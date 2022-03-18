@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Badge,
   Box,
   Button,
   Chip,
@@ -171,20 +172,14 @@ export function Header({
                 size="large"
                 color="inherit"
                 onClick={onClickBasket}
-                startIcon={
-                  <ShoppingCartOutlinedIcon sx={{ margin: '0 10px 0 0' }} />
-                }
               >
-                <Chip
-                  sx={{
-                    position: 'absolute',
-                    left: '20px',
-                    top: 0,
-                    bgcolor: '#fff',
-                  }}
-                  size="small"
-                  label={basketProductCount}
-                />
+                <Badge
+                  sx={{ margin: '0 15px 0 0' }}
+                  badgeContent={basketProductCount}
+                  color='info'
+                >
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
                 {basketProductSum} {getCurrencySymbol(basketProductCurrency)}
               </Button>
               <Button
