@@ -38,7 +38,6 @@ export type HeaderProps = {
 };
 
 export function Header(props: HeaderProps) {
-<<<<<<< HEAD
   const [isCitiesListModalOpen, setIsCitiesListModalOpen] =
     useState<boolean>(false);
 
@@ -128,11 +127,4 @@ export function Header(props: HeaderProps) {
       </Container>
     </Box>
   );
-=======
-    return <div >
-        <h1 className={s.header}>
-            Header
-        </h1>
-    </div>
->>>>>>> main
 }
