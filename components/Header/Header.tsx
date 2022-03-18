@@ -21,5 +21,9 @@ export type HeaderProps = {
 };
 
 export function Header(props: HeaderProps) {
-    return <div>Header</div>
+    return <div >
+        <h1 className={s.header}>
+            Header
+        </h1>
+    </div>
 }
