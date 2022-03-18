@@ -1,9 +1,14 @@
-<<<<<<< HEAD
-.cityDropdown{
-    display: flex;
-    align-items: center;
-=======
-.header {
-  color: red;
->>>>>>> main
+.countryFlag {
+    width: 32px;
+    height: 24px;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+    }
 }

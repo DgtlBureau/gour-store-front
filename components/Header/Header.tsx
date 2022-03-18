@@ -1,22 +1,31 @@
 import {
+  AppBar,
   Box,
   Button,
   Chip,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Link,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 
-import PlaceIcon from '@mui/icons-material/Place';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import RusFlagIcon from './../../assets/icons/flags/rus.svg';
 
 import s from './Header.module.scss';
 import { IconButton } from '../UI/IconButton/IconButton';
+import { getCurrencySymbol } from '../../helpers/currencyHelper';
 
 export type HeaderProps = {
   isMobile: boolean;
@@ -35,96 +44,186 @@ export type HeaderProps = {
   onClickPersonalArea(): void;
   onClickLanguage(): void;
   onClickBasket(): void;
+  onOpenMobileMenu(): void;
 };
 
-export function Header(props: HeaderProps) {
-  const [isCitiesListModalOpen, setIsCitiesListModalOpen] =
-    useState<boolean>(false);
+export function Header({
+  isMobile,
+  phone,
+  selectedCity,
+  cities,
+  basketProductCount,
+  basketProductSum,
+  basketProductCurrency,
+  onChangeCity,
+  onClickFavorite,
+  onClickPersonalArea,
+  onClickLanguage,
+  onClickBasket,
+  onOpenMobileMenu,
+}: HeaderProps) {
+  const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
+
+  const handleOpen = () => {
+    setIsCitiesModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsCitiesModalOpen(false);
+  };
+
+  const handleCityCheck = (cityValue: string) => {
+    onChangeCity(cityValue);
+    handleClose();
+  };
 
   return (
-    <Box sx={{ width: '100vw', backgroundColor: '#c3c3c3', height: '72px' }}>
-      <Container sx={{ height: '100%' }} maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ height: '100%' }}
-        >
+    <>
+      <AppBar sx={{ height: '72px' }}>
+        <Container sx={{ height: '100%' }} maxWidth="lg">
           <Grid
-            item
-            xs={6}
             container
             direction="row"
+            justifyContent="center"
             alignItems="center"
-            justifyContent="flex-start"
-            spacing={2}
+            sx={{ height: '100%' }}
           >
-            <Grid item>
-              <Typography variant="subtitle1">Logo</Typography>
-            </Grid>
-            <Grid item>
-              <Link href="tel:" variant="body1" color="inherit">
-                +7 812 602-52-61
-              </Link>
-            </Grid>
             <Grid
               item
-              xs={4}
+              xs={2}
+              md={6}
               container
               direction="row"
               alignItems="center"
               justifyContent="flex-start"
-              onClick={() => setIsCitiesListModalOpen(!isCitiesListModalOpen)}
             >
-              <PlaceIcon />
-              <Typography variant="body1">Санкт-Петербург</Typography>
-              <KeyboardArrowDownIcon />
-            </Grid>
-            {/* <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              
-            </Box> */}
-          </Grid>
+              <Typography variant="h6">Logo</Typography>
 
-          <Grid
-            item
-            xs={6}
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <div className={s.city}></div>
-            <IconButton component={'span'}>
-              <FavoriteBorderIcon />
-            </IconButton>
-            <Link
-              href="tel:"
-              variant="body2"
-              color="inherit"
-              sx={{
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-              }}
+              <Link
+                href="tel:"
+                variant="body1"
+                color="inherit"
+                sx={{
+                  margin: '0 20px',
+                  display: { xs: 'none', md: 'inline' },
+                }}
+              >
+                {phone}
+              </Link>
+              <Box
+                sx={{
+                  margin: { xs: '0 0 0 20px', md: 'none' },
+                  display: { xs: 'none', md: 'flex' },
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+                onClick={handleOpen}
+              >
+                <PlaceOutlinedIcon />
+                <Typography sx={{ margin: '0 5px' }} variant="body1">
+                  {selectedCity}
+                </Typography>
+                <KeyboardArrowDownIcon />
+              </Box>
+            </Grid>
+
+            <Grid
+              item
+              xs={10}
+              md={6}
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
             >
-              <PersonIcon />
-              Личный кабинет
-            </Link>
-            <Button>
-              <ShoppingCartIcon />
-              <Chip size="small" label="1" />
-              12 550 ₽
-            </Button>
+              <div className={s.city}></div>
+              <IconButton
+                component={'span'}
+                onClick={onClickFavorite}
+                color="inherit"
+                sx={{ display: { xs: 'none', sm: 'flex' } }}
+              >
+                <FavoriteBorderIcon />
+              </IconButton>
+              <Button
+                sx={{
+                  margin: '0 0 0 20px',
+                  display: { xs: 'none', sm: 'flex' },
+                }}
+                variant="text"
+                color="inherit"
+                onClick={onClickPersonalArea}
+              >
+                <PersonIcon />
+                Личный кабинет
+              </Button>
+              <Button
+                sx={{ margin: '0 20px', display: { xs: 'none', sm: 'flex' } }}
+                onClick={onClickLanguage}
+              >
+                <div className={s.countryFlag}>
+                  <img src={RusFlagIcon} alt="" />
+                </div>
+              </Button>
+              <Button
+                sx={{ position: 'relative' }}
+                type="button"
+                size="large"
+                color="inherit"
+                onClick={onClickBasket}
+                startIcon={
+                  <ShoppingCartOutlinedIcon sx={{ margin: '0 10px 0 0' }} />
+                }
+              >
+                <Chip
+                  sx={{
+                    position: 'absolute',
+                    left: '20px',
+                    top: 0,
+                    bgcolor: '#fff',
+                  }}
+                  size="small"
+                  label={basketProductCount}
+                />
+                {basketProductSum} {getCurrencySymbol(basketProductCurrency)}
+              </Button>
+              <Button
+                type="button"
+                size="large"
+                color="inherit"
+                sx={{ display: { xs: 'flex', md: 'none' } }}
+                onClick={onOpenMobileMenu}
+              >
+                <MenuIcon />
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </Box>
+        </Container>
+      </AppBar>
+      <Dialog open={isCitiesModalOpen} onClose={handleClose}>
+        <DialogTitle>Ваш город</DialogTitle>
+        <DialogContent sx={{ width: 500 }}>
+          <Grid container spacing={2}>
+            {cities.map(city => (
+              <Grid
+                item
+                xs={12}
+                md={4}
+                onClick={() => handleCityCheck(city.value)}
+                key={city.value}
+              >
+                <Typography
+                  sx={{ cursor: 'pointer' }}
+                  variant="body1"
+                  color={city.title === selectedCity ? 'primary' : 'inherit'}
+                >
+                  {city.title}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
