@@ -1,15 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {PromotionCard, PromotionCardProps} from "./PromotionCard";
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { PromotionCard } from './PromotionCard';
 
 export default {
-    component: PromotionCard,
-    title: "components/PromotionCard",
-} as Meta;
+  title: 'PromotionCard',
+  component: PromotionCard,
+} as ComponentMeta<typeof PromotionCard>;
 
-const Template: ComponentStory<typeof PromotionCard> = (args: PromotionCardProps) => <PromotionCard {...args} />;
-export const DefaultPromotionCard = Template.bind({});
-const props: Partial<PromotionCardProps> = {};
+const Template: ComponentStory<typeof PromotionCard> = function (args) {
+  return <PromotionCard {...args} />;
+};
 
-DefaultPromotionCard.args = props;
+export const DefaultState = Template.bind({});
+DefaultState.args = {
+  title: 'Акция для любителей кушать сыр!',
+  image:
+    'https://images.unsplash.com/photo-1641642399335-6867075ee7db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
+};

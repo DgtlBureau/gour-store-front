@@ -1,9 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react'
 import {baseQueryWithReauth} from "../../http/baseQuery";
-
-type Product = {
-    id: number;
-}
+import {IProduct} from "../../@types/entities/IProduct";
 
 export const productApi = createApi({
     reducerPath: 'productApi',
@@ -11,7 +8,7 @@ export const productApi = createApi({
     tagTypes: ['Product'],
     endpoints(builder) {
         return {
-            getProductList: builder.query<Product[], void>({
+            getProductList: builder.query<IProduct[], void>({
                 query() {
                     return {
                         method: 'get',
@@ -24,7 +21,7 @@ export const productApi = createApi({
                         {type: 'Product', id: 'LIST'},
                     ] : [{type: 'Product', id: 'LIST'}],
             }),
-            getProduct: builder.query<Product, number>({
+            getProduct: builder.query<IProduct, number>({
                 query(id) {
                     return {
                         method: 'get',
@@ -33,7 +30,7 @@ export const productApi = createApi({
                 },
                 providesTags: (result, error, id) => [{ type: 'Product', id }],
             }),
-            createProduct: builder.mutation<Product, Partial<Product>>({
+            createProduct: builder.mutation<IProduct, Partial<IProduct>>({
                 query(product) {
                     return {
                         method: 'post',
@@ -45,7 +42,7 @@ export const productApi = createApi({
                     { type: 'Product', id: 'LIST' },
                 ],
             }),
-            updateProduct: builder.mutation<Product, Partial<Product> & Pick<Product, 'id'>>({
+            updateProduct: builder.mutation<IProduct, Partial<IProduct> & Pick<IProduct, 'id'>>({
                 query(product) {
                     return {
                         method: 'put',
@@ -57,7 +54,7 @@ export const productApi = createApi({
                     { type: 'Product', id },
                 ],
             }),
-            deleteProduct: builder.mutation<Product, number>({
+            deleteProduct: builder.mutation<IProduct, number>({
                 query(id) {
                     return {
                         method: 'delete',
