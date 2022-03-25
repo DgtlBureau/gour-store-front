@@ -50,50 +50,15 @@ export function TemplateCard({ title, image }: CardProps) {
 
 DefaultState.args = {
   title: 'Акции и скидки',
+  slidesPerView: 4,
   cardsList: [
-    {
-      id: 1,
-      element: <TemplateCard title="test1" />,
-    },
-    {
-      id: 2,
-      element: <TemplateCard title="test2" />,
-    },
-    {
-      id: 3,
-      element: <TemplateCard title="test3" />,
-    },
-    {
-      id: 4,
-      element: <TemplateCard title="test4" />,
-    },
-    {
-      id: 5,
-      element: <TemplateCard title="test5" />,
-    },
-    {
-      id: 6,
-      element: <TemplateCard title="test6" />,
-    },
-    {
-      id: 7,
-      element: <TemplateCard title="test7" />,
-    },
-    {
-      id: 8,
-      element: <TemplateCard title="test8" />,
-    },
-    {
-      id: 9,
-      element: <TemplateCard title="test9" />,
-    },
-    {
-      id: 10,
-      element: <TemplateCard title="test10" />,
-    },
-    {
-      id: 11,
-      element: <TemplateCard title="test11" />,
-    },
+    <TemplateCard title="test1" />,
+    <TemplateCard title="test2" />,
+    <TemplateCard title="test3" />,
+    <TemplateCard title="test4" />,
+    <TemplateCard title="test5" />,
+    <TemplateCard title="test6" />,
+    <TemplateCard title="test7" />,
+    <TemplateCard title="test8" />,
   ],
 };

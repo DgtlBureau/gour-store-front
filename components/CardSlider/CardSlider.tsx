@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from 'react';
 import { Button, ButtonGroup, Stack } from '@mui/material';
 // eslint-disable-next-line
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Grid, Navigation } from 'swiper';
+import SwiperCore, { Grid } from 'swiper';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -16,16 +16,10 @@ import './CardSlider.module.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
 
-type Card = {
-  id: number;
-  element: ReactNode;
-};
-
 type Props = {
   title: string;
-  cardsList: Card[];
+  cardsList: ReactNode[];
   rows?: number;
-  cardHeight?: number;
   spaceBetween?: number;
   slidesPerView?: number;
 };
@@ -43,11 +37,10 @@ export function CardSlider({
   rows = 1,
   slidesPerView = 4,
   spaceBetween = 10,
-  cardHeight = 195,
 }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
-  console.log(slider);
+  const cardHeight = slider?.el.children[0].children[0].scrollHeight || 0;
 
   return (
     <Container sx={wrapperBoxSx}>
@@ -72,7 +65,7 @@ export function CardSlider({
           style={{
             padding: '10px',
             width: '100%',
-            height: `${cardHeight * rows + spaceBetween * (rows)}px`,
+            height: `${cardHeight * rows + spaceBetween * rows}px`,
           }}
           spaceBetween={spaceBetween}
           slidesPerView={slidesPerView}
@@ -83,9 +76,9 @@ export function CardSlider({
           modules={[Grid]}
           className="mySwiper"
         >
-          {cardsList.map(card => (
-            <SwiperSlide key={card.id} style={{ height: `${cardHeight}px` }}>
-              {card.element}
+          {cardsList.map((card, i) => (
+            <SwiperSlide key={i} style={{ height: `${cardHeight}px` }}>
+              {card}
             </SwiperSlide>
           ))}
         </Swiper>
