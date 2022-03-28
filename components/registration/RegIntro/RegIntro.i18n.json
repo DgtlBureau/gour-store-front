@@ -1,8 +1,10 @@
 {
   "en": {
-    "test": "Test"
+    "auth": "I'm already with you",
+    "reg": "Become part of the delicious world"
   },
   "ru": {
-    "test": "Тест"
+    "auth": "Я уже с вами",
+    "reg": "Стать частью вкусного мира"
   }
 }
