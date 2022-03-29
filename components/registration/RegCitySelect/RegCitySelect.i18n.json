@@ -1,8 +1,12 @@
 {
   "ru": {
-    "citySelectMessage": "Я обитаю в Петербурге и Москве, а откуда ты?"
+    "back": "Назад",
+    "title": "Я обитаю в Петербурге и Москве, а откуда ты?",
+    "continue": "Продолжить"
   },
   "en": {
-    "citySelectMessage": ""
+    "back": "Back",
+    "title": "I live in St. Petersburg and Moscow, but where are you from?",
+    "continue": "Continue"
   }
 }

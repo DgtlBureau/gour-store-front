@@ -3,6 +3,7 @@ import MUITypography from '@mui/material/Typography';
 import { SxProps } from '@mui/material';
 
 type Props = {
+  color?: string;
   variant?:
     | 'h1'
     | 'h2'
@@ -23,9 +24,9 @@ type Props = {
   sx?: SxProps;
 };
 
-export function Typography({ variant = 'h4', children, sx }: Props) {
+export function Typography({ variant = 'h4', children, color, sx }: Props) {
   return (
-    <MUITypography sx={sx} variant={variant}>
+    <MUITypography sx={sx} variant={variant} color={color}>
       {children}
     </MUITypography>
   );
