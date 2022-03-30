@@ -7,7 +7,7 @@ import { SignUpDto } from '../../../@types/dto/signup.dto';
 
 export default {
   component: RegCredentials,
-  title: 'components/RegCredentials',
+  title: 'registration/RegCredentials',
 } as Meta;
 
 const boxSx = {
