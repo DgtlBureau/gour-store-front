@@ -30,13 +30,11 @@ export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
   const [seconds, setSeconds] = useState<number>(10);
   const [timer, setTimer] = useState<string>('');
 
+  let intervalId = -1;
   useEffect(() => {
     const nowDate = new Date();
     setSeconds(differenceInSeconds(end, nowDate));
-  }, []);
 
-  let intervalId = -1;
-  useEffect(() => {
     intervalId = +setInterval(() => {
       setSeconds(seconds => seconds - 1);
     }, 1000);
