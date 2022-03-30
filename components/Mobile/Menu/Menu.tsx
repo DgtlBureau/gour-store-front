@@ -15,7 +15,7 @@ import { MobileMenuContacts } from './MenuContacts';
 
 import locationIcon from '../../../assets/icons/mobile/location.svg';
 import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
-import grayArrowIcon from '../../../assets/icons/mobile/gray-arrow.svg';
+import lightArrowIcon from '../../../assets/icons/mobile/light-arrow.svg';
 import russiaImage from '../../../assets/images/countries/russia.png';
 import britainImage from '../../../assets/images/countries/britain.png';
 
@@ -184,7 +184,7 @@ export function MobileMenu({
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
-          <Image src={grayArrowIcon} layout="fill" alt="" />
+          <Image src={lightArrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
 
@@ -194,7 +194,7 @@ export function MobileMenu({
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
-          <Image src={grayArrowIcon} layout="fill" alt="" />
+          <Image src={lightArrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
 

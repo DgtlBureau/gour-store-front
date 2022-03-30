@@ -3,7 +3,7 @@ const sx = {
     position: 'absolute',
     width: '100%',
     maxWidth: '375px',
-    backgroundColor: '#25262D',
+    backgroundColor: '#7E5F2F',
     color: 'white',
   },
   listItem: {
@@ -40,7 +40,7 @@ const sx = {
     opacity: 0.1,
   },
   accent: {
-    color: '#0073D5',
+    color: '#F7A400',
   },
   arrowIcon: {
     position: 'relative',

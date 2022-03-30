@@ -8,7 +8,7 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 20px',
-    backgroundColor: '#25262D',
+    backgroundColor: '#7E5F2F',
     color: 'white',
   },
   logo: {
