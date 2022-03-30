@@ -1,10 +1,10 @@
 {
   "en": {
-    "auth": "I'm already with you",
-    "reg": "Become part of the delicious world"
+    "left": "Left",
+    "end": "The promotion is over!"
   },
   "ru": {
-    "auth": "Я уже с вами",
-    "reg": "Стать частью вкусного мира"
+    "left": "Осталось",
+    "end": "Акция окончена!"
   }
 }

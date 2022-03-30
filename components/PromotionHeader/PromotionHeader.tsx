@@ -8,6 +8,7 @@ import s from './PromotionHeader.module.scss';
 import { secondsToMinutes } from 'date-fns/esm';
 
 import translations from './PromotionHeader.i18n.json';
+import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 
 export type PromotionHeaderProps = {
   title: string;
@@ -24,6 +25,8 @@ const headerSx: CSSProperties = {
 };
 
 export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
+  const { t } = useLocalTranslation(translations);
+
   const [seconds, setSeconds] = useState<number>(10);
   const [timer, setTimer] = useState<string>('');
 
@@ -70,7 +73,7 @@ export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
         </Typography>
         <div className={s.timer}>
           <Typography variant="body1">
-            {seconds > 0 ? `Осталось ${timer}` : 'Акция окончена!'}
+            {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
           </Typography>
         </div>
       </Stack>
