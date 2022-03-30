@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
-export default yup.object().shape({
-  city: yup.string().required('Выберите город'),
+export type Translator = (str: string) => string;
+
+export const getSchema = (t: Translator) => yup.object().shape({
+  city: yup.string().required(t('cityError')),
 });

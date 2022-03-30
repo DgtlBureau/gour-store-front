@@ -2,11 +2,15 @@
   "ru": {
     "back": "Назад",
     "title": "Я обитаю в Петербурге и Москве, а откуда ты?",
+    "city": "Выбор города",
+    "cityError": "Выберите город",
     "continue": "Продолжить"
   },
   "en": {
-    "back": "Back",
+    "back": "Go back",
     "title": "I live in St. Petersburg and Moscow, but where are you from?",
+    "city": "City selection",
+    "cityError": "Select city",
     "continue": "Continue"
   }
 }

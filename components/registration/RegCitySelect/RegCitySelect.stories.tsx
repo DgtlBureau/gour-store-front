@@ -6,7 +6,7 @@ import { Box } from '../../UI/Box/Box';
 
 export default {
   component: RegCitySelect,
-  title: 'RegCitySelect',
+  title: 'registration/RegCitySelect',
 } as Meta;
 
 const boxSx = {
@@ -37,6 +37,7 @@ const props: Partial<RegCitySelectProps> = {
       value: 'petersburg',
     },
   ],
+  onSubmit: city => console.log(city),
 };
 
 DefaultRegCitySelect.args = props;
