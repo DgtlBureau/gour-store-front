@@ -1,15 +1,33 @@
-import React from "react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {RegIntro, RegIntroProps} from "./RegIntro";
+import { Box } from '../../UI/Box/Box';
+import { RegIntro, RegIntroProps } from './RegIntro';
 
 export default {
-    component: RegIntro,
-    title: "components/registration/RegIntro",
+  component: RegIntro,
+  title: 'RegIntro',
 } as Meta;
 
-const Template: ComponentStory<typeof RegIntro> = (args: RegIntroProps) => <RegIntro {...args} />;
+const boxSx = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '500px',
+  backgroundColor: 'gray',
+};
+
+const Template: ComponentStory<typeof RegIntro> = function (args: RegIntroProps) {
+  return (
+    <Box sx={boxSx}>
+      <RegIntro {...args} />
+    </Box>
+  );
+};
 export const DefaultRegIntro = Template.bind({});
-const props: Partial<RegIntroProps> = {};
+
+const props: Partial<RegIntroProps> = {
+
+};
 
 DefaultRegIntro.args = props;

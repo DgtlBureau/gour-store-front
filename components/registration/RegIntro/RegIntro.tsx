@@ -1,14 +1,40 @@
 import React from 'react';
-import s from './RegIntro.module.scss';
-import translations from './RegIntro.i18n.json';
-import {useLocalTranslation} from "../../../hooks/useLocalTranslation";
+import { Paper } from '@mui/material';
 
-export type RegIntroProps = {
-    onClickRegistration(): void;
-    onClickAuth(): void;
+import translations from './RegIntro.i18n.json';
+import  { useLocalTranslation } from "../../../hooks/useLocalTranslation";
+import { Button } from '../../UI/Button/Button';
+
+const sx = {
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '60px',
+  },
+  authBtn: {
+    marginBottom: '20px',
+  },
 };
 
-export function RegIntro(props: RegIntroProps) {
-    const {t} = useLocalTranslation(translations);
-    return <div>RegIntro - {t('test')}</div>
+export type RegIntroProps = {
+  onClickAuth(): void;
+  onClickRegistration(): void;
+};
+
+export function RegIntro({
+  onClickAuth,
+  onClickRegistration,
+}: RegIntroProps) {
+  const { t } = useLocalTranslation(translations);
+
+  return (
+    <Paper square elevation={0} sx={sx.paper}>
+      <Button onClick={onClickAuth} sx={sx.authBtn} variant="outlined">
+        {t('auth')}
+      </Button>
+      <Button onClick={onClickRegistration}>
+        {t('reg')}
+      </Button>
+    </Paper>
+  );
 }
