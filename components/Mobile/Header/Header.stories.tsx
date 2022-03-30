@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { Box } from '../UI/Box/Box';
-import { Typography } from '../UI/Typography/Typography';
-import { MobileHeader } from './MobileHeader';
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
+import { MobileHeader } from './Header';
 
 export default {
   component: MobileHeader,

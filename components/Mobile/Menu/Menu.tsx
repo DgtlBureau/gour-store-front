@@ -8,86 +8,18 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 
-import { Typography } from '../UI/Typography/Typography';
-import { MobileMenuContacts } from './MobileMenuContacts';
+import translations from './Menu.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Typography } from '../../UI/Typography/Typography';
+import { MobileMenuContacts } from './MenuContacts';
 
-import locationIcon from '../../assets/icons/mobile/location.svg';
-import arrowIcon from '../../assets/icons/mobile/arrow.svg';
-import grayArrowIcon from '../../assets/icons/mobile/gray-arrow.svg';
-import russiaImage from '../../assets/images/countries/russia.png';
-import britainImage from '../../assets/images/countries/britain.png';
+import locationIcon from '../../../assets/icons/mobile/location.svg';
+import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
+import grayArrowIcon from '../../../assets/icons/mobile/gray-arrow.svg';
+import russiaImage from '../../../assets/images/countries/russia.png';
+import britainImage from '../../../assets/images/countries/britain.png';
 
-const sx = {
-  list: {
-    position: 'absolute',
-    width: '100%',
-    maxWidth: '375px',
-    backgroundColor: '#25262D',
-    color: 'white',
-  },
-  listItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '10px 25px 10px 20px',
-  },
-  bigItem: {
-    padding: '16px 25px 16px 20px',
-  },
-  title: {
-    fontSize: '15px',
-    fontWeight: 500,
-  },
-  city: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  cityTitle: {
-    marginLeft: '22px',
-  },
-  languageItem: {
-    paddingLeft: '8px',
-  },
-  languageTitle: {
-    marginLeft: '34px',
-  },
-  language: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  divider: {
-    borderColor: 'white',
-    opacity: 0.1,
-  },
-  accent: {
-    color: '#0073D5',
-  },
-  arrowIcon: {
-    position: 'relative',
-    height: '22px',
-    width: '24px',
-  },
-  invertedArrow: {
-    transform: 'rotate(180deg)',
-  },
-  grayArrow: {
-    transform: 'rotate(-90deg)',
-  },
-  locationIcon: {
-    position: 'relative',
-    height: '20px',
-    width: '14px',
-    marginRight: '8px',
-  },
-  languageIcon: {
-    position: 'relative',
-    height: '20px',
-    width: '28px',
-    marginRight: '6px',
-    img: {
-      borderRadius: '6px',
-    }
-  },
-};
+import sx from './Menu.styles';
 
 const languages = [
   {
@@ -140,6 +72,8 @@ export function MobileMenu({
 }: MobileMenuProps) {
   const [citiesIsOpened, setCitiesIsOpened] = useState(false);
   const [languagesIsOpened, setLanguagesIsOpened] = useState(false);
+
+  const { t } = useLocalTranslation(translations);
 
   const currentCity = cities.find(city => city.value === selectedCity);
   const currentLanguage = languages.find(language => language.value === selectedLanguage);
@@ -247,7 +181,7 @@ export function MobileMenu({
       </Collapse>
 
       <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickPersonalArea}>
-        <Typography sx={sx.title}>Личный кабинет</Typography>
+        <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={grayArrowIcon} layout="fill" alt="" />
@@ -257,7 +191,7 @@ export function MobileMenu({
       <Divider sx={sx.divider} />
 
       <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickFavorite}>
-        <Typography sx={sx.title}>Избранное</Typography>
+        <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={grayArrowIcon} layout="fill" alt="" />
@@ -267,7 +201,7 @@ export function MobileMenu({
       <Divider sx={sx.divider} />
 
       <ListItemButton sx={sx.bigItem} onClick={onClickSignout}>
-        <Typography sx={sx.title}>Выйти</Typography>
+        <Typography sx={sx.title}>{t('signOut')}</Typography>
       </ListItemButton>
 
       <Divider sx={sx.divider} />

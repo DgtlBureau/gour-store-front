@@ -2,41 +2,15 @@ import React from 'react';
 import { ListItem } from '@mui/material';
 import Image from 'next/image';
 
-import { Box } from '../UI/Box/Box';
-import { Link as CustomLink } from '../UI/Link/Link';
-import { BlankLink } from '../UI/BlankLink/BlankLink';
+import { Box } from '../../UI/Box/Box';
+import { Link as CustomLink } from '../../UI/Link/Link';
+import { BlankLink } from '../../UI/BlankLink/BlankLink';
 
-import fbIcon from '../../assets/icons/social/fb-white.svg';
-import instIcon from '../../assets/icons/social/inst-white.svg';
-import vkIcon from '../../assets/icons/social/vk-white.svg';
+import fbIcon from '../../../assets/icons/social/fb-white.svg';
+import instIcon from '../../../assets/icons/social/inst-white.svg';
+import vkIcon from '../../../assets/icons/social/vk-white.svg';
 
-const sx = {
-  phones: {
-    padding: '20px',
-  },
-  socials: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '0px 20px 40px 20px',
-  },
-  link: {
-    fontSize: '16px',
-    fontWeight: 700,
-    color: 'white',
-    '&:first-child': {
-      marginRight: '20px',
-    },
-  },
-  socialIcons: {
-    display: 'flex',
-  },
-  socialIcon: {
-    position: 'relative',
-    height: '38px',
-    width: '38px',
-    marginLeft: '10px',
-  },
-};
+import sx from './Menu.styles';
 
 export type MobileMenuContactsProps = {
   firstPhone: string;

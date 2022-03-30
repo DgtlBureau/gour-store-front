@@ -1,48 +1,14 @@
 import React, { useState } from 'react';
 import { Collapse, Button } from '@mui/material';
 
-import { Box } from '../UI/Box/Box';
-import { Typography } from '../UI/Typography/Typography';
-import { MobileMenu } from '../MobileMenu/MobileMenu';
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
+import { MobileMenu } from '../Menu/Menu';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const sx = {
-  headerWrapper: {
-    position: 'relative',
-    maxWidth: '375px',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '10px 20px',
-    backgroundColor: '#25262D',
-    color: 'white',
-  },
-  logo: {
-    fontSize: '18px',
-    fontWeight: 700,
-  },
-  iconBtn: {
-    display: 'flex',
-    justifyContent: 'center',
-    minWidth: '34px',
-    height: '34px',
-    width: '34px',
-    padding: 0,
-    borderRadius: '6px',
-    backgroundColor: 'white',
-    '&:hover': {
-      backgroundColor: 'white',
-    },
-  },
-  menuIcon: {
-    width: '18px',
-    color: 'black',
-  },
-};
+import sx from './Header.styles';
 
 export type MobileHeaderProps = {
   selectedCity: string;
