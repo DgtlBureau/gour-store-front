@@ -1,3 +1,7 @@
+import { muiTheme } from 'storybook-addon-material-ui'
+
+import { lightTheme } from '../styles/themes';
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -7,3 +11,7 @@ export const parameters = {
     },
   },
 }
+
+export const decorators = [
+	muiTheme([lightTheme])
+];
