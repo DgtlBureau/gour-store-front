@@ -1,0 +1,10 @@
+{
+  "en": {
+    "left": "Left",
+    "end": "The promotion is over!"
+  },
+  "ru": {
+    "left": "Осталось",
+    "end": "Акция окончена!"
+  }
+}

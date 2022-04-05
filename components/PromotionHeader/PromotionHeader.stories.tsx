@@ -1,15 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {PromotionHeader, PromotionHeaderProps} from "./PromotionHeader";
+import { ComponentStory, Meta } from '@storybook/react';
+import { PromotionHeader, PromotionHeaderProps } from './PromotionHeader';
 
 export default {
-    component: PromotionHeader,
-    title: "src/components/PromotionHeader",
+  component: PromotionHeader,
+  title: 'src/components/PromotionHeader',
 } as Meta;
 
-const Template: ComponentStory<typeof PromotionHeader> = (args: PromotionHeaderProps) => <PromotionHeader {...args} />;
+const Template: ComponentStory<typeof PromotionHeader> = (
+  args: PromotionHeaderProps
+) => <PromotionHeader {...args} />;
 export const DefaultPromotionHeader = Template.bind({});
-const props: Partial<PromotionHeaderProps> = {};
+const props: Partial<PromotionHeaderProps> = {
+  image:
+    'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80',
+  title: 'Заголовок акции',
+  end: new Date(2022, 3, 1),
+};
 
 DefaultPromotionHeader.args = props;
