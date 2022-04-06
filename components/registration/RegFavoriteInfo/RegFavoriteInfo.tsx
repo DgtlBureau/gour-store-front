@@ -5,6 +5,7 @@ import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Grid, Stack } from '@mui/material';
 import { Button } from './../../UI/Button/Button';
 import { Typography } from './../..//UI/Typography/Typography';
+import { isIdInList } from './RegFavoriteInfoHelper';
 
 export type RegFavoriteInfoProps = {
   countries: {
@@ -31,10 +32,6 @@ export function RegFavoriteInfo({
 
   const [userCountries, setUserCountries] = useState<number[]>([]);
   const [userProducts, setUserProducts] = useState<number[]>([]);
-
-  const isIdInList = (id: number, list: number[]) => {
-    return !!list.find(item => item === id);
-  };
 
   const handleClickCountry = (countryId: number) => {
     const isSelected = isIdInList(countryId, userCountries);
