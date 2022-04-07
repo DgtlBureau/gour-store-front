@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "copyright": "© GOUR FOOD, 2022г.",
+    "rules": "Правила покупки и возврата",
+    "privacy": "Политика конфиденциальности",
+    "cookie": "Соглашение об использовании cookie-файлов",
+    "terms": "Условия и соглашения для физических лиц"
+  },
+  "en": {
+    "copyright": "© GOUR FOOD, 2022",
+    "rules": "Purchase and Refund Rules",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Usage Agreement",
+    "terms": "Terms and Agreements for individuals"
+  }
+}

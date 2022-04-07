@@ -3,6 +3,8 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 import { Divider } from '@mui/material';
 
+import translations from './Footer.i18n.json';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import { Link as CustomLink } from '../UI/Link/Link';
 import { Box } from '../UI/Box/Box';
 
@@ -13,60 +15,88 @@ import vkIcon from '../../assets/icons/social/vk.svg';
 
 import sx from './Footer.styles';
 
-const links = {
-  contacts: [
+export type FooterProps = {
+  firstPhone: string;
+  secondPhone: string;
+  email: string;
+  fb: string;
+  inst: string;
+  vk: string;
+  copyright: string;
+  rules: string;
+  privacy: string;
+  cookie: string;
+  terms: string;
+}
+
+export function Footer({
+  firstPhone,
+  secondPhone,
+  email,
+  fb,
+  inst,
+  vk,
+  copyright,
+  rules,
+  privacy,
+  cookie,
+  terms,
+}: FooterProps) {
+  const { t } = useLocalTranslation(translations);
+
+  const contacts = [
     {
-      label: '+7 812 602-52-61',
-      path: 'tel:+78126025261',
+      label: firstPhone,
+      path: `tel:${firstPhone}`,
     },
     {
-      label: '+372 880-45-21',
-      path: 'tel:+3728804521',
+      label: secondPhone,
+      path: `tel:${secondPhone}`,
     },
     {
-      label: 'rk@gour-food.com',
-      path: 'mailto:rk@gour-food.com',
+      label: email,
+      path: `mailto:${email}`,
     },
-  ],
-  social: [
+  ];
+
+  const social = [
     {
       icon: fbIcon,
-      path: 'https://www.facebook.com/',
+      path: fb,
     },
     {
       icon: instIcon,
-      path: 'https://www.instagram.com/',
+      path: inst,
     },
     {
       icon: vkIcon,
-      path: 'https://vk.com/',
+      path: vk,
     },
-  ],
-  info: [
-    {
-      label: '© GOUR FOOD, 2022г.',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Правила покупки и возврата',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Политика конфиденциальности',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Соглашение об использовании cookie-файлов',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Условия и соглашения для физических лиц',
-      path: 'https://gour-food.com/',
-    },
-  ],
-};
+  ];
 
-export function Footer() {
+  const info = [
+    {
+      label: t('copyright'),
+      path: copyright,
+    },
+    {
+      label: t('rules'),
+      path: rules,
+    },
+    {
+      label: t('privacy'),
+      path: privacy,
+    },
+    {
+      label: t('cookie'),
+      path: cookie,
+    },
+    {
+      label: t('terms'),
+      path: terms,
+    },
+  ];
+
   return (
     <Box>
       <Box sx={sx.contactsWrapper}>
@@ -77,7 +107,7 @@ export function Footer() {
         </CustomLink>
 
         <Box sx={sx.contacts}>
-          {links.contacts.map(link => (
+          {contacts.map(link => (
             <CustomLink
               key={link.path}
               path={link.path}
@@ -88,7 +118,7 @@ export function Footer() {
             </CustomLink>
           ))}
           <Box sx={sx.social}>
-            {links.social.map(link => (
+            {social.map(link => (
               <a
                 key={link.path}
                 href={link.path}
@@ -103,14 +133,14 @@ export function Footer() {
         </Box>
       </Box>
       <Box sx={sx.info}>
-        {links.info.map((link, i) => (
+        {info.map((link, i) => (
           <Fragment key={link.path}>
             <NextLink href={link.path} passHref>
               <a href="replace" rel="noreferrer" target="_blank" style={sx.infoLink}>
                 {link.label}
               </a>
             </NextLink>
-            {i + 1 !== links.info.length && (
+            {i + 1 !== info.length && (
               <Divider sx={sx.divider} orientation="vertical" variant="middle" flexItem />
             )}
           </Fragment>
