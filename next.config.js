@@ -8,7 +8,12 @@ const nextConfig = {
         destination: 'https://gour-store.devshift.ru/api/:path*' // Proxy to Backend
       }
     ]
-  }
+  },
+  i18n: {
+    locales: ['en', 'ru'],
+    defaultLocale: 'ru',
+    localeDetection: false,
+  },
 }
 
 module.exports = nextConfig
