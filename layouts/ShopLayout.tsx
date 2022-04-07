@@ -23,6 +23,7 @@ export function ShopLayout(props: ShopLayoutProps) {
             onClickPersonalArea={() => {}}
             onClickLanguage={() => {}}
             onClickBasket={() => {}}
+            onOpenMobileMenu={() => {}}
             />
         <div className={s.content}>
             {props.children}

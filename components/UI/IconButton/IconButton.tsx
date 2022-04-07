@@ -1,5 +1,6 @@
 import React, { ElementType, ReactNode } from 'react';
 import MUIIconButton from '@mui/material/IconButton';
+import { SxProps } from '@mui/material';
 
 type Props = {
   size?: 'small' | 'medium' | 'large' | undefined;
@@ -17,7 +18,7 @@ type Props = {
     | 'success'
     | 'warning'
     | undefined;
-
+  sx?: SxProps;
   component: ElementType;
 };
 
@@ -29,6 +30,7 @@ export function IconButton({
   type,
   disabled,
   component,
+  sx,
 }: Props) {
   return (
     <MUIIconButton
@@ -38,6 +40,7 @@ export function IconButton({
       onClick={onClick}
       type={type}
       component={component}
+      sx={sx}
     >
       {children}
     </MUIIconButton>

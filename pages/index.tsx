@@ -24,12 +24,15 @@ const Home: NextPage = () => {
             <div>
                 <CardSlider
                     title={'sada'}
-                    cardsList={promotions.map(promotion => <PromotionCard
+                    cardsList={promotions.map(promotion => (
+                      <PromotionCard
+                        title=""
                         key={promotion.id}
                         image={promotion.cardImage.small}
-                        onClickMore={() => {
+                        onMoreClick={() => {
                         }}
-                    />)}
+                      />
+                    ))}
                 />
                 <CardSlider
                     title={'sada'}

@@ -52,20 +52,25 @@ DefaultState.args = {
     title: 'Акции и скидки',
     cardsList: [
         <TemplateCard
+            key="test1"
             title="test1"
         />,
         <TemplateCard
+            key="test2"
             title="test2"
         />,
         <TemplateCard
+            key="test3"
             image="https://images.unsplash.com/photo-1646309244219-9583e1341a00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
             title="test3"
         />,
         <TemplateCard
+            key="test4"
             image="https://images.unsplash.com/photo-1646309244219-9583e1341a00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
             title="test4"
         />,
         <TemplateCard
+            key="test5"
             image="https://images.unsplash.com/photo-1646309244219-9583e1341a00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
             title="test5"
         />,

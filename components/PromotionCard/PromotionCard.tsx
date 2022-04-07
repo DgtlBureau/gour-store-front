@@ -6,7 +6,7 @@ import { Typography } from '../UI/Typography/Typography';
 type Props = {
   title: string;
   image: string;
-  onMoreCLick(): void;
+  onMoreClick(): void;
 };
 
 const wrapperBoxSx: CSSProperties = {
@@ -26,11 +26,11 @@ const wrapperBoxSx: CSSProperties = {
   padding: '26px 18px 13px 18px',
 };
 
-export function PromotionCard({ title, image, onMoreCLick }: Props) {
+export function PromotionCard({ title, image, onMoreClick }: Props) {
   return (
     <Box sx={{ ...wrapperBoxSx, backgroundImage: image ? `url(${image})` : 'none' }}>
       <Typography variant="subtitle1">{title}</Typography>
-      <Button size="small" onClick={onMoreCLick}>
+      <Button size="small" onClick={onMoreClick}>
         подробнее
       </Button>
     </Box>

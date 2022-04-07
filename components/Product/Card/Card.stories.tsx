@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard } from './Card';
-import { Weight } from '../../../@types/entities/Product';
 
 import russiaIcon from '../../../assets/icons/countries/russia.svg';
 
@@ -18,6 +17,11 @@ const DESCRIPTION = `
   содержит ценные витамины и минералы.
   Прекрасен как самостоятельное блюдо в сочетании с белым или розовым вином.
 `;
+
+type Weight = {
+  value: number; 
+  unit: 'г' | 'кг'
+};
 
 const WEIGHTS = [
   {

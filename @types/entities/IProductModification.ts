@@ -1,6 +1,4 @@
-import {TranslatableString} from "../../entity/TranslatableString";
-import {Product} from "../../entity/Product";
-import {Warehouse} from "../../entity/Warehouse";
+import {IWarehouse} from "./IWarehouse";
 import {ITranslatableString} from "./ITranslatableString";
 import {IProduct} from "./IProduct";
 import {IBaseEntity} from "./IBaseEntity";
@@ -11,5 +9,5 @@ export interface IProductModification extends IBaseEntity {
     quantityInStock: number;
     moyskladCode: number;
     product: IProduct;
-    warehouse: Warehouse;
+    warehouse: IWarehouse;
 }

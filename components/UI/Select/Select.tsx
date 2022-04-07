@@ -30,7 +30,7 @@ export function Select({ id, value, onChange, label, items, sx }: Props) {
         <InputLabel id={id}>{label}</InputLabel>
         <MUISelect labelId={id} id={id} value={value} label={label} onChange={onChange}>
           {items.map(item => (
-            <MenuItem value={item.value}>{item.label}</MenuItem>
+            <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
           ))}
         </MUISelect>
       </FormControl>
