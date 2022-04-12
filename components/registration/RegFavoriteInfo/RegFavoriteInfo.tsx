@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import s from './RegFavoriteInfo.module.scss';
 import translations from './RegFavoriteInfo.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Button } from './../../UI/Button/Button';
 import { Typography } from './../..//UI/Typography/Typography';
-import { isIdInList } from './RegFavoriteInfoHelper';
 
 export type RegFavoriteInfoProps = {
   countries: {
@@ -34,7 +33,7 @@ export function RegFavoriteInfo({
   const [userProducts, setUserProducts] = useState<number[]>([]);
 
   const handleClickCountry = (countryId: number) => {
-    const isSelected = isIdInList(countryId, userCountries);
+    const isSelected = userCountries.includes(countryId);
     if (isSelected) {
       const newList = userCountries.filter(id => id !== countryId);
       return setUserCountries(newList);
@@ -43,7 +42,7 @@ export function RegFavoriteInfo({
   };
 
   const handleClickProducts = (productId: number) => {
-    const isSelected = isIdInList(productId, userProducts);
+    const isSelected = userProducts.includes(productId);
     if (isSelected) {
       const newList = userProducts.filter(id => id !== productId);
       return setUserProducts(newList);
@@ -76,7 +75,7 @@ export function RegFavoriteInfo({
           <Grid item xs={2} key={country.id}>
             <div
               className={`${s.circle} ${
-                isIdInList(country.id, userCountries) ? s.selected : ''
+                userCountries.includes(country.id) ? s.selected : ''
               }`}
               style={{ backgroundImage: `url(${country.image})` }}
               onClick={() => {
@@ -96,7 +95,7 @@ export function RegFavoriteInfo({
           <Grid item xs={2} key={product.id}>
             <div
               className={`${s.circle} ${
-                isIdInList(product.id, userProducts) ? s.selected : ''
+                userProducts.includes(product.id) ? s.selected : ''
               }`}
               style={{ backgroundImage: `url(${product.image})` }}
               onClick={() => {
