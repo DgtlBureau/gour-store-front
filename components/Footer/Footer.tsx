@@ -1,183 +1,150 @@
 import React, { Fragment } from 'react';
 import NextLink from 'next/link';
+import Image from 'next/image';
 import { Divider } from '@mui/material';
 
+import translations from './Footer.i18n.json';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import { Link as CustomLink } from '../UI/Link/Link';
 import { Box } from '../UI/Box/Box';
 
-import logo from './assets/logo.png';
-import fbIcon from './assets/fb.svg';
-import instIcon from './assets/inst.svg';
-import vkIcon from './assets/vk.svg';
+import logo from '../../assets/images/logo.svg';
+import fbIcon from '../../assets/icons/social/fb.svg';
+import instIcon from '../../assets/icons/social/inst.svg';
+import vkIcon from '../../assets/icons/social/vk.svg';
 
-const sx = {
-  contactsWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  contacts: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap-reverse',
-  },
-  contactsLink: {
-    whiteSpace: 'nowrap',
-    marginRight: '40px',
-    fontSize: '24px',
-    fontWeight: 700,
-    color: '#25262D',
-  },
-  social: {
-    display: 'flex',
-    flexWrap: 'nowrap',
-  },
-  socialLink: {
-    marginLeft: '20px',
-    '&:first-child': {
-      marginLeft: 0,
-    },
-  },
-  info: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  infoLink: {
-    fontSize: '13px',
-    textDecoration: 'none',
-    color: '#25262D',
-  },
-  divider: {
-    marginTop: 0,
-    marginBottom: 0,
-    margin: '0 15px',
-  },
-  logo: {
-    maxHeight: '113px',
-    maxWidth: '126px',
-    marginBottom: '20px',
-  },
-};
+import sx from './Footer.styles';
 
-const links = {
-  contacts: [
+export type FooterProps = {
+  firstPhone: string;
+  secondPhone: string;
+  email: string;
+  fb: string;
+  inst: string;
+  vk: string;
+  copyright: string;
+  rules: string;
+  privacy: string;
+  cookie: string;
+  terms: string;
+}
+
+export function Footer({
+  firstPhone,
+  secondPhone,
+  email,
+  fb,
+  inst,
+  vk,
+  copyright,
+  rules,
+  privacy,
+  cookie,
+  terms,
+}: FooterProps) {
+  const { t } = useLocalTranslation(translations);
+
+  const contacts = [
     {
-      label: '+7 812 602-52-61',
-      path: 'tel:+78126025261',
+      label: firstPhone,
+      path: `tel:${firstPhone}`,
     },
     {
-      label: '+372 880-45-21',
-      path: 'tel:+3728804521',
+      label: secondPhone,
+      path: `tel:${secondPhone}`,
     },
     {
-      label: 'rk@gour-food.com',
-      path: 'mailto:rk@gour-food.com',
+      label: email,
+      path: `mailto:${email}`,
     },
-  ],
-  social: [
+  ];
+
+  const social = [
     {
       icon: fbIcon,
-      path: 'https://www.facebook.com/',
+      path: fb,
     },
     {
       icon: instIcon,
-      path: 'https://www.instagram.com/',
+      path: inst,
     },
     {
       icon: vkIcon,
-      path: 'https://vk.com/',
+      path: vk,
     },
-  ],
-  info: [
-    {
-      label: '© GOUR FOOD, 2022г.',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Правила покупки и возврата',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Политика конфиденциальности',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Соглашение об использовании cookie-файлов',
-      path: 'https://gour-food.com/',
-    },
-    {
-      label: 'Условия и соглашения для физических лиц',
-      path: 'https://gour-food.com/',
-    },
-  ],
-};
+  ];
 
-export function Footer() {
+  const info = [
+    {
+      label: t('copyright'),
+      path: copyright,
+    },
+    {
+      label: t('rules'),
+      path: rules,
+    },
+    {
+      label: t('privacy'),
+      path: privacy,
+    },
+    {
+      label: t('cookie'),
+      path: cookie,
+    },
+    {
+      label: t('terms'),
+      path: terms,
+    },
+  ];
+
   return (
     <Box>
       <Box sx={sx.contactsWrapper}>
         <CustomLink path="/">
-          <img src={logo} alt="" style={sx.logo} />
+          <Box sx={sx.logo}>
+            <Image src={logo} height={150} width={125} alt="" />
+          </Box>
         </CustomLink>
 
         <Box sx={sx.contacts}>
-          {
-            links.contacts.map(link => (
-              <CustomLink
-                key={link.path}
-                path={link.path}
-                underline="none"
-                sx={sx.contactsLink}
-              >
-                {link.label}
-              </CustomLink>
-            ))
-          }
+          {contacts.map(link => (
+            <CustomLink
+              key={link.path}
+              path={link.path}
+              underline="none"
+              sx={sx.contactsLink}
+            >
+              {link.label}
+            </CustomLink>
+          ))}
           <Box sx={sx.social}>
-            {
-              links.social.map(link => (
-                <a
-                  key={link.path}
-                  href={link.path}
-                  rel="noreferrer"
-                  target="_blank"
-                  style={sx.socialLink}
-                >
-                  <img src={link.icon} alt="" />
-                </a>
-              ))
-            }
+            {social.map(link => (
+              <a
+                key={link.path}
+                href={link.path}
+                rel="noreferrer"
+                target="_blank"
+                style={sx.socialLink}
+              >
+                <Image src={link.icon} height={38} width={38} alt="" />
+              </a>
+            ))}
           </Box>
         </Box>
       </Box>
       <Box sx={sx.info}>
-        {
-          links.info.map((link, i) => (
-            <Fragment key={link.path}>
-              <NextLink href={link.path} passHref>
-                <a
-                  href="replace"
-                  rel="noreferrer"
-                  target="_blank"
-                  style={sx.infoLink}
-                >
-                  {link.label}
-                </a>
-              </NextLink>
-              {
-                (i + 1 !== links.info.length) && (
-                  <Divider
-                    sx={sx.divider}
-                    orientation="vertical"
-                    variant="middle"
-                    flexItem
-                  />
-                )
-              }
-            </Fragment>
-          ))
-        }
+        {info.map((link, i) => (
+          <Fragment key={link.path}>
+            <NextLink href={link.path} passHref>
+              <a href="replace" rel="noreferrer" target="_blank" style={sx.infoLink}>
+                {link.label}
+              </a>
+            </NextLink>
+            {i + 1 !== info.length && (
+              <Divider sx={sx.divider} orientation="vertical" variant="middle" flexItem />
+            )}
+          </Fragment>
+        ))}
       </Box>
     </Box>
   );
