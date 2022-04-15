@@ -5,7 +5,7 @@ import {MobileMenu, MobileMenuProps} from "./MobileMenu";
 
 export default {
     component: MobileMenu,
-    title: "components/MobileFolder",
+    title: "Mobile/Menu",
 } as Meta;
 
 const Template: ComponentStory<typeof MobileMenu> = (args: MobileMenuProps) => <MobileMenu {...args} />;

@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './RegFavoriteInfo.module.scss';
 import translations from './RegFavoriteInfo.i18n.json';
 import {useLocalTranslation} from "../../../hooks/useLocalTranslation";
 

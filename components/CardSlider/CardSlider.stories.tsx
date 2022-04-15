@@ -8,7 +8,7 @@ import { Typography } from '../UI/Typography/Typography';
 import { Button } from '../UI/Button/Button';
 
 export default {
-  title: 'components/CardSlider',
+  title: 'CardSlider',
   component: CardSlider,
 } as ComponentMeta<typeof CardSlider>;
 

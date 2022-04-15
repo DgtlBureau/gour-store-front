@@ -5,7 +5,7 @@ import {RegCitySelect, RegCitySelectProps} from "./RegCitySelect";
 
 export default {
     component: RegCitySelect,
-    title: "components/registration/RegCitySelect",
+    title: "registration/CitySelect",
 } as Meta;
 
 const Template: ComponentStory<typeof RegCitySelect> = (args: RegCitySelectProps) => <RegCitySelect {...args} />;

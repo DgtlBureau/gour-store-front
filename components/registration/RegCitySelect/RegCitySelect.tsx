@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './RegCitySelect.module.scss';
 import {useLocalTranslation} from "../../../hooks/useLocalTranslation";
 import translations from './RegCitySelect.i18n.json';
 

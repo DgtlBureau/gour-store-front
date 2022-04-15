@@ -5,7 +5,7 @@ import {OrderForm, OrderFormProps} from "./OrderForm";
 
 export default {
     component: OrderForm,
-    title: "components/OrderForm",
+    title: "Order/Form",
 } as Meta;
 
 const Template: ComponentStory<typeof OrderForm> = (args: OrderFormProps) => <OrderForm {...args} />;

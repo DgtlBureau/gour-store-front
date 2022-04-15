@@ -14,7 +14,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-export const lightTheme = createTheme({
+export const defaultTheme = createTheme({
   palette: {
     common: {
       white: '#FFFEF7',
@@ -43,5 +43,11 @@ export const lightTheme = createTheme({
       default: '#FFFEF7',
       paper: '#F4E7CE',
     }
+  },
+  shape: {
+    borderRadius: 6,
+  },
+  typography: {
+    fontFamily: ['Nunito', 'Roboto', '-apple-system', 'sans-serif'].join(','),
   },
 });

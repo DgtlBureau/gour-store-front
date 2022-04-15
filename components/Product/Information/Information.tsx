@@ -1,14 +1,14 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Rating } from '@mui/material';
 
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
 import { getDeclensionWordByCount } from '../../../utils/wordHelper';
 
-import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
-import grayStarIcon from '../../../assets/icons/comment/stars/gray-star.svg';
-import commentIcon from '../../../assets/icons/comment/comment.svg';
+import StarIcon from '@mui/icons-material/Star';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
-import s from './Information.module.scss';
+import sx from './Information.styles';
 
 export type ProductInformationProps = {
   rating: number;
@@ -40,39 +40,56 @@ export function ProductInformation({
   ]);
 
   return (
-    <div className={s.info}>
-      <div className={s.stats}>
-        <div className={s.stat}>
+    <Box sx={sx.info}>
+      <Box sx={sx.stats}>
+        <Box sx={sx.stat}>
           <Rating
             value={rating}
             precision={0.5}
             size="small"
             readOnly
-            icon={<img src={grayStarIcon} alt="" />}
-            emptyIcon={<img src={lightStarIcon} alt="" />}
+            icon={<StarIcon fontSize="small" sx={sx.star} />}
+            emptyIcon={<StarIcon fontSize="small" sx={sx.emptyStar} />}
           />
-          <span className={s.count}>{`${gradesCount} ${gradesCountText}`}</span>
-        </div>
 
-        <div
+          <Typography variant="body2" sx={sx.count}>
+            {gradesCount}
+            {' '}
+            {gradesCountText}
+          </Typography>
+        </Box>
+
+        <div 
           role="button"
-          className={classNames(s.stat, s.comments)}
+          style={{...sx.stat, ...sx.comments}} 
           onClick={onClickComments}
           onKeyPress={undefined}
           tabIndex={0}
         >
-          <img src={commentIcon} alt="" />
-          <span className={s.count}>{`${commentsCount} ${commentsCountText}`}</span>
-        </div>
-      </div>
+          <ChatBubbleIcon fontSize="small" />
 
-      {characteristics.map(characteristic => (
-        <div key={characteristic.label} className={s.characteristic}>
-          <span>{characteristic.label}</span>
-          <div className={s.divider} />
-          <span className={s.value}>{characteristic.value}</span>
+          <Typography variant="body2" sx={sx.count}>
+              {commentsCount}
+              {' '}
+              {commentsCountText}
+          </Typography>
         </div>
-      ))}
-    </div>
+      </Box>
+      {
+        characteristics.map(characteristic => (
+          <Box key={characteristic.label} sx={sx.characteristic}>
+            <Typography variant="body2">
+              {characteristic.label}
+            </Typography>
+
+            <div style={sx.divider} />
+
+            <Typography variant="body2" sx={sx.value}>
+              {characteristic.value}
+            </Typography>
+          </Box>
+        ))
+      }
+    </Box>
   );
 }

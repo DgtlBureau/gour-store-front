@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Select } from './Select';
 
 export default {
-  title: 'Select',
+  title: 'UI/Select',
   component: Select,
 } as ComponentMeta<typeof Select>;
 
@@ -15,9 +15,8 @@ const Template: ComponentStory<typeof Select> = function (args) {
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {
-  id: 'select',
   label: 'Select option',
-  items: [
+  options: [
     {
       label: 'Опция 1',
       value: 'option 1',

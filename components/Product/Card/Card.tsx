@@ -1,19 +1,21 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { CSSProperties } from 'react';
 import {
   Card,
   CardContent,
   CardMedia,
   CardActions,
 } from '@mui/material';
+import Image from 'next/image';
+
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
+import { ProductCardRate as Rate } from './Rate';
+import { ProductCardDocket as Docket } from './Docket';
+import { ProductCardCart as Cart } from './Cart';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
-import { ProductCardRate as Rate } from './CardRate';
-import { ProductCardDocket as Docket } from './CardDocket';
-import { ProductCardCart as Cart } from './CardCart';
-
-import s from './Card.module.scss';
+import sx from './Card.styles';
 
 export type ProductCardProps = {
   title: string;
@@ -60,43 +62,52 @@ export function ProductCard({
   const decreaseWeight = weightId === 0 ? onRemove : () => onEdit(weightId - 1);
 
   return (
-    <Card className={s.card}>
-      <CardContent className={s.content}>
-        <div className={s.preview_n_heart}>
+    <Card sx={sx.card} color="white">
+      <CardContent sx={sx.content}>
+        <Box sx={sx.preview}>
           <HeartIcon
-            className={classNames(s.heart, isElected && s.elected)}
+            sx={{ ...sx.heart, ...(isElected && sx.elected) }}
             onClick={onElect}
           />
 
           <CardMedia
-            className={s.preview}
+            sx={sx.previewImg}
             component="img"
             image={previewSrc}
             alt=""
             onClick={onDetail}
           />
 
-          {countrySrc && <img src={countrySrc} className={s.country} alt="" />}
-        </div>
+          {
+            countrySrc && (
+              <Box sx={sx.country}>
+                <Image src={countrySrc} objectFit="cover" height={26} width={26} alt="" />
+              </Box>
+            )
+          }
+        </Box>
 
         <Rate rating={rating} cost={cost} />
 
-        <div className={s.info}>
-          <span
+        <Box sx={sx.info}>
+          <div
             role="button"
             tabIndex={0}
             onKeyPress={undefined}
-            className={s.title}
             onClick={onDetail}
           >
-            {title}
-          </span>
+            <Typography sx={sx.title} variant="h6">
+              {title}
+            </Typography>
+          </div>
 
-          <span className={s.description}>{description}</span>
-        </div>
+          <Typography variant="body2" sx={sx.description}>
+              {description}
+            </Typography>
+        </Box>
       </CardContent>
 
-      <CardActions className={classNames(s.actions, inCart && s.deployed)}>
+      <CardActions sx={{ ...sx.actions, ...(inCart && sx.deployed) }}>
         <Docket
           inCart={inCart}
           currentWeight={currentWeight}

@@ -1,12 +1,14 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ElementType } from 'react';
 import MUIBox from '@mui/material/Box';
 import { SxProps } from '@mui/material';
 
 type Props = {
   children: ReactNode;
+  component?: ElementType;
   sx?: SxProps;
+  onClick?: () => void;
 };
 
-export function Box({ children, sx }: Props) {
-  return <MUIBox sx={sx}>{children}</MUIBox>;
+export function Box({ children, sx, component, onClick }: Props) {
+  return <MUIBox sx={sx} component={component} onClick={onClick}>{children}</MUIBox>;
 }

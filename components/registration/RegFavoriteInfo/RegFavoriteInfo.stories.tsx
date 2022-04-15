@@ -5,7 +5,7 @@ import {RegFavoriteInfo, RegFavoriteInfoProps} from "./RegFavoriteInfo";
 
 export default {
     component: RegFavoriteInfo,
-    title: "components/registration/RegFavoriteInfo",
+    title: "registration/FavoriteInfo",
 } as Meta;
 
 const Template: ComponentStory<typeof RegFavoriteInfo> = (args: RegFavoriteInfoProps) => <RegFavoriteInfo {...args} />;

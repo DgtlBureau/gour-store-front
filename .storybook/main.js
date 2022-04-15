@@ -8,7 +8,6 @@ module.exports = {
         "@storybook/addon-interactions",
         'storybook-css-modules-preset',
         '@storybook/preset-scss',
-        'storybook-addon-material-ui',
     ],
     "framework": "@storybook/react",
     "core": {

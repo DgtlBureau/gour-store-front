@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { PromotionCard } from './PromotionCard';
 
 export default {
-  title: 'PromotionCard',
+  title: 'Promotion/Card',
   component: PromotionCard,
 } as ComponentMeta<typeof PromotionCard>;
 

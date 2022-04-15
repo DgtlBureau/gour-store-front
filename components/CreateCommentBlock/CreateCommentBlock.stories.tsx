@@ -5,7 +5,7 @@ import {CreateCommentBlock, CreateCommentBlockProps} from "./CreateCommentBlock"
 
 export default {
     component: CreateCommentBlock,
-    title: "components/CreateCommentBlock",
+    title: "Comment/CreateBlock",
 } as Meta;
 
 const Template: ComponentStory<typeof CreateCommentBlock> = (args: CreateCommentBlockProps) =>

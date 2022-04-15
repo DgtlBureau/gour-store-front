@@ -1,39 +1,92 @@
 import React from 'react';
-import MUISelect from '@mui/material/Select';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  SelectChangeEvent,
-  SxProps,
-} from '@mui/material';
+import ReactSelect, { Colors, OnChangeValue } from 'react-select';
+import { SxProps } from '@mui/material';
 
-type SelectItem = {
-  value: string;
-  label: string;
+import { Box } from '../Box/Box';
+import { Typography } from '../Typography/Typography';
+import { defaultTheme } from '../../../themes';
+
+const font = defaultTheme.typography.fontFamily;
+
+const selectColors: Pick<Colors, 'primary' | 'primary25'| 'primary50'> = {
+  primary: defaultTheme.palette.primary.main,
+  primary25: defaultTheme.palette.secondary.main,
+  primary50: 'none',
 };
 
-type Props = {
-  id: string;
-  value?: 'string' | undefined;
-  label: string;
-  onChange: (e: SelectChangeEvent) => void;
-  items: SelectItem[];
-  sx: SxProps;
+export type SelectOption<V = string> = {
+  value: V;
+  label: string | undefined;
 };
 
-export function Select({ id, value, onChange, label, items, sx }: Props) {
+type Props<V, isMulti extends boolean> = {
+  onChange: (newValue: OnChangeValue<SelectOption<V>, isMulti>) => void;
+  value?: V;
+  isMulti?: isMulti;
+  error?: string;
+  isError?: boolean;
+  options: SelectOption<V>[];
+  isDisabled?: boolean;
+  placeholder?: string;
+  label?: string;
+  sx?: SxProps;
+};
+
+export function Select<V, isMulti extends boolean>({
+  value,
+  options,
+  error,
+  isError,
+  isMulti,
+  label,
+  ...props
+}: Props<V, isMulti>) {
+  const selectValue = value ?
+    {
+      value,
+      label: options.find(it => it.value === value)?.label,
+    } :
+    null;
+
   return (
-    <Box sx={sx}>
-      <FormControl fullWidth>
-        <InputLabel id={id}>{label}</InputLabel>
-        <MUISelect labelId={id} id={id} value={value} label={label} onChange={onChange}>
-          {items.map(item => (
-            <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
-          ))}
-        </MUISelect>
-      </FormControl>
+    <Box sx={{ marginTop: 15 }}>
+      {
+        label && (
+          <Typography variant="body2" color="primary">
+            {label}
+          </Typography>
+        )
+      }
+      <ReactSelect
+        value={selectValue}
+        options={options}
+        isMulti={isMulti}
+        theme={theme => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            ...selectColors,
+          },
+        })}
+        styles={{
+          control: base => ({
+            ...base,
+            fontFamily: font,
+          }),
+          menu: base => ({
+            ...base,
+            fontFamily: font,
+          }),
+        }}
+        {...props}
+      />
+      {
+        error && isError && (
+          <Typography variant="caption" color="error">
+            {error}
+          </Typography>
+        )
+      }
     </Box>
   );
 }

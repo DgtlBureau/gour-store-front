@@ -7,7 +7,7 @@ import russiaIcon from '../../../assets/icons/countries/russia.svg';
 
 export default {
   component: ProductCard,
-  title: 'ProductCard',
+  title: 'Product/Card',
 } as Meta;
 
 const DESCRIPTION = `

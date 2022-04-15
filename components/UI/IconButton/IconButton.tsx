@@ -19,7 +19,7 @@ type Props = {
     | 'warning'
     | undefined;
   sx?: SxProps;
-  component: ElementType;
+  component?: ElementType;
 };
 
 export function IconButton({
@@ -29,7 +29,7 @@ export function IconButton({
   onClick,
   type,
   disabled,
-  component,
+  component = 'button',
   sx,
 }: Props) {
   return (
