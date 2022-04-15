@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const withImages = require('next-images')
+const nextConfig = withImages({
+  images: {
+    disableStaticImages: true
+  },
   reactStrictMode: true,
   async rewrites() {
     return [
@@ -14,6 +19,6 @@ const nextConfig = {
     defaultLocale: 'ru',
     localeDetection: false,
   },
-}
+})
 
 module.exports = nextConfig

@@ -2,8 +2,17 @@
   padding-top: 100px;
   display: flex;
   justify-content: center;
+  min-height: 100vh;
 }
 
 .content {
   width: 1280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer {
+  margin-top: 180px;
+  margin-bottom: 50px;
 }

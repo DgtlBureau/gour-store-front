@@ -11,8 +11,7 @@ import { Box } from '../UI/Box/Box';
 import { Container } from '../UI/Container/Container';
 import { Typography } from '../UI/Typography/Typography';
 
-import './CardSlider.module.scss';
-
+import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/grid';
 
