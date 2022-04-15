@@ -4,6 +4,7 @@ import { Menu, MenuItem, IconButton } from '@mui/material';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
+import { Weight } from '../../../@types/entities/Weight';
 
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
 
@@ -50,8 +51,8 @@ const sx = {
 
 type Props = {
   inCart: boolean;
-  currentWeight: {value: number; unit: 'г' | 'кг'};
-  weights: {value: number; unit: 'г' | 'кг'}[];
+  currentWeight: Weight;
+  weights: Weight[];
   weightId: number;
   price: number;
   discount: number;

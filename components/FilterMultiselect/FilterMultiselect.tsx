@@ -2,14 +2,31 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
-  Chip,
   Typography,
 } from '@mui/material';
-import React, { CSSProperties, useState } from 'react';
-import s from './FilterMultiselect.module.scss';
+import React, { useState } from 'react';
+
+import { defaultTheme as t } from '../../themes';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+const sx = {
+  select: {
+    backgroundColor: 'background.paper',
+  },
+  optionBox: {
+    padding: '7px 11px',
+    color: t.palette.text.secondary,
+    backgroundColor: t.palette.common.white,
+    borderRadius: '6px',
+    userSelect: 'none',
+    cursor: 'pointer'
+  },
+  selected: {
+    background: t.palette.primary.main,
+    color: t.palette.common.white,
+  },
+};
 
 export type FilterMultiselectProps = {
   title: string;
@@ -19,15 +36,6 @@ export type FilterMultiselectProps = {
     value: string;
   }[];
   onChange(selected: string[]): void;
-};
-
-const optionBoxStyle: CSSProperties = {
-  padding: '7px 11px',
-  color: '#778192',
-  backgroundColor: '#fff',
-  borderRadius: '6px',
-  userSelect: 'none',
-  cursor: 'pointer'
 };
 
 export function FilterMultiselect({
@@ -61,8 +69,8 @@ export function FilterMultiselect({
   }
 
   return (
-    <Accordion sx={{ bgcolor: '#EBEBEB' }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <Accordion sx={sx.select}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={t.palette.text.muted} />}>
         <Typography>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
@@ -72,8 +80,7 @@ export function FilterMultiselect({
             onClick={() => {
               onChangeOption(option.value);
             }}
-            sx={optionBoxStyle}
-            className={`${isOptionSelected(option.value) ? s.selected : ''}`}
+            sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
           >
             {option.label}
           </Typography>

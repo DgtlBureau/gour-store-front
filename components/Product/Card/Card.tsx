@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
+import { Weight } from '../../../@types/entities/Weight';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
@@ -21,7 +22,8 @@ export type ProductCardProps = {
   title: string;
   description: string;
   rating: number;
-  currentWeight: number;
+  weightId: number;
+  weights: Weight[];
   price: number;
   discount?: number;
   cost: string;
@@ -30,7 +32,6 @@ export type ProductCardProps = {
   inCart: boolean;
   isElected: boolean;
   onAdd: () => void;
-  onSubtract: () => void;
   onRemove: () => void;
   onEdit: (id: number) => void;
   onElect: () => void;
@@ -41,7 +42,8 @@ export function ProductCard({
   title,
   description,
   rating,
-  currentWeight,
+  weightId,
+  weights,
   discount = 0,
   price,
   cost,
@@ -50,12 +52,16 @@ export function ProductCard({
   inCart,
   isElected,
   onAdd,
-  onSubtract,
   onRemove,
   onEdit,
   onElect,
   onDetail,
 }: ProductCardProps) {
+  const currentWeight = weights[weightId];
+
+  const increaseWeight = () => onEdit(weightId + 1);
+  const decreaseWeight = weightId === 0 ? onRemove : () => onEdit(weightId - 1);
+
   return (
     <Card sx={sx.card} color="white">
       <CardContent sx={sx.content}>
@@ -105,16 +111,22 @@ export function ProductCard({
       <CardActions sx={{ ...sx.actions, ...(inCart && sx.deployed) }}>
         <Docket
           inCart={inCart}
+          currentWeight={currentWeight}
+          weights={weights}
+          weightId={weightId}
           price={price}
           discount={discount}
+          onEdit={onEdit}
         />
 
         <Cart
           inCart={inCart}
-          onAdd={onAdd}
           currentWeight={currentWeight}
-          increaseWeight={onAdd}
-          decreaseWeight={onSubtract}
+          weights={weights}
+          weightId={weightId}
+          onAdd={onAdd}
+          increaseWeight={increaseWeight}
+          decreaseWeight={decreaseWeight}
         />
       </CardActions>
     </Card>

@@ -1,0 +1,22 @@
+.circle {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #ebebeb;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #ebebeb;
+
+  cursor: pointer;
+
+  &.selected {
+      border: 1px solid #000;
+  }
+}

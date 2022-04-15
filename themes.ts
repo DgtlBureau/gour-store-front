@@ -48,6 +48,6 @@ export const defaultTheme = createTheme({
     borderRadius: 6,
   },
   typography: {
-    fontFamily: ['Nunito', 'Roboto', '-apple-system', 'sans-serif'].join(','),
+    fontFamily: ['Nunito', 'Roboto slab', 'Roboto', '-apple-system', 'sans-serif'].join(','),
   },
 });

@@ -1,3 +1,5 @@
+import { defaultTheme as t } from "../../../themes";
+
 const sx = {
   headerWrapper: {
     position: 'relative',
@@ -8,12 +10,8 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 20px',
-    backgroundColor: '#7E5F2F',
-    color: 'white',
-  },
-  logo: {
-    fontSize: '18px',
-    fontWeight: 700,
+    backgroundColor: t.palette.primary.main,
+    color: t.palette.common.white,
   },
   iconBtn: {
     display: 'flex',
@@ -23,14 +21,14 @@ const sx = {
     width: '34px',
     padding: 0,
     borderRadius: '6px',
-    backgroundColor: 'white',
+    backgroundColor: t.palette.common.white,
     '&:hover': {
-      backgroundColor: 'white',
+      backgroundColor: t.palette.common.white,
     },
   },
   menuIcon: {
     width: '18px',
-    color: 'black',
+    color: t.palette.common.black,
   },
 };
 

@@ -49,7 +49,7 @@ export function Select<V, isMulti extends boolean>({
     null;
 
   return (
-    <Box sx={{ marginTop: 15 }}>
+    <Box>
       {
         label && (
           <Typography variant="body2" color="primary">
