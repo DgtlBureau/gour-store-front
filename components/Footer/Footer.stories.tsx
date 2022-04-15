@@ -1,15 +1,30 @@
-import React from "react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {Footer, FooterProps} from "./Footer";
+import { Footer, FooterProps } from './Footer';
 
 export default {
     component: Footer,
     title: "Footer",
 } as Meta;
 
-const Template: ComponentStory<typeof Footer> = (args: FooterProps) => <Footer {...args} />;
+const Template: ComponentStory<typeof Footer> = function (args: FooterProps) {
+  return <Footer {...args} />;
+};
 export const DefaultFooter = Template.bind({});
-const props: Partial<FooterProps> = {};
+
+const props: Partial<FooterProps> = {
+  firstPhone: '+7 812 602-52-61',
+  secondPhone: '+372 880-45-21',
+  email: 'rk@gour-food.com',
+  fb: '',
+  inst: '',
+  vk: '',
+  copyright: '',
+  rules: '',
+  privacy: '',
+  cookie: '',
+  terms: '',
+};
 
 DefaultFooter.args = props;

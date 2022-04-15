@@ -24,4 +24,5 @@ export interface IProduct extends IBaseEntity {
     characteristics: Record<string, string|number>
     meta: IPageMeta;
     weight: number;
+    isWeightGood: boolean;
 }

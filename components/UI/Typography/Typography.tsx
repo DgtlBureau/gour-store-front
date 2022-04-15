@@ -3,6 +3,7 @@ import MUITypography from '@mui/material/Typography';
 import { SxProps } from '@mui/material';
 
 type Props = {
+  color?: string;
   variant?:
     | 'h1'
     | 'h2'

@@ -21,8 +21,7 @@ export type ProductCardProps = {
   title: string;
   description: string;
   rating: number;
-  weights: {value: number; unit: 'г' | 'кг'}[];
-  weightId?: number;
+  currentWeight: number;
   price: number;
   discount?: number;
   cost: string;
@@ -31,6 +30,7 @@ export type ProductCardProps = {
   inCart: boolean;
   isElected: boolean;
   onAdd: () => void;
+  onSubtract: () => void;
   onRemove: () => void;
   onEdit: (id: number) => void;
   onElect: () => void;
@@ -41,8 +41,7 @@ export function ProductCard({
   title,
   description,
   rating,
-  weightId = 0,
-  weights,
+  currentWeight,
   discount = 0,
   price,
   cost,
@@ -51,16 +50,12 @@ export function ProductCard({
   inCart,
   isElected,
   onAdd,
+  onSubtract,
   onRemove,
   onEdit,
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const currentWeight = weights[weightId];
-
-  const increaseWeight = () => onEdit(weightId + 1);
-  const decreaseWeight = weightId === 0 ? onRemove : () => onEdit(weightId - 1);
-
   return (
     <Card sx={sx.card} color="white">
       <CardContent sx={sx.content}>
@@ -110,22 +105,16 @@ export function ProductCard({
       <CardActions sx={{ ...sx.actions, ...(inCart && sx.deployed) }}>
         <Docket
           inCart={inCart}
-          currentWeight={currentWeight}
-          weights={weights}
-          weightId={weightId}
           price={price}
           discount={discount}
-          onEdit={onEdit}
         />
 
         <Cart
           inCart={inCart}
-          currentWeight={currentWeight}
-          weights={weights}
-          weightId={weightId}
           onAdd={onAdd}
-          increaseWeight={increaseWeight}
-          decreaseWeight={decreaseWeight}
+          currentWeight={currentWeight}
+          increaseWeight={onAdd}
+          decreaseWeight={onSubtract}
         />
       </CardActions>
     </Card>
