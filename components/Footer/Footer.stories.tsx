@@ -1,15 +1,14 @@
-import React from "react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import {ComponentStory, Meta} from "@storybook/react";
-import {Footer, FooterProps} from "./Footer";
+import { Footer } from './Footer';
 
 export default {
-    component: Footer,
-    title: "components/Footer",
+  component: Footer,
+  title: 'Footer',
 } as Meta;
 
-const Template: ComponentStory<typeof Footer> = (args: FooterProps) => <Footer {...args} />;
+const Template: ComponentStory<typeof Footer> = function () {
+  return <Footer />;
+};
 export const DefaultFooter = Template.bind({});
-const props: Partial<FooterProps> = {};
-
-DefaultFooter.args = props;

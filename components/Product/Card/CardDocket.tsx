@@ -19,38 +19,15 @@ const listItemSx = {
 
 type Props = {
   inCart: boolean;
-  currentWeight: {value: number; unit: 'г' | 'кг'};
-  weights: {value: number; unit: 'г' | 'кг'}[];
-  weightId: number;
   price: number;
   discount: number;
-  onEdit: (id: number) => void;
 }
 
 export function ProductCardDocket({
   inCart,
-  currentWeight,
-  weights,
-  weightId,
   price,
   discount,
-  onEdit,
 }: Props) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const getCost = (weight: {value: number; unit: 'г' | 'кг'}) => (price / (weight.unit === 'г' ? 100 : 1000)) * weight.value;
-
-  const total = getCost(currentWeight);
-
-  const openList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setAnchorEl(e.currentTarget);
-  };
-  const closeList = () => setAnchorEl(null);
-
-  const selectWeight = (i: number) => {
-    onEdit(i);
-    setAnchorEl(null);
-  };
 
   return (
     <div className={s.docket}>
@@ -58,7 +35,7 @@ export function ProductCardDocket({
         {discount && (
           <>
             <span className={s.old_price}>
-              {total}
+              {price}
               ₽
             </span>
             {!inCart && ' / '}
@@ -66,61 +43,16 @@ export function ProductCardDocket({
         )}
         {!inCart && (
           <span className={s.weight}>
-            {currentWeight.value}
-            {currentWeight.unit}
+            100 г
           </span>
         )}
       </div>
 
       <div className={s.total}>
         <span className={classNames(s.price, discount && s.with_discount)}>
-          {discount ? total * (1 - discount) : total}
+          {discount ? price * (1 - discount) : price}
           ₽
         </span>
-        {!inCart && (
-          <>
-            <IconButton onClick={openList}>
-              <img src={arrowIcon} alt="" />
-            </IconButton>
-
-            <Menu
-              anchorEl={anchorEl}
-              open={!!anchorEl}
-              onClose={closeList}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
-            >
-              {weights.map((weight, i) => (
-                <MenuItem
-                  key={`${weight.value}${weight.unit}`}
-                  selected={i === weightId}
-                  onClick={() => selectWeight(i)}
-                  sx={listItemSx}
-                >
-                  <span>
-                    {weight.value}
-                    {weight.unit}
-                    {' / '}
-                    {discount ? getCost(weight) * (1 - discount) : getCost(weight)}
-                    ₽
-                  </span>
-                  {discount && (
-                    <span style={listOldPriceSx}>
-                      {getCost(weight)}
-                      ₽
-                    </span>
-                  )}
-                </MenuItem>
-              ))}
-            </Menu>
-          </>
-        )}
       </div>
     </div>
   );

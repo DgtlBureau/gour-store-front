@@ -22,7 +22,7 @@ export interface IProduct extends IBaseEntity {
     price: IPrice;
     roleDiscounts: IRoleDiscount[];
     characteristics: Record<string, string|number>
-    meta: IPageMeta;
-    weight: number;
+    meta: IPageMeta
+    currentDiscount: number;
     isWeightGood: boolean;
 }

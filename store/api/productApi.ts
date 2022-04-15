@@ -21,6 +21,19 @@ export const productApi = createApi({
                         {type: 'Product', id: 'LIST'},
                     ] : [{type: 'Product', id: 'LIST'}],
             }),
+            getNoveltiesProductList: builder.query<IProduct[], void>({
+                query() {
+                    return {
+                        method: 'get',
+                        url: 'products/novelties',
+                    }
+                },
+                providesTags: (result) =>
+                    result ? [
+                        ...result.map(({id}) => ({type: 'Product', id} as const)),
+                        {type: 'Product', id: 'LIST'},
+                    ] : [{type: 'Product', id: 'LIST'}],
+            }),
             getProduct: builder.query<IProduct, number>({
                 query(id) {
                     return {
@@ -76,5 +89,6 @@ export const {
     useGetProductQuery,
     useGetProductListQuery,
     useLazyGetProductQuery,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useGetNoveltiesProductListQuery
 } = productApi
