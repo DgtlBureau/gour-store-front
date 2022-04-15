@@ -36,7 +36,19 @@ export function ShopLayout(props: ShopLayoutProps) {
         <div className={s.content}>
             {props.children}
             <div className={s.footer}>
-                <Footer/>
+                <Footer
+                    firstPhone={"firstPhone"}
+                    secondPhone={"secondPhone"}
+                    email={"email"}
+                    fb={"fb"}
+                    inst={"inst"}
+                    vk={"vk"}
+                    copyright={"copyright"}
+                    rules={"rules"}
+                    privacy={"privacy"}
+                    cookie={"cookie"}
+                    terms={"terms"}
+                />
             </div>
         </div>
     </div>
