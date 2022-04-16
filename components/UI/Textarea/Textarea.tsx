@@ -1,7 +1,12 @@
-import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
+import React, {
+  ChangeEventHandler,
+  CSSProperties,
+  FocusEventHandler,
+} from 'react';
 import MUITextareaAutosize from '@mui/material/TextareaAutosize';
 
 type Props = {
+  name?: string;
   maxRows?: number;
   minRows?: number;
   sx?: CSSProperties;
@@ -13,6 +18,7 @@ type Props = {
 };
 
 export function Textarea({
+  name,
   maxRows,
   minRows = 1,
   sx,
@@ -24,6 +30,7 @@ export function Textarea({
 }: Props) {
   return (
     <MUITextareaAutosize
+      name={name}
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}

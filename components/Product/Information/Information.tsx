@@ -16,7 +16,7 @@ export type ProductInformationProps = {
   commentsCount: number;
   characteristics: {
     label: string;
-    value: string;
+    value: string | number;
   }[];
   onClickComments(): void;
 };
@@ -62,7 +62,9 @@ export function ProductInformation({
           tabIndex={0}
         >
           <img src={commentIcon} alt="" />
-          <span className={s.count}>{`${commentsCount} ${commentsCountText}`}</span>
+          <span
+            className={s.count}
+          >{`${commentsCount} ${commentsCountText}`}</span>
         </div>
       </div>
 
