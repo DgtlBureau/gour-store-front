@@ -10,11 +10,12 @@ type Product = {
   clientName: string;
   value: number;
   comment: string;
-  date: string;
+  date: Date;
 };
 
 export type ProductReviewsProps = {
   reviews: Product[];
+  sx?: CSSProperties;
 };
 
 const containerBoxSx: CSSProperties = {
@@ -23,7 +24,7 @@ const containerBoxSx: CSSProperties = {
   padding: '20px',
 };
 
-export const ProductReviews = ({ reviews }: ProductReviewsProps) => {
+export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
   let ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
@@ -31,12 +32,12 @@ export const ProductReviews = ({ reviews }: ProductReviewsProps) => {
     ratingStats.push({
       grade: i,
       count: reviewsCount,
-      percent: (reviewsCount / reviews.length) * 100,
+      percent: reviews.length ? (reviewsCount / reviews.length) * 100 : 0,
     });
   }
 
   return (
-    <Grid container spacing={1} direction="row" style={containerBoxSx}>
+    <Grid sx={sx} container spacing={1} direction="row" style={containerBoxSx}>
       <Grid item xs={3}>
         <Stack>
           <Typography variant="h5">Отзывы</Typography>
@@ -51,12 +52,15 @@ export const ProductReviews = ({ reviews }: ProductReviewsProps) => {
       </Grid>
       <Grid item xs={9}>
         <Swiper slidesPerView={3}>
+          {reviews.length === 0 && (
+            <Typography variant="h5">Нет отзывов</Typography>
+          )}
           {reviews.map(review => (
             <SwiperSlide key={review.id}>
               <Comment
                 title={review.clientName}
                 grade={review.value}
-                date={review.date}
+                date={`${review.date.getDay()}`}
                 text={review.comment}
               />
             </SwiperSlide>
