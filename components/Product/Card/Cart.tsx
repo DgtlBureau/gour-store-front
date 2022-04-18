@@ -19,6 +19,8 @@ const sx = {
 
     borderRadius: '99px',
 
+    fontFamily: 'Roboto slab',
+
     background: t.palette.primary.main,
     color: t.palette.common.white,
 

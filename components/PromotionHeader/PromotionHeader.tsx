@@ -22,7 +22,7 @@ const sx = {
   timer: {
     padding: '10px',
     position: 'absolute',
-    left: '30px',
+    right: '30px',
     bottom: '30px',
     borderRadius: '6px',
     backgroundColor: 'background.default',
@@ -79,7 +79,7 @@ export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
     <Stack sx={sx.promotion}>
       <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
 
-      <Typography sx={sx.title} variant="h2">
+      <Typography sx={sx.title} variant="body1">
         {title}
       </Typography>
 

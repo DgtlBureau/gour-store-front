@@ -5,7 +5,7 @@ import { ProductReviews, ProductReviewsProps } from './Reviews';
 
 export default {
   component: ProductReviews,
-  title: 'ProductReviews',
+  title: 'Product/Reviews',
 } as Meta;
 
 const Template: ComponentStory<typeof ProductReviews> = function (

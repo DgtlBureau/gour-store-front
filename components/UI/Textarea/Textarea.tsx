@@ -34,6 +34,10 @@ const errorSx = {
   color: errorColor,
 };
 
+const boxSx = {
+  width: '100%',
+};
+
 type Props = {
   name?: string;
   value?: string;
@@ -52,7 +56,7 @@ type Props = {
 
 export function Textarea({ label, minRows = 1, sx, isError, error, ...props }: Props) {
   return (
-    <Box sx={{ ...(isError && errorSx) }}>
+    <Box sx={{ ...boxSx, ...(isError && errorSx) }}>
       {
         label && (
           <Typography variant="body2" color={(isError && 'error') || 'primary'}>

@@ -70,6 +70,7 @@ const sx = {
   title: {
     margin: '10px 0',
     fontWeight: 'bold',
+    fontFamily: 'Roboto slab',
 
     '&:hover': {
       cursor: 'pointer',

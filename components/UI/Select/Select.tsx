@@ -72,10 +72,12 @@ export function Select<V, isMulti extends boolean>({
           control: base => ({
             ...base,
             fontFamily: font,
+            backgroundColor: 'inherit',
           }),
           menu: base => ({
             ...base,
             fontFamily: font,
+            zIndex: 100,
           }),
         }}
         {...props}

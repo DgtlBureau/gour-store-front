@@ -33,6 +33,7 @@ const sx = {
   },
   price: {
     fontWeight: 'bold',
+    fontFamily: ' Roboto slab',
   },
   oldPrice: {
     textDecoration: 'line-through',
@@ -88,7 +89,7 @@ export function ProductCardDocket({
     <Box sx={{ ...sx.docket, ...(inCart && sx.deployed)}}>
       <Box sx={sx.weight}>
         {
-          discount && (
+          !!discount && (
             <>
               <Typography variant="body2" sx={sx.oldPrice}>
                 {total}
