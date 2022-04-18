@@ -1,4 +1,8 @@
-import React, { ChangeEventHandler, CSSProperties, FocusEventHandler } from 'react';
+import React, {
+  ChangeEventHandler,
+  CSSProperties,
+  FocusEventHandler,
+} from 'react';
 import MUITextareaAutosize from '@mui/material/TextareaAutosize';
 
 import { Box } from '../Box/Box';

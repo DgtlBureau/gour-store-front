@@ -16,7 +16,7 @@ export type ProductInformationProps = {
   commentsCount: number;
   characteristics: {
     label: string;
-    value: string;
+    value: string | number;
   }[];
   onClickComments(): void;
 };
