@@ -57,4 +57,5 @@ DefaultState.args = {
             onMoreClick={() => ({})}
         />,
     ],
+    slidesPerView: 4,
 };

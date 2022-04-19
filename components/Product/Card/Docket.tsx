@@ -154,7 +154,7 @@ export function ProductCardDocket({
                         ₽
                       </Typography>
                       {
-                        discount && (
+                        !!discount && (
                           <Typography variant="body2" sx={sx.listOldPrice}>
                             {getCost(weight)}
                             ₽
