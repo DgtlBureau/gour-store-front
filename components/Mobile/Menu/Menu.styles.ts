@@ -66,7 +66,7 @@ const sx = {
     marginRight: '6px',
     img: {
       borderRadius: '6px',
-    }
+    },
   },
 
   phones: {
@@ -81,7 +81,7 @@ const sx = {
     fontSize: '16px',
     fontWeight: 700,
     color: 'white',
-    '&:first-child': {
+    '&:firstChild': {
       marginRight: '20px',
     },
   },
