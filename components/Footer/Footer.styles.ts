@@ -23,7 +23,7 @@ const sx = {
   },
   socialLink: {
     marginLeft: '20px',
-    '&:firstChild': {
+    '&:first-child': {
       marginLeft: 0,
     },
   },
