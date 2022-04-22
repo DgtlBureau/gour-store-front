@@ -39,7 +39,7 @@ export function CardSlider({
 }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
-  const cardHeight = slider?.el.children[0].children[0].scrollHeight || 0;
+  const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
 
   return (
     <Container sx={wrapperBoxSx}>
