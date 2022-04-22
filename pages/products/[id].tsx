@@ -1,15 +1,15 @@
-import { Reviews } from '@mui/icons-material';
 import { LinearProgress, Stack } from '@mui/material';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
 import { ProductActions } from 'components/Product/Actions/Actions';
+import { ProductCard } from 'components/Product/Card/Card';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
 import { useRouter } from 'next/router';
-import { CSSProperties, useState } from 'react';
+import { useState } from 'react';
 import { useGetProductQuery } from 'store/api/productApi';
 import { ShopLayout } from '../../layouts/ShopLayout';
 
@@ -20,6 +20,7 @@ export default function Product() {
   const [count, setCount] = useState(0);
 
   const lang: 'ru' | 'en' = 'ru';
+  const currency = 'rub';
 
   const productId = id ? +id : 0;
 
@@ -47,6 +48,27 @@ export default function Product() {
       date: grade.createdAt,
       comment: grade.comment,
     })) || [];
+
+  const similarProductCards =
+    product?.similarProducts?.map(similarProduct => (
+      <ProductCard
+        title={similarProduct.title[lang] || ''}
+        description={similarProduct.description[lang] || ''}
+        rating={similarProduct.grade}
+        currentWeight={0}
+        price={similarProduct.price[currency]}
+        cost={''}
+        previewSrc={''}
+        inCart={false}
+        isElected={false}
+        onAdd={() => {}}
+        onSubtract={() => {}}
+        onRemove={() => {}}
+        onEdit={() => {}}
+        onElect={() => {}}
+        onDetail={() => {}}
+      />
+    )) || [];
 
   console.log('similar:', product?.similarProducts);
 
@@ -91,7 +113,7 @@ export default function Product() {
                   onClickComments={() => {}}
                 />
                 <ProductActions
-                  price={product?.price?.rub || 0}
+                  price={product?.price[currency] || 0}
                   count={count}
                   discount={product?.discount}
                   onAddToCart={() => setCount(count + 1)}
@@ -110,8 +132,11 @@ export default function Product() {
               {product?.description[lang] || ''}
             </Typography>
 
-            {product?.similarProducts?.length !== 0 && (
-              <CardSlider title="Похожие товары" cardsList={[]} />
+            {similarProductCards.length !== 0 && (
+              <CardSlider
+                title="Похожие товары"
+                cardsList={similarProductCards}
+              />
             )}
 
             <ProductReviews sx={{ margin: '50px 0' }} reviews={comments} />
