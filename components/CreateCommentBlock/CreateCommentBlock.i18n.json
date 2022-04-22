@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "title": "Вы уже покупали этот товар?",
+    "subtitle": "Оставьте отзыв",
+    "rate": "Оцените товар",
+    "placeholder": "Напишите отзыв",
+    "accept": "Отправить"
+  },
+  "en": {
+    "title": "Have you already bought this product?",
+    "subtitle": "Leave a review",
+    "rate": "Rate the product",
+    "placeholder": "Write a review",
+    "accept": "Send"
+  }
+}

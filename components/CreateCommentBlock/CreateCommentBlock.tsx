@@ -6,7 +6,9 @@ import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
 import { Textarea } from '../UI/Textarea/Textarea';
 import { Typography } from '../UI/Typography/Typography';
-import { defaultTheme as t } from '../../themes';
+import { defaultTheme as theme } from '../../themes';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import translations from './CreateCommentBlock.i18n.json';
 
 import StarIcon from '@mui/icons-material/Star';
 
@@ -22,10 +24,10 @@ const sx = {
     }
   },
   star: {
-    color: t.palette.accent.main,
+    color: theme.palette.accent.main,
   },
   emptyStar: {
-    color: t.palette.text.muted,
+    color: theme.palette.text.muted,
   },
 };
 
@@ -34,6 +36,8 @@ export type CreateCommentBlockProps = {
 };
 
 export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
+  const { t } = useLocalTranslation(translations);
+
   const [formData, setFormData] = useState<{ grade: number; text: string }>({
     grade: 0,
     text: '',
@@ -57,11 +61,11 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               variant="h5" 
               sx={{ fontFamily: 'Roboto slab', fontWeight: 'bold' }}
             >
-              Вы уже покупали этот товар?
+              {t('title')}
             </Typography>
 
             <Typography sx={{ margin: '10px 0' }} variant="body1">
-              Оставьте отзыв
+              {t('subtitle')}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -77,9 +81,9 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               <Typography
                 sx={{ margin: '0 0 0 10px' }}
                 variant="caption"
-                color={t.palette.text.muted}
+                color={theme.palette.text.muted}
               >
-                Оцените товар
+                {t('rate')}
               </Typography>
             </Box>
           </Grid>
@@ -95,7 +99,7 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
           >
             <Textarea
               name="text"
-              placeholder="Напишите отзыв"
+              placeholder={t('placeholder')}
               onChange={e => onChange('text', e.target.value)}
             />
             <Button
@@ -103,7 +107,7 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               type="submit"
               disabled={formData.grade === 0}
             >
-              Оставить отзыв
+              {t('accept')}
             </Button>
           </Grid>
         </Grid>

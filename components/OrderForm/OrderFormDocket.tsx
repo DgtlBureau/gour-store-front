@@ -3,7 +3,10 @@ import React from 'react';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 import { getDeclensionWordByCount } from '../../utils/wordHelper';
-import { defaultTheme as t } from '../../themes';
+import { getCurrencySymbol } from '../../helpers/currencyHelper';
+import { defaultTheme as theme } from '../../themes';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import translations from './OrderForm.i18n.json';
 
 const sx = {
   docket: {
@@ -14,7 +17,7 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: '10px',
-    color: t.palette.text.muted,
+    color: theme.palette.text.muted,
     '&:last-child': {
       marginBottom: '10px',
     },
@@ -27,10 +30,10 @@ const sx = {
     fontFamily: 'Roboto slab',
   },
   discountValue: {
-    color: t.palette.error.main,
+    color: theme.palette.error.main,
   },
   total: {
-    color: t.palette.text.secondary,
+    color: theme.palette.text.secondary,
   },
   divider: {
     width: '100%',
@@ -44,6 +47,7 @@ type Props = {
   cost: number;
   discount?: number;
   delivery: number;
+  currency?: 'rub' | 'usd' | 'eur';
 }
 
 export function OrderFormDocket({
@@ -51,13 +55,19 @@ export function OrderFormDocket({
   cost,
   discount = 0,
   delivery,
+  currency = 'rub',
 }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   const total = cost + delivery - discount;
+
   const productsDeclision = getDeclensionWordByCount(productsCount, [
-    'товаров',
-    'товар',
-    'товара',
+    t('manyProducts'),
+    t('oneProduct'),
+    t('someProducts'),
   ]);
+
+  const currencySymbol = getCurrencySymbol(currency);
 
   return (
     <Box sx={sx.docket}>
@@ -70,39 +80,39 @@ export function OrderFormDocket({
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
           {cost}
-          ₽
+          {currencySymbol}
         </Typography>
       </Box>
 
       {
         !!discount && (
           <Box sx={sx.field}>
-            <Typography variant="body1" sx={sx.label}>Скидка</Typography>
+            <Typography variant="body1" sx={sx.label}>{t('discount')}</Typography>
             <hr style={sx.divider} />
             <Typography variant="h6" sx={{ ...sx.value, ...sx.discountValue }}>
               -
               {discount}
-              ₽
+              {currencySymbol}
             </Typography>
           </Box>
         )
       }
 
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>Доставка</Typography>
+        <Typography variant="body1" sx={sx.label}>{t('delivery')}</Typography>
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
           {delivery}
-          ₽
+          {currencySymbol}
         </Typography>
       </Box>
 
       <Box sx={{ ...sx.field, ...sx.total }}>
-        <Typography variant="body1" sx={sx.label}>Итого</Typography>
+        <Typography variant="body1" sx={sx.label}>{t('total')}</Typography>
         <hr style={sx.divider} />
         <Typography variant="h5" sx={sx.value}>
           {total}
-          ₽
+          {currencySymbol}
         </Typography>
       </Box>
     </Box>

@@ -30,6 +30,7 @@ const sx = {
 
   title: {
     fontWeight: 'bold',
+    fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
   },
 

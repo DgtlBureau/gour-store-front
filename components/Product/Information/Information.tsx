@@ -4,6 +4,8 @@ import { Rating } from '@mui/material';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { getDeclensionWordByCount } from '../../../utils/wordHelper';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Information.i18n.json';
 
 import StarIcon from '@mui/icons-material/Star';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -28,15 +30,17 @@ export function ProductInformation({
   characteristics,
   onClickComments,
 }: ProductInformationProps) {
+  const { t } = useLocalTranslation(translations);
+
   const gradesCountText = getDeclensionWordByCount(gradesCount, [
-    'оценок',
-    'оценка',
-    'оценки',
+    t('manyGrades'),
+    t('oneGrade'),
+    t('someGrades'),
   ]);
   const commentsCountText = getDeclensionWordByCount(commentsCount, [
-    'отзывов',
-    'отзыв',
-    'отзыва',
+    t('manyReviews'),
+    t('oneReview'),
+    t('someReviews'),
   ]);
 
   return (

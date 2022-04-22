@@ -5,6 +5,9 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { IconButton } from '../../UI/IconButton/IconButton';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Card.i18n.json';
 
 import PlusIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
@@ -17,6 +20,7 @@ type Props = {
   amount: number;
   productImg: string;
   discount?: number;
+  currency?: 'rub' | 'usd' | 'eur';
   onElect: () => void;
   onAdd: () => void;
   onSubtract: () => void;
@@ -29,11 +33,14 @@ export function CartCard({
   amount,
   productImg,
   discount,
+  currency = 'rub',
   onElect,
   onDelete,
   onAdd,
   onSubtract,
 }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   return (
     <Card sx={sx.card} >
       <CardMedia sx={sx.image} component="img" image={productImg} />
@@ -48,10 +55,11 @@ export function CartCard({
               {' ₽'}
             </Typography>
             {
-              discount && (
+              !!discount && (
                 <Typography variant="body2" sx={sx.oldPrice}>
                   {price}
-                  {' ₽'}
+                  {' '}
+                  {getCurrencySymbol(currency)}
                 </Typography>
               )
             }
@@ -61,10 +69,10 @@ export function CartCard({
         <CardActions sx={sx.actions}>
           <Box sx={sx.leftActions}>
             <Button variant="text" onClick={onElect}>
-              В избранное
+              {t('elect')}
             </Button>
             <Button variant="text" onClick={onDelete}>
-              Удалить
+              {t('delete')}
             </Button>
           </Box>
 
@@ -75,7 +83,8 @@ export function CartCard({
 
             <Typography variant="body2" sx={sx.weight}>
               {amount}
-              {' г'}
+              {' '}
+              {t('g')}
             </Typography>
 
             <IconButton onClick={onAdd}>

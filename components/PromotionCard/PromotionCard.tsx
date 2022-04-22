@@ -1,9 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
-import { defaultTheme as t } from '../../themes';
+import { defaultTheme as theme } from '../../themes';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import translations from './PromotionCard.i18n.json';
 
 type Props = {
   title: string;
@@ -30,25 +32,27 @@ const sx = {
   },
   title: {
     padding: '5px',
-    backgroundColor: t.palette.common.white,
+    backgroundColor: theme.palette.common.white,
     borderRadius: '6px',
   },
   btn: {
-    backgroundColor: t.palette.common.white,
-    color: t.palette.text.secondary,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.text.secondary,
 
     '&:hover': {
-      backgroundColor: t.palette.secondary.main,
+      backgroundColor: theme.palette.secondary.main,
     }
   },
 };
 
 export function PromotionCard({ title, image, onMoreClick }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   return (
     <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none' }}>
       <Typography variant="subtitle1" sx={sx.title}>{title}</Typography>
       <Button size="small" onClick={onMoreClick} sx={sx.btn}>
-        подробнее
+        {t('more')}
       </Button>
     </Box>
   );

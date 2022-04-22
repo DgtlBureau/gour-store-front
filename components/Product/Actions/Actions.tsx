@@ -1,7 +1,10 @@
 import React, { CSSProperties } from 'react';
 import { Button, ButtonGroup, Stack } from '@mui/material';
+
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Actions.i18n.json';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,16 +30,22 @@ export const ProductActions = ({
   onRemoveFromCart,
   onAddToFavorite,
 }: ProductActionsProps) => {
+  const { t } = useLocalTranslation(translations);
+
   return (
     <Stack sx={containerSx} direction="row" justifyContent="space-between">
       <Stack>
-        <Typography variant="body1"> {price} /100г</Typography>
+        <Typography variant="body1">
+          {price}
+          {' / 100'}
+          {t('g')}
+        </Typography>
         <Typography variant="h5">{price * count}</Typography>
       </Stack>
       <Stack direction="row">
         {count === 0 && (
           <Button onClick={onAddToCart} variant="contained">
-            В корзину
+            {t('addToCart')}
           </Button>
         )}
         {count !== 0 && (

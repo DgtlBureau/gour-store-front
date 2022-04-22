@@ -7,6 +7,7 @@ import { MobileMenu } from '../Menu/Menu';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
+
 import Logo from '../../../assets/images/common-logo.svg';
 
 import sx from './Header.styles';

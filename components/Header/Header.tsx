@@ -25,7 +25,9 @@ import { Button } from '../UI/Button/Button';
 import { Link as CustomLink } from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
-import { defaultTheme as t } from '../../themes';
+import { defaultTheme as theme } from '../../themes';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import translations from './Header.i18n.json';
 
 import sx from './Header.styles';
 
@@ -64,6 +66,8 @@ export function Header({
   onClickBasket,
   onOpenMobileMenu,
 }: HeaderProps) {
+  const { t } = useLocalTranslation(translations);
+
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -157,7 +161,7 @@ export function Header({
                 onClick={onClickPersonalArea}
               >
                 <PersonIcon sx={{ marginRight: '8px' }} />
-                Личный кабинет
+                {t('account')}
               </Button>
               <Box
                 sx={sx.flag}
@@ -195,7 +199,7 @@ export function Header({
       </AppBar>
 
       <Dialog open={isCitiesModalOpen} onClose={handleClose} PaperProps={{ sx: sx.paper }}>
-        <DialogTitle>Ваш город</DialogTitle>
+        <DialogTitle>{t('cities')}</DialogTitle>
         <DialogContent sx={{ width: 500 }}>
           <Grid container spacing={2}>
             {cities.map(city => (
@@ -209,7 +213,7 @@ export function Header({
                 <Typography
                   sx={{ cursor: 'pointer' }}
                   variant="body1"
-                  color={city.title === selectedCity ? t.palette.accent.main : 'inherit'}
+                  color={city.title === selectedCity ? theme.palette.accent.main : 'inherit'}
                 >
                   {city.title}
                 </Typography>
