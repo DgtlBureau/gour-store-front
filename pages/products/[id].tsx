@@ -2,7 +2,6 @@ import { Stack } from '@mui/material';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
 import { ProductInformation } from 'components/Product/Information/Information';
-import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -29,15 +28,6 @@ export default function Product() {
       label: key,
       value: product?.characteristics[key] || '',
     }));
-
-  const comments =
-    product?.productGrades?.map((grade, i) => ({
-      id: grade.id,
-      clientName: grade.client.role,
-      value: grade.value,
-      date: grade.createdAt,
-      comment: grade.comment,
-    })) || [];
 
   return (
     <ShopLayout>
@@ -80,8 +70,6 @@ export default function Product() {
         <Typography variant="body1">{product?.description.ru || ''}</Typography>
 
         {/* <CardSlider title="Похожие товары" cardsList={[]} /> */}
-
-        <ProductReviews sx={{ margin: '100px 0 40px 0' }} reviews={comments} />
 
         <CreateCommentBlock
           onCreate={(comment: { grade: number; text: string }) => {

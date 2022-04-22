@@ -68,7 +68,7 @@ const sx = {
     marginRight: '6px',
     img: {
       borderRadius: '6px',
-    }
+    },
   },
 
   phones: {
