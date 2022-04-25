@@ -32,7 +32,6 @@ export default function Product() {
     { id: productId, withSimilarProducts: true },
     { skip: !id }
   );
-  console.log(product);
 
   const characteristics: { label: string; value: string | number }[] =
     Object.keys(product?.characteristics || {}).map(key => ({
@@ -57,7 +56,7 @@ export default function Product() {
         rating={similarProduct.grade}
         currentWeight={0}
         price={similarProduct.price[currency]}
-        cost={''}
+        currency="rub"
         previewSrc={''}
         inCart={false}
         isElected={false}

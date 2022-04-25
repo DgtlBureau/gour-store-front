@@ -6,10 +6,10 @@ import s from './Card.module.scss';
 
 type Props = {
   rating: number;
-  cost: string;
-}
+  price: number;
+};
 
-export function ProductCardRate({ rating, cost }: Props) {
+export function ProductCardRate({ rating, price }: Props) {
   return (
     <div className={s.rating_n_cost}>
       <div className={s.rating}>
@@ -17,7 +17,7 @@ export function ProductCardRate({ rating, cost }: Props) {
         <span>{rating}</span>
       </div>
 
-      <span>{cost}</span>
+      <span>{price}</span>
     </div>
   );
 }

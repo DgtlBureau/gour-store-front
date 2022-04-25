@@ -1,11 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, CardActions } from '@mui/material';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
@@ -22,7 +17,7 @@ export type ProductCardProps = {
   currentWeight: number;
   price: number;
   discount?: number;
-  cost: string;
+  currency: string;
   previewSrc: string;
   countrySrc?: string;
   inCart: boolean;
@@ -42,15 +37,12 @@ export function ProductCard({
   currentWeight,
   discount = 0,
   price,
-  cost,
   previewSrc,
   countrySrc,
   inCart,
   isElected,
-  onAdd,
-  onSubtract,
-  onRemove,
-  onEdit,
+  onAdd, //добавить
+  onSubtract, //вычесть
   onElect,
   onDetail,
 }: ProductCardProps) {
@@ -67,14 +59,13 @@ export function ProductCard({
             className={s.preview}
             component="img"
             image={previewSrc}
-            alt=""
             onClick={onDetail}
           />
 
           {countrySrc && <img src={countrySrc} className={s.country} alt="" />}
         </div>
 
-        <Rate rating={rating} cost={cost} />
+        <Rate rating={rating} price={price} />
 
         <div className={s.info}>
           <span
@@ -92,11 +83,7 @@ export function ProductCard({
       </CardContent>
 
       <CardActions className={classNames(s.actions, inCart && s.deployed)}>
-        <Docket
-          inCart={inCart}
-          price={price}
-          discount={discount}
-        />
+        <Docket inCart={inCart} price={price} discount={discount} />
 
         <Cart
           inCart={inCart}
