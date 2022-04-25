@@ -1,4 +1,4 @@
-export type CreateProductGrade = Readonly<{
+export type CreateProductGradeDto = Readonly<{
   productId: number;
   value: number;
   comment: string;
