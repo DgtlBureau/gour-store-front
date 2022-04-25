@@ -4,6 +4,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { Box, Grid, Stack } from '@mui/material';
 import { ReviewsCounter } from './ReviewsCounter';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { formatDate } from 'helpers/dateHelper';
 
 type Review = {
   id: number;
@@ -36,8 +37,6 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
     });
   }
 
-  const reviewDate = 'test';
-
   return (
     <Grid sx={sx} container spacing={1} direction="row" style={containerBoxSx}>
       <Grid item xs={3}>
@@ -59,7 +58,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
               <Comment
                 title={review.clientName}
                 grade={review.value}
-                date={reviewDate}
+                date={formatDate(review.date)}
                 text={review.comment}
               />
             </SwiperSlide>

@@ -11,6 +11,7 @@ type Props = {
   minRows?: number;
   sx?: CSSProperties;
   defaultValue?: string | number | readonly string[] | undefined;
+  value?: string | number | readonly string[] | undefined;
   placeholder?: string | undefined;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
   onBlur?: ChangeEventHandler<HTMLTextAreaElement>;
@@ -22,6 +23,7 @@ export function Textarea({
   maxRows,
   minRows = 1,
   sx,
+  value,
   defaultValue,
   placeholder,
   onChange,
@@ -37,6 +39,7 @@ export function Textarea({
       maxRows={maxRows}
       minRows={minRows}
       style={{ ...sx }}
+      value={value}
       defaultValue={defaultValue}
       placeholder={placeholder}
     />

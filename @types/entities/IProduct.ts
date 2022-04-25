@@ -16,6 +16,8 @@ export interface IProduct extends IBaseEntity {
   images: IImage[];
   category: ICategory;
   productGrades: IProductGrade[];
+  gradesCount: number;
+  commentsCount: number;
   grade: number;
   similarProducts: IProduct[];
   pieces: IProductModification[];

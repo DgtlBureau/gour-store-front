@@ -11,6 +11,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useGetProductQuery } from 'store/api/productApi';
+import { useCreateProductGradeMutation } from 'store/api/productGradeApi';
 import { ShopLayout } from '../../layouts/ShopLayout';
 
 export default function Product() {
@@ -29,9 +30,21 @@ export default function Product() {
     isLoading,
     isError,
   } = useGetProductQuery(
-    { id: productId, withSimilarProducts: true },
+    { id: productId, withSimilarProducts: true, withGrades: true },
     { skip: !id }
   );
+
+  const [fetchCreateProductGrade] = useCreateProductGradeMutation();
+
+  const onCreateComment = (comment: { value: number; comment: string }) => {
+    console.log(comment);
+
+    try {
+      fetchCreateProductGrade({ productId, ...comment }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const characteristics: { label: string; value: string | number }[] =
     Object.keys(product?.characteristics || {}).map(key => ({
@@ -40,13 +53,17 @@ export default function Product() {
     }));
 
   const comments =
-    product?.productGrades?.map((grade, i) => ({
-      id: grade.id,
-      clientName: grade.client.role,
-      value: grade.value,
-      date: grade.createdAt,
-      comment: grade.comment,
-    })) || [];
+    product?.productGrades?.map((grade, i) => {
+      console.log('тип createdAt', typeof grade.createdAt);
+
+      return {
+        id: grade.id,
+        clientName: grade.client?.role || 'Клиент',
+        value: grade.value,
+        date: new Date(grade.createdAt),
+        comment: grade.comment,
+      };
+    }) || [];
 
   const similarProductCards =
     product?.similarProducts?.map(similarProduct => (
@@ -69,7 +86,7 @@ export default function Product() {
       />
     )) || [];
 
-  console.log('similar:', product?.similarProducts);
+  console.log(product);
 
   return (
     <ShopLayout>
@@ -101,20 +118,20 @@ export default function Product() {
                 />
               </Box>
               <Stack width="100%">
-                <Typography variant="h5" sx={{ margin: '0 0 35px 0' }}>
-                  {product?.title[lang] || ''}
+                <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
+                  {product.title[lang] || ''}
                 </Typography>
                 <ProductInformation
-                  rating={product?.grade || 0}
-                  gradesCount={product?.productGrades?.length || 0}
-                  commentsCount={0}
+                  rating={product.grade || 0}
+                  gradesCount={product.gradesCount || 0}
+                  commentsCount={product.commentsCount || 0}
                   characteristics={characteristics}
                   onClickComments={() => {}}
                 />
                 <ProductActions
-                  price={product?.price[currency] || 0}
+                  price={product.price[currency] || 0}
                   count={count}
-                  discount={product?.discount}
+                  discount={product.discount}
                   onAddToCart={() => setCount(count + 1)}
                   onRemoveFromCart={() => setCount(count - 1)}
                   onAddToFavorite={() => {
@@ -128,7 +145,7 @@ export default function Product() {
               Описание товара
             </Typography>
             <Typography variant="body1">
-              {product?.description[lang] || ''}
+              {product.description[lang] || ''}
             </Typography>
 
             {similarProductCards.length !== 0 && (
@@ -140,11 +157,7 @@ export default function Product() {
 
             <ProductReviews sx={{ margin: '50px 0' }} reviews={comments} />
 
-            <CreateCommentBlock
-              onCreate={(comment: { grade: number; text: string }) => {
-                console.log(comment);
-              }}
-            />
+            <CreateCommentBlock onCreate={onCreateComment} />
           </div>
         )}
       </>

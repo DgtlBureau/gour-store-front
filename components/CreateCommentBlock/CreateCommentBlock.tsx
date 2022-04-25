@@ -7,18 +7,19 @@ import { Textarea } from '../UI/Textarea/Textarea';
 import { Typography } from '../UI/Typography/Typography';
 
 export type CreateCommentBlockProps = {
-  onCreate(comment: { grade: number; text: string }): void;
+  onCreate(comment: { value: number; comment: string }): void;
 };
 
 export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
-  const [formData, setFormData] = useState<{ grade: number; text: string }>({
-    grade: 0,
-    text: '',
+  const [formData, setFormData] = useState<{ value: number; comment: string }>({
+    value: 0,
+    comment: '',
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.grade !== 0) onCreate(formData);
+    setFormData({ value: 0, comment: '' });
+    if (formData.value !== 0) onCreate(formData);
   };
 
   const onChange = (name: string, value: string | number) => {
@@ -52,9 +53,9 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Rating
-                name="grade"
-                onChange={(e, value) => onChange('grade', value || 0)}
-                value={formData.grade}
+                name="value"
+                onChange={(e, value) => onChange('value', value || 0)}
+                value={formData.value}
                 size="large"
               />
               <Typography sx={{ margin: '0 0 0 10px' }} variant="caption">
@@ -73,13 +74,14 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
           >
             <Textarea
               sx={textareaSx}
-              name="text"
-              onChange={e => onChange('text', e.target.value)}
+              name="comment"
+              value={formData.comment}
+              onChange={e => onChange('comment', e.target.value)}
             />
             <Button
               sx={{ margin: '15px 0 0 0' }}
               type="submit"
-              disabled={formData.grade === 0}
+              disabled={formData.value === 0}
             >
               Оставить отзыв
             </Button>
