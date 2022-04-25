@@ -1,27 +1,43 @@
-import React, { CSSProperties, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Typography } from '../UI/Typography/Typography';
 import { differenceInSeconds, minutesToHours } from 'date-fns';
-import { Stack } from '@mui/material';
-
-import s from './PromotionHeader.module.scss';
 import { secondsToMinutes } from 'date-fns/esm';
+import { Stack } from '@mui/material';
+import Image from 'next/image';
 
 import translations from './PromotionHeader.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
+import { Box } from '../UI/Box/Box';
+import { Typography } from '../UI/Typography/Typography';
+
+const sx = {
+  promotion: {
+    maxWidth: '1200px',
+    width: '100%',
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '6px',
+    backgroundColor: '#ebebeb',
+  },
+  timer: {
+    padding: '10px',
+    position: 'absolute',
+    right: '30px',
+    bottom: '30px',
+    borderRadius: '6px',
+    backgroundColor: 'background.default',
+  },
+  title: {
+    position: 'absolute', 
+    top: '30px', 
+    left: '30px',
+  },
+}
 
 export type PromotionHeaderProps = {
   title: string;
   image: string;
   end: Date;
-};
-
-const headerSx: CSSProperties = {
-  width: '100%',
-  position: 'relative',
-  overflow: 'hidden',
-  borderRadius: '6px',
-  backgroundColor: '#ebebeb',
 };
 
 export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
@@ -60,21 +76,18 @@ export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
   };
 
   return (
-    <Stack sx={{ maxWidth: '1200px' }}>
-      <Stack sx={{ ...headerSx }}>
-        <img className={s.image} src={image} />
-        <Typography
-          sx={{ position: 'absolute', top: '30px', left: '30px' }}
-          variant="h2"
-        >
-          {title}
+    <Stack sx={sx.promotion}>
+      <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
+
+      <Typography sx={sx.title} variant="body1">
+        {title}
+      </Typography>
+
+      <Box sx={sx.timer}>
+        <Typography variant="body1">
+          {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
         </Typography>
-        <div className={s.timer}>
-          <Typography variant="body1">
-            {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
-          </Typography>
-        </div>
-      </Stack>
+      </Box>
     </Stack>
   );
 }

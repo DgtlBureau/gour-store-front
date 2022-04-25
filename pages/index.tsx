@@ -31,18 +31,21 @@ const Home: NextPage = () => {
                 <div>
                     <CardSlider
                         title={'Акции и скидки'}
-                        cardsList={promotions.map(promotion => <PromotionCard
+                        cardsList={promotions.map(promotion => (
+                          <PromotionCard
                             title={promotion?.title?.ru || 'X'}
                             key={promotion.id}
                             image={promotion.cardImage.small}
-                            onMoreCLick={() => {}}
-                        />)}
+                            onMoreClick={() => ({})}
+                          />
+                        ))}
                     />
                 </div>
                 <div className={s.infoBlock}>
                     <CardSlider
                         title="Новинки"
-                        cardsList={novelties.map(product => <ProductCard
+                        cardsList={novelties.map(product => (
+                          <ProductCard
                             key={product.id}
                             title={product.title ? product.title[currentLanguage] : ''}
                             description={product.description ? product.description[currentLanguage] : ''}
@@ -67,34 +70,8 @@ const Home: NextPage = () => {
                             }}
                             onDetail={() => {
                             }}
-                        />)}
-                    />
-                </div>
-                <div className={s.infoBlock}>
-                    <CardSlider
-                        title={'sada'}
-                        cardsList={products.map(product => <ProductCard
-                            key={product.id}
-                            title={product.title ? product.title[currentLanguage] : ''}
-                            description={product.description ? product.description[currentLanguage] : ''}
-                            rating={product.grade}
-                            price={product.price[currentCurrency]}
-                            cost={'200 руб'}
-                            previewSrc={product.images[0] ? product.images[0].small : ''}
-                            inCart={false}
-                            isElected={false}
-                            onAdd={() => {
-                                dispatch(addBasketProduct(product))
-                            }}
-                            onRemove={() => {
-                            }}
-                            onEdit={() => {
-                            }}
-                            onElect={() => {
-                            }}
-                            onDetail={() => {
-                            }}
-                        />)}
+                          />
+                        ))}
                     />
                 </div>
             </div>

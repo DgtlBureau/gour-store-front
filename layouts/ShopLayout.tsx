@@ -20,40 +20,40 @@ export function ShopLayout(props: ShopLayoutProps) {
   const sum = useSelector(selectedProductSum);
   const router = useRouter();
 
-  return (
-    <div className={s.shopLayout}>
-      <Header
-        isMobile={false}
-        phone={''}
-        selectedCity={''}
-        cities={[]}
-        selectedLanguage={'ru'}
-        basketProductCount={count}
-        basketProductSum={sum}
-        basketProductCurrency={'rub'}
-        onChangeCity={() => {}}
-        onClickFavorite={() => {}}
-        onClickPersonalArea={() => {}}
-        onClickLanguage={() => {}}
-        onClickBasket={() => router.push('/order/basket')}
-        onOpenMobileMenu={() => {}}
-      />
-      <div className={s.content}>
-        {props.children}
-        <div className={s.footer}>
-          <Footer
-            firstPhone={'firstPhone'}
-            secondPhone={'secondPhone'}
-            email={'email'}
-            fb={'fb'}
-            inst={'inst'}
-            vk={'vk'}
-            copyright={'copyright'}
-            rules={'rules'}
-            privacy={'privacy'}
-            cookie={'cookie'}
-            terms={'terms'}
-          />
+    return <div className={s.shopLayout}>
+        <Header
+            isMobile={false}
+            phone={''}
+            selectedCity={''}
+            cities={[]}
+            selectedLanguage={'ru'}
+            basketProductCount={count}
+            basketProductSum={sum}
+            basketProductCurrency={'rub'}
+            onChangeCity={() => {}}
+            onClickFavorite={() => {}}
+            onClickPersonalArea={() => {}}
+            onClickLanguage={() => {}}
+            onClickBasket={() => {}}
+            onOpenMobileMenu={() => {}}
+            />
+        <div className={s.content}>
+            {props.children}
+            <div className={s.footer}>
+                <Footer 
+                  firstPhone="+7 812 602-52-61"
+                  secondPhone="+372 880-45-21"
+                  email="rk@gour-food.com"
+                  fb=""
+                  inst=""
+                  vk=""
+                  copyright=""
+                  rules=""
+                  privacy=""
+                  cookie=""
+                  terms=""
+                />
+            </div>
         </div>
       </div>
     </div>

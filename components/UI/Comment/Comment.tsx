@@ -1,10 +1,32 @@
 import React from 'react';
-import { Card, CardContent, Rating } from '@mui/material';
+import { Paper, Rating } from '@mui/material';
 
-import lightStarIcon from '../../../assets/icons/comment/stars/light-star.svg';
-import blueStarIcon from '../../../assets/icons/comment/stars/blue-star.svg';
+import { Box } from '../Box/Box';
+import { Typography } from '../Typography/Typography';
+import { defaultTheme as t } from '../../../themes';
 
-import s from './Comment.module.scss';
+import StarIcon from '@mui/icons-material/Star';
+
+const sx = {
+  comment: {
+    width: '280px',
+    padding: '12px',
+    backgroundColor: 'background.default',
+  },
+  rating: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '6px 0',
+  },
+  date: {
+    marginLeft: '16px',
+  },
+  text: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
+};
 
 export type CommentProps = {
   title: string;
@@ -20,25 +42,21 @@ export function Comment({
   text,
 }: CommentProps) {
   return (
-    <Card className={s.card}>
-      <CardContent className={s.content}>
-        <span className={s.title}>{title}</span>
+    <Paper sx={sx.comment} elevation={0}>
+      <Typography variant="body1" color="primary">{title}</Typography>
 
-        <div className={s.grade_n_date}>
-          <Rating
-            className={s.stars}
-            value={grade}
-            precision={0.5}
-            size="small"
-            readOnly
-            icon={<img src={blueStarIcon} alt="" />}
-            emptyIcon={<img src={lightStarIcon} alt="" />}
-          />
-          <span className={s.date}>{date}</span>
-        </div>
+      <Box sx={sx.rating}>
+        <Rating
+          value={grade}
+          precision={0.5}
+          readOnly
+          icon={<StarIcon fontSize="small" htmlColor={t.palette.accent.main} />}
+          emptyIcon={<StarIcon fontSize="small" htmlColor={t.palette.text.muted} />}
+        />
+        <Typography sx={sx.date} variant="body2" color="text.muted">{date}</Typography>
+      </Box>
 
-        <span className={s.text}>{text}</span>
-      </CardContent>
-    </Card>
+      <Typography sx={sx.text} variant="body2" color="text.muted">{text}</Typography>
+    </Paper>
   );
 }

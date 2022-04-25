@@ -1,10 +1,12 @@
+import { defaultTheme as t } from "../../../themes";
+
 const sx = {
   list: {
     position: 'absolute',
     width: '100%',
     maxWidth: '375px',
-    backgroundColor: '#7E5F2F',
-    color: 'white',
+    backgroundColor: t.palette.primary.main,
+    color: t.palette.common.white,
   },
   listItem: {
     display: 'flex',
@@ -36,11 +38,11 @@ const sx = {
     alignItems: 'center',
   },
   divider: {
-    borderColor: 'white',
+    borderColor: t.palette.common.white,
     opacity: 0.1,
   },
   accent: {
-    color: '#F7A400',
+    color: t.palette.accent.main,
   },
   arrowIcon: {
     position: 'relative',
@@ -80,8 +82,8 @@ const sx = {
   link: {
     fontSize: '16px',
     fontWeight: 700,
-    color: 'white',
-    '&:firstChild': {
+    color: t.palette.common.white,
+    '&:first-child': {
       marginRight: '20px',
     },
   },

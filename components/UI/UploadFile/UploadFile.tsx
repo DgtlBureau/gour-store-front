@@ -1,7 +1,10 @@
 import React, { ChangeEventHandler } from 'react';
 import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { Button } from '../Button/Button';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './UploadFile.i18n.json';
 
 type Props = {
   id: string;
@@ -10,6 +13,8 @@ type Props = {
 };
 
 export function UploadFile({ id, allowedFileTypes, onChange }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   const Input = styled('input')({
     display: 'none',
   });
@@ -25,7 +30,7 @@ export function UploadFile({ id, allowedFileTypes, onChange }: Props) {
           type="file"
         />
         <Button variant="contained" component="span">
-          Загрузить
+          {t('upload')}
         </Button>
       </label>
     </Stack>

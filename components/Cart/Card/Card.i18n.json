@@ -1,0 +1,12 @@
+{
+  "ru": {
+    "elect": "В избранное",
+    "delete": "Удалить",
+    "g": "г"
+  },
+  "en": {
+    "elect": "To favorites",
+    "delete": "Delete",
+    "g": "g"
+  }
+}

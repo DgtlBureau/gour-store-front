@@ -5,8 +5,8 @@ import { RegCitySelect, RegCitySelectProps } from './RegCitySelect';
 import { Box } from '../../UI/Box/Box';
 
 export default {
-  component: RegCitySelect,
-  title: 'registration/RegCitySelect',
+    component: RegCitySelect,
+    title: "registration/CitySelect",
 } as Meta;
 
 const boxSx = {

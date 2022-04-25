@@ -6,7 +6,7 @@ import { RegIntro, RegIntroProps } from './RegIntro';
 
 export default {
   component: RegIntro,
-  title: 'RegIntro',
+  title: 'registration/Intro',
 } as Meta;
 
 const boxSx = {

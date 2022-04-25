@@ -4,8 +4,8 @@ import { ComponentStory, Meta } from '@storybook/react';
 import { RegFavoriteInfo, RegFavoriteInfoProps } from './RegFavoriteInfo';
 
 export default {
-  component: RegFavoriteInfo,
-  title: 'components/registration/RegFavoriteInfo',
+    component: RegFavoriteInfo,
+    title: "registration/FavoriteInfo",
 } as Meta;
 
 const Template: ComponentStory<typeof RegFavoriteInfo> = (

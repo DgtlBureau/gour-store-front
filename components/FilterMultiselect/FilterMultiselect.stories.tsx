@@ -5,7 +5,7 @@ import { FilterMultiselect, FilterMultiselectProps } from './FilterMultiselect';
 
 export default {
   component: FilterMultiselect,
-  title: 'components/FilterMultiselect',
+  title: 'FilterMultiselect',
 } as Meta;
 
 const Template: ComponentStory<typeof FilterMultiselect> = (

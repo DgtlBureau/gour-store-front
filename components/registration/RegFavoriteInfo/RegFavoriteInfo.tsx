@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import s from './RegFavoriteInfo.module.scss';
 import translations from './RegFavoriteInfo.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Grid } from '@mui/material';
 import { Button } from './../../UI/Button/Button';
 import { Typography } from './../..//UI/Typography/Typography';
+
+import s from './RegFavoriteInfo.module.scss';
 
 export type RegFavoriteInfoProps = {
   countries: {

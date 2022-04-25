@@ -5,7 +5,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CartInfo } from './Info';
 
 export default {
-  title: 'CartInfo',
+  title: 'Cart/Info',
   component: CartInfo,
 } as ComponentMeta<typeof CartInfo>;
 

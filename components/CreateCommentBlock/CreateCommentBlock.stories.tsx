@@ -1,18 +1,20 @@
 import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { CreateCommentBlock } from './CreateCommentBlock';
+import { CreateCommentBlock, CreateCommentBlockProps } from './CreateCommentBlock';
 
 export default {
-  title: 'CreateCommentBlock',
   component: CreateCommentBlock,
-} as ComponentMeta<typeof CreateCommentBlock>;
+  title: 'Comment/CreateBlock',
+} as Meta;
 
-const Template: ComponentStory<typeof CreateCommentBlock> = function (args) {
+const Template: ComponentStory<typeof CreateCommentBlock> = function (args: CreateCommentBlockProps) {
   return <CreateCommentBlock {...args} />;
 };
+export const DefaultCreateCommentBlock = Template.bind({});
 
-export const DefaultState = Template.bind({});
+const props: Partial<CreateCommentBlockProps> = {
 
-DefaultState.args = {};
+};
+
+DefaultCreateCommentBlock.args = props;

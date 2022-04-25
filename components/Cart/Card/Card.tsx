@@ -1,12 +1,18 @@
 import React from 'react';
 import { Card, CardContent, CardActions, CardMedia } from '@mui/material';
-import classNames from 'classnames';
 
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
-import plusIcon from '../../../assets/icons/cart/plus.svg';
-import minusIcon from '../../../assets/icons/cart/minus.svg';
+import { IconButton } from '../../UI/IconButton/IconButton';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Card.i18n.json';
 
-import s from './Card.module.scss';
+import PlusIcon from '@mui/icons-material/Add';
+import MinusIcon from '@mui/icons-material/Remove';
+
+import sx from './Card.styles';
 
 type Props = {
   title: string;
@@ -14,6 +20,7 @@ type Props = {
   amount: number;
   productImg: string;
   discount?: number;
+  currency?: 'rub' | 'usd' | 'eur';
   onElect: () => void;
   onAdd: () => void;
   onSubtract: () => void;
@@ -26,59 +33,66 @@ export function CartCard({
   amount,
   productImg,
   discount,
+  currency = 'rub',
   onElect,
   onDelete,
   onAdd,
   onSubtract,
 }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   return (
-    <Card className={s.card}>
-      <CardMedia className={s.image} component="img" image={productImg} />
+    <Card sx={sx.card} >
+      <CardMedia sx={sx.image} component="img" image={productImg} />
 
-      <div className={s.info}>
-        <CardContent className={s.content}>
-          <span className={s.title}>{title}</span>
+      <Box sx={sx.info}>
+        <CardContent sx={sx.content}>
+          <Typography variant="h6" sx={sx.title}>{title}</Typography>
 
-          <div className={s.price__wrapper}>
-            <span className={classNames(s.price, discount && s.discounted)}>
+          <Box sx={sx.docket}>
+            <Typography variant="h5" sx={sx.price} color={discount ? 'error' : 'primary'}>
               {discount ? Math.round(price * (1 - discount)) : price}
               {' ₽'}
-            </span>
-            {discount && (
-              <span className={s.price__old}>
-                {price}
-                {' ₽'}
-              </span>
-            )}
-          </div>
+            </Typography>
+            {
+              !!discount && (
+                <Typography variant="body2" sx={sx.oldPrice}>
+                  {price}
+                  {' '}
+                  {getCurrencySymbol(currency)}
+                </Typography>
+              )
+            }
+          </Box>
         </CardContent>
 
-        <CardActions className={s.actions}>
-          <div className={s.actions__left}>
+        <CardActions sx={sx.actions}>
+          <Box sx={sx.leftActions}>
             <Button variant="text" onClick={onElect}>
-              В избранное
+              {t('elect')}
             </Button>
             <Button variant="text" onClick={onDelete}>
-              Удалить
+              {t('delete')}
             </Button>
-          </div>
+          </Box>
 
-          <div className={s.edit}>
-            <Button onClick={onSubtract}>
-              <img src={minusIcon} alt="" />
-            </Button>
+          <Box sx={sx.edit}>
+            <IconButton onClick={onSubtract}>
+              <MinusIcon />
+            </IconButton>
 
-            <span className={s.edit__text}>
+            <Typography variant="body2" sx={sx.weight}>
               {amount}
-              {' г'}
-            </span>
+              {' '}
+              {t('g')}
+            </Typography>
 
-            <Button onClick={onAdd}>
-              <img src={plusIcon} alt="" />
-            </Button>
-          </div>
+            <IconButton onClick={onAdd}>
+              <PlusIcon />
+            </IconButton>
+          </Box>
         </CardActions>
-      </div>
+      </Box>
     </Card>
   );
 }
