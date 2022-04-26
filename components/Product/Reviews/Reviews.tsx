@@ -33,7 +33,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
     ratingStats.push({
       grade: i,
       count: reviewsCount,
-      percent: (reviewsCount / reviews.length) * 100,
+      percent: reviewsCount ? (reviewsCount / reviews.length) * 100 : 0,
     });
   }
 
@@ -52,6 +52,14 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
         </Stack>
       </Grid>
       <Grid item xs={9}>
+        {reviews.length === 0 && (
+          <>
+            <Typography variant="h5">На этот товар нет отзывов</Typography>
+            <Typography variant="body1">
+              Будьте первым, кто оставит отзыв
+            </Typography>
+          </>
+        )}
         <Swiper slidesPerView={3}>
           {reviews.map(review => (
             <SwiperSlide key={review.id}>

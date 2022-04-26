@@ -20,10 +20,12 @@ import {
 } from 'store/api/productGradeApi';
 import {
   addBasketProduct,
+  productsInBasketCount,
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
 
 import { ShopLayout } from '../../layouts/ShopLayout';
+import { CHARACTERISTICS } from 'constants/characteristics';
 
 export default function Product() {
   const router = useRouter();
@@ -39,8 +41,12 @@ export default function Product() {
     dispatch(subtractBasketProduct(product));
   };
 
+  const handleDetailProduct = (productId: number) => {
+    router.push(`/products/${productId}`);
+  };
+
   const lang: 'ru' | 'en' = 'ru';
-  const currency = 'rub';
+  const currency: 'rub' | 'usd' | 'eur' = 'rub';
 
   const productId = id ? +id : 0;
 
@@ -49,13 +55,23 @@ export default function Product() {
     isLoading,
     isError,
   } = useGetProductQuery(
-    { id: productId, withSimilarProducts: true, withGrades: true },
+    {
+      id: productId,
+      withSimilarProducts: true,
+      withMetrics: true,
+    },
     { skip: !productId }
+  );
+
+  const basket = useAppSelector(state => state.order);
+
+  const count = useAppSelector(state =>
+    productsInBasketCount(state, productId, product?.isWeightGood || false)
   );
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
-  const data = useGetProductGradeListQuery(
+  const { data: comments = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
     { skip: !productId }
   );
@@ -68,14 +84,8 @@ export default function Product() {
     }
   };
 
-  const characteristics: { label: string; value: string | number }[] =
-    Object.keys(product?.characteristics || {}).map(key => ({
-      label: key,
-      value: product?.characteristics[key] || '',
-    }));
-
   const productComments =
-    product?.productGrades?.map((grade, i) => {
+    comments.map((grade, i) => {
       return {
         id: grade.id,
         clientName: grade.client?.role || 'Клиент',
@@ -86,25 +96,54 @@ export default function Product() {
     }) || [];
 
   const similarProductCards =
-    product?.similarProducts?.map(similarProduct => (
-      <ProductCard
-        title={similarProduct.title[lang] || ''}
-        description={similarProduct.description[lang] || ''}
-        rating={similarProduct.grade}
-        currentWeight={0}
-        price={similarProduct.price[currency]}
-        currency={currency}
-        previewSrc={''}
-        inCart={false}
-        isElected={false}
-        onAdd={() => {}}
-        onSubtract={() => {}}
-        onRemove={() => {}}
-        onEdit={() => {}}
-        onElect={() => {}}
-        onDetail={() => {}}
-      />
-    )) || [];
+    product?.similarProducts?.map(similarProduct => {
+      const productInBasket = basket.products.find(
+        it => it.product.id === similarProduct.id
+      );
+      const count = similarProduct.isWeightGood
+        ? productInBasket?.weight
+        : productInBasket?.amount;
+      return (
+        <ProductCard
+          title={similarProduct.title[lang] || ''}
+          description={similarProduct.description[lang] || ''}
+          rating={similarProduct.grade}
+          currentCount={count || 0}
+          isWeightGood={similarProduct.isWeightGood}
+          price={similarProduct.price[currency]}
+          currency={currency}
+          previewSrc={similarProduct.images[0]?.full || ''}
+          inCart={!!productInBasket}
+          isElected={false}
+          onAdd={() => {
+            handleAddProduct(similarProduct);
+          }}
+          onSubtract={() => {
+            handleRemoveProduct(similarProduct);
+          }}
+          onDetail={() => {
+            handleDetailProduct(similarProduct.id);
+          }}
+          onRemove={() => {}}
+          onEdit={() => {}}
+          onElect={() => {}}
+        />
+      );
+    }) || [];
+
+  const productCharacteristics =
+    Object.keys(product?.characteristics || {})
+      .filter(key => product?.characteristics[key])
+      .map(key => {
+        const characteristicValue = CHARACTERISTICS[key]?.values.find(
+          value => value.key === product?.characteristics[key]
+        );
+
+        return {
+          label: CHARACTERISTICS[key]?.label[lang] || '',
+          value: characteristicValue?.label[lang] || 'нет информации',
+        };
+      }) || [];
 
   return (
     <ShopLayout>
@@ -130,13 +169,15 @@ export default function Product() {
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
                   commentsCount={product.commentsCount || 0}
-                  characteristics={characteristics}
+                  characteristics={productCharacteristics}
                   onClickComments={() => {}}
                 />
                 <ProductActions
                   price={product.price[currency] || 0}
-                  weight={100}
+                  count={count}
+                  currency={currency}
                   discount={product.discount}
+                  isWeightGood={product.isWeightGood}
                   onAddToCart={() => {
                     handleAddProduct(product);
                   }}

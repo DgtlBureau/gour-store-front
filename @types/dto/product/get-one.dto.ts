@@ -4,4 +4,5 @@ export type ProductGetOneDto = Readonly<{
   withMeta?: boolean;
   withRoleDiscount?: boolean;
   withGrades?: boolean;
+  withMetrics?: boolean;
 }>;

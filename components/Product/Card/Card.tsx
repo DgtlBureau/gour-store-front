@@ -14,7 +14,8 @@ export type ProductCardProps = {
   title: string;
   description: string;
   rating: number;
-  currentWeight: number;
+  currentCount: number;
+  isWeightGood: boolean;
   price: number;
   discount?: number;
   currency: string;
@@ -34,9 +35,10 @@ export function ProductCard({
   title,
   description,
   rating,
-  currentWeight,
+  currentCount,
   discount = 0,
   price,
+  isWeightGood,
   previewSrc,
   countrySrc,
   inCart,
@@ -88,7 +90,8 @@ export function ProductCard({
         <Cart
           inCart={inCart}
           onAdd={onAdd}
-          currentWeight={currentWeight}
+          isWeightGood={isWeightGood}
+          currentCount={currentCount}
           increaseWeight={onAdd}
           decreaseWeight={onSubtract}
         />

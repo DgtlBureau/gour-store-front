@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../../@types/entities/User';
 import { RootState } from '../store';
-import { authSlice } from './authSlice';
 import { IProduct } from '../../@types/entities/IProduct';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
-import { Product } from '../../@types/entities/Product';
 
 interface OrderFormContacts {
   firstName: string;
@@ -37,14 +34,13 @@ export const orderSlice = createSlice({
   initialState,
   reducers: {
     addBasketProduct: (state, action: PayloadAction<IProduct>) => {
-      console.log('addBasketProduct', action.payload);
       const product = action.payload;
       const foundIndex = state.products.findIndex(
         it => it.product.id === product.id
       );
       if (foundIndex > -1) {
         const foundOrderProduct = state.products[foundIndex];
-        console.log('11111', product);
+        console.log('Added product info: ', product);
         if (product.isWeightGood) {
           state.products.splice(foundIndex, 1, {
             ...foundOrderProduct,
@@ -148,14 +144,19 @@ export const checkProductInBasket = (
   return state.order.products.some(it => it.product.id === productId);
 };
 
-export const productsInBasketWeight = (
+export const productsInBasketCount = (
   state: RootState,
-  productId: number
+  productId: number,
+  isWeightGood: boolean
 ): number => {
-  return (
-    state.order.products.find(product => product.product.id === productId)
-      ?.weight || 0
+  const currentProduct = state.order.products.find(
+    it => it.product.id === productId
   );
+  if (!currentProduct) return 0;
+  if (isWeightGood) {
+    return currentProduct.weight;
+  }
+  return currentProduct.amount;
 };
 
 export const selectProductsInOrder = (state: RootState): IOrderProduct[] => {

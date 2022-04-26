@@ -11,19 +11,20 @@ import s from './Card.module.scss';
 type Props = {
   inCart: boolean;
   onAdd: () => void;
-  currentWeight: number;
+  isWeightGood: boolean;
+  currentCount: number;
   increaseWeight: () => void;
   decreaseWeight: () => void;
-}
+};
 
 export function ProductCardCart({
   inCart,
   onAdd,
-  currentWeight,
+  isWeightGood,
+  currentCount,
   increaseWeight,
   decreaseWeight,
 }: Props) {
-
   return (
     <div className={s.cart}>
       {!inCart ? (
@@ -34,12 +35,12 @@ export function ProductCardCart({
         <Grid container>
           <Grid item xs={4}>
             <IconButton className={s.remove} onClick={decreaseWeight}>
-              <img src={currentWeight === 100 ? bucketIcon : minusIcon} alt="" />
+              <img src={currentCount === 100 ? bucketIcon : minusIcon} alt="" />
             </IconButton>
           </Grid>
 
           <Grid item xs={4}>
-            {currentWeight} г
+            {currentCount} {isWeightGood ? 'г' : 'шт'}
           </Grid>
 
           <Grid item xs={4}>
