@@ -1,4 +1,5 @@
 import { LinearProgress, Stack } from '@mui/material';
+import { IProduct } from '../../@types/entities/IProduct';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -8,164 +9,170 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
+import { useAppSelector } from 'hooks/store';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductQuery } from 'store/api/productApi';
-import { useGetProductGradeListQuery } from 'store/api/productGradeApi';
+import {
+  useCreateProductGradeMutation,
+  useGetProductGradeListQuery,
+} from 'store/api/productGradeApi';
+import {
+  addBasketProduct,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
 
 import { ShopLayout } from '../../layouts/ShopLayout';
 
 export default function Product() {
-  const { data: comments } = useGetProductGradeListQuery({ productId: 123 });
+  const router = useRouter();
+  const { id } = router.query;
 
-  // const router = useRouter();
-  // const { id } = router.query;
+  const dispatch = useDispatch();
 
-  // const [count, setCount] = useState(0);
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addBasketProduct(product));
+  };
 
-  // const lang: 'ru' | 'en' = 'ru';
-  // const currency = 'rub';
+  const handleRemoveProduct = (product: IProduct) => {
+    dispatch(subtractBasketProduct(product));
+  };
 
-  // const productId = id ? +id : 0;
+  const lang: 'ru' | 'en' = 'ru';
+  const currency = 'rub';
 
-  // const {
-  //   data: product,
-  //   isLoading,
-  //   isError,
-  // } = useGetProductQuery(
-  //   { id: productId, withSimilarProducts: true, withGrades: true },
-  //   { skip: !productId }
-  // );
+  const productId = id ? +id : 0;
 
-  // const [fetchCreateProductGrade] = useCreateProductGradeMutation();
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useGetProductQuery(
+    { id: productId, withSimilarProducts: true, withGrades: true },
+    { skip: !productId }
+  );
 
-  // const onCreateComment = (comment: { value: number; comment: string }) => {
-  //   console.log(comment);
+  const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
-  //   try {
-  //     fetchCreateProductGrade({ productId, ...comment }).unwrap();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const data = useGetProductGradeListQuery(
+    { productId, withComments: true, isApproved: true },
+    { skip: !productId }
+  );
 
-  // const characteristics: { label: string; value: string | number }[] =
-  //   Object.keys(product?.characteristics || {}).map(key => ({
-  //     label: key,
-  //     value: product?.characteristics[key] || '',
-  //   }));
+  const onCreateComment = (comment: { value: number; comment: string }) => {
+    try {
+      fetchCreateProductGrade({ productId, ...comment }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // const productComments =
-  //   comments?.map((grade, i) => {
-  //     return {
-  //       id: grade.id,
-  //       clientName: grade.client?.role || 'Клиент',
-  //       value: grade.value,
-  //       date: new Date(grade.createdAt),
-  //       comment: grade.comment,
-  //     };
-  //   }) || [];
+  const characteristics: { label: string; value: string | number }[] =
+    Object.keys(product?.characteristics || {}).map(key => ({
+      label: key,
+      value: product?.characteristics[key] || '',
+    }));
 
-  // const similarProductCards =
-  //   product?.similarProducts?.map(similarProduct => (
-  //     <ProductCard
-  //       title={similarProduct.title[lang] || ''}
-  //       description={similarProduct.description[lang] || ''}
-  //       rating={similarProduct.grade}
-  //       currentWeight={0}
-  //       price={similarProduct.price[currency]}
-  //       currency="rub"
-  //       previewSrc={''}
-  //       inCart={false}
-  //       isElected={false}
-  //       onAdd={() => {}}
-  //       onSubtract={() => {}}
-  //       onRemove={() => {}}
-  //       onEdit={() => {}}
-  //       onElect={() => {}}
-  //       onDetail={() => {}}
-  //     />
-  //   )) || [];
+  const productComments =
+    product?.productGrades?.map((grade, i) => {
+      return {
+        id: grade.id,
+        clientName: grade.client?.role || 'Клиент',
+        value: grade.value,
+        date: new Date(grade.createdAt),
+        comment: grade.comment,
+      };
+    }) || [];
 
-  // console.log(product);
+  const similarProductCards =
+    product?.similarProducts?.map(similarProduct => (
+      <ProductCard
+        title={similarProduct.title[lang] || ''}
+        description={similarProduct.description[lang] || ''}
+        rating={similarProduct.grade}
+        currentWeight={0}
+        price={similarProduct.price[currency]}
+        currency={currency}
+        previewSrc={''}
+        inCart={false}
+        isElected={false}
+        onAdd={() => {}}
+        onSubtract={() => {}}
+        onRemove={() => {}}
+        onEdit={() => {}}
+        onElect={() => {}}
+        onDetail={() => {}}
+      />
+    )) || [];
 
   return (
-    <div></div>
-    // <ShopLayout>
-    //   <>
-    //     {isLoading && <LinearProgress />}
-    //     {!isLoading && isError && (
-    //       <Typography variant="h5">Произошла ошибка</Typography>
-    //     )}
-    //     {!isLoading && !isError && !product && (
-    //       <Typography variant="h5">Продукт не найден</Typography>
-    //     )}
-    //     {!isLoading && !isError && product && (
-    //       <div>
-    //         <Stack direction="row" justifyContent="space-between">
-    //           <Box sx={{ width: '580px', margin: '0 40px 0 0' }}>
-    //             <ImageSlider
-    //               images={[
-    //                 {
-    //                   small:
-    //                     'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80',
-    //                   full: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80',
-    //                 },
-    //                 {
-    //                   small:
-    //                     'https://images.unsplash.com/photo-1589881133595-a3c085cb731d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80',
-    //                   full: 'https://images.unsplash.com/photo-1589881133595-a3c085cb731d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80',
-    //                 },
-    //               ]}
-    //             />
-    //           </Box>
-    //           <Stack width="100%">
-    //             <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
-    //               {product.title[lang] || ''}
-    //             </Typography>
-    //             <ProductInformation
-    //               rating={product.grade || 0}
-    //               gradesCount={product.gradesCount || 0}
-    //               commentsCount={product.commentsCount || 0}
-    //               characteristics={characteristics}
-    //               onClickComments={() => {}}
-    //             />
-    //             <ProductActions
-    //               price={product.price[currency] || 0}
-    //               count={count}
-    //               discount={product.discount}
-    //               onAddToCart={() => setCount(count + 1)}
-    //               onRemoveFromCart={() => setCount(count - 1)}
-    //               onAddToFavorite={() => {
-    //                 console.log('add to fav');
-    //               }}
-    //             />
-    //           </Stack>
-    //         </Stack>
+    <ShopLayout>
+      <>
+        {isLoading && <LinearProgress />}
+        {!isLoading && isError && (
+          <Typography variant="h5">Произошла ошибка</Typography>
+        )}
+        {!isLoading && !isError && !product && (
+          <Typography variant="h5">Продукт не найден</Typography>
+        )}
+        {!isLoading && !isError && product && (
+          <div>
+            <Stack direction="row" justifyContent="space-between">
+              <Box sx={{ width: '580px', margin: '0 40px 0 0' }}>
+                <ImageSlider images={product.images} />
+              </Box>
+              <Stack width="100%">
+                <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
+                  {product.title[lang] || ''}
+                </Typography>
+                <ProductInformation
+                  rating={product.grade || 0}
+                  gradesCount={product.gradesCount || 0}
+                  commentsCount={product.commentsCount || 0}
+                  characteristics={characteristics}
+                  onClickComments={() => {}}
+                />
+                <ProductActions
+                  price={product.price[currency] || 0}
+                  weight={100}
+                  discount={product.discount}
+                  onAddToCart={() => {
+                    handleAddProduct(product);
+                  }}
+                  onRemoveFromCart={() => {
+                    handleRemoveProduct(product);
+                  }}
+                  onAddToFavorite={() => {
+                    console.log('add to fav');
+                  }}
+                />
+              </Stack>
+            </Stack>
 
-    //         <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
-    //           Описание товара
-    //         </Typography>
-    //         <Typography variant="body1">
-    //           {product.description[lang] || ''}
-    //         </Typography>
+            <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
+              Описание товара
+            </Typography>
+            <Typography variant="body1">
+              {product.description[lang] || ''}
+            </Typography>
 
-    //         {similarProductCards.length !== 0 && (
-    //           <CardSlider
-    //             title="Похожие товары"
-    //             cardsList={similarProductCards}
-    //           />
-    //         )}
+            {similarProductCards.length !== 0 && (
+              <CardSlider
+                title="Похожие товары"
+                cardsList={similarProductCards}
+              />
+            )}
 
-    //         <ProductReviews
-    //           sx={{ margin: '50px 0' }}
-    //           reviews={productComments}
-    //         />
+            <ProductReviews
+              sx={{ margin: '50px 0' }}
+              reviews={productComments}
+            />
 
-    //         <CreateCommentBlock onCreate={onCreateComment} />
-    //       </div>
-    //     )}
-    //   </>
-    // </ShopLayout>
+            <CreateCommentBlock onCreate={onCreateComment} />
+          </div>
+        )}
+      </>
+    </ShopLayout>
   );
 }

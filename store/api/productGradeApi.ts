@@ -15,10 +15,11 @@ export const productGradeApi = createApi({
         IProductGrade[],
         GetProductGradeListDto
       >({
-        query({ productId }) {
+        query({ productId, ...params }) {
           return {
             method: 'get',
             url: `products/${productId}/grades`,
+            params,
           };
         },
       }),

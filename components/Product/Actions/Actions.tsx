@@ -11,19 +11,20 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 export type ProductActionsProps = {
   price: number;
   discount?: number;
-  count: number;
+  weight: number;
   onAddToCart: () => void;
   onRemoveFromCart: () => void;
   onAddToFavorite: () => void;
 };
 
 const containerSx: CSSProperties = {
+  margin: '50px 0 0 0',
   width: '100%',
 };
 
 export const ProductActions = ({
   price,
-  count,
+  weight,
   discount,
   onAddToCart,
   onRemoveFromCart,
@@ -40,21 +41,21 @@ export const ProductActions = ({
         </Typography>
       </Stack>
       <Stack direction="row">
-        {count === 0 && (
+        {weight === 0 && (
           <Button onClick={onAddToCart} variant="contained">
             В корзину
           </Button>
         )}
-        {count !== 0 && (
+        {weight !== 0 && (
           <ButtonGroup
             variant="contained"
             aria-label="outlined primary button group"
           >
             <Button onClick={onRemoveFromCart}>
-              {count !== 1 ? <RemoveIcon /> : <DeleteIcon />}
+              {weight !== 1 ? <RemoveIcon /> : <DeleteIcon />}
             </Button>
             <Typography sx={{ padding: '0 20px' }} variant="h5">
-              {count * 100} г
+              {weight} г
             </Typography>
             <Button onClick={onAddToCart}>
               <AddIcon />
