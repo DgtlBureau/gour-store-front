@@ -1,6 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from "react-redux";
 
+import {
+  addBasketProduct,
+  selectProductsIdInOrder,
+  subtractBasketProduct,
+} from "../../store/slices/orderSlice";
 import translations from './Promotion.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 import { ShopLayout } from '../../layouts/ShopLayout';
@@ -42,11 +48,16 @@ const defaultWeights = [
 ] as Weight[];
 
 export default function Promotion() {
+  const dispatch = useDispatch();
+
+  const productsIdInOrder = useSelector(selectProductsIdInOrder);
+  
   const { t } = useLocalTranslation(translations);
 
   const router = useRouter();
   const { id } = router.query;
 
+  const currentCurrency = 'rub';
   const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
 
   const promotionId = id ? +id : 0;
@@ -93,13 +104,13 @@ export default function Promotion() {
                     rating={product.grade}
                     weightId={0}
                     weights={defaultWeights}
-                    price={product.price.rub}
+                    price={product.price[currentCurrency]}
                     cost={'200 руб'}
                     previewSrc={product.images[0] ? product.images[0].small : ''}
-                    inCart={false}
+                    inCart={productsIdInOrder.includes(product.id)}
                     isElected={false}
-                    onAdd={() => ({})}
-                    onRemove={() => ({})}
+                    onAdd={() => dispatch(addBasketProduct(product))}
+                    onRemove={() => dispatch(subtractBasketProduct(product))}
                     onEdit={() => {}}
                     onElect={() => {}}
                     onDetail={() => {}}
