@@ -35,24 +35,24 @@ export function ShopLayout(props: ShopLayoutProps) {
         onClickFavorite={() => {}}
         onClickPersonalArea={() => {}}
         onClickLanguage={() => {}}
-        onClickBasket={() => router.push('/order/basket')}
+        onClickBasket={() => {}}
         onOpenMobileMenu={() => {}}
       />
       <div className={s.content}>
         {props.children}
         <div className={s.footer}>
           <Footer
-            firstPhone={'firstPhone'}
-            secondPhone={'secondPhone'}
-            email={'email'}
-            fb={'fb'}
-            inst={'inst'}
-            vk={'vk'}
-            copyright={'copyright'}
-            rules={'rules'}
-            privacy={'privacy'}
-            cookie={'cookie'}
-            terms={'terms'}
+            firstPhone="+7 812 602-52-61"
+            secondPhone="+372 880-45-21"
+            email="rk@gour-food.com"
+            fb=""
+            inst=""
+            vk=""
+            copyright=""
+            rules=""
+            privacy=""
+            cookie=""
+            terms=""
           />
         </div>
       </div>

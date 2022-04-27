@@ -5,6 +5,7 @@ const sx = {
     flexDirection: 'column',
     maxWidth: '550px',
     padding: '60px',
+    backgroundColor: 'background.default',
   },
   title: {
     fontWeight: 700,

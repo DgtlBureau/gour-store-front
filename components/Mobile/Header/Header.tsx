@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Collapse, Button } from '@mui/material';
+import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenu } from '../Menu/Menu';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
+
+import Logo from '../../../assets/images/common-logo.svg';
 
 import sx from './Header.styles';
 
@@ -53,9 +55,7 @@ export function MobileHeader({
   return (
     <Box sx={sx.headerWrapper}>
       <Box sx={sx.header}>
-        <Typography sx={sx.logo}>
-          Logo
-        </Typography>
+        <Image src={Logo} height={41} width={35} alt="" />
         <Button
           sx={sx.iconBtn}
           color="inherit"

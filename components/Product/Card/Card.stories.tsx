@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard } from './Card';
-import { Weight } from '../../../@types/entities/Product';
+import { Weight } from '../../../@types/entities/Weight';
 
 import russiaIcon from '../../../assets/icons/countries/russia.svg';
 
 export default {
   component: ProductCard,
-  title: 'ProductCard',
+  title: 'Product/Card',
 } as Meta;
 
 const DESCRIPTION = `
@@ -52,7 +52,7 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       weights={WEIGHTS}
       weightId={weightId}
       price={PRICE}
-      discount={0.2}
+      // discount={0.2}
       cost={`${PRICE * 10}₽/кг`}
       previewSrc={PREVIEW_SRC}
       countrySrc={russiaIcon}

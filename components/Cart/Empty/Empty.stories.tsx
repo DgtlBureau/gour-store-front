@@ -5,7 +5,7 @@ import { Link as CustomLink } from '../../UI/Link/Link';
 import { CartEmpty } from './Empty';
 
 export default {
-  title: 'CartEmpty',
+  title: 'Cart/Empty',
   component: CartEmpty,
 } as ComponentMeta<typeof CartEmpty>;
 

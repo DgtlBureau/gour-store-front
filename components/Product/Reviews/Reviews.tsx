@@ -1,9 +1,12 @@
 import React, { CSSProperties } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Grid, Stack } from '@mui/material';
+
 import { Comment } from '../..//UI/Comment/Comment';
 import { Typography } from '../../UI/Typography/Typography';
-import { Box, Grid, Stack } from '@mui/material';
 import { ReviewsCounter } from './ReviewsCounter';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Reviews.i18n.json';
 import { formatDate } from 'helpers/dateHelper';
 
 type Review = {
@@ -26,6 +29,8 @@ const containerBoxSx: CSSProperties = {
 };
 
 export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
+  const { t } = useLocalTranslation(translations);
+
   let ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
@@ -41,9 +46,10 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
     <Grid sx={sx} container spacing={1} direction="row" style={containerBoxSx}>
       <Grid item xs={3}>
         <Stack>
-          <Typography variant="h5">Отзывы</Typography>
+          <Typography variant="h5">{t('reviews')}</Typography>
           {ratingStats.map(stat => (
             <ReviewsCounter
+              key={`${stat.grade}/${stat.count}/${stat.percent}`}
               grade={stat.grade}
               count={stat.count}
               percent={stat.percent}
@@ -52,15 +58,10 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
         </Stack>
       </Grid>
       <Grid item xs={9}>
-        {reviews.length === 0 && (
-          <>
-            <Typography variant="h5">На этот товар нет отзывов</Typography>
-            <Typography variant="body1">
-              Будьте первым, кто оставит отзыв
-            </Typography>
-          </>
-        )}
         <Swiper slidesPerView={3}>
+          {reviews.length === 0 && (
+            <Typography variant="h5">{t('noReviews')}</Typography>
+          )}
           {reviews.map(review => (
             <SwiperSlide key={review.id}>
               <Comment

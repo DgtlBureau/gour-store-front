@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "reviews": "Отзывы",
+    "noReviews": "Нет отзывов",
+    "oneReview": "отзыв",
+    "someReviews": "отзыва",
+    "manyReviews": "отзывов"
+  },
+  "en": {
+    "reviews": "Reviews",
+    "noReviews": "No reviews",
+    "oneReview": "review",
+    "someReviews": "reviews",
+    "manyReviews": "reviews"
+  }
+}

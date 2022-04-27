@@ -5,7 +5,6 @@ import { Button, ButtonGroup, Stack } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Grid } from 'swiper';
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box } from '../UI/Box/Box';
 import { Container } from '../UI/Container/Container';
@@ -15,6 +14,23 @@ import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/grid';
 
+const sx = {
+  container: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  } as CSSProperties,
+  title: {
+    fontWeight: 'bold',
+    fontFamily: 'Roboto slab',
+    color: 'text.secondary'
+  },
+  backArrow: {
+    transform: 'rotate(-180deg)',
+  },
+};
+
 type Props = {
   title: string;
   cardsList: ReactNode[];
@@ -23,18 +39,11 @@ type Props = {
   slidesPerView?: number;
 };
 
-const wrapperBoxSx: CSSProperties = {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-};
-
 export function CardSlider({
   title,
   cardsList,
   rows = 1,
-  slidesPerView = 4,
+  slidesPerView,
   spaceBetween = 10,
 }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
@@ -42,32 +51,31 @@ export function CardSlider({
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
 
   return (
-    <Container sx={wrapperBoxSx}>
+    <Container sx={sx.container}>
       <Stack
         sx={{ width: '100%' }}
         direction="row"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography variant="h4">{title}</Typography>
+        <Typography variant="h4" sx={sx.title}>{title}</Typography>
         <ButtonGroup>
           <Button onClick={() => slider?.slidePrev()}>
-            <ArrowBackIosIcon />
+            <ArrowForwardIosIcon fontSize="small" sx={sx.backArrow} />
           </Button>
           <Button onClick={() => slider?.slideNext()}>
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon fontSize="small" />
           </Button>
         </ButtonGroup>
       </Stack>
       <Box sx={{ width: '100%', margin: '20px 0 0 0' }}>
         <Swiper
           style={{
-            padding: '10px',
             width: '100%',
             height: `${cardHeight * rows + spaceBetween * rows}px`,
           }}
           spaceBetween={spaceBetween}
-          slidesPerView={slidesPerView}
+          slidesPerView={slidesPerView || 'auto'}
           grid={{
             rows: rows,
           }}

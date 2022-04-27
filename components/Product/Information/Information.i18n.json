@@ -1,0 +1,18 @@
+{
+  "ru": {
+    "oneGrade": "оценка",
+    "someGrades": "оценки",
+    "manyGrades": "оценок",
+    "oneReview": "отзыв",
+    "someReviews": "отзыва",
+    "manyReviews": "отзывов"
+  },
+  "en": {
+    "oneGrade": "grade",
+    "someGrades": "grades",
+    "manyGrades": "grades",
+    "oneReview": "review",
+    "someReviews": "reviews",
+    "manyReviews": "reviews"
+  }
+}

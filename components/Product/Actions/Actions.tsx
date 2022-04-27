@@ -1,7 +1,10 @@
 import React, { CSSProperties } from 'react';
 import { Button, ButtonGroup, Stack } from '@mui/material';
+
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import translations from './Actions.i18n.json';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -35,11 +38,12 @@ export const ProductActions = ({
   onAddToFavorite,
   isWeightGood,
 }: ProductActionsProps) => {
+  const { t } = useLocalTranslation(translations);
   return (
     <Stack sx={containerSx} direction="row" justifyContent="space-between">
       <Stack>
         <Typography variant="body1">
-          {discount ? <s>{price}</s> : ''} /100г
+          {discount ? <s>{price}</s> : ''} /100{t('g')}
         </Typography>
         <Typography variant="h5" color={discount ? 'rgba(244, 87, 37, 1)' : ''}>
           {discount ? price * (1 - discount / 100) : price}{' '}
@@ -49,7 +53,7 @@ export const ProductActions = ({
       <Stack direction="row">
         {count === 0 && (
           <Button onClick={onAddToCart} variant="contained">
-            В корзину
+            {t('addToCart')}
           </Button>
         )}
         {count !== 0 && (
@@ -62,7 +66,7 @@ export const ProductActions = ({
               <RemoveIcon />
             </Button>
             <Typography sx={{ padding: '0 20px' }} variant="h5">
-              {count} {isWeightGood ? 'г' : 'шт'}
+              {count} {isWeightGood && t('g')}
             </Typography>
             <Button onClick={onAddToCart}>
               <AddIcon />

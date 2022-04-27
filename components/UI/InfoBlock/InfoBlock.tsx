@@ -1,9 +1,21 @@
 import React from 'react';
-import { Card, CardContent } from '@mui/material';
+import { Paper } from '@mui/material';
 
+import { Typography } from '../Typography/Typography';
 import { Link as CustomLink } from '../Link/Link';
 
-import s from './InfoBlock.module.scss';
+const sx = {
+  block: {
+    maxWidth: '380px',
+    padding: '16px',
+    backgroundColor: 'background.default',
+    border: '1px solid',
+    borderColor: 'secondary.main',
+  },
+  text: {
+    marginBottom: '10px',
+  },
+}
 
 type Props = {
   text: string;
@@ -15,11 +27,9 @@ type Props = {
 
 export function InfoBlock({ text, link }: Props) {
   return (
-    <Card className={s.card}>
-      <CardContent className={s.content}>
-        <div className={s.text}>{text}</div>
-        {link && <CustomLink path={link.path}>{link.label}</CustomLink>}
-      </CardContent>
-    </Card>
+    <Paper sx={sx.block} elevation={0}>
+      <Typography sx={sx.text} color="text.muted" variant="body1">{text}</Typography>
+      {link && <CustomLink path={link.path}>{link.label}</CustomLink>}
+    </Paper>
   );
 }

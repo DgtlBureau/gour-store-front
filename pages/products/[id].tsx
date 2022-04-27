@@ -88,7 +88,7 @@ export default function Product() {
     comments.map((grade, i) => {
       return {
         id: grade.id,
-        clientName: grade.client?.role || 'Клиент',
+        clientName: grade.client?.role?.title || 'Клиент',
         value: grade.value,
         date: new Date(grade.createdAt),
         comment: grade.comment,
@@ -108,25 +108,29 @@ export default function Product() {
           title={similarProduct.title[lang] || ''}
           description={similarProduct.description[lang] || ''}
           rating={similarProduct.grade}
-          currentCount={count || 0}
-          isWeightGood={similarProduct.isWeightGood}
           price={similarProduct.price[currency]}
-          currency={currency}
           previewSrc={similarProduct.images[0]?.full || ''}
           inCart={!!productInBasket}
           isElected={false}
           onAdd={() => {
             handleAddProduct(similarProduct);
           }}
-          onSubtract={() => {
+          onRemove={() => {
             handleRemoveProduct(similarProduct);
           }}
           onDetail={() => {
             handleDetailProduct(similarProduct.id);
           }}
-          onRemove={() => {}}
           onEdit={() => {}}
           onElect={() => {}}
+          weightId={0}
+          discount={10}
+          weights={[
+            { value: 100, unit: 'г' },
+            { value: 500, unit: 'г' },
+            { value: 1000, unit: 'г' },
+          ]}
+          cost={'1600'}
         />
       );
     }) || [];

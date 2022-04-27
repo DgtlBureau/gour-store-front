@@ -1,20 +1,14 @@
 import {
   AppBar,
   Badge,
-  Box,
-  Button,
-  Chip,
   Container,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
-  Link,
-  Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -23,10 +17,19 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import RusFlagIcon from './../../assets/icons/flags/rus.svg';
+import Logo from '../../assets/images/common-logo.svg';
 
-import s from './Header.module.scss';
+import { Box } from '../UI/Box/Box';
+import { Typography } from '../UI/Typography/Typography';
+import { Button } from '../UI/Button/Button';
+import { Link as CustomLink } from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
+import { defaultTheme as theme } from '../../themes';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import translations from './Header.i18n.json';
+
+import sx from './Header.styles';
 
 export type HeaderProps = {
   isMobile: boolean;
@@ -63,6 +66,8 @@ export function Header({
   onClickBasket,
   onOpenMobileMenu,
 }: HeaderProps) {
+  const { t } = useLocalTranslation(translations);
+
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -98,10 +103,10 @@ export function Header({
               alignItems="center"
               justifyContent="flex-start"
             >
-              <Typography variant="h6">Logo</Typography>
+              <Image src={Logo} height={52} width={58} alt="" />
 
-              <Link
-                href="tel:"
+              <CustomLink
+                path="tel:"
                 variant="body1"
                 color="inherit"
                 sx={{
@@ -110,7 +115,7 @@ export function Header({
                 }}
               >
                 {phone}
-              </Link>
+              </CustomLink>
               <Box
                 sx={{
                   margin: { xs: '0 0 0 20px', md: 'none' },
@@ -137,7 +142,6 @@ export function Header({
               alignItems="center"
               justifyContent="flex-end"
             >
-              <div className={s.city}></div>
               <IconButton
                 component={'span'}
                 onClick={onClickFavorite}
@@ -150,35 +154,33 @@ export function Header({
                 sx={{
                   margin: '0 0 0 20px',
                   display: { xs: 'none', sm: 'flex' },
+                  textTransform: 'none',
                 }}
                 variant="text"
                 color="inherit"
                 onClick={onClickPersonalArea}
               >
-                <PersonIcon />
-                Личный кабинет
+                <PersonIcon sx={{ marginRight: '8px' }} />
+                {t('account')}
               </Button>
-              <Button
-                sx={{ margin: '0 20px', display: { xs: 'none', sm: 'flex' } }}
+              <Box
+                sx={sx.flag}
                 onClick={onClickLanguage}
               >
-                <div className={s.countryFlag}>
-                  <img src={RusFlagIcon} alt="" />
-                </div>
-              </Button>
+                <Image src={RusFlagIcon} objectFit="cover" height={24} width={34}  alt="" />
+              </Box>
               <Button
-                sx={{ position: 'relative' }}
+                sx={sx.cart}
                 type="button"
                 size="large"
-                color="inherit"
                 onClick={onClickBasket}
               >
                 <Badge
                   sx={{ margin: '0 15px 0 0' }}
                   badgeContent={basketProductCount}
-                  color='info'
+                  color='primary'
                 >
-                  <ShoppingCartOutlinedIcon />
+                  <ShoppingCartOutlinedIcon color="primary" />
                 </Badge>
                 {basketProductSum} {getCurrencySymbol(basketProductCurrency)}
               </Button>
@@ -195,8 +197,9 @@ export function Header({
           </Grid>
         </Container>
       </AppBar>
-      <Dialog open={isCitiesModalOpen} onClose={handleClose}>
-        <DialogTitle>Ваш город</DialogTitle>
+
+      <Dialog open={isCitiesModalOpen} onClose={handleClose} PaperProps={{ sx: sx.paper }}>
+        <DialogTitle>{t('cities')}</DialogTitle>
         <DialogContent sx={{ width: 500 }}>
           <Grid container spacing={2}>
             {cities.map(city => (
@@ -210,7 +213,7 @@ export function Header({
                 <Typography
                   sx={{ cursor: 'pointer' }}
                   variant="body1"
-                  color={city.title === selectedCity ? 'primary' : 'inherit'}
+                  color={city.title === selectedCity ? theme.palette.accent.main : 'inherit'}
                 >
                   {city.title}
                 </Typography>

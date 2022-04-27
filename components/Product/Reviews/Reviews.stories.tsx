@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { ProductReviewsProps, ProductReviews } from './Reviews';
 
 export default {
@@ -13,7 +14,6 @@ const Template: ComponentStory<typeof ProductReviews> = function (
 ) {
   return <ProductReviews {...args} />;
 };
-
 export const DefaultProductInformation = Template.bind({});
 
 const props: Partial<ProductReviewsProps> = {};

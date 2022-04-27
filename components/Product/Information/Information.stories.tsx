@@ -5,7 +5,7 @@ import { ProductInformation, ProductInformationProps } from './Information';
 
 export default {
   component: ProductInformation,
-  title: 'ProductInformation',
+  title: 'Product/Information',
 } as Meta;
 
 const Template: ComponentStory<typeof ProductInformation> = function (

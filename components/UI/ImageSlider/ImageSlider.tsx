@@ -2,10 +2,35 @@
 import React, { useState } from 'react';
 import SwiperCore, { EffectFade } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Image from 'next/image';
+
+import { Box } from '../Box/Box';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import s from './ImageSlider.module.scss';
+
+const sx = {
+  slider: {
+    width: '100%',
+    marginLeft: 0,
+    marginRight: 0,
+    '@media (min-width: 995px)': {
+      maxWidth: '580px',
+    },
+  },
+  scroll: {
+    display: 'flex',
+    overflow: 'scroll',
+    padding: '7px 0',
+  },
+  small: {
+    cursor: 'pointer',
+    marginRight: '14px',
+    '&:last-child': {
+      marginRight: 0,
+    },
+  }
+}
 
 export type ImageSliderProps = {
   images: {
@@ -20,9 +45,8 @@ export function ImageSlider({ images }: ImageSliderProps) {
   const slideTo = (i: number) => slider?.slideTo(i);
 
   return (
-    <>
+    <Box sx={sx.slider}>
       <Swiper
-        className={s.slider}
         modules={[EffectFade]}
         effect="fade"
         onSwiper={setSlider}
@@ -30,28 +54,21 @@ export function ImageSlider({ images }: ImageSliderProps) {
         {
           images.map(image => (
             <SwiperSlide key={image.full}>
-              <img src={image.full} className={s.full} alt="" />
+              <Image src={image.full} objectFit="cover" height={500} width={580} alt="" />
             </SwiperSlide>
           ))
         }
       </Swiper>
 
-      <div className={s.scroll}>
+      <Box sx={sx.scroll}>
         {
           images.map((image, i) => (
-            <div
-              key={image.small}
-              role="button"
-              className={s.small}
-              onClick={() => slideTo(i)}
-              onKeyPress={undefined}
-              tabIndex={0}
-            >
-              <img src={image.small} alt="" />
-            </div>
+            <Box key={image.small} sx={sx.small}>
+              <Image src={image.small} objectFit="cover" height={80} width={90} alt="" onClick={() => slideTo(i)} />
+            </Box>
           ))
         }
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 }

@@ -1,6 +1,7 @@
 import React, { ElementType, ReactNode } from 'react';
 import MUIButton from '@mui/material/Button';
 import { SxProps } from '@mui/material';
+
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 
 type Props = {
@@ -12,35 +13,29 @@ type Props = {
   onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
+  color?: string;
   fullWidth?: boolean;
   sx?: SxProps;
 };
 
 export function Button({
   variant = 'contained',
+  component = 'button',
+  color = 'primary',
+  isLoading,
   children,
-  type,
-  onClick,
-  disabled,
-  component,
-  fullWidth,
-  isLoading = false,
-  size,
-  sx,
+  ...props
 }: Props) {
   return (
-    <MUIButton
-      sx={sx}
-      fullWidth={fullWidth}
-      type={type}
-      disabled={disabled}
-      onClick={onClick}
-      variant={variant}
-      size={size}
-      component={component || 'button'}
-    >
-      {isLoading ? <ProgressCircular size={15} /> : ''}
-      &nbsp;
+    <MUIButton variant={variant} component={component} color={color} {...props}>
+      {
+        isLoading && (
+          <>
+            <ProgressCircular size={15} />
+            &nbsp;
+          </> 
+        )
+      }
       {children}
     </MUIButton>
   );

@@ -10,6 +10,7 @@ const sx = {
     display: 'flex',
     flexDirection: 'column',
     padding: '60px',
+    backgroundColor: 'background.default',
   },
   authBtn: {
     marginBottom: '20px',

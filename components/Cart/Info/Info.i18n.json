@@ -1,0 +1,22 @@
+{
+  "ru": {
+    "total": "Итого",
+    "all": "Всего",
+    "delivery": "Доставка",
+    "discount": "Скидка",
+    "kg": "кг",
+    "oneProduct": "товар",
+    "someProducts": "товара",
+    "manyProducts": "товаров"
+  },
+  "en": {
+    "total": "Total",
+    "all": "In cart",
+    "delivery": "Delivery",
+    "discount": "Discount",
+    "kg": "kg",
+    "oneProduct": "product",
+    "someProducts": "products",
+    "manyProducts": "products"
+  }
+}
