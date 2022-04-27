@@ -16,7 +16,7 @@ const sx = {
     backgroundColor: t.palette.background.default,
 
     boxShadow: 'none',
-
+    boxSizing: 'border-box',
     '&:last-child': {
       paddingBottom: '0px',
     },

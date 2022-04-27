@@ -202,6 +202,8 @@ export default function Product() {
               <CardSlider
                 title="Похожие товары"
                 cardsList={similarProductCards}
+                slidesPerView={4}
+                spaceBetween={0}
               />
             )}
 
