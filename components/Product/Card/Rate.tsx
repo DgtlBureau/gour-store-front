@@ -18,15 +18,16 @@ const sx = {
   },
   star: {
     marginRight: '6px',
-  }
+  },
 };
 
 type Props = {
   rating: number;
-  cost: string;
-}
+  price: number;
+  isWeightGood: boolean;
+};
 
-export function ProductCardRate({ rating, cost }: Props) {
+export function ProductCardRate({ rating, price, isWeightGood }: Props) {
   return (
     <Box sx={sx.box}>
       <Box sx={sx.rating}>
@@ -34,7 +35,9 @@ export function ProductCardRate({ rating, cost }: Props) {
         <Typography variant="body2">{rating}</Typography>
       </Box>
 
-      <Typography variant="body2">{cost}</Typography>
+      <Typography variant="body2">
+        {price}/{isWeightGood ? 'кг' : 'шт'}
+      </Typography>
     </Box>
   );
 }

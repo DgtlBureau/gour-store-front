@@ -42,35 +42,29 @@ const sx = {
 };
 
 type Props = {
-  inCart: boolean;
-  weights: Weight[];
-  weightId: number;
-  currentWeight: Weight;
+  currentCount: number;
+  isWeightGood: boolean;
   onAdd: () => void;
-  increaseWeight: () => void;
-  decreaseWeight: () => void;
+  onRemove: () => void;
 };
 
 export function ProductCardCart({
-  inCart,
-  currentWeight,
-  weights,
-  weightId,
+  onRemove,
+  currentCount,
+  isWeightGood,
   onAdd,
-  increaseWeight,
-  decreaseWeight,
 }: Props) {
   return (
-    <Box sx={{ ...sx.box, ...(inCart && sx.deployed) }}>
-      {!inCart ? (
+    <Box sx={{ ...sx.box, ...(currentCount !== 0 && sx.deployed) }}>
+      {currentCount === 0 ? (
         <IconButton onClick={onAdd}>
           <CartIcon sx={sx.icon} />
         </IconButton>
       ) : (
         <Grid container xs>
           <Grid item xs={4} sx={sx.action}>
-            <IconButton onClick={decreaseWeight}>
-              {weightId === 0 ? (
+            <IconButton onClick={onRemove}>
+              {currentCount === 0 ? (
                 <TrashIcon sx={sx.icon} />
               ) : (
                 <MinusIcon sx={sx.icon} />
@@ -79,16 +73,13 @@ export function ProductCardCart({
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            {currentWeight.value}
-            {currentWeight.unit}
+            {currentCount} {isWeightGood ? 'кг' : 'шт'}
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            {weightId + 1 !== weights.length && (
-              <IconButton onClick={increaseWeight}>
-                <PlusIcon sx={sx.icon} />
-              </IconButton>
-            )}
+            <IconButton onClick={onAdd}>
+              <PlusIcon sx={sx.icon} />
+            </IconButton>
           </Grid>
         </Grid>
       )}

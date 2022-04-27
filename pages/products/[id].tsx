@@ -100,9 +100,10 @@ export default function Product() {
       const productInBasket = basket.products.find(
         it => it.product.id === similarProduct.id
       );
-      const count = similarProduct.isWeightGood
-        ? productInBasket?.weight
-        : productInBasket?.amount;
+      const count =
+        (product.isWeightGood
+          ? productInBasket?.weight
+          : productInBasket?.amount) || 0;
       return (
         <ProductCard
           title={similarProduct.title[lang] || ''}
@@ -123,14 +124,9 @@ export default function Product() {
           }}
           onEdit={() => {}}
           onElect={() => {}}
-          weightId={0}
-          discount={10}
-          weights={[
-            { value: 100, unit: 'г' },
-            { value: 500, unit: 'г' },
-            { value: 1000, unit: 'г' },
-          ]}
-          cost={'1600'}
+          discount={similarProduct.discount}
+          currentCount={count}
+          isWeightGood={similarProduct.isWeightGood}
         />
       );
     }) || [];

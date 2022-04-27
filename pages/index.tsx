@@ -16,6 +16,7 @@ import {
   subtractBasketProduct,
 } from '../store/slices/orderSlice';
 import s from './index.module.scss';
+import { useAppSelector } from 'hooks/store';
 
 const Home: NextPage = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Home: NextPage = () => {
   const { data: promotions } = useGetPromotionListQuery();
   const currentLanguage = 'en';
   const currentCurrency = 'eur';
+  const basket = useAppSelector(state => state.order);
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
   const productsInOrder = useSelector(selectProductsInOrder);
 
@@ -49,38 +51,42 @@ const Home: NextPage = () => {
         <div className={s.infoBlock}>
           <CardSlider
             title="Новинки"
-            cardsList={novelties.map(product => (
-              <ProductCard
-                key={product.id}
-                title={product.title ? product.title[currentLanguage] : ''}
-                description={
-                  product.description
-                    ? product.description[currentLanguage]
-                    : ''
-                }
-                rating={product.grade}
-                // currentWeight={
-                //   productsInOrder.find(it => it.product.id === product.id)
-                //     ?.weight || 0
-                // }
-                price={product.price[currentCurrency]}
-                cost={'200 руб'}
-                previewSrc={product.images[0] ? product.images[0].small : ''}
-                inCart={productsIdInOrder.includes(product.id)}
-                isElected={false}
-                onAdd={() => {
-                  dispatch(addBasketProduct(product));
-                }}
-                onRemove={() => {
-                  dispatch(subtractBasketProduct(product));
-                }}
-                onEdit={() => {}}
-                onElect={() => {}}
-                onDetail={() => {}}
-                weightId={0}
-                weights={[]}
-              />
-            ))}
+            cardsList={novelties.map(product => {
+              const productInBasket = basket.products.find(
+                it => it.product.id === product.id
+              );
+              const count =
+                (product.isWeightGood
+                  ? productInBasket?.weight
+                  : productInBasket?.amount) || 0;
+              return (
+                <ProductCard
+                  key={product.id}
+                  title={product.title ? product.title[currentLanguage] : ''}
+                  description={
+                    product.description
+                      ? product.description[currentLanguage]
+                      : ''
+                  }
+                  rating={product.grade}
+                  price={product.price[currentCurrency]}
+                  previewSrc={product.images[0] ? product.images[0].small : ''}
+                  inCart={productsIdInOrder.includes(product.id)}
+                  isElected={false}
+                  onAdd={() => {
+                    dispatch(addBasketProduct(product));
+                  }}
+                  onRemove={() => {
+                    dispatch(subtractBasketProduct(product));
+                  }}
+                  onEdit={() => {}}
+                  onElect={() => {}}
+                  onDetail={() => {}}
+                  currentCount={count}
+                  isWeightGood={product.isWeightGood}
+                />
+              );
+            })}
           />
         </div>
       </div>
