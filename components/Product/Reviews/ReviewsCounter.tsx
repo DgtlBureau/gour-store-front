@@ -1,13 +1,21 @@
 import React from 'react';
 import { Stack } from '@mui/material';
 
+import { Box } from '../../UI/Box/Box';
 import { getDeclensionWordByCount } from '../../../utils/wordHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Reviews.i18n.json';
 
-import s from './Reviews.module.scss';
-
 import StarIcon from '@mui/icons-material/Star';
+
+const sx = {
+  progress: {
+
+  },
+  progressFill: {
+
+  },
+};
 
 type Props = { grade: number; count: number; percent: number };
 
@@ -24,9 +32,9 @@ export const ReviewsCounter = ({ grade, percent, count }: Props) => {
     <Stack direction="row" alignItems="center">
       {grade}
       <StarIcon />
-      <div className={s.progress}>
-        <div className={s.progressFill} style={{ width: `${percent}%` }}></div>
-      </div>
+      <Box sx={sx.progress}>
+        <Box sx={{ ...sx.progressFill, width: `${percent}%` }}>{}</Box>
+      </Box>
       {count}
       {' '}
       {reviewsCountText}

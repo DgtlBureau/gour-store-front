@@ -35,7 +35,8 @@ const Template: ComponentStory<typeof CartCard> = function () {
         productImg="https://www.gastronom.ru/binfiles/images/20190731/b05fb007.jpg"
         onElect={() => ({})}
         onDelete={() => ({})}
-        onEdit={edit}
+        onAdd={() => edit('increase')}
+        onSubtract={() => edit('increase')}
       />
     </div>
   );

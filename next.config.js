@@ -3,7 +3,8 @@
 const withImages = require('next-images')
 const nextConfig = withImages({
   images: {
-    disableStaticImages: true
+    disableStaticImages: true,
+    domains: ['resizer.mail.ru'],
   },
   reactStrictMode: true,
   async rewrites() {
