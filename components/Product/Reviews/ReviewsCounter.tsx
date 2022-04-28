@@ -27,9 +27,7 @@ export const ReviewsCounter = ({ grade, percent, count }: Props) => {
       <div className={s.progress}>
         <div className={s.progressFill} style={{ width: `${percent}%` }}></div>
       </div>
-      {count}
-      {' '}
-      {reviewsCountText}
+      {count} {reviewsCountText}
     </Stack>
   );
 };

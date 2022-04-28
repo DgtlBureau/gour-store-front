@@ -12,14 +12,14 @@ const sx = {
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
-    
+
     backgroundColor: t.palette.background.default,
 
     boxShadow: 'none',
-
+    boxSizing: 'border-box',
     '&:last-child': {
       paddingBottom: '0px',
-    }
+    },
   },
   content: {
     padding: '20px 20px 0px 20px',
@@ -75,12 +75,12 @@ const sx = {
     '&:hover': {
       cursor: 'pointer',
       opacity: '0.75',
-    }
+    },
   },
   description: {
     height: '42px',
-    textOverflow:'ellipsis',
-    overflow:'hidden',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
     display: 'inline-block',
     whiteSpace: 'normal',
   },

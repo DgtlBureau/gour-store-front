@@ -10,9 +10,13 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 
 export type ProductActionsProps = {
   price: number;
+  discount?: number;
+  isWeightGood: boolean;
+  currency: 'rub' | 'usd' | 'eur';
   count: number;
   onAddToCart: () => void;
   onRemoveFromCart: () => void;
@@ -20,27 +24,31 @@ export type ProductActionsProps = {
 };
 
 const containerSx: CSSProperties = {
+  margin: '50px 0 0 0',
   width: '100%',
 };
 
 export const ProductActions = ({
   price,
   count,
+  discount,
+  currency,
   onAddToCart,
   onRemoveFromCart,
   onAddToFavorite,
+  isWeightGood,
 }: ProductActionsProps) => {
   const { t } = useLocalTranslation(translations);
-
   return (
     <Stack sx={containerSx} direction="row" justifyContent="space-between">
       <Stack>
         <Typography variant="body1">
-          {price}
-          {' / 100'}
-          {t('g')}
+          {discount ? <s>{price}</s> : ''} /100{t('g')}
         </Typography>
-        <Typography variant="h5">{price * count}</Typography>
+        <Typography variant="h5" color={discount ? 'rgba(244, 87, 37, 1)' : ''}>
+          {discount ? price * (1 - discount / 100) : price}{' '}
+          {getCurrencySymbol(currency)}
+        </Typography>
       </Stack>
       <Stack direction="row">
         {count === 0 && (
@@ -54,10 +62,11 @@ export const ProductActions = ({
             aria-label="outlined primary button group"
           >
             <Button onClick={onRemoveFromCart}>
-              {count !== 1 ? <RemoveIcon /> : <DeleteIcon />}
+              {/* {count !== 1 ? <RemoveIcon /> : <DeleteIcon />} */}
+              <RemoveIcon />
             </Button>
             <Typography sx={{ padding: '0 20px' }} variant="h5">
-              {count * 100} г
+              {count} {isWeightGood && t('g')}
             </Typography>
             <Button onClick={onAddToCart}>
               <AddIcon />
