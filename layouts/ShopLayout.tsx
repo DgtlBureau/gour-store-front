@@ -40,7 +40,7 @@ export function ShopLayout(props: ShopLayoutProps) {
         <div className={s.content}>
             {props.children}
             <div className={s.footer}>
-                <Footer 
+                <Footer
                   firstPhone="+7 812 602-52-61"
                   secondPhone="+372 880-45-21"
                   email="rk@gour-food.com"
@@ -55,7 +55,5 @@ export function ShopLayout(props: ShopLayoutProps) {
                 />
             </div>
         </div>
-      </div>
-    </div>
-  );
+    </div>;
 }

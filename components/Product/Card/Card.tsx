@@ -42,8 +42,8 @@ export function ProductCard({
   title,
   description,
   rating,
-  weightId,
-  weights,
+  weightId = 0,
+  weights = [],
   discount = 0,
   price,
   cost,
@@ -57,7 +57,11 @@ export function ProductCard({
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const currentWeight = weights[weightId];
+  // TODO: Пофиксить логику выбора веса
+  const currentWeight = weights[weightId] || {
+    value: 100,
+    unit: 'г'
+  };
 
   const increaseWeight = () => onEdit(weightId + 1);
   const decreaseWeight = weightId === 0 ? onRemove : () => onEdit(weightId - 1);
