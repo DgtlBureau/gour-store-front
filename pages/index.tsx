@@ -23,11 +23,10 @@ const Home: NextPage = () => {
   const { data: products } = useGetProductListQuery();
   const { data: novelties } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
-  const currentLanguage = 'en';
-  const currentCurrency = 'eur';
+  const currentLanguage = 'ru';
+  const currentCurrency = 'rub';
   const basket = useAppSelector(state => state.order);
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
-  const productsInOrder = useSelector(selectProductsInOrder);
 
   if (!products || !promotions || !novelties) {
     return <div />;
@@ -51,6 +50,8 @@ const Home: NextPage = () => {
         <div className={s.infoBlock}>
           <CardSlider
             title="Новинки"
+            slidesPerView={4}
+            spaceBetween={0}
             cardsList={novelties.map(product => {
               const productInBasket = basket.products.find(
                 it => it.product.id === product.id
@@ -84,6 +85,7 @@ const Home: NextPage = () => {
                   onDetail={() => {}}
                   currentCount={count}
                   isWeightGood={product.isWeightGood}
+                  currency={'rub'}
                 />
               );
             })}

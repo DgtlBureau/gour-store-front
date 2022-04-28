@@ -35,7 +35,9 @@ export function ShopLayout(props: ShopLayoutProps) {
         onClickFavorite={() => {}}
         onClickPersonalArea={() => {}}
         onClickLanguage={() => {}}
-        onClickBasket={() => {}}
+        onClickBasket={() => {
+          router.push('/basket');
+        }}
         onOpenMobileMenu={() => {}}
       />
       <div className={s.content}>

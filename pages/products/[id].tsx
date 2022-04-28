@@ -127,6 +127,7 @@ export default function Product() {
           discount={similarProduct.discount}
           currentCount={count}
           isWeightGood={similarProduct.isWeightGood}
+          currency={'rub'}
         />
       );
     }) || [];
