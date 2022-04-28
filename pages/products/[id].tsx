@@ -3,7 +3,7 @@ import { IProduct } from '../../@types/entities/IProduct';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
 import { ProductActions } from 'components/Product/Actions/Actions';
-import { ProductCard } from 'components/Product/Card/Card';
+import { ProductCard, ProductCardProps } from 'components/Product/Card/Card';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductQuery } from 'store/api/productApi';
+import translations from './ProductPage.i18n.json';
 import {
   useCreateProductGradeMutation,
   useGetProductGradeListQuery,
@@ -26,10 +27,13 @@ import {
 
 import { ShopLayout } from '../../layouts/ShopLayout';
 import { CHARACTERISTICS } from 'constants/characteristics';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { ProductCardSlider } from 'components/CardSlider/Product';
 
 export default function Product() {
   const router = useRouter();
   const { id } = router.query;
+  const { t } = useLocalTranslation(translations);
 
   const dispatch = useDispatch();
 
@@ -88,14 +92,14 @@ export default function Product() {
     comments.map((grade, i) => {
       return {
         id: grade.id,
-        clientName: grade.client?.role?.title || 'Клиент',
+        clientName: grade.client?.role?.title || t('client'),
         value: grade.value,
         date: new Date(grade.createdAt),
         comment: grade.comment,
       };
     }) || [];
 
-  const similarProductCards =
+  const similarProductCardPropsList: ProductCardProps[] =
     product?.similarProducts?.map(similarProduct => {
       const productInBasket = basket.products.find(
         it => it.product.id === similarProduct.id
@@ -104,31 +108,30 @@ export default function Product() {
         (product.isWeightGood
           ? productInBasket?.weight
           : productInBasket?.amount) || 0;
-      return (
-        <ProductCard
-          title={similarProduct.title[lang] || ''}
-          description={similarProduct.description[lang] || ''}
-          rating={similarProduct.grade}
-          price={similarProduct.price[currency]}
-          previewSrc={similarProduct.images[0]?.full || ''}
-          inCart={!!productInBasket}
-          isElected={false}
-          onAdd={() => {
-            handleAddProduct(similarProduct);
-          }}
-          onRemove={() => {
-            handleRemoveProduct(similarProduct);
-          }}
-          onDetail={() => {
-            handleDetailProduct(similarProduct.id);
-          }}
-          onEdit={() => {}}
-          onElect={() => {}}
-          discount={similarProduct.discount}
-          currentCount={count}
-          isWeightGood={similarProduct.isWeightGood}
-        />
-      );
+      return {
+        title: similarProduct.title[lang] || '',
+        description: similarProduct.description[lang] || '',
+        rating: similarProduct.grade,
+        price: similarProduct.price[currency],
+        previewSrc: similarProduct.images[0]?.full || '',
+        inCart: !!productInBasket,
+        isElected: false,
+        currency: currency,
+        discount: similarProduct.discount,
+        currentCount: count,
+        isWeightGood: similarProduct.isWeightGood,
+        onAdd: () => {
+          handleAddProduct(similarProduct);
+        },
+        onRemove: () => {
+          handleRemoveProduct(similarProduct);
+        },
+        onDetail: () => {
+          handleDetailProduct(similarProduct.id);
+        },
+        onEdit: () => {},
+        onElect: () => {},
+      };
     }) || [];
 
   const productCharacteristics =
@@ -137,11 +140,12 @@ export default function Product() {
       .map(key => {
         const characteristicValue = CHARACTERISTICS[key]?.values.find(
           value => value.key === product?.characteristics[key]
-        );
-
+        )?.label[lang];
+        const characteristicLabel = CHARACTERISTICS[key]?.label[lang];
+        // if (!characteristicValue || !characteristicLabel) return;
         return {
-          label: CHARACTERISTICS[key]?.label[lang] || '',
-          value: characteristicValue?.label[lang] || 'нет информации',
+          label: characteristicLabel || '',
+          value: characteristicValue || '',
         };
       }) || [];
 
@@ -150,10 +154,10 @@ export default function Product() {
       <>
         {isLoading && <LinearProgress />}
         {!isLoading && isError && (
-          <Typography variant="h5">Произошла ошибка</Typography>
+          <Typography variant="h5">{t('errorMessage')}</Typography>
         )}
         {!isLoading && !isError && !product && (
-          <Typography variant="h5">Продукт не найден</Typography>
+          <Typography variant="h5">{t('notFoundMessage')}</Typography>
         )}
         {!isLoading && !isError && product && (
           <div>
@@ -192,18 +196,16 @@ export default function Product() {
             </Stack>
 
             <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
-              Описание товара
+              {t('productDescription')}
             </Typography>
             <Typography variant="body1">
               {product.description[lang] || ''}
             </Typography>
 
-            {similarProductCards.length !== 0 && (
-              <CardSlider
-                title="Похожие товары"
-                cardsList={similarProductCards}
-                slidesPerView={4}
-                spaceBetween={0}
+            {similarProductCardPropsList.length !== 0 && (
+              <ProductCardSlider
+                title={t('similarProducts')}
+                productCardPropList={similarProductCardPropsList}
               />
             )}
 

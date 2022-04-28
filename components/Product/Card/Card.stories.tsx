@@ -49,11 +49,8 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       title="Chevrano XO Козий Элитный Сыр"
       description={DESCRIPTION}
       rating={4.3}
-      weights={WEIGHTS}
-      weightId={weightId}
       price={PRICE}
       // discount={0.2}
-      cost={`${PRICE * 10}₽/кг`}
       previewSrc={PREVIEW_SRC}
       countrySrc={russiaIcon}
       inCart={inCart}
@@ -63,6 +60,9 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       onElect={() => setIsElected(!isElected)}
       onEdit={id => setWeightId(id)}
       onDetail={() => ({})}
+      currentCount={0}
+      isWeightGood={false}
+      currency="rub"
     />
   );
 };

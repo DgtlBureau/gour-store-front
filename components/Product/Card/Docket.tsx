@@ -4,6 +4,9 @@ import { Menu, MenuItem, IconButton } from '@mui/material';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translation from './Docket.i18n.json';
 
 const sx = {
   docket: {
@@ -51,6 +54,7 @@ type Props = {
   inCart: boolean;
   isWeightGood: boolean;
   price: number;
+  currency: 'rub' | 'usd' | 'eur';
   discount?: number;
   onEdit: (id: number) => void;
 };
@@ -58,10 +62,13 @@ type Props = {
 export function ProductCardDocket({
   inCart,
   price,
+  currency,
   isWeightGood,
   discount = 0,
 }: Props) {
   const pricePerCount = isWeightGood ? price / 100 : price;
+
+  const { t } = useLocalTranslation(translation);
 
   return (
     <Box sx={{ ...sx.docket, ...(inCart && sx.deployed) }}>
@@ -69,14 +76,14 @@ export function ProductCardDocket({
         {!!discount && (
           <>
             <Typography variant="body2" sx={sx.oldPrice}>
-              {pricePerCount}₽
+              {pricePerCount}
             </Typography>
             {!inCart && '/'}
           </>
         )}
         {!inCart && (
           <Typography variant="body2">
-            {isWeightGood ? '100г' : 'шт'}
+            {isWeightGood ? `100${t('gram')}` : t('piece')}
           </Typography>
         )}
       </Box>
@@ -87,7 +94,8 @@ export function ProductCardDocket({
           color={discount ? 'error' : 'primary'}
           sx={sx.price}
         >
-          {pricePerCount * (1 - discount / 100)}₽
+          {pricePerCount * (1 - discount / 100)}
+          {getCurrencySymbol(currency)}
         </Typography>
       </Box>
     </Box>

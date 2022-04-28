@@ -17,6 +17,7 @@ export type ProductCardProps = {
   description: string;
   rating: number;
   currentCount: number;
+  currency: 'rub' | 'usd' | 'eur';
   isWeightGood: boolean;
   price: number;
   discount?: number;
@@ -33,6 +34,7 @@ export type ProductCardProps = {
 
 export function ProductCard({
   title,
+  currency,
   description,
   currentCount,
   rating,
@@ -78,7 +80,12 @@ export function ProductCard({
           )}
         </Box>
 
-        <Rate rating={rating} price={price} isWeightGood={isWeightGood} />
+        <Rate
+          rating={rating}
+          price={price}
+          currency={currency}
+          isWeightGood={isWeightGood}
+        />
 
         <Box sx={sx.info}>
           <div
@@ -104,6 +111,7 @@ export function ProductCard({
         <Docket
           inCart={currentCount !== 0}
           price={price}
+          currency={currency}
           discount={discount}
           isWeightGood={false}
           onEdit={onEdit}

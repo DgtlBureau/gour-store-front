@@ -58,7 +58,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
         </Stack>
       </Grid>
       <Grid item xs={9}>
-        <Swiper slidesPerView={3}>
+        <Swiper slidesPerView={3} spaceBetween={10}>
           {reviews.length === 0 && (
             <Typography variant="h5">{t('noReviews')}</Typography>
           )}

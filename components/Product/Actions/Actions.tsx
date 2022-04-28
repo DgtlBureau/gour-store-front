@@ -62,7 +62,6 @@ export const ProductActions = ({
             aria-label="outlined primary button group"
           >
             <Button onClick={onRemoveFromCart}>
-              {/* {count !== 1 ? <RemoveIcon /> : <DeleteIcon />} */}
               <RemoveIcon />
             </Button>
             <Typography sx={{ padding: '0 20px' }} variant="h5">

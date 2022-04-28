@@ -5,7 +5,9 @@ import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
 
 import StarIcon from '@mui/icons-material/Star';
-
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translation from './Rate.i18n.json';
 const sx = {
   box: {
     display: 'flex',
@@ -25,9 +27,16 @@ type Props = {
   rating: number;
   price: number;
   isWeightGood: boolean;
+  currency: 'rub' | 'usd' | 'eur';
 };
 
-export function ProductCardRate({ rating, price, isWeightGood }: Props) {
+export function ProductCardRate({
+  rating,
+  price,
+  currency,
+  isWeightGood,
+}: Props) {
+  const { t } = useLocalTranslation(translation);
   return (
     <Box sx={sx.box}>
       <Box sx={sx.rating}>
@@ -36,7 +45,8 @@ export function ProductCardRate({ rating, price, isWeightGood }: Props) {
       </Box>
 
       <Typography variant="body2">
-        {price}/{isWeightGood ? 'кг' : 'шт'}
+        {price}
+        {getCurrencySymbol(currency)}/{isWeightGood ? t('kilo') : t('piece')}
       </Typography>
     </Box>
   );

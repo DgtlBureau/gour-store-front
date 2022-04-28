@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "client": "Клиент",
+    "productDescription": "Описание товара",
+    "similarProducts": "Похожие товары",
+    "notFoundMessage": "Товар не найден",
+    "errorMessage": "Произошла ошибка"
+  },
+  "en": {
+    "client": "Client",
+    "productDescription": "Description",
+    "similarProducts": "Similar products",
+    "notFoundMessage": "Product not found",
+    "errorMessage": "Something went wrong"
+  }
+}

@@ -9,6 +9,8 @@ import CartIcon from '@mui/icons-material/ShoppingCart';
 import PlusIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
 import TrashIcon from '@mui/icons-material/DeleteForever';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translation from './Cart.i18n.json';
 
 const sx = {
   box: {
@@ -54,6 +56,7 @@ export function ProductCardCart({
   isWeightGood,
   onAdd,
 }: Props) {
+  const { t } = useLocalTranslation(translation);
   return (
     <Box sx={{ ...sx.box, ...(currentCount !== 0 && sx.deployed) }}>
       {currentCount === 0 ? (
@@ -64,7 +67,7 @@ export function ProductCardCart({
         <Grid container xs>
           <Grid item xs={4} sx={sx.action}>
             <IconButton onClick={onRemove}>
-              {currentCount === 0 ? (
+              {currentCount === 1 ? (
                 <TrashIcon sx={sx.icon} />
               ) : (
                 <MinusIcon sx={sx.icon} />
@@ -73,7 +76,7 @@ export function ProductCardCart({
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            {currentCount} {isWeightGood ? 'кг' : 'шт'}
+            {currentCount} {isWeightGood ? t('kilo') : t('piece')}
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
