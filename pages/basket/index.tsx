@@ -16,12 +16,16 @@ import { Grid, Stack } from '@mui/material';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useRouter } from 'next/router';
+import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translation from './Basket.i18n.json';
 
 export type basketProps = {};
 
 export function Basket({}: basketProps) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { t } = useLocalTranslation(translation);
   const lang: 'ru' | 'en' = 'ru';
   const currency: 'rub' | 'usd' | 'eur' = 'rub';
 
@@ -39,6 +43,9 @@ export function Basket({}: basketProps) {
     );
   }, 0);
 
+  const sumToFreeDelivery = 2990 - sum;
+  const isDeliveryFree = sumToFreeDelivery <= 0;
+
   const handleClickOrder = () => {};
 
   return (
@@ -47,18 +54,15 @@ export function Basket({}: basketProps) {
         <Typography variant="h3">Корзина</Typography>
         {productsInOrder.length === 0 && (
           <CartEmpty
-            title={'В корзине нет товаров'}
+            title={t('emptyTitle')}
             btn={{
-              label: 'Вернуться к покупкам',
+              label: t('emptyButton'),
               onClick: () => {
                 router.push('/');
               },
             }}
           >
-            <Typography variant="body1">
-              Акции, специальные предложения интересных товаров на главной
-              странице помогут вам определиться с выбором!
-            </Typography>
+            <Typography variant="body1">{t('emptyText')}</Typography>
           </CartEmpty>
         )}
 
@@ -95,7 +99,7 @@ export function Basket({}: basketProps) {
                 sx={{ width: '100%', margin: '0 0 10px 0' }}
                 onClick={handleClickOrder}
               >
-                Перейти к оформлению
+                {t('orderButton')}
               </Button>
               <CartInfo
                 count={count}
@@ -103,6 +107,18 @@ export function Basket({}: basketProps) {
                 price={sum}
                 delivery={500}
                 discount={sumDiscount}
+              />
+              {!isDeliveryFree && (
+                <InfoBlock
+                  styles={{ margin: '10px 0 0 0' }}
+                  text={`Добавьте ещё товаров на ${sumToFreeDelivery}₽ для бесплатной доставки по Москве и Санкт-Петербургу`}
+                  link={{ label: 'Продолжить покупки', path: '/' }}
+                />
+              )}
+              <InfoBlock
+                styles={{ margin: '10px 0 0 0' }}
+                text="Заказы обрабатываются ежедневно, все заказы, поступившие в день обращения, доставляются на следующий день, включая выходные и праздничные дни. "
+                link={{ label: 'Подробнее', path: '/test' }}
               />
             </Grid>
           </Grid>
