@@ -80,8 +80,13 @@ export function CartInfo({
       <Box sx={sx.footnote}>
         <Typography variant="body1">{t('delivery')}</Typography>
         <Typography variant="body1">
-          {delivery}
-          {currencySymbol}
+          {delivery ? (
+            <>
+              {delivery} {currencySymbol}
+            </>
+          ) : (
+            'Бесплатно'
+          )}
         </Typography>
       </Box>
       <Box sx={sx.footnote}>

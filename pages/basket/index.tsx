@@ -51,7 +51,7 @@ export function Basket({}: basketProps) {
   return (
     <ShopLayout>
       <Stack>
-        <Typography variant="h3">Корзина</Typography>
+        <Typography variant="h3">{t('cart')}</Typography>
         {productsInOrder.length === 0 && (
           <CartEmpty
             title={t('emptyTitle')}
@@ -105,20 +105,22 @@ export function Basket({}: basketProps) {
                 count={count}
                 weight={weight}
                 price={sum}
-                delivery={500}
+                delivery={isDeliveryFree ? 0 : 500}
                 discount={sumDiscount}
               />
               {!isDeliveryFree && (
                 <InfoBlock
                   styles={{ margin: '10px 0 0 0' }}
-                  text={`Добавьте ещё товаров на ${sumToFreeDelivery}₽ для бесплатной доставки по Москве и Санкт-Петербургу`}
-                  link={{ label: 'Продолжить покупки', path: '/' }}
+                  text={`${t(
+                    'freeDeliveryText.part1'
+                  )} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  link={{ label: t('continueShopping'), path: '/' }}
                 />
               )}
               <InfoBlock
                 styles={{ margin: '10px 0 0 0' }}
-                text="Заказы обрабатываются ежедневно, все заказы, поступившие в день обращения, доставляются на следующий день, включая выходные и праздничные дни. "
-                link={{ label: 'Подробнее', path: '/test' }}
+                text={t('aboutDelivery')}
+                link={{ label: t('continueShopping'), path: '/test' }}
               />
             </Grid>
           </Grid>
