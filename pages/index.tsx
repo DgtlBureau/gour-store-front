@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from 'next/router';
 
 import {
   addBasketProduct,
@@ -30,12 +31,17 @@ const defaultWeights = [
 ] as Weight[];
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   const dispatch = useDispatch();
+
   const {data: products} = useGetProductListQuery();
   const {data: novelties} = useGetNoveltiesProductListQuery();
   const {data: promotions} = useGetPromotionListQuery();
+
   const currentLanguage = 'en';
   const currentCurrency = 'eur';
+
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
   const productsInOrder = useSelector(selectProductsInOrder);
 
@@ -55,7 +61,7 @@ const Home: NextPage = () => {
                   title={promotion?.title?.ru || 'X'}
                   key={promotion.id}
                   image={promotion.cardImage.small}
-                  onMoreClick={() => ({})}
+                  onMoreClick={() => router.push(`promotions/${promotion.id}`)}
                 />
               ))
             }
