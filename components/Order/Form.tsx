@@ -11,10 +11,10 @@ import { Checkbox } from '../UI/Checkbox/Checkbox';
 import { HFTextField } from '../HookForm/HFTextField';
 import { HFSelect } from '../HookForm/HFSelect';
 import { HFTextarea } from '../HookForm/HFTextarea';
-import { OrderFormDocket } from './OrderFormDocket';
+import { OrderFormDocket } from './FormDocket';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import translations from './OrderForm.i18n.json';
+import translations from './Form.i18n.json';
 
 const sx = {
   form: {
@@ -56,7 +56,14 @@ const sx = {
 
 const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
 
-const addressFields = ['city', 'street', 'house', 'apartment', 'entrance', 'floor'];
+const addressFields = [
+  'city',
+  'street',
+  'house',
+  'apartment',
+  'entrance',
+  'floor',
+];
 
 export type OrderFields = {
   firstName: string;
@@ -74,10 +81,10 @@ export type OrderFields = {
 
   comment: string;
   promo: string;
-}
+};
 
 export type OrderFormProps = {
-  order: OrderFields,
+  order: OrderFields;
   productsCount: number;
   cost: number;
   discount?: number;
@@ -89,7 +96,7 @@ export type OrderFormProps = {
   currency?: 'rub' | 'usd' | 'eur';
   onSubmit: (data: OrderFields) => void;
   onPromo: (code: string) => string | undefined;
-}
+};
 
 export function OrderForm({
   order,
@@ -135,13 +142,11 @@ export function OrderForm({
             </Typography>
 
             <Grid container spacing={1}>
-              {
-                contactsFields.map(field => (
-                  <Grid key={field} item xs={6}>
-                    <HFTextField name={field} label={t(field)} />
-                  </Grid>
-                ))
-              }
+              {contactsFields.map(field => (
+                <Grid key={field} item xs={6}>
+                  <HFTextField name={field} label={t(field)} />
+                </Grid>
+              ))}
             </Grid>
           </Box>
 
@@ -158,13 +163,11 @@ export function OrderForm({
             />
 
             <Grid container spacing={1}>
-              {
-                addressFields.map(field => (
-                  <Grid key={field} item xs={6}>
-                    <HFTextField name={field} label={t(field)} />
-                  </Grid>
-                ))
-              }
+              {addressFields.map(field => (
+                <Grid key={field} item xs={6}>
+                  <HFTextField name={field} label={t(field)} />
+                </Grid>
+              ))}
               <Grid item xs>
                 <HFTextarea
                   sx={sx.textarea}
@@ -180,17 +183,17 @@ export function OrderForm({
                 <HFTextField name="promo" label={t('promo')} />
               </Grid>
               <Grid item xs={3}>
-                <Button sx={sx.btn} onClick={applyPromo}>{t('promoApply')}</Button>
+                <Button sx={sx.btn} onClick={applyPromo}>
+                  {t('promoApply')}
+                </Button>
               </Grid>
-              {
-                promoText && (
-                  <Grid item xs={12}>
-                    <Typography variant="body1" sx={sx.promoText}>
-                      {promoText}
-                    </Typography>
-                  </Grid>
-                )
-              }
+              {promoText && (
+                <Grid item xs={12}>
+                  <Typography variant="body1" sx={sx.promoText}>
+                    {promoText}
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
 
             <OrderFormDocket

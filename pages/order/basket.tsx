@@ -13,10 +13,12 @@ import {
 import { Button } from '../../components/UI/Button/Button';
 import s from './basket.module.scss';
 import { CartInfo } from '../../components/Cart/Info/Info';
+import { useRouter } from 'next/router';
 
 export type basketProps = {};
 
 export function Basket({}: basketProps) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
@@ -53,7 +55,13 @@ export function Basket({}: basketProps) {
             ))}
           </div>
           <div>
-            <Button>Перейти к оформлению</Button>
+            <Button
+              onClick={() => {
+                router.push('/order');
+              }}
+            >
+              Перейти к оформлению
+            </Button>
             <CartInfo
               count={count}
               weight={weight / 1000}
