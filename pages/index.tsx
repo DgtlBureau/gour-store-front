@@ -16,6 +16,7 @@ import { PromotionCard } from "../components/PromotionCard/PromotionCard";
 import { Weight } from '../@types/entities/Weight';
 
 import s from './index.module.scss';
+import { useAppSelector } from 'hooks/store';
 
 // FIX ME!!!
 const defaultWeights = [
@@ -91,4 +92,4 @@ const Home: NextPage = () => {
   );
 }
 
-export default Home
+export default Home;

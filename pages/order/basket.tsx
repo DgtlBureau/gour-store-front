@@ -1,17 +1,18 @@
 import React from 'react';
-import {ShopLayout} from "../../layouts/ShopLayout";
-import {CartCard} from "../../components/Cart/Card/Card";
-import {useDispatch, useSelector} from "react-redux";
+import { ShopLayout } from '../../layouts/ShopLayout';
+import { CartCard } from '../../components/Cart/Card/Card';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-    addBasketProduct,
-    selectedProductCount,
-    selectedProductSum,
-    selectedProductWeight,
-    selectProductsInOrder, subtractBasketProduct
-} from "../../store/slices/orderSlice";
-import {Button} from "../../components/UI/Button/Button";
+  addBasketProduct,
+  selectedProductCount,
+  selectedProductSum,
+  selectedProductWeight,
+  selectProductsInOrder,
+  subtractBasketProduct,
+} from '../../store/slices/orderSlice';
+import { Button } from '../../components/UI/Button/Button';
 import s from './basket.module.scss';
-import {CartInfo} from "../../components/Cart/Info/Info";
+import { CartInfo } from '../../components/Cart/Info/Info';
 
 export type basketProps = {};
 
@@ -71,6 +72,5 @@ export function Basket({}: basketProps) {
     </ShopLayout>
   ); 
 }
-
 
 export default Basket;

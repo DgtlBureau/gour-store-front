@@ -7,8 +7,9 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ReviewsCounter } from './ReviewsCounter';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Reviews.i18n.json';
+import { formatDate } from 'helpers/dateHelper';
 
-type Product = {
+type Review = {
   id: number;
   clientName: string;
   value: number;
@@ -17,8 +18,8 @@ type Product = {
 };
 
 export type ProductReviewsProps = {
-  reviews: Product[];
-  sx?: CSSProperties;
+  reviews: Review[];
+  sx: CSSProperties;
 };
 
 const containerBoxSx: CSSProperties = {
@@ -37,7 +38,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
     ratingStats.push({
       grade: i,
       count: reviewsCount,
-      percent: reviews.length ? (reviewsCount / reviews.length) * 100 : 0,
+      percent: reviewsCount ? (reviewsCount / reviews.length) * 100 : 0,
     });
   }
 
@@ -66,7 +67,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
               <Comment
                 title={review.clientName}
                 grade={review.value}
-                date={`${review.date.getDay()}`}
+                date={formatDate(review.date)}
                 text={review.comment}
               />
             </SwiperSlide>
