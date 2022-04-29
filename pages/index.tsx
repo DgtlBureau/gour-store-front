@@ -8,30 +8,19 @@ import {
   selectProductsInOrder,
   subtractBasketProduct,
 } from "../store/slices/orderSlice";
+import { useAppSelector } from 'hooks/store';
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from "../store/api/productApi";
 import { ShopLayout } from "../layouts/ShopLayout";
 import { CardSlider } from "../components/CardSlider/CardSlider";
 import { ProductCard } from "../components/Product/Card/Card";
 import { useGetPromotionListQuery } from "../store/api/promotionApi";
 import { PromotionCard } from "../components/PromotionCard/PromotionCard";
-import { Weight } from '../@types/entities/Weight';
 
 import s from './index.module.scss';
 
-// FIX ME!!!
-const defaultWeights = [
-  {
-    value: 100,
-    unit: 'г',
-  },
-  {
-    value: 200,
-    unit: 'г',
-  },
-] as Weight[];
-
 const Home: NextPage = () => {
   const router = useRouter();
+  const basket = useAppSelector(state => state.order);
 
   const dispatch = useDispatch();
 
@@ -70,26 +59,42 @@ const Home: NextPage = () => {
         <div className={s.infoBlock}>
           <CardSlider
             title="Новинки"
-            cardsList={novelties.map(product => (
-              <ProductCard
-                key={product.id}
-                title={product.title ? product.title[currentLanguage] : ''}
-                description={product.description ? product.description[currentLanguage] : ''}
-                rating={product.grade}
-                weightId={0}
-                weights={defaultWeights}
-                price={product.price[currentCurrency]}
-                cost={'200 руб'}
-                previewSrc={product.images[0] ? product.images[0].small : ''}
-                inCart={productsIdInOrder.includes(product.id)}
-                isElected={false}
-                onAdd={() => dispatch(addBasketProduct(product))}
-                onRemove={() => dispatch(subtractBasketProduct(product))}
-                onEdit={() => {}}
-                onElect={() => {}}
-                onDetail={() => {}}
-              />
-            ))}
+            cardsList={novelties.map(product => {
+              const productInBasket = basket.products.find(
+                it => it.product.id === product.id
+              );
+              const count =
+                (product.isWeightGood
+                  ? productInBasket?.weight
+                  : productInBasket?.amount) || 0;
+              return (
+                <ProductCard
+                  key={product.id}
+                  title={product.title ? product.title[currentLanguage] : ''}
+                  description={
+                    product.description
+                      ? product.description[currentLanguage]
+                      : ''
+                  }
+                  rating={product.grade}
+                  price={product.price[currentCurrency]}
+                  previewSrc={product.images[0] ? product.images[0].small : ''}
+                  inCart={productsIdInOrder.includes(product.id)}
+                  isElected={false}
+                  onAdd={() => {
+                    dispatch(addBasketProduct(product));
+                  }}
+                  onRemove={() => {
+                    dispatch(subtractBasketProduct(product));
+                  }}
+                  onEdit={() => {}}
+                  onElect={() => {}}
+                  onDetail={() => router.push(`products/${product.id}`)}
+                  currentCount={count}
+                  isWeightGood={product.isWeightGood}
+                />
+              );
+            })}
           />
         </div>
       </div>
@@ -97,4 +102,4 @@ const Home: NextPage = () => {
   );
 }
 
-export default Home
+export default Home;

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, CardActions } from '@mui/material';
 import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
@@ -12,7 +7,6 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
-import { Weight } from '../../../@types/entities/Weight';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
@@ -22,11 +16,10 @@ export type ProductCardProps = {
   title: string;
   description: string;
   rating: number;
-  weightId: number;
-  weights: Weight[];
+  currentCount: number;
+  isWeightGood: boolean;
   price: number;
   discount?: number;
-  cost: string;
   previewSrc: string;
   countrySrc?: string;
   inCart: boolean;
@@ -41,15 +34,13 @@ export type ProductCardProps = {
 export function ProductCard({
   title,
   description,
+  currentCount,
   rating,
-  weightId,
-  weights,
+  isWeightGood,
   discount = 0,
   price,
-  cost,
   previewSrc,
   countrySrc,
-  inCart,
   isElected,
   onAdd,
   onRemove,
@@ -57,11 +48,6 @@ export function ProductCard({
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const currentWeight = weights[weightId];
-
-  const increaseWeight = () => onEdit(weightId + 1);
-  const decreaseWeight = weightId === 0 ? onRemove : () => onEdit(weightId - 1);
-
   return (
     <Card sx={sx.card} color="white">
       <CardContent sx={sx.content}>
@@ -79,16 +65,20 @@ export function ProductCard({
             onClick={onDetail}
           />
 
-          {
-            countrySrc && (
-              <Box sx={sx.country}>
-                <Image src={countrySrc} objectFit="cover" height={26} width={26} alt="" />
-              </Box>
-            )
-          }
+          {countrySrc && (
+            <Box sx={sx.country}>
+              <Image
+                src={countrySrc}
+                objectFit="cover"
+                height={26}
+                width={26}
+                alt=""
+              />
+            </Box>
+          )}
         </Box>
 
-        <Rate rating={rating} cost={cost} />
+        <Rate rating={rating} price={price} isWeightGood={isWeightGood} />
 
         <Box sx={sx.info}>
           <div
@@ -103,30 +93,27 @@ export function ProductCard({
           </div>
 
           <Typography variant="body2" sx={sx.description}>
-              {description}
-            </Typography>
+            {description}
+          </Typography>
         </Box>
       </CardContent>
 
-      <CardActions sx={{ ...sx.actions, ...(inCart && sx.deployed) }}>
+      <CardActions
+        sx={{ ...sx.actions, ...(currentCount !== 0 && sx.deployed) }}
+      >
         <Docket
-          inCart={inCart}
-          currentWeight={currentWeight}
-          weights={weights}
-          weightId={weightId}
+          inCart={currentCount !== 0}
           price={price}
           discount={discount}
+          isWeightGood={false}
           onEdit={onEdit}
         />
 
         <Cart
-          inCart={inCart}
-          currentWeight={currentWeight}
-          weights={weights}
-          weightId={weightId}
+          currentCount={currentCount}
           onAdd={onAdd}
-          increaseWeight={increaseWeight}
-          decreaseWeight={decreaseWeight}
+          onRemove={onRemove}
+          isWeightGood={isWeightGood}
         />
       </CardActions>
     </Card>

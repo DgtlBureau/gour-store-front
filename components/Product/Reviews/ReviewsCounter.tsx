@@ -10,10 +10,13 @@ import StarIcon from '@mui/icons-material/Star';
 
 const sx = {
   progress: {
-
+    width: '130px',
+    height: '2px',
+    backgroundColor: '#fff',
   },
   progressFill: {
-
+    backgroundColor: 'rgba(0, 115, 213, 1)',
+    height: '100%',
   },
 };
 
@@ -33,7 +36,7 @@ export const ReviewsCounter = ({ grade, percent, count }: Props) => {
       {grade}
       <StarIcon />
       <Box sx={sx.progress}>
-        <Box sx={{ ...sx.progressFill, width: `${percent}%` }}>{}</Box>
+        <div style={{ ...sx.progressFill, width: `${percent}%` }} />
       </Box>
       {count}
       {' '}

@@ -39,65 +39,50 @@ const sx = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-}
+};
 
 type Props = {
-  inCart: boolean;
-  weights:  Weight[];
-  weightId: number;
-  currentWeight: Weight;
+  currentCount: number;
+  isWeightGood: boolean;
   onAdd: () => void;
-  increaseWeight: () => void;
-  decreaseWeight: () => void;
-}
+  onRemove: () => void;
+};
 
 export function ProductCardCart({
-  inCart,
-  currentWeight,
-  weights,
-  weightId,
+  onRemove,
+  currentCount,
+  isWeightGood,
   onAdd,
-  increaseWeight,
-  decreaseWeight,
 }: Props) {
   return (
-    <Box sx={{ ...sx.box, ...(inCart && sx.deployed) }}>
-      {
-        !inCart ? (
-          <IconButton onClick={onAdd}>
-            <CartIcon sx={sx.icon} />
-          </IconButton>
-        ) : (
-          <Grid container xs>
-            <Grid item xs={4} sx={sx.action}>
-              <IconButton onClick={decreaseWeight}>
-                {
-                  weightId === 0 ? (
-                    <TrashIcon sx={sx.icon} /> 
-                  ) : (
-                    <MinusIcon sx={sx.icon} />
-                  )
-                }
-              </IconButton>
-            </Grid>
-
-            <Grid item xs={4} sx={sx.action}>
-              {currentWeight.value}
-              {currentWeight.unit}
-            </Grid>
-
-            <Grid item xs={4} sx={sx.action}>
-              {
-                weightId + 1 !== weights.length && (
-                  <IconButton onClick={increaseWeight}>
-                    <PlusIcon sx={sx.icon} />
-                  </IconButton>
-                )
-              }
-            </Grid>
+    <Box sx={{ ...sx.box, ...(currentCount !== 0 && sx.deployed) }}>
+      {currentCount === 0 ? (
+        <IconButton onClick={onAdd}>
+          <CartIcon sx={sx.icon} />
+        </IconButton>
+      ) : (
+        <Grid container xs>
+          <Grid item xs={4} sx={sx.action}>
+            <IconButton onClick={onRemove}>
+              {currentCount === 0 ? (
+                <TrashIcon sx={sx.icon} />
+              ) : (
+                <MinusIcon sx={sx.icon} />
+              )}
+            </IconButton>
           </Grid>
-        )
-      }
+
+          <Grid item xs={4} sx={sx.action}>
+            {currentCount} {isWeightGood ? 'кг' : 'шт'}
+          </Grid>
+
+          <Grid item xs={4} sx={sx.action}>
+            <IconButton onClick={onAdd}>
+              <PlusIcon sx={sx.icon} />
+            </IconButton>
+          </Grid>
+        </Grid>
+      )}
     </Box>
   );
 }
