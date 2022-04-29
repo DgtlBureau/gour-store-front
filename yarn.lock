@@ -9458,6 +9458,11 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-notifications-component@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/react-notifications-component/-/react-notifications-component-3.4.1.tgz#3670aa17210a4e63ba3b4f553853bd99ab6a0150"
+  integrity sha512-vS/RLdz+VlXZz0dbK+LCcdhgUdUPi1BvSo7mVp58AQDpixI9emGwI0uISXhiTSjqFn/cPibPlJOJQ8kcvgmUrQ==
+
 react-popper-tooltip@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-3.1.1.tgz#329569eb7b287008f04fcbddb6370452ad3f9eac"

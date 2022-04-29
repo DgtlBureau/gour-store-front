@@ -13,6 +13,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../HookForm/HFRadioGroup';
+import { Roles } from '../../../constants/roles';
 
 import sx from './RegCredentials.styles';
 
@@ -38,12 +39,15 @@ export function RegCredentials({
   const schema = getSchema(t as Translator);
 
   const values = useForm<SignUpDto>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      role: defaultValues.role || Roles.CLIENT,
+    },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid = !values.watch('phone') || values.getFieldState('phone').invalid;
+  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
   const formIsInvalid = !values.formState.isValid || !isConfirmed || !isAgree;
 
   const sendSMS = () => {
@@ -77,18 +81,25 @@ export function RegCredentials({
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFRadioGroup name="type" sx={sx.radioGroup}>
-            {
-              ['physical', 'organization', 'procurementOrganizer'].map(type => (
-                <FormControlLabel
-                  sx={sx.radioBtn}
-                  key={type}
-                  value={type}
-                  control={<Radio />}
-                  label={t(type)}
-                />
-              ))
-            }
+          <HFRadioGroup name="role" sx={sx.radioGroup}>
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value={Roles.CLIENT}
+              control={<Radio />}
+              label={t('physical')}
+            />
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value={Roles.COMPANY}
+              control={<Radio />}
+              label={t('company')}
+            />
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value={Roles.COLLECTIVE_PURCHASE}
+              control={<Radio />}
+              label={t('collectivePurchase')}
+            />
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
@@ -111,7 +122,7 @@ export function RegCredentials({
 
           <Checkbox sx={sx.field} checked={isAgree} onChange={agree} label={t('agreement')} />
 
-          <Button type="submit" disabled={formIsInvalid}>{t('signUp')}</Button>
+          <Button type="submit" disabled={formIsInvalid}>{t('submit')}</Button>
         </Paper>
       </form>
     </FormProvider>
