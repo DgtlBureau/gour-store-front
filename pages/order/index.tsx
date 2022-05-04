@@ -31,7 +31,6 @@ export function Order({}: basketProps) {
 
   const currency = 'rub';
 
-  const [discount, setDiscount] = useState(0);
   const [isSubmitError, setIsSubmitError] = useState(false);
 
   const [fetchCreateOrder] = useCreateOrderMutation();
@@ -47,7 +46,6 @@ export function Order({}: basketProps) {
   };
 
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
-  const discountSum = sum * (discount / 100);
 
   if (productsInOrder.length === 0)
     return (
@@ -100,20 +98,13 @@ export function Order({}: basketProps) {
                 comment: '',
                 promo: '',
               }}
-              discount={discountSum}
+              discount={0}
               productsCount={count}
               cost={sum}
               delivery={delivery}
               deliveryProfiles={[]}
               onSubmit={handleSubmitForm}
               isSubmitError={isSubmitError}
-              onPromo={(code: string) => {
-                if (code === '12345') {
-                  setDiscount(10);
-                  return 'Промокод активирован!';
-                }
-                return 'Промокод не существует или недействителен!';
-              }}
             />
           </Grid>
           <Grid item md={4} xs={12}>

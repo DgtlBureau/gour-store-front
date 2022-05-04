@@ -96,7 +96,6 @@ export type OrderFormProps = {
   }[];
   currency?: 'rub' | 'usd' | 'eur';
   onSubmit: (data: OrderFields) => void;
-  onPromo: (code: string) => string | undefined;
 };
 
 export function OrderForm({
@@ -109,13 +108,9 @@ export function OrderForm({
   isSubmitError,
   currency,
   onSubmit,
-  onPromo,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
-
   const [isAgree, setIsAgree] = useState(false);
-  const [promoText, setPromoText] = useState('');
-
   const schema = getValidationSchema(t);
 
   const values = useForm<OrderFields>({
@@ -127,12 +122,6 @@ export function OrderForm({
   const submitHandler = (data: OrderFields) => onSubmit(data);
 
   const agree = () => setIsAgree(!isAgree);
-
-  const applyPromo = () => {
-    const promo = onPromo(values.watch('promo'));
-    if (promo) setPromoText(String(promo));
-    else values.setError('promo', { message: t('promoError') });
-  };
 
   return (
     <FormProvider {...values}>
@@ -180,24 +169,6 @@ export function OrderForm({
                   placeholder={t('commentPlaceholder')}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container spacing={1} sx={sx.promo}>
-              <Grid item xs={6}>
-                <HFTextField name="promo" label={t('promo')} />
-              </Grid>
-              <Grid item xs={3}>
-                <Button sx={sx.btn} onClick={applyPromo}>
-                  {t('promoApply')}
-                </Button>
-              </Grid>
-              {promoText && (
-                <Grid item xs={12}>
-                  <Typography variant="body1" sx={sx.promoText}>
-                    {promoText}
-                  </Typography>
-                </Grid>
-              )}
             </Grid>
 
             <OrderFormDocket
