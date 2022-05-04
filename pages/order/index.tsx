@@ -31,6 +31,15 @@ export function Order({}: basketProps) {
 
   const currency = 'rub';
 
+  const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
+  }, 0);
+
   const [isSubmitError, setIsSubmitError] = useState(false);
 
   const [fetchCreateOrder] = useCreateOrderMutation();
@@ -98,7 +107,7 @@ export function Order({}: basketProps) {
                 comment: '',
                 promo: '',
               }}
-              discount={0}
+              discount={sumDiscount}
               productsCount={count}
               cost={sum}
               delivery={delivery}
