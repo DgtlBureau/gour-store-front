@@ -100,8 +100,14 @@ export function OrderFormDocket({
         </Typography>
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
-          {delivery}
-          {currencySymbol}
+          {delivery === 0 ? (
+            'Бесплатно'
+          ) : (
+            <>
+              {delivery}
+              {currencySymbol}
+            </>
+          )}
         </Typography>
       </Box>
 

@@ -2,9 +2,9 @@
   "ru": {
     "details": "Контактные данные",
     "firstName": "Имя*",
-    "lastName": "Фамилия",
+    "lastName": "Фамилия*",
     "phone": "Номер телефона*",
-    "email": "Электроннная почта*",
+    "email": "Электронная почта*",
     "nameRequired": "Укажите имя",
     "lastNameRequired": "Укажите фамилию",
     "phoneRequired": "Укажите номер телефона",
@@ -32,6 +32,7 @@
     "total": "Итого",
     "agreement": "Согласен",
     "toPay": "Перейти к оплате",
+    "orderError": "Возникла ошибка, попробуйте позже",
     "oneProduct": "товар",
     "someProducts": "товара",
     "manyProducts": "товаров"
@@ -39,7 +40,7 @@
   "en": {
     "details": "Contact details",
     "firstName": "Name*",
-    "lastName": "Lastname",
+    "lastName": "Surname*",
     "phone": "Phone*",
     "email": "Email*",
     "nameRequired": "Name is required",
@@ -69,6 +70,7 @@
     "total": "Total",
     "agreement": "I agree",
     "toPay": "Go to payment",
+    "orderError": "An error occurred, please try again later",
     "oneProduct": "product",
     "someProducts": "products",
     "manyProducts": "products"

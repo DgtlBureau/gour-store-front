@@ -18,7 +18,7 @@ import translations from './Form.i18n.json';
 
 const sx = {
   form: {
-    maxWidth: '650px',
+    width: '100%',
   },
   block: {
     marginBottom: '40px',
@@ -88,6 +88,7 @@ export type OrderFormProps = {
   productsCount: number;
   cost: number;
   discount?: number;
+  isSubmitError?: boolean;
   delivery: number;
   deliveryProfiles: {
     value: string;
@@ -105,6 +106,7 @@ export function OrderForm({
   discount,
   delivery,
   deliveryProfiles,
+  isSubmitError,
   currency,
   onSubmit,
   onPromo,
@@ -155,12 +157,14 @@ export function OrderForm({
               {t('address')}
             </Typography>
 
-            <HFSelect
-              name="deliveryProfile"
-              options={deliveryProfiles}
-              placeholder={t('profileSelect')}
-              sx={sx.select}
-            />
+            {deliveryProfiles.length !== 0 && (
+              <HFSelect
+                name="deliveryProfile"
+                options={deliveryProfiles}
+                placeholder={t('profileSelect')}
+                sx={sx.select}
+              />
+            )}
 
             <Grid container spacing={1}>
               {addressFields.map(field => (
@@ -215,8 +219,9 @@ export function OrderForm({
               sx={sx.btn}
               type="submit"
               disabled={!values.formState.isValid || !isAgree}
+              color={!isSubmitError ? 'primary' : 'error'}
             >
-              {t('toPay')}
+              {!isSubmitError ? t('toPay') : t('orderError')}
             </Button>
           </Box>
         </Box>
