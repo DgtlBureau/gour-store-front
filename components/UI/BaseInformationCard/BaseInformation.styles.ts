@@ -1,6 +1,6 @@
 const sx = {
   card: {
-    maxHeight: '660px',
+    maxWidth: '660px',
     boxShadow: 'none',
     border: '1px solid',
     borderColor: '#FEC983',
