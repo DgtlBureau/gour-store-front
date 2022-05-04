@@ -8,22 +8,20 @@ const sx = {
   },
   content: {
     padding: '26px',
+    borderBottom: '1px solid',
+    borderColor: 'secondary.main',
   },
   title: {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
     marginBottom: '20px',
   },
-  footer: {
-    padding: '20px 26px',
-    borderTop: '1px solid',
-    borderColor: 'secondary.main',
-  },
   link: {
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: '20px 26px',
     color: 'accent.main',
     '&:hover': {
       opacity: 0.75,

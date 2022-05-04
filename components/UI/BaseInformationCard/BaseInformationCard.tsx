@@ -29,13 +29,11 @@ export function BaseInformationCard({
         </Typography>
         {children}
       </Box>
-      <Box sx={sx.footer}>
-        <Box sx={sx.link} onClick={onClickMore}>
-          <Typography variant="body1">
-            {footerText}
-          </Typography>
-          <ArrowIcon fontSize="small" />
-        </Box>
+      <Box sx={sx.link} onClick={onClickMore}>
+        <Typography variant="body1">
+          {footerText}
+        </Typography>
+        <ArrowIcon fontSize="small" />
       </Box>
     </Paper>
   );
