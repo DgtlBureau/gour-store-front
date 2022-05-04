@@ -7,7 +7,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ReviewsCounter } from './ReviewsCounter';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Reviews.i18n.json';
-import { formatDate } from 'helpers/dateHelper';
+import { formatDate } from '../../../helpers/dateHelper';
 
 type Review = {
   id: number;
