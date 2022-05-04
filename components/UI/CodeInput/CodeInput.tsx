@@ -16,7 +16,7 @@ const inputSx = {
   outlineColor: defaultTheme.palette.primary.main,
 };
 
-type Props = {
+export type CodeInputProps = {
   name: string;
   sx?: CSSProperties;
   value?: string;
@@ -34,7 +34,7 @@ export function CodeInput({
   fieldsCount = 4,
   type = 'text',
   inputMode = 'numeric',
-}: Props) {
+}: CodeInputProps) {
   return (
     <ReactCodeInput
       style={sx}
