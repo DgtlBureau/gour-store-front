@@ -16,12 +16,16 @@ import { Grid, Stack } from '@mui/material';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useRouter } from 'next/router';
+import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translation from './Basket.i18n.json';
 
 export type basketProps = {};
 
 export function Basket({}: basketProps) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { t } = useLocalTranslation(translation);
   const lang: 'ru' | 'en' = 'ru';
   const currency: 'rub' | 'usd' | 'eur' = 'rub';
 
@@ -39,26 +43,26 @@ export function Basket({}: basketProps) {
     );
   }, 0);
 
+  const sumToFreeDelivery = 2990 - sum;
+  const isDeliveryFree = sumToFreeDelivery <= 0;
+
   const handleClickOrder = () => {};
 
   return (
     <ShopLayout>
       <Stack>
-        <Typography variant="h3">Корзина</Typography>
+        <Typography variant="h3">{t('cart')}</Typography>
         {productsInOrder.length === 0 && (
           <CartEmpty
-            title={'В корзине нет товаров'}
+            title={t('emptyTitle')}
             btn={{
-              label: 'Вернуться к покупкам',
+              label: t('emptyButton'),
               onClick: () => {
                 router.push('/');
               },
             }}
           >
-            <Typography variant="body1">
-              Акции, специальные предложения интересных товаров на главной
-              странице помогут вам определиться с выбором!
-            </Typography>
+            <Typography variant="body1">{t('emptyText')}</Typography>
           </CartEmpty>
         )}
 
@@ -95,14 +99,28 @@ export function Basket({}: basketProps) {
                 sx={{ width: '100%', margin: '0 0 10px 0' }}
                 onClick={handleClickOrder}
               >
-                Перейти к оформлению
+                {t('orderButton')}
               </Button>
               <CartInfo
                 count={count}
                 weight={weight}
                 price={sum}
-                delivery={500}
+                delivery={isDeliveryFree ? 0 : 500}
                 discount={sumDiscount}
+              />
+              {!isDeliveryFree && (
+                <InfoBlock
+                  styles={{ margin: '10px 0 0 0' }}
+                  text={`${t(
+                    'freeDeliveryText.part1'
+                  )} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  link={{ label: t('continueShopping'), path: '/' }}
+                />
+              )}
+              <InfoBlock
+                styles={{ margin: '10px 0 0 0' }}
+                text={t('aboutDelivery')}
+                link={{ label: t('continueShopping'), path: '/test' }}
               />
             </Grid>
           </Grid>
