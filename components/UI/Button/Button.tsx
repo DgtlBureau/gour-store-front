@@ -1,6 +1,6 @@
 import React, { ElementType, ReactNode } from 'react';
 import MUIButton from '@mui/material/Button';
-import { SxProps } from '@mui/material';
+import { SxProps, Color } from '@mui/material';
 
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 
@@ -10,10 +10,10 @@ type Props = {
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'medium' | 'large';
+  color?:'primary' | 'secondary' | 'inherit' | 'error' | 'info' | 'success' | 'warning' | undefined;
   onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
-  color?: string;
   fullWidth?: boolean;
   sx?: SxProps;
 };

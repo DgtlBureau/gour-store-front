@@ -1,10 +1,10 @@
-import {ClientRole} from "../../entity/ClientRole";
-import {Product} from "../../entity/Product";
+import {IClientRole} from "./IClientRole";
+import {IProduct} from "./IProduct";
 import {IBaseEntity} from "./IBaseEntity";
 
 export interface IClient extends IBaseEntity {
     apiUserUuid: string;
-    role: ClientRole;
+    role: IClientRole;
     additionalInfo: Record<string, string|number>;
-    favorites: Product[]
+    favorites: IProduct[]
 }

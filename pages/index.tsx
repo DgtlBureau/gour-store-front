@@ -1,5 +1,14 @@
 import type { NextPage } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+
+import {
+  addBasketProduct,
+  selectProductsIdInOrder,
+  selectProductsInOrder,
+  subtractBasketProduct,
+} from '../store/slices/orderSlice';
+import { useAppSelector } from 'hooks/store';
 import {
   useGetNoveltiesProductListQuery,
   useGetProductListQuery,
@@ -9,28 +18,30 @@ import { CardSlider } from '../components/CardSlider/CardSlider';
 import { ProductCard } from '../components/Product/Card/Card';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  selectProductsInOrder,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
+import { LocalConfig } from '../@types/entities/LocalConfig';
+
 import s from './index.module.scss';
-import { useAppSelector } from 'hooks/store';
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const basket = useAppSelector(state => state.order);
+
   const dispatch = useDispatch();
+
   const { data: products } = useGetProductListQuery();
   const { data: novelties } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
   const currentLanguage = 'ru';
   const currentCurrency = 'rub';
-  const basket = useAppSelector(state => state.order);
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
 
   if (!products || !promotions || !novelties) {
     return <div />;
   }
+
   return (
     <ShopLayout>
       <div>
@@ -42,7 +53,7 @@ const Home: NextPage = () => {
                 title={promotion?.title?.ru || 'X'}
                 key={promotion.id}
                 image={promotion.cardImage.small}
-                onMoreClick={() => ({})}
+                onMoreClick={() => router.push(`promotions/${promotion.id}`)}
               />
             ))}
           />
@@ -52,6 +63,7 @@ const Home: NextPage = () => {
             title="Новинки"
             slidesPerView={4}
             spaceBetween={0}
+            rows={1}
             cardsList={novelties.map(product => {
               const productInBasket = basket.products.find(
                 it => it.product.id === product.id
@@ -63,11 +75,9 @@ const Home: NextPage = () => {
               return (
                 <ProductCard
                   key={product.id}
-                  title={product.title ? product.title[currentLanguage] : ''}
+                  title={product.title ? product.title[locale] : ''}
                   description={
-                    product.description
-                      ? product.description[currentLanguage]
-                      : ''
+                    product.description ? product.description[locale] : ''
                   }
                   rating={product.grade}
                   price={product.price[currentCurrency]}
@@ -82,7 +92,7 @@ const Home: NextPage = () => {
                   }}
                   onEdit={() => {}}
                   onElect={() => {}}
-                  onDetail={() => {}}
+                  onDetail={() => router.push(`products/${product.id}`)}
                   currentCount={count}
                   isWeightGood={product.isWeightGood}
                 />
