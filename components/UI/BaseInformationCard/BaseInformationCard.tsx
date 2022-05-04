@@ -11,14 +11,14 @@ import sx from './BaseInformation.styles';
 export type BaseInformationCardProps = {
   title: string;
   footerText: string;
-  onMoreClick(): void;
+  onClickMore(): void;
   children: ReactNode;
 };
 
 export function BaseInformationCard({
   title,
   footerText,
-  onMoreClick,
+  onClickMore,
   children,
 }: BaseInformationCardProps) {
   return (
@@ -30,7 +30,7 @@ export function BaseInformationCard({
         {children}
       </Box>
       <Box sx={sx.footer}>
-        <Box sx={sx.link} onClick={onMoreClick}>
+        <Box sx={sx.link} onClick={onClickMore}>
           <Typography variant="body1">
             {footerText}
           </Typography>

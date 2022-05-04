@@ -20,17 +20,17 @@ export type LkMainAddressCardProps = {
     label: string;
     value: string;
   }[];
-  onMoreClick(): void;
+  onClickMore(): void;
 };
 
-export function LkMainAddressCard({ addresses, onMoreClick }: LkMainAddressCardProps) {
+export function LkMainAddressCard({ addresses, onClickMore }: LkMainAddressCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <BaseInformationCard
       title={t('title')}
       footerText={t('footerText')}
-      onMoreClick={onMoreClick}
+      onClickMore={onClickMore}
     >
       {
         addresses.map(address => (
