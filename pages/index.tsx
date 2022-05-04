@@ -85,7 +85,6 @@ const Home: NextPage = () => {
                   onDetail={() => {}}
                   currentCount={count}
                   isWeightGood={product.isWeightGood}
-                  currency={'rub'}
                 />
               );
             })}
