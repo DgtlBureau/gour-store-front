@@ -1,6 +1,6 @@
 const sx = {
   card: {
-    maxHeight: '660px',
+    maxWidth: '660px',
     boxShadow: 'none',
     border: '1px solid',
     borderColor: '#FEC983',
@@ -8,6 +8,10 @@ const sx = {
   },
   content: {
     padding: '26px',
+  },
+  children: {
+    maxHeight: '140px',
+    overflow: 'auto',
   },
   title: {
     fontFamily: 'Roboto slab',
