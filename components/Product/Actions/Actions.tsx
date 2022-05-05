@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
 export type ProductActionsProps = {
   price: number;
