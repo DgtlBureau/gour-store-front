@@ -17,6 +17,7 @@ import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Order.i18n.json';
+import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
 
 export type basketProps = {};
 
@@ -25,7 +26,26 @@ const DELIVERY_PRICE = 500;
 export function Order({}: basketProps) {
   const router = useRouter();
   const { t } = useLocalTranslation(translation);
+  const {
+    data: deliveryProfiles = [],
+    isLoading,
+    isError,
+  } = useGetOrderProfilesListQuery();
   const productsInOrder = useSelector(selectProductsInOrder);
+  const [orderDefaultValues, setOrderDefaultValues] = useState<OrderFields>({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    city: '',
+    street: '',
+    house: '',
+    apartment: '',
+    entrance: '',
+    floor: '',
+    comment: '',
+    deliveryProfile: 0,
+  });
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
@@ -52,6 +72,30 @@ export function Order({}: basketProps) {
       console.log(error);
       setIsSubmitError(true);
     }
+  };
+
+  const onChangeDeliveryProfile = (deliveryProfileId: number) => {
+    const currentProfile = deliveryProfiles.find(
+      profile => profile.id === deliveryProfileId
+    );
+    console.log('!!');
+
+    if (!currentProfile) return;
+    const orderValues = {
+      firstName: currentProfile.firstName,
+      lastName: currentProfile.lastName,
+      phone: currentProfile.phone,
+      email: currentProfile.email,
+      city: currentProfile.city,
+      street: '',
+      house: '',
+      apartment: '',
+      entrance: '',
+      floor: '',
+      comment: '',
+      deliveryProfile: deliveryProfileId,
+    };
+    setOrderDefaultValues(orderValues);
   };
 
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
@@ -92,26 +136,13 @@ export function Order({}: basketProps) {
         <Grid container spacing={2}>
           <Grid item md={8} xs={12}>
             <OrderForm
-              order={{
-                firstName: '',
-                lastName: '',
-                phone: '',
-                email: '',
-                deliveryProfile: '',
-                city: '',
-                street: '',
-                house: '',
-                apartment: '',
-                entrance: '',
-                floor: '',
-                comment: '',
-                promo: '',
-              }}
+              order={orderDefaultValues}
+              onChangeDeliveryProfile={onChangeDeliveryProfile}
               discount={sumDiscount}
               productsCount={count}
               cost={sum}
               delivery={delivery}
-              deliveryProfiles={[]}
+              deliveryProfiles={deliveryProfiles}
               onSubmit={handleSubmitForm}
               isSubmitError={isSubmitError}
             />

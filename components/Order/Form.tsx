@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
@@ -15,6 +15,7 @@ import { OrderFormDocket } from './FormDocket';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
+import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 
 const sx = {
   form: {
@@ -71,7 +72,7 @@ export type OrderFields = {
   phone: string;
   email: string;
 
-  deliveryProfile: string;
+  deliveryProfile: number;
   city: string;
   street: string;
   house: string;
@@ -80,7 +81,6 @@ export type OrderFields = {
   floor: string;
 
   comment: string;
-  promo: string;
 };
 
 export type OrderFormProps = {
@@ -90,12 +90,10 @@ export type OrderFormProps = {
   discount?: number;
   isSubmitError?: boolean;
   delivery: number;
-  deliveryProfiles: {
-    value: string;
-    label: string;
-  }[];
+  deliveryProfiles: IOrderProfile[];
   currency?: 'rub' | 'usd' | 'eur';
   onSubmit: (data: OrderFields) => void;
+  onChangeDeliveryProfile: (profileId: number) => void;
 };
 
 export function OrderForm({
@@ -106,6 +104,7 @@ export function OrderForm({
   delivery,
   deliveryProfiles,
   isSubmitError,
+  onChangeDeliveryProfile,
   currency,
   onSubmit,
 }: OrderFormProps) {
@@ -114,14 +113,23 @@ export function OrderForm({
   const schema = getValidationSchema(t);
 
   const values = useForm<OrderFields>({
-    defaultValues: order,
-    mode: 'onBlur',
     resolver: yupResolver(schema),
+    mode: 'onBlur',
+    defaultValues: order,
   });
+
+  useEffect(() => {
+    values.reset(order);
+  }, [order]);
 
   const submitHandler = (data: OrderFields) => onSubmit(data);
 
   const agree = () => setIsAgree(!isAgree);
+
+  const deliveryProfileOptions = deliveryProfiles.map(profile => ({
+    label: profile.title,
+    value: profile.id,
+  }));
 
   return (
     <FormProvider {...values}>
@@ -149,7 +157,7 @@ export function OrderForm({
             {deliveryProfiles.length !== 0 && (
               <HFSelect
                 name="deliveryProfile"
-                options={deliveryProfiles}
+                options={deliveryProfileOptions}
                 placeholder={t('profileSelect')}
                 sx={sx.select}
               />
