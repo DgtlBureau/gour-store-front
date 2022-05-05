@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Basket.i18n.json';
+import { Currency } from '../../@types/entities/Currency';
 
 export type basketProps = {};
 
@@ -27,7 +28,7 @@ export function Basket({}: basketProps) {
   const dispatch = useDispatch();
   const { t } = useLocalTranslation(translation);
   const lang: 'ru' | 'en' = 'ru';
-  const currency: 'rub' | 'usd' | 'eur' = 'rub';
+  const currency: Currency = 'rub';
 
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);

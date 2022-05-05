@@ -85,7 +85,7 @@ export function CartInfo({
               {delivery} {currencySymbol}
             </>
           ) : (
-            'Бесплатно'
+            t('free')
           )}
         </Typography>
       </Box>
