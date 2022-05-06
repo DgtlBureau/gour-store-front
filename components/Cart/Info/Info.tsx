@@ -11,9 +11,8 @@ import translations from './Info.i18n.json';
 
 const sx = {
   paper: {
-    maxWidth: '380px',
+    width: '100%',
     padding: '16px',
-
     '*': {
       display: 'flex',
       justifyContent: 'space-between',
@@ -69,7 +68,10 @@ export function CartInfo({
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
-        <Typography variant="body1">{`${t('all')}: ${count} ${productsCountText} • ${weight}${t('kg')}`}</Typography>
+        <Typography variant="body1">
+          {t('all')}: {count} {productsCountText}{' '}
+          {weight ? `• ${weight} ${t('kg')}` : ''}
+        </Typography>
         <Typography variant="body1">
           {price}
           {currencySymbol}
@@ -78,14 +80,18 @@ export function CartInfo({
       <Box sx={sx.footnote}>
         <Typography variant="body1">{t('delivery')}</Typography>
         <Typography variant="body1">
-          {delivery}
-          {currencySymbol}
+          {delivery ? (
+            <>
+              {delivery} {currencySymbol}
+            </>
+          ) : (
+            t('free')
+          )}
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
         <Typography variant="body1">{t('discount')}</Typography>
         <Typography variant="body1" color="error">
-          -
           {discount}
           {currencySymbol}
         </Typography>
