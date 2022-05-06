@@ -1,5 +1,5 @@
-import type { NextPage } from 'next'
-import { useDispatch, useSelector } from "react-redux";
+import type { NextPage } from 'next';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import {
@@ -7,14 +7,17 @@ import {
   selectProductsIdInOrder,
   selectProductsInOrder,
   subtractBasketProduct,
-} from "../store/slices/orderSlice";
+} from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
-import { useGetNoveltiesProductListQuery, useGetProductListQuery } from "../store/api/productApi";
-import { ShopLayout } from "../layouts/ShopLayout";
-import { CardSlider } from "../components/CardSlider/CardSlider";
-import { ProductCard } from "../components/Product/Card/Card";
-import { useGetPromotionListQuery } from "../store/api/promotionApi";
-import { PromotionCard } from "../components/PromotionCard/PromotionCard";
+import {
+  useGetNoveltiesProductListQuery,
+  useGetProductListQuery,
+} from '../store/api/productApi';
+import { ShopLayout } from '../layouts/ShopLayout';
+import { CardSlider } from '../components/CardSlider/CardSlider';
+import { ProductCard } from '../components/Product/Card/Card';
+import { useGetPromotionListQuery } from '../store/api/promotionApi';
+import { PromotionCard } from '../components/PromotionCard/PromotionCard';
 import { LocalConfig } from '../@types/entities/LocalConfig';
 
 import s from './index.module.scss';
@@ -28,15 +31,15 @@ const Home: NextPage = () => {
   const { data: products } = useGetProductListQuery();
   const { data: novelties } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
-
-  const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
-  const currentCurrency = 'eur';
+  const currentLanguage = 'ru';
+  const currentCurrency = 'rub';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
-  const productsInOrder = useSelector(selectProductsInOrder);
 
   if (!products || !promotions || !novelties) {
-    return <div/>
+    return <div />;
   }
 
   return (
@@ -45,16 +48,14 @@ const Home: NextPage = () => {
         <div>
           <CardSlider
             title={'Акции и скидки'}
-            cardsList={
-              promotions.map(promotion => (
-                <PromotionCard
-                  title={promotion?.title?.ru || 'X'}
-                  key={promotion.id}
-                  image={promotion.cardImage.small}
-                  onMoreClick={() => router.push(`promotions/${promotion.id}`)}
-                />
-              ))
-            }
+            cardsList={promotions.map(promotion => (
+              <PromotionCard
+                title={promotion?.title?.ru || 'X'}
+                key={promotion.id}
+                image={promotion.cardImage.small}
+                onMoreClick={() => router.push(`promotions/${promotion.id}`)}
+              />
+            ))}
           />
         </div>
         <div className={s.infoBlock}>
@@ -76,9 +77,7 @@ const Home: NextPage = () => {
                   key={product.id}
                   title={product.title ? product.title[locale] : ''}
                   description={
-                    product.description
-                      ? product.description[locale]
-                      : ''
+                    product.description ? product.description[locale] : ''
                   }
                   rating={product.grade}
                   price={product.price[currentCurrency]}
@@ -105,6 +104,6 @@ const Home: NextPage = () => {
       </div>
     </ShopLayout>
   );
-}
+};
 
 export default Home;

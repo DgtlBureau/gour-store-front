@@ -17,8 +17,10 @@ import sx from './Card.styles';
 type Props = {
   title: string;
   price: number;
+  weight: number;
   amount: number;
   productImg: string;
+  isWeightGood: boolean;
   discount?: number;
   currency?: 'rub' | 'usd' | 'eur';
   onElect: () => void;
@@ -33,6 +35,8 @@ export function CartCard({
   amount,
   productImg,
   discount,
+  weight,
+  isWeightGood,
   currency = 'rub',
   onElect,
   onDelete,
@@ -40,29 +44,34 @@ export function CartCard({
   onSubtract,
 }: Props) {
   const { t } = useLocalTranslation(translations);
+  const currencySymbol = getCurrencySymbol(currency);
+  const totalPrice = discount
+    ? Math.round(price * (1 - discount / 100))
+    : price;
 
   return (
-    <Card sx={sx.card} >
+    <Card sx={sx.card}>
       <CardMedia sx={sx.image} component="img" image={productImg} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant="h6" sx={sx.title}>{title}</Typography>
+          <Typography variant="h6" sx={sx.title}>
+            {title}
+          </Typography>
 
           <Box sx={sx.docket}>
-            <Typography variant="h5" sx={sx.price} color={discount ? 'error' : 'primary'}>
-              {discount ? Math.round(price * (1 - discount)) : price}
-              {' ₽'}
+            <Typography
+              variant="h5"
+              sx={sx.price}
+              color={discount ? 'error' : 'primary'}
+            >
+              {totalPrice * amount} {currencySymbol}
             </Typography>
-            {
-              !!discount && (
-                <Typography variant="body2" sx={sx.oldPrice}>
-                  {price}
-                  {' '}
-                  {getCurrencySymbol(currency)}
-                </Typography>
-              )
-            }
+            {!!discount && (
+              <Typography variant="body2" sx={sx.oldPrice}>
+                {price * amount} {currencySymbol}
+              </Typography>
+            )}
           </Box>
         </CardContent>
 
@@ -82,9 +91,8 @@ export function CartCard({
             </IconButton>
 
             <Typography variant="body2" sx={sx.weight}>
-              {amount}
-              {' '}
-              {t('g')}
+              {isWeightGood ? weight : amount}{' '}
+              {isWeightGood ? t('g') : t('piece')}
             </Typography>
 
             <IconButton onClick={onAdd}>

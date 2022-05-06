@@ -36,14 +36,14 @@ export function ShopLayout(props: ShopLayoutProps) {
         onClickPersonalArea={() => {}}
         onClickLanguage={() => {}}
         onClickBasket={() => {
-          router.push('/order/basket');
+          router.push('/basket');
         }}
         onOpenMobileMenu={() => {}}
       />
       <div className={s.content}>
         {props.children}
         <div className={s.footer}>
-          <Footer 
+          <Footer
             firstPhone="+7 812 602-52-61"
             secondPhone="+372 880-45-21"
             email="rk@gour-food.com"
