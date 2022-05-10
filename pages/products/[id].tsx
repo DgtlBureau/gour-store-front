@@ -24,7 +24,7 @@ import {
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
 
-import { ShopLayout } from '../../layouts/ShopLayout/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CHARACTERISTICS } from 'constants/characteristics';
 import { Currency } from '../../@types/entities/Currency';
 

@@ -7,11 +7,11 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
+import { Currency } from '../../../@types/entities/Currency';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import sx from './Card.styles';
-import { Currency } from '../../../@types/entities/Currency';
 
 export type ProductCardProps = {
   title: string;

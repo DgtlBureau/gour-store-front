@@ -10,7 +10,7 @@ import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { LocalConfig } from '../../@types/entities/LocalConfig';
 
-import sx from './ShopLayout.styles';
+import sx from './Shop.styles';
 
 export interface ShopLayoutProps {
   children?: ReactNode;
@@ -20,6 +20,7 @@ export function ShopLayout(props: ShopLayoutProps) {
   const router = useRouter();
 
   const locale: keyof LocalConfig = router?.locale as keyof LocalConfig || 'ru';
+  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -43,11 +44,6 @@ export function ShopLayout(props: ShopLayoutProps) {
   // TO DO
   const changeCity = (id: number) => ({});
 
-  const changeLanguage = () => {
-    // const newLanguage = locale === 'ru' ? 'en' : 'ru';
-    // router.push('', '', { locale: newLanguage })
-  };
-
   return (
     <Box sx={sx.shopLayout}>
       <Header
@@ -58,11 +54,10 @@ export function ShopLayout(props: ShopLayoutProps) {
         selectedLanguage={locale}
         basketProductCount={count}
         basketProductSum={sum}
-        basketProductCurrency={'rub'}
+        currency={currentCurrency}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
-        onClickLanguage={changeLanguage}
         onClickBasket={goToBasket}
         onOpenMobileMenu={() => {}}
       />

@@ -8,6 +8,7 @@ import {
   Grid,
 } from '@mui/material';
 import React, { useState } from 'react';
+import NextLink from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -31,6 +32,7 @@ import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Header.i18n.json';
 import { LocalConfig } from '../../@types/entities/LocalConfig';
+import { Currency } from '../../@types/entities/Currency';
 
 import sx from './Header.styles';
 
@@ -45,11 +47,10 @@ export type HeaderProps = {
   selectedLanguage: 'ru' | 'en';
   basketProductCount: number;
   basketProductSum: number;
-  basketProductCurrency: 'rub' | 'usd' | 'eur';
+  currency: Currency;
   onChangeCity(id: number): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
-  onClickLanguage(): void;
   onClickBasket(): void;
   onOpenMobileMenu(): void;
 };
@@ -61,11 +62,10 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  basketProductCurrency,
+  currency,
   onChangeCity,
   onClickFavorite,
   onClickPersonalArea,
-  onClickLanguage,
   onClickBasket,
   onOpenMobileMenu,
 }: HeaderProps) {
@@ -110,8 +110,12 @@ export function Header({
               alignItems="center"
               justifyContent="flex-start"
             >
-              <Image src={Logo} height={52} width={58} alt="" />
-
+              <Box sx={{ cursor: 'pointer' }}>
+                <NextLink href='/' passHref>
+                  <Image src={Logo} height={52} width={58} alt="" />
+                </NextLink>
+              </Box>
+            
               <CustomLink
                 path="tel:"
                 variant="body1"
@@ -170,17 +174,16 @@ export function Header({
                 <PersonIcon sx={{ marginRight: '8px' }} />
                 {t('account')}
               </Button>
-              <Box
-                sx={sx.flag}
-                onClick={onClickLanguage}
-              >
-                <Image 
-                  src={locale === 'ru' ? RusFlagIcon : UKFlagIcon} 
-                  objectFit="cover" 
-                  height={24} 
-                  width={34}  
-                  alt=""
-                />
+              <Box sx={sx.flag}>
+                <NextLink href={router.asPath} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
+                  <Image 
+                    src={locale === 'ru' ? RusFlagIcon : UKFlagIcon} 
+                    objectFit="cover" 
+                    height={24} 
+                    width={34}  
+                    alt=""
+                  />
+                </NextLink>
               </Box>
               <Button
                 sx={sx.cart}
@@ -195,7 +198,7 @@ export function Header({
                 >
                   <ShoppingCartOutlinedIcon color="primary" />
                 </Badge>
-                {basketProductSum} {getCurrencySymbol(basketProductCurrency)}
+                {basketProductSum} {getCurrencySymbol(currency)}
               </Button>
               <Button
                 type="button"

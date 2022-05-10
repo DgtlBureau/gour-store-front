@@ -1,7 +1,7 @@
 import React from "react";
 
 import {ComponentStory, Meta} from "@storybook/react";
-import {LkLayout, LkLayoutProps} from "./LkLayout";
+import {LkLayout, LkLayoutProps} from "./Lk";
 
 export default {
     component: LkLayout,

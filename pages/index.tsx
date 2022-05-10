@@ -6,7 +6,6 @@ import Image from 'next/image';
 import {
   addBasketProduct,
   selectProductsIdInOrder,
-  selectProductsInOrder,
   subtractBasketProduct,
 } from "../store/slices/orderSlice";
 import translations from './index.i18n.json';
@@ -16,7 +15,7 @@ import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from "../store/api/promotionApi";
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from "../store/api/productApi";
 
-import { ShopLayout } from "../layouts/ShopLayout/ShopLayout";
+import { ShopLayout } from "../layouts/Shop/Shop";
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { CardSlider } from "../components/CardSlider/CardSlider";
@@ -45,7 +44,7 @@ const Home: NextPage = () => {
   const { data: page } = useGetPageQuery('MAIN');
 
   const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
-  const currentCurrency = 'rub';
+  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
 
@@ -63,14 +62,15 @@ const Home: NextPage = () => {
       rating={product.grade}
       price={product.price[currentCurrency]}
       previewSrc={product.images[0] ? product.images[0].small : ''}
+      currency={currentCurrency}
+      currentCount={count}
       inCart={productsIdInOrder.includes(product.id)}
       isElected={false}
+      isWeightGood={product.isWeightGood}
       onAdd={() => addToBasket(product)}
       onRemove={() => removeFromBasket(product)}
       onElect={() => {}}
       onDetail={() => goToProductPage(product.id)}
-      currentCount={count}
-      isWeightGood={product.isWeightGood}
     />
   );
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CartCard } from '../../components/Cart/Card/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +18,7 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useRouter } from 'next/router';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translation from './Basket.i18n.json';
+import translations from './Basket.i18n.json';
 import { Currency } from '../../@types/entities/Currency';
 
 export type basketProps = {};
@@ -26,7 +26,7 @@ export type basketProps = {};
 export function Basket({}: basketProps) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { t } = useLocalTranslation(translation);
+  const { t } = useLocalTranslation(translations);
   const lang: 'ru' | 'en' = 'ru';
   const currency: Currency = 'rub';
 
