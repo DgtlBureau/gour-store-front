@@ -9,7 +9,7 @@ import {
 } from "../../store/slices/orderSlice";
 import translations from './Promotion.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/ShopLayout/ShopLayout';
 import { PromotionHeader } from 'components/PromotionHeader/PromotionHeader';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { ProductCard } from 'components/Product/Card/Card';

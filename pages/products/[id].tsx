@@ -24,7 +24,7 @@ import {
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
 
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/ShopLayout/ShopLayout';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
 export default function Product() {

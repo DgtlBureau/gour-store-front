@@ -38,6 +38,7 @@ const props: Partial<FilterMultiselectProps> = {
     },
   ],
   selected: [],
+  onChange: selected => console.log(selected),
 };
 
 DefaultFilterMultiselect.args = props;

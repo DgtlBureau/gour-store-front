@@ -26,7 +26,6 @@ export type ProductCardProps = {
   isElected: boolean;
   onAdd: () => void;
   onRemove: () => void;
-  onEdit: (id: number) => void;
   onElect: () => void;
   onDetail: () => void;
 };
@@ -44,7 +43,6 @@ export function ProductCard({
   isElected,
   onAdd,
   onRemove,
-  onEdit,
   onElect,
   onDetail,
 }: ProductCardProps) {
@@ -105,8 +103,7 @@ export function ProductCard({
           inCart={currentCount !== 0}
           price={price}
           discount={discount}
-          isWeightGood={false}
-          onEdit={onEdit}
+          isWeightGood={isWeightGood}
         />
 
         <Cart

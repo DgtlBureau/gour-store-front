@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Menu, MenuItem, IconButton } from '@mui/material';
+import React from 'react';
 
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
@@ -52,7 +51,6 @@ type Props = {
   isWeightGood: boolean;
   price: number;
   discount?: number;
-  onEdit: (id: number) => void;
 };
 
 export function ProductCardDocket({
