@@ -11,6 +11,7 @@ import { ProductCardCart as Cart } from './Cart';
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import sx from './Card.styles';
+import { Currency } from '../../../@types/entities/Currency';
 
 export type ProductCardProps = {
   title: string;
@@ -22,6 +23,7 @@ export type ProductCardProps = {
   discount?: number;
   previewSrc: string;
   countrySrc?: string;
+  currency: Currency;
   inCart: boolean;
   isElected: boolean;
   onAdd: () => void;
@@ -41,6 +43,7 @@ export function ProductCard({
   previewSrc,
   countrySrc,
   isElected,
+  currency,
   onAdd,
   onRemove,
   onElect,
@@ -76,7 +79,12 @@ export function ProductCard({
           )}
         </Box>
 
-        <Rate rating={rating} price={price} isWeightGood={isWeightGood} />
+        <Rate
+          currency={currency}
+          rating={rating}
+          price={price}
+          isWeightGood={isWeightGood}
+        />
 
         <Box sx={sx.info}>
           <div
@@ -103,7 +111,8 @@ export function ProductCard({
           inCart={currentCount !== 0}
           price={price}
           discount={discount}
-          isWeightGood={isWeightGood}
+          isWeightGood={false}
+          currency={currency}
         />
 
         <Cart

@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
+import { Currency } from '../../../@types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 
 const sx = {
   docket: {
@@ -51,6 +53,7 @@ type Props = {
   isWeightGood: boolean;
   price: number;
   discount?: number;
+  currency: Currency;
 };
 
 export function ProductCardDocket({
@@ -58,6 +61,7 @@ export function ProductCardDocket({
   price,
   isWeightGood,
   discount = 0,
+  currency,
 }: Props) {
   const pricePerCount = isWeightGood ? price / 100 : price;
 
@@ -67,7 +71,8 @@ export function ProductCardDocket({
         {!!discount && (
           <>
             <Typography variant="body2" sx={sx.oldPrice}>
-              {pricePerCount}₽
+              {pricePerCount}
+              {getCurrencySymbol(currency)}
             </Typography>
             {!inCart && '/'}
           </>
@@ -85,7 +90,8 @@ export function ProductCardDocket({
           color={discount ? 'error' : 'primary'}
           sx={sx.price}
         >
-          {pricePerCount * (1 - discount / 100)}₽
+          {pricePerCount * (1 - discount / 100)}
+          {getCurrencySymbol(currency)}
         </Typography>
       </Box>
     </Box>

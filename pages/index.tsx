@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import type { NextPage } from 'next';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import type { NextPage } from 'next'
 
 import {
   addBasketProduct,
@@ -48,7 +48,6 @@ const Home: NextPage = () => {
   const currentCurrency = 'rub';
 
   const productsIdInOrder = useSelector(selectProductsIdInOrder);
-  const productsInOrder = useSelector(selectProductsInOrder);
 
   const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
   const goToProductPage = (id: number) => router.push(`products/${id}`);
@@ -158,6 +157,6 @@ const Home: NextPage = () => {
       }
     </ShopLayout>
   );
-}
+};
 
 export default Home;

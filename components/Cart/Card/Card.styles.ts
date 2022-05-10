@@ -5,7 +5,7 @@ const sx = {
     display: 'flex',
     padding: '20px 0',
 
-    boxShadow: 'none', 
+    boxShadow: 'none',
     background: 'transparent',
     borderRadius: 0,
   },
@@ -39,7 +39,7 @@ const sx = {
     flexDirection: 'column',
     justifyContent: 'space-between',
 
-    width: '100%',
+    width: 'calc(100% - 145px)',
     paddingLeft: '20px',
   },
 
@@ -98,7 +98,7 @@ const sx = {
 
     backgroundColor: t.palette.secondary.main,
     color: t.palette.text.secondary,
-    
+
     borderRadius: '99px',
 
     button: {
