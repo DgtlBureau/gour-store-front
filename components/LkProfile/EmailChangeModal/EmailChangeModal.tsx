@@ -1,15 +1,15 @@
 import React from 'react';
-import s from './PasswordChangeModal.module.scss';
-import translations from './PasswordChangeModal.i18n.json';
+import s from './EmailChangeModal.module.scss';
+import translations from './EmailChangeModal.i18n.json';
 import {useLocalTranslation} from "../../../hooks/useLocalTranslation";
 
-export type PasswordChangeModalProps = {
+export type EmailChangeModalProps = {
     isOpened: boolean;
     onClose(): void;
     onChange(email: string): void;
 };
 
-export function PasswordChangeModal(props: PasswordChangeModalProps) {
+export function EmailChangeModal(props: EmailChangeModalProps) {
     const {t} = useLocalTranslation(translations);
     return <div>PasswordChangeModal - {t('citySelectMessage')}</div>
 }
