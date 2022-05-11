@@ -3,7 +3,7 @@ const pack = require('./package.json');
 module.exports = {
   apps : [{
     name: `${pack.name}`,
-    script: "npm",
+    script: "next",
     args : "start",
     instances: 1,
     autorestart: true,
