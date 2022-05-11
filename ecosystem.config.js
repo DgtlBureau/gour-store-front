@@ -4,7 +4,7 @@ require('dotenv').config({path: './.env.local'})
 module.exports = {
   apps : [{
     name: `${pack.name}`,
-    script: "next",
+    script: "node_modules/next",
     args : "start",
     instances: 1,
     autorestart: true,
