@@ -7,7 +7,7 @@ export const orderApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints(builder) {
     return {
-      createOrder: builder.mutation<IOrder, Partial<IOrder>>({
+      createOrder: builder.mutation<IOrder, IOrder>({
         query(product) {
           return {
             method: 'post',

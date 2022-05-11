@@ -19,7 +19,6 @@ import { useRouter } from 'next/router';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Basket.i18n.json';
-import { Currency } from '../../@types/entities/Currency';
 
 export type basketProps = {};
 
@@ -28,7 +27,7 @@ export function Basket({}: basketProps) {
   const dispatch = useDispatch();
   const { t } = useLocalTranslation(translation);
   const lang: 'ru' | 'en' = 'ru';
-  const currency: Currency = 'rub';
+  const currency: 'rub' | 'eur' = 'rub';
 
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
@@ -47,7 +46,9 @@ export function Basket({}: basketProps) {
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
-  const handleClickOrder = () => {};
+  const handleClickOrder = () => {
+    router.push('/order');
+  };
 
   return (
     <ShopLayout>
@@ -121,7 +122,7 @@ export function Basket({}: basketProps) {
               <InfoBlock
                 styles={{ margin: '10px 0 0 0' }}
                 text={t('aboutDelivery')}
-                link={{ label: t('continueShopping'), path: '/test' }}
+                link={{ label: t('continueShopping'), path: '/' }}
               />
             </Grid>
           </Grid>

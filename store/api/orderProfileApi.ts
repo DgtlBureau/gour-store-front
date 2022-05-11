@@ -3,8 +3,9 @@ import { baseQueryWithReauth } from '../../http/baseQuery';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 
 export const orderProfileApi = createApi({
-  reducerPath: 'orderApi',
+  reducerPath: 'orderProfileApi',
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['DeliveryProfile'],
   endpoints(builder) {
     return {
       getOrderProfilesList: builder.query<IOrderProfile[], void>({
@@ -14,6 +15,15 @@ export const orderProfileApi = createApi({
             url: 'order-profiles',
           };
         },
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(
+                  ({ id }) => ({ type: 'DeliveryProfile', id } as const)
+                ),
+                { type: 'DeliveryProfile', id: 'LIST' },
+              ]
+            : [{ type: 'DeliveryProfile', id: 'LIST' }],
       }),
       createProduct: builder.mutation<IOrderProfile, Partial<IOrderProfile>>({
         query(profile) {
@@ -23,6 +33,7 @@ export const orderProfileApi = createApi({
             data: profile,
           };
         },
+        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
       }),
     };
   },

@@ -7,7 +7,7 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
 } from '../../store/slices/orderSlice';
-import { OrderFields, OrderForm } from '../../components/Order/Form';
+import { DeliveryFields, OrderForm } from '../../components/Order/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { Grid, Stack } from '@mui/material';
 import { OrderCard } from 'components/Order/Card';
@@ -18,39 +18,45 @@ import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Order.i18n.json';
 import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
-
-export type basketProps = {};
+import { CreateOrderDto } from '../../@types/dto/order/create.dto';
+import { IOrder } from '../../@types/entities/IOrder';
+import { useGetCitiesListQuery } from 'store/api/cityApi';
+import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 
 const DELIVERY_PRICE = 500;
 
-export function Order({}: basketProps) {
+export function Order() {
+  const language = 'ru';
+  const currency = 'rub';
+
   const router = useRouter();
   const { t } = useLocalTranslation(translation);
-  const {
-    data: deliveryProfiles = [],
-    isLoading,
-    isError,
-  } = useGetOrderProfilesListQuery();
-  const productsInOrder = useSelector(selectProductsInOrder);
-  const [orderDefaultValues, setOrderDefaultValues] = useState<OrderFields>({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    city: '',
+
+  const [isSubmitError, setIsSubmitError] = useState(false);
+  const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>({
+    deliveryProfile: 0,
+    cityId: 0,
     street: '',
     house: '',
     apartment: '',
     entrance: '',
     floor: '',
-    comment: '',
-    deliveryProfile: 0,
   });
+
+  const {
+    data: deliveryProfiles = [],
+    isLoading: isDeliveryProfilesLoading = false,
+    isError: isDeliveryProfilesError = false,
+  } = useGetOrderProfilesListQuery();
+  const {
+    data: citiesList = [],
+    isLoading: isCitiesListLoading = false,
+    isError: isCitiesListError = false,
+  } = useGetCitiesListQuery();
+
+  const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
-
-  const currency = 'rub';
-
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
     return (
       acc +
@@ -60,44 +66,71 @@ export function Order({}: basketProps) {
     );
   }, 0);
 
-  const [isSubmitError, setIsSubmitError] = useState(false);
-
   const [fetchCreateOrder] = useCreateOrderMutation();
 
-  const handleSubmitForm = async (FormData: OrderFields) => {
+  const handleSubmitForm = async (orderData: CreateOrderDto) => {
+    const {
+      firstName,
+      lastName,
+      phone,
+      email,
+      cityId,
+      street,
+      house,
+      apartment,
+      entrance,
+      floor,
+      comment,
+    } = orderData;
+    const fullOrderAddress = `${street} ${house} ${apartment} ${entrance} ${floor} `;
+    const formattedOrderData: IOrder = {
+      orderProducts: productsInOrder,
+      firstName,
+      lastName,
+      phone,
+      email,
+      cityId,
+      comment: comment,
+      deliveryType: '',
+      address: fullOrderAddress,
+    };
     try {
-      await fetchCreateOrder(FormData).unwrap();
-      router.push('/');
+      // await fetchCreateOrder(formattedOrderData).unwrap();
+      console.log(formattedOrderData);
+
+      // router.push('/');
     } catch (error) {
       console.log(error);
       setIsSubmitError(true);
     }
   };
-
   const onChangeDeliveryProfile = (deliveryProfileId: number) => {
     const currentProfile = deliveryProfiles.find(
       profile => profile.id === deliveryProfileId
     );
-    console.log('!!');
 
     if (!currentProfile) return;
-    const orderValues = {
-      firstName: currentProfile.firstName,
-      lastName: currentProfile.lastName,
-      phone: currentProfile.phone,
-      email: currentProfile.email,
-      city: currentProfile.city,
-      street: '',
-      house: '',
-      apartment: '',
-      entrance: '',
-      floor: '',
-      comment: '',
+
+    setDeliveryFields({
       deliveryProfile: deliveryProfileId,
-    };
-    setOrderDefaultValues(orderValues);
+      cityId: currentProfile.cityId,
+      street: currentProfile.street,
+      house: currentProfile.house,
+      apartment: currentProfile.apartment,
+      entrance: currentProfile.entrance,
+      floor: currentProfile.floor,
+    });
   };
 
+  const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
+    label: profile.title,
+    value: profile.id,
+  }));
+
+  const formattedCitiesList = citiesList.map(city => ({
+    value: city.id,
+    label: city.name[language],
+  }));
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
   if (productsInOrder.length === 0)
@@ -136,13 +169,21 @@ export function Order({}: basketProps) {
         <Grid container spacing={2}>
           <Grid item md={8} xs={12}>
             <OrderForm
-              order={orderDefaultValues}
+              defaultPersonalFields={{
+                firstName: '',
+                lastName: '',
+                phone: '',
+                email: '',
+                comment: '',
+              }}
+              defaultDeliveryFields={deliveryFields}
+              citiesList={formattedCitiesList}
               onChangeDeliveryProfile={onChangeDeliveryProfile}
               discount={sumDiscount}
               productsCount={count}
               cost={sum}
               delivery={delivery}
-              deliveryProfiles={deliveryProfiles}
+              deliveryProfiles={formattedDeliveryProfiles}
               onSubmit={handleSubmitForm}
               isSubmitError={isSubmitError}
             />

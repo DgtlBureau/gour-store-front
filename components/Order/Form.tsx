@@ -16,6 +16,7 @@ import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
+import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 
 const sx = {
   form: {
@@ -57,47 +58,50 @@ const sx = {
 
 const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
 
-const addressFields = [
-  'city',
-  'street',
-  'house',
-  'apartment',
-  'entrance',
-  'floor',
-];
+const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
-export type OrderFields = {
+export type PersonalFields = {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
+  comment: string;
+};
 
+export type DeliveryFields = {
   deliveryProfile: number;
-  city: string;
+  cityId: number;
   street: string;
   house: string;
   apartment: string;
   entrance: string;
   floor: string;
-
-  comment: string;
 };
 
 export type OrderFormProps = {
-  order: OrderFields;
+  defaultPersonalFields: PersonalFields;
+  defaultDeliveryFields: DeliveryFields;
   productsCount: number;
   cost: number;
   discount?: number;
+  citiesList: {
+    value: number;
+    label: string;
+  }[];
   isSubmitError?: boolean;
   delivery: number;
-  deliveryProfiles: IOrderProfile[];
+  deliveryProfiles: {
+    value: number;
+    label: string;
+  }[];
   currency?: 'rub' | 'usd' | 'eur';
-  onSubmit: (data: OrderFields) => void;
+  onSubmit: (data: CreateOrderDto) => void;
   onChangeDeliveryProfile: (profileId: number) => void;
 };
 
 export function OrderForm({
-  order,
+  defaultPersonalFields,
+  defaultDeliveryFields,
   productsCount,
   cost,
   discount,
@@ -105,6 +109,7 @@ export function OrderForm({
   deliveryProfiles,
   isSubmitError,
   onChangeDeliveryProfile,
+  citiesList,
   currency,
   onSubmit,
 }: OrderFormProps) {
@@ -112,28 +117,34 @@ export function OrderForm({
   const [isAgree, setIsAgree] = useState(false);
   const schema = getValidationSchema(t);
 
-  const values = useForm<OrderFields>({
+  const values = useForm<CreateOrderDto>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
-    defaultValues: order,
+    defaultValues: {
+      ...defaultPersonalFields,
+      ...defaultDeliveryFields,
+    },
   });
 
   useEffect(() => {
-    values.reset(order);
-  }, [order]);
+    values.reset({
+      ...values.getValues(),
+      ...defaultDeliveryFields,
+    });
+  }, [defaultDeliveryFields]);
 
-  const submitHandler = (data: OrderFields) => onSubmit(data);
+  const submitHandler = (data: CreateOrderDto) => onSubmit(data);
 
   const agree = () => setIsAgree(!isAgree);
 
-  const deliveryProfileOptions = deliveryProfiles.map(profile => ({
-    label: profile.title,
-    value: profile.id,
-  }));
-
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form
+        onSubmit={values.handleSubmit(submitHandler)}
+        onBlur={() => {
+          onChangeDeliveryProfile(values.getValues('deliveryProfile'));
+        }}
+      >
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -157,13 +168,21 @@ export function OrderForm({
             {deliveryProfiles.length !== 0 && (
               <HFSelect
                 name="deliveryProfile"
-                options={deliveryProfileOptions}
+                options={deliveryProfiles}
                 placeholder={t('profileSelect')}
                 sx={sx.select}
               />
             )}
 
             <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <HFSelect
+                  name="cityId"
+                  options={citiesList}
+                  placeholder={t('city')}
+                  sx={sx.select}
+                />
+              </Grid>
               {addressFields.map(field => (
                 <Grid key={field} item xs={6}>
                   <HFTextField name={field} label={t(field)} />
@@ -173,7 +192,7 @@ export function OrderForm({
                 <HFTextarea
                   sx={sx.textarea}
                   name="comment"
-                  label={t('commet')}
+                  label={t('comment')}
                   placeholder={t('commentPlaceholder')}
                 />
               </Grid>

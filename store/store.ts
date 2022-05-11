@@ -21,6 +21,7 @@ const persistConfig = {
     'productApi',
     'productGradeApi',
     'promotionApi',
+    'cityApi',
   ],
   storage,
 };

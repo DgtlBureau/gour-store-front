@@ -13,8 +13,7 @@ export const getValidationSchema = (t: Translator) => {
       .required(t('phoneRequired'))
       .matches(phoneRegExp, t('incorrectPhone')),
     email: yup.string().required(t('emailRequired')).email(t('incorrectEmail')),
-
-    city: yup.string().required(t('cityRequired')),
+    cityId: yup.number().required(t('cityRequired')),
     street: yup.string().required(t('streetRequired')),
     house: yup.string().required(t('houseRequired')),
   });

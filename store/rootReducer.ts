@@ -7,10 +7,12 @@ import orderSlice from './slices/orderSlice';
 import { productGradeApi } from './api/productGradeApi';
 import { orderApi } from './api/orderApi';
 import { orderProfileApi } from './api/orderProfileApi';
+import { cityApi } from './api/cityApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
   order: orderSlice,
+  [cityApi.reducerPath]: cityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
