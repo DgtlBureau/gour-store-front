@@ -5,6 +5,8 @@ import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
 
 import StarIcon from '@mui/icons-material/Star';
+import { Currency } from '../../../@types/entities/Currency';
+import {getCurrencySymbol} from "../../../helpers/currencyHelper";
 
 const sx = {
   box: {
@@ -25,9 +27,15 @@ type Props = {
   rating: number;
   price: number;
   isWeightGood: boolean;
+  currency: Currency;
 };
 
-export function ProductCardRate({ rating, price, isWeightGood }: Props) {
+export function ProductCardRate({
+  rating,
+  price,
+  isWeightGood,
+  currency,
+}: Props) {
   return (
     <Box sx={sx.box}>
       <Box sx={sx.rating}>
@@ -36,7 +44,8 @@ export function ProductCardRate({ rating, price, isWeightGood }: Props) {
       </Box>
 
       <Typography variant="body2">
-        {price}/{isWeightGood ? 'кг' : 'шт'}
+        {price}
+        {getCurrencySymbol(currency)}/{isWeightGood ? 'кг' : 'шт'}
       </Typography>
     </Box>
   );
