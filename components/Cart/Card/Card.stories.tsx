@@ -31,6 +31,8 @@ const Template: ComponentStory<typeof CartCard> = function () {
         title="Chevrano XO Козий Элитный Сыр"
         amount={amount}
         price={price}
+        weight={100}
+        isWeightGood={true}
         discount={DISCOUNT}
         productImg="https://www.gastronom.ru/binfiles/images/20190731/b05fb007.jpg"
         onElect={() => ({})}

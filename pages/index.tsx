@@ -75,6 +75,7 @@ const Home: NextPage = () => {
               return (
                 <ProductCard
                   key={product.id}
+                  currency={currentCurrency}
                   title={product.title ? product.title[locale] : ''}
                   description={
                     product.description ? product.description[locale] : ''

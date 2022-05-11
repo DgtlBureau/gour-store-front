@@ -98,6 +98,7 @@ export default function Promotion() {
                   return (
                     <ProductCard
                       key={product.id}
+                      currency={currentCurrency}
                       title={product.title ? product.title[locale] : ''}
                       description={
                         product.description
