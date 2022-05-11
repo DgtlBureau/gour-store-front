@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { useRouter } from 'next/router';
 
 export interface ShopLayoutProps {
-  children: ReactElement;
+  children?: ReactElement;
 }
 
 export function ShopLayout(props: ShopLayoutProps) {
@@ -35,13 +35,15 @@ export function ShopLayout(props: ShopLayoutProps) {
         onClickFavorite={() => {}}
         onClickPersonalArea={() => {}}
         onClickLanguage={() => {}}
-        onClickBasket={() => {}}
+        onClickBasket={() => {
+          router.push('/basket');
+        }}
         onOpenMobileMenu={() => {}}
       />
       <div className={s.content}>
         {props.children}
         <div className={s.footer}>
-          <Footer
+          <Footer 
             firstPhone="+7 812 602-52-61"
             secondPhone="+372 880-45-21"
             email="rk@gour-food.com"

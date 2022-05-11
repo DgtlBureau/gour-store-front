@@ -1,0 +1,28 @@
+{
+  "ru": {
+    "cart": "Корзина",
+    "emptyTitle": "В корзине нет товаров",
+    "emptyText": "Акции, специальные предложения интересных товаров на главной странице помогут вам определиться с выбором!",
+    "emptyButton": "Вернуться к покупкам",
+    "orderButton": "Перейти к оформлению",
+    "aboutDelivery": "Заказы обрабатываются ежедневно, все заказы, поступившие в день обращения, доставляются на следующий день, включая выходные и праздничные дни.",
+    "continueShopping": "Продолжить покупки",
+    "freeDeliveryText": {
+      "part1": "Добавьте ещё товаров на",
+      "part2": "для бесплатной доставки по Москве и Санкт-Петербургу"
+    }
+  },
+  "en": {
+    "cart": "Cart",
+    "emptyTitle": "There are no items in the cart",
+    "emptyText": "Promotions, special offers of interesting products on the main page will help you make the right choice!",
+    "emptyButton": "Back to shopping",
+    "aboutDelivery": "Orders are processed daily, all orders received on the same day are delivered the next day, including weekends and holidays.",
+    "orderButton": "Go to order",
+    "continueShopping": "Continue shopping",
+    "freeDeliveryText": {
+      "part1": "Add more items for",
+      "part2": "for free delivery in Moscow and St. Petersburg"
+    }
+  }
+}

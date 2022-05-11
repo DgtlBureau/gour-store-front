@@ -46,14 +46,13 @@ const Template: ComponentStory<typeof ProductCard> = function () {
 
   return (
     <ProductCard
+      currentCount={1}
+      isWeightGood={true}
+      currency={'rub'}
       title="Chevrano XO Козий Элитный Сыр"
       description={DESCRIPTION}
       rating={4.3}
-      weights={WEIGHTS}
-      weightId={weightId}
       price={PRICE}
-      // discount={0.2}
-      cost={`${PRICE * 10}₽/кг`}
       previewSrc={PREVIEW_SRC}
       countrySrc={russiaIcon}
       inCart={inCart}

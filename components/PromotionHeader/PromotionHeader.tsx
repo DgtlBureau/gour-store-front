@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { differenceInSeconds, minutesToHours } from 'date-fns';
-import { secondsToMinutes } from 'date-fns/esm';
-import { Stack } from '@mui/material';
+import { differenceInSeconds, minutesToHours, secondsToMinutes } from 'date-fns';
+import { Stack, SxProps } from '@mui/material';
 import Image from 'next/image';
 
 import translations from './PromotionHeader.i18n.json';
@@ -10,8 +9,9 @@ import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 
-const sx = {
+const headerSx = {
   promotion: {
+    maxHeight: '360px',
     maxWidth: '1200px',
     width: '100%',
     position: 'relative',
@@ -31,6 +31,9 @@ const sx = {
     position: 'absolute', 
     top: '30px', 
     left: '30px',
+    padding: '10px',
+    borderRadius: '6px',
+    backgroundColor: 'background.default',
   },
 }
 
@@ -38,15 +41,17 @@ export type PromotionHeaderProps = {
   title: string;
   image: string;
   end: Date;
+  sx?: SxProps; 
 };
 
-export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
+export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps) {
   const { t } = useLocalTranslation(translations);
 
   const [seconds, setSeconds] = useState<number>(10);
   const [timer, setTimer] = useState<string>('');
 
   let intervalId = -1;
+
   useEffect(() => {
     const nowDate = new Date();
     setSeconds(differenceInSeconds(end, nowDate));
@@ -76,14 +81,14 @@ export function PromotionHeader({ title, image, end }: PromotionHeaderProps) {
   };
 
   return (
-    <Stack sx={sx.promotion}>
+    <Stack sx={{ ...headerSx.promotion, ...sx }}>
       <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
 
-      <Typography sx={sx.title} variant="body1">
+      <Typography sx={headerSx.title} variant="body1">
         {title}
       </Typography>
 
-      <Box sx={sx.timer}>
+      <Box sx={headerSx.timer}>
         <Typography variant="body1">
           {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
         </Typography>
