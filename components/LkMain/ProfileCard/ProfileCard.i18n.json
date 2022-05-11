@@ -1,0 +1,14 @@
+{
+  "en": {
+    "title": "Personal data",
+    "footerText": "Personal data settings",
+    "name": "Name and surname",
+    "phone": "Phone"
+  },
+  "ru": {
+    "title": "Личные данные",
+    "footerText": "Настройки личных данных",
+    "name": "Имя и фамилия",
+    "phone": "Телефон"
+  }
+}
