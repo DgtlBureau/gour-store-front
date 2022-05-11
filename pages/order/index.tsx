@@ -58,30 +58,13 @@ export function Order() {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return (
-      acc +
-      (currentProduct.product.price[currency] *
-        currentProduct.product.discount) /
-        100
-    );
+    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
 
   const [fetchCreateOrder] = useCreateOrderMutation();
 
   const handleSubmitForm = async (orderData: CreateOrderDto) => {
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      cityId,
-      street,
-      house,
-      apartment,
-      entrance,
-      floor,
-      comment,
-    } = orderData;
+    const { firstName, lastName, phone, email, cityId, street, house, apartment, entrance, floor, comment } = orderData;
     const fullOrderAddress = `${street} ${house} ${apartment} ${entrance} ${floor} `;
     const formattedOrderData: IOrder = {
       orderProducts: productsInOrder,
@@ -104,10 +87,9 @@ export function Order() {
       setIsSubmitError(true);
     }
   };
+
   const onChangeDeliveryProfile = (deliveryProfileId: number) => {
-    const currentProfile = deliveryProfiles.find(
-      profile => profile.id === deliveryProfileId
-    );
+    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
     if (!currentProfile) return;
 
@@ -146,10 +128,7 @@ export function Order() {
               },
             }}
           >
-            <Typography variant="body1">
-              Ваша корзина пуста. Чтобы оформить заказ добавьте товары в
-              корзину.
-            </Typography>
+            <Typography variant="body1">Ваша корзина пуста. Чтобы оформить заказ добавьте товары в корзину.</Typography>
           </CartEmpty>
         </Stack>
       </ShopLayout>
@@ -158,11 +137,7 @@ export function Order() {
   return (
     <ShopLayout>
       <Stack>
-        <Button
-          sx={{ width: '250px', margin: '0 0 30px 0' }}
-          variant="contained"
-          onClick={() => router.push('/')}
-        >
+        <Button sx={{ width: '250px', margin: '0 0 30px 0' }} variant="contained" onClick={() => router.push('/')}>
           На главную
         </Button>
         <Typography variant="h4">{t('title')}</Typography>

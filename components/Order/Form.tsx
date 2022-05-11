@@ -139,12 +139,7 @@ export function OrderForm({
 
   return (
     <FormProvider {...values}>
-      <form
-        onSubmit={values.handleSubmit(submitHandler)}
-        onBlur={() => {
-          onChangeDeliveryProfile(values.getValues('deliveryProfile'));
-        }}
-      >
+      <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -167,6 +162,7 @@ export function OrderForm({
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
+                onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfile'))}
                 name="deliveryProfile"
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
@@ -176,12 +172,7 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <HFSelect
-                  name="cityId"
-                  options={citiesList}
-                  placeholder={t('city')}
-                  sx={sx.select}
-                />
+                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
               </Grid>
               {addressFields.map(field => (
                 <Grid key={field} item xs={6}>
@@ -206,12 +197,7 @@ export function OrderForm({
               currency={currency}
             />
 
-            <Checkbox
-              sx={sx.agreement}
-              label={t('agreement')}
-              checked={isAgree}
-              onChange={agree}
-            />
+            <Checkbox sx={sx.agreement} label={t('agreement')} checked={isAgree} onChange={agree} />
 
             <Button
               sx={sx.btn}
