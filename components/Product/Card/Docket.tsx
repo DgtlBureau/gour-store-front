@@ -5,7 +5,7 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
 import { Currency } from '../../../@types/entities/Currency';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
 const sx = {
   docket: {
