@@ -1,23 +1,20 @@
 import React from 'react';
-import { ComponentStory, Meta } from '@storybook/react';
 
-import { Typography } from '../Typography/Typography';
-import { BaseInformationCard, BaseInformationCardProps } from './BaseInformationCard';
+import { ComponentStory, Meta } from '@storybook/react';
+import {
+  BaseInformationCard,
+  BaseInformationCardProps,
+} from './BaseInformationCard';
 
 export default {
   component: BaseInformationCard,
-  title: 'UI/BaseInformationCard',
+  title: 'components/UI/BaseInformationCard',
 } as Meta;
 
-const Template: ComponentStory<typeof BaseInformationCard> = function (args: BaseInformationCardProps) {
-  return <BaseInformationCard {...args} />;
-};
+const Template: ComponentStory<typeof BaseInformationCard> = (
+  args: BaseInformationCardProps
+) => <BaseInformationCard {...args} />;
 export const DefaultBaseInformationCard = Template.bind({});
-
-const props: Partial<BaseInformationCardProps> = {
-  title: 'Личные данные',
-  footerText: 'Настройка личных данных',
-  children: <Typography>sdhfgsjhdfgjsdgfjsdhjfsjhdfjsdfgjsdfj</Typography>,
-};
+const props: Partial<BaseInformationCardProps> = {};
 
 DefaultBaseInformationCard.args = props;
