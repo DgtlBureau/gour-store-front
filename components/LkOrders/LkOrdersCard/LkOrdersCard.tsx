@@ -7,7 +7,10 @@ import {Currency} from "../../../@types/entities/Currency";
 export type LkOrdersCardProps = {
     isOpened: boolean;
     title: string;
-    status: string;
+    status: {
+        title: string;
+        color: string;
+    };
     createdAt: Date;
     address: string;
     client: string;
