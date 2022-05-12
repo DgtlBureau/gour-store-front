@@ -60,7 +60,6 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       onAdd={() => setInCart(true)}
       onRemove={() => setInCart(false)}
       onElect={() => setIsElected(!isElected)}
-      onEdit={id => setWeightId(id)}
       onDetail={() => ({})}
     />
   );

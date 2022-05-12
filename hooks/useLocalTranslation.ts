@@ -10,11 +10,6 @@ export const useLocalTranslation = (config: LocalConfig) => {
   const router = useRouter();
   const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
   return {
-    t: (str: string, count?: number) => {
-      if(!count) {
-        return get(config[locale], str) as string
-      }
-
-    }
+    t: (str: string) => get(config[locale], str) as string
   };
 };

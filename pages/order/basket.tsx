@@ -1,5 +1,4 @@
 import React from 'react';
-import { ShopLayout } from '../../layouts/ShopLayout';
 import { CartCard } from '../../components/Cart/Card/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,6 +12,7 @@ import {
 import { Button } from '../../components/UI/Button/Button';
 import s from './basket.module.scss';
 import { CartInfo } from '../../components/Cart/Info/Info';
+import {ShopLayout} from "../../layouts/Shop/Shop";
 
 export type basketProps = {};
 
@@ -36,6 +36,8 @@ export function Basket({}: basketProps) {
                 title={it.product.title?.ru || '...'}
                 price={it.product.price?.rub || 0}
                 amount={it.amount}
+                weight={it.weight}
+                isWeightGood={true}
                 productImg={it.product.images[0]?.small}
                 discount={10}
                 onElect={() => {

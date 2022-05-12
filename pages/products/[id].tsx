@@ -124,7 +124,6 @@ export default function Product() {
           onDetail={() => {
             handleDetailProduct(similarProduct.id);
           }}
-          onEdit={() => {}}
           onElect={() => {}}
           discount={similarProduct.discount}
           currentCount={count}

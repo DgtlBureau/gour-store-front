@@ -116,7 +116,6 @@ export default function Promotion() {
                       onRemove={() => {
                         dispatch(subtractBasketProduct(product));
                       }}
-                      onEdit={() => {}}
                       onElect={() => {}}
                       onDetail={() => router.push(`products/${product.id}`)}
                       currentCount={count}

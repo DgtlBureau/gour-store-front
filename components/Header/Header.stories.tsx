@@ -17,31 +17,30 @@ const props: Partial<HeaderProps> = {
   selectedCity: 'Москва и область',
   basketProductCount: 5,
   basketProductSum: 15000,
-  basketProductCurrency: 'usd',
   cities: [
     {
-      title: 'Санкт-Петербург',
-      value: 'SPb',
+      name: 'Санкт-Петербург',
+      id: 1,
     },
     {
-      title: 'Москва и область',
-      value: 'Moscow',
+      name: 'Москва и область',
+      id: 2,
     },
     {
-      title: 'Казань',
-      value: 'Kazan',
+      name: 'Казань',
+      id: 3,
     },
     {
-      title: 'Новосибирск',
-      value: 'someText',
+      name: 'Новосибирск',
+      id: 4,
     },
     {
-      title: 'Екатеринбург',
-      value: 'someText2',
+      name: 'Екатеринбург',
+      id: 5,
     },
     {
-      title: 'Новгород',
-      value: 'newCity',
+      name: 'Новгород',
+      id: 6,
     },
   ],
 };

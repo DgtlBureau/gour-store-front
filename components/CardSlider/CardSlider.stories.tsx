@@ -30,31 +30,31 @@ DefaultState.args = {
             key="test1"
             title="test1"
             image={defaultImg}
-            onMoreClick={() => ({})}
+            onClickMore={() => ({})}
         />,
         <PromotionCard
             key="test2"
             title="test2"
             image={defaultImg}
-            onMoreClick={() => ({})}
+            onClickMore={() => ({})}
         />,
         <PromotionCard
             key="test3"
             title="test3"
             image={defaultImg}
-            onMoreClick={() => ({})}
+            onClickMore={() => ({})}
         />,
         <PromotionCard
             key="test4"
             title="test4"
             image={defaultImg}
-            onMoreClick={() => ({})}
+            onClickMore={() => ({})}
         />,
         <PromotionCard
             key="test5"
             title="test5"
             image={defaultImg}
-            onMoreClick={() => ({})}
+            onClickMore={() => ({})}
         />,
     ],
     slidesPerView: 4,
