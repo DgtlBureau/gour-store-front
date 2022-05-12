@@ -16,6 +16,7 @@ type Props = {
   component?: ElementType;
   fullWidth?: boolean;
   sx?: SxProps;
+  form?: string | number;
 };
 
 export function Button({
