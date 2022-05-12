@@ -9,7 +9,7 @@ export const userApi = commonApi.injectEndpoints({
   endpoints: builder => ({
     getCurrentUser: builder.query<User, void>({
       query: () => ({
-        url: '/auth/currentUser',
+        url: '/client-auth/currentUser',
         method: 'GET',
       }),
     }),

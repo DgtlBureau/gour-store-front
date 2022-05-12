@@ -10,15 +10,19 @@ import {
 import { Footer } from '../components/Footer/Footer';
 import { useLocation, useNavigate } from 'react-router';
 import { useRouter } from 'next/router';
+import {useGetCurrentUserQuery} from "../store/api/userApi";
 
 export interface ShopLayoutProps {
   children?: ReactElement;
 }
 
 export function ShopLayout(props: ShopLayoutProps) {
+  const { data: currentUser } = useGetCurrentUserQuery();
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
   const router = useRouter();
+
+  console.log('currentUser', currentUser)
 
   return (
     <div className={s.shopLayout}>
