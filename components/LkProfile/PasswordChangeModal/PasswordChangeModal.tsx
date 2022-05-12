@@ -6,7 +6,10 @@ import {useLocalTranslation} from "../../../hooks/useLocalTranslation";
 export type PasswordChangeModalProps = {
     isOpened: boolean;
     onClose(): void;
-    onChange(email: string): void;
+    onChange(changePasswordDto: {
+        prevPassword: string;
+        newPassword: string;
+    }): void;
 };
 
 export function PasswordChangeModal(props: PasswordChangeModalProps) {

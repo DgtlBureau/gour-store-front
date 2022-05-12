@@ -5,8 +5,8 @@ import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
 
 import StarIcon from '@mui/icons-material/Star';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
+import {getCurrencySymbol} from "../../../helpers/currencyHelper";
 
 const sx = {
   box: {

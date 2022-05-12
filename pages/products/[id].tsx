@@ -107,6 +107,7 @@ export default function Product() {
           : productInBasket?.amount) || 0;
       return (
         <ProductCard
+          key={similarProduct.id}
           title={similarProduct.title[lang] || ''}
           description={similarProduct.description[lang] || ''}
           rating={similarProduct.grade}
