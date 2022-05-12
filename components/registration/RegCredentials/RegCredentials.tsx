@@ -18,7 +18,7 @@ import { Roles } from '../../../constants/roles';
 import sx from './RegCredentials.styles';
 
 export type RegCredentialsProps = {
-  defaultValues: SignUpDto;
+  defaultValues?: SignUpDto;
   onBack(): void;
   onSendSMS(phone: string): string;
   onSubmit(data: SignUpDto): void;
@@ -41,7 +41,7 @@ export function RegCredentials({
   const values = useForm<SignUpDto>({
     defaultValues: {
       ...defaultValues,
-      role: defaultValues.role || Roles.CLIENT,
+      role: defaultValues?.role || Roles.CLIENT,
     },
     mode: 'onBlur',
     resolver: yupResolver(schema),

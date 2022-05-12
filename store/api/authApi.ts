@@ -14,7 +14,7 @@ export const authApi = createApi({
         query(body) {
           return {
             method: 'POST',
-            url: `auth/signup`,
+            url: `client-auth/signup`,
             body,
           }
         },
@@ -23,7 +23,7 @@ export const authApi = createApi({
         query(body) {
           return {
             method: 'POST',
-            url: `auth/signin`,
+            url: `client-auth/signin`,
             body,
           }
         },
@@ -32,7 +32,7 @@ export const authApi = createApi({
         query(phone) {
           return {
             method: 'POST',
-            url: `auth/sendCode`,
+            url: `client-auth/sendCode`,
             body: { phone },
           }
         },

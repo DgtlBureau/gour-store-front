@@ -36,7 +36,7 @@ export default function SignUp() {
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState({} as SignUpDto);
+  const [credentials, setCredentials] = useState<SignUpDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
 
   const goToIntro = () => router.push('/auth');
@@ -57,10 +57,7 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = async (data: SignUpDto) => {
-    setCredentials(data);
-    register();
-  };
+  const saveCredentials = (data: SignUpDto) => setCredentials(data);
 
   const saveFavoriteInfo = (info: FavoriteInfo) => {
     setFavoriteInfo(info);
@@ -68,7 +65,9 @@ export default function SignUp() {
   };
 
   const register = async () => {
-    const role = roles?.find(it => it.key === credentials.role)
+    if (!credentials) return;
+
+    const role = roles?.find(it => it.key === credentials.role);
 
     const data: RegistrationData = {
       name: '',
@@ -87,6 +86,10 @@ export default function SignUp() {
       // event bus notification
     }
   };
+
+  useEffect(() => {
+    if (credentials) register();
+  }, [credentials])
 
   const forms = {
     greeting: (
