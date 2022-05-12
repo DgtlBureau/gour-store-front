@@ -2,6 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { baseQueryWithReauth } from "../../http/baseQuery";
 import { RegistrationData } from '../../@types/entities/RegistrationData';
+import { Tokens } from '../../@types/dto/tokens.dto';
+import { SignInDto } from '../../@types/dto/signin.dto';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -13,6 +15,15 @@ export const authApi = createApi({
           return {
             method: 'POST',
             url: `auth/signup`,
+            data,
+          }
+        },
+      }),
+      signIn: builder.mutation<Tokens, SignInDto>({
+        query(data) {
+          return {
+            method: 'POST',
+            url: `auth/signin`,
             data,
           }
         },
@@ -30,4 +41,4 @@ export const authApi = createApi({
   }
 })
 
-export const { useSignUpMutation, useSendCodeMutation } = authApi;
+export const { useSignUpMutation, useSignInMutation, useSendCodeMutation } = authApi;

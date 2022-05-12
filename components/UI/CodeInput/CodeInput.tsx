@@ -1,7 +1,10 @@
-import React, { CSSProperties } from 'react';
-import ReactCodeInput, { InputModeTypes } from 'react-code-input';
+import React, {Component, ComponentClass, CSSProperties} from 'react';
+import dynamic from 'next/dynamic';
+
+const ReactCodeInput = dynamic(() => import('react-code-input')) as unknown as React.FunctionComponent<ReactCodeInputProps>;
 
 import { defaultTheme } from '../../../themes';
+import {InputModeTypes, ReactCodeInputProps} from "react-code-input";
 
 const inputSx = {
   border: '1px solid lightgrey',

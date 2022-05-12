@@ -18,8 +18,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Link as CustomLink } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
 import { useGetProductListQuery } from 'store/api/productApi';
+import { useAppSelector } from 'hooks/store';
 import { LocalConfig } from '../../@types/entities/LocalConfig';
-import { Weight } from '../../@types/entities/Weight';
 import { defaultTheme as theme } from 'themes';
 
 const sx= {
@@ -35,18 +35,6 @@ const sx= {
   }
 }
 
-// FIX ME!!!
-const defaultWeights = [
-  {
-    value: 100,
-    unit: 'г',
-  },
-  {
-    value: 200,
-    unit: 'г',
-  },
-] as Weight[];
-
 export default function Promotion() {
   const dispatch = useDispatch();
 
@@ -55,6 +43,8 @@ export default function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const router = useRouter();
+  const basket = useAppSelector(state => state.order);
+
   const { id } = router.query;
 
   const currentCurrency = 'rub';
@@ -92,30 +82,48 @@ export default function Promotion() {
         {
           products && (
             <CardSlider
-              title={t('catalogTitle')}
-              rows={2}
+              title="Товары из акции"
               slidesPerView={4}
+              spaceBetween={0}
+              rows={2}
               cardsList={
-                products.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    title={product.title ? product.title[locale] : ''}
-                    description={product.description ? product.description[locale] : ''}
-                    rating={product.grade}
-                    weightId={0}
-                    weights={defaultWeights}
-                    price={product.price[currentCurrency]}
-                    cost={'200 руб'}
-                    previewSrc={product.images[0] ? product.images[0].small : ''}
-                    inCart={productsIdInOrder.includes(product.id)}
-                    isElected={false}
-                    onAdd={() => dispatch(addBasketProduct(product))}
-                    onRemove={() => dispatch(subtractBasketProduct(product))}
-                    onEdit={() => {}}
-                    onElect={() => {}}
-                    onDetail={() => {}}
-                  />
-                ))
+                products.map(product => {
+                  const productInBasket = basket.products.find(
+                    it => it.product.id === product.id
+                  );
+                  const count =
+                    (product.isWeightGood
+                      ? productInBasket?.weight
+                      : productInBasket?.amount) || 0;
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      currency={currentCurrency}
+                      title={product.title ? product.title[locale] : ''}
+                      description={
+                        product.description
+                          ? product.description[locale]
+                          : ''
+                      }
+                      rating={product.grade}
+                      price={product.price[currentCurrency]}
+                      previewSrc={product.images[0] ? product.images[0].small : ''}
+                      inCart={productsIdInOrder.includes(product.id)}
+                      isElected={false}
+                      onAdd={() => {
+                        dispatch(addBasketProduct(product));
+                      }}
+                      onRemove={() => {
+                        dispatch(subtractBasketProduct(product));
+                      }}
+                      onEdit={() => {}}
+                      onElect={() => {}}
+                      onDetail={() => router.push(`products/${product.id}`)}
+                      currentCount={count}
+                      isWeightGood={product.isWeightGood}
+                    />
+                  );
+                })
               }
             />
           )

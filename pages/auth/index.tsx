@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import { AuthLayout } from 'layouts/AuthLayout';
+import { AuthLayout } from '../../layouts/AuthLayout';
 import { RegIntro } from 'components/registration/RegIntro/RegIntro';
 
 const sx = {

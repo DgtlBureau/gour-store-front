@@ -26,6 +26,7 @@ import {
 
 import { ShopLayout } from '../../layouts/ShopLayout';
 import { CHARACTERISTICS } from 'constants/characteristics';
+import { Currency } from '../../@types/entities/Currency';
 
 export default function Product() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function Product() {
   };
 
   const lang: 'ru' | 'en' = 'ru';
-  const currency: 'rub' | 'usd' | 'eur' = 'rub';
+  const currency: Currency = 'rub';
 
   const productId = id ? +id : 0;
 
@@ -106,6 +107,7 @@ export default function Product() {
           : productInBasket?.amount) || 0;
       return (
         <ProductCard
+          key={similarProduct.id}
           title={similarProduct.title[lang] || ''}
           description={similarProduct.description[lang] || ''}
           rating={similarProduct.grade}
@@ -127,6 +129,7 @@ export default function Product() {
           discount={similarProduct.discount}
           currentCount={count}
           isWeightGood={similarProduct.isWeightGood}
+          currency={currency}
         />
       );
     }) || [];
