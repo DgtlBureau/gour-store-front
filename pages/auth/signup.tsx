@@ -34,7 +34,6 @@ export default function SignUp() {
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
-
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState({} as SignUpDto);
@@ -58,7 +57,7 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = (data: SignUpDto) => {
+  const saveCredentials = async (data: SignUpDto) => {
     setCredentials(data);
     register();
   };
@@ -68,7 +67,7 @@ export default function SignUp() {
     goToSignIn();
   };
 
-   const register = async () => {
+  const register = async () => {
     const role = roles?.find(it => it.key === credentials.role)
 
     const data: RegistrationData = {
