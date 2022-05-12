@@ -11,6 +11,10 @@ const sx = {
     borderBottom: '1px solid',
     borderColor: 'secondary.main',
   },
+  children: {
+    maxHeight: '140px',
+    overflow: 'auto',
+  },
   title: {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
