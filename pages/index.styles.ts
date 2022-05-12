@@ -1,4 +1,4 @@
-const sx = {
+export const sx = {
   novelties: {
     margin: '130px 0 75px 0'
   },
@@ -19,5 +19,3 @@ const sx = {
     fontWeight: 'bold',
   }
 };
-
-export default sx;

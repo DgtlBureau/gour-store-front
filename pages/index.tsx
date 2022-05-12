@@ -27,7 +27,7 @@ import { IProduct } from '../@types/entities/IProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
-import sx from './index.styles';
+import { sx } from './index.styles';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
