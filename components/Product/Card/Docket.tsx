@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Menu, MenuItem, IconButton } from '@mui/material';
+import React from 'react';
 
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
@@ -55,7 +54,6 @@ type Props = {
   price: number;
   discount?: number;
   currency: Currency;
-  onEdit: (id: number) => void;
 };
 
 export function ProductCardDocket({

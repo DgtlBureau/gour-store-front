@@ -1,23 +1,21 @@
 import React, { CSSProperties, ReactNode, useState } from 'react';
 
-import { Button, ButtonGroup, Stack } from '@mui/material';
+import { Button, ButtonGroup, Stack, SxProps } from '@mui/material';
 // eslint-disable-next-line
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Grid } from 'swiper';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box } from '../UI/Box/Box';
-import { Container } from '../UI/Container/Container';
 import { Typography } from '../UI/Typography/Typography';
 
 import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/grid';
 
-const sx = {
+const sliderSx = {
   container: {
-    maxWidth: '1200px',
-    width: '100%',
+    width: '1200px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -38,38 +36,48 @@ type Props = {
   rows?: number;
   spaceBetween?: number;
   slidesPerView?: number;
+  sx?: SxProps ;
 };
 
 export function CardSlider({
   title,
   cardsList,
   rows = 1,
-  slidesPerView,
+  slidesPerView = 4,
   spaceBetween = 10,
+  sx,
 }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
 
+  const withArrows = cardsList.length > rows * slidesPerView;
+
   return (
-    <Container sx={sx.container}>
+    <Box sx={{ ...sliderSx.container, ...sx }}>
       <Stack
         sx={{ width: '100%' }}
         direction="row"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography variant="h4" sx={sx.title}>{title}</Typography>
-        <ButtonGroup>
-          <Button onClick={() => slider?.slidePrev()}>
-            <ArrowForwardIosIcon fontSize="small" sx={sx.backArrow} />
-          </Button>
-          <Button onClick={() => slider?.slideNext()}>
-            <ArrowForwardIosIcon fontSize="small" />
-          </Button>
-        </ButtonGroup>
+        <Typography variant="h4" sx={sliderSx.title}>{title}</Typography>
+        {
+          withArrows && (
+            <ButtonGroup>
+              <Button onClick={() => slider?.slidePrev()}>
+                <ArrowForwardIosIcon fontSize="small" sx={sliderSx.backArrow} />
+              </Button>
+
+              <Button onClick={() => slider?.slideNext()}>
+                <ArrowForwardIosIcon fontSize="small" />
+              </Button>
+            </ButtonGroup>
+          )
+        }
       </Stack>
-      <Box sx={{ width: '100%', margin: '20px 0 0 0' }}>
+
+      <Box sx={{ width: '100%', margin: '40px 0 0 0' }}>
         <Swiper
           style={{
             width: '100%',
@@ -78,19 +86,22 @@ export function CardSlider({
           spaceBetween={spaceBetween}
           slidesPerView={slidesPerView || 'auto'}
           grid={{
+            fill: 'row',
             rows: rows,
           }}
           onSwiper={setSlider}
           modules={[Grid]}
           className="mySwiper"
         >
-          {cardsList.map((card, i) => (
-            <SwiperSlide key={i} style={{ height: `${cardHeight}px` }}>
-              {card}
-            </SwiperSlide>
-          ))}
+          {
+            cardsList.map((card, i) => (
+              <SwiperSlide key={i} style={{ height: `${cardHeight}px` }}>
+                {card}
+              </SwiperSlide>
+            ))
+          }
         </Swiper>
       </Box>
-    </Container>
+    </Box>
   );
 }
