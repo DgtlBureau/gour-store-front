@@ -37,8 +37,16 @@ export const authApi = createApi({
           }
         },
       }),
+      getCurrentUser: builder.query<object, void>({
+        query() {
+          return {
+            method: 'GET',
+            url: `client-auth/currentUser`,
+          }
+        },
+      }),
     }
   }
 })
 
-export const { useSignUpMutation, useSignInMutation, useSendCodeMutation } = authApi;
+export const { useSignUpMutation, useSignInMutation, useSendCodeMutation, useGetCurrentUserQuery } = authApi;
