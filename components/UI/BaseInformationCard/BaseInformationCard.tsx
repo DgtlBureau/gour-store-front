@@ -27,7 +27,10 @@ export function BaseInformationCard({
         <Typography variant="h5" sx={sx.title}>
           {title}
         </Typography>
-        {children}
+
+        <Box sx={sx.children}>
+          {children}
+        </Box>
       </Box>
       <Box sx={sx.link} onClick={onClickMore}>
         <Typography variant="body1">

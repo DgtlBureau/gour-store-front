@@ -9,6 +9,7 @@ const sx = {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap-reverse',
+    fontFamily: 'Roboto slab',
   },
   contactsLink: {
     whiteSpace: 'nowrap',
