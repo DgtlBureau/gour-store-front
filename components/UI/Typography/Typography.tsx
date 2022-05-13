@@ -22,11 +22,12 @@ type Props = {
     | undefined;
   children: ReactNode;
   sx?: SxProps;
+  onClick?(): void;
 };
 
-export function Typography({ variant = 'h4', children, color, sx }: Props) {
+export function Typography({ variant = 'h4', children, color, sx, onClick }: Props) {
   return (
-    <MUITypography sx={sx} variant={variant} color={color}>
+    <MUITypography sx={sx} variant={variant} color={color} onClick={onClick}>
       {children}
     </MUITypography>
   );

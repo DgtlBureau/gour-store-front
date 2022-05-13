@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import { Divider } from '@mui/material';
+import { Divider, SxProps } from '@mui/material';
 
 import translations from './Footer.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
@@ -13,7 +13,7 @@ import fbIcon from '../../assets/icons/social/fb.svg';
 import instIcon from '../../assets/icons/social/inst.svg';
 import vkIcon from '../../assets/icons/social/vk.svg';
 
-import sx from './Footer.styles';
+import footerSx from './Footer.styles';
 
 export type FooterProps = {
   firstPhone: string;
@@ -27,6 +27,7 @@ export type FooterProps = {
   privacy: string;
   cookie: string;
   terms: string;
+  sx?: SxProps;
 };
 
 export function Footer({
@@ -41,6 +42,7 @@ export function Footer({
   privacy,
   cookie,
   terms,
+  sx,
 }: FooterProps) {
   const { t } = useLocalTranslation(translations);
 
@@ -98,33 +100,33 @@ export function Footer({
   ];
 
   return (
-    <Box>
-      <Box sx={sx.contactsWrapper}>
+    <Box sx={sx}>
+      <Box sx={footerSx.contactsWrapper}>
         <CustomLink path="/">
-          <Box sx={sx.logo}>
+          <Box sx={footerSx.logo}>
             <Image src={logo} height={150} width={125} alt="" />
           </Box>
         </CustomLink>
 
-        <Box sx={sx.contacts}>
+        <Box sx={footerSx.contacts}>
           {contacts.map(link => (
             <CustomLink
               key={link.path}
               path={link.path}
               underline="none"
-              sx={sx.contactsLink}
+              sx={footerSx.contactsLink}
             >
               {link.label}
             </CustomLink>
           ))}
-          <Box sx={sx.social}>
+          <Box sx={footerSx.social}>
             {social.map(link => (
               <a
                 key={link.path}
                 href={link.path}
                 rel="noreferrer"
                 target="_blank"
-                style={sx.socialLink}
+                style={footerSx.socialLink}
               >
                 <Image src={link.icon} height={38} width={38} alt="" />
               </a>
@@ -132,7 +134,7 @@ export function Footer({
           </Box>
         </Box>
       </Box>
-      <Box sx={sx.info}>
+      <Box sx={footerSx.info}>
         {info.map((link, i) => (
           <Fragment key={link.path}>
             <NextLink href={link.path} passHref>
@@ -140,14 +142,14 @@ export function Footer({
                 href="replace"
                 rel="noreferrer"
                 target="_blank"
-                style={sx.infoLink}
+                style={footerSx.infoLink}
               >
                 {link.label}
               </a>
             </NextLink>
             {i + 1 !== info.length && (
               <Divider
-                sx={sx.divider}
+                sx={footerSx.divider}
                 orientation="vertical"
                 variant="middle"
                 flexItem

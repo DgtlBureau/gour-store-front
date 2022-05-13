@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CartCard } from '../../components/Cart/Card/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -71,8 +71,9 @@ export function Basket({}: basketProps) {
         {productsInOrder.length !== 0 && (
           <Grid container spacing={2}>
             <Grid item xs={8}>
-              {productsInOrder.map(it => (
+              {productsInOrder.map((it, i) => (
                 <CartCard
+                  key={`${it.product.id}-${i}`}
                   title={it.product.title[lang] || '...'}
                   price={it.product.price[currency] || 0}
                   amount={it.amount}

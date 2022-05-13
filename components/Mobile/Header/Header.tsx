@@ -69,7 +69,6 @@ export function MobileHeader({
         <MobileMenu
           selectedCity={selectedCity}
           cities={cities}
-          selectedLanguage={selectedLanguage}
           firstPhone={firstPhone}
           secondPhone={secondPhone}
           email={email}
@@ -77,7 +76,6 @@ export function MobileHeader({
           inst={inst}
           vk={vk}
           onChangeCity={onChangeCity}
-          onChangeLanguage={onChangeLanguage}
           onClickFavorite={onClickFavorite}
           onClickPersonalArea={onClickPersonalArea}
           onClickSignout={onClickSignout}

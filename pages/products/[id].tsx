@@ -24,7 +24,7 @@ import {
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
 
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CHARACTERISTICS } from 'constants/characteristics';
 import { Currency } from '../../@types/entities/Currency';
 
@@ -107,6 +107,7 @@ export default function Product() {
           : productInBasket?.amount) || 0;
       return (
         <ProductCard
+          key={similarProduct.id}
           title={similarProduct.title[lang] || ''}
           description={similarProduct.description[lang] || ''}
           rating={similarProduct.grade}
@@ -123,7 +124,6 @@ export default function Product() {
           onDetail={() => {
             handleDetailProduct(similarProduct.id);
           }}
-          onEdit={() => {}}
           onElect={() => {}}
           discount={similarProduct.discount}
           currentCount={count}

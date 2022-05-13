@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { Paper, Grid } from '@mui/material';
+
 import translations from './RegFavoriteInfo.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Grid } from '@mui/material';
 import { Button } from './../../UI/Button/Button';
 import { Typography } from './../..//UI/Typography/Typography';
 
-import s from './RegFavoriteInfo.module.scss';
+import sx from './RegFavoriteInfo.styles';
+
+export type FavoriteInfo = {
+  countries: number[];
+  products: number[];
+};
 
 export type RegFavoriteInfoProps = {
   countries: {
@@ -19,7 +25,7 @@ export type RegFavoriteInfoProps = {
     id: number;
   }[];
   onBack(): void;
-  onSubmit(info: { countries: number[]; products: number[] }): void;
+  onSubmit(info: FavoriteInfo): void;
 };
 
 export function RegFavoriteInfo({
@@ -59,64 +65,78 @@ export function RegFavoriteInfo({
   };
 
   return (
-    <Grid container spacing={2} sx={{ maxWidth: '520px' }}>
-      <Grid item xs={4}>
-        <Button variant="outlined" onClick={onBack}>
-          {t('backButton')}
-        </Button>
+    <Paper sx={sx.paper}>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Button variant="outlined" onClick={onBack}>
+            {t('backButton')}
+          </Button>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('title')}</Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
+        </Grid>
+
+        <Grid item xs={12} container>
+          {
+            countries.map(country => (
+              <Grid item xs={2} key={country.id}>
+                <div
+                  style={{ 
+                    ...sx.circle, 
+                    ...(userCountries.includes(country.id) && sx.selected), 
+                    backgroundImage: `url(${country.image})`,
+                  }}
+                  onClick={() => {
+                    handleClickCountry(country.id);
+                  }}
+                >
+                  <Typography variant="body2">{country.title}</Typography>
+                </div>
+              </Grid>
+            ))
+          }
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('likedTitle')}</Typography>
+        </Grid>
+
+        <Grid item xs={12} container>
+          {
+            products.map(product => (
+              <Grid item xs={2} key={product.id}>
+                <div
+                  style={{ 
+                    ...sx.circle, 
+                    ...(userProducts.includes(product.id) && sx.selected), 
+                    backgroundImage: `url(${product.image})`,
+                  }}
+                  onClick={() => {
+                    handleClickProducts(product.id);
+                  }}
+                >
+                  <Typography variant="body2">{product.title}</Typography>
+                </div>
+              </Grid>
+            ))
+          }
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            sx={{ width: '100%' }}
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            {t('endRegistration')}
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">{t('title')}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
-      </Grid>
-      <Grid item xs={12} container>
-        {countries.map(country => (
-          <Grid item xs={2} key={country.id}>
-            <div
-              className={`${s.circle} ${
-                userCountries.includes(country.id) ? s.selected : ''
-              }`}
-              style={{ backgroundImage: `url(${country.image})` }}
-              onClick={() => {
-                handleClickCountry(country.id);
-              }}
-            >
-              <Typography variant="body2">{country.title}</Typography>
-            </div>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">{t('likedTitle')}</Typography>
-      </Grid>
-      <Grid item xs={12} container>
-        {products.map(product => (
-          <Grid item xs={2} key={product.id}>
-            <div
-              className={`${s.circle} ${
-                userProducts.includes(product.id) ? s.selected : ''
-              }`}
-              style={{ backgroundImage: `url(${product.image})` }}
-              onClick={() => {
-                handleClickProducts(product.id);
-              }}
-            >
-              <Typography variant="body2">{product.title}</Typography>
-            </div>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          sx={{ width: '100%' }}
-          variant="contained"
-          onClick={handleSubmit}
-        >
-          {t('endRegistration')}
-        </Button>
-      </Grid>
-    </Grid>
+    </Paper>
   );
 }

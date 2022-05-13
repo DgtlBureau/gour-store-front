@@ -1,11 +1,13 @@
 const sx = {
   paper: {
-    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '550px',
+    width: '550px',
     padding: '60px',
     backgroundColor: 'background.default',
+    border: '4px solid',
+    borderColor: 'accent.main',
+    borderRadius: '10px',
   },
   title: {
     fontWeight: 700,

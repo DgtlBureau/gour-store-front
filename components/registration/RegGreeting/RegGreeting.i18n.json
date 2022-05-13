@@ -1,0 +1,14 @@
+{
+  "en": {
+    "goBack": "Go back",
+    "firstText": "Hello, buddy, let's get acquainted!",
+    "secondText": "I am Oleg and I want you to eat delicious.",
+    "goNext": "Let's go"
+  },
+  "ru": {
+    "goBack": "Назад",
+    "firstText": "Привет, дружище, давай знакомиться!",
+    "secondText": "Я — Олег и я хочу, чтобы ты ел вкусно.",
+    "goNext": "Погнали"
+  }
+}

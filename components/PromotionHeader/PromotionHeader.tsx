@@ -8,6 +8,7 @@ import translations from './PromotionHeader.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
+import {Theme} from "@mui/material/styles/createTheme";
 
 const headerSx = {
   promotion: {
@@ -81,7 +82,7 @@ export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps)
   };
 
   return (
-    <Stack sx={{ ...headerSx.promotion, ...sx }}>
+    <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
       <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
 
       <Typography sx={headerSx.title} variant="body1">

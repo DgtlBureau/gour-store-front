@@ -2,31 +2,25 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Typography,
+  Collapse,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
 } from '@mui/material';
 import React, { useState } from 'react';
 
-import { defaultTheme as t } from '../../themes';
+import translations from './FilterMultiSelect.i18n.json';
+import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import { Box } from '../UI/Box/Box';
+import { Typography } from '../UI/Typography/Typography';
+import { Button } from '../UI/Button/Button';
+import { Checkbox } from '../UI/Checkbox/Checkbox';
+import { defaultTheme as theme } from '../../themes';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const sx = {
-  select: {
-    backgroundColor: 'background.paper',
-  },
-  optionBox: {
-    padding: '7px 11px',
-    color: t.palette.text.secondary,
-    backgroundColor: t.palette.common.white,
-    borderRadius: '6px',
-    userSelect: 'none',
-    cursor: 'pointer'
-  },
-  selected: {
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
-  },
-};
+import sx from './FilterMultiSelect.styles'
 
 export type FilterMultiselectProps = {
   title: string;
@@ -35,6 +29,7 @@ export type FilterMultiselectProps = {
     label: string;
     value: string;
   }[];
+  isMobile?: boolean;
   onChange(selected: string[]): void;
 };
 
@@ -42,11 +37,18 @@ export function FilterMultiselect({
   title,
   selected,
   options,
+  isMobile,
   onChange,
 }: FilterMultiselectProps) {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
+  const { t } = useLocalTranslation(translations);
 
-  function onChangeOption(selected: string) {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
+  const [isDeployed, setIsDeployed] = useState(false);
+
+  const resetOptions = () => setSelectedOptions([]);
+  const applyOptions = () => onChange(selectedOptions);
+
+  function changeOption(selected: string) {
     const isOptionSelected = selectedOptions.find(
       option => option === selected
     );
@@ -56,36 +58,78 @@ export function FilterMultiselect({
         option => option !== selected
       );
       setSelectedOptions(newSelectedList);
-      onChange(selectedOptions);
+      if (isMobile) onChange(selectedOptions);
       return;
     }
 
     setSelectedOptions(oldSelectedList => [...oldSelectedList, selected]);
-    onChange(selectedOptions);
+
+    if (isMobile) onChange(selectedOptions);
   }
 
   function isOptionSelected(currentOption: string) {
     return selectedOptions.find(option => option === currentOption);
   }
 
-  return (
+  return isMobile ? (
     <Accordion sx={sx.select}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={t.palette.text.muted} />}>
-        <Typography>{title}</Typography>
+      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
+        <Typography variant="body1" sx={sx.title}>{title}</Typography>
       </AccordionSummary>
+
       <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
-        {options.map(option => (
-          <Typography
-            key={option.value}
-            onClick={() => {
-              onChangeOption(option.value);
-            }}
-            sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
-          >
-            {option.label}
-          </Typography>
-        ))}
+        {
+          options.map(option => (
+            <Typography
+              variant="body1"
+              key={option.value}
+              onClick={() => changeOption(option.value)}
+              sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
+            >
+              {option.label}
+            </Typography>
+          ))
+        }
       </AccordionDetails>
     </Accordion>
+  ) : (
+    <Box>
+      <Box sx={sx.extender} onClick={() => setIsDeployed(!isDeployed)}>
+        <Typography variant="body1" sx={{ ...sx.title, userSelect: 'none' }}>{title}</Typography>
+        <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && sx.rotatedArrow) }} />
+      </Box>
+
+      <Collapse in={isDeployed} timeout="auto" unmountOnExit>
+        <List sx={sx.list}>
+          {
+            options.map(option => (
+              <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
+                <ListItemButton role={undefined} dense>
+                  <ListItemIcon sx={sx.listItemIcon}>
+                    <Checkbox
+                      sx={sx.checkbox}
+                      edge="start"
+                      checked={selectedOptions.includes(option.value)}
+                      disableRipple
+                    />
+                  </ListItemIcon>
+                  <Typography variant="body2" sx={sx.listItemText}>
+                    {option.label}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            ))
+          }
+          <Box sx={sx.actions}>
+            <Button size="small" variant="outlined" onClick={resetOptions}>
+              {t('reset')}
+            </Button>
+            <Button size="small" onClick={applyOptions} sx={sx.applyBtn}>
+              {t('apply')}
+            </Button>
+          </Box>
+        </List>
+      </Collapse>
+    </Box>
   );
 }
