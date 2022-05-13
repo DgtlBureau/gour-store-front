@@ -11,20 +11,20 @@ export const authApi = createApi({
   endpoints(builder) {
     return {
       signUp: builder.mutation<void, RegistrationData>({
-        query(data) {
+        query(body) {
           return {
             method: 'POST',
-            url: `auth/signup`,
-            data,
+            url: `client-auth/signup`,
+            body,
           }
         },
       }),
       signIn: builder.mutation<Tokens, SignInDto>({
-        query(data) {
+        query(body) {
           return {
             method: 'POST',
-            url: `auth/signin`,
-            data,
+            url: `client-auth/signin`,
+            body,
           }
         },
       }),
@@ -32,8 +32,8 @@ export const authApi = createApi({
         query(phone) {
           return {
             method: 'POST',
-            url: `auth/sendCode`,
-            data: { phone },
+            url: `client-auth/sendCode`,
+            body: { phone },
           }
         },
       }),

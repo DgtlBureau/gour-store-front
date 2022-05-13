@@ -31,8 +31,43 @@ export const cityApi = createApi({
         },
         providesTags: (r, e, id) => [{ type: 'City', id }],
       }),
+      createCity: builder.mutation<ICity, Partial<ICity>>({
+        query(city) {
+          return {
+            method: 'POST',
+            url: `cities`,
+            data: city
+          }
+        },
+        invalidatesTags: [{ type: 'City', id: 'LIST' }],
+      }),
+      updateCity: builder.mutation<ICity, Partial<ICity> & Pick<ICity, 'id'>>({
+        query(city) {
+          return {
+            method: 'PUT',
+            url: `cities/${city.id}`,
+            data: city
+          }
+        },
+        invalidatesTags: (r, e, { id }) => [{ type: 'City', id }],
+      }),
+      deleteCity: builder.mutation<ICity, number>({
+        query(id) {
+          return {
+            method: 'DELETE',
+            url: `cities/${id}`,
+          }
+        },
+        invalidatesTags: [{ type: 'City', id: 'LIST' }],
+      })
     }
   }
 })
 
-export const { useGetCityQuery, useGetCityListQuery } = cityApi;
+export const {
+  useCreateCityMutation,
+  useDeleteCityMutation,
+  useGetCityQuery,
+  useGetCityListQuery,
+  useUpdateCityMutation,
+} = cityApi;
