@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { ShopLayout } from '../../layouts/ShopLayout';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   selectedProductCount,
   selectedProductSum,
-  selectedProductWeight,
   selectProductsInOrder,
 } from '../../store/slices/orderSlice';
-import { DeliveryFields, OrderForm } from '../../components/Order/Form';
+import {
+  DeliveryFields,
+  OrderForm,
+  OrderFormType,
+} from '../../components/Order/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { Grid, Stack } from '@mui/material';
 import { OrderCard } from 'components/Order/Card';
@@ -17,11 +20,15 @@ import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Order.i18n.json';
-import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+import {
+  useCreateOrderProfileMutation,
+  useGetOrderProfilesListQuery,
+} from 'store/api/orderProfileApi';
 import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 import { IOrder } from '../../@types/entities/IOrder';
 import { useGetCitiesListQuery } from 'store/api/cityApi';
-import { IOrderProfile } from '../../@types/entities/IOrderProfile';
+import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
+import { OrderProductDto } from '../../@types/dto/order/product.dto';
 
 const DELIVERY_PRICE = 500;
 
@@ -33,8 +40,9 @@ export function Order() {
   const { t } = useLocalTranslation(translation);
 
   const [isSubmitError, setIsSubmitError] = useState(false);
+  const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>({
-    deliveryProfile: 0,
+    deliveryProfileId: 0,
     cityId: 0,
     street: '',
     house: '',
@@ -42,7 +50,6 @@ export function Order() {
     entrance: '',
     floor: '',
   });
-
   const {
     data: deliveryProfiles = [],
     isLoading: isDeliveryProfilesLoading = false,
@@ -53,35 +60,72 @@ export function Order() {
     isLoading: isCitiesListLoading = false,
     isError: isCitiesListError = false,
   } = useGetCitiesListQuery();
-
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
   }, 0);
 
   const [fetchCreateOrder] = useCreateOrderMutation();
 
-  const handleSubmitForm = async (orderData: CreateOrderDto) => {
-    const { firstName, lastName, phone, email, cityId, street, house, apartment, entrance, floor, comment } = orderData;
-    const fullOrderAddress = `${street} ${house} ${apartment} ${entrance} ${floor} `;
-    const formattedOrderData: IOrder = {
-      orderProducts: productsInOrder,
+  const handleSubmitForm = async (orderData: OrderFormType) => {
+    const {
       firstName,
       lastName,
       phone,
       email,
       cityId,
-      comment: comment,
-      deliveryType: '',
-      address: fullOrderAddress,
-    };
-    try {
-      // await fetchCreateOrder(formattedOrderData).unwrap();
-      console.log(formattedOrderData);
+      street,
+      house,
+      apartment,
+      entrance,
+      floor,
+      comment,
+      deliveryProfileId,
+    } = orderData;
 
-      // router.push('/');
+    try {
+      let currentDeliveryProfileId = deliveryProfileId;
+      if (currentDeliveryProfileId !== 0) {
+        const deliveryProfileData: CreateOrderProfileDto = {
+          title: `${street}, ${house}`,
+          cityId,
+          street,
+          house,
+          apartment,
+          entrance,
+          floor,
+        };
+
+        currentDeliveryProfileId = (
+          await fetchCreateOrderProfile(deliveryProfileData).unwrap()
+        ).id;
+      }
+
+      const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
+        productId: product.product.id,
+        amount: product.amount,
+        weight: product.weight,
+      }));
+
+      const formattedOrderData: CreateOrderDto = {
+        firstName,
+        lastName,
+        phone,
+        email,
+        comment,
+        deliveryProfileId: currentDeliveryProfileId,
+        orderProducts,
+      };
+      await fetchCreateOrder(formattedOrderData).unwrap();
+
+      router.push('/');
     } catch (error) {
       console.log(error);
       setIsSubmitError(true);
@@ -89,13 +133,15 @@ export function Order() {
   };
 
   const onChangeDeliveryProfile = (deliveryProfileId: number) => {
-    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
+    const currentProfile = deliveryProfiles.find(
+      profile => profile.id === deliveryProfileId
+    );
 
     if (!currentProfile) return;
 
     setDeliveryFields({
-      deliveryProfile: deliveryProfileId,
-      cityId: currentProfile.cityId,
+      deliveryProfileId,
+      cityId: currentProfile.city.id,
       street: currentProfile.street,
       house: currentProfile.house,
       apartment: currentProfile.apartment,
@@ -103,6 +149,8 @@ export function Order() {
       floor: currentProfile.floor,
     });
   };
+
+  console.log(deliveryProfiles);
 
   const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
     label: profile.title,
@@ -128,7 +176,10 @@ export function Order() {
               },
             }}
           >
-            <Typography variant="body1">Ваша корзина пуста. Чтобы оформить заказ добавьте товары в корзину.</Typography>
+            <Typography variant="body1">
+              Ваша корзина пуста. Чтобы оформить заказ добавьте товары в
+              корзину.
+            </Typography>
           </CartEmpty>
         </Stack>
       </ShopLayout>
@@ -137,7 +188,11 @@ export function Order() {
   return (
     <ShopLayout>
       <Stack>
-        <Button sx={{ width: '250px', margin: '0 0 30px 0' }} variant="contained" onClick={() => router.push('/')}>
+        <Button
+          sx={{ width: '250px', margin: '0 0 30px 0' }}
+          variant="contained"
+          onClick={() => router.push('/')}
+        >
           На главную
         </Button>
         <Typography variant="h4">{t('title')}</Typography>

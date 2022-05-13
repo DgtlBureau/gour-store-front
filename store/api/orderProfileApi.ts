@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from '../../http/baseQuery';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
+import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 
 export const orderProfileApi = createApi({
   reducerPath: 'orderProfileApi',
@@ -25,12 +26,15 @@ export const orderProfileApi = createApi({
               ]
             : [{ type: 'DeliveryProfile', id: 'LIST' }],
       }),
-      createProduct: builder.mutation<IOrderProfile, Partial<IOrderProfile>>({
+      createOrderProfile: builder.mutation<
+        IOrderProfile,
+        CreateOrderProfileDto
+      >({
         query(profile) {
           return {
             method: 'post',
             url: `order-profiles`,
-            data: profile,
+            body: profile,
           };
         },
         invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
@@ -39,4 +43,5 @@ export const orderProfileApi = createApi({
   },
 });
 
-export const { useGetOrderProfilesListQuery } = orderProfileApi;
+export const { useGetOrderProfilesListQuery, useCreateOrderProfileMutation } =
+  orderProfileApi;

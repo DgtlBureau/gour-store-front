@@ -47,6 +47,7 @@ export const OrderCard = ({
       ? product.weight / 1000
       : product.amount;
     return {
+      id: product.product.id,
       title: product.product.title[lang],
       totalPrice: productTotalPrice,
       totalCount: `${productTotalCount} ${
@@ -67,7 +68,7 @@ export const OrderCard = ({
         {totalProductCount} {productsCountText} в заказе
       </Typography>
       {productInfo.map(product => (
-        <Stack sx={{ margin: '0 0 10px 0' }}>
+        <Stack key={product.id} sx={{ margin: '0 0 10px 0' }}>
           <Typography variant="body1">{product.title}</Typography>
           <Typography variant="body1">
             {product.totalPrice}

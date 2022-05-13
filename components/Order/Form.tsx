@@ -16,7 +16,6 @@ import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
-import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 
 const sx = {
   form: {
@@ -60,6 +59,21 @@ const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
+export type OrderFormType = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  deliveryProfileId: number;
+  cityId: number;
+  street: string;
+  house: string;
+  apartment: string;
+  entrance: string;
+  floor: string;
+  comment?: string;
+};
+
 export type PersonalFields = {
   firstName: string;
   lastName: string;
@@ -69,7 +83,7 @@ export type PersonalFields = {
 };
 
 export type DeliveryFields = {
-  deliveryProfile: number;
+  deliveryProfileId: number;
   cityId: number;
   street: string;
   house: string;
@@ -95,7 +109,7 @@ export type OrderFormProps = {
     label: string;
   }[];
   currency?: 'rub' | 'usd' | 'eur';
-  onSubmit: (data: CreateOrderDto) => void;
+  onSubmit: (data: OrderFormType) => void;
   onChangeDeliveryProfile: (profileId: number) => void;
 };
 
@@ -117,7 +131,7 @@ export function OrderForm({
   const [isAgree, setIsAgree] = useState(false);
   const schema = getValidationSchema(t);
 
-  const values = useForm<CreateOrderDto>({
+  const values = useForm<OrderFormType>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
@@ -133,13 +147,19 @@ export function OrderForm({
     });
   }, [defaultDeliveryFields]);
 
-  const submitHandler = (data: CreateOrderDto) => onSubmit(data);
+  const submitHandler = (data: OrderFormType) => onSubmit(data);
+  const changeHandler = () => {
+    values.setValue('deliveryProfileId', 0);
+  };
 
   const agree = () => setIsAgree(!isAgree);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form
+        onSubmit={values.handleSubmit(submitHandler)}
+        onChange={changeHandler}
+      >
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -162,8 +182,10 @@ export function OrderForm({
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
-                onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfile'))}
-                name="deliveryProfile"
+                onChange={() =>
+                  onChangeDeliveryProfile(values.getValues('deliveryProfileId'))
+                }
+                name="deliveryProfileId"
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
                 sx={sx.select}
@@ -172,7 +194,12 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
+                <HFSelect
+                  name="cityId"
+                  options={citiesList}
+                  placeholder={t('city')}
+                  sx={sx.select}
+                />
               </Grid>
               {addressFields.map(field => (
                 <Grid key={field} item xs={6}>
@@ -197,7 +224,12 @@ export function OrderForm({
               currency={currency}
             />
 
-            <Checkbox sx={sx.agreement} label={t('agreement')} checked={isAgree} onChange={agree} />
+            <Checkbox
+              sx={sx.agreement}
+              label={t('agreement')}
+              checked={isAgree}
+              onChange={agree}
+            />
 
             <Button
               sx={sx.btn}

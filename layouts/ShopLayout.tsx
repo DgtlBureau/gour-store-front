@@ -47,14 +47,14 @@ export function ShopLayout(props: ShopLayoutProps) {
             firstPhone="+7 812 602-52-61"
             secondPhone="+372 880-45-21"
             email="rk@gour-food.com"
-            fb=""
-            inst=""
-            vk=""
-            copyright=""
-            rules=""
-            privacy=""
-            cookie=""
-            terms=""
+            fb="1"
+            inst="2"
+            vk="3"
+            copyright="1"
+            rules="2"
+            privacy="3"
+            cookie="4"
+            terms="5"
           />
         </div>
       </div>
