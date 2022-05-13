@@ -8,7 +8,9 @@ import {
   Grid,
 } from '@mui/material';
 import React, { useState } from 'react';
+import NextLink from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -17,6 +19,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import RusFlagIcon from './../../assets/icons/flags/rus.svg';
+import UKFlagIcon from './../../assets/icons/flags/uk.svg';
 import Logo from '../../assets/images/common-logo.svg';
 
 import { Box } from '../UI/Box/Box';
@@ -28,6 +31,8 @@ import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Header.i18n.json';
+import { LocalConfig } from '../../@types/entities/LocalConfig';
+import { Currency } from '../../@types/entities/Currency';
 
 import sx from './Header.styles';
 
@@ -36,17 +41,16 @@ export type HeaderProps = {
   phone: string;
   selectedCity: string;
   cities: {
-    title: string;
-    value: string;
+    id: number;
+    name: string;
   }[];
   selectedLanguage: 'ru' | 'en';
   basketProductCount: number;
   basketProductSum: number;
-  basketProductCurrency: 'rub' | 'usd' | 'eur';
-  onChangeCity(value: string): void;
+  currency: Currency;
+  onChangeCity(id: number): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
-  onClickLanguage(): void;
   onClickBasket(): void;
   onOpenMobileMenu(): void;
 };
@@ -58,29 +62,32 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  basketProductCurrency,
+  currency,
   onChangeCity,
   onClickFavorite,
   onClickPersonalArea,
-  onClickLanguage,
   onClickBasket,
   onOpenMobileMenu,
 }: HeaderProps) {
   const { t } = useLocalTranslation(translations);
 
+  const router = useRouter();
+
+  const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
+
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
 
-  const handleOpen = () => {
+  const openCityModal = () => {
     setIsCitiesModalOpen(true);
   };
 
-  const handleClose = () => {
+  const closeCityModal = () => {
     setIsCitiesModalOpen(false);
   };
 
-  const handleCityCheck = (cityValue: string) => {
-    onChangeCity(cityValue);
-    handleClose();
+  const selectCity = (id: number) => {
+    onChangeCity(id);
+    closeCityModal();
   };
 
   return (
@@ -103,8 +110,12 @@ export function Header({
               alignItems="center"
               justifyContent="flex-start"
             >
-              <Image src={Logo} height={52} width={58} alt="" />
-
+              <Box sx={{ cursor: 'pointer' }}>
+                <NextLink href='/' passHref>
+                  <Image src={Logo} height={52} width={58} alt="" />
+                </NextLink>
+              </Box>
+            
               <CustomLink
                 path="tel:"
                 variant="body1"
@@ -123,7 +134,7 @@ export function Header({
                   alignItems: 'center',
                   cursor: 'pointer',
                 }}
-                onClick={handleOpen}
+                onClick={openCityModal}
               >
                 <PlaceOutlinedIcon />
                 <Typography sx={{ margin: '0 5px' }} variant="body1">
@@ -163,11 +174,16 @@ export function Header({
                 <PersonIcon sx={{ marginRight: '8px' }} />
                 {t('account')}
               </Button>
-              <Box
-                sx={sx.flag}
-                onClick={onClickLanguage}
-              >
-                <Image src={RusFlagIcon} objectFit="cover" height={24} width={34}  alt="" />
+              <Box sx={sx.flag}>
+                <NextLink href={router.asPath} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
+                  <Image 
+                    src={locale === 'ru' ? RusFlagIcon : UKFlagIcon} 
+                    objectFit="cover" 
+                    height={24} 
+                    width={34}  
+                    alt=""
+                  />
+                </NextLink>
               </Box>
               <Button
                 sx={sx.cart}
@@ -182,7 +198,7 @@ export function Header({
                 >
                   <ShoppingCartOutlinedIcon color="primary" />
                 </Badge>
-                {basketProductSum} {getCurrencySymbol(basketProductCurrency)}
+                {basketProductSum} {getCurrencySymbol(currency)}
               </Button>
               <Button
                 type="button"
@@ -198,7 +214,7 @@ export function Header({
         </Container>
       </AppBar>
 
-      <Dialog open={isCitiesModalOpen} onClose={handleClose} PaperProps={{ sx: sx.paper }}>
+      <Dialog open={isCitiesModalOpen} onClose={closeCityModal} PaperProps={{ sx: sx.paper }}>
         <DialogTitle>{t('cities')}</DialogTitle>
         <DialogContent sx={{ width: 500 }}>
           <Grid container spacing={2}>
@@ -207,15 +223,15 @@ export function Header({
                 item
                 xs={12}
                 md={4}
-                onClick={() => handleCityCheck(city.value)}
-                key={city.value}
+                onClick={() => selectCity(city.id)}
+                key={city.id}
               >
                 <Typography
                   sx={{ cursor: 'pointer' }}
                   variant="body1"
-                  color={city.title === selectedCity ? theme.palette.accent.main : 'inherit'}
+                  color={city.name === selectedCity ? theme.palette.accent.main : 'inherit'}
                 >
-                  {city.title}
+                  {city.name}
                 </Typography>
               </Grid>
             ))}
