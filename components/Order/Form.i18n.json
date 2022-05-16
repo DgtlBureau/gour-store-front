@@ -35,7 +35,8 @@
     "orderError": "Возникла ошибка, попробуйте позже",
     "oneProduct": "товар",
     "someProducts": "товара",
-    "manyProducts": "товаров"
+    "manyProducts": "товаров",
+    "free": "Бесплатно"
   },
   "en": {
     "details": "Contact details",
@@ -73,6 +74,7 @@
     "orderError": "An error occurred, please try again later",
     "oneProduct": "product",
     "someProducts": "products",
-    "manyProducts": "products"
+    "manyProducts": "products",
+    "free": "Free"
   }
 }

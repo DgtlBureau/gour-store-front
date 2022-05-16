@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { useSelector } from 'react-redux';
 import {
   selectedProductCount,
@@ -26,7 +26,7 @@ import {
 } from 'store/api/orderProfileApi';
 import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 import { IOrder } from '../../@types/entities/IOrder';
-import { useGetCitiesListQuery } from 'store/api/cityApi';
+import { useGetCityListQuery } from 'store/api/cityApi';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 
@@ -59,7 +59,7 @@ export function Order() {
     data: citiesList = [],
     isLoading: isCitiesListLoading = false,
     isError: isCitiesListError = false,
-  } = useGetCitiesListQuery();
+  } = useGetCityListQuery();
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
@@ -150,8 +150,6 @@ export function Order() {
     });
   };
 
-  console.log(deliveryProfiles);
-
   const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
     label: profile.title,
     value: profile.id,
@@ -161,6 +159,7 @@ export function Order() {
     value: city.id,
     label: city.name[language],
   }));
+  //TODO: вынести на бек
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
   if (productsInOrder.length === 0)
@@ -168,18 +167,15 @@ export function Order() {
       <ShopLayout>
         <Stack alignItems="center">
           <CartEmpty
-            title={'Корзина пуста'}
+            title={t('emptyBasket')}
             btn={{
-              label: 'На главную',
+              label: t('toHome'),
               onClick: () => {
                 router.push('/');
               },
             }}
           >
-            <Typography variant="body1">
-              Ваша корзина пуста. Чтобы оформить заказ добавьте товары в
-              корзину.
-            </Typography>
+            <Typography variant="body1">{t('emptyBasketText')}</Typography>
           </CartEmpty>
         </Stack>
       </ShopLayout>

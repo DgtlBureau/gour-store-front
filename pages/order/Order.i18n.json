@@ -1,8 +1,14 @@
 {
   "ru": {
-    "title": "Оформление заказа"
+    "title": "Оформление заказа",
+    "emptyBasket": "Корзина пуста",
+    "emptyBasketText": "Ваша корзина пуста. Чтобы оформить заказ добавьте товары в корзину.",
+    "toHome": "На главную"
   },
   "en": {
-    "title": "Checkout"
+    "title": "Checkout",
+    "emptyBasket": "Basket is empty",
+    "emptyBasketText": "Your basket is empty. To place an order, add products to basket.",
+    "toHome": "To home"
   }
 }

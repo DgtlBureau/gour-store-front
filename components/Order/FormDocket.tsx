@@ -101,7 +101,7 @@ export function OrderFormDocket({
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
           {delivery === 0 ? (
-            'Бесплатно'
+            t('free')
           ) : (
             <>
               {delivery}
