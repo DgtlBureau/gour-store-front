@@ -9,7 +9,7 @@ import {
 } from "../../store/slices/orderSlice";
 import translations from './Promotion.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
-import { ShopLayout } from '../../layouts/ShopLayout';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { PromotionHeader } from 'components/PromotionHeader/PromotionHeader';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { ProductCard } from 'components/Product/Card/Card';
@@ -116,7 +116,6 @@ export default function Promotion() {
                       onRemove={() => {
                         dispatch(subtractBasketProduct(product));
                       }}
-                      onEdit={() => {}}
                       onElect={() => {}}
                       onDetail={() => router.push(`products/${product.id}`)}
                       currentCount={count}

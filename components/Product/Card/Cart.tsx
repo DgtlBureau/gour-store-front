@@ -3,7 +3,6 @@ import { Grid, IconButton } from '@mui/material';
 
 import { Box } from '../../UI/Box/Box';
 import { defaultTheme as t } from '../../../themes';
-import { Weight } from '../../../@types/entities/Weight';
 
 import CartIcon from '@mui/icons-material/ShoppingCart';
 import PlusIcon from '@mui/icons-material/Add';

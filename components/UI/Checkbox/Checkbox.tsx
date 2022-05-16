@@ -24,7 +24,10 @@ type Props = {
   checked?: boolean;
   label?: string;
   sx?: SxProps;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  edge?: 'start' | 'end';
+  tabIndex?: number;
+  disableRipple?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function Checkbox({
@@ -33,6 +36,9 @@ export function Checkbox({
   disabled,
   label,
   sx,
+  edge,
+  tabIndex,
+  disableRipple,
   onChange,
 }: Props) {
   return (
@@ -42,6 +48,9 @@ export function Checkbox({
         defaultChecked={defaultChecked}
         disabled={disabled}
         checked={checked}
+        edge={edge}
+        tabIndex={tabIndex}
+        disableRipple={disableRipple}
         onChange={onChange}
       />
       {label && <Typography sx={labelSx}>{label}</Typography>}

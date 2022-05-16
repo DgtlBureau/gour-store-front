@@ -8,9 +8,9 @@ import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './PromotionCard.i18n.json';
 
 type Props = {
-  title: string;
+  title?: string;
   image: string;
-  onMoreClick(): void;
+  onClickMore(): void;
 };
 
 const sx = {
@@ -45,13 +45,13 @@ const sx = {
   },
 };
 
-export function PromotionCard({ title, image, onMoreClick }: Props) {
+export function PromotionCard({ title, image, onClickMore }: Props) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none' }}>
       <Typography variant="subtitle1" sx={sx.title}>{title}</Typography>
-      <Button size="small" onClick={onMoreClick} sx={sx.btn}>
+      <Button size="small" onClick={onClickMore} sx={sx.btn}>
         {t('more')}
       </Button>
     </Box>

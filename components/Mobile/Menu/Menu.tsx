@@ -6,12 +6,15 @@ import {
   Collapse,
   Divider,
 } from '@mui/material';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import Image from 'next/image';
 
 import translations from './Menu.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';
+import { LocalConfig } from '../../../@types/entities/LocalConfig';
 
 import locationIcon from '../../../assets/icons/mobile/location.svg';
 import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
@@ -40,7 +43,6 @@ export type MobileMenuProps = {
     title: string;
     value: string;
   }[];
-  selectedLanguage: 'ru'|'en';
   firstPhone: string;
   secondPhone: string;
   email: string;
@@ -48,7 +50,6 @@ export type MobileMenuProps = {
   inst: string;
   vk: string;
   onChangeCity(value: string): void;
-  onChangeLanguage(value: 'ru' | 'en'): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
   onClickSignout(): void;
@@ -57,7 +58,6 @@ export type MobileMenuProps = {
 export function MobileMenu({
   selectedCity,
   cities,
-  selectedLanguage,
   firstPhone,
   secondPhone,
   email,
@@ -65,7 +65,6 @@ export function MobileMenu({
   inst,
   vk,
   onChangeCity,
-  onChangeLanguage,
   onClickFavorite,
   onClickPersonalArea,
   onClickSignout,
@@ -75,17 +74,16 @@ export function MobileMenu({
 
   const { t } = useLocalTranslation(translations);
 
+  const router = useRouter();
+
+  const locale: keyof LocalConfig = router?.locale as keyof LocalConfig || 'ru';
+
   const currentCity = cities.find(city => city.value === selectedCity);
-  const currentLanguage = languages.find(language => language.value === selectedLanguage);
+  const currentLanguage = languages.find(language => language.value === locale);
 
   const selectCity = (value: string) => {
     onChangeCity(value);
     setCitiesIsOpened(false);
-  };
-
-  const selectLanguage = (value: 'ru' | 'en') => {
-    onChangeLanguage(value);
-    setLanguagesIsOpened(false);
   };
 
   return (
@@ -161,17 +159,19 @@ export function MobileMenu({
               <Fragment key={language.title}>
                 <ListItemButton
                   sx={{ ...sx.listItem, ...sx.languageItem }}
-                  onClick={() => selectLanguage(language.value as typeof selectedLanguage)}
+                  onClick={() => setLanguagesIsOpened(false)}
                 >
-                  <Typography
-                    sx={Object.assign([
-                      sx.title,
-                      sx.languageTitle,
-                      language.value === currentLanguage?.value && sx.accent,
-                    ])}
-                  >
-                    {language.title}
-                  </Typography>
+                  <NextLink href={router.asPath} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
+                    <Typography
+                      sx={Object.assign([
+                        sx.title,
+                        sx.languageTitle,
+                        language.value === currentLanguage?.value && sx.accent,
+                      ])}
+                    >
+                      {language.title}
+                    </Typography>
+                  </NextLink>
                 </ListItemButton>
                 <Divider sx={sx.divider} />
               </Fragment>
