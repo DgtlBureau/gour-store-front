@@ -1,5 +1,5 @@
 export type SignUpDto = Readonly<{
-  type: 'physical' | 'organization' | 'procurementOrganizer';
+  role: 'CLIENT' | 'COMPANY' | 'COLLECTIVE_PURCHASE';
   phone: string;
   sms: string;
   password: string;
