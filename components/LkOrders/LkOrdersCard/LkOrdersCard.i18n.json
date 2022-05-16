@@ -1,8 +1,18 @@
 {
-  "en": {
-    "test": "Test"
-  },
   "ru": {
-    "test": "Тест"
+    "deliveryAddress": "Адрес доставки",
+    "receiver": "Получатель",
+    "goodsWorth": "Товары на сумму",
+    "economy": "Всего вы экономите",
+    "total": "Итого",
+    "delivery": "Доставка"
+  },
+  "en": {
+    "deliveryAddress": "Delivery address",
+    "receiver": "Receiver",
+    "goodsWorth": "Goods worth",
+    "economy": "Total you save",
+    "total": "Total",
+    "delivery": "Delivery"
   }
 }

@@ -1,0 +1,47 @@
+import { Card, CardContent, CardMedia, Divider } from '@mui/material';
+import { Box } from '@mui/system';
+import { Typography } from '../../UI/Typography/Typography';
+import React from 'react';
+
+import sx from './ProductCard.styles';
+import { Currency } from '../../../@types/entities/Currency';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+
+export type OrderProductType = {
+  photo: string;
+  title: string;
+  weight: number;
+  amount: number;
+  cost: number;
+  isWeightGood: boolean;
+};
+
+type LkOrderProductCardProps = {
+  product: OrderProductType;
+  currency: Currency;
+};
+
+export const OrderProductCard = ({
+  currency,
+  product,
+}: LkOrderProductCardProps) => {
+  const { photo, title, weight, amount, cost, isWeightGood } = product;
+  return (
+    <Card sx={sx.card}>
+      <CardMedia sx={sx.image} component="img" image={photo} />
+      <Box sx={sx.info}>
+        <CardContent sx={sx.content}>
+          <Typography variant="body1" sx={sx.title}>
+            {title}
+          </Typography>
+          <Typography variant="body1" sx={sx.title}>
+            {isWeightGood ? `${amount}шт. / ${weight}г.` : `${weight} г.`}
+          </Typography>
+          <Typography variant="body1" sx={sx.title}>
+            {cost} {getCurrencySymbol(currency)}
+          </Typography>
+        </CardContent>
+      </Box>
+    </Card>
+  );
+};
