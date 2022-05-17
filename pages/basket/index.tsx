@@ -44,7 +44,7 @@ export function Basket({}: basketProps) {
     );
   }, 0);
 
-  const sumToFreeDelivery = 2990 - sum;
+  const sumToFreeDelivery = 2990 - sum; //TODO: вынести логику стоимости заказа на бек
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
   const handleClickOrder = () => {};
@@ -107,7 +107,7 @@ export function Basket({}: basketProps) {
                 count={count}
                 weight={weight}
                 price={sum}
-                delivery={isDeliveryFree ? 0 : 500}
+                delivery={isDeliveryFree ? 0 : 500} //TODO: вынести логику стоимости заказа на бек
                 discount={sumDiscount}
               />
               {!isDeliveryFree && (

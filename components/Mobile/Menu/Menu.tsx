@@ -1,20 +1,16 @@
 import React, { useState, Fragment } from 'react';
-import {
-  Box,
-  List,
-  ListItemButton,
-  Collapse,
-  Divider,
-} from '@mui/material';
+import { Box, List, ListItemButton, Collapse, Divider } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import Image from 'next/image';
 
 import translations from './Menu.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import {
+  useLocalTranslation,
+  LocalConfig,
+} from '../../../hooks/useLocalTranslation';
 import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';
-import { LocalConfig } from '../../../@types/entities/LocalConfig';
 
 import locationIcon from '../../../assets/icons/mobile/location.svg';
 import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
@@ -76,7 +72,8 @@ export function MobileMenu({
 
   const router = useRouter();
 
-  const locale: keyof LocalConfig = router?.locale as keyof LocalConfig || 'ru';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const currentCity = cities.find(city => city.value === selectedCity);
   const currentLanguage = languages.find(language => language.value === locale);
@@ -94,13 +91,15 @@ export function MobileMenu({
       >
         <Box sx={sx.city}>
           <Box sx={sx.locationIcon}>
-            <Image src={locationIcon} layout="fill" alt=""/>
+            <Image src={locationIcon} layout="fill" alt="" />
           </Box>
 
           <Typography sx={sx.title}>{currentCity?.title}</Typography>
         </Box>
 
-        <Box sx={Object.assign([sx.arrowIcon, citiesIsOpened && sx.invertedArrow])}>
+        <Box
+          sx={Object.assign([sx.arrowIcon, citiesIsOpened && sx.invertedArrow])}
+        >
           <Image src={arrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
@@ -109,27 +108,25 @@ export function MobileMenu({
 
       <Collapse in={citiesIsOpened} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {
-            cities.map(city => (
-              <Fragment key={city.title}>
-                <ListItemButton
-                  sx={sx.listItem}
-                  onClick={() => selectCity(city.value)}
+          {cities.map(city => (
+            <Fragment key={city.title}>
+              <ListItemButton
+                sx={sx.listItem}
+                onClick={() => selectCity(city.value)}
+              >
+                <Typography
+                  sx={Object.assign([
+                    sx.title,
+                    sx.cityTitle,
+                    city.value === currentCity?.value && sx.accent,
+                  ])}
                 >
-                  <Typography
-                    sx={Object.assign([
-                      sx.title,
-                      sx.cityTitle,
-                      city.value === currentCity?.value && sx.accent,
-                    ])}
-                  >
-                    {city.title}
-                  </Typography>
-                </ListItemButton>
-                <Divider sx={sx.divider} />
-              </Fragment>
-            ))
-          }
+                  {city.title}
+                </Typography>
+              </ListItemButton>
+              <Divider sx={sx.divider} />
+            </Fragment>
+          ))}
         </List>
       </Collapse>
 
@@ -145,7 +142,12 @@ export function MobileMenu({
           <Typography sx={sx.title}>{currentLanguage?.title}</Typography>
         </Box>
 
-        <Box sx={Object.assign([sx.arrowIcon, languagesIsOpened && sx.invertedArrow])}>
+        <Box
+          sx={Object.assign([
+            sx.arrowIcon,
+            languagesIsOpened && sx.invertedArrow,
+          ])}
+        >
           <Image src={arrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
@@ -154,33 +156,38 @@ export function MobileMenu({
 
       <Collapse in={languagesIsOpened} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {
-            languages.map(language => (
-              <Fragment key={language.title}>
-                <ListItemButton
-                  sx={{ ...sx.listItem, ...sx.languageItem }}
-                  onClick={() => setLanguagesIsOpened(false)}
+          {languages.map(language => (
+            <Fragment key={language.title}>
+              <ListItemButton
+                sx={{ ...sx.listItem, ...sx.languageItem }}
+                onClick={() => setLanguagesIsOpened(false)}
+              >
+                <NextLink
+                  href={router.asPath}
+                  locale={locale === 'ru' ? 'en' : 'ru'}
+                  passHref
                 >
-                  <NextLink href={router.asPath} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
-                    <Typography
-                      sx={Object.assign([
-                        sx.title,
-                        sx.languageTitle,
-                        language.value === currentLanguage?.value && sx.accent,
-                      ])}
-                    >
-                      {language.title}
-                    </Typography>
-                  </NextLink>
-                </ListItemButton>
-                <Divider sx={sx.divider} />
-              </Fragment>
-            ))
-          }
+                  <Typography
+                    sx={Object.assign([
+                      sx.title,
+                      sx.languageTitle,
+                      language.value === currentLanguage?.value && sx.accent,
+                    ])}
+                  >
+                    {language.title}
+                  </Typography>
+                </NextLink>
+              </ListItemButton>
+              <Divider sx={sx.divider} />
+            </Fragment>
+          ))}
         </List>
       </Collapse>
 
-      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickPersonalArea}>
+      <ListItemButton
+        sx={{ ...sx.listItem, ...sx.bigItem }}
+        onClick={onClickPersonalArea}
+      >
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -190,7 +197,10 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickFavorite}>
+      <ListItemButton
+        sx={{ ...sx.listItem, ...sx.bigItem }}
+        onClick={onClickFavorite}
+      >
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -207,12 +217,12 @@ export function MobileMenu({
       <Divider sx={sx.divider} />
 
       <MobileMenuContacts
-       firstPhone={firstPhone}
-       secondPhone={secondPhone}
-       email={email}
-       fb={fb}
-       inst={inst}
-       vk={vk}
+        firstPhone={firstPhone}
+        secondPhone={secondPhone}
+        email={email}
+        fb={fb}
+        inst={inst}
+        vk={vk}
       />
     </List>
   );

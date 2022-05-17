@@ -29,9 +29,11 @@ import { Link as CustomLink } from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { defaultTheme as theme } from '../../themes';
-import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import {
+  useLocalTranslation,
+  LocalConfig,
+} from '../../hooks/useLocalTranslation';
 import translations from './Header.i18n.json';
-import { LocalConfig } from '../../@types/entities/LocalConfig';
 import { Currency } from '../../@types/entities/Currency';
 
 import sx from './Header.styles';
@@ -73,7 +75,8 @@ export function Header({
 
   const router = useRouter();
 
-  const locale: keyof LocalConfig= router?.locale as keyof LocalConfig || 'ru';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
 
@@ -111,11 +114,11 @@ export function Header({
               justifyContent="flex-start"
             >
               <Box sx={{ cursor: 'pointer' }}>
-                <NextLink href='/' passHref>
+                <NextLink href="/" passHref>
                   <Image src={Logo} height={52} width={58} alt="" />
                 </NextLink>
               </Box>
-            
+
               <CustomLink
                 path="tel:"
                 variant="body1"
@@ -175,12 +178,16 @@ export function Header({
                 {t('account')}
               </Button>
               <Box sx={sx.flag}>
-                <NextLink href={router.asPath} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
-                  <Image 
-                    src={locale === 'ru' ? RusFlagIcon : UKFlagIcon} 
-                    objectFit="cover" 
-                    height={24} 
-                    width={34}  
+                <NextLink
+                  href={router.asPath}
+                  locale={locale === 'ru' ? 'en' : 'ru'}
+                  passHref
+                >
+                  <Image
+                    src={locale === 'ru' ? RusFlagIcon : UKFlagIcon}
+                    objectFit="cover"
+                    height={24}
+                    width={34}
                     alt=""
                   />
                 </NextLink>
@@ -194,7 +201,7 @@ export function Header({
                 <Badge
                   sx={{ margin: '0 15px 0 0' }}
                   badgeContent={basketProductCount}
-                  color='primary'
+                  color="primary"
                 >
                   <ShoppingCartOutlinedIcon color="primary" />
                 </Badge>
@@ -214,7 +221,11 @@ export function Header({
         </Container>
       </AppBar>
 
-      <Dialog open={isCitiesModalOpen} onClose={closeCityModal} PaperProps={{ sx: sx.paper }}>
+      <Dialog
+        open={isCitiesModalOpen}
+        onClose={closeCityModal}
+        PaperProps={{ sx: sx.paper }}
+      >
         <DialogTitle>{t('cities')}</DialogTitle>
         <DialogContent sx={{ width: 500 }}>
           <Grid container spacing={2}>
@@ -229,7 +240,11 @@ export function Header({
                 <Typography
                   sx={{ cursor: 'pointer' }}
                   variant="body1"
-                  color={city.name === selectedCity ? theme.palette.accent.main : 'inherit'}
+                  color={
+                    city.name === selectedCity
+                      ? theme.palette.accent.main
+                      : 'inherit'
+                  }
                 >
                   {city.name}
                 </Typography>

@@ -8,7 +8,10 @@ import {
   subtractBasketProduct,
 } from '../../store/slices/orderSlice';
 import translations from './Promotion.i18n.json';
-import { useLocalTranslation } from './../../hooks/useLocalTranslation';
+import {
+  useLocalTranslation,
+  LocalConfig,
+} from './../../hooks/useLocalTranslation';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { PromotionHeader } from 'components/PromotionHeader/PromotionHeader';
 import { CardSlider } from 'components/CardSlider/CardSlider';
@@ -19,7 +22,6 @@ import { Link as CustomLink } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
 import { useGetProductListQuery } from 'store/api/productApi';
 import { useAppSelector } from 'hooks/store';
-import { LocalConfig } from '../../@types/entities/LocalConfig';
 import { defaultTheme as theme } from 'themes';
 
 const sx = {
