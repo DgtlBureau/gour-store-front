@@ -1,8 +1,32 @@
 {
   "en": {
-    "test": "Test"
+    "city": "City",
+    "street": "Street",
+    "house": "House",
+    "apartment": "Apartment",
+    "entrance": "Entrance",
+    "floor": "Floor",
+    "titleRequired": "Title is required",
+    "cityRequired": "City is required",
+    "streetRequired": "Street  is required",
+    "houseRequired": "House number is required",
+    "save": "Save",
+    "cancel": "Cancel",
+    "isMain": "Set as main shipping address"
   },
   "ru": {
-    "test": "Тест"
+    "city": "Город",
+    "street": "Улица",
+    "house": "Номер дома",
+    "apartment": "Номер квартиры",
+    "entrance": "Подъезд",
+    "floor": "Этаж",
+    "titleRequired": "Укажите название",
+    "cityRequired": "Укажите город",
+    "streetRequired": "Укажите улицу",
+    "houseRequired": "Укажите номер дома",
+    "isMain": "Сделать главным адресом доставки",
+    "save": "Сохранить",
+    "cancel": "Отменить"
   }
 }
