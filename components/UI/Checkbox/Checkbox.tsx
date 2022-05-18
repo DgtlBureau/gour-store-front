@@ -21,8 +21,9 @@ const checkSx = {
 type Props = {
   defaultChecked?: boolean;
   disabled?: boolean;
-  checked?: boolean;
+  value?: boolean;
   label?: string;
+  name?: string;
   sx?: SxProps;
   edge?: 'start' | 'end';
   tabIndex?: number;
@@ -32,9 +33,10 @@ type Props = {
 
 export function Checkbox({
   defaultChecked,
-  checked,
+  value,
   disabled,
   label,
+  name,
   sx,
   edge,
   tabIndex,
@@ -45,9 +47,10 @@ export function Checkbox({
     <Box sx={{ ...boxSx, ...sx }}>
       <MUICheckbox
         sx={checkSx}
+        name={name}
         defaultChecked={defaultChecked}
         disabled={disabled}
-        checked={checked}
+        checked={value}
         edge={edge}
         tabIndex={tabIndex}
         disableRipple={disableRipple}
