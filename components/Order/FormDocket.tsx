@@ -6,7 +6,7 @@ import { getDeclensionWordByCount } from '../../utils/wordHelper';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import translations from './OrderForm.i18n.json';
+import translations from './Form.i18n.json';
 
 const sx = {
   docket: {
@@ -16,7 +16,6 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '10px',
     color: theme.palette.text.muted,
     '&:last-child': {
       marginBottom: '10px',
@@ -48,7 +47,7 @@ type Props = {
   discount?: number;
   delivery: number;
   currency?: 'rub' | 'usd' | 'eur';
-}
+};
 
 export function OrderFormDocket({
   productsCount,
@@ -73,9 +72,7 @@ export function OrderFormDocket({
     <Box sx={sx.docket}>
       <Box sx={sx.field}>
         <Typography variant="body1" sx={sx.label}>
-          {productsCount}
-          {' '}
-          {productsDeclision}
+          {productsCount} {productsDeclision}
         </Typography>
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
@@ -84,31 +81,40 @@ export function OrderFormDocket({
         </Typography>
       </Box>
 
-      {
-        !!discount && (
-          <Box sx={sx.field}>
-            <Typography variant="body1" sx={sx.label}>{t('discount')}</Typography>
-            <hr style={sx.divider} />
-            <Typography variant="h6" sx={{ ...sx.value, ...sx.discountValue }}>
-              -
-              {discount}
-              {currencySymbol}
-            </Typography>
-          </Box>
-        )
-      }
+      {!!discount && (
+        <Box sx={sx.field}>
+          <Typography variant="body1" sx={sx.label}>
+            {t('discount')}
+          </Typography>
+          <hr style={sx.divider} />
+          <Typography variant="h6" sx={{ ...sx.value, ...sx.discountValue }}>
+            -{discount}
+            {currencySymbol}
+          </Typography>
+        </Box>
+      )}
 
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>{t('delivery')}</Typography>
+        <Typography variant="body1" sx={sx.label}>
+          {t('delivery')}
+        </Typography>
         <hr style={sx.divider} />
         <Typography variant="h6" sx={sx.value}>
-          {delivery}
-          {currencySymbol}
+          {delivery === 0 ? (
+            t('free')
+          ) : (
+            <>
+              {delivery}
+              {currencySymbol}
+            </>
+          )}
         </Typography>
       </Box>
 
       <Box sx={{ ...sx.field, ...sx.total }}>
-        <Typography variant="body1" sx={sx.label}>{t('total')}</Typography>
+        <Typography variant="body1" sx={sx.label}>
+          {t('total')}
+        </Typography>
         <hr style={sx.divider} />
         <Typography variant="h5" sx={sx.value}>
           {total}

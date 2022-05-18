@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
@@ -11,14 +11,14 @@ import { Checkbox } from '../UI/Checkbox/Checkbox';
 import { HFTextField } from '../HookForm/HFTextField';
 import { HFSelect } from '../HookForm/HFSelect';
 import { HFTextarea } from '../HookForm/HFTextarea';
-import { OrderFormDocket } from './OrderFormDocket';
+import { OrderFormDocket } from './FormDocket';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import translations from './OrderForm.i18n.json';
+import translations from './Form.i18n.json';
 
 const sx = {
   form: {
-    maxWidth: '650px',
+    width: '100%',
   },
   block: {
     marginBottom: '40px',
@@ -56,85 +56,109 @@ const sx = {
 
 const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
 
-const addressFields = [
-  'city',
-  'street',
-  'house',
-  'apartment',
-  'entrance',
-  'floor',
-];
+const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
-export type OrderFields = {
+export type OrderFormType = {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
-
-  deliveryProfile: string;
-  city: string;
+  deliveryProfileId: number;
+  cityId: number;
   street: string;
   house: string;
   apartment: string;
   entrance: string;
   floor: string;
+  comment?: string;
+};
 
+export type PersonalFields = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
   comment: string;
-  promo: string;
+};
+
+export type DeliveryFields = {
+  deliveryProfileId: number;
+  cityId: number;
+  street: string;
+  house: string;
+  apartment: string;
+  entrance: string;
+  floor: string;
 };
 
 export type OrderFormProps = {
-  order: OrderFields;
+  defaultPersonalFields: PersonalFields;
+  defaultDeliveryFields: DeliveryFields;
   productsCount: number;
   cost: number;
   discount?: number;
+  citiesList: {
+    value: number;
+    label: string;
+  }[];
+  isSubmitError?: boolean;
   delivery: number;
   deliveryProfiles: {
-    value: string;
+    value: number;
     label: string;
   }[];
   currency?: 'rub' | 'usd' | 'eur';
-  onSubmit: (data: OrderFields) => void;
-  onPromo: (code: string) => string | undefined;
+  onSubmit: (data: OrderFormType) => void;
+  onChangeDeliveryProfile: (profileId: number) => void;
 };
 
 export function OrderForm({
-  order,
+  defaultPersonalFields,
+  defaultDeliveryFields,
   productsCount,
   cost,
   discount,
   delivery,
   deliveryProfiles,
+  isSubmitError,
+  onChangeDeliveryProfile,
+  citiesList,
   currency,
   onSubmit,
-  onPromo,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
-
   const [isAgree, setIsAgree] = useState(false);
-  const [promoText, setPromoText] = useState('');
-
   const schema = getValidationSchema(t);
 
-  const values = useForm<OrderFields>({
-    defaultValues: order,
-    mode: 'onBlur',
+  const values = useForm<OrderFormType>({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
+    defaultValues: {
+      ...defaultPersonalFields,
+      ...defaultDeliveryFields,
+    },
   });
 
-  const submitHandler = (data: OrderFields) => onSubmit(data);
+  useEffect(() => {
+    values.reset({
+      ...values.getValues(),
+      ...defaultDeliveryFields,
+    });
+  }, [defaultDeliveryFields]);
+
+  const submitHandler = (data: OrderFormType) => onSubmit(data);
+  const changeHandler = () => {
+    values.setValue('deliveryProfileId', 0);
+  };
 
   const agree = () => setIsAgree(!isAgree);
 
-  const applyPromo = () => {
-    const promo = onPromo(values.watch('promo'));
-    if (promo) setPromoText(String(promo));
-    else values.setError('promo', { message: t('promoError') });
-  };
-
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form
+        onSubmit={values.handleSubmit(submitHandler)}
+        onChange={changeHandler}
+      >
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -155,14 +179,27 @@ export function OrderForm({
               {t('address')}
             </Typography>
 
-            <HFSelect
-              name="deliveryProfile"
-              options={deliveryProfiles}
-              placeholder={t('profileSelect')}
-              sx={sx.select}
-            />
+            {deliveryProfiles.length !== 0 && (
+              <HFSelect
+                onChange={() =>
+                  onChangeDeliveryProfile(values.getValues('deliveryProfileId'))
+                }
+                name="deliveryProfileId"
+                options={deliveryProfiles}
+                placeholder={t('profileSelect')}
+                sx={sx.select}
+              />
+            )}
 
             <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <HFSelect
+                  name="cityId"
+                  options={citiesList}
+                  placeholder={t('city')}
+                  sx={sx.select}
+                />
+              </Grid>
               {addressFields.map(field => (
                 <Grid key={field} item xs={6}>
                   <HFTextField name={field} label={t(field)} />
@@ -172,30 +209,11 @@ export function OrderForm({
                 <HFTextarea
                   sx={sx.textarea}
                   name="comment"
-                  label={t('commet')}
+                  label={t('comment')}
                   placeholder={t('commentPlaceholder')}
                 />
               </Grid>
             </Grid>
-
-            <Grid container spacing={1} sx={sx.promo}>
-              <Grid item xs={6}>
-                <HFTextField name="promo" label={t('promo')} />
-              </Grid>
-              <Grid item xs={3}>
-                <Button sx={sx.btn} onClick={applyPromo}>
-                  {t('promoApply')}
-                </Button>
-              </Grid>
-              {promoText && (
-                <Grid item xs={12}>
-                  <Typography variant="body1" sx={sx.promoText}>
-                    {promoText}
-                  </Typography>
-                </Grid>
-              )}
-            </Grid>
-
             <OrderFormDocket
               productsCount={productsCount}
               cost={cost}
@@ -215,8 +233,9 @@ export function OrderForm({
               sx={sx.btn}
               type="submit"
               disabled={!values.formState.isValid || !isAgree}
+              color={!isSubmitError ? 'primary' : 'error'}
             >
-              {t('toPay')}
+              {!isSubmitError ? t('toPay') : t('orderError')}
             </Button>
           </Box>
         </Box>

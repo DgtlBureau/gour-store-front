@@ -10,12 +10,13 @@ type Props<V> = {
   placeholder: string;
   options: SelectOption<V>[];
   defaultValue?: SelectOption<V>['value'];
+  onChange?: () => void;
   type?: string;
   label?: string;
   sx?: SxProps;
 };
 
-export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
+export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Props<V>) {
   const {
     control,
     formState: { errors },
@@ -25,6 +26,9 @@ export function HFSelect<V>({ name, defaultValue, sx, ...props }: Props<V>) {
     <Box sx={sx}>
       <Controller
         name={name}
+        rules={{
+          onChange,
+        }}
         control={control}
         defaultValue={defaultValue || ''}
         render={({ field: { ref, onChange, ...rest } }) => (

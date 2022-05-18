@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQueryWithReauth } from "../../http/baseQuery";
+import { baseQueryWithReauth } from '../../http/baseQuery';
 import { ICity } from '../../@types/entities/ICity';
 
 export const cityApi = createApi({
@@ -14,20 +14,22 @@ export const cityApi = createApi({
           return {
             method: 'GET',
             url: 'cities',
-          }
+          };
         },
-        providesTags: (result) =>
-          result ? [
-            ...result.map(({ id }) => ({ type: 'City', id } as const)),
-            { type: 'City', id: 'LIST' },
-          ] : [{ type: 'City', id: 'LIST' }],
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'City', id } as const)),
+                { type: 'City', id: 'LIST' },
+              ]
+            : [{ type: 'City', id: 'LIST' }],
       }),
       getCity: builder.query<ICity, number>({
         query(id) {
           return {
             method: 'GET',
             url: `cities/${id}`,
-          }
+          };
         },
         providesTags: (r, e, id) => [{ type: 'City', id }],
       }),
@@ -36,8 +38,8 @@ export const cityApi = createApi({
           return {
             method: 'POST',
             url: `cities`,
-            data: city
-          }
+            data: city,
+          };
         },
         invalidatesTags: [{ type: 'City', id: 'LIST' }],
       }),
@@ -46,8 +48,8 @@ export const cityApi = createApi({
           return {
             method: 'PUT',
             url: `cities/${city.id}`,
-            data: city
-          }
+            data: city,
+          };
         },
         invalidatesTags: (r, e, { id }) => [{ type: 'City', id }],
       }),
@@ -56,13 +58,13 @@ export const cityApi = createApi({
           return {
             method: 'DELETE',
             url: `cities/${id}`,
-          }
+          };
         },
         invalidatesTags: [{ type: 'City', id: 'LIST' }],
-      })
-    }
-  }
-})
+      }),
+    };
+  },
+});
 
 export const {
   useCreateCityMutation,
