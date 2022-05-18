@@ -15,7 +15,7 @@ export const DefaultPhoneChangeModal = Template.bind({});
 
 const props: Partial<PhoneChangeModalProps> = {
   isOpen: true,
-  onSendSMS: phone => '1234',
+  error: 'Неверный код!'
 };
 
 DefaultPhoneChangeModal.args = props;

@@ -8,4 +8,5 @@ export type Translator = (str: string) => string;
 
 export const getSchema = (t: Translator) => yup.object().shape({
   phone: yup.string().required(t('phoneEmpty')).matches(phoneRegExp, t('phoneError')),
+  sms: yup.string().required(t('smsEmpty')),
 });

@@ -28,6 +28,9 @@ const sx = {
     marginTop: '8px',
     color: 'text.muted',
   },
+  error: {
+    marginTop: '8px',
+  },
   divider: {
     height: 28,
     marginRight: '14px',
@@ -37,21 +40,21 @@ const sx = {
 export type PhoneChangeModalProps = {
   isOpen: boolean;
   defaultValues?: PhoneChangeDto;
+  error?: string;
   onClose(): void;
-  onSendSMS(phone: string): string;
+  onSendSMS(phone: string): void;
   onSubmit(data: PhoneChangeDto): void;
 };
 
 export function PhoneChangeModal({
   isOpen,
   defaultValues,
+  error,
   onClose,
   onSendSMS,
   onSubmit,
 }: PhoneChangeModalProps) {
-  const [sms, setSMS] = useState('');
   const [seconds, setSeconds] = useState(0);
-  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const { t } = useLocalTranslation(translations);
 
@@ -63,13 +66,13 @@ export function PhoneChangeModal({
     defaultValues,
   });
 
-  const formIsInvalid = !values.formState.isValid || !isConfirmed;
+  const formIsInvalid = !values.formState.isValid;
   const sendingIsDisabled = !!seconds || !values.watch('phone') || !!values.getFieldState('phone').error;
 
   const startTimer = () => {
     setSeconds(30);
 
-    let intervalId = +setInterval(() => {
+    let intervalId = setInterval(() => {
       setSeconds(seconds => seconds - 1);
     }, 1000);
 
@@ -80,23 +83,11 @@ export function PhoneChangeModal({
     if (seconds !== 0) return;
 
     const phone = values.watch('phone');
-    const code = onSendSMS(phone);
 
-    setSMS(code);
+    onSendSMS(phone);
+
     startTimer();
   }
-
-  const blurSMSField = () => {
-    const code = values.watch('sms');
-
-    if (!code.trim()) values.setError('sms', { message: t('smsEmpty') });
-    else if (code !== sms) values.setError('sms', { message: t('smsError') });
-    else values.clearErrors('sms');
-    
-    const codeIsValid = !values.getFieldState('sms').error;
-
-    setIsConfirmed(codeIsValid);
-  };
 
   const submit = (data: PhoneChangeDto) => onSubmit(data);
 
@@ -130,16 +121,11 @@ export function PhoneChangeModal({
                   ),
                 }}
               />
-              {
-                !!sms && (
-                  <HFTextField
-                    label={t('sms')}
-                    name="sms"
-                    onBlur={blurSMSField}
-                    sx={sx.smsField}
-                  />
-                )
-              }
+              <HFTextField
+                label={t('sms')}
+                name="sms"
+                sx={sx.smsField}
+              />
               {
                 seconds !== 0 && (
                   <Box sx={sx.timer}>
@@ -152,6 +138,13 @@ export function PhoneChangeModal({
                       {t('seconds')}
                     </Typography>
                   </Box>
+                )
+              }
+              {
+                !!error && (
+                  <Typography sx={sx.error} variant="body2" color="error">
+                    {error}
+                  </Typography>
                 )
               }
             </form>
