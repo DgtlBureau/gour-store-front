@@ -50,6 +50,10 @@ export const LkOrderProfileForm = ({ orderProfile, cities, onSave }: Props) => {
     onSave(orderProfileData);
   };
 
+  const onCancel = () => {
+    values.reset(orderProfile);
+  };
+
   return (
     <FormProvider {...values}>
       <form onSubmit={values.handleSubmit(submitHandler)}>
@@ -81,7 +85,7 @@ export const LkOrderProfileForm = ({ orderProfile, cities, onSave }: Props) => {
             <Button sx={{ margin: '0 10px 0 0' }} type="submit">
               {t('save')}
             </Button>
-            <Button>{t('cancel')}</Button>
+            <Button onClick={onCancel}>{t('cancel')}</Button>
           </Box>
         </Stack>
       </form>

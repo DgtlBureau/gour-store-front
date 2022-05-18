@@ -1,8 +1,8 @@
 {
   "en": {
-    "city": "City*",
-    "street": "Street*",
-    "house": "House*",
+    "city": "City",
+    "street": "Street",
+    "house": "House",
     "apartment": "Apartment",
     "entrance": "Entrance",
     "floor": "Floor",
@@ -15,9 +15,9 @@
     "isMain": "Set as main shipping address"
   },
   "ru": {
-    "city": "Город*",
-    "street": "Улица*",
-    "house": "Номер дома*",
+    "city": "Город",
+    "street": "Улица",
+    "house": "Номер дома",
     "apartment": "Номер квартиры",
     "entrance": "Подъезд",
     "floor": "Этаж",
