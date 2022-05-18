@@ -1,8 +1,28 @@
 {
   "en": {
-    "test": "Test"
+    "firstName": "First name",
+    "lastName": "Last name",
+    "referralCode": "Referral code",
+    "phone": "Phone",
+    "email": "E-mail",
+    "password": "Password",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "referralCodeRequired": "Referral code is required",
+    "submit": "Submit",
+    "cancel": "Cancel"
   },
   "ru": {
-    "test": "Тест"
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "referralCode": "Реферальный код",
+    "phone": "Номер телефона",
+    "email": "E-mail",
+    "password": "Пароль",
+    "firstNameRequired": "Укажите имя",
+    "lastNameRequired": "Укажите фамилию",
+    "referralCodeRequired": "Укажите реферальный код",
+    "submit": "Сохранить",
+    "cancel": "Отмена"
   }
 }
