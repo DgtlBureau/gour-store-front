@@ -52,7 +52,9 @@ export function EmailChangeModal({
     resolver: yupResolver(schema),
   });
 
-  const submitHandler = () => {};
+  const submitHandler = (formData: { email: string }) => {
+    onChange(formData.email);
+  };
 
   return (
     <Modal open={true} onClose={onClose}>
@@ -71,7 +73,7 @@ export function EmailChangeModal({
                 label={t('passwordConfirm')}
               />
               <Button type="submit" sx={sx.submitBtn}>
-                Отправить
+                {t('send')}
               </Button>
             </Stack>
           </form>
