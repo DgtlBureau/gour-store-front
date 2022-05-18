@@ -78,7 +78,7 @@ export function LkOrdersCard({
               <Typography variant="h6">{title}</Typography>
               <Chip label="Создан" color="primary" />
               <Typography variant="body1">
-                от {createdDate} в {createdTime}
+                {t('from')} {createdDate} {t('at')} {createdTime}
               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2}>

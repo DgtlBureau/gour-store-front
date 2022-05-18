@@ -76,7 +76,7 @@ export const OrderInfoCard = ({
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="body2">Доставка</Typography>
+        <Typography variant="body2">{t('delivery')}</Typography>
         <Typography variant="body2">
           {deliveryCost} {getCurrencySymbol(currency)}
         </Typography>

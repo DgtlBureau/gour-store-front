@@ -5,7 +5,11 @@
     "goodsWorth": "Товары на сумму",
     "economy": "Всего вы экономите",
     "total": "Итого",
-    "delivery": "Доставка"
+    "delivery": "Доставка",
+    "from": "от",
+    "at": "в",
+    "g": "г",
+    "pc": "шт"
   },
   "en": {
     "deliveryAddress": "Delivery address",
@@ -13,6 +17,11 @@
     "goodsWorth": "Goods worth",
     "economy": "Total you save",
     "total": "Total",
-    "delivery": "Delivery"
+    "delivery": "Delivery",
+
+    "from": "from",
+    "at": "at",
+    "g": "g",
+    "pc": "шт"
   }
 }

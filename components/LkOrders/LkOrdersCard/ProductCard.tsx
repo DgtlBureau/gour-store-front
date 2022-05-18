@@ -6,6 +6,8 @@ import React from 'react';
 import sx from './ProductCard.styles';
 import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import translations from './LkOrdersCard.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 
 export type OrderProductType = {
   photo: string;
@@ -25,6 +27,7 @@ export const OrderProductCard = ({
   currency,
   product,
 }: LkOrderProductCardProps) => {
+  const { t } = useLocalTranslation(translations);
   const { photo, title, weight, amount, cost, isWeightGood } = product;
   return (
     <Card sx={sx.card}>
@@ -35,7 +38,9 @@ export const OrderProductCard = ({
             {title}
           </Typography>
           <Typography variant="body1" sx={sx.title}>
-            {isWeightGood ? `${amount}шт. / ${weight}г.` : `${weight} г.`}
+            {isWeightGood
+              ? `${amount}${t('pc')}. / ${weight}${t('g')}.`
+              : `${weight}${t('g')}.`}
           </Typography>
           <Typography variant="body1" sx={sx.title}>
             {cost} {getCurrencySymbol(currency)}
