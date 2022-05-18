@@ -15,7 +15,6 @@ import { OrderFormDocket } from './FormDocket';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
-import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 
 const sx = {
   form: {
@@ -215,7 +214,6 @@ export function OrderForm({
                 />
               </Grid>
             </Grid>
-
             <OrderFormDocket
               productsCount={productsCount}
               cost={cost}
@@ -227,7 +225,7 @@ export function OrderForm({
             <Checkbox
               sx={sx.agreement}
               label={t('agreement')}
-              checked={isAgree}
+              value={isAgree}
               onChange={agree}
             />
 
