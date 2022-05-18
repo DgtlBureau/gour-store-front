@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import s from './LkMenu.module.scss';
 import translations from './LkMenu.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
