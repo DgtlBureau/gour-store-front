@@ -12,25 +12,28 @@ export type MenuItem = {
 };
 
 export type LkMenuProps = {
+  title: string;
   active: string;
   menuList: MenuItem[];
   onItemClick: (path: string) => void;
 };
 
-export function LkMenu({ active, menuList, onItemClick }: LkMenuProps) {
+export function LkMenu({ title, active, menuList, onItemClick }: LkMenuProps) {
   const { t } = useLocalTranslation(translations);
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">
-      <Typography>{active}</Typography>
-      <Stack direction="row" spacing={2}>
+      <Typography>{title}</Typography>
+      <Stack direction="row" alignItems="center" spacing={2}>
         {menuList.map(link => (
-          <Button
+          <span
             key={link.path}
-            variant={link.label === active ? 'contained' : 'text'}
+            className={`${s.lkMenuItem} ${
+              link.label === active ? s.active : ''
+            }`}
             onClick={() => onItemClick(link.path)}
           >
             {link.label}
-          </Button>
+          </span>
         ))}
       </Stack>
     </Stack>
