@@ -4,6 +4,7 @@ import translations from './LkProfileAvatarEditor.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Avatar, Stack } from '@mui/material';
 import { Button } from '../../UI/Button/Button';
+import { Typography } from '../../UI/Typography/Typography';
 
 export type LkProfileAvatarEditorProps = {
   image: string;
@@ -18,10 +19,17 @@ export function LkProfileAvatarEditor({
 }: LkProfileAvatarEditorProps) {
   const { t } = useLocalTranslation(translations);
   return (
-    <Stack spacing={2} alignItems="center">
+    <Stack sx={{ width: '165px' }} spacing={2} alignItems="center">
       <Avatar alt="Your profile" src={image} sx={{ width: 128, height: 128 }} />
-      <Button onClick={onChange}>Изменить фото</Button>
-      <Button variant="outlined" onClick={onClose}>
+      <div className={s.photoInput}>
+        <label htmlFor="profile-photo-input">
+          <Typography variant="body1" color="#fff">
+            Изменить фото
+          </Typography>
+        </label>
+        <input id="profile-photo-input" type="file" onChange={onChange} />
+      </div>
+      <Button sx={{ width: '100%' }} variant="outlined" onClick={onClose}>
         Удалить
       </Button>
     </Stack>
