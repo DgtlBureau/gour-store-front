@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import s from './EmailChangeModal.module.scss';
 import translations from './EmailChangeModal.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -52,12 +52,16 @@ export function EmailChangeModal({
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    values.reset();
+  }, [isOpened]);
+
   const submitHandler = (formData: { email: string }) => {
     onChange(formData.email);
   };
 
   return (
-    <Modal open={true} onClose={onClose}>
+    <Modal open={isOpened} onClose={onClose}>
       <Stack sx={sx.container} spacing={2}>
         <IconButton sx={sx.closeBtn} onClick={onClose}>
           <CloseIcon />

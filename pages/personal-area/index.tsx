@@ -3,19 +3,32 @@ import { LkProfileEditor } from 'components/LkProfile/LkProfileEditor/LkProfileE
 import { ShopLayout } from 'layouts/Shop/Shop';
 import React, { useState } from 'react';
 import { LkProfileAvatarEditor } from 'components/LkProfile/LkProfileAvatarEditor/LkProfileAvatarEditor';
+
 import { PhoneChangeModal } from 'components/LkProfile/PhoneChangeModal/PhoneChangeModal';
-import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
+import { EmailChangeModal } from 'components/LkProfile/EmailChangeModal/EmailChangeModal';
 import { PasswordChangeModal } from 'components/LkProfile/PasswordChangeModal/PasswordChangeModal';
 
+import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
 import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
 import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
+import { useGetCurrentUserQuery } from 'store/api/authApi';
+import { useRouter } from 'next/router';
 
 export type props = {};
 
 export function Profile({}: props) {
   const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
+  const [isEmailModalOpened, setIsEmailModalOpened] = useState(false);
 
-  const handleChangeEmail = () => {};
+  const router = useRouter();
+
+  const { data: currentUser } = useGetCurrentUserQuery();
+
+  const handleChangeEmail = (email: string) => {
+    console.log(email);
+    //запрос на сервер
+    setIsEmailModalOpened(false);
+  };
   const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
   const handleChangePassword = (changePasswordData: ChangePasswordDto) => {
     console.log(changePasswordData);
@@ -32,6 +45,10 @@ export function Profile({}: props) {
     console.log(updatedUser);
   };
 
+  // if (!currentUser) {
+  //   router.push('/');
+  // }
+
   return (
     <ShopLayout>
       <Grid container spacing={2}>
@@ -46,13 +63,13 @@ export function Profile({}: props) {
         </Grid>
         <Grid item xs={4}>
           <LkProfileEditor
-            onChangeEmail={handleChangeEmail}
+            onChangeEmail={() => setIsEmailModalOpened(true)}
             onChangePhone={() => {}}
             onChangePassword={() => setIsPasswordModalOpened(true)}
             user={{
-              firstName: 'Михалин',
-              lastName: 'Барулин',
-              referralCode: '123123123',
+              firstName: currentUser?.firstName || '',
+              lastName: currentUser?.lastName || '',
+              referralCode: currentUser?.referralCode?.code || '',
             }}
             email={'bebzhyzh@gmail.com'}
             phone={'89218650538'}
@@ -60,6 +77,14 @@ export function Profile({}: props) {
           />
         </Grid>
       </Grid>
+
+      <EmailChangeModal
+        isOpened={isEmailModalOpened}
+        onClose={() => {
+          setIsEmailModalOpened(false);
+        }}
+        onChange={handleChangeEmail}
+      />
 
       <PasswordChangeModal
         isOpened={isPasswordModalOpened}
