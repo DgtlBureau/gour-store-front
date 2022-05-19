@@ -11,6 +11,7 @@ import { IconButton } from '../../UI/IconButton/IconButton';
 import { Button } from '../../UI/Button/Button';
 import { getValidationSchema } from './validation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 
 type UserData = {
   firstName: string;
@@ -25,11 +26,7 @@ export type LkProfileEditorProps = {
   onChangeEmail(): void;
   onChangePhone(): void;
   onChangePassword(): void;
-  onSave(updatedUser: {
-    firstName?: string;
-    lastName?: string;
-    referralCode?: string;
-  }): void;
+  onSave(updatedUser: UpdateUserDto): void;
 };
 
 export function LkProfileEditor({
@@ -98,10 +95,16 @@ export function LkProfileEditor({
           />
           <HFTextField name="referralCode" label={t('referralCode')} />
         </Stack>
-        <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
+        <Button
+          type="submit"
+          disabled={!values.formState.isDirty}
+          sx={{ margin: '0 10px 0 0' }}
+        >
           {t('submit')}
         </Button>
-        <Button onClick={cancelHandler}>{t('cancel')}</Button>
+        <Button disabled={!values.formState.isDirty} onClick={cancelHandler}>
+          {t('cancel')}
+        </Button>
       </form>
     </FormProvider>
   );

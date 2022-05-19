@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import s from './PasswordChangeModal.module.scss';
 import translations from './PasswordChangeModal.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -59,13 +59,17 @@ export function PasswordChangeModal({
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    values.reset();
+  }, [isOpened]);
+
   const submitHandler = (formData: FormType) => {
     const { prevPassword, newPassword, repeatNewPassword } = formData;
     onChange({ prevPassword, newPassword });
   };
 
   return (
-    <Modal open={true} onClose={onClose}>
+    <Modal open={isOpened} onClose={onClose}>
       <Box sx={sx.container}>
         <IconButton sx={sx.closeBtn} onClick={onClose}>
           <CloseIcon />

@@ -1,0 +1,21 @@
+.photoInput {
+    width: 100%;
+    label {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 6px 16px;
+        border-radius: 4px;
+
+        cursor: pointer;
+
+        background-color: rgba(37, 38, 45, 1);
+    }
+
+    input {
+        display: none;
+    }
+}
