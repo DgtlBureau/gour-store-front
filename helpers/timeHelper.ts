@@ -1,15 +1,12 @@
-import { minutesToHours, secondsToMinutes } from 'date-fns';
+import { intervalToDuration, differenceInHours } from 'date-fns';
 
 export const formatSeconds = (seconds: number) => {
-  const remainderSeconds = seconds % 60;
-  const roundedSeconds = seconds - remainderSeconds;
-  const minutes = secondsToMinutes(roundedSeconds);
-  const hours = minutesToHours(minutes);
-  const reminderMinutes = minutes % 60;
-  const formattedMinutes =
-    reminderMinutes < 10 ? `0${reminderMinutes}` : reminderMinutes;
-  const formattedSeconds =
-    remainderSeconds < 10 ? `0${remainderSeconds}` : remainderSeconds;
+  const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
+    const hours = differenceInHours(seconds * 1000, 0);
+    const formattedMinutes =
+      (duration.minutes || 0) < 10 ? `0${duration.minutes}` : duration.minutes;
+    const formattedSeconds =
+      (duration.seconds || 0) < 10 ? `0${duration.seconds}` : duration.seconds;
 
-  return `${hours}:${formattedMinutes}:${formattedSeconds}`;
+    return `${hours}:${formattedMinutes}:${formattedSeconds}`;
 };

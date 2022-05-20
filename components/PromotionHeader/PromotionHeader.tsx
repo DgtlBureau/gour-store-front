@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Theme } from "@mui/material/styles/createTheme";
-import { differenceInSeconds } from 'date-fns';
+import { differenceInSeconds, differenceInHours, intervalToDuration } from 'date-fns';
 import { Stack, SxProps } from '@mui/material';
 import Image from 'next/image';
 
@@ -62,8 +62,11 @@ export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps)
     }, 1000);
   }, []);
 
+  console.log(intervalToDuration)
+
   useEffect(() => {
-    setTimer(formatSeconds(seconds));
+    const time = formatSeconds(seconds);
+    setTimer(time);
     if (seconds < 0) return clearInterval(intervalId);
   }, [seconds]);
 
