@@ -1,0 +1,40 @@
+{
+  "en": {
+    "back": "Go back",
+    "title": "Password recovery",
+    "phone": "Phone",
+    "phoneEmpty": "Enter phone number",
+    "phoneError": "Invalid phone number",
+    "sms": "SMS code",
+    "smsEmpty": "Enter confirmation code",
+    "smsHelper": "Resending SMS is possible via",
+    "smsError": "Incorrect code",
+    "seconds": "sec.",
+    "getCode": "Get code",
+    "password": "Password",
+    "passwordConfirm": "Password confirm",
+    "passwordHelper": "At least 8 characters and at least one number",
+    "passwordError": "Password must contain 8 characters and at least one number",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "submit": "Change password"
+  },
+  "ru": {
+    "back": "Назад",
+    "title": "Смена пароля",
+    "phone": "Телефон",
+    "phoneEmpty": "Введите номер телефона",
+    "phoneError": "Некорректный номер телефона",
+    "sms": "Код из SMS",
+    "smsEmpty": "Введите код подтверждения",
+    "smsHelper": "Повторная отправка SMS возможна через",
+    "smsError": "Неверный код",
+    "seconds": "сек.",
+    "getCode": "Получить код",
+    "password": "Введите пароль",
+    "passwordConfirm": "Повторите пароль",
+    "passwordHelper": "Минимум 8 символов и хотя бы одну цифру",
+    "passwordError": "Пароль должен содержать 8 символов и хотя бы одну цифру",
+    "passwordsDoNotMatch": "Пароли не совпадают",
+    "submit": "Изменить пароль"
+  }
+}

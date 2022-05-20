@@ -17,7 +17,7 @@ type RegCityFields = {
 };
 
 export type RegCitySelectProps = {
-  city: string;
+  city?: string;
   options: {
     label: string;
     value: string;

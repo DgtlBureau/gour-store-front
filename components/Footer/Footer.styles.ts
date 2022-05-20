@@ -9,6 +9,7 @@ const sx = {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap-reverse',
+    fontFamily: 'Roboto slab',
   },
   contactsLink: {
     whiteSpace: 'nowrap',
@@ -23,7 +24,7 @@ const sx = {
   },
   socialLink: {
     marginLeft: '20px',
-    '&:first-child': {
+    '&:firstChild': {
       marginLeft: 0,
     },
   },

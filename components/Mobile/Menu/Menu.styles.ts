@@ -1,4 +1,4 @@
-import { defaultTheme as t } from "../../../themes";
+import { defaultTheme as t } from '../../../themes';
 
 const sx = {
   list: {
@@ -83,7 +83,7 @@ const sx = {
     fontSize: '16px',
     fontWeight: 700,
     color: t.palette.common.white,
-    '&:first-child': {
+    '&:firstChild': {
       marginRight: '20px',
     },
   },

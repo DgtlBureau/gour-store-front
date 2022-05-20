@@ -7,11 +7,11 @@ import { Typography } from '../../UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
+import { Currency } from '../../../@types/entities/Currency';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import sx from './Card.styles';
-import { Currency } from '../../../@types/entities/Currency';
 
 export type ProductCardProps = {
   title: string;
@@ -28,7 +28,6 @@ export type ProductCardProps = {
   isElected: boolean;
   onAdd: () => void;
   onRemove: () => void;
-  onEdit: (id: number) => void;
   onElect: () => void;
   onDetail: () => void;
 };
@@ -47,7 +46,6 @@ export function ProductCard({
   currency,
   onAdd,
   onRemove,
-  onEdit,
   onElect,
   onDetail,
 }: ProductCardProps) {
@@ -114,7 +112,6 @@ export function ProductCard({
           price={price}
           discount={discount}
           isWeightGood={false}
-          onEdit={onEdit}
           currency={currency}
         />
 

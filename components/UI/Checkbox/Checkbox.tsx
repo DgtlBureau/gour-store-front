@@ -21,27 +21,39 @@ const checkSx = {
 type Props = {
   defaultChecked?: boolean;
   disabled?: boolean;
-  checked?: boolean;
+  value?: boolean;
   label?: string;
+  name?: string;
   sx?: SxProps;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  edge?: 'start' | 'end';
+  tabIndex?: number;
+  disableRipple?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function Checkbox({
   defaultChecked,
-  checked,
+  value,
   disabled,
   label,
+  name,
   sx,
+  edge,
+  tabIndex,
+  disableRipple,
   onChange,
 }: Props) {
   return (
     <Box sx={{ ...boxSx, ...sx }}>
       <MUICheckbox
         sx={checkSx}
+        name={name}
         defaultChecked={defaultChecked}
         disabled={disabled}
-        checked={checked}
+        checked={value}
+        edge={edge}
+        tabIndex={tabIndex}
+        disableRipple={disableRipple}
         onChange={onChange}
       />
       {label && <Typography sx={labelSx}>{label}</Typography>}
