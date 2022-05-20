@@ -17,6 +17,7 @@ const persistConfig = {
   key: 'root',
   blacklist: [
     'auth',
+    'authApi',
     'commonApi',
     'productApi',
     'productGradeApi',
