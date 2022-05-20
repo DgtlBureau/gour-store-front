@@ -6,6 +6,7 @@ import { Avatar, Stack } from '@mui/material';
 import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
 
+
 export type LkProfileAvatarEditorProps = {
   image: string;
   onChange(event: ChangeEvent<HTMLInputElement>): void;
