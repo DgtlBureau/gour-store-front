@@ -16,14 +16,13 @@ import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 type UserData = {
   firstName: string;
   lastName: string;
+  email: string;
   referralCode: string;
 };
 
 export type LkProfileEditorProps = {
   user: UserData;
-  email: string;
   phone: string;
-  onChangeEmail(): void;
   onChangePhone(): void;
   onChangePassword(): void;
   onSave(updatedUser: UpdateUserDto): void;
@@ -31,10 +30,8 @@ export type LkProfileEditorProps = {
 
 export function LkProfileEditor({
   user,
-  email,
   phone,
   onSave,
-  onChangeEmail,
   onChangePhone,
   onChangePassword,
 }: LkProfileEditorProps) {
@@ -49,6 +46,8 @@ export function LkProfileEditor({
   });
 
   useEffect(() => {
+    console.log(user);
+
     values.reset(user);
   }, [user]);
 
@@ -65,15 +64,7 @@ export function LkProfileEditor({
         <Stack spacing={2} sx={{ margin: '0 0 10px 0' }}>
           <HFTextField name="firstName" label={t('firstName')} />
           <HFTextField name="lastName" label={t('lastName')} />
-          <TextField
-            value={email}
-            label={t('email')}
-            endAdornment={
-              <IconButton onClick={onChangeEmail}>
-                <SettingsIcon />
-              </IconButton>
-            }
-          />
+          <HFTextField name="email" label={t('email')} />
           <TextField
             value={phone}
             label={t('phone')}

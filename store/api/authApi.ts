@@ -6,10 +6,12 @@ import { Tokens } from '../../@types/dto/tokens.dto';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { IUser } from '../../@types/entities/IUser';
 import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
+import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['CurrentUser'],
   endpoints(builder) {
     return {
       signUp: builder.mutation<void, RegistrationData>({
@@ -46,6 +48,7 @@ export const authApi = createApi({
             url: `client-auth/currentUser`,
           };
         },
+        providesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
       updateCurrentUser: builder.mutation<number, UpdateUserDto>({
         query(user) {
@@ -55,6 +58,17 @@ export const authApi = createApi({
             body: user,
           };
         },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+      }),
+      updateCurrentUserPassword: builder.mutation<number, ChangePasswordDto>({
+        query(password) {
+          return {
+            method: 'POST',
+            url: `client-auth/currentUser/change-password`,
+            body: password,
+          };
+        },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
     };
   },
@@ -66,4 +80,5 @@ export const {
   useSendCodeMutation,
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
+  useUpdateCurrentUserPasswordMutation,
 } = authApi;

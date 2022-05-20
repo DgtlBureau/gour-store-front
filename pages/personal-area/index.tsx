@@ -1,11 +1,9 @@
 import { Grid, LinearProgress } from '@mui/material';
 import { LkProfileEditor } from 'components/LkProfile/LkProfileEditor/LkProfileEditor';
 import { ShopLayout } from 'layouts/Shop/Shop';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LkProfileAvatarEditor } from 'components/LkProfile/LkProfileAvatarEditor/LkProfileAvatarEditor';
 
-import { PhoneChangeModal } from 'components/LkProfile/PhoneChangeModal/PhoneChangeModal';
-import { EmailChangeModal } from 'components/LkProfile/EmailChangeModal/EmailChangeModal';
 import { PasswordChangeModal } from 'components/LkProfile/PasswordChangeModal/PasswordChangeModal';
 
 import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
@@ -14,30 +12,37 @@ import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto'
 import {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
+  useUpdateCurrentUserPasswordMutation,
 } from 'store/api/authApi';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser, selectIsAuth } from 'store/selectors/auth';
 
 export type props = {};
 
 export function Profile({}: props) {
   const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
-  const [isEmailModalOpened, setIsEmailModalOpened] = useState(false);
 
   const router = useRouter();
 
-  const { data: currentUser, isLoading, isError } = useGetCurrentUserQuery();
-  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
+  // const currentUser = useSelector(selectCurrentUser);
+  // const isAuth = useSelector(selectIsAuth);
 
-  const handleChangeEmail = (email: string) => {
-    console.log(email);
-    //запрос на сервер
-    setIsEmailModalOpened(false);
-  };
+  const { data: currentUser } = useGetCurrentUserQuery();
+
+  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
+  const [fetchUpdatePassword] = useUpdateCurrentUserPasswordMutation();
+
   const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = (changePasswordData: ChangePasswordDto) => {
-    console.log(changePasswordData);
-    //запрос на сервер
-    setIsPasswordModalOpened(false);
+  const handleChangePassword = async (
+    changePasswordData: ChangePasswordDto
+  ) => {
+    try {
+      await fetchUpdatePassword(changePasswordData).unwrap();
+      router.push('auth/signin');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangeAvatar = () => {};
@@ -61,14 +66,6 @@ export function Profile({}: props) {
     );
   }
 
-  if (isLoading) {
-    return (
-      <ShopLayout>
-        <LinearProgress />
-      </ShopLayout>
-    );
-  }
-
   return (
     <ShopLayout>
       <Grid container spacing={2}>
@@ -83,28 +80,19 @@ export function Profile({}: props) {
         </Grid>
         <Grid item xs={4}>
           <LkProfileEditor
-            onChangeEmail={() => setIsEmailModalOpened(true)}
             onChangePhone={() => {}}
             onChangePassword={() => setIsPasswordModalOpened(true)}
             user={{
               firstName: currentUser.firstName || '',
               lastName: currentUser.lastName || '',
               referralCode: currentUser.referralCode?.code || '',
+              email: currentUser.email || '',
             }}
-            email={currentUser.email}
             phone={currentUser.phone}
             onSave={handleSaveBaseInfo}
           />
         </Grid>
       </Grid>
-
-      <EmailChangeModal
-        isOpened={isEmailModalOpened}
-        onClose={() => {
-          setIsEmailModalOpened(false);
-        }}
-        onChange={handleChangeEmail}
-      />
 
       <PasswordChangeModal
         isOpened={isPasswordModalOpened}
