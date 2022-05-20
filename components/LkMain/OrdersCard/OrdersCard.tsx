@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 
 import translations from './OrdersCard.i18n.json';
-import { useLocalTranslation } from "../../../hooks/useLocalTranslation";
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
@@ -21,8 +21,8 @@ const sx = {
   },
   orderId: {
     marginRight: '12px',
-  }
-}
+  },
+};
 
 export type LkMainOrdersCardProps = {
   orders: {
@@ -35,7 +35,10 @@ export type LkMainOrdersCardProps = {
   onClickMore(): void;
 };
 
-export function LkMainOrdersCard({ orders, onClickMore }: LkMainOrdersCardProps) {
+export function LkMainOrdersCard({
+  orders,
+  onClickMore,
+}: LkMainOrdersCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
@@ -44,35 +47,29 @@ export function LkMainOrdersCard({ orders, onClickMore }: LkMainOrdersCardProps)
       footerText={t('footerText')}
       onClickMore={onClickMore}
     >
-      {
-        orders.map(order => (
-          <Box key={order.id} sx={sx.order}>
-            <Box sx={sx.orderHeader}>
-              <Box sx={sx.orderTitle}>
-                <Typography variant="body1" sx={sx.orderId}>
-                  {t('order')}
-                  {' '}
-                  {order.id}
-                </Typography>
-                <Typography variant="body1" color="text.muted">
-                  {t('from')}
-                  {' '}
-                  {format(order.date, 'dd.MM.yyyy')}
-                </Typography>
-              </Box>
-              
-              <Typography variant="body1">
-                {order.sum}
-                {getCurrencySymbol(order.currency)}
+      {orders.map(order => (
+        <Box key={order.id} sx={sx.order}>
+          <Box sx={sx.orderHeader}>
+            <Box sx={sx.orderTitle}>
+              <Typography variant="body1" sx={sx.orderId}>
+                {t('order')} {order.id}
+              </Typography>
+              <Typography variant="body1" color="text.muted">
+                {t('from')} {format(order.date, 'dd.MM.yyyy')}
               </Typography>
             </Box>
-            
-            <Typography variant="body2" color="text.muted">
-              {order.status}
+
+            <Typography variant="body1">
+              {order.sum}
+              {getCurrencySymbol(order.currency)}
             </Typography>
           </Box>
-        ))
-      }
+
+          <Typography variant="body2" color="text.muted">
+            {order.status}
+          </Typography>
+        </Box>
+      ))}
     </BaseInformationCard>
   );
 }

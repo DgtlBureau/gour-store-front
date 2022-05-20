@@ -24,7 +24,7 @@ const sx = {
   },
   socialLink: {
     marginLeft: '20px',
-    '&:first-child': {
+    '&:firstChild': {
       marginLeft: 0,
     },
   },

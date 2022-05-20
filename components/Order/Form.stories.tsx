@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { OrderForm, OrderFields } from './OrderForm';
+import { OrderForm, OrderFields } from './Form';
 
 export default {
   component: OrderForm,

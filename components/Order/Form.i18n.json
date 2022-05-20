@@ -2,16 +2,17 @@
   "ru": {
     "details": "Контактные данные",
     "firstName": "Имя*",
-    "lastName": "Фамилия",
+    "lastName": "Фамилия*",
     "phone": "Номер телефона*",
-    "email": "Электроннная почта*",
+    "email": "Электронная почта*",
     "nameRequired": "Укажите имя",
+    "lastNameRequired": "Укажите фамилию",
     "phoneRequired": "Укажите номер телефона",
     "incorrectPhone": "Некорректный номер телефона",
     "emailRequired": "Укажите электронную почту",
     "incorrectEmail": "Некорректный адрес электронной почты",
     "address": "Адрес доставки",
-    "profileSelect": "Выберите профиль доставки",
+    "profileSelect": "Новый профиль доставки",
     "city": "Город*",
     "street": "Улица*",
     "house": "Номер дома*",
@@ -31,17 +32,20 @@
     "total": "Итого",
     "agreement": "Согласен",
     "toPay": "Перейти к оплате",
+    "orderError": "Возникла ошибка, попробуйте позже",
     "oneProduct": "товар",
     "someProducts": "товара",
-    "manyProducts": "товаров"
+    "manyProducts": "товаров",
+    "free": "Бесплатно"
   },
   "en": {
     "details": "Contact details",
     "firstName": "Name*",
-    "lastName": "Lastname",
+    "lastName": "Surname*",
     "phone": "Phone*",
     "email": "Email*",
     "nameRequired": "Name is required",
+    "lastNameRequired": "Last name is required",
     "phoneRequired": "Phone is required",
     "incorrectPhone": "Incorrect phone number",
     "emailRequired": "Email is required",
@@ -67,8 +71,10 @@
     "total": "Total",
     "agreement": "I agree",
     "toPay": "Go to payment",
+    "orderError": "An error occurred, please try again later",
     "oneProduct": "product",
     "someProducts": "products",
-    "manyProducts": "products"
+    "manyProducts": "products",
+    "free": "Free"
   }
 }

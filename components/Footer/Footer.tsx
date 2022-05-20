@@ -28,7 +28,7 @@ export type FooterProps = {
   cookie: string;
   terms: string;
   sx?: SxProps;
-}
+};
 
 export function Footer({
   firstPhone,
@@ -138,12 +138,22 @@ export function Footer({
         {info.map((link, i) => (
           <Fragment key={link.path}>
             <NextLink href={link.path} passHref>
-              <a href="replace" rel="noreferrer" target="_blank" style={footerSx.infoLink}>
+              <a
+                href="replace"
+                rel="noreferrer"
+                target="_blank"
+                style={footerSx.infoLink}
+              >
                 {link.label}
               </a>
             </NextLink>
             {i + 1 !== info.length && (
-              <Divider sx={footerSx.divider} orientation="vertical" variant="middle" flexItem />
+              <Divider
+                sx={footerSx.divider}
+                orientation="vertical"
+                variant="middle"
+                flexItem
+              />
             )}
           </Fragment>
         ))}
