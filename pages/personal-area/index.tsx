@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { LkProfileEditor } from 'components/LkProfile/LkProfileEditor/LkProfileEditor';
 import { ShopLayout } from 'layouts/Shop/Shop';
 import React, { useState } from 'react';
@@ -11,7 +11,10 @@ import { PasswordChangeModal } from 'components/LkProfile/PasswordChangeModal/Pa
 import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
 import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
 import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
+import {
+  useGetCurrentUserQuery,
+  useUpdateCurrentUserMutation,
+} from 'store/api/authApi';
 import { useRouter } from 'next/router';
 
 export type props = {};
@@ -22,7 +25,8 @@ export function Profile({}: props) {
 
   const router = useRouter();
 
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: currentUser, isLoading, isError } = useGetCurrentUserQuery();
+  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
 
   const handleChangeEmail = (email: string) => {
     console.log(email);
@@ -41,13 +45,29 @@ export function Profile({}: props) {
 
   const handleSendCode = (phone: string) => {};
 
-  const handleSave = (updatedUser: UpdateUserDto) => {
-    console.log(updatedUser);
+  const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
+    try {
+      await fetchUpdateCurrentUser(updatedUser).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // if (!currentUser) {
-  //   router.push('/');
-  // }
+  if (!currentUser) {
+    return (
+      <ShopLayout>
+        <h1>Пользователь не найден</h1>
+      </ShopLayout>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <ShopLayout>
+        <LinearProgress />
+      </ShopLayout>
+    );
+  }
 
   return (
     <ShopLayout>
@@ -67,13 +87,13 @@ export function Profile({}: props) {
             onChangePhone={() => {}}
             onChangePassword={() => setIsPasswordModalOpened(true)}
             user={{
-              firstName: currentUser?.firstName || '',
-              lastName: currentUser?.lastName || '',
-              referralCode: currentUser?.referralCode?.code || '',
+              firstName: currentUser.firstName || '',
+              lastName: currentUser.lastName || '',
+              referralCode: currentUser.referralCode?.code || '',
             }}
-            email={'bebzhyzh@gmail.com'}
-            phone={'89218650538'}
-            onSave={handleSave}
+            email={currentUser.email}
+            phone={currentUser.phone}
+            onSave={handleSaveBaseInfo}
           />
         </Grid>
       </Grid>
