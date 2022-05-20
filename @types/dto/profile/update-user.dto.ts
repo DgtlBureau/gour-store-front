@@ -3,4 +3,5 @@ export type UpdateUserDto = Readonly<{
   lastName?: string;
   referralCode?: string;
   email?: string;
+  avatarId?: number | null;
 }>;

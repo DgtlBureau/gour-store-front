@@ -25,6 +25,7 @@ const persistConfig = {
     'cityApi',
     'orderApi',
     'orderProfileApi',
+    'imageApi',
   ],
   storage,
 };

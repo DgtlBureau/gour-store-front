@@ -17,6 +17,8 @@ import {
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser, selectIsAuth } from 'store/selectors/auth';
+import { useCreateImageMutation } from 'store/api/imageApi';
+import fi from 'date-fns/esm/locale/fi/index.js';
 
 export type props = {};
 
@@ -32,6 +34,7 @@ export function Profile({}: props) {
 
   const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
   const [fetchUpdatePassword] = useUpdateCurrentUserPasswordMutation();
+  const [fetchUploadImage] = useCreateImageMutation();
 
   const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
   const handleChangePassword = async (
@@ -39,14 +42,34 @@ export function Profile({}: props) {
   ) => {
     try {
       await fetchUpdatePassword(changePasswordData).unwrap();
-      router.push('auth/signin');
+      // router.push('auth/signin');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleChangeAvatar = () => {};
-  const handleDeleteAvatar = () => {};
+  const handleChangeAvatar = async (file: File) => {
+    console.log('file', file);
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const image = await fetchUploadImage(formData).unwrap();
+      if (!image) return;
+
+      await fetchUpdateCurrentUser({ avatarId: image.id });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleRemoveAvatar = async () => {
+    try {
+      await fetchUpdateCurrentUser({ avatarId: null }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSendCode = (phone: string) => {};
 
@@ -71,11 +94,9 @@ export function Profile({}: props) {
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <LkProfileAvatarEditor
-            image={
-              'https://images.unsplash.com/photo-1652819674544-a284366b1d0d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=906'
-            }
+            image={currentUser.avatar?.full || ''}
             onChange={handleChangeAvatar}
-            onDelete={handleDeleteAvatar}
+            onRemove={handleRemoveAvatar}
           />
         </Grid>
         <Grid item xs={4}>
