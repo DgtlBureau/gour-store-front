@@ -1,8 +1,10 @@
 {
   "en": {
-    "test": "Test"
+    "changePhoto": "Change photo",
+    "delete": "Delete"
   },
   "ru": {
-    "test": "Тест"
+    "changePhoto": "Изменить фото",
+    "delete": "Удалить"
   }
 }
