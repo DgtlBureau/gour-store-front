@@ -1,8 +1,26 @@
 {
   "en": {
-    "test": "Test"
+    "title": "Changing the phone",
+    "description": "Please provide a new mobile phone number. We will send a confirmation code to it.",
+    "phone": "Phone",
+    "sms": "Code from sms",
+    "phoneEmpty": "Enter phone number",
+    "phoneError": "Invalid phone number",
+    "smsEmpty": "Enter confirmation code",
+    "smsHelper": "Resending SMS is possible via",
+    "smsError": "Incorrect code",
+    "seconds": "sec."
   },
   "ru": {
-    "test": "Тест"
+    "title": "Изменение телефона",
+    "description": "Пожалуйста, укажите новый номер мобильного телефона. На него мы отправим код подтверждения.",
+    "phone": "Телефон",
+    "sms": "Код из смс",
+    "phoneEmpty": "Введите номер телефона",
+    "phoneError": "Некорректный номер телефона",
+    "smsEmpty": "Введите код подтверждения",
+    "smsHelper": "Повторная отправка SMS возможна через",
+    "smsError": "Неверный код",
+    "seconds": "сек."
   }
 }

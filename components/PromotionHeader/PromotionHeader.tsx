@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
-import { differenceInSeconds, minutesToHours, secondsToMinutes } from 'date-fns';
+import { Theme } from "@mui/material/styles/createTheme";
+import { differenceInSeconds, differenceInHours, intervalToDuration } from 'date-fns';
 import { Stack, SxProps } from '@mui/material';
 import Image from 'next/image';
 
@@ -8,7 +8,7 @@ import translations from './PromotionHeader.i18n.json';
 import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
-import {Theme} from "@mui/material/styles/createTheme";
+import { formatSeconds } from '../../helpers/timeHelper';
 
 const headerSx = {
   promotion: {
@@ -62,24 +62,13 @@ export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps)
     }, 1000);
   }, []);
 
+  console.log(intervalToDuration)
+
   useEffect(() => {
-    setTimer(formatSeconds(seconds));
+    const time = formatSeconds(seconds);
+    setTimer(time);
     if (seconds < 0) return clearInterval(intervalId);
   }, [seconds]);
-
-  const formatSeconds = (seconds: number) => {
-    const remainderSeconds = seconds % 60;
-    const roundedSeconds = seconds - remainderSeconds;
-    const minutes = secondsToMinutes(roundedSeconds);
-    const hours = minutesToHours(minutes);
-    const reminderMinutes = minutes % 60;
-    const formattedMinutes =
-      reminderMinutes < 10 ? `0${reminderMinutes}` : reminderMinutes;
-    const formattedSeconds =
-      remainderSeconds < 10 ? `0${remainderSeconds}` : remainderSeconds;
-
-    return `${hours}:${formattedMinutes}:${formattedSeconds}`;
-  };
 
   return (
     <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
