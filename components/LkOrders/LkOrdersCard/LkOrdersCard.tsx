@@ -20,12 +20,13 @@ import { Box } from '@mui/system';
 import { format } from 'date-fns';
 
 export type LkOrdersCardProps = {
+  isOpened: boolean;
   title: string;
   status: {
     title: string;
     color: string;
   };
-  createdAt: string;
+  createdAt: Date;
   address: string;
   client: string;
   currency: Currency;
@@ -48,6 +49,9 @@ export function LkOrdersCard({
   deliveryCost,
 }: LkOrdersCardProps) {
   const { t } = useLocalTranslation(translations);
+
+  const createdDate = format(createdAt, 'yyyy.MM.d');
+  const createdTime = format(createdAt, 'HH:mm');
 
   const productCount = products.length;
   const fullOrderPrice = products.reduce((acc, currentProduct) => {
@@ -73,7 +77,9 @@ export function LkOrdersCard({
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="h6">{title}</Typography>
               <Chip label="Создан" color="primary" />
-              <Typography variant="body1">{createdAt}</Typography>
+              <Typography variant="body1">
+                {t('from')} {createdDate} {t('at')} {createdTime}
+              </Typography>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="body1">{productCount} товара</Typography>

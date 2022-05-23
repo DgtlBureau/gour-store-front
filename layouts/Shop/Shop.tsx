@@ -29,7 +29,7 @@ export function ShopLayout(props: ShopLayoutProps) {
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  // console.log('currentUser', currentUser);
+  console.log('currentUser', currentUser);
 
   const convertedCities =
     cities?.map(city => ({

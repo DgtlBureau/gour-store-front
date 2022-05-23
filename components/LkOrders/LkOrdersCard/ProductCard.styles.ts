@@ -32,19 +32,6 @@ const sx = {
     fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
   },
-  productPrice: {
-    width: '250px',
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
-    textAlign: 'right',
-  },
-  count: {
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
-    textAlign: 'right',
-  },
 
   info: {
     display: 'flex',
