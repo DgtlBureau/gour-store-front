@@ -37,14 +37,14 @@ export const OrderProductCard = ({
           <Typography variant="body1" sx={sx.title}>
             {title}
           </Typography>
-          <Typography variant="body1" sx={sx.title}>
-            {isWeightGood
-              ? `${amount}${t('pc')}. / ${weight}${t('g')}.`
-              : `${weight}${t('g')}.`}
-          </Typography>
-          <Typography variant="body1" sx={sx.title}>
-            {cost} {getCurrencySymbol(currency)}
-          </Typography>
+          <Box sx={{ display: 'flex' }}>
+            <Typography variant="body1" sx={sx.count}>
+              {!isWeightGood ? `${amount}${t('pc')}.` : `${weight}${t('g')}.`}
+            </Typography>
+            <Typography variant="body1" sx={sx.productPrice}>
+              {cost} {getCurrencySymbol(currency)}
+            </Typography>
+          </Box>
         </CardContent>
       </Box>
     </Card>

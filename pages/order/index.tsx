@@ -124,8 +124,7 @@ export function Order() {
         orderProducts,
       };
       await fetchCreateOrder(formattedOrderData).unwrap();
-
-      router.push('/');
+      router.push('/personal-area/orders');
     } catch (error) {
       console.log(error);
       setIsSubmitError(true);
