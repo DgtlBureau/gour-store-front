@@ -8,6 +8,14 @@ export const orderApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints(builder) {
     return {
+      gerOrdersList: builder.query<IOrder[], void>({
+        query() {
+          return {
+            method: 'get',
+            url: `orders`,
+          };
+        },
+      }),
       createOrder: builder.mutation<IOrder, CreateOrderDto>({
         query(product) {
           return {
@@ -21,4 +29,4 @@ export const orderApi = createApi({
   },
 });
 
-export const { useCreateOrderMutation } = orderApi;
+export const { useCreateOrderMutation, useGerOrdersListQuery } = orderApi;
