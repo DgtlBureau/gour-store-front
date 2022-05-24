@@ -23,7 +23,6 @@ const sx = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     padding: 0,
   },
 
@@ -47,12 +46,11 @@ const sx = {
   },
 
   info: {
+    width: 'calc(100% - 48px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-
-    width: 'calc(100% - 145px)',
-    paddingLeft: '20px',
+    padding: '0 24px',
   },
 
   docket: {
@@ -63,24 +61,6 @@ const sx = {
   price: {
     fontWeight: 'bold',
   },
-  oldPrice: {
-    position: 'relative',
-
-    width: 'fit-content',
-
-    color: t.palette.text.muted || '',
-
-    '&:before': {
-      content: '""',
-      borderBottom: '1px solid',
-      borderColor: t.palette.error.main,
-      position: 'absolute',
-      width: '100%',
-      height: '50%',
-      transform: 'rotate(-12deg)',
-    },
-  },
-
   actions: {
     display: 'flex',
     justifyContent: 'space-between',

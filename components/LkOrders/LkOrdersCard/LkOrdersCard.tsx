@@ -25,7 +25,7 @@ export type LkOrdersCardProps = {
     title: string;
     color: string;
   };
-  createdAt: string;
+  createdAt: Date;
   address: string;
   client: string;
   currency: Currency;
@@ -54,6 +54,9 @@ export function LkOrdersCard({
     return (acc += currentProduct.cost);
   }, 0);
 
+  const createdDate = format(createdAt, 'yyyy.MM.d');
+  const createdTime = format(createdAt, 'HH:mm');
+
   const summaryDiscount = promotions.reduce((acc, currentDiscount) => {
     return (acc += currentDiscount.amount);
   }, 0);
@@ -61,52 +64,55 @@ export function LkOrdersCard({
   const priceWithDiscount = fullOrderPrice + deliveryCost - summaryDiscount;
 
   return (
-    <div>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Stack
-            sx={{ width: '100%' }}
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Typography variant="h6">{title}</Typography>
-              <Chip label="Создан" color="primary" />
-              <Typography variant="body1">{createdAt}</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Typography variant="body1">{productCount} товара</Typography>
-              <Typography variant="h6">
-                {priceWithDiscount} {getCurrencySymbol(currency)}
-              </Typography>
-            </Stack>
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Stack
+          sx={{ width: '100%' }}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography variant="h6">{title}</Typography>
+            <Chip label="Создан" color="primary" />
+            <Typography variant="body1">
+              {t('from')} {createdDate} {t('at')} {createdTime}
+            </Typography>
           </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>
-            <Typography>
-              {t('deliveryAddress')}: {address}
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography variant="body1">{productCount} товара</Typography>
+            <Typography
+              sx={{ width: '250px', textAlign: 'right' }}
+              variant="h6"
+            >
+              {priceWithDiscount} {getCurrencySymbol(currency)}
             </Typography>
-            <Typography>
-              {t('receiver')}: {client}
-            </Typography>
-          </div>
-          <Divider variant="fullWidth" sx={{ margin: '20px 0' }} />
-          {products.map(product => (
-            <OrderProductCard product={product} currency={currency} />
-          ))}
-          <Divider variant="fullWidth" />
-          <OrderInfoCard
-            fullPrice={fullOrderPrice}
-            totalPrice={priceWithDiscount}
-            summaryDiscount={summaryDiscount}
-            promotions={promotions}
-            deliveryCost={deliveryCost}
-            currency={currency}
-          />
-        </AccordionDetails>
-      </Accordion>
-    </div>
+          </Stack>
+        </Stack>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div>
+          <Typography>
+            {t('deliveryAddress')}: {address}
+          </Typography>
+          <Typography>
+            {t('receiver')}: {client}
+          </Typography>
+        </div>
+        <Divider variant="fullWidth" sx={{ margin: '20px 0' }} />
+        {products.map(product => (
+          <OrderProductCard product={product} currency={currency} />
+        ))}
+        <Divider variant="fullWidth" />
+        <OrderInfoCard
+          fullPrice={fullOrderPrice}
+          totalPrice={priceWithDiscount}
+          summaryDiscount={summaryDiscount}
+          promotions={promotions}
+          deliveryCost={deliveryCost}
+          currency={currency}
+        />
+      </AccordionDetails>
+    </Accordion>
   );
 }
