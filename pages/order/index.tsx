@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectedProductCount,
   selectedProductSum,
@@ -29,6 +29,8 @@ import { IOrder } from '../../@types/entities/IOrder';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
+import { IProduct } from '../../@types/entities/IProduct';
+import { removeProduct } from 'store/slices/orderSlice';
 
 const DELIVERY_PRICE = 500;
 
@@ -38,6 +40,12 @@ export function Order() {
 
   const router = useRouter();
   const { t } = useLocalTranslation(translation);
+
+  const dispatch = useDispatch();
+
+  const handleRemoveProduct = (product: IProduct) => {
+    dispatch(removeProduct(product));
+  };
 
   const [isSubmitError, setIsSubmitError] = useState(false);
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
@@ -60,6 +68,7 @@ export function Order() {
     isLoading: isCitiesListLoading = false,
     isError: isCitiesListError = false,
   } = useGetCityListQuery();
+
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
@@ -124,6 +133,11 @@ export function Order() {
         orderProducts,
       };
       await fetchCreateOrder(formattedOrderData).unwrap();
+      productsInOrder.forEach(product => {
+        console.log(product);
+
+        handleRemoveProduct(product.product);
+      });
       router.push('/personal-area/orders');
     } catch (error) {
       console.log(error);

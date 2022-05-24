@@ -169,6 +169,7 @@ export const selectProductsIdInOrder = (state: RootState): number[] => {
   }, [] as number[]);
 };
 
-export const { addBasketProduct, subtractBasketProduct } = orderSlice.actions;
+export const { addBasketProduct, subtractBasketProduct, removeProduct } =
+  orderSlice.actions;
 
 export default orderSlice.reducer;
