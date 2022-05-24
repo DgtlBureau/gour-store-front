@@ -4,7 +4,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard } from './Card';
 import { Weight } from '../../../@types/entities/Weight';
 
-import russiaIcon from '../../../assets/icons/countries/russia.svg';
+import spainIcon from '../../../assets/icons/countries/spain.svg';
 
 export default {
   component: ProductCard,
@@ -36,6 +36,8 @@ const WEIGHTS = [
 
 const PRICE = 350;
 
+const countrySrc = spainIcon;
+
 const PREVIEW_SRC =
   'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
 
@@ -54,7 +56,7 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       rating={4.3}
       price={PRICE}
       previewSrc={PREVIEW_SRC}
-      countrySrc={russiaIcon}
+      countrySrc={countrySrc}
       inCart={inCart}
       isElected={isElected}
       onAdd={() => setInCart(true)}

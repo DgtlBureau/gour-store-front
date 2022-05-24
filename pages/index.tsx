@@ -194,6 +194,7 @@ const SliderProductCard = ({
       onRemove={() => removeFromBasket(product)}
       onElect={() => {}}
       onDetail={() => goToProductPage(product.id)}
+      countrySrc={product.characteristics.country}
     />
   );
 };
