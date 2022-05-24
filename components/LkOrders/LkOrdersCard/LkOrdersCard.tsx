@@ -51,7 +51,10 @@ export function LkOrdersCard({
 
   const productCount = products.length;
   const fullOrderPrice = products.reduce((acc, currentProduct) => {
-    return (acc += currentProduct.cost);
+    if (!currentProduct.isWeightGood) {
+      return (acc += currentProduct.cost * currentProduct.amount);
+    }
+    return (acc += (currentProduct.cost * currentProduct.weight) / 100);
   }, 0);
 
   const createdDate = format(createdAt, 'yyyy.MM.d');
