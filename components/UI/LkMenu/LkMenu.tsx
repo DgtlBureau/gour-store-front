@@ -1,10 +1,35 @@
 import React from 'react';
-import s from './LkMenu.module.scss';
-import translations from './LkMenu.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Stack } from '@mui/material';
-import { Button } from '../Button/Button';
+
 import { Typography } from './../Typography/Typography';
+
+const sx = {
+  menu: {
+    margin: '40px 0 60px 0',
+  },
+  menuItem: {
+    padding: '10px 16px',
+    color: 'text.muted',
+    borderRadius: '6px',
+    cursor: 'pointer',
+
+    transition: 'all 0.2s ease',
+  
+    '&:hover': {
+      backgroundColor: 'secondary.main',
+      color: 'text.primary',
+    }
+  },
+  active: {
+    backgroundColor: 'secondary.main',
+    color: 'text.primary',
+  },
+  title: {
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    color: 'primary.main',
+  },
+};
 
 export type MenuItem = {
   label: string;
@@ -12,29 +37,31 @@ export type MenuItem = {
 };
 
 export type LkMenuProps = {
-  title: string;
   active: string;
   menuList: MenuItem[];
-  onItemClick: (path: string) => void;
+  onChange: (path: string) => void;
 };
 
-export function LkMenu({ title, active, menuList, onItemClick }: LkMenuProps) {
-  const { t } = useLocalTranslation(translations);
+export function LkMenu({ active, menuList, onChange }: LkMenuProps) {
+  const currentChapter = menuList.find(it => it.path === active);
+
   return (
-    <Stack direction="row" alignItems="center" justifyContent="space-between">
-      <Typography>{title}</Typography>
+    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={sx.menu}>
+      <Typography variant="h4" sx={sx.title}>{currentChapter?.label}</Typography>
+
       <Stack direction="row" alignItems="center" spacing={2}>
-        {menuList.map(link => (
-          <span
-            key={link.path}
-            className={`${s.lkMenuItem} ${
-              link.label === active ? s.active : ''
-            }`}
-            onClick={() => onItemClick(link.path)}
-          >
-            {link.label}
-          </span>
-        ))}
+        {
+          menuList.map(link => (
+            <Typography
+              key={link.path}
+              variant="body1"
+              sx={{ ...sx.menuItem, ...((link.path === active) && sx.active) }}
+              onClick={() => onChange(link.path)}
+            >
+              {link.label}
+            </Typography>
+          ))
+        }
       </Stack>
     </Stack>
   );

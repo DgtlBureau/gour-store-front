@@ -12,6 +12,7 @@ type Props = {
   type?: string;
   sx?: SxProps;
   InputProps?: InputProps;
+  rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 

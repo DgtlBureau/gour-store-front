@@ -7,7 +7,7 @@ import {
   selectedProductSum,
 } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
