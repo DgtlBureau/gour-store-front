@@ -7,7 +7,7 @@ import {
   selectedProductSum,
 } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
+import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
@@ -29,7 +29,7 @@ export function ShopLayout(props: ShopLayoutProps) {
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  console.log('currentUser', currentUser);
+  const [changeCity] = useChangeCurrentCityMutation();
 
   const convertedCities =
     cities?.map(city => ({
@@ -46,9 +46,6 @@ export function ShopLayout(props: ShopLayoutProps) {
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
-
-  // TO DO
-  const changeCity = (id: number) => ({});
 
   return (
     <Box sx={sx.shopLayout}>
