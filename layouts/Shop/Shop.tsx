@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import {
+  selectProductsInOrder,
   selectedProductCount,
   selectedProductSum,
 } from '../../store/slices/orderSlice';
+import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/authApi';
 import { Box } from '../../components/UI/Box/Box';
@@ -13,7 +15,6 @@ import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 
 import sx from './Shop.styles';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
 
 export interface ShopLayoutProps {
   children?: ReactNode;
@@ -24,12 +25,10 @@ export function ShopLayout(props: ShopLayoutProps) {
 
   const locale: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+  const currency = locale === 'ru' ? 'rub' : 'eur';
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
-
-  console.log('currentUser', currentUser);
 
   const convertedCities =
     cities?.map(city => ({
@@ -37,8 +36,18 @@ export function ShopLayout(props: ShopLayoutProps) {
       name: city.name[locale],
     })) || [];
 
+  const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
+
+  const discount = productsInOrder.reduce((acc, currentProduct) => {
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
+  }, 0);
 
   const selectedCity =
     cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
@@ -59,8 +68,8 @@ export function ShopLayout(props: ShopLayoutProps) {
         cities={convertedCities}
         selectedLanguage={locale}
         basketProductCount={count}
-        basketProductSum={sum}
-        currency={currentCurrency}
+        basketProductSum={sum - discount}
+        currency={currency}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}

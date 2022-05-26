@@ -1,37 +1,29 @@
 import type { NextPage } from 'next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import {
-  useGetNoveltiesProductListQuery,
-  useGetProductListQuery,
-} from '../store/api/productApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { CardSlider } from '../components/CardSlider/CardSlider';
-
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
-import { IProduct } from '../@types/entities/IProduct';
 import { ProductCard } from '../components/Product/Card/Card';
-
-import bannerImg from '../assets/images/banner.jpeg';
-
-import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import { IProduct } from '../@types/entities/IProduct';
+
+import { sx } from '../styles/index.styles';
+
+import bannerImg from '../assets/images/banner.jpeg';
 
 type SliderProductCardProps = {
   product: IProduct;
@@ -57,11 +49,8 @@ const Home: NextPage = () => {
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
-
-  const productsIdInOrder = useSelector(selectProductsIdInOrder);
 
   const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
   const goToProductPage = (id: number) => router.push(`products/${id}`);
@@ -82,6 +71,7 @@ const Home: NextPage = () => {
 
   const noveltiesList = novelties?.map(product => (
     <SliderProductCard
+      key={product.id}
       product={product}
       basket={basket.products}
       currency={currentCurrency}
@@ -94,6 +84,7 @@ const Home: NextPage = () => {
 
   const catalogList = products?.map(product => (
     <SliderProductCard
+      key={product.id}
       product={product}
       basket={basket.products}
       currency={currentCurrency}
@@ -113,48 +104,56 @@ const Home: NextPage = () => {
 
   return (
     <ShopLayout>
-      {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
-      )}
-      {!!noveltiesList && (
-        <CardSlider
-          title={t('novelties')}
-          slidesPerView={4}
-          spaceBetween={0}
-          rows={1}
-          cardsList={noveltiesList}
-          sx={sx.novelties}
-        />
-      )}
-      {!!catalogList && (
-        <CardSlider
-          title={t('catalog')}
-          slidesPerView={4}
-          spaceBetween={0}
-          rows={getCatalogRows()}
-          cardsList={catalogList}
-        />
-      )}
-      {!!page && (
-        <>
-          <Box sx={sx.banner}>
-            <Image
-              src={bannerImg}
-              objectFit="cover"
-              width={1200}
-              height={350}
-              alt=""
-            />
-            <Typography variant="h4" sx={sx.bannerTitle}>
-              {page.info?.title?.[locale]}
-            </Typography>
-          </Box>
+      {
+        !!promotionsList && (
+          <CardSlider title={t('promotions')} cardsList={promotionsList} />
+        )
+      }
+      {
+        !!noveltiesList && (
+          <CardSlider
+            title={t('novelties')}
+            slidesPerView={4}
+            spaceBetween={0}
+            rows={1}
+            cardsList={noveltiesList}
+            sx={sx.novelties}
+          />
+        )
+      }
+      {
+        !!catalogList && (
+          <CardSlider
+            title={t('catalog')}
+            slidesPerView={4}
+            spaceBetween={0}
+            rows={getCatalogRows()}
+            cardsList={catalogList}
+          />
+        )
+      }
+      {
+        !!page && (
+          <>
+            <Box sx={sx.banner}>
+              <Image
+                src={bannerImg}
+                objectFit="cover"
+                width={1200}
+                height={350}
+                alt=""
+              />
+              <Typography variant="h4" sx={sx.bannerTitle}>
+                {page.info?.title?.[locale]}
+              </Typography>
+            </Box>
 
-          <Typography variant="body1">
-            {page.info?.description?.[locale]}
-          </Typography>
-        </>
-      )}
+            <Typography variant="body1">
+              {page.info?.description?.[locale]}
+            </Typography>
+          </>
+        )
+      }
     </ShopLayout>
   );
 };
