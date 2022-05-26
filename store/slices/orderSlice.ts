@@ -110,6 +110,13 @@ export const orderSlice = createSlice({
     setAddress(state, action: PayloadAction<OrderFormAddress>) {
       state.address = action.payload;
     },
+    setProducts: (state, action: PayloadAction<number>) => {
+      const id = action.payload;
+      const foundIndex = state.products.findIndex(
+          it => it.product.id === id
+      );
+      state.products.splice(foundIndex, 1);
+    }
   },
 });
 
@@ -169,6 +176,6 @@ export const selectProductsIdInOrder = (state: RootState): number[] => {
   }, [] as number[]);
 };
 
-export const { addBasketProduct, subtractBasketProduct } = orderSlice.actions;
+export const { addBasketProduct, subtractBasketProduct, setProducts } = orderSlice.actions;
 
 export default orderSlice.reducer;

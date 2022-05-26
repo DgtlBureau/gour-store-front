@@ -9,6 +9,7 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
   subtractBasketProduct,
+  setProducts
 } from '../../store/slices/orderSlice';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
@@ -50,6 +51,8 @@ export function Basket({}: basketProps) {
     router.push('/order');
   };
 
+  const zero = []
+
   return (
     <ShopLayout>
       <Stack>
@@ -86,7 +89,7 @@ export function Basket({}: basketProps) {
                     dispatch(addBasketProduct(it.product));
                   }}
                   onDelete={() => {
-                    dispatch(subtractBasketProduct(it.product));
+                    dispatch(setProducts(it.product.id));
                   }}
                   onAdd={() => {
                     dispatch(addBasketProduct(it.product));
