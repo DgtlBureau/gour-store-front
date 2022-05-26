@@ -32,15 +32,22 @@ import bannerImg from '../assets/images/banner.jpeg';
 import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+} from 'store/api/favoriteApi';
+import { useState } from 'react';
+import { useGetCurrentUserQuery } from 'store/api/authApi';
 
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
   locale: 'en' | 'ru';
-  addToBasket: (product: IProduct) => {};
-  removeFromBasket: (product: IProduct) => {};
-  goToProductPage: (id: number) => {};
+  addToBasket: (product: IProduct) => void;
+  removeFromBasket: (product: IProduct) => void;
+  goToProductPage: (id: number) => void;
+  handleElect: (id: number, isElect: boolean) => void;
 };
 
 const Home: NextPage = () => {
@@ -50,6 +57,29 @@ const Home: NextPage = () => {
   const basket = useAppSelector(state => state.order);
 
   const dispatch = useDispatch();
+
+  const { data: currentUser } = useGetCurrentUserQuery();
+
+  // const favoriteProducts = currentUser?.
+
+  const [fetchRemoveFavorite] = useDeleteFavoriteProductMutation();
+  const [fetchAddFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await fetchRemoveFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await fetchAddFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const { data: products } = useGetProductListQuery();
   const { data: novelties } = useGetNoveltiesProductListQuery();
@@ -89,6 +119,7 @@ const Home: NextPage = () => {
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
+      handleElect={handleElect}
     />
   ));
 
@@ -99,6 +130,7 @@ const Home: NextPage = () => {
       currency={currentCurrency}
       locale={locale}
       addToBasket={addToBasket}
+      handleElect={handleElect}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
     />
@@ -169,13 +201,20 @@ const SliderProductCard = ({
   addToBasket,
   removeFromBasket,
   goToProductPage,
+  handleElect,
 }: SliderProductCardProps) => {
+  const [isElect, setIsElect] = useState(false);
   const productInBasket = basket.find(it => it.product.id === product.id);
 
   const count =
     (product.isWeightGood
       ? productInBasket?.weight
       : productInBasket?.amount) || 0;
+
+  const onElect = () => {
+    handleElect(product.id, isElect);
+    setIsElect(!isElect);
+  };
 
   return (
     <ProductCard
@@ -188,11 +227,11 @@ const SliderProductCard = ({
       currency={currency}
       currentCount={count}
       inCart={!!productInBasket}
-      isElected={false}
+      isElected={isElect}
       isWeightGood={product.isWeightGood}
       onAdd={() => addToBasket(product)}
       onRemove={() => removeFromBasket(product)}
-      onElect={() => {}}
+      onElect={onElect}
       onDetail={() => goToProductPage(product.id)}
     />
   );

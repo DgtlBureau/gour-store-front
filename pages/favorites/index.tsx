@@ -1,0 +1,155 @@
+import { Grid, Stack } from '@mui/material';
+import { Typography } from '../../components/UI/Typography/Typography';
+import { ShopLayout } from '../../layouts/Shop/Shop';
+import React, { useState } from 'react';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { ProductCard } from 'components/Product/Card/Card';
+import { LocalConfig } from '../../hooks/useLocalTranslation';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import {
+  addBasketProduct,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
+import { IProduct } from '../../@types/entities/IProduct';
+import { useAppSelector } from '../../hooks/store';
+import { IOrderProduct } from '../../@types/entities/IOrderProduct';
+import { Currency } from '../../@types/entities/Currency';
+
+export function Favorites() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+
+  const {
+    data: favoriteProducts = [],
+    isLoading,
+    isError,
+  } = useGetFavoriteProductsQuery();
+
+  const [fetchRemoveFavorite] = useDeleteFavoriteProductMutation();
+  const [fetchAddFavorite] = useCreateFavoriteProductsMutation();
+
+  const basket = useAppSelector(state => state.order);
+
+  const addToBasket = (product: IProduct) =>
+    dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) =>
+    dispatch(subtractBasketProduct(product));
+
+  console.log('fav', favoriteProducts);
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await fetchRemoveFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await fetchAddFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const handleDetail = (id: number) => {
+    router.push(`/products/${id}`);
+  };
+
+  if (!favoriteProducts) {
+    return <></>;
+  }
+
+  return (
+    <ShopLayout>
+      <Stack spacing={2}>
+        <Typography>Избранные продукты</Typography>
+        <Grid container>
+          {favoriteProducts.map(product => (
+            <FavoriteProductCard
+              product={product}
+              basket={basket.products}
+              currency={currentCurrency}
+              locale={locale}
+              addToBasket={addToBasket}
+              removeFromBasket={removeFromBasket}
+              handleElect={handleElect}
+              goToProductPage={handleDetail}
+            />
+          ))}
+        </Grid>
+      </Stack>
+    </ShopLayout>
+  );
+}
+
+export default Favorites;
+
+type FavoriteProductType = {
+  product: IProduct;
+  basket: IOrderProduct[];
+  currency: Currency;
+  locale: 'en' | 'ru';
+  addToBasket: (product: IProduct) => void;
+  removeFromBasket: (product: IProduct) => void;
+  handleElect: (id: number, isElect: boolean) => void;
+  goToProductPage: (id: number) => void;
+};
+
+const FavoriteProductCard = ({
+  product,
+  basket,
+  locale,
+  currency,
+  addToBasket,
+  removeFromBasket,
+  handleElect,
+  goToProductPage,
+}: FavoriteProductType) => {
+  const [isElect, setIsElect] = useState(true);
+  const productInBasket = basket.find(it => it.product.id === product.id);
+  const count =
+    (product.isWeightGood
+      ? productInBasket?.weight
+      : productInBasket?.amount) || 0;
+
+  const onElect = () => {
+    handleElect(product.id, isElect);
+    setIsElect(!isElect);
+  };
+
+  return (
+    <ProductCard
+      title={product.title[locale]}
+      description={product.description[locale]}
+      rating={product.grade}
+      discount={product.discount}
+      currentCount={count}
+      isWeightGood={product.isWeightGood}
+      price={product.price[currency]}
+      previewSrc={product.images[0]?.small || ''}
+      currency={currency}
+      inCart={!!productInBasket}
+      isElected={isElect}
+      onAdd={() => {
+        addToBasket(product);
+      }}
+      onRemove={() => {
+        removeFromBasket(product);
+      }}
+      onElect={onElect}
+      onDetail={() => {
+        goToProductPage(product.id);
+      }}
+    />
+  );
+};
