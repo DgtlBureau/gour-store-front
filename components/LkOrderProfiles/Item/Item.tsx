@@ -45,7 +45,7 @@ export function LkOrderProfilesItem({
     profile.city.name[locale], 
     profile.street, 
     profile.house, 
-    profile.apartment && `кв. ${profile.apartment}`
+    profile.apartment && `${locale === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
   ].filter(it => !!it).join(', ') : '';
 
   const convertToOrderProfile = (profile: IOrderProfile) => ({
