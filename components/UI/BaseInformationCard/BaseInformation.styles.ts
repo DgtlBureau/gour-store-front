@@ -12,7 +12,7 @@ const sx = {
     borderColor: 'secondary.main',
   },
   children: {
-    maxHeight: '140px',
+    height: '140px',
     overflow: 'auto',
   },
   title: {

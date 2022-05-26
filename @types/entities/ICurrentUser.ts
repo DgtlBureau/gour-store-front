@@ -1,6 +1,7 @@
+import { IBaseEntity } from "./IBaseEntity";
 import { IImage } from "./IImage";
 
-export type CurrentUser = {
+export interface ICurrentUser extends IBaseEntity {
   firstName: string,
   lastName: string,
   phone: string,

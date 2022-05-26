@@ -1,27 +1,24 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-
-import { baseQueryWithReauth } from "../../http/baseQuery";
-import { CurrentUser } from '../../@types/entities/CurrentUser';
+import { commonApi } from './commonApi';
+import { ICurrentUser } from '../../@types/entities/ICurrentUser';
 import { CurrentUserUpdateDto } from '../../@types/dto/current-user-update.dto';
+import { Path } from 'constants/routes';
 
-export const currentUserApi = createApi({
-  reducerPath: 'currentUserApi',
-  baseQuery: baseQueryWithReauth,
+export const currentUserApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getCurrentUser: builder.query<CurrentUser, void>({
+      getCurrentUser: builder.query<ICurrentUser, void>({
         query() {
           return {
             method: 'GET',
-            url: `client-auth/currentUser`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
           }
         },
       }),
-      updateCurrentUser: builder.mutation<CurrentUser, CurrentUserUpdateDto>({
+      updateCurrentUser: builder.mutation<ICurrentUser, CurrentUserUpdateDto>({
         query(body) {
           return {
             method: 'POST',
-            url: `client-auth/currentUser`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
             body,
           }
         },

@@ -3,7 +3,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 
 import { Box } from '../../UI/Box/Box';
 import { RegCredentials, RegCredentialsProps } from './RegCredentials';
-import { SignUpDto } from '../../../@types/dto/signup.dto';
+import { SignUpFormDto } from '../../../@types/dto/signup-form.dto';
 
 export default {
   component: RegCredentials,
@@ -29,7 +29,7 @@ export const DefaultRegCredentials = Template.bind({});
 
 const props: Partial<RegCredentialsProps> = {
   defaultValues: {
-    type: 'physical',
+    role: 'CLIENT',
     phone: '',
     sms: '',
     password: '',
@@ -37,7 +37,7 @@ const props: Partial<RegCredentialsProps> = {
     referral: '',
   },
   onSendSMS: (phone: string) => '1234',
-  onSubmit: (data: SignUpDto) => console.log(data),
+  onSubmit: (data: SignUpFormDto) => console.log(data),
 };
 
 DefaultRegCredentials.args = props;

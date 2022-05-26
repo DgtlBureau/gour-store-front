@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import translations from './RegCredentials.i18n.json';
 import { useLocalTranslation } from "../../../hooks/useLocalTranslation";
 import { getSchema, Translator } from './validation';
-import { SignUpDto } from '../../../@types/dto/signup.dto';
+import { SignUpFormDto } from '../../../@types/dto/signup-form.dto';
 import { Box } from '../../UI/Box/Box';
 import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
@@ -18,10 +18,10 @@ import { Roles } from '../../../constants/roles';
 import sx from './RegCredentials.styles';
 
 export type RegCredentialsProps = {
-  defaultValues?: SignUpDto;
+  defaultValues?: SignUpFormDto;
   onBack(): void;
   onSendSMS(phone: string): string;
-  onSubmit(data: SignUpDto): void;
+  onSubmit(data: SignUpFormDto): void;
 };
 
 export function RegCredentials({
@@ -38,7 +38,7 @@ export function RegCredentials({
 
   const schema = getSchema(t as Translator);
 
-  const values = useForm<SignUpDto>({
+  const values = useForm<SignUpFormDto>({
     defaultValues: {
       ...defaultValues,
       role: defaultValues?.role || Roles.CLIENT,
@@ -71,7 +71,7 @@ export function RegCredentials({
 
   const agree = () => setIsAgree(!isAgree);
 
-  const submit = (data: SignUpDto) => onSubmit(data);
+  const submit = (data: SignUpFormDto) => onSubmit(data);
 
   return (
     <FormProvider {...values}>
@@ -120,7 +120,7 @@ export function RegCredentials({
 
           <HFTextField sx={sx.field} name="referral" label={t('referral')} />
 
-          <Checkbox sx={sx.field} checked={isAgree} onChange={agree} label={t('agreement')} />
+          <Checkbox sx={sx.field} value={isAgree} onChange={agree} label={t('agreement')} />
 
           <Button type="submit" disabled={formIsInvalid}>{t('submit')}</Button>
         </Paper>

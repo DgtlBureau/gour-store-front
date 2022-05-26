@@ -1,6 +1,6 @@
-import {IBaseEntity} from "./IBaseEntity";
+import { IBaseEntity } from "./IBaseEntity";
 
 export interface IImage extends IBaseEntity {
-    small: string;
-    full: string;
+  small: string;
+  full: string;
 }
