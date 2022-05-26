@@ -34,9 +34,9 @@ export function Addresses() {
 
   const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
-  const { data: profiles } = useGetOrderProfilesListQuery();
+  const { data: profiles, refetch: refetchProfiles } = useGetOrderProfilesListQuery();
   const { data: cities } = useGetCityListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: currentUser, refetch: refetchCurrentUser } = useGetCurrentUserQuery();
 
   const [createProfile] = useCreateOrderProfileMutation();
   const [updateProfile] = useUpdateOrderProfileMutation();
@@ -61,7 +61,7 @@ export function Addresses() {
     else rollUpProfile();
   };
 
-  const changeMainAddress = (newOrderProfileId: number) => {
+  const changeMainAddress = async (newOrderProfileId: number) => {
     if (!currentUser) return;
 
     const { avatar, ...userData } = currentUser;
@@ -72,26 +72,32 @@ export function Addresses() {
       avatarId: currentUser.avatar.id,
     } as CurrentUserUpdateDto;
 
-    updateUser(updatedUser);
+    await updateUser(updatedUser);
+
+    refetchCurrentUser();
   };
 
-  const createAddress = (data: OrderProfileDto) => {
-    createProfile(data);
+  const createAddress = async (data: OrderProfileDto) => {
+    await createProfile(data);
+    refetchProfiles();
     closeCreateForm();
   }
 
-  const editAddress = (data: OrderProfileDto, id: number) => {
-    updateProfile({ ...data, id });
+  const editAddress = async (data: OrderProfileDto, id: number) => {
+    await updateProfile({ ...data, id });
+
+    refetchProfiles();
 
     const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
     if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
   };
 
-  const deleteAddress = () => {
-    if (expandedProfileId) deleteProfile(expandedProfileId);
+  const deleteAddress = async () => {
+    if (expandedProfileId) await deleteProfile(expandedProfileId);
     rollUpProfile();
     closeDeleteModal();
+    refetchProfiles();
   };
 
   const openCreateForm = () => {
