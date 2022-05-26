@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Grid, Stack } from '@mui/material';
+import { Grid, Paper, Stack } from '@mui/material';
 
 import { Comment } from '../..//UI/Comment/Comment';
 import { Typography } from '../../UI/Typography/Typography';
@@ -23,7 +23,6 @@ export type ProductReviewsProps = {
 };
 
 const containerBoxSx: CSSProperties = {
-  background: '#EBEBEB',
   borderRadius: '6px',
   padding: '20px',
 };
@@ -43,37 +42,45 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
   }
 
   return (
-    <Grid sx={sx} container spacing={1} direction="row" style={containerBoxSx}>
-      <Grid item xs={3}>
-        <Stack>
-          <Typography variant="h5">{t('reviews')}</Typography>
-          {ratingStats.map(stat => (
-            <ReviewsCounter
-              key={`${stat.grade}/${stat.count}/${stat.percent}`}
-              grade={stat.grade}
-              count={stat.count}
-              percent={stat.percent}
-            />
-          ))}
-        </Stack>
-      </Grid>
-      <Grid item xs={9}>
-        <Swiper slidesPerView={3}>
-          {reviews.length === 0 && (
-            <Typography variant="h5">{t('noReviews')}</Typography>
-          )}
-          {reviews.map(review => (
-            <SwiperSlide key={review.id}>
-              <Comment
-                title={review.clientName}
-                grade={review.value}
-                date={formatDate(review.date)}
-                text={review.comment}
+    <Paper>
+      <Grid
+        sx={sx}
+        container
+        spacing={1}
+        direction="row"
+        style={containerBoxSx}
+      >
+        <Grid item xs={3}>
+          <Stack>
+            <Typography variant="h5">{t('reviews')}</Typography>
+            {ratingStats.map(stat => (
+              <ReviewsCounter
+                key={`${stat.grade}/${stat.count}/${stat.percent}`}
+                grade={stat.grade}
+                count={stat.count}
+                percent={stat.percent}
               />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          </Stack>
+        </Grid>
+        <Grid item xs={9}>
+          <Swiper slidesPerView={3}>
+            {reviews.length === 0 && (
+              <Typography variant="h5">{t('noReviews')}</Typography>
+            )}
+            {reviews.map(review => (
+              <SwiperSlide key={review.id}>
+                <Comment
+                  title={review.clientName}
+                  grade={review.value}
+                  date={formatDate(review.date)}
+                  text={review.comment}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };

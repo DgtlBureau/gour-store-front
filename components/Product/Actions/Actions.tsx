@@ -1,5 +1,5 @@
-import React, { CSSProperties } from 'react';
-import { Button, ButtonGroup, Stack } from '@mui/material';
+import React from 'react';
+import { Button, Stack, SxProps } from '@mui/material';
 
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
@@ -7,9 +7,11 @@ import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Actions.i18n.json';
 
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import RemoveIcon from '@mui/icons-material/Remove';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { defaultTheme as theme } from '../../../themes';
+
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
 export type ProductActionsProps = {
@@ -23,9 +25,30 @@ export type ProductActionsProps = {
   onAddToFavorite: () => void;
 };
 
-const containerSx: CSSProperties = {
-  margin: '50px 0 0 0',
-  width: '100%',
+const sx: Record<string, SxProps> = {
+  container: {
+    margin: '50px 0 0 0',
+    width: '350px',
+  },
+  buttonGroup: {
+    padding: '0 24px',
+    height: '40px',
+    borderRadius: '99px',
+    background: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+
+  icon: {
+    color: theme.palette.common.white,
+  },
+  favoriteIcon: {
+    background: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    margin: '0 0 0 3px',
+    '&: hover': {
+      background: theme.palette.primary.dark,
+    },
+  },
 };
 
 export const ProductActions = ({
@@ -40,7 +63,12 @@ export const ProductActions = ({
 }: ProductActionsProps) => {
   const { t } = useLocalTranslation(translations);
   return (
-    <Stack sx={containerSx} direction="row" justifyContent="space-between">
+    <Stack
+      sx={sx.container}
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Stack>
         <Typography variant="body1">
           {discount ? <s>{price}</s> : ''} /100{t('g')}
@@ -52,28 +80,29 @@ export const ProductActions = ({
       </Stack>
       <Stack direction="row">
         {count === 0 && (
-          <Button onClick={onAddToCart} variant="contained">
+          <Button sx={sx.buttonGroup} onClick={onAddToCart} variant="contained">
             {t('addToCart')}
           </Button>
         )}
         {count !== 0 && (
-          <ButtonGroup
-            variant="contained"
-            aria-label="outlined primary button group"
-          >
-            <Button onClick={onRemoveFromCart}>
+          <Stack direction="row" alignItems="center" sx={sx.buttonGroup}>
+            <IconButton sx={sx.icon} size="small" onClick={onRemoveFromCart}>
               {/* {count !== 1 ? <RemoveIcon /> : <DeleteIcon />} */}
               <RemoveIcon />
-            </Button>
-            <Typography sx={{ padding: '0 20px' }} variant="h5">
+            </IconButton>
+            <Typography sx={{ padding: '0 20px' }} variant="h6">
               {count} {isWeightGood && t('g')}
             </Typography>
-            <Button onClick={onAddToCart}>
+            <IconButton sx={sx.icon} size="small" onClick={onAddToCart}>
               <AddIcon />
-            </Button>
-          </ButtonGroup>
+            </IconButton>
+          </Stack>
         )}
-        <IconButton onClick={onAddToFavorite} component={'symbol'}>
+        <IconButton
+          sx={sx.favoriteIcon}
+          onClick={onAddToFavorite}
+          component={'symbol'}
+        >
           <FavoriteIcon />
         </IconButton>
       </Stack>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { LinearProgress, Stack } from '@mui/material';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CardSlider } from 'components/CardSlider/CardSlider';
@@ -11,8 +12,7 @@ import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
 import { useAppSelector } from 'hooks/store';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetProductQuery } from 'store/api/productApi';
 import {
   useCreateProductGradeMutation,
@@ -26,6 +26,8 @@ import {
 
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CHARACTERISTICS } from 'constants/characteristics';
+import { LocalConfig } from '../../hooks/useLocalTranslation';
+import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
 
 export default function Product() {
@@ -46,8 +48,9 @@ export default function Product() {
     router.push(`/products/${productId}`);
   };
 
-  const lang: 'ru' | 'en' = 'ru';
-  const currency: Currency = 'rub';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
   const productId = id ? +id : 0;
 
@@ -85,8 +88,10 @@ export default function Product() {
     }
   };
 
+  console.log(comments);
+
   const productComments =
-    comments.map((grade, i) => {
+    comments.map(grade => {
       return {
         id: grade.id,
         clientName: grade.client?.role?.title || 'Клиент',
@@ -97,41 +102,23 @@ export default function Product() {
     }) || [];
 
   const similarProductCards =
-    product?.similarProducts?.map(similarProduct => {
-      const productInBasket = basket.products.find(
-        it => it.product.id === similarProduct.id
-      );
-      const count =
-        (product.isWeightGood
-          ? productInBasket?.weight
-          : productInBasket?.amount) || 0;
-      return (
-        <ProductCard
-          key={similarProduct.id}
-          title={similarProduct.title[lang] || ''}
-          description={similarProduct.description[lang] || ''}
-          rating={similarProduct.grade}
-          price={similarProduct.price[currency]}
-          previewSrc={similarProduct.images[0]?.full || ''}
-          inCart={!!productInBasket}
-          isElected={false}
-          onAdd={() => {
-            handleAddProduct(similarProduct);
-          }}
-          onRemove={() => {
-            handleRemoveProduct(similarProduct);
-          }}
-          onDetail={() => {
-            handleDetailProduct(similarProduct.id);
-          }}
-          onElect={() => {}}
-          discount={similarProduct.discount}
-          currentCount={count}
-          isWeightGood={similarProduct.isWeightGood}
-          currency={currency}
-        />
-      );
-    }) || [];
+    product?.similarProducts?.map(similarProduct => (
+      <SimilarProductCards
+        similarProduct={similarProduct}
+        basket={basket.products}
+        currentCurrency={currentCurrency}
+        locale={locale}
+        handleAddProduct={() => {
+          handleAddProduct(similarProduct);
+        }}
+        handleRemoveProduct={() => {
+          handleRemoveProduct(similarProduct);
+        }}
+        handleDetailProduct={() => {
+          handleDetailProduct(similarProduct.id);
+        }}
+      />
+    )) || [];
 
   const productCharacteristics =
     Object.keys(product?.characteristics || {})
@@ -142,8 +129,8 @@ export default function Product() {
         );
 
         return {
-          label: CHARACTERISTICS[key]?.label[lang] || '',
-          value: characteristicValue?.label[lang] || 'нет информации',
+          label: CHARACTERISTICS[key]?.label[locale] || '',
+          value: characteristicValue?.label[locale] || 'нет информации',
         };
       }) || [];
 
@@ -165,7 +152,7 @@ export default function Product() {
               </Box>
               <Stack width="100%">
                 <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
-                  {product.title[lang] || ''}
+                  {product.title[locale] || ''}
                 </Typography>
                 <ProductInformation
                   rating={product.grade || 0}
@@ -175,9 +162,9 @@ export default function Product() {
                   onClickComments={() => {}}
                 />
                 <ProductActions
-                  price={product.price[currency] || 0}
+                  price={product.price[currentCurrency] || 0}
                   count={count}
-                  currency={currency}
+                  currency={currentCurrency}
                   discount={product.discount}
                   isWeightGood={product.isWeightGood}
                   onAddToCart={() => {
@@ -197,7 +184,7 @@ export default function Product() {
               Описание товара
             </Typography>
             <Typography variant="body1">
-              {product.description[lang] || ''}
+              {product.description[locale] || ''}
             </Typography>
 
             {similarProductCards.length !== 0 && (
@@ -221,3 +208,51 @@ export default function Product() {
     </ShopLayout>
   );
 }
+
+type SimilarProductCards = {
+  similarProduct: IProduct;
+  basket: IOrderProduct[];
+  currentCurrency: Currency;
+  locale: 'ru' | 'en';
+  handleAddProduct: () => void;
+  handleRemoveProduct: () => void;
+  handleDetailProduct: () => void;
+};
+
+const SimilarProductCards = ({
+  similarProduct,
+  basket,
+  locale,
+  currentCurrency,
+  handleAddProduct,
+  handleRemoveProduct,
+  handleDetailProduct,
+}: SimilarProductCards) => {
+  const productInBasket = basket.find(
+    it => it.product.id === similarProduct.id
+  );
+  const count =
+    (similarProduct.isWeightGood
+      ? productInBasket?.weight
+      : productInBasket?.amount) || 0;
+  return (
+    <ProductCard
+      key={similarProduct.id}
+      title={similarProduct.title[locale] || ''}
+      description={similarProduct.description[locale] || ''}
+      rating={similarProduct.grade}
+      price={similarProduct.price[currentCurrency]}
+      previewSrc={similarProduct.images[0]?.full || ''}
+      inCart={!!productInBasket}
+      isElected={false}
+      onAdd={handleAddProduct}
+      onRemove={handleRemoveProduct}
+      onDetail={handleDetailProduct}
+      onElect={() => {}}
+      discount={similarProduct.discount}
+      currentCount={count}
+      isWeightGood={similarProduct.isWeightGood}
+      currency={currentCurrency}
+    />
+  );
+};
