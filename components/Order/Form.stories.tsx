@@ -25,7 +25,6 @@ const Template: ComponentStory<typeof OrderForm> = function () {
 
   const submit = (data: OrderFields) => {
     setOrder(data);
-    console.log(data);
   };
 
   const checkPromo = (code: string) => {

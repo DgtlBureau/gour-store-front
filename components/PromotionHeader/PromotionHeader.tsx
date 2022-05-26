@@ -29,8 +29,8 @@ const headerSx = {
     backgroundColor: 'background.default',
   },
   title: {
-    position: 'absolute', 
-    top: '30px', 
+    position: 'absolute',
+    top: '30px',
     left: '30px',
     padding: '10px',
     borderRadius: '6px',
@@ -42,7 +42,7 @@ export type PromotionHeaderProps = {
   title: string;
   image: string;
   end: Date;
-  sx?: SxProps; 
+  sx?: SxProps;
 };
 
 export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps) {
@@ -61,8 +61,6 @@ export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps)
       setSeconds(seconds => seconds - 1);
     }, 1000);
   }, []);
-
-  console.log(intervalToDuration)
 
   useEffect(() => {
     const time = formatSeconds(seconds);

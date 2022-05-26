@@ -104,14 +104,14 @@ export function Footer({
       <Box sx={footerSx.contactsWrapper}>
         <CustomLink path="/">
           <Box sx={footerSx.logo}>
-            <Image src={logo} height={150} width={125} alt="" />
+            <Image src={logo} height={150} width={125} alt="logo" />
           </Box>
         </CustomLink>
 
         <Box sx={footerSx.contacts}>
-          {contacts.map(link => (
+          {contacts.map((link, i) => (
             <CustomLink
-              key={link.path}
+              key={link.path + i}
               path={link.path}
               underline="none"
               sx={footerSx.contactsLink}
@@ -120,15 +120,15 @@ export function Footer({
             </CustomLink>
           ))}
           <Box sx={footerSx.social}>
-            {social.map(link => (
+            {social.map((link,i) => (
               <a
-                key={link.path}
+                key={link.path + i}
                 href={link.path}
                 rel="noreferrer"
                 target="_blank"
                 style={footerSx.socialLink}
               >
-                <Image src={link.icon} height={38} width={38} alt="" />
+                <Image src={link.icon} height={38} width={38} alt="icon" />
               </a>
             ))}
           </Box>
@@ -136,7 +136,7 @@ export function Footer({
       </Box>
       <Box sx={footerSx.info}>
         {info.map((link, i) => (
-          <Fragment key={link.path}>
+          <Fragment key={link.path + i}>
             <NextLink href={link.path} passHref>
               <a
                 href="replace"

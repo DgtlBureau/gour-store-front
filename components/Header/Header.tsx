@@ -115,7 +115,9 @@ export function Header({
             >
               <Box sx={{ cursor: 'pointer' }}>
                 <NextLink href="/" passHref>
+                  <>
                   <Image src={Logo} height={52} width={58} alt="" />
+                  </>
                 </NextLink>
               </Box>
 
@@ -183,6 +185,7 @@ export function Header({
                   locale={locale === 'ru' ? 'en' : 'ru'}
                   passHref
                 >
+                  <>
                   <Image
                     src={locale === 'ru' ? RusFlagIcon : UKFlagIcon}
                     objectFit="cover"
@@ -190,6 +193,7 @@ export function Header({
                     width={34}
                     alt=""
                   />
+                  </>
                 </NextLink>
               </Box>
               <Button
