@@ -16,7 +16,7 @@ import { Button } from 'components/UI/Button/Button';
 import { LkLayout } from 'layouts/Lk/Lk';
 import { LkOrderProfilesItem } from 'components/LkOrderProfiles/Item/Item';
 import { LkOrderProfilesDeleteModal } from 'components/LkOrderProfiles/DeleteModal/DeleteModal';
-import { OrderProfileDto } from '../../../@types/dto/order/profile.dto'
+import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
 import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
 
 const sx = {
@@ -25,7 +25,7 @@ const sx = {
     justifyContent: 'flex-end',
     marginBottom: '10px',
   },
-}
+};
 
 export function Addresses() {
   const { t } = useLocalTranslation(translations);
@@ -34,9 +34,9 @@ export function Addresses() {
 
   const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
-  const { data: profiles, refetch: refetchProfiles } = useGetOrderProfilesListQuery();
+  const { data: profiles } = useGetOrderProfilesListQuery();
   const { data: cities } = useGetCityListQuery();
-  const { data: currentUser, refetch: refetchCurrentUser } = useGetCurrentUserQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const [createProfile] = useCreateOrderProfileMutation();
   const [updateProfile] = useUpdateOrderProfileMutation();
@@ -48,10 +48,11 @@ export function Addresses() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  const citiesList = cities?.map(city => ({
-    value: city.id,
-    label: city.name[locale],
-  })) || [];
+  const citiesList =
+    cities?.map(city => ({
+      value: city.id,
+      label: city.name[locale],
+    })) || [];
 
   const rollUpProfile = () => setExpandedProfileId(null);
 
@@ -73,20 +74,15 @@ export function Addresses() {
     } as CurrentUserUpdateDto;
 
     await updateUser(updatedUser);
-
-    refetchCurrentUser();
   };
 
   const createAddress = async (data: OrderProfileDto) => {
     await createProfile(data);
-    refetchProfiles();
     closeCreateForm();
-  }
+  };
 
   const editAddress = async (data: OrderProfileDto, id: number) => {
     await updateProfile({ ...data, id });
-
-    refetchProfiles();
 
     const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
@@ -97,7 +93,6 @@ export function Addresses() {
     if (expandedProfileId) await deleteProfile(expandedProfileId);
     rollUpProfile();
     closeDeleteModal();
-    refetchProfiles();
   };
 
   const openCreateForm = () => {
@@ -116,35 +111,22 @@ export function Addresses() {
           {t('newAddress')}
         </Button>
       </Box>
-      {
-        isCreating && (
-          <LkOrderProfilesItem
-            key={-1}
-            cities={citiesList}
-            onSave={createAddress}
-            onDelete={closeCreateForm}
-          />
-        )
-      }
-      {
-        profiles?.map(profile => (
-          <LkOrderProfilesItem
-            key={profile.id}
-            isExpanded={expandedProfileId === profile.id}
-            isMain={currentUser?.mainOrderProfileId === profile.id}
-            cities={citiesList}
-            profile={profile}
-            onExpand={() => expandProfile(profile.id)}
-            onSave={data => editAddress(data, profile.id)}
-            onDelete={openDeleteModal}
-          />
-        ))
-      }
-      <LkOrderProfilesDeleteModal
-        isOpen={isDeleting}
-        onAccept={deleteAddress}
-        onClose={closeDeleteModal}
-      />
+      {isCreating && (
+        <LkOrderProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+      )}
+      {profiles?.map(profile => (
+        <LkOrderProfilesItem
+          key={profile.id}
+          isExpanded={expandedProfileId === profile.id}
+          isMain={currentUser?.mainOrderProfileId === profile.id}
+          cities={citiesList}
+          profile={profile}
+          onExpand={() => expandProfile(profile.id)}
+          onSave={data => editAddress(data, profile.id)}
+          onDelete={openDeleteModal}
+        />
+      ))}
+      <LkOrderProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
     </LkLayout>
   );
 }
