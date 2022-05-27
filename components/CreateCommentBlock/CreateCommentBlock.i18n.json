@@ -8,7 +8,7 @@
     "alert": {
       "title": "Спасибо!",
       "message": {
-        "1": "Отзыв отправлен на модерацию.\r",
+        "1": "Отзыв отправлен на модерацию.",
         "2": "Скоро мы его опубликуем."
       }
     }
@@ -18,6 +18,13 @@
     "subtitle": "Leave a review",
     "rate": "Rate the product",
     "placeholder": "Write a review",
-    "accept": "Send"
+    "accept": "Send",
+    "alert": {
+      "title": "Thank you!",
+      "message": {
+        "1": "Review sent for moderation.",
+        "2": "We will publish it soon."
+      }
+    }
   }
 }
