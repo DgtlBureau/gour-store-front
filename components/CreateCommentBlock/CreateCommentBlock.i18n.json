@@ -4,7 +4,14 @@
     "subtitle": "Оставьте отзыв",
     "rate": "Оцените товар",
     "placeholder": "Напишите отзыв",
-    "accept": "Отправить"
+    "accept": "Отправить",
+    "alert": {
+      "title": "Спасибо!",
+      "message": {
+        "1": "Отзыв отправлен на модерацию.\r",
+        "2": "Скоро мы его опубликуем."
+      }
+    }
   },
   "en": {
     "title": "Have you already bought this product?",
