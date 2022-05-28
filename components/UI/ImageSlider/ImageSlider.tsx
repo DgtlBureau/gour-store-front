@@ -8,6 +8,7 @@ import { Box } from '../Box/Box';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
+import defaultImage from '../../../assets/no-image.png';
 
 const sx = {
   slider: {
@@ -54,7 +55,7 @@ export function ImageSlider({ images }: ImageSliderProps) {
         {
           images.map(image => (
             <SwiperSlide key={image.full}>
-              <Image src={image.full} objectFit="cover" height={500} width={580} alt="" />
+              <Image src={image.full ? image.full: defaultImage} objectFit="cover" height={500} width={580} alt="" />
             </SwiperSlide>
           ))
         }

@@ -7,6 +7,7 @@ import { Button } from '../../UI/Button/Button';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import defaultImage from '../../../assets/no-image.png'
 import translations from './Card.i18n.json';
 
 import PlusIcon from '@mui/icons-material/Add';
@@ -51,7 +52,7 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={productImg} />
+      <CardMedia sx={sx.image} component="img" image={productImg ? productImg : defaultImage} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>

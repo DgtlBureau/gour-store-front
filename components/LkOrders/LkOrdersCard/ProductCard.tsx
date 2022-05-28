@@ -8,6 +8,8 @@ import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import translations from './LkOrdersCard.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import defaultImage from '../../../assets/no-image.png'
+
 
 export type OrderProductType = {
   photo: string;
@@ -31,7 +33,7 @@ export const OrderProductCard = ({
   const { photo, title, weight, amount, cost, isWeightGood } = product;
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={photo} />
+      <CardMedia sx={sx.image} component="img" image={photo ? photo : defaultImage} />
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
           <Typography variant="body1" sx={sx.title}>
