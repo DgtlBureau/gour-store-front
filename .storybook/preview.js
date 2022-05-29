@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import * as NextImage from "next/image";
 
 import { defaultTheme } from '../themes';

@@ -28,6 +28,8 @@ import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CHARACTERISTICS } from 'constants/characteristics';
 import { Currency } from '../../@types/entities/Currency';
 
+import { sx } from './[id].styles';
+
 export default function Product() {
   const router = useRouter();
   const { id } = router.query;
@@ -160,11 +162,11 @@ export default function Product() {
         {!isLoading && !isError && product && (
           <div>
             <Stack direction="row" justifyContent="space-between">
-              <Box sx={{ width: '580px', margin: '0 40px 0 0' }}>
+              <Box sx={sx.imageSlider}>
                 <ImageSlider images={product.images} />
               </Box>
               <Stack width="100%">
-                <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
+                <Typography variant="h3" sx={sx.productTitle}>
                   {product.title[lang] || ''}
                 </Typography>
                 <ProductInformation
@@ -193,10 +195,10 @@ export default function Product() {
               </Stack>
             </Stack>
 
-            <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
+            <Typography sx={sx.descriptionTitle} variant="h5">
               Описание товара
             </Typography>
-            <Typography variant="body1">
+            <Typography sx={sx.description} variant="body1">
               {product.description[lang] || ''}
             </Typography>
 
@@ -210,7 +212,7 @@ export default function Product() {
             )}
 
             <ProductReviews
-              sx={{ margin: '50px 0' }}
+              sx={sx.reviews}
               reviews={productComments}
             />
 
