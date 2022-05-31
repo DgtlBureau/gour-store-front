@@ -211,19 +211,19 @@ export class GameCore {
     if (!this.isPlaying) return;
 
     const deviation = this.getDeviation();
-    const shownTime = this.RABBIT_DISPLAY_PERIOD / (this.speed + deviation);
+    const displayPeriod = this.RABBIT_DISPLAY_PERIOD / (this.speed + deviation);
 
     setTimeout(() => {
       this.isRabbitShown = true;
 
-      const hideTime = this.RABBIT_DISPLAY_TIME / this.speed;
+      const displayTime = this.RABBIT_DISPLAY_TIME / this.speed;
 
       setTimeout(() => {
         this.isRabbitShown = false;
         
         this.runRabbitLogic();
-      }, hideTime);
-    }, shownTime);
+      }, displayTime);
+    }, displayPeriod);
 
     this.pushEvent();
   }
