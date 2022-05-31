@@ -1,17 +1,16 @@
 import React from 'react';
-import s from './GameOleg.module.scss';
 
 export enum PlayerPosition {
-    topLeft = 'topLeft',
-    topRight = 'topRight',
-    bottomLeft = 'bottomLeft',
-    bottomRight = 'bottomRight',
+  topLeft = 'topLeft',
+  topRight = 'topRight',
+  bottomLeft = 'bottomLeft',
+  bottomRight = 'bottomRight',
 }
 
 export type GameOlegProps = {
-    position: PlayerPosition
+  position: PlayerPosition
 };
 
 export function GameOleg(props: GameOlegProps) {
-    return <div>GameOleg</div>
+  return <div>GameOleg</div>
 }
