@@ -7,7 +7,7 @@ import { Button } from '../../UI/Button/Button';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import defaultImage from '../../../assets/no-image.png'
+import defaultImage from '../../../assets/no-image.svg'
 import translations from './Card.i18n.json';
 
 import PlusIcon from '@mui/icons-material/Add';

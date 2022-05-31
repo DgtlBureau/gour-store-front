@@ -16,7 +16,7 @@ const sx = {
 
     borderRadius: '2px',
 
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
 
   content: {

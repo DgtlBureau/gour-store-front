@@ -8,7 +8,7 @@ import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
 import { Currency } from '../../../@types/entities/Currency';
-import defaultImage from '../../../assets/no-image.png'
+import defaultImage from '../../../assets/no-image.svg'
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import sx from './Card.styles';

@@ -8,7 +8,7 @@ import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import translations from './LkOrdersCard.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import defaultImage from '../../../assets/no-image.png'
+import defaultImage from '../../../assets/no-image.svg'
 
 
 export type OrderProductType = {

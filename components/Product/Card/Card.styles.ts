@@ -34,6 +34,7 @@ const sx = {
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
+    objectFit: 'none',
 
     '&:hover': {
       cursor: 'pointer',

@@ -8,7 +8,8 @@ import { Box } from '../Box/Box';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import defaultImage from '../../../assets/no-image.png';
+
+import defaultImage from '../../../assets/no-image.svg';
 
 const sx = {
   slider: {
@@ -31,7 +32,7 @@ const sx = {
       marginRight: 0,
     },
   }
-}
+};
 
 export type ImageSliderProps = {
   images: {
@@ -40,10 +41,17 @@ export type ImageSliderProps = {
   }[];
 };
 
-export function ImageSlider({ images }: ImageSliderProps) {
-  const [slider, setSlider] = useState<SwiperCore | null>(null);
+const defaultImages = [{ full: defaultImage, small: defaultImage}];
 
+export function ImageSlider({images}: ImageSliderProps) {
+  const [slider, setSlider] = useState<SwiperCore | null>(null);
   const slideTo = (i: number) => slider?.slideTo(i);
+  const checkImages = () => {
+    if (!images.length) {
+      return defaultImages
+    }
+    return images
+  }
 
   return (
     <Box sx={sx.slider}>
@@ -53,9 +61,9 @@ export function ImageSlider({ images }: ImageSliderProps) {
         onSwiper={setSlider}
       >
         {
-          images.map(image => (
-            <SwiperSlide key={image.full}>
-              <Image src={image.full ? image.full: defaultImage} objectFit="cover" height={500} width={580} alt="" />
+          checkImages().map((image, i) => (
+            <SwiperSlide key={image.full + i}>
+              <Image src={image.full} objectFit="contain" height={500} width={580} alt=""/>
             </SwiperSlide>
           ))
         }
@@ -63,9 +71,9 @@ export function ImageSlider({ images }: ImageSliderProps) {
 
       <Box sx={sx.scroll}>
         {
-          images.map((image, i) => (
-            <Box key={image.small} sx={sx.small}>
-              <Image src={image.small} objectFit="cover" height={80} width={90} alt="" onClick={() => slideTo(i)} />
+          checkImages().map((image, i) => (
+            <Box key={image.small + i} sx={sx.small}>
+              <Image src={image.small} objectFit="contain" height={80} width={90} alt="" onClick={() => slideTo(i)}/>
             </Box>
           ))
         }
