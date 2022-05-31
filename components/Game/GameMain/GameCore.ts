@@ -40,6 +40,7 @@ export class GameCore {
   private PRODUCT_PERIOD = 2000;
 
   private MAX_LIVES_COUNT = 3;
+  private LAST_STEP = 4;
 
   private RECOVERY_CHECKPOINTS = [200, 500, 1000];
   private BOOST_CHECKPOINT = 20;
@@ -152,11 +153,11 @@ export class GameCore {
   }
 
   private tryToCatchProduct() {
-    // Функция должна вызываться при каждом изменении currentPlayerPosition и step = 4 у каждого продукта
+    // Функция должна вызываться при каждом изменении currentPlayerPosition и step = LAST_STEP у каждого продукта
     // она должна проверять текущее положение игрока и проходить по всем активным товарам и ловить те,
-    // что на 4 шаге. Если товар пойман - вызывается функция addScore если нет - вызывается функция subtractLive
+    // что на LAST_STEP шаге. Если товар пойман - вызывается функция addScore если нет - вызывается функция subtractLive
     this.products.forEach((product, i) => {
-      if (product.step !== 4) return;
+      if (product.step !== this.LAST_STEP) return;
 
       if (product.position === this.currentPlayerPosition) this.addScore;
       else this.subtractLive;
@@ -187,13 +188,13 @@ export class GameCore {
 
   private runChangingProductStep(productId: number) {
     // Функция должна, в зависимости от this.speed изменять step продукта
-    // Когда доходит до шага 4 - должна вызываться функция tryToCatchProduct
+    // Когда доходит до шага LAST_STEP - должна вызываться функция tryToCatchProduct
     // Функция должна вызывать себя саму вплоть до 5 шага (падения продукта) по таймауту
     if (!this.isPlaying) return;
 
     const product = this.products[productId];
 
-    if (product.step !== 4) {
+    if (product.step !== this.LAST_STEP) {
       const updatedProduct = { ...product, step: product.step + 1 } as GameProduct;
       this.products.splice(productId, 1, updatedProduct);
     }
