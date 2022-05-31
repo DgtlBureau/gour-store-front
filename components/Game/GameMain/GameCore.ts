@@ -1,14 +1,14 @@
 import { GameProductType } from "../GameProduct/GameProduct";
 import { PlayerPosition } from "../GameOleg/GameOleg";
 
-const productTypes= [
+const PRODUCT_TYPES = [
   GameProductType.cheese, 
   GameProductType.sausage, 
   GameProductType.jamon, 
   GameProductType.chicken,
 ];
 
-const playerPositions = [
+const PLAYER_POSITIONS = [
   PlayerPosition.topLeft,
   PlayerPosition.bottomLeft,
   PlayerPosition.topRight,
@@ -136,12 +136,12 @@ export class GameCore {
   private addProduct() {
     // Функция добавляет продукт в массив products cо случайными PlayerPosition и ProductType,
     // вызывает функцию runChangingProductStep
-    const productTypeId = Math.floor(Math.random() * productTypes.length);
-    const positionId = Math.floor(Math.random() * playerPositions.length);
+    const productTypeId = Math.floor(Math.random() * PRODUCT_TYPES .length);
+    const positionId = Math.floor(Math.random() * PLAYER_POSITIONS.length);
 
     const product: GameProduct = {
-      type: productTypes[productTypeId],
-      position: playerPositions[positionId],
+      type: PRODUCT_TYPES [productTypeId],
+      position: PLAYER_POSITIONS[positionId],
       step: 1,
     };
     const productId = this.products.push(product);
