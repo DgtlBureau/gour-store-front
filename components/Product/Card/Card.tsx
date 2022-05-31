@@ -23,7 +23,7 @@ export type ProductCardProps = {
   price: number;
   discount?: number;
   previewSrc: string;
-  countryFrom: string;
+  country?: string;
   currency: Currency;
   inCart: boolean;
   isElected: boolean;
@@ -42,7 +42,7 @@ export function ProductCard({
   discount = 0,
   price,
   previewSrc,
-  countryFrom,
+  country,
   isElected,
   currency,
   onAdd,
@@ -66,14 +66,14 @@ export function ProductCard({
             alt=""
             onClick={onDetail}
           />
-          {countryFrom && (
+          {!!country && (
             <Box sx={sx.country}>
               <Image
-                src={!countryFrom ? countryFrom : getCountryFlag(countryFrom)}
+                src={getCountryFlag(country)}
                 objectFit="cover"
                 height={26}
                 width={26}
-                alt={"country" + countryFrom}
+                alt={"country" + country}
               />
             </Box>
           )}

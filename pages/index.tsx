@@ -32,6 +32,8 @@ import bannerImg from '../assets/images/banner.jpeg';
 import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import exports from 'webpack';
+import hasOwnProperty = exports.RuntimeGlobals.hasOwnProperty;
 
 type SliderProductCardProps = {
   product: IProduct;
@@ -194,7 +196,7 @@ const SliderProductCard = ({
       onRemove={() => removeFromBasket(product)}
       onElect={() => {}}
       onDetail={() => goToProductPage(product.id)}
-      countrySrc={product.characteristics.country}
+      country={product.characteristics.country ? `${product.characteristics.country}` : '' }
     />
   );
 };
