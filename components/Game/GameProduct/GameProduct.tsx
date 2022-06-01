@@ -1,22 +1,20 @@
 import React from 'react';
-import cheese from '../../../assets/images/game/cheese.svg'
-import chicken from  '../../../assets/images/game/chicken.svg'
-import sausage from  '../../../assets/images/game/sausage.svg'
-import jamon from  '../../../assets/images/game/jamon.svg'
+import Image from 'next/image';
+import s from './GameProduct.module.scss';
 
-export enum GameProductType {
-    cheese = 'cheese',
-    sausage = 'sausage',
-    jamon = 'jamon',
-    chicken = 'chicken',
-}
+import cheese from '../../../assets/images/game/cheese.svg';
+import chicken from '../../../assets/images/game/chicken.svg';
+import sausage from '../../../assets/images/game/sausage.svg';
+import jamon from '../../../assets/images/game/jamon.svg';
+
 
 export type GameProductProps = {
-    type: GameProductType;
-    tiltAngle: number;
+    type: 'cheese' | 'sausage' | 'jamon' | 'chicken';
+    isActive: boolean;
+    step: 'first' | 'second' | 'third' | 'four';
 };
 
-const checkItem = (props:string) => {
+const checkItem = (props: string) => {
     switch (props) {
         case 'cheese':
             return cheese;
@@ -31,6 +29,26 @@ const checkItem = (props:string) => {
     }
 };
 
+const checkStep = (props:string) => {
+    switch (props) {
+        case 'first':
+            return s.firstStep;
+        case 'second':
+            return s.secondStep;
+        case 'third':
+            return s.thirdStep;
+        case 'four':
+            return s.fourStep;
+        default:
+            return '';
+    }
+}
+
 export function GameProduct(props: GameProductProps) {
-    return <img src={checkItem(props.type)} alt="item" style={{transform: `rotate(${props.tiltAngle}deg)`, transition: "transform 0.5s ease"}}/>
+    return <Image src={checkItem(props.type)}
+           alt="item"
+           width="100%"
+           height="100%"
+           className={(props.isActive ? s.elementActive : s.elementDisabled) + ' ' + (checkStep(props.step))}
+    />
 }
