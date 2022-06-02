@@ -1,7 +1,8 @@
 import React from 'react';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CartCard } from '../../components/Cart/Card/Card';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { Grid, Stack } from '@mui/material';
+
 import {
   addBasketProduct,
   selectedProductCount,
@@ -9,25 +10,30 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
   subtractBasketProduct,
+  removeProduct
 } from '../../store/slices/orderSlice';
+import translation from './Basket.i18n.json';
+import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
-import { Grid, Stack } from '@mui/material';
+import { ShopLayout } from '../../layouts/Shop/Shop';
+import { CartCard } from '../../components/Cart/Card/Card';
+import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { CartEmpty } from 'components/Cart/Empty/Empty';
-import { useRouter } from 'next/router';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translation from './Basket.i18n.json';
 
-export type basketProps = {};
-
-export function Basket({}: basketProps) {
+export function Basket() {
   const router = useRouter();
+
   const dispatch = useDispatch();
+
   const { t } = useLocalTranslation(translation);
-  const lang: 'ru' | 'en' = 'ru';
-  const currency: 'rub' | 'eur' = 'rub';
+
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
@@ -46,14 +52,23 @@ export function Basket({}: basketProps) {
   const sumToFreeDelivery = 2990 - sum; //TODO: вынести логику стоимости заказа на бек
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
-  const handleClickOrder = () => {
-    router.push('/order');
-  };
+  const goToHome = () => router.push('/');
+  const goToOrder = () => router.push('/order');
+
+  const electProduct = (product: IProduct) => ({});
+  const deleteProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
+  const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
-    <ShopLayout>
+    <ShopLayout currency={currency} language={language}>
       <Stack>
-        <Typography variant="h3">{t('cart')}</Typography>
+        <Typography 
+          variant="h3" 
+          sx={{ fontWeight: 'bold' ,fontFamily: 'Roboto slab', color: 'primary.main'}}
+        >
+          {t('cart')}
+        </Typography>
         {productsInOrder.length === 0 && (
           <CartEmpty
             title={t('emptyTitle')}
@@ -74,7 +89,7 @@ export function Basket({}: basketProps) {
               {productsInOrder.map((it, i) => (
                 <CartCard
                   key={`${it.product.id}-${i}`}
-                  title={it.product.title[lang] || '...'}
+                  title={it.product.title[language] || '...'}
                   price={it.product.price[currency] || 0}
                   amount={it.amount}
                   weight={it.weight}
@@ -86,7 +101,7 @@ export function Basket({}: basketProps) {
                     dispatch(addBasketProduct(it.product));
                   }}
                   onDelete={() => {
-                    dispatch(subtractBasketProduct(it.product));
+                    dispatch(removeProduct(it.product));
                   }}
                   onAdd={() => {
                     dispatch(addBasketProduct(it.product));
@@ -95,39 +110,24 @@ export function Basket({}: basketProps) {
                     dispatch(subtractBasketProduct(it.product));
                   }}
                 />
-              ))}
-            </Grid>
-            <Grid item xs={4}>
-              <Button
-                sx={{ width: '100%', margin: '0 0 10px 0' }}
-                onClick={handleClickOrder}
-              >
-                {t('orderButton')}
-              </Button>
-              <CartInfo
-                count={count}
-                weight={weight}
-                price={sum}
-                delivery={isDeliveryFree ? 0 : 500} //TODO: вынести логику стоимости заказа на бек
-                discount={sumDiscount}
-              />
-              {!isDeliveryFree && (
+                {
+                  !isDeliveryFree && (
+                    <InfoBlock
+                      styles={{ margin: '10px 0 0 0' }}
+                      text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                      link={{ label: t('continueShopping'), path: '/' }}
+                    />
+                  )
+                }
                 <InfoBlock
                   styles={{ margin: '10px 0 0 0' }}
-                  text={`${t(
-                    'freeDeliveryText.part1'
-                  )} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  text={t('aboutDelivery')}
                   link={{ label: t('continueShopping'), path: '/' }}
                 />
-              )}
-              <InfoBlock
-                styles={{ margin: '10px 0 0 0' }}
-                text={t('aboutDelivery')}
-                link={{ label: t('continueShopping'), path: '/' }}
-              />
+              </Grid>
             </Grid>
-          </Grid>
-        )}
+          )
+        }
       </Stack>
     </ShopLayout>
   );

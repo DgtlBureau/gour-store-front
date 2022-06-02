@@ -4,8 +4,8 @@ import { ComponentStory, Meta } from "@storybook/react";
 import { GameOleg, GameOlegProps, PlayerPosition } from "./Oleg";
 
 export default {
-    component: GameOleg,
-    title: "Game/Oleg",
+  component: GameOleg,
+  title: "Game/Oleg",
 } as Meta;
 
 const Template: ComponentStory<typeof GameOleg> = (args: GameOlegProps) => <GameOleg {...args} />;
