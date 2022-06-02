@@ -1,6 +1,6 @@
 import { GameFieldPosition } from "../Player/Player";
 
-const FIELD_POSITIONS: GameFieldPosition[] = [
+export const FIELD_POSITIONS: GameFieldPosition[] = [
   'topLeft',
   'bottomLeft',
   'topRight',

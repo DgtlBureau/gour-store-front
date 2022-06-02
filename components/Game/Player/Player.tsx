@@ -8,6 +8,7 @@ const sx = {
     display: 'flex',
     justifyContent: 'space-between',
     maxWidth: '500px',
+    zIndex: 50,
   },
 };
 

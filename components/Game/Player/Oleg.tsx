@@ -33,7 +33,7 @@ const sx = {
     transform: 'scaleX(-1)',
   },
   muted: {
-    opacity: 0.5,
+    opacity: 0.15,
   },
 };
 
