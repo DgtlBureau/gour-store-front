@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { PlayerPosition } from "../Oleg/Oleg";
+import { PlayerPosition } from "../Player/Player";
 
 export function GameMain() {
   const [currentOlegPosition, setCurrentOlegPosition] = useState<PlayerPosition>(PlayerPosition.topLeft);

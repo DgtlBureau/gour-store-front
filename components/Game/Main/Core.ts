@@ -1,5 +1,5 @@
 import {GameProductType} from "../GameProduct/GameProduct";
-import {PlayerPosition} from "../Oleg/Oleg";
+import {PlayerPosition} from "../Player/Player";
 
 export interface GameProduct {
     type: GameProductType;
