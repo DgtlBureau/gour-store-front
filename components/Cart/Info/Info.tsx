@@ -8,6 +8,7 @@ import { defaultTheme as t } from '../../../themes';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Info.i18n.json';
+import { Currency } from '../../../@types/entities/Currency';
 
 const sx = {
   paper: {
@@ -37,7 +38,7 @@ type CartInfoProps = {
   price: number;
   delivery: number;
   discount: number;
-  currency?: 'rub' | 'usd' | 'eur';
+  currency?: Currency;
 };
 
 export function CartInfo({
@@ -46,7 +47,7 @@ export function CartInfo({
   price,
   delivery,
   discount,
-  currency = 'rub',
+  currency = 'cheeseCoin',
 }: CartInfoProps) {
   const { t } = useLocalTranslation(translations);
 

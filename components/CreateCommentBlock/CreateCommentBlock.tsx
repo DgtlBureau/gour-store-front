@@ -4,6 +4,8 @@ import { Paper, Grid, Rating } from '@mui/material';
 
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
+import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import { Textarea } from '../UI/Textarea/Textarea';
 import { Typography } from '../UI/Typography/Typography';
 import { defaultTheme as theme } from '../../themes';
@@ -29,6 +31,9 @@ const sx = {
   emptyStar: {
     color: theme.palette.text.muted,
   },
+  alertTitle:{
+    fontWeight: 'Bold'
+  }
 };
 
 export type CreateCommentBlockProps = {
@@ -52,6 +57,19 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
   const onChange = (name: string, value: string | number) => {
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
+
+  const [isAlertOpen,setIsAlert] = useState<boolean>(false);
+
+  const openAlert = () => {
+    setIsAlert(true);
+  };
+
+  const closeAlert = () => {
+    setIsAlert(false);
+  };
+
+  const vertical = 'bottom';
+  const horizontal = 'right';
 
   return (
     <Paper sx={sx.block}>
@@ -88,7 +106,6 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               </Typography>
             </Box>
           </Grid>
-
           <Grid
             item
             xs={8}
@@ -103,9 +120,25 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               value={formData.comment}
               onChange={e => onChange('comment', e.target.value)}
             />
-            <Button sx={sx.btn} type="submit" disabled={formData.value === 0}>
+            <Button sx={sx.btn} type="submit" disabled={formData.value === 0} onClick={openAlert}>
               {t('accept')}
             </Button>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={isAlertOpen}
+                autoHideDuration={6000}
+                onClose={closeAlert}
+                message="sda"
+            >
+              <Alert icon={<CheckCircleOutlineRoundedIcon fontSize="inherit" />} severity="success">
+                <AlertTitle sx={sx.alertTitle}>
+                  {t('alert.title')}
+                </AlertTitle>
+                {t('alert.message.1')}
+                <br></br>
+              {t('alert.message.2')}
+              </Alert>
+            </Snackbar>
           </Grid>
         </Grid>
       </form>

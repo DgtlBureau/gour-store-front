@@ -1,23 +1,14 @@
-import { GameProductType } from "../GameProduct/GameProduct";
-import { PlayerPosition } from "../GameOleg/GameOleg";
+import { GameFieldPosition } from "../Player/Player";
 
-const PRODUCT_TYPES = [
-  GameProductType.cheese, 
-  GameProductType.sausage, 
-  GameProductType.jamon, 
-  GameProductType.chicken,
-];
-
-const PLAYER_POSITIONS = [
-  PlayerPosition.topLeft,
-  PlayerPosition.bottomLeft,
-  PlayerPosition.topRight,
-  PlayerPosition.bottomRight,
+const FIELD_POSITIONS: GameFieldPosition[] = [
+  'topLeft',
+  'bottomLeft',
+  'topRight',
+  'bottomRight',
 ];
 
 export interface GameProduct {
-  type: GameProductType;
-  position: PlayerPosition;
+  position: GameFieldPosition;
   step: 1 | 2 | 3 | 4;
 }
 
@@ -29,7 +20,7 @@ export interface GameEvent {
   speed: number;
   score: number;
 
-  currentPlayerPosition: PlayerPosition;
+  playerPosition: GameFieldPosition;
   products: GameProduct[];
 }
 
@@ -57,7 +48,7 @@ export class GameCore {
   private speed = 0;
   private score = 0;
 
-  private currentPlayerPosition: PlayerPosition = PlayerPosition.bottomLeft;
+  private playerPosition: GameFieldPosition = 'topLeft';
   private products: GameProduct[] = [];
   
   private eventHandler: (e: GameEvent) => void;
@@ -76,7 +67,7 @@ export class GameCore {
       speed: this.speed,
       score: this.score,
       
-      currentPlayerPosition: this.currentPlayerPosition,
+      playerPosition: this.playerPosition,
       products: this.products,
     };
 
@@ -100,9 +91,9 @@ export class GameCore {
     this.pushEvent();
   }
 
-  setPlayerPosition(position: PlayerPosition) {
-    // Функция устанавливает текущее положение currentPlayerPosition и вызывает функцию tryToCatchProduct
-    this.currentPlayerPosition = position;
+  setPlayerPosition(position: GameFieldPosition) {
+    // Функция устанавливает текущее положение playerPosition и вызывает функцию tryToCatchProduct
+    this.playerPosition = position;
 
     this.tryToCatchProduct();
     this.pushEvent();
@@ -137,12 +128,10 @@ export class GameCore {
   private addProduct() {
     // Функция добавляет продукт в массив products cо случайными PlayerPosition и ProductType,
     // вызывает функцию runChangingProductStep
-    const productTypeId = Math.floor(Math.random() * PRODUCT_TYPES .length);
-    const positionId = Math.floor(Math.random() * PLAYER_POSITIONS.length);
+    const productTypeId = Math.floor(Math.random() * 4);
 
     const product: GameProduct = {
-      type: PRODUCT_TYPES [productTypeId],
-      position: PLAYER_POSITIONS[positionId],
+      position: FIELD_POSITIONS[productTypeId],
       step: 1,
     };
     const productId = this.products.push(product);
@@ -153,13 +142,13 @@ export class GameCore {
   }
 
   private tryToCatchProduct() {
-    // Функция должна вызываться при каждом изменении currentPlayerPosition и step = LAST_STEP у каждого продукта
+    // Функция должна вызываться при каждом изменении playerPosition и step = LAST_STEP у каждого продукта
     // она должна проверять текущее положение игрока и проходить по всем активным товарам и ловить те,
     // что на LAST_STEP шаге. Если товар пойман - вызывается функция addScore если нет - вызывается функция subtractLive
     this.products.forEach((product, i) => {
       if (product.step !== this.LAST_STEP) return;
 
-      if (product.position === this.currentPlayerPosition) this.addScore;
+      if (product.position === this.playerPosition) this.addScore;
       else this.subtractLive;
 
       this.products.splice(i, 1);

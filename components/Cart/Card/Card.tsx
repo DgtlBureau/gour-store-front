@@ -8,6 +8,7 @@ import { IconButton } from '../../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Card.i18n.json';
+import { Currency } from '../../../@types/entities/Currency';
 
 import PlusIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
@@ -22,7 +23,7 @@ type Props = {
   productImg: string;
   isWeightGood: boolean;
   discount?: number;
-  currency?: 'rub' | 'usd' | 'eur';
+  currency?: Currency;
   onElect: () => void;
   onAdd: () => void;
   onSubtract: () => void;
@@ -37,7 +38,7 @@ export function CartCard({
   discount,
   weight,
   isWeightGood,
-  currency = 'rub',
+  currency = 'cheeseCoin',
   onElect,
   onDelete,
   onAdd,
