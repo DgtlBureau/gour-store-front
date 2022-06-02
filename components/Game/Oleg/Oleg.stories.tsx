@@ -1,7 +1,7 @@
 import React from "react";
 
 import {ComponentStory, Meta} from "@storybook/react";
-import {GameOleg, GameOlegProps} from "./GameOleg";
+import {GameOleg, GameOlegProps} from "./Oleg";
 
 export default {
     component: GameOleg,
