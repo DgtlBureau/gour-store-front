@@ -33,7 +33,7 @@ export const OrderProductCard = ({
   const { photo, title, weight, amount, cost, isWeightGood } = product;
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={photo ? photo : defaultImage} />
+      <CardMedia sx={sx.image} component="img" image={photo || defaultImage} />
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
           <Typography variant="body1" sx={sx.title}>

@@ -52,7 +52,7 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={productImg ? productImg : defaultImage} />
+      <CardMedia sx={sx.image} component="img" image={productImg || defaultImage} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>

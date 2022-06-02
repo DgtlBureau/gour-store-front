@@ -61,7 +61,7 @@ export function ProductCard({
           <CardMedia
             sx={sx.previewImg}
             component="img"
-            image={previewSrc ? previewSrc : defaultImage}
+            image={previewSrc || defaultImage}
             alt=""
             onClick={onDetail}
           />
