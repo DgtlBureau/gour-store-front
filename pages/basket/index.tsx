@@ -10,8 +10,9 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
   subtractBasketProduct,
+  removeProduct
 } from '../../store/slices/orderSlice';
-import translation from './index.i18n.json';
+import translation from './Basket.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
@@ -20,16 +21,19 @@ import { CartCard } from '../../components/Cart/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
-import { IProduct } from '../../@types/entities/IProduct';
-import { Currency } from '../../@types/entities/Currency';  
 
 export function Basket() {
   const router = useRouter();
+
   const dispatch = useDispatch();
+
   const { t } = useLocalTranslation(translation);
 
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
-  const currency: Currency = locale === 'ru' ? 'rub' : 'eur';
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
@@ -57,53 +61,54 @@ export function Basket() {
   const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
-    <ShopLayout>
+    <ShopLayout currency={currency} language={language}>
       <Stack>
-        <Typography variant="h3">{t('cart')}</Typography>
-        {
-          productsInOrder.length === 0 && (
-            <CartEmpty
-              title={t('emptyTitle')}
-              btn={{ label: t('emptyButton'), onClick: goToHome }}
-            >
-              <Typography variant="body1">{t('emptyText')}</Typography>
-            </CartEmpty>
-          )
-        }
-        {
-          productsInOrder.length !== 0 && (
-            <Grid container spacing={2}>
-              <Grid item xs={8}>
-                {
-                  productsInOrder.map((it, i) => (
-                    <CartCard
-                      key={`${it.product.id}-${i}`}
-                      title={it.product.title[locale] || '...'}
-                      price={it.product.price[currency] || 0}
-                      amount={it.amount}
-                      weight={it.weight}
-                      isWeightGood={it.product.isWeightGood}
-                      productImg={it.product.images[0]?.small}
-                      discount={it.product.discount}
-                      currency={currency}
-                      onElect={() => electProduct(it.product)}
-                      onDelete={() => deleteProduct(it.product)}
-                      onAdd={() => addProduct(it.product)}
-                      onSubtract={() => subtractProduct(it.product)}
-                    />
-                  ))
-                }
-              </Grid>
-              <Grid item xs={4}>
-                <Button sx={{ width: '100%', margin: '0 0 10px 0' }} onClick={goToOrder}>
-                  {t('orderButton')}
-                </Button>
-                <CartInfo
-                  count={count}
-                  weight={weight}
-                  price={sum}
-                  delivery={isDeliveryFree ? 0 : 500} //TODO: вынести логику стоимости заказа на бек
-                  discount={sumDiscount}
+        <Typography 
+          variant="h3" 
+          sx={{ fontWeight: 'bold' ,fontFamily: 'Roboto slab', color: 'primary.main'}}
+        >
+          {t('cart')}
+        </Typography>
+        {productsInOrder.length === 0 && (
+          <CartEmpty
+            title={t('emptyTitle')}
+            btn={{
+              label: t('emptyButton'),
+              onClick: () => {
+                router.push('/');
+              },
+            }}
+          >
+            <Typography variant="body1">{t('emptyText')}</Typography>
+          </CartEmpty>
+        )}
+
+        {productsInOrder.length !== 0 && (
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              {productsInOrder.map((it, i) => (
+                <CartCard
+                  key={`${it.product.id}-${i}`}
+                  title={it.product.title[language] || '...'}
+                  price={it.product.price[currency] || 0}
+                  amount={it.amount}
+                  weight={it.weight}
+                  isWeightGood={it.product.isWeightGood}
+                  productImg={it.product.images[0]?.small}
+                  discount={10}
+                  currency={currency}
+                  onElect={() => {
+                    dispatch(addBasketProduct(it.product));
+                  }}
+                  onDelete={() => {
+                    dispatch(removeProduct(it.product));
+                  }}
+                  onAdd={() => {
+                    dispatch(addBasketProduct(it.product));
+                  }}
+                  onSubtract={() => {
+                    dispatch(subtractBasketProduct(it.product));
+                  }}
                 />
                 {
                   !isDeliveryFree && (

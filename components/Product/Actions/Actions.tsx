@@ -11,12 +11,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Currency } from '../../../@types/entities/Currency';
 
 export type ProductActionsProps = {
   price: number;
   discount?: number;
   isWeightGood: boolean;
-  currency: 'rub' | 'usd' | 'eur';
+  currency: Currency;
   count: number;
   onAddToCart: () => void;
   onRemoveFromCart: () => void;

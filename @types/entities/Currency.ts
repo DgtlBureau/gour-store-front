@@ -1,1 +1,1 @@
-export type Currency = 'rub' | 'eur';
+export type Currency = 'cheeseCoin';

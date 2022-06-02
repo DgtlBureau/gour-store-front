@@ -1,5 +1,13 @@
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { LinearProgress, Stack } from '@mui/material';
-import { IProduct } from '../../@types/entities/IProduct';
+
+import { useAppSelector } from 'hooks/store';
+import { useGetProductQuery } from 'store/api/productApi';
+import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
+import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -9,27 +17,15 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { useAppSelector } from 'hooks/store';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetProductQuery } from 'store/api/productApi';
-import {
-  useCreateProductGradeMutation,
-  useGetProductGradeListQuery,
-} from 'store/api/productGradeApi';
-import {
-  addBasketProduct,
-  productsInBasketCount,
-  subtractBasketProduct,
-} from 'store/slices/orderSlice';
-
-import { ShopLayout } from '../../layouts/Shop/Shop';
+import { LocalConfig } from 'hooks/useLocalTranslation';
+import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
-import { Currency } from '../../@types/entities/Currency';
+
+import { sx } from './[id].styles';
 
 export default function Product() {
   const router = useRouter();
+
   const { id } = router.query;
 
   const dispatch = useDispatch();
@@ -46,8 +42,10 @@ export default function Product() {
     router.push(`/products/${productId}`);
   };
 
-  const lang: 'ru' | 'en' = 'ru';
-  const currency: Currency = 'rub';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const productId = id ? +id : 0;
 
@@ -108,8 +106,8 @@ export default function Product() {
       return (
         <ProductCard
           key={similarProduct.id}
-          title={similarProduct.title[lang] || ''}
-          description={similarProduct.description[lang] || ''}
+          title={similarProduct.title[language] || ''}
+          description={similarProduct.description[language] || ''}
           rating={similarProduct.grade}
           price={similarProduct.price[currency]}
           previewSrc={similarProduct.images[0]?.full || ''}
@@ -142,13 +140,13 @@ export default function Product() {
         );
 
         return {
-          label: CHARACTERISTICS[key]?.label[lang] || '',
-          value: characteristicValue?.label[lang] || 'нет информации',
+          label: CHARACTERISTICS[key]?.label[language] || '',
+          value: characteristicValue?.label[language] || 'нет информации',
         };
       }) || [];
 
   return (
-    <ShopLayout>
+    <ShopLayout language={language} currency={currency}>
       <>
         {isLoading && <LinearProgress />}
         {!isLoading && isError && (
@@ -160,12 +158,12 @@ export default function Product() {
         {!isLoading && !isError && product && (
           <div>
             <Stack direction="row" justifyContent="space-between">
-              <Box sx={{ width: '580px', margin: '0 40px 0 0' }}>
+              <Box sx={sx.imageSlider}>
                 <ImageSlider images={product.images} />
               </Box>
               <Stack width="100%">
-                <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
-                  {product.title[lang] || ''}
+                <Typography variant="h3" sx={sx.productTitle}>
+                  {product.title[language] || ''}
                 </Typography>
                 <ProductInformation
                   rating={product.grade || 0}
@@ -193,11 +191,11 @@ export default function Product() {
               </Stack>
             </Stack>
 
-            <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
+            <Typography sx={sx.descriptionTitle} variant="h5">
               Описание товара
             </Typography>
-            <Typography variant="body1">
-              {product.description[lang] || ''}
+            <Typography sx={sx.description} variant="body1">
+              {product.description[language] || ''}
             </Typography>
 
             {similarProductCards.length !== 0 && (
@@ -210,7 +208,7 @@ export default function Product() {
             )}
 
             <ProductReviews
-              sx={{ margin: '50px 0' }}
+              sx={sx.reviews}
               reviews={productComments}
             />
 

@@ -17,7 +17,12 @@ import { Typography } from '../components/UI/Typography/Typography';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
 import { ProductCard } from '../components/Product/Card/Card';
+
+
+import bannerImg from '../assets/images/banner.jpeg';
+
 import { Currency } from '../@types/entities/Currency';
+import { Language } from '../@types/entities/Language';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
 import { IProduct } from '../@types/entities/IProduct';
 
@@ -25,11 +30,13 @@ import { sx } from '../styles/index.styles';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
+import { sx } from '../styles/index.styles';
+
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
-  locale: 'en' | 'ru';
+  language: Language;
   addToBasket: (product: IProduct) => {};
   removeFromBasket: (product: IProduct) => {};
   goToProductPage: (id: number) => {};
@@ -49,8 +56,11 @@ const Home: NextPage = () => {
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
   const goToProductPage = (id: number) => router.push(`products/${id}`);
@@ -63,7 +73,7 @@ const Home: NextPage = () => {
   const promotionsList = promotions?.map(promotion => (
     <PromotionCard
       key={promotion.id}
-      title={promotion.title[locale]}
+      title={promotion.title[language]}
       image={promotion.cardImage.small}
       onClickMore={() => goToPromotionPage(promotion.id)}
     />
@@ -74,8 +84,8 @@ const Home: NextPage = () => {
       key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
@@ -87,8 +97,8 @@ const Home: NextPage = () => {
       key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
@@ -103,57 +113,49 @@ const Home: NextPage = () => {
   };
 
   return (
-    <ShopLayout>
-      {
-        !!promotionsList && (
-          <CardSlider title={t('promotions')} cardsList={promotionsList} />
-        )
-      }
-      {
-        !!noveltiesList && (
-          <CardSlider
-            title={t('novelties')}
-            slidesPerView={4}
-            spaceBetween={0}
-            rows={1}
-            cardsList={noveltiesList}
-            sx={sx.novelties}
-          />
-        )
-      }
-      {
-        !!catalogList && (
-          <CardSlider
-            title={t('catalog')}
-            slidesPerView={4}
-            spaceBetween={0}
-            rows={getCatalogRows()}
-            cardsList={catalogList}
-          />
-        )
-      }
-      {
-        !!page && (
-          <>
-            <Box sx={sx.banner}>
-              <Image
-                src={bannerImg}
-                objectFit="cover"
-                width={1200}
-                height={350}
-                alt=""
-              />
-              <Typography variant="h4" sx={sx.bannerTitle}>
-                {page.info?.title?.[locale]}
-              </Typography>
-            </Box>
-
-            <Typography variant="body1">
-              {page.info?.description?.[locale]}
+    <ShopLayout currency={currency} language={language}>
+      {!!promotionsList && (
+        <CardSlider title={t('promotions')} cardsList={promotionsList} />
+      )}
+      {!!noveltiesList && (
+        <CardSlider
+          title={t('novelties')}
+          slidesPerView={4}
+          spaceBetween={0}
+          rows={1}
+          cardsList={noveltiesList}
+          sx={sx.novelties}
+        />
+      )}
+      {!!catalogList && (
+        <CardSlider
+          title={t('catalog')}
+          slidesPerView={4}
+          spaceBetween={0}
+          rows={getCatalogRows()}
+          cardsList={catalogList}
+        />
+      )}
+      {!!page && (
+        <>
+          <Box sx={sx.banner}>
+            <Image
+              src={bannerImg}
+              objectFit="cover"
+              width={1200}
+              height={350}
+              alt=""
+            />
+            <Typography variant="h4" sx={sx.bannerTitle}>
+              {page.info?.title?.[language]}
             </Typography>
-          </>
-        )
-      }
+          </Box>
+
+          <Typography variant="body1">
+            {page.info?.description?.[language]}
+          </Typography>
+        </>
+      )}
     </ShopLayout>
   );
 };
@@ -164,7 +166,7 @@ const SliderProductCard = ({
   product,
   basket,
   currency,
-  locale,
+  language,
   addToBasket,
   removeFromBasket,
   goToProductPage,
@@ -179,8 +181,8 @@ const SliderProductCard = ({
   return (
     <ProductCard
       key={product.id}
-      title={product.title[locale]}
-      description={product.description[locale]}
+      title={product.title[language]}
+      description={product.description[language]}
       rating={product.grade}
       price={product.price[currency]}
       previewSrc={product.images[0] ? product.images[0].small : ''}

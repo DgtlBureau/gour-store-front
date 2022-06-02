@@ -18,7 +18,7 @@ import { Button } from '../../components/UI/Button/Button';
 import { useRouter } from 'next/router';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { useCreateOrderMutation } from 'store/api/orderApi';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import translation from './Order.i18n.json';
 import {
   useCreateOrderProfileMutation,
@@ -33,11 +33,14 @@ import { OrderProductDto } from '../../@types/dto/order/product.dto';
 const DELIVERY_PRICE = 500;
 
 export function Order() {
-  const language = 'ru';
-  const currency = 'rub';
-
   const router = useRouter();
+
   const { t } = useLocalTranslation(translation);
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const [isSubmitError, setIsSubmitError] = useState(false);
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
@@ -164,7 +167,7 @@ export function Order() {
 
   if (productsInOrder.length === 0)
     return (
-      <ShopLayout>
+      <ShopLayout language={language} currency={currency}>
         <Stack alignItems="center">
           <CartEmpty
             title={t('emptyBasket')}
@@ -182,7 +185,7 @@ export function Order() {
     );
 
   return (
-    <ShopLayout>
+    <ShopLayout language={language} currency={currency}>
       <Stack>
         <Button
           sx={{ width: '250px', margin: '0 0 30px 0' }}
