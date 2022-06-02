@@ -7,6 +7,7 @@ import { promotionApi } from './api/promotionApi';
 import { cityApi } from './api/cityApi';
 import { roleApi } from './api/roleApi';
 import { authApi } from './api/authApi';
+import { currentUserApi } from './api/currentUserApi';
 import { productGradeApi } from './api/productGradeApi';
 import { orderApi } from './api/orderApi';
 import { orderProfileApi } from './api/orderProfileApi';
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers({
   [cityApi.reducerPath]: cityApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
+  [currentUserApi.reducerPath]: currentUserApi.reducer,
   [productGradeApi.reducerPath]: productGradeApi.reducer,
   [orderProfileApi.reducerPath]: orderProfileApi.reducer,
   [cityApi.reducerPath]: cityApi.reducer,
