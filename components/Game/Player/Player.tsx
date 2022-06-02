@@ -11,27 +11,16 @@ const sx = {
   },
 };
 
-export enum PlayerPosition {
-  topLeft = 'topLeft',
-  bottomLeft = 'bottomLeft',
-  topRight = 'topRight',
-  bottomRight = 'bottomRight',
-}
+export type GameFieldPosition = 'topLeft' | 'bottomLeft' | 'topRight' | 'bottomRight';
 
 export type GamePlayerProps = {
-  position: PlayerPosition;
+  position: GameFieldPosition;
 };
 
 export function GamePlayer({ position }: GamePlayerProps) {
-  const direction = [
-    PlayerPosition.bottomLeft,
-    PlayerPosition.topLeft,
-  ].includes(position) ? 'left' : 'right';
+  const direction = ['topLeft', 'bottomLeft'].includes(position) ? 'left' : 'right';
 
-  const handsPosition = [
-    PlayerPosition.topLeft,
-    PlayerPosition.topRight,
-  ].includes(position) ? 'top' : 'bottom';
+  const handsPosition = ['topLeft', 'topRight'].includes(position) ? 'top' : 'bottom';
 
   return (
     <Box sx={sx.player}>
