@@ -6,7 +6,7 @@ import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 
 type Props = {
   variant?: 'text' | 'outlined' | 'contained';
-  children: ReactNode;
+  children?: ReactNode;
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'medium' | 'large';
@@ -34,7 +34,7 @@ export function Button({
           <>
             <ProgressCircular size={15} />
             &nbsp;
-          </> 
+          </>
         )
       }
       {children}
