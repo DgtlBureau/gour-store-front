@@ -3,42 +3,54 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import {
+  selectProductsInOrder,
   selectedProductCount,
   selectedProductSum,
 } from '../../store/slices/orderSlice';
+import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
+import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
+import { Currency } from '../../@types/entities/Currency';
+import { Language } from '../../@types/entities/Language';
 
 import sx from './Shop.styles';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
 
 export interface ShopLayoutProps {
+  currency: Currency;
+  language: Language;
   children?: ReactNode;
 }
 
-export function ShopLayout(props: ShopLayoutProps) {
+export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  console.log('currentUser', currentUser);
+  const [changeCity] = useChangeCurrentCityMutation();
 
   const convertedCities =
     cities?.map(city => ({
       id: city.id,
-      name: city.name[locale],
+      name: city.name[language],
     })) || [];
 
+  const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
+
+  const discount = productsInOrder.reduce((acc, currentProduct) => {
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
+  }, 0);
 
   const selectedCity =
     cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
@@ -47,20 +59,17 @@ export function ShopLayout(props: ShopLayoutProps) {
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
 
-  // TO DO
-  const changeCity = (id: number) => ({});
-
   return (
     <Box sx={sx.shopLayout}>
       <Header
         isMobile={false}
         phone="+7 812 602-52-61"
-        selectedCity={selectedCity?.name[locale] || ''}
+        selectedCity={selectedCity?.name[language] || ''}
         cities={convertedCities}
-        selectedLanguage={locale}
+        currency={currency}
+        language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        currency={currentCurrency}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
@@ -69,7 +78,7 @@ export function ShopLayout(props: ShopLayoutProps) {
       />
 
       <Box sx={sx.content}>
-        {props.children}
+        {children}
         <Footer
           sx={sx.footer}
           firstPhone="+7 812 602-52-61"

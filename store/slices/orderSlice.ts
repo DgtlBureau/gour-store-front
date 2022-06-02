@@ -131,9 +131,9 @@ export const selectedProductWeight = (state: RootState) =>
 export const selectedProductSum = (state: RootState) =>
   state.order.products.reduce((acc, it) => {
     if (it.product.isWeightGood) {
-      return acc + (it.product.price.rub / 1000) * it.weight;
+      return acc + (it.product.price.cheeseCoin / 1000) * it.weight;
     } else {
-      return acc + it.product.price.rub * it.amount;
+      return acc + it.product.price.cheeseCoin * it.amount;
     }
   }, 0);
 
@@ -169,6 +169,6 @@ export const selectProductsIdInOrder = (state: RootState): number[] => {
   }, [] as number[]);
 };
 
-export const { addBasketProduct, subtractBasketProduct } = orderSlice.actions;
+export const { addBasketProduct, subtractBasketProduct, removeProduct } = orderSlice.actions;
 
 export default orderSlice.reducer;
