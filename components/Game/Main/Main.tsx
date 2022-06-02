@@ -5,22 +5,25 @@ import { PlayerPosition } from "../Oleg/Oleg";
 export function GameMain() {
   const [currentOlegPosition, setCurrentOlegPosition] = useState<PlayerPosition>(PlayerPosition.topLeft);
 
-  const changeOlegPosition = (e: KeyboardEvent) => {
-    const keyCode = e.code;
-    
-    if (keyCode === 'KeyQ') setCurrentOlegPosition(PlayerPosition.topLeft);
-    if (keyCode === 'KeyA') setCurrentOlegPosition(PlayerPosition.bottomLeft);
-    if (keyCode === 'KeyE') setCurrentOlegPosition(PlayerPosition.topRight);
-    if (keyCode === 'KeyD') setCurrentOlegPosition(PlayerPosition.bottomRight);
+  const moveToUpLeft = () => setCurrentOlegPosition(PlayerPosition.topLeft);
+  const moveToDownLeft = () => setCurrentOlegPosition(PlayerPosition.bottomLeft);
+  const moveToUpRight = () => setCurrentOlegPosition(PlayerPosition.topRight);
+  const moveToDownRight = () => setCurrentOlegPosition(PlayerPosition.bottomRight);
+
+  const changeOlegPosition = (keyCode: string) => {
+    if (keyCode === 'KeyQ') moveToUpLeft();
+    if (keyCode === 'KeyA') moveToDownLeft();
+    if (keyCode === 'KeyE') moveToUpRight();
+    if (keyCode === 'KeyD') moveToDownRight();
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", changeOlegPosition);
+    document.addEventListener("keydown", e => changeOlegPosition(e.code));
 
     return () => {
-      document.removeEventListener("keydown", changeOlegPosition);
+      document.removeEventListener("keydown", e => changeOlegPosition(e.code));
     }
-  }, [])
+  });
 
   return <div>{currentOlegPosition}</div>
 }
