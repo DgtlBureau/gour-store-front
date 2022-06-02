@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import {
+  selectProductsInOrder,
   selectedProductCount,
   selectedProductSum,
 } from '../../store/slices/orderSlice';
+import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
@@ -25,6 +27,7 @@ export interface ShopLayoutProps {
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
 
+
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
@@ -36,8 +39,18 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       name: city.name[language],
     })) || [];
 
+  const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
+
+  const discount = productsInOrder.reduce((acc, currentProduct) => {
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
+  }, 0);
 
   const selectedCity =
     cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];

@@ -3,35 +3,32 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import {
-  useGetNoveltiesProductListQuery,
-  useGetProductListQuery,
-} from '../store/api/productApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { CardSlider } from '../components/CardSlider/CardSlider';
-
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
-import { IProduct } from '../@types/entities/IProduct';
 import { ProductCard } from '../components/Product/Card/Card';
+
 
 import bannerImg from '../assets/images/banner.jpeg';
 
 import { Currency } from '../@types/entities/Currency';
 import { Language } from '../@types/entities/Language';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import { IProduct } from '../@types/entities/IProduct';
+
+import { sx } from '../styles/index.styles';
+
+import bannerImg from '../assets/images/banner.jpeg';
 
 import { sx } from '../styles/index.styles';
 
@@ -58,6 +55,7 @@ const Home: NextPage = () => {
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
+
 
   const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
