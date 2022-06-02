@@ -49,9 +49,10 @@ export default function Promotion() {
 
   const { id } = router.query;
 
-  const currentCurrency = 'rub';
-  const locale: keyof LocalConfig =
+  const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const promotionId = id ? +id : 0;
 
@@ -60,21 +61,21 @@ export default function Promotion() {
   const { data: products } = useGetProductListQuery();
 
   return (
-    <ShopLayout>
+    <ShopLayout language={language} currency={currency}>
       <>
         {promotion && (
           <Box sx={sx.promotion}>
             <CustomLink path="/">{t('goBack')}</CustomLink>
 
             <PromotionHeader
-              title={promotion.title[locale]}
+              title={promotion.title[language]}
               image={promotion.pageImage.full}
               end={promotion.end}
               sx={sx.header}
             />
 
             <Typography variant="body1" sx={sx.description}>
-              {promotion.description[locale]}
+              {promotion.description[language]}
             </Typography>
           </Box>
         )}
@@ -95,13 +96,13 @@ export default function Promotion() {
               return (
                 <ProductCard
                   key={product.id}
-                  currency={currentCurrency}
-                  title={product.title ? product.title[locale] : ''}
+                  currency={currency}
+                  title={product.title ? product.title[language] : ''}
                   description={
-                    product.description ? product.description[locale] : ''
+                    product.description ? product.description[language] : ''
                   }
                   rating={product.grade}
-                  price={product.price[currentCurrency]}
+                  price={product.price[currency]}
                   previewSrc={product.images[0] ? product.images[0].small : ''}
                   inCart={productsIdInOrder.includes(product.id)}
                   isElected={false}
