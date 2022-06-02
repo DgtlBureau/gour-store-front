@@ -35,6 +35,7 @@ import {
 } from '../../hooks/useLocalTranslation';
 import translations from './Header.i18n.json';
 import { Currency } from '../../@types/entities/Currency';
+import { Language } from '../../@types/entities/Language';
 
 import sx from './Header.styles';
 
@@ -46,10 +47,10 @@ export type HeaderProps = {
     id: number;
     name: string;
   }[];
-  selectedLanguage: 'ru' | 'en';
+  currency: Currency;
+  language: Language;
   basketProductCount: number;
   basketProductSum: number;
-  currency: Currency;
   onChangeCity(id: number): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
@@ -64,6 +65,7 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
+  language,
   currency,
   onChangeCity,
   onClickFavorite,
@@ -74,9 +76,6 @@ export function Header({
   const { t } = useLocalTranslation(translations);
 
   const router = useRouter();
-
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
 
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
 
@@ -180,11 +179,11 @@ export function Header({
               <Box sx={sx.flag}>
                 <NextLink
                   href={router.asPath}
-                  locale={locale === 'ru' ? 'en' : 'ru'}
+                  locale={language === 'ru' ? 'en' : 'ru'}
                   passHref
                 >
                   <Image
-                    src={locale === 'ru' ? RusFlagIcon : UKFlagIcon}
+                    src={language === 'ru' ? RusFlagIcon : UKFlagIcon}
                     objectFit="cover"
                     height={24}
                     width={34}

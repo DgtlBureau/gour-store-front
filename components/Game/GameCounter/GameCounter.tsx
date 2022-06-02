@@ -1,10 +1,9 @@
 import React from 'react';
-import s from './GameCounter.module.scss';
 
 export type GameCounterProps = {
-    value: number;
+  value: number;
 };
 
 export function GameCounter(props: GameCounterProps) {
-    return <div>GameCounter</div>
+  return <div>GameCounter</div>
 }

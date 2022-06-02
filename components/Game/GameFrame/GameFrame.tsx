@@ -1,11 +1,12 @@
 import React, {ReactNode} from 'react';
+
 import {Button} from '../../UI/Button/Button';
 import {Box} from '../../UI/Box/Box';
 import backgroundImage from '../../../assets/images/game/background.svg';
 import buttonImage from '../../../assets/images/game/button.svg';
 
 export type GameFrameProps = {
-    children: ReactNode
+  children: ReactNode
 };
 
 const sx = {
@@ -67,4 +68,5 @@ export function GameFrame(props: GameFrameProps) {
         <Button sx={{...sx.button, ...sx.topRight}}/>
         <Button sx={{...sx.button, ...sx.bottomRight}}/>
     </Box>;
+  return <div>GameFrame</div>
 }
