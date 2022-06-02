@@ -10,18 +10,18 @@ export function GameMain() {
   const moveToUpRight = () => setCurrentOlegPosition(PlayerPosition.topRight);
   const moveToDownRight = () => setCurrentOlegPosition(PlayerPosition.bottomRight);
 
-  const changeOlegPosition = (keyCode: string) => {
-    if (keyCode === 'KeyQ') moveToUpLeft();
-    if (keyCode === 'KeyA') moveToDownLeft();
-    if (keyCode === 'KeyE') moveToUpRight();
-    if (keyCode === 'KeyD') moveToDownRight();
+  const changeOlegPosition = (e: KeyboardEvent) => {
+    if (e.code === 'KeyQ') moveToUpLeft();
+    if (e.code === 'KeyA') moveToDownLeft();
+    if (e.code === 'KeyE') moveToUpRight();
+    if (e.code === 'KeyD') moveToDownRight();
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", e => changeOlegPosition(e.code));
+    document.addEventListener("keydown", changeOlegPosition);
 
     return () => {
-      document.removeEventListener("keydown", e => changeOlegPosition(e.code));
+      document.removeEventListener("keydown", changeOlegPosition);
     }
   });
 
