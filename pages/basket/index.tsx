@@ -9,6 +9,7 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
   subtractBasketProduct,
+  removeProduct
 } from '../../store/slices/orderSlice';
 import translation from './Basket.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
@@ -96,7 +97,7 @@ export function Basket({}: basketProps) {
                     dispatch(addBasketProduct(it.product));
                   }}
                   onDelete={() => {
-                    dispatch(subtractBasketProduct(it.product));
+                    dispatch(removeProduct(it.product));
                   }}
                   onAdd={() => {
                     dispatch(addBasketProduct(it.product));
