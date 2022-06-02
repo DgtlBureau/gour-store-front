@@ -10,6 +10,8 @@ import {
   selectProductsInOrder,
   subtractBasketProduct,
 } from '../../store/slices/orderSlice';
+import translation from './Basket.i18n.json';
+import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
 import { Grid, Stack } from '@mui/material';
@@ -17,17 +19,20 @@ import { Typography } from '../../components/UI/Typography/Typography';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useRouter } from 'next/router';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translation from './Basket.i18n.json';
 
 export type basketProps = {};
 
 export function Basket({}: basketProps) {
   const router = useRouter();
+
   const dispatch = useDispatch();
+
   const { t } = useLocalTranslation(translation);
-  const lang: 'ru' | 'en' = 'ru';
-  const currency: 'rub' | 'eur' = 'rub';
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
@@ -51,9 +56,14 @@ export function Basket({}: basketProps) {
   };
 
   return (
-    <ShopLayout>
+    <ShopLayout currency={currency} language={language}>
       <Stack>
-        <Typography variant="h3">{t('cart')}</Typography>
+        <Typography 
+          variant="h3" 
+          sx={{ fontWeight: 'bold' ,fontFamily: 'Roboto slab', color: 'primary.main'}}
+        >
+          {t('cart')}
+        </Typography>
         {productsInOrder.length === 0 && (
           <CartEmpty
             title={t('emptyTitle')}
@@ -74,7 +84,7 @@ export function Basket({}: basketProps) {
               {productsInOrder.map((it, i) => (
                 <CartCard
                   key={`${it.product.id}-${i}`}
-                  title={it.product.title[lang] || '...'}
+                  title={it.product.title[language] || '...'}
                   price={it.product.price[currency] || 0}
                   amount={it.amount}
                   weight={it.weight}
