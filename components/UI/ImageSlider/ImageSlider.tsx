@@ -46,8 +46,7 @@ const defaultImages = [{ full: defaultImage, small: defaultImage}];
 export function ImageSlider({images}: ImageSliderProps) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
   const slideTo = (i: number) => slider?.slideTo(i);
-  const isImagesExist = () => !images.length ? defaultImages : images;
-  const arrayOfExistImages = isImagesExist();
+  const arrayOfExistImages = () => !images.length ? defaultImages : images;
 
   return (
     <Box sx={sx.slider}>
@@ -57,7 +56,7 @@ export function ImageSlider({images}: ImageSliderProps) {
         onSwiper={setSlider}
       >
         {
-          arrayOfExistImages.map((image, i) => (
+          arrayOfExistImages().map((image, i) => (
             <SwiperSlide key={image.full + i}>
               <Image src={image.full} objectFit="contain" height={500} width={580} alt=""/>
             </SwiperSlide>
@@ -67,7 +66,7 @@ export function ImageSlider({images}: ImageSliderProps) {
 
       <Box sx={sx.scroll}>
         {
-          arrayOfExistImages.map((image, i) => (
+          arrayOfExistImages().map((image, i) => (
             <Box key={image.small + i} sx={sx.small}>
               <Image src={image.small} objectFit="contain" height={80} width={90} alt="" onClick={() => slideTo(i)}/>
             </Box>
