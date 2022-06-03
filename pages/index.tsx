@@ -19,8 +19,6 @@ import { PromotionCard } from '../components/PromotionCard/PromotionCard';
 import { ProductCard } from '../components/Product/Card/Card';
 
 
-import bannerImg from '../assets/images/banner.jpeg';
-
 import { Currency } from '../@types/entities/Currency';
 import { Language } from '../@types/entities/Language';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
@@ -29,8 +27,6 @@ import { IProduct } from '../@types/entities/IProduct';
 import { sx } from '../styles/index.styles';
 
 import bannerImg from '../assets/images/banner.jpeg';
-
-import { sx } from '../styles/index.styles';
 
 type SliderProductCardProps = {
   product: IProduct;
@@ -115,7 +111,10 @@ const Home: NextPage = () => {
   return (
     <ShopLayout currency={currency} language={language}>
       {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
+        <CardSlider
+            title={t('promotions')}
+            cardsList={promotionsList}
+        />
       )}
       {!!noveltiesList && (
         <CardSlider

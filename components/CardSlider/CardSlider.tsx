@@ -50,11 +50,13 @@ export function CardSlider({
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
+  const cardWidth = slider?.el?.children[0]?.children[0]?.children[0]?.offsetWidth || 0;
+  console.log(cardWidth)
 
   const withArrows = cardsList.length > rows * slidesPerView;
 
   return (
-    <Box sx={{ ...sliderSx.container, ...sx }}>
+    <Box sx={{ ...sliderSx.container, ...sx}}>
       <Stack
         sx={{ width: '100%' }}
         direction="row"
@@ -92,10 +94,21 @@ export function CardSlider({
           onSwiper={setSlider}
           modules={[Grid]}
           className="mySwiper"
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+            },
+            480: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
         >
           {
             cardsList.map((card, i) => (
-              <SwiperSlide key={i} style={{ height: `${cardHeight}px` }}>
+              <SwiperSlide key={i}  style={{ height: `${cardHeight}px`, width: cardWidth}}>
                 {card}
               </SwiperSlide>
             ))
