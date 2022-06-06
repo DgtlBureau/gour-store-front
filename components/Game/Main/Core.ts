@@ -47,15 +47,17 @@ export class GameCore {
   private BOOST_RATE = 0.1;
   private BRAKE_RATE = 0.2;
 
+  private START_SPEED = 1;
+
   // состояние игры
   private isPlaying= false;
   private isRabbitShown = false;
 
   private lives = this.MAX_LIVES_COUNT;
-  private speed = 1;
+  private speed = this.START_SPEED;
   private score = 0;
 
-  private playerPosition: GameFieldPosition = 'topLeft';
+  private playerPosition: GameFieldPosition = 'basic';
 
   private products: GameProductSteps = {
     cheese: 0,
@@ -90,6 +92,8 @@ export class GameCore {
   start(){
     // Функция устанавливает isPlaying = true и
     // запускает методы runProductSendingLogic и runRabbitLogic
+    this.reset();
+
     this.isPlaying = true;
 
     this.pushEvent();
@@ -112,6 +116,24 @@ export class GameCore {
     this.playerPosition = position;
 
     this.pushEvent();
+  }
+
+  private reset() {
+    // Функция
+    this.isRabbitShown = false;
+  
+    this.lives = this.MAX_LIVES_COUNT;
+    this.speed = this.START_SPEED;
+    this.score = 0;
+  
+    this.playerPosition = 'topLeft';
+  
+    this.products = {
+      cheese: 0,
+      sausage: 0,
+      jamon: 0,
+      chicken: 0,
+    };
   }
 
   private increaseScore() {

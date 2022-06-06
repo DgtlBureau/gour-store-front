@@ -12,7 +12,7 @@ const playerSx = {
   zIndex: 50,
 };
 
-export type GameFieldPosition = 'topLeft' | 'bottomLeft' | 'topRight' | 'bottomRight';
+export type GameFieldPosition = 'topLeft' | 'bottomLeft' | 'topRight' | 'bottomRight' | 'basic';
 
 export type GamePlayerProps = {
   position: GameFieldPosition;
@@ -20,19 +20,19 @@ export type GamePlayerProps = {
 };
 
 export function GamePlayer({ position, sx }: GamePlayerProps) {
-  const direction = ['topLeft', 'bottomLeft'].includes(position) ? 'left' : 'right';
-
+  const isBasic = position === 'basic';
+  const isLeft = ['topLeft', 'bottomLeft'].includes(position);
   const handsPosition = ['topLeft', 'topRight'].includes(position) ? 'top' : 'bottom';
 
   return (
     <Box sx={{ ...playerSx, ...sx } as SxProps}>
       <GameOleg
-        isActive={direction === 'left'}
+        isActive={!isBasic && isLeft}
         direction="left"
         handsPosition={handsPosition}
       />
       <GameOleg
-        isActive={direction === 'right'}
+        isActive={!isBasic && !isLeft}
         direction="right"
         handsPosition={handsPosition}
       />

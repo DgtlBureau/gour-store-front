@@ -1,11 +1,12 @@
 import buttonImage from '../../../assets/images/game/button.svg';
+import buttonSmallImage from '../../../assets/images/game/button-small.svg';
 
 export const sx = {
   player: {
     bottom: '85px',
     paddingRight: '15px',
   },
-  btn: {
+  controlBtn: {
     background: `url("${buttonImage}")`,
     width: '78px',
     height: '78px',
@@ -23,6 +24,36 @@ export const sx = {
       transform: 'translateY(3px)',
       boxShadow: '0 3px #666',
     }
+  },
+
+  startBtn: {
+    background: `url("${buttonSmallImage}")`,
+    position: 'absolute',
+    top: '165px',
+    right: '50px',
+    minWidth: '54px',
+    height: '30px',
+    boxShadow: 'none',
+    zIndex: 100,
+    borderRadius: '9px',
+    '&:hover': {
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+    },
+    '&:active': {
+      opacity: '0.8',
+      transform: 'translateY(3px)',
+      boxShadow: '0 3px #666',
+    }
+  },
+
+  alarm: {
+    top: '105px',
+    left: '270px',
+  },
+
+  lives: {
+    top: '150px',
   },
 
   counter: {

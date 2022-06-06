@@ -14,5 +14,13 @@ export type GameCounterProps = {
 };
 
 export function GameCounter({ value, sx }: GameCounterProps) {
-  return <Typography variant="h3" sx={{ ...counterSx, ...sx } as SxProps}>{value}</Typography>;
+  const getCount = () => {
+    if (!value) return '0000';
+    if (value < 9) return `000${value}`;
+    if (value < 100) return `00${value}`;
+    if (value < 1000) return `0${value}`;
+    return value;
+  };
+
+  return <Typography variant="h3" sx={{ ...counterSx, ...sx } as SxProps}>{getCount()}</Typography>;
 }

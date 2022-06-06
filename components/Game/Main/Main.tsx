@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Rating } from '@mui/material';
 
 import { Button } from '../../UI/Button/Button';
-import { GameFieldPosition } from '../Player/Player';
 import { GameFrame as Frame } from '../Frame/Frame';
 import { GamePlayer as Player } from '../Player/Player';
-import { GameProduct as Product, GameProductType } from '../Product/Product';
+import { GameProduct as Product } from '../Product/Product';
 import { GameCounter as Counter } from '../Counter/Counter';
 import { GameLives as Lives } from '../Lives/Lives';
-import { GameCore, GameEvent, GameProductStep } from './Core';
+import { GameAlarm as Alarm } from '../Alarm/Alarm';
+import { GameCore, GameEvent } from './Core';
 
 import sx from './Main.styles'
 
@@ -43,9 +42,7 @@ export function GameMain() {
     if (e.code === 'KeyD') moveToBottomRight();
   };
 
-  useEffect(() => {
-    game.start();
-  }, [game]);
+  const start = () => game.start();
 
   useEffect(() => {
     document.addEventListener("keydown", changeOlegPosition);
@@ -57,12 +54,16 @@ export function GameMain() {
 
   return (
     <Frame>
-      <Button onClick={moveToTopLeft} sx={{ ...sx.btn, ...sx.topLeftBtn }} />
-      <Button onClick={moveToBottomLeft} sx={{ ...sx.btn, ...sx.bottomLeftBtn }} />
-      <Button onClick={moveToTopRight} sx={{ ...sx.btn, ...sx.topRightBtn }} />
-      <Button onClick={moveToBottomRight} sx={{ ...sx.btn, ...sx.bottomRightBtn }} />
+      <Button onClick={moveToTopLeft} sx={{ ...sx.controlBtn, ...sx.topLeftBtn }} />
+      <Button onClick={moveToBottomLeft} sx={{ ...sx.controlBtn, ...sx.bottomLeftBtn }} />
+      <Button onClick={moveToTopRight} sx={{ ...sx.controlBtn, ...sx.topRightBtn }} />
+      <Button onClick={moveToBottomRight} sx={{ ...sx.controlBtn, ...sx.bottomRightBtn }} />
 
-      <Lives value={gameState.lives} />
+      <Button onClick={start} sx={sx.startBtn} />
+
+      <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown} />
+
+      <Lives sx={sx.lives} value={gameState.lives} />
 
       <Counter sx={sx.counter} value={gameState.score} />
 
