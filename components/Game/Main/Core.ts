@@ -1,4 +1,7 @@
 import { GameFieldPosition } from "../Player/Player";
+import { GameProductType } from "../Product/Product";
+
+export type GameProductStep = 0 | 1 | 2 | 3;
 
 export const FIELD_POSITIONS: GameFieldPosition[] = [
   'topLeft',
@@ -7,10 +10,14 @@ export const FIELD_POSITIONS: GameFieldPosition[] = [
   'bottomRight',
 ];
 
-export interface GameProduct {
-  position: GameFieldPosition;
-  step: 1 | 2 | 3 | 4;
-}
+const PRODUCT_POSITIONS: Record<GameProductType, GameFieldPosition> = {
+  cheese: 'topLeft',
+  sausage: 'bottomLeft',
+  jamon: 'topRight',
+  chicken: 'bottomRight',
+};
+
+type GameProductSteps = Record<GameProductType, GameProductStep>
 
 export interface GameEvent {
   isPlaying: boolean;
@@ -21,7 +28,7 @@ export interface GameEvent {
   score: number;
 
   playerPosition: GameFieldPosition;
-  products: GameProduct[];
+  products: GameProductSteps;
 }
 
 export class GameCore {
@@ -31,7 +38,7 @@ export class GameCore {
   private PRODUCT_PERIOD = 2000;
 
   private MAX_LIVES_COUNT = 3;
-  private LAST_STEP = 4;
+  private LAST_STEP = 3;
 
   private RECOVERY_CHECKPOINTS = [200, 500, 1000];
   private BOOST_CHECKPOINT = 20;
@@ -45,11 +52,17 @@ export class GameCore {
   private isRabbitShown = false;
 
   private lives = this.MAX_LIVES_COUNT;
-  private speed = 0;
+  private speed = 1;
   private score = 0;
 
   private playerPosition: GameFieldPosition = 'topLeft';
-  private products: GameProduct[] = [];
+
+  private products: GameProductSteps = {
+    cheese: 0,
+    sausage: 0,
+    jamon: 0,
+    chicken: 0,
+  };
   
   private eventHandler: (e: GameEvent) => void;
 
@@ -79,9 +92,10 @@ export class GameCore {
     // запускает методы runProductSendingLogic и runRabbitLogic
     this.isPlaying = true;
 
+    this.pushEvent();
+
     this.runProductSendingLogic();
     this.runRabbitLogic();
-    this.pushEvent();
   }
 
   finish(){
@@ -92,15 +106,16 @@ export class GameCore {
   }
 
   setPlayerPosition(position: GameFieldPosition) {
-    // Функция устанавливает текущее положение playerPosition и вызывает функцию tryToCatchProduct
+    // Функция устанавливает текущее положение playerPosition
+    if (!this.isPlaying) return;
+    
     this.playerPosition = position;
 
-    this.tryToCatchProduct();
     this.pushEvent();
   }
 
-  private addScore() {
-    // добавляет счет (возможно, зависит от speed - стоит уточнить у PM)
+  private increaseScore() {
+    // увеличивает счет (возможно, зависит от speed - стоит уточнить у PM)
     // при достижении определенных чекпоинтов - должен менять speed
     // при наборе HEALTH_CHECKPOINTS очков происходит восстановление жизней
     // каждые BRAKE_CHECKPOINT очков уменьшение скорости на BRAKE_RATE
@@ -120,41 +135,54 @@ export class GameCore {
     // игра заканчивается при lives = 0 (вызывается finish())
     this.lives -= this.isRabbitShown ? 0.5 : 1;
 
-    if (this.lives === 0) this.finish();
+    if (this.lives <= 0) this.finish();
 
     this.pushEvent();
   }
 
-  private addProduct() {
-    // Функция добавляет продукт в массив products cо случайными PlayerPosition и ProductType,
-    // вызывает функцию runChangingProductStep
-    const productTypeId = Math.floor(Math.random() * 4);
+  private getRandomProductType() {
+    // Функция возвращает случайный тип из пула доступных продуктов
 
-    const product: GameProduct = {
-      position: FIELD_POSITIONS[productTypeId],
-      step: 1,
+    const availableProducts = Object.keys(this.products)
+    .filter(it => this.products[it as GameProductType] === 0) as GameProductType[];
+    
+    const productTypeId = Math.floor(Math.random() * availableProducts.length);
+    
+    return availableProducts[productTypeId];
+  }
+
+  private moveProduct(productType: GameProductType) {
+    // Сдвигает продукт на 1 шаг
+    const currentStep = this.products[productType];
+
+    this.products = {
+      ...this.products,
+      [productType]: currentStep + 1,
+    }
+
+    this.pushEvent();
+  }
+
+  private removeProduct(productType: GameProductType) {
+    // убирает продукта с поля, возвращая на 0 шаг
+    this.products = {
+      ...this.products,
+      [productType]: 0,
     };
-    const productId = this.products.push(product);
-
-    this.runChangingProductStep(productId);
 
     this.pushEvent();
   }
+ 
+  private tryToCatchProduct(productType: GameProductType) {
+    // Функция должна вызываться при step = LAST_STEP
+    // Она должна проверять текущее положение игрока и товара,
+    // если товар пойман - вызывается функция increaseScore если нет - вызывается функция subtractLive
+    const productPosition = PRODUCT_POSITIONS[productType];
 
-  private tryToCatchProduct() {
-    // Функция должна вызываться при каждом изменении playerPosition и step = LAST_STEP у каждого продукта
-    // она должна проверять текущее положение игрока и проходить по всем активным товарам и ловить те,
-    // что на LAST_STEP шаге. Если товар пойман - вызывается функция addScore если нет - вызывается функция subtractLive
-    this.products.forEach((product, i) => {
-      if (product.step !== this.LAST_STEP) return;
+    if (productPosition === this.playerPosition) this.increaseScore();
+    else this.subtractLive();
 
-      if (product.position === this.playerPosition) this.addScore;
-      else this.subtractLive;
-
-      this.products.splice(i, 1);
-    });
-
-    this.pushEvent();
+    this.removeProduct(productType);
   }
 
   private getDeviation() {
@@ -162,38 +190,37 @@ export class GameCore {
   }
 
   private runProductSendingLogic() {
-    // Вызывает функцию addProduct со скоро зависящей от speed
+    // Запускает движение продуктов
     // Функция должна вызывать себя саму с таймаутом до тех пор, пока isPlaying = true
     // Значение таймаута зависит от speed но имеет некоторое рандомное отклонение
     if (!this.isPlaying) return;
 
-    this.addProduct();
+    const productType = this.getRandomProductType();
+
+    if (productType) this.runProductMovement(productType);
 
     const deviation = this.getDeviation();
     const timeout = this.PRODUCT_PERIOD / (this.speed + deviation);
 
-    setTimeout(this.runProductSendingLogic, timeout);
+    setTimeout(() => this.runProductSendingLogic(), timeout);
   }
 
-  private runChangingProductStep(productId: number) {
-    // Функция должна, в зависимости от this.speed изменять step продукта
-    // Когда доходит до шага LAST_STEP - должна вызываться функция tryToCatchProduct
-    // Функция должна вызывать себя саму вплоть до 5 шага (падения продукта) по таймауту
+  private runProductMovement(productType: GameProductType) {
+    // Функция должна, в зависимости от speed изменять step продукта
+    // Вызывает саму себя вплоть до step = LAST_STEP
+    // Когда доходит до шага LAST_STEP - должна сработать функция tryToCatchProduct
     if (!this.isPlaying) return;
 
-    const product = this.products[productId];
+    const currentStep = this.products[productType];
 
-    if (product.step !== this.LAST_STEP) {
-      const updatedProduct = { ...product, step: product.step + 1 } as GameProduct;
-      this.products.splice(productId, 1, updatedProduct);
+    if (currentStep !== this.LAST_STEP) {
+      this.moveProduct(productType);
+
+      const timeout = this.PRODUCT_PERIOD / this.speed;
+
+      setTimeout(() => this.runProductMovement(productType), timeout);
     }
-    else this.tryToCatchProduct();
-      
-    const timeout = this.PRODUCT_PERIOD / this.speed;
-
-    setTimeout(() => this.runChangingProductStep(productId), timeout);
-
-    this.pushEvent();
+    else this.tryToCatchProduct(productType);
   }
 
   private runRabbitLogic() {
