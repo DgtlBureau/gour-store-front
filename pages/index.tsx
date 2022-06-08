@@ -18,15 +18,10 @@ import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
 import { ProductCard } from '../components/Product/Card/Card';
 
-
-import bannerImg from '../assets/images/banner.jpeg';
-
 import { Currency } from '../@types/entities/Currency';
 import { Language } from '../@types/entities/Language';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
 import { IProduct } from '../@types/entities/IProduct';
-
-import { sx } from '../styles/index.styles';
 
 import bannerImg from '../assets/images/banner.jpeg';
 

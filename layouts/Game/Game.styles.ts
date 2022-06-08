@@ -1,9 +1,11 @@
 import stripes  from '../../assets/images/stripes.svg'
 
 const sx = {
-  shopLayout: {
+  layout: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: '100vh',
     paddingTop: '100px',
     backgroundImage: 'url(' + `${(stripes)}` + ')',
@@ -14,11 +16,12 @@ const sx = {
   content: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '1200px',
   },
   footer: {
-    marginTop: '180px',
+    width: '1200px',
     marginBottom: '50px',
   },
 };

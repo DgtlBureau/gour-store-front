@@ -19,7 +19,7 @@ export type GamePlayerProps = {
   sx?: SxProps;
 };
 
-export function GamePlayer({ position, sx }: GamePlayerProps) {
+export function GamePlayer({ position = 'basic', sx }: GamePlayerProps) {
   const isBasic = position === 'basic';
   const isLeft = ['topLeft', 'bottomLeft'].includes(position);
   const handsPosition = ['topLeft', 'topRight'].includes(position) ? 'top' : 'bottom';

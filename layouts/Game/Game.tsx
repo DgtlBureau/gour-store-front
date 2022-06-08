@@ -11,15 +11,15 @@ import { Footer } from '../../components/Footer/Footer';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
 
-import sx from './Shop.styles';
+import sx from './Game.styles';
 
-export interface ShopLayoutProps {
+export interface GameLayoutProps {
   currency: Currency;
   language: Language;
   children?: ReactNode;
 }
 
-export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
+export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const router = useRouter();
 
 
@@ -45,7 +45,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const goToPersonalArea = () => router.push('/personal-area');
 
   return (
-    <Box sx={sx.shopLayout}>
+    <Box sx={sx.layout}>
       <Header
         isMobile={false}
         phone="+7 812 602-52-61"
@@ -64,21 +64,22 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <Box sx={sx.content}>
         {children}
-        <Footer
-          sx={sx.footer}
-          firstPhone="+7 812 602-52-61"
-          secondPhone="+372 880-45-21"
-          email="rk@gour-food.com"
-          fb="https://www.facebook.com/gourfood.spb/"
-          inst="https://www.instagram.com/gourfood_/"
-          vk="https://vk.com/gour_food"
-          copyright=""
-          rules=""
-          privacy=""
-          cookie=""
-          terms=""
-        />
       </Box>
+
+      <Footer
+        sx={sx.footer}
+        firstPhone="+7 812 602-52-61"
+        secondPhone="+372 880-45-21"
+        email="rk@gour-food.com"
+        fb="https://www.facebook.com/gourfood.spb/"
+        inst="https://www.instagram.com/gourfood_/"
+        vk="https://vk.com/gour_food"
+        copyright=""
+        rules=""
+        privacy=""
+        cookie=""
+        terms=""
+      />
     </Box>
   );
 }
