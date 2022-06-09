@@ -33,21 +33,21 @@ export interface GameEvent {
 
 export class GameCore {
   // настройки
-  private RABBIT_DISPLAY_TIME = 5000;
-  private RABBIT_DISPLAY_PERIOD = 20000;
-  private PRODUCT_PERIOD = 2000;
+  private RABBIT_DISPLAY_TIME = 5000; // время отображения зайца
+  private RABBIT_DISPLAY_PERIOD = 20000; // интервал отображения зайца
+  private PRODUCT_PERIOD = 2000; // интервал появления продуктов
 
-  private MAX_LIVES_COUNT = 3;
-  private LAST_STEP = 3;
+  private MAX_LIVES_COUNT = 3; // максимальное кол-во жизней
+  private LAST_STEP = 3; // последний шаг продукта
 
-  private RECOVERY_CHECKPOINTS = [200, 500, 1000];
-  private BOOST_CHECKPOINT = 20;
-  private BRAKE_CHECKPOINT = 100;
+  private RECOVERY_CHECKPOINTS = [200, 500, 1000]; // при достижении N очков восстанавливаются жизни
+  private BOOST_CHECKPOINT = 20; // каждые N очков игра ускоряется
+  private BRAKE_CHECKPOINT = 100; // каждые N очков игра замедляется
 
-  private BOOST_RATE = 0.1;
-  private BRAKE_RATE = 0.2;
+  private BOOST_RATE = 0.1; // коэффициент ускорения игры
+  private BRAKE_RATE = 0.2; // коэффициент замедления игры
 
-  private START_SPEED = 1;
+  private START_SPEED = 1; // стартовая скорость
 
   // состояние игры
   private isPlaying= false;
@@ -110,7 +110,7 @@ export class GameCore {
   }
 
   setPlayerPosition(position: GameFieldPosition) {
-    // Функция устанавливает текущее положение playerPosition
+    // Устанавливает текущее положение playerPosition
     if (!this.isPlaying) return;
     
     this.playerPosition = position;
@@ -119,7 +119,7 @@ export class GameCore {
   }
 
   private reset() {
-    // Функция
+    // Сбрасывает игру
     this.isRabbitShown = false;
   
     this.lives = this.MAX_LIVES_COUNT;
@@ -208,6 +208,7 @@ export class GameCore {
   }
 
   private getDeviation() {
+    // возвращает коэффициент отклонения
     return Math.random();
   }
 
