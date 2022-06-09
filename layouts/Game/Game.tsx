@@ -22,7 +22,6 @@ export interface GameLayoutProps {
 export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const router = useRouter();
 
-
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
@@ -43,10 +42,12 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
+  const goToReplenishment = () => router.push('/replenishment');
 
   return (
     <Box sx={sx.layout}>
       <Header
+        isGame
         isMobile={false}
         phone="+7 812 602-52-61"
         selectedCity={selectedCity?.name[language] || ''}
@@ -55,31 +56,18 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
+        moneyAmount={1000}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
+        onClickReplenishment={goToReplenishment}
         onOpenMobileMenu={() => {}}
       />
 
       <Box sx={sx.content}>
         {children}
       </Box>
-
-      <Footer
-        sx={sx.footer}
-        firstPhone="+7 812 602-52-61"
-        secondPhone="+372 880-45-21"
-        email="rk@gour-food.com"
-        fb="https://www.facebook.com/gourfood.spb/"
-        inst="https://www.instagram.com/gourfood_/"
-        vk="https://vk.com/gour_food"
-        copyright=""
-        rules=""
-        privacy=""
-        cookie=""
-        terms=""
-      />
     </Box>
   );
 }

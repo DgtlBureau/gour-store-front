@@ -43,6 +43,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
+  const goToReplenishment = () => router.push('/replenishment');
 
   return (
     <Box sx={sx.shopLayout}>
@@ -55,10 +56,12 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
+        moneyAmount={1000}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
+        onClickReplenishment={goToReplenishment}
         onOpenMobileMenu={() => {}}
       />
 

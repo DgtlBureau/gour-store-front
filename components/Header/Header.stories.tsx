@@ -17,6 +17,7 @@ const props: Partial<HeaderProps> = {
   selectedCity: 'Москва и область',
   basketProductCount: 5,
   basketProductSum: 15000,
+  currency: 'cheeseCoin',
   cities: [
     {
       name: 'Санкт-Петербург',

@@ -18,6 +18,8 @@ export enum Path {
 
   PROMOTIONS = 'promotions',
 
+  GAME = 'game',
+
   PRODUCTS = 'products',
   NOVELTIES = 'novelties',
   GRADES = 'grades',

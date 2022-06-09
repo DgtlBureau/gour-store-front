@@ -28,6 +28,9 @@ const sx = {
       backgroundColor: t.palette.secondary.main,
     }
   },
+  icon: { 
+    marginLeft: '20px',
+  },
 };
 
 export default sx;
