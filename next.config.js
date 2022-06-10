@@ -6,6 +6,7 @@ const nextConfig = withImages({
     disableStaticImages: true,
     domains: ['gour-store.devshift.ru', 'resizer.mail.ru'],
   },
+  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
   reactStrictMode: true,
   async rewrites() {
     return [

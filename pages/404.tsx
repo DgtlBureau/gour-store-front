@@ -35,15 +35,15 @@ export default function NotFound() {
 
     const { t } = useLocalTranslation(translations);
 
-    return <>
-        <ShopLayout>
-        <Box sx={sx.notFound}>
-            <CustomLink path="/">
-            <Image src={notFound} height="325" width="814" alt="notFound" />
-            </CustomLink>
-            <Typography variant={'h4'} sx={sx.title}>{t('notFound.message')}</Typography>
-            <Button sx={sx.button} size={'medium'} onClick={goToHome} >{t('notFound.button')}</Button>
-        </Box>
+    return (
+        <ShopLayout currency="cheeseCoin" language="ru">
+            <Box sx={sx.notFound}>
+                <CustomLink path="/">
+                <Image src={notFound} height="325" width="814" alt="notFound" />
+                </CustomLink>
+                <Typography variant={'h4'} sx={sx.title}>{t('notFound.message')}</Typography>
+                <Button sx={sx.button} size={'medium'} onClick={goToHome} >{t('notFound.button')}</Button>
+            </Box>
         </ShopLayout>
-    </>
+    );
 }
