@@ -109,54 +109,63 @@ export function Footer({
         </CustomLink>
 
         <Box sx={footerSx.contacts}>
-          {contacts.map(link => (
-            <CustomLink
-              key={link.path}
-              path={link.path}
-              underline="none"
-              sx={footerSx.contactsLink}
-            >
-              {link.label}
-            </CustomLink>
-          ))}
-          <Box sx={footerSx.social}>
-            {social.map(link => (
-              <a
+          {
+            contacts.map(link => (
+              <CustomLink
                 key={link.path}
-                href={link.path}
-                rel="noreferrer"
-                target="_blank"
-                style={footerSx.socialLink}
+                path={link.path}
+                underline="none"
+                sx={footerSx.contactsLink}
               >
-                <Image src={link.icon} height={38} width={38} alt="" />
-              </a>
-            ))}
+                {link.label}
+              </CustomLink>
+            ))
+          }
+          <Box sx={footerSx.social}>
+            {
+              social.map(link => (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  rel="noreferrer"
+                  target="_blank"
+                  style={footerSx.socialLink}
+                >
+                  <Image src={link.icon} height={38} width={38} alt="" />
+                </a>
+              ))
+            }
           </Box>
         </Box>
       </Box>
+
       <Box sx={footerSx.info}>
-        {info.map((link, i) => (
-          <Fragment key={link.path}>
-            <NextLink href={link.path} passHref>
-              <a
-                href="replace"
-                rel="noreferrer"
-                target="_blank"
-                style={footerSx.infoLink}
-              >
-                {link.label}
-              </a>
-            </NextLink>
-            {i + 1 !== info.length && (
-              <Divider
-                sx={footerSx.divider}
-                orientation="vertical"
-                variant="middle"
-                flexItem
-              />
-            )}
-          </Fragment>
-        ))}
+        {
+          info.map((link, i) => (
+            <Fragment key={link.path}>
+              <NextLink href={link.path} passHref>
+                <a
+                  href="replace"
+                  rel="noreferrer"
+                  target="_blank"
+                  style={footerSx.infoLink}
+                >
+                  {link.label}
+                </a>
+              </NextLink>
+              {
+                i + 1 !== info.length && (
+                  <Divider
+                    sx={footerSx.divider}
+                    orientation="vertical"
+                    variant="middle"
+                    flexItem
+                  />
+                )
+              }
+            </Fragment>
+          ))
+        }
       </Box>
     </Box>
   );

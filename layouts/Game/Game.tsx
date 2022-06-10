@@ -1,28 +1,27 @@
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
-import { Footer } from '../../components/Footer/Footer';
 import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
 
-import sx from './Shop.styles';
+import sx from './Game.styles';
 
-export interface ShopLayoutProps {
+export interface GameLayoutProps {
   currency: Currency;
   language: Language;
   children?: ReactNode;
 }
 
-export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
+export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const router = useRouter();
-
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -47,8 +46,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const goToReplenishment = () => router.push('/replenishment');
 
   return (
-    <Box sx={sx.shopLayout}>
+    <Box sx={sx.layout}>
       <Header
+        isGame
         isMobile={false}
         phone="+7 812 602-52-61"
         selectedCity={selectedCity?.name[language] || ''}
@@ -66,25 +66,11 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         onOpenMobileMenu={() => {}}
       />
 
-      <Box sx={sx.content}>
-        {children}
-        <Footer
-          sx={sx.footer}
-          firstPhone="+7 812 602-52-61"
-          secondPhone="+372 880-45-21"
-          email="rk@gour-food.com"
-          fb="https://www.facebook.com/gourfood.spb/"
-          inst="https://www.instagram.com/gourfood_/"
-          vk="https://vk.com/gour_food"
-          copyright=""
-          rules=""
-          privacy=""
-          cookie=""
-          terms=""
-        />
-      </Box>
+      {children}
 
-      <Copyright />
+      <Box sx={sx.copyright}>
+        <Copyright />
+      </Box>
     </Box>
   );
 }

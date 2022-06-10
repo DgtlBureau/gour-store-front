@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, Meta } from "@storybook/react";
 
-import { GameProduct, GameProductProps } from "./GameProduct";
+import { GameProduct, GameProductProps } from "./Product";
 
 export default {
   component: GameProduct,
