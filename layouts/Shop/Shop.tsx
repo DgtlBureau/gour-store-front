@@ -8,6 +8,7 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
+import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
 
@@ -82,6 +83,8 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
           terms=""
         />
       </Box>
+
+      <Copyright />
     </Box>
   );
 }

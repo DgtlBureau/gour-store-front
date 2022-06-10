@@ -31,6 +31,7 @@ const sx = {
   icon: { 
     marginLeft: '20px',
   },
+  
 };
 
 export default sx;

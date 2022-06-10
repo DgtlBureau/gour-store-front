@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
-import { Footer } from '../../components/Footer/Footer';
+import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
 
@@ -65,8 +66,10 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         onOpenMobileMenu={() => {}}
       />
 
-      <Box sx={sx.content}>
-        {children}
+      {children}
+
+      <Box sx={sx.copyright}>
+        <Copyright />
       </Box>
     </Box>
   );
