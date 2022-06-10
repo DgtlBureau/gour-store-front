@@ -1,7 +1,8 @@
 import React from "react";
 
 import { ComponentStory, Meta } from "@storybook/react";
-import { GamePlayer, GamePlayerProps, PlayerPosition } from "./Player";
+import { GamePlayer, GamePlayerProps } from "./Player";
+import { FIELD_POSITIONS } from "../Main/Core";
 
 export default {
   component: GamePlayer,
@@ -11,7 +12,7 @@ export default {
 const Template: ComponentStory<typeof GamePlayer> = (args: GamePlayerProps) => <GamePlayer {...args} />;
 export const DefaultGamePlayer = Template.bind({});
 const props: Partial<GamePlayerProps> = {
-  position: PlayerPosition.bottomRight,
+  position: 'bottomRight',
 };
 
 DefaultGamePlayer.args = props;

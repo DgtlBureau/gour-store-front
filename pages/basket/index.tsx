@@ -12,7 +12,7 @@ import {
   subtractBasketProduct,
   removeProduct
 } from '../../store/slices/orderSlice';
-import translation from './Basket.i18n.json';
+import translation from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
@@ -21,6 +21,7 @@ import { CartCard } from '../../components/Cart/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
+import { IProduct } from '../../@types/entities/IProduct';
 
 export function Basket() {
   const router = useRouter();
@@ -110,6 +111,7 @@ export function Basket() {
                     dispatch(subtractBasketProduct(it.product));
                   }}
                 />
+                ))}
                 {
                   !isDeliveryFree && (
                     <InfoBlock

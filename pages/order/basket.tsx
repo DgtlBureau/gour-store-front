@@ -25,7 +25,7 @@ export function Basket({}: basketProps) {
   const sum = useSelector(selectedProductSum);
 
   return (
-    <ShopLayout>
+    <ShopLayout language="ru" currency="cheeseCoin">
       <div>
         <h2>Корзина</h2>
         <div className={s.basket}>
@@ -34,7 +34,7 @@ export function Basket({}: basketProps) {
               <CartCard
                 key={it.product.id}
                 title={it.product.title?.ru || '...'}
-                price={it.product.price?.rub || 0}
+                price={it.product.price?.cheeseCoin || 0}
                 amount={it.amount}
                 weight={it.weight}
                 isWeightGood={true}

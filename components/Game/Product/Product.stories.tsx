@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof GameProduct> = (args: GameProductProps) =>
 export const DefaultGameProduct = Template.bind({});
 const props: Partial<GameProductProps> = {
   isActive: true,
-  step: 1,
+  angle: 20,
   type: 'cheese',
 };
 

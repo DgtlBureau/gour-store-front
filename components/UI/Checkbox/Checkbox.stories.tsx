@@ -19,12 +19,12 @@ export const CheckboxLabel = Template.bind({});
 DefaultState.args = {
   defaultChecked: false,
   disabled: false,
-  checked: false,
+  value: false,
 };
 
 CheckboxLabel.args = {
   defaultChecked: false,
   disabled: false,
-  checked: false,
+  value: false,
   label: 'label',
 };

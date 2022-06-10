@@ -21,7 +21,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
-import { sx } from './[id].styles';
+import sx from './products.styles';
 
 export default function Product() {
   const router = useRouter();
