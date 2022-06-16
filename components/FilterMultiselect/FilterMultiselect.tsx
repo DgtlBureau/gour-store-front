@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  SxProps,
 } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -20,7 +21,7 @@ import { defaultTheme as theme } from '../../themes';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import sx from './FilterMultiSelect.styles'
+import selectSx from './FilterMultiSelect.styles'
 
 export type FilterMultiselectProps = {
   title: string;
@@ -30,6 +31,7 @@ export type FilterMultiselectProps = {
     value: string;
   }[];
   isMobile?: boolean;
+  sx?: SxProps;
   onChange(selected: string[]): void;
 };
 
@@ -38,6 +40,7 @@ export function FilterMultiselect({
   selected,
   options,
   isMobile,
+  sx,
   onChange,
 }: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
@@ -46,7 +49,10 @@ export function FilterMultiselect({
   const [isDeployed, setIsDeployed] = useState(false);
 
   const resetOptions = () => setSelectedOptions([]);
-  const applyOptions = () => onChange(selectedOptions);
+  const applyOptions = () => {
+    onChange(selectedOptions);
+    setIsDeployed(false);
+  };
 
   function changeOption(selected: string) {
     const isOptionSelected = selectedOptions.find(
@@ -72,9 +78,9 @@ export function FilterMultiselect({
   }
 
   return isMobile ? (
-    <Accordion sx={sx.select}>
+    <Accordion sx={selectSx.select}>
       <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
-        <Typography variant="body1" sx={sx.title}>{title}</Typography>
+        <Typography variant="body1" sx={selectSx.title}>{title}</Typography>
       </AccordionSummary>
 
       <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
@@ -84,7 +90,7 @@ export function FilterMultiselect({
               variant="body1"
               key={option.value}
               onClick={() => changeOption(option.value)}
-              sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
+              sx={{ ...selectSx.optionBox, ...(isOptionSelected(option.value) && selectSx.selected) }}
             >
               {option.label}
             </Typography>
@@ -93,38 +99,38 @@ export function FilterMultiselect({
       </AccordionDetails>
     </Accordion>
   ) : (
-    <Box>
-      <Box sx={sx.extender} onClick={() => setIsDeployed(!isDeployed)}>
-        <Typography variant="body1" sx={{ ...sx.title, userSelect: 'none' }}>{title}</Typography>
-        <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && sx.rotatedArrow) }} />
+    <Box sx={sx}>
+      <Box sx={selectSx.extender} onClick={() => setIsDeployed(!isDeployed)}>
+        <Typography variant="body1" sx={{ ...selectSx.title, userSelect: 'none' }}>{title}</Typography>
+        <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
       </Box>
 
       <Collapse in={isDeployed} timeout="auto" unmountOnExit>
-        <List sx={sx.list}>
+        <List sx={selectSx.list}>
           {
             options.map(option => (
               <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
                 <ListItemButton role={undefined} dense>
-                  <ListItemIcon sx={sx.listItemIcon}>
+                  <ListItemIcon sx={selectSx.listItemIcon}>
                     <Checkbox
-                      sx={sx.checkbox}
+                      sx={selectSx.checkbox}
                       edge="start"
                       value={selectedOptions.includes(option.value)}
                       disableRipple
                     />
                   </ListItemIcon>
-                  <Typography variant="body2" sx={sx.listItemText}>
+                  <Typography variant="body2" sx={selectSx.listItemText}>
                     {option.label}
                   </Typography>
                 </ListItemButton>
               </ListItem>
             ))
           }
-          <Box sx={sx.actions}>
+          <Box sx={selectSx.actions}>
             <Button size="small" variant="outlined" onClick={resetOptions}>
               {t('reset')}
             </Button>
-            <Button size="small" onClick={applyOptions} sx={sx.applyBtn}>
+            <Button size="small" onClick={applyOptions} sx={selectSx.applyBtn}>
               {t('apply')}
             </Button>
           </Box>

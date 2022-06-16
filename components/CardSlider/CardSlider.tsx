@@ -19,7 +19,6 @@ const sliderSx = {
     width: '1200px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
   } as CSSProperties,
   title: {
     fontWeight: 'bold',
@@ -33,6 +32,7 @@ const sliderSx = {
 
 type Props = {
   title: string;
+  head?: ReactNode;
   cardsList: ReactNode[];
   rows?: number;
   spaceBetween?: number;
@@ -42,6 +42,7 @@ type Props = {
 
 export function CardSlider({
   title,
+  head,
   cardsList,
   rows = 1,
   slidesPerView = 4,
@@ -78,7 +79,9 @@ export function CardSlider({
         }
       </Stack>
 
-      <Box sx={{ width: '100%', margin: '40px 0 0 0' }}>
+      {!!head && <Box sx={{ marginTop: '40px'}}>{head}</Box>}
+      
+      <Box sx={{ width: '100%', marginTop: '40px' }}>
         <Swiper
           style={{
             width: '100%',
