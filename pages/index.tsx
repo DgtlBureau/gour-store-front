@@ -25,8 +25,6 @@ import { IProduct } from '../@types/entities/IProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
-import { sx } from '../styles/index.styles';
-
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
@@ -110,7 +108,10 @@ const Home: NextPage = () => {
   return (
     <ShopLayout currency={currency} language={language}>
       {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
+        <CardSlider
+            title={t('promotions')}
+            cardsList={promotionsList}
+        />
       )}
       {!!noveltiesList && (
         <CardSlider
