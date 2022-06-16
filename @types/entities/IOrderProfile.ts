@@ -9,4 +9,5 @@ export interface IOrderProfile extends IBaseEntity {
   apartment: string;
   entrance: string;
   floor: string;
+  comment: string;
 }

@@ -16,9 +16,9 @@ const sx = {
 };
 
 export type LkMainAddressCardProps = {
-  addresses: {
-    label: string;
-    value: string;
+  addresses?: {
+    title: string;
+    address: string;
   }[];
   onClickMore(): void;
 };
@@ -33,12 +33,18 @@ export function LkMainAddressCard({ addresses, onClickMore }: LkMainAddressCardP
       onClickMore={onClickMore}
     >
       {
-        addresses.map(address => (
-          <Box key={address.value} sx={sx.address}>
-            <Typography variant="body2" color="text.muted">{address.label}</Typography>
-            <Typography variant="body1">{address.value}</Typography>
-          </Box>
-        ))
+        addresses ? (
+          addresses.map(address => (
+            <Box key={address.address} sx={sx.address}>
+              <Typography variant="body2" color="text.muted">{address.title}</Typography>
+              <Typography variant="body1">{address.address}</Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.muted">
+            {t('emptyAddresses')}
+          </Typography>
+        )
       }
     </BaseInformationCard>
   );

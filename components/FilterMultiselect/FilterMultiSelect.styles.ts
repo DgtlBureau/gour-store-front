@@ -6,12 +6,12 @@ const sx = {
     boxShadow: 'none',
   },
   optionBox: {
-    padding: '7px 11px',
+    padding: '6px 12px',
     color: t.palette.text.secondary,
     backgroundColor: t.palette.common.white,
     borderRadius: '6px',
     userSelect: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   selected: {
     background: t.palette.primary.main,
@@ -38,8 +38,9 @@ const sx = {
     border: '1px solid',
     borderColor: t.palette.secondary.main,
     borderRadius: '6px',
+    zIndex: 100,
   },
-  listItemIcon : {
+  listItemIcon: {
     minWidth: '24px',
   },
   listItemText: {
@@ -50,7 +51,7 @@ const sx = {
   },
   rotatedArrow: {
     transform: 'rotate(180deg)',
-  }, 
+  },
   actions: {
     marginTop: '14px',
     padding: '0 14px',

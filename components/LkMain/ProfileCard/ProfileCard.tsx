@@ -7,6 +7,9 @@ import { BaseInformationCard } from '../../UI/BaseInformationCard/BaseInformatio
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 
+// TODO
+// import noPhoto from '../../../assets/images/no-photo.png';
+
 const sx = {
   content: {
     display: 'flex',
@@ -27,7 +30,7 @@ const sx = {
 export type LkMainProfileCardProps = {
   name: string;
   phone: string;
-  photo: string;
+  photo?: string;
   onClickMore(): void;
 };
 
@@ -62,7 +65,7 @@ export function LkMainProfileCard({ name, phone, photo, onClickMore}: LkMainProf
         </Box>
 
         <Box sx={sx.photo}>
-          <Image src={photo} objectFit="cover" height={92} width={92} alt="" />
+          <Image src={photo || ''} objectFit="cover" height={92} width={92} alt="" />
         </Box>
       </Box>
      

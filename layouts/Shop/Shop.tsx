@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
+
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';

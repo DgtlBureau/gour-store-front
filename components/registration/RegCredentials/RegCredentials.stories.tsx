@@ -3,6 +3,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 
 import { Box } from '../../UI/Box/Box';
 import { RegCredentials, RegCredentialsProps } from './RegCredentials';
+import { SignUpFormDto } from '../../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../../@types/dto/signup.dto';
 import { Roles } from 'constants/roles';
 
@@ -38,7 +39,7 @@ const props: Partial<RegCredentialsProps> = {
     referral: '',
   },
   onSendSMS: (phone: string) => '1234',
-  onSubmit: (data: SignUpDto) => console.log(data),
+  onSubmit: (data: SignUpFormDto) => console.log(data),
 };
 
 DefaultRegCredentials.args = props;

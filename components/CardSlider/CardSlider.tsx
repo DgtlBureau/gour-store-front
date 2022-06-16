@@ -19,7 +19,6 @@ const sliderSx = {
     maxWidth: '1200px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
   } as CSSProperties,
   title: {
     fontWeight: 'bold',
