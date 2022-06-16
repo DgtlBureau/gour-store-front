@@ -4,6 +4,7 @@ import { ComponentStory, Meta } from '@storybook/react';
 import { Box } from '../../UI/Box/Box';
 import { RegCredentials, RegCredentialsProps } from './RegCredentials';
 import { SignUpDto } from '../../../@types/dto/signup.dto';
+import { Roles } from 'constants/roles';
 
 export default {
   component: RegCredentials,
@@ -29,7 +30,7 @@ export const DefaultRegCredentials = Template.bind({});
 
 const props: Partial<RegCredentialsProps> = {
   defaultValues: {
-    type: 'physical',
+    role: Roles.CLIENT,
     phone: '',
     sms: '',
     password: '',

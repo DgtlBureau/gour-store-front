@@ -163,7 +163,7 @@ export function MobileMenu({
                 onClick={() => setLanguagesIsOpened(false)}
               >
                 <NextLink
-                  href={router.asPath}
+                  href={router?.asPath || ''}
                   locale={locale === 'ru' ? 'en' : 'ru'}
                   passHref
                 >
