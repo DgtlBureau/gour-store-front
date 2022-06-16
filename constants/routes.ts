@@ -1,5 +1,6 @@
 export enum Path {
   HOME = '/',
+  PERSONAL_AREA = 'personal-area',
 
   AUTH = 'auth',
   SIGN_UP = 'signup',
@@ -28,6 +29,6 @@ export enum Path {
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',
   DISCOUNTS = 'discounts',
-
+  
   ERROR_PAGE = '404',
 }

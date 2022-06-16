@@ -12,36 +12,63 @@ export const orderProfileApi = createApi({
       getOrderProfilesList: builder.query<IOrderProfile[], void>({
         query() {
           return {
-            method: 'get',
+            method: 'GET',
             url: 'order-profiles',
           };
         },
-        providesTags: result =>
-          result
-            ? [
-                ...result.map(
-                  ({ id }) => ({ type: 'DeliveryProfile', id } as const)
-                ),
-                { type: 'DeliveryProfile', id: 'LIST' },
-              ]
-            : [{ type: 'DeliveryProfile', id: 'LIST' }],
-      }),
+        providesTags: result => {
+          console.log('result ', result);
+          return result ? (
+          [
+            ...result.map(({ id }) => ({ type: 'DeliveryProfile', id } as const)),
+            { type: 'DeliveryProfile', id: 'LIST' },
+          ]
+        ) : (
+          [{ type: 'DeliveryProfile', id: 'LIST' }]
+        )
+      }}),
       createOrderProfile: builder.mutation<
         IOrderProfile,
         CreateOrderProfileDto
       >({
         query(profile) {
           return {
-            method: 'post',
+            method: 'POST',
             url: `order-profiles`,
             body: profile,
           };
         },
         invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
       }),
+      updateOrderProfile: builder.mutation<
+        IOrderProfile,
+        Partial<CreateOrderProfileDto> & Pick<IOrderProfile, 'id'>
+      >({
+        query({ id, ...body }) {
+          return {
+            method: 'PUT',
+            url: `order-profiles/${id}`,
+            body,
+          };
+        },
+        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+      }),
+      deleteOrderProfile: builder.mutation<void, number>({
+        query(id) {
+          return {
+            method: 'DELETE',
+            url: `order-profiles/${id}`,
+          };
+        },
+        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+      })
     };
   },
 });
 
-export const { useGetOrderProfilesListQuery, useCreateOrderProfileMutation } =
-  orderProfileApi;
+export const {
+  useGetOrderProfilesListQuery,
+  useCreateOrderProfileMutation,
+  useUpdateOrderProfileMutation,
+  useDeleteOrderProfileMutation,
+} = orderProfileApi;

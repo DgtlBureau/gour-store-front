@@ -23,6 +23,7 @@ export const currentUserApi = commonApi.injectEndpoints({
           }
         },
       }),
+
       changeCurrentCity: builder.mutation<void, number>({
         query(id) {
           return {
@@ -35,5 +36,6 @@ export const currentUserApi = commonApi.injectEndpoints({
     }
   }
 })
+
 
 export const { useGetCurrentUserQuery, useUpdateCurrentUserMutation, useChangeCurrentCityMutation } = currentUserApi;

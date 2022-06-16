@@ -1,8 +1,16 @@
 {
-  "en": {
-    "test": "Test"
-  },
   "ru": {
-    "test": "Тест"
+    "main": "Главная",
+    "orders": "Заказы",
+    "credentials": "Личные данные",
+    "addresses": "Адреса доставки",
+    "discounts": "Система скидок"
+  },
+  "en": {
+    "main": "Main",
+    "orders": "Orders",
+    "credentials": "Credentials",
+    "addresses": "Delivery addresses",
+    "discounts": "Discount system"
   }
 }
