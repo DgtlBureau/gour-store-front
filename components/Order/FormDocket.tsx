@@ -7,6 +7,7 @@ import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
+import { Currency } from '../../@types/entities/Currency';
 
 const sx = {
   docket: {
@@ -46,7 +47,7 @@ type Props = {
   cost: number;
   discount?: number;
   delivery: number;
-  currency?: 'rub' | 'usd' | 'eur';
+  currency?: Currency;
 };
 
 export function OrderFormDocket({
@@ -54,7 +55,7 @@ export function OrderFormDocket({
   cost,
   discount = 0,
   delivery,
-  currency = 'rub',
+  currency = 'cheeseCoin',
 }: Props) {
   const { t } = useLocalTranslation(translations);
 

@@ -120,7 +120,7 @@ export function RegCredentials({
 
           <HFTextField sx={sx.field} name="referral" label={t('referral')} />
 
-          <Checkbox sx={sx.field} checked={isAgree} onChange={agree} label={t('agreement')} />
+          <Checkbox sx={sx.field} value={isAgree} onChange={agree} label={t('agreement')} />
 
           <Button type="submit" disabled={formIsInvalid}>{t('submit')}</Button>
         </Paper>

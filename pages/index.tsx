@@ -1,43 +1,35 @@
 import type { NextPage } from 'next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import {
-  useGetNoveltiesProductListQuery,
-  useGetProductListQuery,
-} from '../store/api/productApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { CardSlider } from '../components/CardSlider/CardSlider';
-
 import { PromotionCard } from '../components/PromotionCard/PromotionCard';
-import { IProduct } from '../@types/entities/IProduct';
 import { ProductCard } from '../components/Product/Card/Card';
 
-import bannerImg from '../assets/images/banner.jpeg';
-
-import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
+import { Language } from '../@types/entities/Language';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import { IProduct } from '../@types/entities/IProduct';
+
+import bannerImg from '../assets/images/banner.jpeg';
 
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
-  locale: 'en' | 'ru';
+  language: Language;
   addToBasket: (product: IProduct) => {};
   removeFromBasket: (product: IProduct) => {};
   goToProductPage: (id: number) => {};
@@ -57,11 +49,11 @@ const Home: NextPage = () => {
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
-  const productsIdInOrder = useSelector(selectProductsIdInOrder);
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
   const goToProductPage = (id: number) => router.push(`products/${id}`);
@@ -74,7 +66,7 @@ const Home: NextPage = () => {
   const promotionsList = promotions?.map(promotion => (
     <PromotionCard
       key={promotion.id}
-      title={promotion.title[locale]}
+      title={promotion.title[language]}
       image={promotion.cardImage.small}
       onClickMore={() => goToPromotionPage(promotion.id)}
     />
@@ -82,10 +74,11 @@ const Home: NextPage = () => {
 
   const noveltiesList = novelties?.map(product => (
     <SliderProductCard
+      key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
@@ -94,10 +87,11 @@ const Home: NextPage = () => {
 
   const catalogList = products?.map(product => (
     <SliderProductCard
+      key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
@@ -112,9 +106,12 @@ const Home: NextPage = () => {
   };
 
   return (
-    <ShopLayout>
+    <ShopLayout currency={currency} language={language}>
       {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
+        <CardSlider
+            title={t('promotions')}
+            cardsList={promotionsList}
+        />
       )}
       {!!noveltiesList && (
         <CardSlider
@@ -146,12 +143,12 @@ const Home: NextPage = () => {
               alt=""
             />
             <Typography variant="h4" sx={sx.bannerTitle}>
-              {page.info?.title?.[locale]}
+              {page.info?.title?.[language]}
             </Typography>
           </Box>
 
           <Typography variant="body1">
-            {page.info?.description?.[locale]}
+            {page.info?.description?.[language]}
           </Typography>
         </>
       )}
@@ -165,7 +162,7 @@ const SliderProductCard = ({
   product,
   basket,
   currency,
-  locale,
+  language,
   addToBasket,
   removeFromBasket,
   goToProductPage,
@@ -180,8 +177,8 @@ const SliderProductCard = ({
   return (
     <ProductCard
       key={product.id}
-      title={product.title[locale]}
-      description={product.description[locale]}
+      title={product.title[language]}
+      description={product.description[language]}
       rating={product.grade}
       price={product.price[currency]}
       previewSrc={product.images[0] ? product.images[0].small : ''}
