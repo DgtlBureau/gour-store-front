@@ -5,7 +5,7 @@ module.exports = {
   apps: [
     {
       name: `gour-store-front`,
-      script: 'npm',
+      script: 'yarn',
       args: 'start',
       instances: 1,
       autorestart: true,
