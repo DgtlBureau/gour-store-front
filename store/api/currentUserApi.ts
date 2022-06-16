@@ -23,8 +23,18 @@ export const currentUserApi = commonApi.injectEndpoints({
           }
         },
       }),
+      changeCurrentCity: builder.mutation<void, number>({
+        query(id) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_CITY}`,
+            body: id,
+          }
+        },
+      }),
     }
   }
 })
 
-export const { useGetCurrentUserQuery, useUpdateCurrentUserMutation } = currentUserApi;
+
+export const { useGetCurrentUserQuery, useUpdateCurrentUserMutation, useChangeCurrentCityMutation } = currentUserApi;

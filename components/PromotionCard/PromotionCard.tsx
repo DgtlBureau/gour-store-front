@@ -15,7 +15,7 @@ type Props = {
 
 const sx = {
   box: {
-    width: '285px',
+    width: '293px',
     height: '156px',
     display: 'flex',
     flexDirection: 'column',
@@ -29,6 +29,13 @@ const sx = {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     padding: '26px 18px 13px 18px',
+    textTransform: 'none',
+    boxSizing: 'border-box',
+    [theme.breakpoints.down('sm')]: {
+      width: '169px',
+      height: '95px',
+      padding: '10px',
+    },
   },
   title: {
     padding: '5px',
@@ -38,6 +45,7 @@ const sx = {
   btn: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.text.secondary,
+    textTransform: 'none',
 
     '&:hover': {
       backgroundColor: theme.palette.secondary.main,

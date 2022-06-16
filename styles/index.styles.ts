@@ -17,5 +17,10 @@ export const sx = {
     marginLeft: '60px',
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
-  }
+  },
+  promoRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'justify-content',
+  },
 };

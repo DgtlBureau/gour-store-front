@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 
 import authSlice from './slices/authSlice';
 import orderSlice from './slices/orderSlice';
+import { commonApi } from './api/commonApi';
 import { productApi } from './api/productApi';
 import { promotionApi } from './api/promotionApi';
 import { cityApi } from './api/cityApi';
@@ -12,15 +13,15 @@ import { productGradeApi } from './api/productGradeApi';
 import { orderApi } from './api/orderApi';
 import { orderProfileApi } from './api/orderProfileApi';
 import { pageApi } from './api/pageApi';
+import { categoryApi } from './api/categoryApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
   order: orderSlice,
-  [cityApi.reducerPath]: cityApi.reducer,
+  [commonApi.reducerPath]: commonApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
   [promotionApi.reducerPath]: promotionApi.reducer,
-  [cityApi.reducerPath]: cityApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [currentUserApi.reducerPath]: currentUserApi.reducer,
@@ -28,4 +29,6 @@ export const rootReducer = combineReducers({
   [orderProfileApi.reducerPath]: orderProfileApi.reducer,
   [cityApi.reducerPath]: cityApi.reducer,
   [pageApi.reducerPath]: pageApi.reducer,
+  [categoryApi.reducerPath]: categoryApi.reducer,
 });
+

@@ -6,7 +6,7 @@ const sx = {
     boxShadow: 'none',
   },
   optionBox: {
-    padding: '7px 11px',
+    padding: '6px 12px',
     color: t.palette.text.secondary,
     backgroundColor: t.palette.common.white,
     borderRadius: '6px',
@@ -25,7 +25,7 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px 16px',
+    padding: '6px 12px',
     backgroundColor: 'background.paper',
     borderRadius: '6px',
   },
@@ -38,6 +38,7 @@ const sx = {
     border: '1px solid',
     borderColor: t.palette.secondary.main,
     borderRadius: '6px',
+    zIndex: 100,
   },
   listItemIcon : {
     minWidth: '24px',
