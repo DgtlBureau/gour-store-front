@@ -1,26 +1,22 @@
 import stripes  from '../../assets/images/stripes.svg'
 
 const sx = {
-  shopLayout: {
+  layout: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    paddingTop: '100px',
+    height: '100%',
     backgroundImage: 'url(' + `${(stripes)}` + ')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',
-},
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    width: '1200px',
   },
-  footer: {
-    marginTop: '180px',
-    marginBottom: '50px',
+  copyright: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
   },
 };
 

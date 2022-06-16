@@ -17,3 +17,5 @@ export const sx = {
         margin: '90px 0 40px 0'
     },
 };
+
+export default sx;

@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 
 import authSlice from './slices/authSlice';
 import orderSlice from './slices/orderSlice';
+import { commonApi } from './api/commonApi';
 import { productApi } from './api/productApi';
 import { promotionApi } from './api/promotionApi';
 import { cityApi } from './api/cityApi';
@@ -16,11 +17,10 @@ import { pageApi } from './api/pageApi';
 export const rootReducer = combineReducers({
   auth: authSlice,
   order: orderSlice,
-  [cityApi.reducerPath]: cityApi.reducer,
+  [commonApi.reducerPath]: commonApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
   [promotionApi.reducerPath]: promotionApi.reducer,
-  [cityApi.reducerPath]: cityApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [currentUserApi.reducerPath]: currentUserApi.reducer,

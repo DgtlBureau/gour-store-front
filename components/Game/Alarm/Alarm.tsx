@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { keyframes } from '@emotion/react';
+import { SxProps } from '@mui/material';
 
 import { Box } from '../../UI/Box/Box';
 
@@ -32,11 +33,15 @@ const shine = keyframes`
   }
 `;
 
-const sx = {
+const alarmSx = {
+  wrapper: {
+    position: 'absolute',
+  },
   rabbit: {
     position: 'relative',
     height: '120px',
     width: '90px',
+
   },
   hand: {
     position: 'absolute',
@@ -64,18 +69,22 @@ const sx = {
 
 export type GameAlarmProps = {
   isRinging: boolean;
+  sx?: SxProps; 
 };
 
-export function GameAlarm({ isRinging }: GameAlarmProps) {
+export function GameAlarm({ isRinging, sx }: GameAlarmProps) {
   return (
-    <Box sx={{ ...sx.rabbit, ...(!isRinging && sx.muted) }}>
-      <Image src={body} height={120} width={90} alt="" />
-      <Box sx={{ ...sx.hand, ...sx.upHand, ...(isRinging && sx.upHandAnimation) }}>
-        <Image src={handUp} height={56} width={55} alt="" />
-      </Box>
-      <Box sx={{ ...sx.hand, ...sx.downHand, ...(isRinging && sx.downHandAnimation) }}>
-        <Image src={handDown} height={70} width={44} alt="" />
+    <Box sx={{ ...alarmSx.wrapper, ...sx} as SxProps}>
+      <Box sx={{ ...alarmSx.rabbit, ...(!isRinging && alarmSx.muted) }}>
+        <Image src={body} height={120} width={90} alt="" />
+        <Box sx={{ ...alarmSx.hand, ...alarmSx.upHand, ...(isRinging && alarmSx.upHandAnimation) }}>
+          <Image src={handUp} height={56} width={55} alt="" />
+        </Box>
+        <Box sx={{ ...alarmSx.hand, ...alarmSx.downHand, ...(isRinging && alarmSx.downHandAnimation) }}>
+          <Image src={handDown} height={70} width={44} alt="" />
+        </Box>
       </Box>
     </Box>
+    
   );
 }

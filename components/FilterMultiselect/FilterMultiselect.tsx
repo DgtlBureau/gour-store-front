@@ -109,7 +109,7 @@ export function FilterMultiselect({
                     <Checkbox
                       sx={sx.checkbox}
                       edge="start"
-                      checked={selectedOptions.includes(option.value)}
+                      value={selectedOptions.includes(option.value)}
                       disableRipple
                     />
                   </ListItemIcon>

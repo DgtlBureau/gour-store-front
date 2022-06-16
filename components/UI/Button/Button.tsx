@@ -17,6 +17,7 @@ type Props = {
   fullWidth?: boolean;
   sx?: SxProps;
   form?: string | number;
+  id?: string;
 };
 
 export function Button({

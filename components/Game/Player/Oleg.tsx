@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
 
-import handsUp from '../../../assets/game/player/hands-up.svg';
-import handsDown from '../../../assets/game/player/hands-down.svg';
-import body from '../../../assets/game/player/body.svg'
+import handsUp from '../../../assets/images/game/player/hands-up.svg';
+import handsDown from '../../../assets/images/game/player/hands-down.svg';
+import body from '../../../assets/images/game/player/body.svg'
 
 const sx = {
   oleg: {
@@ -33,7 +33,7 @@ const sx = {
     transform: 'scaleX(-1)',
   },
   muted: {
-    opacity: 0.5,
+    opacity: 0.15,
   },
 };
 
