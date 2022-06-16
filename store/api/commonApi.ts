@@ -16,7 +16,7 @@ export const commonApi = createApi({
     'ProductGrade',
     'Promotion',
     'Role',
-    'Category'
+    'Category',
   ],
   endpoints: () => ({}),
 });
