@@ -156,10 +156,7 @@ export function OrderForm({
 
   return (
     <FormProvider {...values}>
-      <form
-        onSubmit={values.handleSubmit(submitHandler)}
-        onChange={changeHandler}
-      >
+      <form onSubmit={values.handleSubmit(submitHandler)} onChange={changeHandler}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -168,7 +165,7 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               {contactsFields.map(field => (
-                <Grid key={field} item xs={6}>
+                <Grid key={field} item xs={12} sm={6}>
                   <HFTextField name={field} label={t(field)} />
                 </Grid>
               ))}
@@ -182,9 +179,7 @@ export function OrderForm({
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
-                onChange={() =>
-                  onChangeDeliveryProfile(values.getValues('deliveryProfileId'))
-                }
+                onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfileId'))}
                 name="deliveryProfileId"
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
@@ -193,16 +188,11 @@ export function OrderForm({
             )}
 
             <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <HFSelect
-                  name="cityId"
-                  options={citiesList}
-                  placeholder={t('city')}
-                  sx={sx.select}
-                />
+              <Grid item xs={12} sm={6}>
+                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
               </Grid>
               {addressFields.map(field => (
-                <Grid key={field} item xs={6}>
+                <Grid key={field} item xs={12} sm={6}>
                   <HFTextField name={field} label={t(field)} />
                 </Grid>
               ))}
@@ -223,12 +213,7 @@ export function OrderForm({
               currency={currency}
             />
 
-            <Checkbox
-              sx={sx.agreement}
-              label={t('agreement')}
-              value={isAgree}
-              onChange={agree}
-            />
+            <Checkbox sx={sx.agreement} label={t('agreement')} value={isAgree} onChange={agree} />
 
             <Button
               sx={sx.btn}

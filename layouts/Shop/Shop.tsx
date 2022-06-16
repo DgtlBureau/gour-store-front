@@ -11,6 +11,7 @@ import { Footer } from '../../components/Footer/Footer';
 import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
+import { contacts } from '../../constants/contacts';
 
 import sx from './Shop.styles';
 
@@ -22,7 +23,6 @@ export interface ShopLayoutProps {
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
-
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -38,8 +38,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity =
-    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
@@ -47,11 +46,10 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const goToReplenishment = () => router.push('/replenishment');
 
   return (
-    <Box sx={sx.shopLayout}>
+    <Box sx={sx.layout}>
       <Header
-        isMobile={false}
-        phone="+7 812 602-52-61"
-        selectedCity={selectedCity?.name[language] || ''}
+        {...contacts}
+        selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
         language={language}
@@ -63,26 +61,12 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
-        onOpenMobileMenu={() => {}}
+        onClickSignout={() => ({})}
       />
 
-      <Box sx={sx.content}>
-        {children}
-        <Footer
-          sx={sx.footer}
-          firstPhone="+7 812 602-52-61"
-          secondPhone="+372 880-45-21"
-          email="rk@gour-food.com"
-          fb="https://www.facebook.com/gourfood.spb/"
-          inst="https://www.instagram.com/gourfood_/"
-          vk="https://vk.com/gour_food"
-          copyright=""
-          rules=""
-          privacy=""
-          cookie=""
-          terms=""
-        />
-      </Box>
+      <Box sx={sx.content}>{children}</Box>
+
+      <Footer {...contacts} sx={sx.footer} />
 
       <Copyright />
     </Box>

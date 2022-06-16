@@ -21,7 +21,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
-import sx from './products.styles';
+import sx from './[id].styles';
 
 export default function Product() {
   const router = useRouter();
@@ -42,8 +42,7 @@ export default function Product() {
     router.push(`/products/${productId}`);
   };
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -64,9 +63,7 @@ export default function Product() {
 
   const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector(state =>
-    productsInBasketCount(state, productId, product?.isWeightGood || false)
-  );
+  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -96,13 +93,8 @@ export default function Product() {
 
   const similarProductCards =
     product?.similarProducts?.map(similarProduct => {
-      const productInBasket = basket.products.find(
-        it => it.product.id === similarProduct.id
-      );
-      const count =
-        (product.isWeightGood
-          ? productInBasket?.weight
-          : productInBasket?.amount) || 0;
+      const productInBasket = basket.products.find(it => it.product.id === similarProduct.id);
+      const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
       return (
         <ProductCard
           key={similarProduct.id}
@@ -149,12 +141,8 @@ export default function Product() {
     <ShopLayout language={language} currency={currency}>
       <>
         {isLoading && <LinearProgress />}
-        {!isLoading && isError && (
-          <Typography variant="h5">Произошла ошибка</Typography>
-        )}
-        {!isLoading && !isError && !product && (
-          <Typography variant="h5">Продукт не найден</Typography>
-        )}
+        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
         {!isLoading && !isError && product && (
           <div>
             <Stack direction="row" justifyContent="space-between">
@@ -204,13 +192,11 @@ export default function Product() {
                 cardsList={similarProductCards}
                 slidesPerView={4}
                 spaceBetween={0}
+                sx={sx.similar}
               />
             )}
 
-            <ProductReviews
-              sx={sx.reviews}
-              reviews={productComments}
-            />
+            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
 
             <CreateCommentBlock onCreate={onCreateComment} />
           </div>

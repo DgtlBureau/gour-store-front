@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Paper, Grid, Rating } from '@mui/material';
+import { Paper, Grid, Rating, SxProps } from '@mui/material';
 
 import { Box } from '../UI/Box/Box';
 import { Button } from '../UI/Button/Button';
@@ -14,8 +14,8 @@ import translations from './CreateCommentBlock.i18n.json';
 
 import StarIcon from '@mui/icons-material/Star';
 
-const sx = {
-  block: {
+const blockSx = {
+  container: {
     padding: '20px',
   },
   btn: {
@@ -31,16 +31,17 @@ const sx = {
   emptyStar: {
     color: theme.palette.text.muted,
   },
-  alertTitle:{
-    fontWeight: 'Bold'
-  }
+  alertTitle: {
+    fontWeight: 'Bold',
+  },
 };
 
 export type CreateCommentBlockProps = {
+  sx?: SxProps;
   onCreate(comment: { value: number; comment: string }): void;
 };
 
-export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
+export function CreateCommentBlock({ sx, onCreate }: CreateCommentBlockProps) {
   const { t } = useLocalTranslation(translations);
 
   const [formData, setFormData] = useState<{ value: number; comment: string }>({
@@ -58,7 +59,7 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const [isAlertOpen,setIsAlert] = useState<boolean>(false);
+  const [isAlertOpen, setIsAlert] = useState<boolean>(false);
 
   const openAlert = () => {
     setIsAlert(true);
@@ -72,14 +73,11 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
   const horizontal = 'right';
 
   return (
-    <Paper sx={sx.block}>
+    <Paper sx={{ ...blockSx.container, ...sx }}>
       <form onSubmit={e => handleSubmit(e)}>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <Typography
-              variant="h5"
-              sx={{ fontFamily: 'Roboto slab', fontWeight: 'bold' }}
-            >
+            <Typography variant="h5" sx={{ fontFamily: 'Roboto slab', fontWeight: 'bold' }}>
               {t('title')}
             </Typography>
 
@@ -93,15 +91,11 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
                 onChange={(e, value) => onChange('value', value || 0)}
                 value={formData.value}
                 size="large"
-                icon={<StarIcon sx={sx.star} />}
-                emptyIcon={<StarIcon sx={sx.emptyStar} />}
+                icon={<StarIcon sx={blockSx.star} />}
+                emptyIcon={<StarIcon sx={blockSx.emptyStar} />}
               />
 
-              <Typography
-                sx={{ margin: '0 0 0 10px' }}
-                variant="caption"
-                color={theme.palette.text.muted}
-              >
+              <Typography sx={{ margin: '0 0 0 10px' }} variant="caption" color={theme.palette.text.muted}>
                 {t('rate')}
               </Typography>
             </Box>
@@ -115,28 +109,22 @@ export function CreateCommentBlock({ onCreate }: CreateCommentBlockProps) {
               alignItems: 'flex-end',
             }}
           >
-            <Textarea
-              name="comment"
-              value={formData.comment}
-              onChange={e => onChange('comment', e.target.value)}
-            />
-            <Button sx={sx.btn} type="submit" disabled={formData.value === 0} onClick={openAlert}>
+            <Textarea name="comment" value={formData.comment} onChange={e => onChange('comment', e.target.value)} />
+            <Button sx={blockSx.btn} type="submit" disabled={formData.value === 0} onClick={openAlert}>
               {t('accept')}
             </Button>
             <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={isAlertOpen}
-                autoHideDuration={6000}
-                onClose={closeAlert}
-                message="sda"
+              anchorOrigin={{ vertical, horizontal }}
+              open={isAlertOpen}
+              autoHideDuration={6000}
+              onClose={closeAlert}
+              message="sda"
             >
               <Alert icon={<CheckCircleOutlineRoundedIcon fontSize="inherit" />} severity="success">
-                <AlertTitle sx={sx.alertTitle}>
-                  {t('alert.title')}
-                </AlertTitle>
+                <AlertTitle sx={blockSx.alertTitle}>{t('alert.title')}</AlertTitle>
                 {t('alert.message.1')}
                 <br></br>
-              {t('alert.message.2')}
+                {t('alert.message.2')}
               </Alert>
             </Snackbar>
           </Grid>

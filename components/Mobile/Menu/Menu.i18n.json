@@ -1,10 +1,12 @@
 {
   "ru": {
+    "game": "Игра",
     "personalArea": "Личный кабинет",
     "favorites": "Избранное",
     "signOut": "Выйти"
   },
   "en": {
+    "game": "Game",
     "personalArea": "Personal area",
     "favorites": "Favorites",
     "signOut": "Sign out"

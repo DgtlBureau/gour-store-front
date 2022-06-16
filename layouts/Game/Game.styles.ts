@@ -1,17 +1,22 @@
-import stripes  from '../../assets/images/stripes.svg'
+import stripes from '../../assets/images/stripes.svg';
 
 const sx = {
   layout: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    height: '100%',
-    backgroundImage: 'url(' + `${(stripes)}` + ')',
+    backgroundImage: 'url(' + `${stripes}` + ')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    maxWidth: '1200px',
+    paddingTop: '50px',
   },
   copyright: {
     position: 'absolute',

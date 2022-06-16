@@ -8,16 +8,20 @@ export default {
   title: 'Header',
 } as Meta;
 
-const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
-  <Header {...args} />
-);
+const Template: ComponentStory<typeof Header> = (args: HeaderProps) => <Header {...args} />;
 export const DefaultHeader = Template.bind({});
 const props: Partial<HeaderProps> = {
-  phone: '8 (921) 865-05-38',
-  selectedCity: 'Москва и область',
+  firstPhone: '8 (921) 865-05-38',
+  secondPhone: '+372 880-45-21',
+  email: 'rk@gour-food.com',
+  fb: 'https://www.facebook.com/',
+  inst: 'https://www.instagram.com/',
+  vk: 'https://www.vk.com/',
+  selectedCityId: 1,
   basketProductCount: 5,
   basketProductSum: 15000,
   currency: 'cheeseCoin',
+  moneyAmount: 1000,
   cities: [
     {
       name: 'Санкт-Петербург',

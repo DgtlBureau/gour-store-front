@@ -19,6 +19,7 @@ const sx = {
   },
   title: {
     textAlign: 'center',
+    fontFamily: 'Roboto slab',
     fontWeight: 'bold',
     color: t.palette.text.secondary,
   },

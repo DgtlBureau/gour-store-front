@@ -10,7 +10,7 @@ export default {
 
 const Template: ComponentStory<typeof Comment> = function (args: CommentProps) {
   return (
-    <div style={{ background: '#EBEBEB', padding: '20px' }}>
+    <div style={{ background: '#F4E7CE', padding: '20px' }}>
       <Comment {...args} />
     </div>
   );

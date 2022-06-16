@@ -50,13 +50,7 @@ type Props = {
   currency?: Currency;
 };
 
-export function OrderFormDocket({
-  productsCount,
-  cost,
-  discount = 0,
-  delivery,
-  currency = 'cheeseCoin',
-}: Props) {
+export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, currency = 'cheeseCoin' }: Props) {
   const { t } = useLocalTranslation(translations);
 
   const total = cost + delivery - discount;

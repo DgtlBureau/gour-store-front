@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  ClickAwayListener,
 } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -20,7 +21,7 @@ import { defaultTheme as theme } from '../../themes';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import sx from './FilterMultiSelect.styles'
+import sx from './FilterMultiSelect.styles';
 
 export type FilterMultiselectProps = {
   title: string;
@@ -33,13 +34,7 @@ export type FilterMultiselectProps = {
   onChange(selected: string[]): void;
 };
 
-export function FilterMultiselect({
-  title,
-  selected,
-  options,
-  isMobile,
-  onChange,
-}: FilterMultiselectProps) {
+export function FilterMultiselect({ title, selected, options, isMobile, onChange }: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
@@ -49,14 +44,10 @@ export function FilterMultiselect({
   const applyOptions = () => onChange(selectedOptions);
 
   function changeOption(selected: string) {
-    const isOptionSelected = selectedOptions.find(
-      option => option === selected
-    );
+    const isOptionSelected = selectedOptions.find(option => option === selected);
 
     if (isOptionSelected) {
-      const newSelectedList = [...selectedOptions].filter(
-        option => option !== selected
-      );
+      const newSelectedList = [...selectedOptions].filter(option => option !== selected);
       setSelectedOptions(newSelectedList);
       if (isMobile) onChange(selectedOptions);
       return;
@@ -74,35 +65,37 @@ export function FilterMultiselect({
   return isMobile ? (
     <Accordion sx={sx.select}>
       <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
-        <Typography variant="body1" sx={sx.title}>{title}</Typography>
+        <Typography variant="body1" sx={sx.title}>
+          {title}
+        </Typography>
       </AccordionSummary>
 
       <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
-        {
-          options.map(option => (
-            <Typography
-              variant="body1"
-              key={option.value}
-              onClick={() => changeOption(option.value)}
-              sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
-            >
-              {option.label}
-            </Typography>
-          ))
-        }
+        {options.map(option => (
+          <Typography
+            variant="body1"
+            key={option.value}
+            onClick={() => changeOption(option.value)}
+            sx={{ ...sx.optionBox, ...(isOptionSelected(option.value) && sx.selected) }}
+          >
+            {option.label}
+          </Typography>
+        ))}
       </AccordionDetails>
     </Accordion>
   ) : (
     <Box>
       <Box sx={sx.extender} onClick={() => setIsDeployed(!isDeployed)}>
-        <Typography variant="body1" sx={{ ...sx.title, userSelect: 'none' }}>{title}</Typography>
+        <Typography variant="body1" sx={{ ...sx.title, userSelect: 'none' }}>
+          {title}
+        </Typography>
         <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && sx.rotatedArrow) }} />
       </Box>
 
       <Collapse in={isDeployed} timeout="auto" unmountOnExit>
-        <List sx={sx.list}>
-          {
-            options.map(option => (
+        <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
+          <List sx={sx.list}>
+            {options.map(option => (
               <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
                 <ListItemButton role={undefined} dense>
                   <ListItemIcon sx={sx.listItemIcon}>
@@ -118,17 +111,18 @@ export function FilterMultiselect({
                   </Typography>
                 </ListItemButton>
               </ListItem>
-            ))
-          }
-          <Box sx={sx.actions}>
-            <Button size="small" variant="outlined" onClick={resetOptions}>
-              {t('reset')}
-            </Button>
-            <Button size="small" onClick={applyOptions} sx={sx.applyBtn}>
-              {t('apply')}
-            </Button>
-          </Box>
-        </List>
+            ))}
+
+            <Box sx={sx.actions}>
+              <Button size="small" variant="outlined" onClick={resetOptions}>
+                {t('reset')}
+              </Button>
+              <Button size="small" onClick={applyOptions} sx={sx.applyBtn}>
+                {t('apply')}
+              </Button>
+            </Box>
+          </List>
+        </ClickAwayListener>
       </Collapse>
     </Box>
   );

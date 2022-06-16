@@ -4,10 +4,23 @@ const sx = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
 
-    height: '540px',
-    width: '300px',
+    height: {
+      xs: '340px',
+      sm: '370px',
+      md: '500px',
+    },
+
+    width: {
+      xs: '180px',
+      sm: '220px',
+      md: '300px',
+    },
+
+    padding: {
+      xs: '10px',
+      md: '20px',
+    },
 
     border: '2px solid',
     borderColor: '#FEC983',
@@ -17,19 +30,20 @@ const sx = {
 
     boxShadow: 'none',
     boxSizing: 'border-box',
-    '&:last-child': {
-      paddingBottom: '0px',
-    },
-  },
-  content: {
-    padding: '20px 20px 0px 20px',
   },
   preview: {
     position: 'relative',
-    marginBottom: '20px',
+    marginBottom: {
+      xs: '10px',
+      md: '20px',
+    },
   },
   previewImg: {
-    height: '245px',
+    height: {
+      xs: '160px',
+      sm: '190px',
+      md: '245px',
+    },
 
     border: '2px solid',
     borderColor: '#FEC983',
@@ -68,7 +82,11 @@ const sx = {
     color: t.palette.text.secondary,
   },
   title: {
-    margin: '10px 0',
+    margin: {
+      xs: '4px 0',
+      md: '10px 0',
+    },
+
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
 
@@ -78,7 +96,10 @@ const sx = {
     },
   },
   description: {
-    height: '42px',
+    height: {
+      xs: '20px',
+      md: '42px',
+    },
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     display: 'inline-block',
@@ -87,8 +108,6 @@ const sx = {
   actions: {
     display: 'flex',
     justifyContent: 'space-between',
-
-    padding: '0 20px 20px 20px',
   },
   deployed: {
     flexDirection: 'column',

@@ -9,9 +9,12 @@ import StarIcon from '@mui/icons-material/Star';
 
 const sx = {
   comment: {
-    width: '280px',
+    width: {
+      xs: '250px',
+      sm: '280px',
+    },
     padding: '12px',
-    backgroundColor: 'background.default',
+    backgroundColor: t.palette.common.white,
   },
   rating: {
     display: 'flex',
@@ -35,15 +38,12 @@ export type CommentProps = {
   text: string;
 };
 
-export function Comment({
-  title,
-  grade,
-  date,
-  text,
-}: CommentProps) {
+export function Comment({ title, grade, date, text }: CommentProps) {
   return (
     <Paper sx={sx.comment} elevation={0}>
-      <Typography variant="body1" color="primary">{title}</Typography>
+      <Typography variant="body1" color="primary">
+        {title}
+      </Typography>
 
       <Box sx={sx.rating}>
         <Rating
@@ -53,10 +53,14 @@ export function Comment({
           icon={<StarIcon fontSize="small" htmlColor={t.palette.accent.main} />}
           emptyIcon={<StarIcon fontSize="small" htmlColor={t.palette.text.muted} />}
         />
-        <Typography sx={sx.date} variant="body2" color="text.muted">{date}</Typography>
+        <Typography sx={sx.date} variant="body2" color="text.muted">
+          {date}
+        </Typography>
       </Box>
 
-      <Typography sx={sx.text} variant="body2" color="text.muted">{text}</Typography>
+      <Typography sx={sx.text} variant="body2" color="text.muted">
+        {text}
+      </Typography>
     </Paper>
   );
 }
