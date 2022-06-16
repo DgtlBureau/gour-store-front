@@ -8,6 +8,7 @@ import SwiperCore, { Grid } from 'swiper';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
+import cardCss from './CardSliderModule.module.scss'
 
 import 'swiper/css';
 import 'swiper/css';
@@ -55,7 +56,7 @@ export function CardSlider({
   const withArrows = cardsList.length > rows * slidesPerView;
 
   return (
-    <Box sx={{ ...sliderSx.container, ...sx }}>
+    <Box sx={{ ...sliderSx.container, ...sx}}>
       <Stack
         sx={{ width: '100%' }}
         direction="row"
@@ -95,10 +96,21 @@ export function CardSlider({
           onSwiper={setSlider}
           modules={[Grid]}
           className="mySwiper"
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+            },
+            480: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
         >
           {
             cardsList.map((card, i) => (
-              <SwiperSlide key={i} style={{ height: `${cardHeight}px` }}>
+              <SwiperSlide key={i}  style={{ height: `${cardHeight}px`}} className={cardCss.fit}>
                 {card}
               </SwiperSlide>
             ))

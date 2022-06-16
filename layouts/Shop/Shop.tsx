@@ -2,39 +2,37 @@ import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import {
-  selectedProductCount,
-  selectedProductSum,
-} from '../../store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
+import { Copyright } from '../../components/Copyright/Copyright';
+import { Currency } from '../../@types/entities/Currency';
+import { Language } from '../../@types/entities/Language';
 
 import sx from './Shop.styles';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
 
 export interface ShopLayoutProps {
+  currency: Currency;
+  language: Language;
   children?: ReactNode;
 }
 
-export function ShopLayout(props: ShopLayoutProps) {
+export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  console.log('currentUser', currentUser);
+  const [changeCity] = useChangeCurrentCityMutation();
 
   const convertedCities =
     cities?.map(city => ({
       id: city.id,
-      name: city.name[locale],
+      name: city.name[language],
     })) || [];
 
   const count = useSelector(selectedProductCount);
@@ -46,38 +44,38 @@ export function ShopLayout(props: ShopLayoutProps) {
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
-
-  // TO DO
-  const changeCity = (id: number) => ({});
+  const goToReplenishment = () => router.push('/replenishment');
 
   return (
     <Box sx={sx.shopLayout}>
       <Header
         isMobile={false}
         phone="+7 812 602-52-61"
-        selectedCity={selectedCity?.name[locale] || ''}
+        selectedCity={selectedCity?.name[language] || ''}
         cities={convertedCities}
-        selectedLanguage={locale}
+        currency={currency}
+        language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        currency={currentCurrency}
+        moneyAmount={1000}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
+        onClickReplenishment={goToReplenishment}
         onOpenMobileMenu={() => {}}
       />
 
       <Box sx={sx.content}>
-        {props.children}
+        {children}
         <Footer
           sx={sx.footer}
           firstPhone="+7 812 602-52-61"
           secondPhone="+372 880-45-21"
           email="rk@gour-food.com"
-          fb=""
-          inst=""
-          vk=""
+          fb="https://www.facebook.com/gourfood.spb/"
+          inst="https://www.instagram.com/gourfood_/"
+          vk="https://vk.com/gour_food"
           copyright=""
           rules=""
           privacy=""
@@ -85,6 +83,8 @@ export function ShopLayout(props: ShopLayoutProps) {
           terms=""
         />
       </Box>
+
+      <Copyright />
     </Box>
   );
 }

@@ -8,8 +8,10 @@ import {
   addBasketProduct,
   subtractBasketProduct,
 } from '../store/slices/orderSlice';
+
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
@@ -25,19 +27,19 @@ import { ProductCard } from '../components/Product/Card/Card';
 import { CatalogFilter, Filters } from 'components/CatalogFilter/CatalogFilter';
 import { Path } from 'constants/routes';
 
-import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
 import { IOrderProduct } from '../@types/entities/IOrderProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
-
 import { sx } from '../styles/index.styles';
+import { Currency } from '../@types/entities/Currency';
+import { Language } from '../@types/entities/Language';
 
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
-  locale: 'en' | 'ru';
+  language: Language;
   addToBasket: (product: IProduct) => {};
   removeFromBasket: (product: IProduct) => {};
   goToProductPage: (id: number) => {};
@@ -92,10 +94,11 @@ const Home: NextPage = () => {
     .every(it => filters.characteristics[it].length === 0 || filters.characteristics[it].includes(characteristics[it]))
   );
 
+
   const promotionsList = promotions?.map(promotion => (
     <PromotionCard
       key={promotion.id}
-      title={promotion.title[locale]}
+      title={promotion.title[language]}
       image={promotion.cardImage.small}
       onClickMore={() => goToPromotionPage(promotion.id)}
     />
@@ -106,8 +109,8 @@ const Home: NextPage = () => {
       key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
@@ -131,6 +134,7 @@ const Home: NextPage = () => {
     ))
   );
     
+
   const getCatalogRows = () => {
     const length = catalogList?.length || 0;
     if (length > 8) return 3;
@@ -212,7 +216,7 @@ const SliderProductCard = ({
   product,
   basket,
   currency,
-  locale,
+  language,
   addToBasket,
   removeFromBasket,
   goToProductPage,
@@ -227,8 +231,8 @@ const SliderProductCard = ({
   return (
     <ProductCard
       key={product.id}
-      title={product.title[locale]}
-      description={product.description[locale]}
+      title={product.title[language]}
+      description={product.description[language]}
       rating={product.grade}
       price={product.price[currency]}
       previewSrc={product.images[0] ? product.images[0].small : ''}

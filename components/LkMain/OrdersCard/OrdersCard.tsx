@@ -7,6 +7,7 @@ import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { BaseInformationCard } from '../../UI/BaseInformationCard/BaseInformationCard';
+import { Currency } from '../../../@types/entities/Currency';
 
 const sx = {
   order: {
@@ -30,7 +31,7 @@ export type LkMainOrdersCardProps = {
     date: Date;
     status: string;
     sum: number;
-    currency: 'rub' | 'eur' | 'usd';
+    currency: Currency;
   }[];
   onClickMore(): void;
 };

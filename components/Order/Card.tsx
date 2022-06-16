@@ -6,9 +6,10 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translation from './Card.i18n.json';
 import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Currency } from '../../@types/entities/Currency';
 
 type Props = {
-  currency: 'rub' | 'eur';
+  currency: Currency;
   totalProductCount: number;
   totalCartPrice: number;
   productsList: IOrderProduct[];

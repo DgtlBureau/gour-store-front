@@ -15,6 +15,7 @@ import { OrderFormDocket } from './FormDocket';
 import { defaultTheme as theme } from '../../themes';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
+import { Currency } from '../../@types/entities/Currency';
 
 const sx = {
   form: {
@@ -107,7 +108,7 @@ export type OrderFormProps = {
     value: number;
     label: string;
   }[];
-  currency?: 'rub' | 'usd' | 'eur';
+  currency?: Currency;
   onSubmit: (data: OrderFormType) => void;
   onChangeDeliveryProfile: (profileId: number) => void;
 };

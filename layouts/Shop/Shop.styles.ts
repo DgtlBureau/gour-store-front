@@ -1,10 +1,17 @@
+import stripes  from '../../assets/images/stripes.svg'
+
 const sx = {
   shopLayout: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
     minHeight: '100vh',
     paddingTop: '100px',
-  },
+    backgroundImage: 'url(' + `${(stripes)}` + ')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'top center',
+},
   content: {
     display: 'flex',
     flexDirection: 'column',
