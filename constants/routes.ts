@@ -12,6 +12,10 @@ export enum Path {
   CLIENT_ROLES = 'client-roles',
   ORDER_PROFILES = 'order-profiles',
   
+  PRODUCTS = 'products',
+  NOVELTIES = 'novelties',
+  GRADES = 'grades',
+
   CATEGORIES = 'categories',
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
@@ -22,7 +26,6 @@ export enum Path {
   PRODUCTS = 'products',
   NOVELTIES = 'novelties',
   GRADES = 'grades',
-  PERSONAL_AREA = 'personal-area',
 
   MAIN = 'main',
   ORDERS = 'orders',

@@ -10,8 +10,8 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { ITranslatableString } from '../../@types/entities/ITranslatableString';
+import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
-import { RegistrationData } from '../../@types/entities/RegistrationData';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
@@ -36,7 +36,7 @@ export default function SignUp() {
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpDto | undefined>(undefined);
+  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
 
   const goToIntro = () => router.push('/auth');
@@ -57,7 +57,7 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = (data: SignUpDto) => setCredentials(data);
+  const saveCredentials = (data: SignUpFormDto) => setCredentials(data);
 
   const saveFavoriteInfo = (info: FavoriteInfo) => {
     setFavoriteInfo(info);
@@ -69,7 +69,7 @@ export default function SignUp() {
 
     const role = roles?.find(it => it.key === credentials.role);
 
-    const data: RegistrationData = {
+    const data: SignUpDto = {
       name: '',
       phone: credentials.phone,
       code: +credentials.sms,

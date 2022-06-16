@@ -23,7 +23,6 @@ export const currentUserApi = commonApi.injectEndpoints({
           }
         },
       }),
-
       changeCurrentCity: builder.mutation<void, number>({
         query(id) {
           return {

@@ -8,8 +8,8 @@ import {
 } from '../../store/slices/orderSlice';
 import translations from './Lk.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useGetCityListQuery } from '../../store/api/cityApi';
+import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { LkMenu } from 'components/UI/LkMenu/LkMenu';
@@ -83,8 +83,6 @@ export function LkLayout(props: LkLayoutProps) {
     setChapter(path);
     router.push(path);
   };
-
-  console.log(currentPath);
 
   return (
     <Box sx={sx.layout}>

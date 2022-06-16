@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof LkMenu> = (args: LkMenuProps) => (
 );
 export const DefaultLkMenu = Template.bind({});
 const props: Partial<LkMenuProps> = {
-  active: 'Заказы',
+  active: '/1',
   menuList: [
     {
       label: 'Главная',

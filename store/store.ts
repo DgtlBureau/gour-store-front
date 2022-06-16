@@ -7,6 +7,9 @@ import { orderProfileApi } from './api/orderProfileApi';
 import { commonApi } from './api/commonApi';
 import { rootReducer } from './rootReducer';
 
+import { commonApi } from './api/commonApi';
+import { rootReducer } from './rootReducer';
+
 const persistConfig = {
   key: 'root',
   blacklist: [

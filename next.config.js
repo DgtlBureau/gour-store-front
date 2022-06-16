@@ -2,8 +2,11 @@
 
 const withImages = require('next-images');
 const nextConfig = withImages({
+  webpack(config) {
+    return config;
+  },
   images: {
-    disableStaticImages: true,
+    disableStaticImages: false,
     domains: ['gour-store.devshift.ru', 'resizer.mail.ru'],
   },
   pageExtensions: ['tsx'],

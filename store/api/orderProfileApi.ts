@@ -1,32 +1,25 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { commonApi } from './commonApi';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
+import { Path } from '../../constants/routes';
 
-export const orderProfileApi = createApi({
-  reducerPath: 'orderProfileApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['DeliveryProfile'],
+export const orderProfileApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getOrderProfilesList: builder.query<IOrderProfile[], void>({
         query() {
           return {
             method: 'GET',
-            url: 'order-profiles',
+            url: Path.ORDER_PROFILES,
           };
         },
-        providesTags: result => {
-          console.log('result ', result);
-          return result ? (
+        providesTags: result => result ? (
           [
-            ...result.map(({ id }) => ({ type: 'DeliveryProfile', id } as const)),
-            { type: 'DeliveryProfile', id: 'LIST' },
+            ...result.map(({ id }) => ({ type: 'OrderProfile', id } as const)),
+            { type: 'OrderProfile', id: 'LIST' },
           ]
-        ) : (
-          [{ type: 'DeliveryProfile', id: 'LIST' }]
-        )
-      }}),
+        ) : [{ type: 'OrderProfile', id: 'LIST' }],
+      }),
       createOrderProfile: builder.mutation<
         IOrderProfile,
         CreateOrderProfileDto
@@ -34,11 +27,11 @@ export const orderProfileApi = createApi({
         query(profile) {
           return {
             method: 'POST',
-            url: `order-profiles`,
+            url: Path.ORDER_PROFILES,
             body: profile,
           };
         },
-        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
       }),
       updateOrderProfile: builder.mutation<
         IOrderProfile,
@@ -47,20 +40,20 @@ export const orderProfileApi = createApi({
         query({ id, ...body }) {
           return {
             method: 'PUT',
-            url: `order-profiles/${id}`,
+            url: `${Path.ORDER_PROFILES}/${id}`,
             body,
           };
         },
-        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
       }),
       deleteOrderProfile: builder.mutation<void, number>({
         query(id) {
           return {
             method: 'DELETE',
-            url: `order-profiles/${id}`,
+            url: `${Path.ORDER_PROFILES}/${id}`,
           };
         },
-        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
       })
     };
   },

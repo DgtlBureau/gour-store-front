@@ -26,7 +26,7 @@ const sx = {
 };
 
 export type LkMainOrdersCardProps = {
-  orders: {
+  orders?: {
     id: string;
     date: Date;
     status: string;
@@ -48,29 +48,37 @@ export function LkMainOrdersCard({
       footerText={t('footerText')}
       onClickMore={onClickMore}
     >
-      {orders.map(order => (
-        <Box key={order.id} sx={sx.order}>
-          <Box sx={sx.orderHeader}>
-            <Box sx={sx.orderTitle}>
-              <Typography variant="body1" sx={sx.orderId}>
-                {t('order')} {order.id}
-              </Typography>
-              <Typography variant="body1" color="text.muted">
-                {t('from')} {format(order.date, 'dd.MM.yyyy')}
+      {
+        orders ? (
+          orders.map(order => (
+            <Box key={order.id} sx={sx.order}>
+              <Box sx={sx.orderHeader}>
+                <Box sx={sx.orderTitle}>
+                  <Typography variant="body1" sx={sx.orderId}>
+                    {t('order')} {order.id}
+                  </Typography>
+                  <Typography variant="body1" color="text.muted">
+                    {t('from')} {format(order.date, 'dd.MM.yyyy')}
+                  </Typography>
+                </Box>
+  
+                <Typography variant="body1">
+                  {order.sum}
+                  {getCurrencySymbol(order.currency)}
+                </Typography>
+              </Box>
+  
+              <Typography variant="body2" color="text.muted">
+                {order.status}
               </Typography>
             </Box>
-
-            <Typography variant="body1">
-              {order.sum}
-              {getCurrencySymbol(order.currency)}
-            </Typography>
-          </Box>
-
-          <Typography variant="body2" color="text.muted">
-            {order.status}
+          ))
+        ) : (
+          <Typography variant="body1" color="text.muted">
+            {t('emptyOrders')}
           </Typography>
-        </Box>
-      ))}
+        )
+      }
     </BaseInformationCard>
   );
 }
