@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const withImages = require('next-images')
+const withImages = require('next-images');
 const nextConfig = withImages({
   images: {
     disableStaticImages: true,
@@ -12,15 +12,15 @@ const nextConfig = withImages({
     return [
       {
         source: '/api/:path*',
-        destination: 'https://gour-store.devshift.ru/api/:path*' // Proxy to Backend
-      }
-    ]
+        destination: 'https://gour-store.devshift.ru/api/:path*', // Proxy to Backend
+      },
+    ];
   },
   i18n: {
     locales: ['en', 'ru'],
     defaultLocale: 'ru',
     localeDetection: false,
   },
-})
+});
 
-module.exports = nextConfig
+module.exports = nextConfig;
