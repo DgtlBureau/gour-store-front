@@ -38,6 +38,7 @@ const sliderSx = {
 
 type Props = {
   title?: string;
+  head?: ReactNode;
   cardsList: ReactNode[];
   rows?: number;
   spaceBetween?: number;
@@ -45,7 +46,7 @@ type Props = {
   sx?: SxProps;
 };
 
-export function CardSlider({ title, cardsList, rows = 1, slidesPerView = 4, spaceBetween = 10, sx }: Props) {
+export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4, spaceBetween = 10, sx }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
@@ -71,6 +72,8 @@ export function CardSlider({ title, cardsList, rows = 1, slidesPerView = 4, spac
           </ButtonGroup>
         )}
       </Stack>
+
+      {head}
 
       <Box sx={{ width: '100%', marginTop: { xs: '20px', md: '40px' } }}>
         <Swiper
