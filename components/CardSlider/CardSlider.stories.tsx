@@ -3,7 +3,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { CardSlider } from './CardSlider';
-import { PromotionCard } from '../PromotionCard/PromotionCard';
+import { PromotionCard } from '../Promotion/Card/Card';
 
 export default {
   title: 'CardSlider',

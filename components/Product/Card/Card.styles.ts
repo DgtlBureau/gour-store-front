@@ -6,7 +6,7 @@ const sx = {
     flexDirection: 'column',
 
     height: {
-      xs: '340px',
+      xs: '320px',
       sm: '370px',
       md: '500px',
     },
@@ -33,10 +33,6 @@ const sx = {
   },
   preview: {
     position: 'relative',
-    marginBottom: {
-      xs: '10px',
-      md: '20px',
-    },
   },
   previewImg: {
     height: {
@@ -76,20 +72,29 @@ const sx = {
     height: '26px',
     borderRadius: '99px',
   },
-  info: {
-    display: 'flex',
-    flexDirection: 'column',
-
-    color: t.palette.text.secondary,
-  },
-  title: {
+  rate: {
     margin: {
-      xs: '4px 0',
+      xs: '10px 0 5px 0',
       md: '10px 0',
     },
-
+  },
+  title: {
+    fontSize: {
+      xs: '14px',
+      sm: '16px',
+      md: '20px',
+    },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
+    color: t.palette.text.secondary,
+
+    maxHeight: {
+      sm: '26px',
+      md: '64px',
+    },
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'normal',
 
     '&:hover': {
       cursor: 'pointer',
@@ -97,21 +102,35 @@ const sx = {
     },
   },
   description: {
-    height: {
-      xs: '20px',
-      md: '42px',
+    display: {
+      md: 'inline-block',
+      sm: 'inline-block',
+      xs: 'none',
     },
+    height: '100%',
+    maxHeight: {
+      md: '44px',
+      sm: '22px',
+    },
+    margin: {
+      xs: '5px 0',
+      md: '10px 0',
+    },
+
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    display: 'inline-block',
     whiteSpace: 'normal',
+    color: t.palette.text.secondary,
   },
   actions: {
     display: 'flex',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
+    height: '100%',
   },
   deployed: {
     flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
 };
 

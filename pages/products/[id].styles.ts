@@ -5,10 +5,16 @@ export const sx = {
   },
   productTitle: {
     margin: '0 0 35px 0',
+    fontFamily: 'Roboto slab',
+    color: 'primary.main',
+  },
+  productActions: {
+    marginTop: '40px',
   },
   descriptionTitle: {
-    fontWeight: 'bold',
     margin: '100px 0 10px 0',
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
   },
   description: {
     marginBottom: '100px',

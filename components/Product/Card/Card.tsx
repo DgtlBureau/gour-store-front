@@ -63,30 +63,28 @@ export function ProductCard({
         )}
       </Box>
 
-      <Rate currency={currency} rating={rating} price={price} isWeightGood={isWeightGood} />
+      <Rate currency={currency} rating={rating} price={price} isWeightGood={isWeightGood} sx={sx.rate} />
 
-      <Box sx={sx.info}>
-        <div role="button" tabIndex={0} onKeyPress={undefined} onClick={onDetail}>
-          <Typography sx={sx.title} variant="h6">
-            {title}
-          </Typography>
-        </div>
-
-        <Typography variant="body2" sx={sx.description}>
-          {description}
+      <div role="button" tabIndex={0} onKeyPress={undefined} onClick={onDetail}>
+        <Typography sx={sx.title} variant="h6">
+          {title}
         </Typography>
-      </Box>
+      </div>
+
+      <Typography variant="body2" sx={sx.description}>
+        {description}
+      </Typography>
 
       <Box sx={{ ...sx.actions, ...(currentCount !== 0 && sx.deployed) }}>
         <Docket
           inCart={currentCount !== 0}
           price={price}
           discount={discount}
-          isWeightGood={false}
+          isWeightGood={isWeightGood}
           currency={currency}
         />
 
-        <Cart currentCount={currentCount} onAdd={onAdd} onRemove={onRemove} isWeightGood={isWeightGood} />
+        <Cart isWeightGood={isWeightGood} currentCount={currentCount} onAdd={onAdd} onRemove={onRemove} />
       </Box>
     </Box>
   );

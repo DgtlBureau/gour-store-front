@@ -17,9 +17,9 @@ import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
-import { PromotionCard } from '../components/PromotionCard/PromotionCard';
+import { PromotionCard } from '../components/Promotion/Card/Card';
 import { ProductCard } from '../components/Product/Card/Card';
-import { CatalogFilter, Filters } from 'components/CatalogFilter/CatalogFilter';
+import { CatalogFilter, Filters } from 'components/Catalog/Filter/Filter';
 import { Path } from 'constants/routes';
 
 import { IProduct } from '../@types/entities/IProduct';
@@ -27,9 +27,10 @@ import { IOrderProduct } from '../@types/entities/IOrderProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
-import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
 import { Language } from '../@types/entities/Language';
+
+import { sx } from './index.styles';
 
 type SliderProductCardProps = {
   product: IProduct;
@@ -137,8 +138,6 @@ const Home: NextPage = () => {
     else return 1;
   };
 
-  useEffect(() => console.log(filters, catalogList), [filters]);
-
   return (
     <ShopLayout currency={currency} language={language}>
       {!!promotionsList && <CardSlider title={t('promotions')} cardsList={promotionsList} />}
@@ -156,7 +155,6 @@ const Home: NextPage = () => {
         <CardSlider
           key={`catalog/${filters.category}`}
           title={t('catalog')}
-          slidesPerView={4}
           spaceBetween={0}
           rows={getCatalogRows()}
           cardsList={filters.isReversed ? catalogList.reverse() : catalogList}

@@ -14,8 +14,10 @@ const sx = {
   content: {
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
     maxWidth: '1200px',
     paddingTop: '50px',
+    padding: '50px 20px 20px 20px',
   },
   footer: {
     marginTop: '180px',

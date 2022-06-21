@@ -5,7 +5,7 @@ import translations from './Reviews.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
 import { CardSlider } from '../../CardSlider/CardSlider';
-import { Comment } from '../../UI/Comment/Comment';
+import { CommentCard } from '../../Comment/Card/Card';
 import { Typography } from '../../UI/Typography/Typography';
 import { ReviewsCounter } from './ReviewsCounter';
 import { formatDate } from '../../../helpers/dateHelper';
@@ -34,6 +34,7 @@ const sxReviews = {
     marginBottom: '20px',
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
+    color: 'text.primary',
   },
   slider: {
     height: '100%',
@@ -87,7 +88,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
             sx={sxReviews.slider}
             slidesPerView={3}
             cardsList={reviews.map(review => (
-              <Comment
+              <CommentCard
                 key={review.id}
                 title={review.clientName}
                 grade={review.value}
