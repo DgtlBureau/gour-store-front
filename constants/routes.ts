@@ -11,7 +11,7 @@ export enum Path {
   CLIENT_AUTH = 'client-auth',
   CLIENT_ROLES = 'client-roles',
   ORDER_PROFILES = 'order-profiles',
-  
+
   PRODUCTS = 'products',
   NOVELTIES = 'novelties',
   GRADES = 'grades',
@@ -19,19 +19,16 @@ export enum Path {
   CATEGORIES = 'categories',
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
-  
+
   PAGES = 'pages',
   PROMOTIONS = 'promotions',
   GAME = 'game',
-  PRODUCTS = 'products',
-  NOVELTIES = 'novelties',
-  GRADES = 'grades',
 
   MAIN = 'main',
   ORDERS = 'orders',
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',
   DISCOUNTS = 'discounts',
-  
+
   ERROR_PAGE = '404',
 }

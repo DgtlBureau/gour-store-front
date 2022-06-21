@@ -2,18 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  subtractBasketProduct,
-} from '../../store/slices/orderSlice';
-import translations from './Promotion.i18n.json';
-import {
-  useLocalTranslation,
-  LocalConfig,
-} from './../../hooks/useLocalTranslation';
+import translations from './[id].i18n.json';
+import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
+import { addBasketProduct, selectProductsIdInOrder, subtractBasketProduct } from '../../store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import { PromotionHeader } from 'components/PromotionHeader/PromotionHeader';
+import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { ProductCard } from 'components/Product/Card/Card';
 import { Box } from 'components/UI/Box/Box';
@@ -49,8 +42,7 @@ export default function Promotion() {
 
   const { id } = router.query;
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -86,21 +78,14 @@ export default function Promotion() {
             spaceBetween={0}
             rows={2}
             cardsList={products.map(product => {
-              const productInBasket = basket.products.find(
-                it => it.product.id === product.id
-              );
-              const count =
-                (product.isWeightGood
-                  ? productInBasket?.weight
-                  : productInBasket?.amount) || 0;
+              const productInBasket = basket.products.find(it => it.product.id === product.id);
+              const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
               return (
                 <ProductCard
                   key={product.id}
                   currency={currency}
                   title={product.title ? product.title[language] : ''}
-                  description={
-                    product.description ? product.description[language] : ''
-                  }
+                  description={product.description ? product.description[language] : ''}
                   rating={product.grade}
                   price={product.price[currency]}
                   previewSrc={product.images[0] ? product.images[0].small : ''}

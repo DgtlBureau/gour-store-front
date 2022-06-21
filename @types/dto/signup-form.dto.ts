@@ -1,5 +1,7 @@
+import { Role } from '../../@types/entities/Role';
+
 export type SignUpFormDto = Readonly<{
-  role: 'CLIENT' | 'COMPANY' | 'COLLECTIVE_PURCHASE';
+  role: Role;
   phone: string;
   sms: string;
   password: string;

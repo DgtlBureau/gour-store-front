@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import NextLink from 'next/link';
 
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
@@ -11,6 +10,7 @@ import { Header } from '../../components/Header/Header';
 import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
+import { contacts } from '../../constants/contacts';
 
 import sx from './Game.styles';
 
@@ -37,8 +37,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity =
-    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
@@ -49,9 +48,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
     <Box sx={sx.layout}>
       <Header
         isGame
-        isMobile={false}
-        phone="+7 812 602-52-61"
-        selectedCity={selectedCity?.name[language] || ''}
+        selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
         language={language}
@@ -63,10 +60,11 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
-        onOpenMobileMenu={() => {}}
+        onClickSignout={() => ({})}
+        {...contacts}
       />
 
-      {children}
+      <Box sx={sx.content}>{children}</Box>
 
       <Box sx={sx.copyright}>
         <Copyright />

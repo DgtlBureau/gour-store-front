@@ -6,7 +6,7 @@ const nextConfig = withImages({
     return config;
   },
   images: {
-    disableStaticImages: false,
+    disableStaticImages: true,
     domains: ['gour-store.devshift.ru', 'resizer.mail.ru'],
   },
   pageExtensions: ['tsx'],

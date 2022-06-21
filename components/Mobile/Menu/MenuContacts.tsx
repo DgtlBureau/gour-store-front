@@ -19,41 +19,22 @@ export type MobileMenuContactsProps = {
   fb: string;
   inst: string;
   vk: string;
-}
+};
 
-export function MobileMenuContacts({
-  firstPhone,
-  secondPhone,
-  email,
-  fb,
-  inst,
-  vk,
-}: MobileMenuContactsProps) {
+export function MobileMenuContacts({ firstPhone, secondPhone, email, fb, inst, vk }: MobileMenuContactsProps) {
   return (
     <>
       <ListItem sx={sx.phones}>
-        <CustomLink
-          path={`tel:${firstPhone}`}
-          sx={sx.link}
-          underline="always"
-        >
+        <CustomLink path={`tel:${firstPhone}`} sx={sx.link} underline="always">
           {firstPhone}
         </CustomLink>
-        <CustomLink
-          path={`tel:${secondPhone}`}
-          sx={sx.link}
-          underline="always"
-        >
+        <CustomLink path={`tel:${secondPhone}`} sx={sx.link} underline="always">
           {secondPhone}
         </CustomLink>
       </ListItem>
 
       <ListItem sx={sx.socials}>
-        <CustomLink
-          path={`mailto:${email}`}
-          sx={sx.link}
-          underline="always"
-        >
+        <CustomLink path={`mailto:${email}`} sx={sx.link} underline="always">
           {email}
         </CustomLink>
 

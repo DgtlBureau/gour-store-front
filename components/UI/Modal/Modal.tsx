@@ -10,31 +10,7 @@ import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
 
-const sx = {
-  modal: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: '520px',
-    padding: '60px',
-    bgcolor: 'background.default',
-  },
-  title: {
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    marginBottom: '14px',
-  },
-  acceptBtn: {
-    width: '100%',
-    marginTop: '14px',
-  },
-  cross: {
-    position: 'absolute',
-    top: '30px',
-    right: '52px',
-  }
-};
+import sx from './Modal.styles';
 
 export type ModalProps = {
   isOpen: boolean;
@@ -44,7 +20,7 @@ export type ModalProps = {
   actions?: ReactNode;
   acceptText?: string;
   formId?: string;
-  acceptIsDisabled?: boolean; 
+  acceptIsDisabled?: boolean;
   onAccept?: () => void;
   onClose: () => void;
 };
@@ -56,7 +32,7 @@ export function Modal({
   body,
   acceptText,
   formId,
-  acceptIsDisabled, 
+  acceptIsDisabled,
   onAccept,
   onClose,
 }: ModalProps) {
@@ -65,34 +41,31 @@ export function Modal({
   return (
     <MUIModal open={isOpen} onClose={onClose}>
       <Box sx={sx.modal}>
-        <IconButton sx={sx.cross} onClick={onClose}>
-          <CrossIcon color="primary" />
-        </IconButton>
-        
-        <Typography sx={sx.title} variant="h6" color="primary">
-          {title}
-        </Typography>
-        {
-          !!description && (
-            <Typography variant="body1">
-              {description}
-            </Typography>
-          )
-        }
+        <Box sx={sx.head}>
+          <Typography sx={sx.title} variant="h6" color="primary">
+            {title}
+          </Typography>
+
+          <IconButton sx={sx.cross} onClick={onClose}>
+            <CrossIcon color="primary" />
+          </IconButton>
+        </Box>
+
+        {!!description && <Typography variant="body1">{description}</Typography>}
+
         {body}
-        {
-          onAccept ? (
-            <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
+
+        {onAccept ? (
+          <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
+            {acceptText || t('acceptText')}
+          </Button>
+        ) : (
+          !!formId && (
+            <Button sx={sx.acceptBtn} type="submit" form={formId} disabled={acceptIsDisabled}>
               {acceptText || t('acceptText')}
             </Button>
-          ) : (
-            !!formId && (
-              <Button sx={sx.acceptBtn} type="submit" form={formId} disabled={acceptIsDisabled}>
-                {acceptText || t('acceptText')}
-              </Button>
-            )
           )
-        }
+        )}
       </Box>
     </MUIModal>
   );

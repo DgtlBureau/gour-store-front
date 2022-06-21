@@ -9,7 +9,7 @@ import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'stor
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CardSlider } from 'components/CardSlider/CardSlider';
-import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
+import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductActions } from 'components/Product/Actions/Actions';
 import { ProductCard } from 'components/Product/Card/Card';
 import { ProductInformation } from 'components/Product/Information/Information';
@@ -21,7 +21,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
-import sx from './products.styles';
+import sx from './[id].styles';
 
 export default function Product() {
   const router = useRouter();
@@ -42,8 +42,7 @@ export default function Product() {
     router.push(`/products/${productId}`);
   };
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -64,9 +63,7 @@ export default function Product() {
 
   const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector(state =>
-    productsInBasketCount(state, productId, product?.isWeightGood || false)
-  );
+  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -96,13 +93,8 @@ export default function Product() {
 
   const similarProductCards =
     product?.similarProducts?.map(similarProduct => {
-      const productInBasket = basket.products.find(
-        it => it.product.id === similarProduct.id
-      );
-      const count =
-        (product.isWeightGood
-          ? productInBasket?.weight
-          : productInBasket?.amount) || 0;
+      const productInBasket = basket.products.find(it => it.product.id === similarProduct.id);
+      const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
       return (
         <ProductCard
           key={similarProduct.id}
@@ -147,75 +139,68 @@ export default function Product() {
 
   return (
     <ShopLayout language={language} currency={currency}>
-      <>
-        {isLoading && <LinearProgress />}
-        {!isLoading && isError && (
-          <Typography variant="h5">Произошла ошибка</Typography>
-        )}
-        {!isLoading && !isError && !product && (
-          <Typography variant="h5">Продукт не найден</Typography>
-        )}
-        {!isLoading && !isError && product && (
-          <div>
-            <Stack direction="row" justifyContent="space-between">
-              <Box sx={sx.imageSlider}>
-                <ImageSlider images={product.images} />
-              </Box>
-              <Stack width="100%">
-                <Typography variant="h3" sx={sx.productTitle}>
-                  {product.title[language] || ''}
-                </Typography>
-                <ProductInformation
-                  rating={product.grade || 0}
-                  gradesCount={product.gradesCount || 0}
-                  commentsCount={product.commentsCount || 0}
-                  characteristics={productCharacteristics}
-                  onClickComments={() => {}}
-                />
-                <ProductActions
-                  price={product.price[currency] || 0}
-                  count={count}
-                  currency={currency}
-                  discount={product.discount}
-                  isWeightGood={product.isWeightGood}
-                  onAddToCart={() => {
-                    handleAddProduct(product);
-                  }}
-                  onRemoveFromCart={() => {
-                    handleRemoveProduct(product);
-                  }}
-                  onAddToFavorite={() => {
-                    console.log('add to fav');
-                  }}
-                />
-              </Stack>
-            </Stack>
-
-            <Typography sx={sx.descriptionTitle} variant="h5">
-              Описание товара
-            </Typography>
-            <Typography sx={sx.description} variant="body1">
-              {product.description[language] || ''}
-            </Typography>
-
-            {similarProductCards.length !== 0 && (
-              <CardSlider
-                title="Похожие товары"
-                cardsList={similarProductCards}
-                slidesPerView={4}
-                spaceBetween={0}
+      {isLoading && <LinearProgress />}
+      {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+      {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+      {!isLoading && !isError && product && (
+        <div>
+          <Stack direction="row" justifyContent="space-between">
+            <Box sx={sx.imageSlider}>
+              <ImageSlider images={product.images} />
+            </Box>
+            <Stack width="100%">
+              <Typography variant="h3" sx={sx.productTitle}>
+                {product.title[language] || ''}
+              </Typography>
+              <ProductInformation
+                rating={product.grade || 0}
+                gradesCount={product.gradesCount || 0}
+                commentsCount={product.commentsCount || 0}
+                characteristics={productCharacteristics}
+                onClickComments={() => {}}
               />
-            )}
+              <ProductActions
+                price={product.price[currency] || 0}
+                count={count}
+                currency={currency}
+                discount={product.discount}
+                isWeightGood={product.isWeightGood}
+                sx={sx.productActions}
+                onAdd={() => {
+                  handleAddProduct(product);
+                }}
+                onRemove={() => {
+                  handleRemoveProduct(product);
+                }}
+                onElect={() => {
+                  console.log('add to fav');
+                }}
+              />
+            </Stack>
+          </Stack>
 
-            <ProductReviews
-              sx={sx.reviews}
-              reviews={productComments}
+          <Typography sx={sx.descriptionTitle} variant="h5">
+            Описание товара
+          </Typography>
+          <Typography sx={sx.description} variant="body1">
+            {product.description[language] || ''}
+          </Typography>
+
+          {similarProductCards.length !== 0 && (
+            <CardSlider
+              title="Похожие товары"
+              cardsList={similarProductCards}
+              slidesPerView={4}
+              spaceBetween={0}
+              sx={sx.similar}
             />
+          )}
 
-            <CreateCommentBlock onCreate={onCreateComment} />
-          </div>
-        )}
-      </>
+          {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
+
+          <CommentCreateBlock onCreate={onCreateComment} />
+        </div>
+      )}
     </ShopLayout>
   );
 }

@@ -10,7 +10,7 @@ import MinusIcon from '@mui/icons-material/Remove';
 import TrashIcon from '@mui/icons-material/DeleteForever';
 
 const sx = {
-  box: {
+  cart: {
     display: 'flex',
     alignItems: 'center',
 
@@ -27,7 +27,19 @@ const sx = {
       background: t.palette.common.black,
     },
   },
+  iconBtn: {
+    padding: {
+      md: '8px',
+      sm: '6px',
+      xs: '4px',
+    },
+  },
   icon: {
+    fontSize: {
+      md: '22px',
+      sm: '20px',
+      xs: '18px',
+    },
     color: t.palette.common.white,
   },
   deployed: {
@@ -47,27 +59,18 @@ type Props = {
   onRemove: () => void;
 };
 
-export function ProductCardCart({
-  onRemove,
-  currentCount,
-  isWeightGood,
-  onAdd,
-}: Props) {
+export function ProductCardCart({ onRemove, currentCount, isWeightGood, onAdd }: Props) {
   return (
-    <Box sx={{ ...sx.box, ...(currentCount !== 0 && sx.deployed) }}>
+    <Box sx={{ ...sx.cart, ...(currentCount !== 0 && sx.deployed) }}>
       {currentCount === 0 ? (
-        <IconButton onClick={onAdd}>
+        <IconButton sx={sx.iconBtn} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
         </IconButton>
       ) : (
         <Grid container xs>
           <Grid item xs={4} sx={sx.action}>
-            <IconButton onClick={onRemove}>
-              {currentCount === 0 ? (
-                <TrashIcon sx={sx.icon} />
-              ) : (
-                <MinusIcon sx={sx.icon} />
-              )}
+            <IconButton sx={sx.iconBtn} onClick={onRemove}>
+              {currentCount === 1 ? <TrashIcon sx={sx.icon} /> : <MinusIcon sx={sx.icon} />}
             </IconButton>
           </Grid>
 
@@ -76,7 +79,7 @@ export function ProductCardCart({
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            <IconButton onClick={onAdd}>
+            <IconButton sx={sx.iconBtn} onClick={onAdd}>
               <PlusIcon sx={sx.icon} />
             </IconButton>
           </Grid>

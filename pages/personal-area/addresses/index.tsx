@@ -11,11 +11,11 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { LkLayout } from 'layouts/Lk/Lk';
-import { LkOrderProfilesItem } from 'components/LkOrderProfiles/Item/Item';
-import { LkOrderProfilesDeleteModal } from 'components/LkOrderProfiles/DeleteModal/DeleteModal';
+import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
+import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
 import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
 
@@ -105,17 +105,15 @@ export function Addresses() {
   const closeDeleteModal = () => setIsDeleting(false);
 
   return (
-    <LkLayout>
+    <PALayout>
       <Box sx={sx.actions}>
         <Button size="small" disabled={isCreating} onClick={openCreateForm}>
           {t('newAddress')}
         </Button>
       </Box>
-      {isCreating && (
-        <LkOrderProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
-      )}
+      {isCreating && <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />}
       {profiles?.map(profile => (
-        <LkOrderProfilesItem
+        <PAProfilesItem
           key={profile.id}
           isExpanded={expandedProfileId === profile.id}
           isMain={currentUser?.mainOrderProfileId === profile.id}
@@ -126,8 +124,8 @@ export function Addresses() {
           onDelete={openDeleteModal}
         />
       ))}
-      <LkOrderProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
-    </LkLayout>
+      <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
+    </PALayout>
   );
 }
 

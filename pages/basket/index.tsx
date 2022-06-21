@@ -10,7 +10,7 @@ import {
   selectedProductWeight,
   selectProductsInOrder,
   subtractBasketProduct,
-  removeProduct
+  removeProduct,
 } from '../../store/slices/orderSlice';
 import translation from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
@@ -20,7 +20,7 @@ import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CartCard } from '../../components/Cart/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { InfoBlock } from '../../components/UI/InfoBlock/InfoBlock';
+import { InfoBlock } from '../../components/UI/Info/Block/Block';
 import { IProduct } from '../../@types/entities/IProduct';
 
 export function Basket() {
@@ -30,9 +30,7 @@ export function Basket() {
 
   const { t } = useLocalTranslation(translation);
 
-
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -42,12 +40,7 @@ export function Basket() {
   const sum = useSelector(selectedProductSum);
 
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return (
-      acc +
-      (currentProduct.product.price[currency] *
-        currentProduct.product.discount) /
-        100
-    );
+    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
 
   const sumToFreeDelivery = 2990 - sum; //TODO: вынести логику стоимости заказа на бек
@@ -64,10 +57,7 @@ export function Basket() {
   return (
     <ShopLayout currency={currency} language={language}>
       <Stack>
-        <Typography 
-          variant="h3" 
-          sx={{ fontWeight: 'bold' ,fontFamily: 'Roboto slab', color: 'primary.main'}}
-        >
+        <Typography variant="h3" sx={{ fontWeight: 'bold', fontFamily: 'Roboto slab', color: 'primary.main' }}>
           {t('cart')}
         </Typography>
         {productsInOrder.length === 0 && (
@@ -111,25 +101,22 @@ export function Basket() {
                     dispatch(subtractBasketProduct(it.product));
                   }}
                 />
-                ))}
-                {
-                  !isDeliveryFree && (
-                    <InfoBlock
-                      styles={{ margin: '10px 0 0 0' }}
-                      text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
-                      link={{ label: t('continueShopping'), path: '/' }}
-                    />
-                  )
-                }
+              ))}
+              {!isDeliveryFree && (
                 <InfoBlock
                   styles={{ margin: '10px 0 0 0' }}
-                  text={t('aboutDelivery')}
+                  text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
                   link={{ label: t('continueShopping'), path: '/' }}
                 />
-              </Grid>
+              )}
+              <InfoBlock
+                styles={{ margin: '10px 0 0 0' }}
+                text={t('aboutDelivery')}
+                link={{ label: t('continueShopping'), path: '/' }}
+              />
             </Grid>
-          )
-        }
+          </Grid>
+        )}
       </Stack>
     </ShopLayout>
   );
