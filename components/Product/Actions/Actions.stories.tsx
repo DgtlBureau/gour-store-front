@@ -8,9 +8,7 @@ export default {
   title: 'Product/Actions',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductActions> = function (
-  args: ProductActionsProps
-) {
+const Template: ComponentStory<typeof ProductActions> = function (args: ProductActionsProps) {
   const [count, setCount] = useState(0);
 
   const handleAddToCart = () => {
@@ -21,19 +19,14 @@ const Template: ComponentStory<typeof ProductActions> = function (
     setCount(count - 1);
   };
 
-  return (
-    <ProductActions
-      {...args}
-      count={count}
-      onAddToCart={handleAddToCart}
-      onRemoveFromCart={handleRemoveFromCart}
-    />
-  );
+  return <ProductActions {...args} count={count} onAdd={handleAddToCart} onRemove={handleRemoveFromCart} />;
 };
 export const DefaultProductPreview = Template.bind({});
 
 const props: Partial<ProductActionsProps> = {
   price: 500,
+  currency: 'cheeseCoin',
+  discount: 50,
 };
 
 DefaultProductPreview.args = props;

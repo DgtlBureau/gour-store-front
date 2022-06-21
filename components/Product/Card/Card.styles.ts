@@ -4,10 +4,23 @@ const sx = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
 
-    height: '540px',
-    width: '300px',
+    height: {
+      xs: '320px',
+      sm: '370px',
+      md: '500px',
+    },
+
+    width: {
+      xs: '180px',
+      sm: '220px',
+      md: '300px',
+    },
+
+    padding: {
+      xs: '10px',
+      md: '20px',
+    },
 
     border: '2px solid',
     borderColor: '#FEC983',
@@ -17,23 +30,21 @@ const sx = {
 
     boxShadow: 'none',
     boxSizing: 'border-box',
-    '&:last-child': {
-      paddingBottom: '0px',
-    },
-  },
-  content: {
-    padding: '20px 20px 0px 20px',
   },
   preview: {
     position: 'relative',
-    marginBottom: '20px',
   },
   previewImg: {
-    height: '245px',
+    height: {
+      xs: '160px',
+      sm: '190px',
+      md: '245px',
+    },
 
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
+    objectFit: 'none',
 
     '&:hover': {
       cursor: 'pointer',
@@ -61,16 +72,29 @@ const sx = {
     height: '26px',
     borderRadius: '99px',
   },
-  info: {
-    display: 'flex',
-    flexDirection: 'column',
-
-    color: t.palette.text.secondary,
+  rate: {
+    margin: {
+      xs: '10px 0 5px 0',
+      md: '10px 0',
+    },
   },
   title: {
-    margin: '10px 0',
+    fontSize: {
+      xs: '14px',
+      sm: '16px',
+      md: '20px',
+    },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
+    color: t.palette.text.secondary,
+
+    maxHeight: {
+      sm: '26px',
+      md: '64px',
+    },
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'normal',
 
     '&:hover': {
       cursor: 'pointer',
@@ -78,20 +102,35 @@ const sx = {
     },
   },
   description: {
-    height: '42px',
+    display: {
+      md: 'inline-block',
+      sm: 'inline-block',
+      xs: 'none',
+    },
+    height: '100%',
+    maxHeight: {
+      md: '44px',
+      sm: '22px',
+    },
+    margin: {
+      xs: '5px 0',
+      md: '10px 0',
+    },
+
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    display: 'inline-block',
     whiteSpace: 'normal',
+    color: t.palette.text.secondary,
   },
   actions: {
     display: 'flex',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
-
-    padding: '0 20px 20px 20px',
+    height: '100%',
   },
   deployed: {
     flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
 };
 

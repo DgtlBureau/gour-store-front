@@ -1,10 +1,14 @@
-import { defaultTheme as t } from "../../../themes";
+import { defaultTheme as t } from '../../../themes';
 
 const sx = {
   info: {
     display: 'flex',
     flexDirection: 'column',
-    width: '350px',
+    width: {
+      xs: '100%',
+      sm: '450px',
+      md: '350px',
+    },
     color: t.palette.text.muted || '',
   },
   stats: {

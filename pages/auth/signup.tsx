@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { AuthLayout } from 'layouts/AuthLayout';
-import { RegGreeting } from 'components/registration/RegGreeting/RegGreeting';
-import { RegCitySelect } from 'components/registration/RegCitySelect/RegCitySelect';
-import { RegCredentials } from 'components/registration/RegCredentials/RegCredentials';
-import { RegFavoriteInfo, FavoriteInfo } from 'components/registration/RegFavoriteInfo/RegFavoriteInfo';
+import { AuthLayout } from 'layouts/Auth/Auth';
+import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
+import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
+import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
+import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { ITranslatableString } from '../../@types/entities/ITranslatableString';
+import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
-import { RegistrationData } from '../../@types/entities/RegistrationData';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
@@ -24,19 +24,19 @@ export default function SignUp() {
   const { data: cities } = useGetCityListQuery();
   const { data: roles } = useGetRoleListQuery();
 
-  const convertedCities = cities ? cities.map(city => (
-    {
-      label: city.name[locale].toString(),
-      value: city.id.toString(),
-    }
-  )) : [];
+  const convertedCities = cities
+    ? cities.map(city => ({
+        label: city.name[locale].toString(),
+        value: city.id.toString(),
+      }))
+    : [];
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpDto | undefined>(undefined);
+  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
 
   const goToIntro = () => router.push('/auth');
@@ -46,7 +46,7 @@ export default function SignUp() {
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToSignIn = () => router.push('/auth/signin');
 
-  // finish it later 
+  // finish it later
   const sendSMS = (phone: string) => {
     sendCode(phone);
     return '1234';
@@ -57,7 +57,7 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = (data: SignUpDto) => setCredentials(data);
+  const saveCredentials = (data: SignUpFormDto) => setCredentials(data);
 
   const saveFavoriteInfo = (info: FavoriteInfo) => {
     setFavoriteInfo(info);
@@ -69,45 +69,35 @@ export default function SignUp() {
 
     const role = roles?.find(it => it.key === credentials.role);
 
-    const data: RegistrationData = {
+    const data: SignUpDto = {
       name: '',
       phone: credentials.phone,
       code: +credentials.sms,
       password: credentials.password,
       referralCode: credentials.referral,
       cityId: +selectedCity,
-      roleId: role && role.id || 1,
+      roleId: (role && role.id) || 1,
     };
 
     try {
       await signUp(data).unwrap();
       goToFavoriteInfo();
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       // event bus notification
     }
   };
 
   useEffect(() => {
     if (credentials) register();
-  }, [credentials])
+  }, [credentials]);
 
   const forms = {
-    greeting: (
-      <RegGreeting
-        onSubmit={goToCitySelect}
-        onBack={goToIntro}
-      />
-    ),
+    greeting: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
     citySelect: (
-      <RegCitySelect
-        city={selectedCity}
-        options={convertedCities}
-        onSubmit={saveCity}
-        onBack={goToGreeting}
-      />
+      <SignupCitySelect city={selectedCity} options={convertedCities} onSubmit={saveCity} onBack={goToGreeting} />
     ),
     credentials: (
-      <RegCredentials
+      <SignupCredentials
         defaultValues={credentials}
         onSendSMS={sendSMS}
         onSubmit={saveCredentials}
@@ -115,7 +105,7 @@ export default function SignUp() {
       />
     ),
     favoriteInfo: (
-      <RegFavoriteInfo
+      <SignupFavoriteInfo
         countries={favoriteCountries}
         products={favoriteProducts}
         onSubmit={saveFavoriteInfo}

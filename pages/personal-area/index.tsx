@@ -1,129 +1,77 @@
-import { Grid, LinearProgress } from '@mui/material';
-import { LkProfileEditor } from 'components/LkProfile/LkProfileEditor/LkProfileEditor';
-import { ShopLayout } from 'layouts/Shop/Shop';
-import React, { useEffect, useState } from 'react';
-import { LkProfileAvatarEditor } from 'components/LkProfile/LkProfileAvatarEditor/LkProfileAvatarEditor';
-
-import { PasswordChangeModal } from 'components/LkProfile/PasswordChangeModal/PasswordChangeModal';
-
-import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
-import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
-import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
-import {
-  useGetCurrentUserQuery,
-  useUpdateCurrentUserMutation,
-  useUpdateCurrentUserPasswordMutation,
-} from 'store/api/authApi';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser, selectIsAuth } from 'store/selectors/auth';
-import { useCreateImageMutation } from 'store/api/imageApi';
-import fi from 'date-fns/esm/locale/fi/index.js';
+import { Grid } from '@mui/material';
 
-export type props = {};
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+import { useGetOrderListQuery } from 'store/api/orderApi';
+import { PALayout } from 'layouts/PA/PA';
+import { PACredentialsCard } from 'components/PA/Main/CredentialsCard/CredentialsCard';
+import { PAAddressCard } from 'components/PA/Main/AddressCard/AddressCard';
+import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
+import { LocalConfig } from 'hooks/useLocalTranslation';
+import { Path } from 'constants/routes';
+import { Currency } from '../../@types/entities/Currency';
 
-export function Profile({}: props) {
-  const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
-
+export function Main() {
   const router = useRouter();
 
-  // const currentUser = useSelector(selectCurrentUser);
-  // const isAuth = useSelector(selectIsAuth);
-
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: addressList } = useGetOrderProfilesListQuery();
+  const { data: orderList } = useGetOrderListQuery();
 
-  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
-  const [fetchUpdatePassword] = useUpdateCurrentUserPasswordMutation();
-  const [fetchUploadImage] = useCreateImageMutation();
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+  const currency: Currency = 'cheeseCoin';
 
-  const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = async (
-    changePasswordData: ChangePasswordDto
-  ) => {
-    try {
-      await fetchUpdatePassword(changePasswordData).unwrap();
-      // router.push('auth/signin');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const orders = orderList?.map(it => ({
+    id: it.crmInfo.id,
+    date: new Date(it.order.createdAt),
+    status: it.crmInfo.status.name,
+    sum: 0,
+    currency,
+  }));
 
-  const handleChangeAvatar = async (file: File) => {
-    console.log('file', file);
+  const addresses = addressList?.map(it => {
+    const address = [
+      it.city.name[language],
+      it.street,
+      it.house,
+      it.apartment && `${language === 'ru' ? 'кв.' : 'apt.'}. ${it.apartment}`,
+    ]
+      .filter(it => !!it)
+      .join(', ');
 
-    const formData = new FormData();
-    formData.append('image', file);
+    return { title: it.title, address };
+  });
 
-    try {
-      const image = await fetchUploadImage(formData).unwrap();
-      if (!image) return;
-
-      await fetchUpdateCurrentUser({ avatarId: image.id });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleRemoveAvatar = async () => {
-    try {
-      await fetchUpdateCurrentUser({ avatarId: null }).unwrap();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleSendCode = (phone: string) => {};
-
-  const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
-    try {
-      await fetchUpdateCurrentUser(updatedUser).unwrap();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  if (!currentUser) {
-    return (
-      <ShopLayout>
-        <h1>Пользователь не найден</h1>
-      </ShopLayout>
-    );
-  }
+  const goToCredentials = () => router.push(Path.CREDENTIALS);
+  const goToAddresses = () => router.push(Path.ADDRESSES);
+  const goToOrders = () => router.push(Path.ORDERS);
 
   return (
-    <ShopLayout>
+    <PALayout>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
-          <LkProfileAvatarEditor
-            image={currentUser.avatar?.full || ''}
-            onChange={handleChangeAvatar}
-            onRemove={handleRemoveAvatar}
-          />
+        {!!currentUser && (
+          <Grid item xs={6}>
+            <PACredentialsCard
+              name={`${currentUser.firstName} ${currentUser.lastName}`}
+              phone={currentUser.phone}
+              photo={currentUser.avatar?.small}
+              onClickMore={goToCredentials}
+            />
+          </Grid>
+        )}
+        <Grid item xs={6}>
+          <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
         </Grid>
-        <Grid item xs={4}>
-          <LkProfileEditor
-            onChangePhone={() => {}}
-            onChangePassword={() => setIsPasswordModalOpened(true)}
-            user={{
-              firstName: currentUser.firstName || '',
-              lastName: currentUser.lastName || '',
-              referralCode: currentUser.referralCode?.code || '',
-              email: currentUser.email || '',
-            }}
-            phone={currentUser.phone}
-            onSave={handleSaveBaseInfo}
-          />
+
+        <Grid item xs={6}>
+          <PAOrdersCard orders={orders} onClickMore={goToOrders} />
         </Grid>
       </Grid>
-
-      <PasswordChangeModal
-        isOpened={isPasswordModalOpened}
-        onClose={() => {
-          setIsPasswordModalOpened(false);
-        }}
-        onChange={handleChangePassword}
-      />
-    </ShopLayout>
+    </PALayout>
   );
 }
 
-export default Profile;
+export default Main;

@@ -17,7 +17,7 @@ const sx = {
     border: '2px solid #FDCE85',
     borderRadius: '10px',
 
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
 
   content: {

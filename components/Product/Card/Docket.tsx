@@ -1,15 +1,18 @@
 import React from 'react';
 
+import translations from '../Actions/Actions.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
-import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Currency } from '../../../@types/entities/Currency';
+import { defaultTheme as t } from '../../../themes';
 
 const sx = {
   docket: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   deployed: {
     flexDirection: 'row-reverse',
@@ -25,26 +28,32 @@ const sx = {
   },
   total: {
     display: 'flex',
-    alignItems: 'center',
     marginRight: '5px',
     fontWeight: 'bold',
   },
   price: {
+    fontSize: {
+      xs: '16px',
+      sm: '20px',
+      md: '24px',
+    },
     fontWeight: 'bold',
     fontFamily: ' Roboto slab',
   },
-  oldPrice: {
-    textDecoration: 'line-through',
-  },
-  list: {
-    ul: {
-      backgroundColor: t.palette.background.default,
+  unit: {
+    fontSize: {
+      xs: '12px',
+      sm: '13px',
+      md: '14px',
     },
   },
-  listOldPrice: {
-    marginLeft: '4px',
+  oldPrice: {
+    fontSize: {
+      xs: '12px',
+      sm: '13px',
+      md: '14px',
+    },
     textDecoration: 'line-through',
-    color: t.palette.text.muted,
   },
 };
 
@@ -56,13 +65,9 @@ type Props = {
   currency: Currency;
 };
 
-export function ProductCardDocket({
-  inCart,
-  price,
-  isWeightGood,
-  discount = 0,
-  currency,
-}: Props) {
+export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, currency }: Props) {
+  const { t } = useLocalTranslation(translations);
+
   const pricePerCount = isWeightGood ? price / 100 : price;
 
   return (
@@ -74,22 +79,20 @@ export function ProductCardDocket({
               {pricePerCount}
               {getCurrencySymbol(currency)}
             </Typography>
+            &nbsp;
             {!inCart && '/'}
+            &nbsp;
           </>
         )}
         {!inCart && (
-          <Typography variant="body2">
-            {isWeightGood ? '100г' : 'шт'}
+          <Typography variant="body2" sx={sx.unit}>
+            {isWeightGood ? `100${t('g')}` : t('pcs')}
           </Typography>
         )}
       </Box>
 
       <Box sx={sx.total}>
-        <Typography
-          variant={inCart ? 'h6' : 'h5'}
-          color={discount ? 'error' : 'primary'}
-          sx={sx.price}
-        >
+        <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sx.price}>
           {pricePerCount * (1 - discount / 100)}
           {getCurrencySymbol(currency)}
         </Typography>
