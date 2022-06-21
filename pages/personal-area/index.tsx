@@ -12,6 +12,7 @@ import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 import { Path } from 'constants/routes';
 import { Currency } from '../../@types/entities/Currency';
+import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
 
 export function Main() {
   const router = useRouter();
@@ -20,7 +21,8 @@ export function Main() {
   const { data: addressList } = useGetOrderProfilesListQuery();
   const { data: orderList } = useGetOrderListQuery();
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
   const orders = orderList?.map(it => ({
@@ -47,6 +49,7 @@ export function Main() {
   const goToCredentials = () => router.push(Path.CREDENTIALS);
   const goToAddresses = () => router.push(Path.ADDRESSES);
   const goToOrders = () => router.push(Path.ORDERS);
+  const goToDiscounts = () => router.push(Path.DISCOUNTS);
 
   return (
     <PALayout>
@@ -64,9 +67,11 @@ export function Main() {
         <Grid item xs={6}>
           <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
         </Grid>
-
         <Grid item xs={6}>
           <PAOrdersCard orders={orders} onClickMore={goToOrders} />
+        </Grid>
+        <Grid item xs={6}>
+          <PADiscountsCard discounts={[]} onClickMore={goToDiscounts} />
         </Grid>
       </Grid>
     </PALayout>

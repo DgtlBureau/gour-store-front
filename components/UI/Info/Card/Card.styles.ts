@@ -15,6 +15,7 @@ const sx = {
     borderColor: 'secondary.main',
   },
   children: {
+    width: '100%',
     height: '140px',
     overflow: 'auto',
   },
