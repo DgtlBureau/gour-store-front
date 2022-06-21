@@ -1,16 +1,12 @@
 {
   "en": {
-    "title": "Orders",
-    "footerText": "Go to the order history",
-    "order": "Order",
-    "emptyOrders": "The list of orders is empty",
-    "from": "from"
+    "title": "Discounts",
+    "footerText": "Go to the discounts system",
+    "emptyDiscounts": "The list of discounts is empty"
   },
   "ru": {
     "title": "Скидки по категориям",
     "footerText": "Перейти к системе скидок",
-    "order": "Заказ",
-    "emptyOrders": "Список заказов пуст",
-    "from": "от"
+    "emptyDiscounts": "Список заказов пуст"
   }
 }

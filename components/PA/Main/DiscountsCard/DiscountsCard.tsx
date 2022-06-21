@@ -55,7 +55,7 @@ export function PADiscountsCard({
           ))}
         </Grid>
       ) : (
-        <Typography variant="h6">Скидки отсутствуют :(</Typography>
+        <Typography variant="h6">{t('emptyDiscounts')}</Typography>
       )}
     </InfoCard>
   );
