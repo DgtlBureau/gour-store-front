@@ -2,7 +2,10 @@ import React, { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import {
+  selectedProductCount,
+  selectedProductSum,
+} from '../../store/slices/orderSlice';
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import { useGetCityListQuery } from '../../store/api/cityApi';
@@ -24,7 +27,8 @@ export interface PALayoutProps {
 export function PALayout({ children }: PALayoutProps) {
   const router = useRouter();
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -32,7 +36,9 @@ export function PALayout({ children }: PALayoutProps) {
 
   const { t } = useLocalTranslation(translations);
 
-  const currentPath = router.pathname.split('/')[2];
+  const currentPath = router.pathname.split('/')[1];
+
+  console.log(currentPath);
 
   const [chapter, setChapter] = useState<string>(currentPath);
 
@@ -45,7 +51,8 @@ export function PALayout({ children }: PALayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity =
+    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const menuList = [
     {

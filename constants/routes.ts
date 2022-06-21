@@ -24,7 +24,7 @@ export enum Path {
   PROMOTIONS = 'promotions',
   GAME = 'game',
 
-  MAIN = 'main',
+  MAIN = 'personal-area',
   ORDERS = 'orders',
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',
