@@ -21,7 +21,6 @@ const sx = {
     margin: '40px 0 60px 0',
   },
   list: {
-    overflow: 'scroll',
     display: 'flex',
     alignItems: 'center',
     width: {
