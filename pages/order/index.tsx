@@ -1,32 +1,33 @@
 import React, { useState } from 'react';
-import { ShopLayout } from '../../layouts/Shop/Shop';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+
+import { Grid, Stack } from '@mui/material';
+
+import translation from './index.i18n.json';
+import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import {
   selectedProductCount,
   selectedProductSum,
   selectProductsInOrder,
 } from '../../store/slices/orderSlice';
+import { useCreateOrderMutation } from '../../store/api/orderApi';
+import {
+  useCreateOrderProfileMutation,
+  useGetOrderProfilesListQuery,
+} from '../../store/api/orderProfileApi';
+import { useGetCityListQuery } from '../../store/api/cityApi';
+import { ShopLayout } from '../../layouts/Shop/Shop';
 import {
   DeliveryFields,
   OrderForm,
   OrderFormType,
-} from '../../components/Order/Form';
+} from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { Grid, Stack } from '@mui/material';
-import { OrderCard } from 'components/Order/Card';
+import { OrderCard } from 'components/Order/Card/Card';
 import { Button } from '../../components/UI/Button/Button';
-import { useRouter } from 'next/router';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
-import { useCreateOrderMutation } from 'store/api/orderApi';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translation from './Order.i18n.json';
-import {
-  useCreateOrderProfileMutation,
-  useGetOrderProfilesListQuery,
-} from 'store/api/orderProfileApi';
 import { CreateOrderDto } from '../../@types/dto/order/create.dto';
-import { IOrder } from '../../@types/entities/IOrder';
-import { useGetCityListQuery } from 'store/api/cityApi';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 import { IProduct } from '../../@types/entities/IProduct';
@@ -35,10 +36,8 @@ import { removeProduct } from 'store/slices/orderSlice';
 const DELIVERY_PRICE = 500;
 
 export function Order() {
-  const language = 'ru';
-  const currency = 'rub';
-
   const router = useRouter();
+
   const { t } = useLocalTranslation(translation);
 
   const dispatch = useDispatch();
@@ -46,6 +45,10 @@ export function Order() {
   const handleRemoveProduct = (product: IProduct) => {
     dispatch(removeProduct(product));
   };
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const [isSubmitError, setIsSubmitError] = useState(false);
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
@@ -177,7 +180,7 @@ export function Order() {
 
   if (productsInOrder.length === 0)
     return (
-      <ShopLayout>
+      <ShopLayout language={language} currency={currency}>
         <Stack alignItems="center">
           <CartEmpty
             title={t('emptyBasket')}
@@ -195,7 +198,7 @@ export function Order() {
     );
 
   return (
-    <ShopLayout>
+    <ShopLayout language={language} currency={currency}>
       <Stack>
         <Button
           sx={{ width: '250px', margin: '0 0 30px 0' }}

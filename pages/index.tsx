@@ -1,43 +1,42 @@
+import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import {
-  addBasketProduct,
-  selectProductsIdInOrder,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
 import translations from './index.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import {
-  useGetNoveltiesProductListQuery,
-  useGetProductListQuery,
-} from '../store/api/productApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 
-import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
+import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
-
-import { PromotionCard } from '../components/PromotionCard/PromotionCard';
-import { IProduct } from '../@types/entities/IProduct';
+import { PromotionCard } from '../components/Promotion/Card/Card';
 import { ProductCard } from '../components/Product/Card/Card';
+import { CatalogFilter, Filters } from 'components/Catalog/Filter/Filter';
+import { Path } from 'constants/routes';
+
+import { IProduct } from '../@types/entities/IProduct';
+import { IOrderProduct } from '../@types/entities/IOrderProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
-import { sx } from '../styles/index.styles';
 import { Currency } from '../@types/entities/Currency';
-import { IOrderProduct } from '../@types/entities/IOrderProduct';
+import { Language } from '../@types/entities/Language';
+
+import { sx } from './index.styles';
 
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
-  locale: 'en' | 'ru';
+  language: Language;
   addToBasket: (product: IProduct) => {};
   removeFromBasket: (product: IProduct) => {};
   goToProductPage: (id: number) => {};
@@ -51,30 +50,53 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch();
 
+  const { data: categories } = useGetCategoryListQuery();
   const { data: products } = useGetProductListQuery();
   const { data: novelties } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+  const [filters, setFilters] = useState<Filters>({
+    isReversed: false,
+    category: 'all',
+    characteristics: {},
+  });
 
-  const productsIdInOrder = useSelector(selectProductsIdInOrder);
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const currency: Currency = 'cheeseCoin';
 
-  const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
-  const goToProductPage = (id: number) => router.push(`products/${id}`);
+  const goToPromotionPage = (id: number) => router.push(`${Path.PROMOTIONS}/${id}`);
+  const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
-  const addToBasket = (product: IProduct) =>
-    dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) =>
-    dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+
+  const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
+  const selectCategory = (value: string) =>
+    setFilters({
+      ...filters,
+      category: filters.category !== value ? value : 'all',
+      characteristics: {},
+    });
+  const selectCharacteristics = (key: string, selected: string[]) =>
+    setFilters({
+      ...filters,
+      characteristics: {
+        [key]: selected,
+      },
+    });
+
+  const checkCategory = (key: string) => filters.category === 'all' || key === filters.category;
+  const checkCharacteristics = (characteristics: { [key: string]: string }) =>
+    Object.keys(filters.characteristics).every(
+      it => filters.characteristics[it].length === 0 || filters.characteristics[it].includes(characteristics[it])
+    );
 
   const promotionsList = promotions?.map(promotion => (
     <PromotionCard
       key={promotion.id}
-      title={promotion.title[locale]}
+      title={promotion.title[language]}
       image={promotion.cardImage.small}
       onClickMore={() => goToPromotionPage(promotion.id)}
     />
@@ -82,27 +104,32 @@ const Home: NextPage = () => {
 
   const noveltiesList = novelties?.map(product => (
     <SliderProductCard
+      key={product.id}
       product={product}
       basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
+      currency={currency}
+      language={language}
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
     />
   ));
 
-  const catalogList = products?.map(product => (
-    <SliderProductCard
-      product={product}
-      basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
-      addToBasket={addToBasket}
-      removeFromBasket={removeFromBasket}
-      goToProductPage={goToProductPage}
-    />
-  ));
+  const catalogList = products
+    ?.filter(product => checkCategory(product.category.key))
+    .filter(product => checkCharacteristics(product.characteristics))
+    .map(product => (
+      <SliderProductCard
+        key={product.id}
+        product={product}
+        basket={basket.products}
+        currency={currency}
+        language={language}
+        addToBasket={addToBasket}
+        removeFromBasket={removeFromBasket}
+        goToProductPage={goToProductPage}
+      />
+    ));
 
   const getCatalogRows = () => {
     const length = catalogList?.length || 0;
@@ -112,10 +139,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <ShopLayout>
-      {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
-      )}
+    <ShopLayout currency={currency} language={language}>
+      {!!promotionsList && <CardSlider title={t('promotions')} cardsList={promotionsList} />}
       {!!noveltiesList && (
         <CardSlider
           title={t('novelties')}
@@ -128,31 +153,32 @@ const Home: NextPage = () => {
       )}
       {!!catalogList && (
         <CardSlider
+          key={`catalog/${filters.category}`}
           title={t('catalog')}
-          slidesPerView={4}
           spaceBetween={0}
           rows={getCatalogRows()}
-          cardsList={catalogList}
+          cardsList={filters.isReversed ? catalogList.reverse() : catalogList}
+          head={
+            <CatalogFilter
+              categories={categories || []}
+              filters={filters}
+              onReverse={toggleSequence}
+              onCategoryChange={selectCategory}
+              onCharacteristicChange={selectCharacteristics}
+            />
+          }
         />
       )}
       {!!page && (
         <>
           <Box sx={sx.banner}>
-            <Image
-              src={bannerImg}
-              objectFit="cover"
-              width={1200}
-              height={350}
-              alt=""
-            />
+            <Image src={bannerImg} objectFit="cover" width={1200} height={350} alt="" />
             <Typography variant="h4" sx={sx.bannerTitle}>
-              {page.info?.title?.[locale]}
+              {page.info?.title?.[language]}
             </Typography>
           </Box>
 
-          <Typography variant="body1">
-            {page.info?.description?.[locale]}
-          </Typography>
+          <Typography variant="body1">{page.info?.description?.[language]}</Typography>
         </>
       )}
     </ShopLayout>
@@ -165,23 +191,20 @@ const SliderProductCard = ({
   product,
   basket,
   currency,
-  locale,
+  language,
   addToBasket,
   removeFromBasket,
   goToProductPage,
 }: SliderProductCardProps) => {
   const productInBasket = basket.find(it => it.product.id === product.id);
 
-  const count =
-    (product.isWeightGood
-      ? productInBasket?.weight
-      : productInBasket?.amount) || 0;
+  const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
 
   return (
     <ProductCard
       key={product.id}
-      title={product.title[locale]}
-      description={product.description[locale]}
+      title={product.title[language]}
+      description={product.description[language]}
       rating={product.grade}
       price={product.price[currency]}
       previewSrc={product.images[0] ? product.images[0].small : ''}

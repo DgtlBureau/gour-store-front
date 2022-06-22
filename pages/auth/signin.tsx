@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { AuthLayout } from 'layouts/AuthLayout';
-import { LoginCredentials } from '../../components/login/LoginCredentials/LoginCredentials';
-import { LoginPassRecovery } from '../../components/login/LoginPassRecovery/LoginPassRecovery';
+import { AuthLayout } from 'layouts/Auth/Auth';
+import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
+import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
 import { useSignInMutation, useSendCodeMutation } from '../../store/api/authApi';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
@@ -18,7 +18,7 @@ export default function SignIn() {
 
   const [stage, setStage] = useState<SignInStage>('credentials');
   const [credentials, setCredentials] = useState({} as SignInDto);
-  const [recoveryData, setRecoveryData] = useState({} as PasswordRecoveryDto)
+  const [recoveryData, setRecoveryData] = useState({} as PasswordRecoveryDto);
 
   const goToIntro = () => router.push('/auth');
   const goToCredentials = () => setStage('credentials');
@@ -26,7 +26,7 @@ export default function SignIn() {
   const goToRegistration = () => router.push('/auth/signup');
   const goToHome = () => router.push('/');
 
-   // finish it later 
+  // finish it later
   const sendSMS = (phone: string) => {
     sendCode(phone);
     return '1234';
@@ -38,7 +38,7 @@ export default function SignIn() {
     try {
       await signIn(credentials).unwrap();
       goToHome();
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       // event bus notification
     }
   };
@@ -49,14 +49,14 @@ export default function SignIn() {
     try {
       // await recoverPassword(recoveryData).unwrap();
       goToCredentials();
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       // event bus notification
     }
   };
 
   const forms = {
     credentials: (
-      <LoginCredentials
+      <SigninCredentials
         defaultValues={credentials}
         onBack={goToIntro}
         onPasswordChange={goToRecovery}
@@ -65,7 +65,7 @@ export default function SignIn() {
       />
     ),
     recovery: (
-      <LoginPassRecovery
+      <SigninPassRecovery
         defaultValues={recoveryData}
         onSendSMS={sendSMS}
         onBack={goToCredentials}

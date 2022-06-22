@@ -1,20 +1,34 @@
 export enum Path {
   HOME = '/',
-  USER = 'users/:id',
-  USERS = 'users',
-  CITY = 'cities/:id',
-  CITIES = 'cities',
-  GOOD = 'good/:id',
-  GOODS = 'goods',
-  STOCK = 'stocks/:id',
-  STOCKS = 'stocks',
-  REVIEW = 'reviews/:id',
-  REVIEWS = 'reviews',
-  CATEGORY = 'categories/:id',
-  CATEGORIES = 'categories',
-  PAGE = 'pages/:id',
-  PAGES = 'pages',
-  REGISTRATION = 'registrations-confirmations',
+  PERSONAL_AREA = 'personal-area',
+
   AUTH = 'auth',
+  SIGN_UP = 'signup',
+  SIGN_IN = 'signin',
+  SEND_CODE = 'sendCode',
+  CURRENT_USER = 'currentUser',
+
+  CLIENT_AUTH = 'client-auth',
+  CLIENT_ROLES = 'client-roles',
+  ORDER_PROFILES = 'order-profiles',
+
+  PRODUCTS = 'products',
+  NOVELTIES = 'novelties',
+  GRADES = 'grades',
+
+  CATEGORIES = 'categories',
+  CITIES = 'cities',
+  CHANGE_CITY = 'change-city',
+
+  PAGES = 'pages',
+  PROMOTIONS = 'promotions',
+  GAME = 'game',
+
+  MAIN = 'personal-area',
+  ORDERS = 'orders',
+  CREDENTIALS = 'credentials',
+  ADDRESSES = 'addresses',
+  DISCOUNTS = 'discounts',
+
   ERROR_PAGE = '404',
 }

@@ -1,8 +1,9 @@
-export type SignUpDto = Readonly<{
-  role: 'CLIENT' | 'COMPANY' | 'COLLECTIVE_PURCHASE';
-  phone: string;
-  sms: string;
-  password: string;
-  passwordConfirm: string;
-  referral: string;
-}>;
+export type SignUpDto = {
+  name: string,
+  phone: string,
+  code: number,
+  password: string,
+  referralCode: string,
+  cityId: number,
+  roleId: number,
+};

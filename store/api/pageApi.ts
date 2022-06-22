@@ -1,18 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { commonApi } from './commonApi';
 import { IPage } from '../../@types/entities/IPage';
+import { Path } from 'constants/routes';
 
-export const pageApi = createApi({
-  reducerPath: 'pageApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['Page'],
+export const pageApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getPage: builder.query<IPage, string>({
         query(key) {
           return {
             method: 'GET',
-            url: `pages/${key}`,
+            url: `${Path.PAGES}/${key}`,
           };
         },
       }),

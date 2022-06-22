@@ -1,13 +1,13 @@
 {
   "ru": {
-    "reviews": "Отзывы",
+    "reviews": "Отзывы о товаре",
     "noReviews": "Нет отзывов",
     "oneReview": "отзыв",
     "someReviews": "отзыва",
     "manyReviews": "отзывов"
   },
   "en": {
-    "reviews": "Reviews",
+    "reviews": "Product Reviews",
     "noReviews": "No reviews",
     "oneReview": "review",
     "someReviews": "reviews",

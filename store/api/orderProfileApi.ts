@@ -1,30 +1,24 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { commonApi } from './commonApi';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
+import { Path } from '../../constants/routes';
 
-export const orderProfileApi = createApi({
-  reducerPath: 'orderProfileApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['DeliveryProfile'],
+export const orderProfileApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getOrderProfilesList: builder.query<IOrderProfile[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'order-profiles',
+            method: 'GET',
+            url: Path.ORDER_PROFILES,
           };
         },
-        providesTags: result =>
-          result
-            ? [
-                ...result.map(
-                  ({ id }) => ({ type: 'DeliveryProfile', id } as const)
-                ),
-                { type: 'DeliveryProfile', id: 'LIST' },
-              ]
-            : [{ type: 'DeliveryProfile', id: 'LIST' }],
+        providesTags: result => result ? (
+          [
+            ...result.map(({ id }) => ({ type: 'OrderProfile', id } as const)),
+            { type: 'OrderProfile', id: 'LIST' },
+          ]
+        ) : [{ type: 'OrderProfile', id: 'LIST' }],
       }),
       createOrderProfile: builder.mutation<
         IOrderProfile,
@@ -32,16 +26,42 @@ export const orderProfileApi = createApi({
       >({
         query(profile) {
           return {
-            method: 'post',
-            url: `order-profiles`,
+            method: 'POST',
+            url: Path.ORDER_PROFILES,
             body: profile,
           };
         },
-        invalidatesTags: [{ type: 'DeliveryProfile', id: 'LIST' }],
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
       }),
+      updateOrderProfile: builder.mutation<
+        IOrderProfile,
+        Partial<CreateOrderProfileDto> & Pick<IOrderProfile, 'id'>
+      >({
+        query({ id, ...body }) {
+          return {
+            method: 'PUT',
+            url: `${Path.ORDER_PROFILES}/${id}`,
+            body,
+          };
+        },
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
+      }),
+      deleteOrderProfile: builder.mutation<void, number>({
+        query(id) {
+          return {
+            method: 'DELETE',
+            url: `${Path.ORDER_PROFILES}/${id}`,
+          };
+        },
+        invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
+      })
     };
   },
 });
 
-export const { useGetOrderProfilesListQuery, useCreateOrderProfileMutation } =
-  orderProfileApi;
+export const {
+  useGetOrderProfilesListQuery,
+  useCreateOrderProfileMutation,
+  useUpdateOrderProfileMutation,
+  useDeleteOrderProfileMutation,
+} = orderProfileApi;
