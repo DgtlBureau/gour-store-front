@@ -23,7 +23,7 @@ const props = {
     },
     {
       title: 'Овечье',
-      summary: 615460,
+      summary: 687460,
     },
   ],
 };

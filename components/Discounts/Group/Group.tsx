@@ -31,6 +31,13 @@ const sx = {
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  category: {
+    width: '100%',
+    marginBottom: {
+      xs: '10px',
+      md: '25px',
+    },
+  },
 };
 
 export const Group = ({ title, categories }: Props) => {
@@ -41,11 +48,27 @@ export const Group = ({ title, categories }: Props) => {
       </AccordionSummary>
       <AccordionDetails>
         <Stack>
-          <Grid sx={{ margin: '0 0 25px 0' }} container spacing={2}>
-            <Grid item xs={1}>
+          <Grid
+            sx={{
+              margin: '0 0 25px 0',
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+            }}
+            container
+            spacing={2}
+          >
+            <Grid item xs={2} md={1}>
               <Typography variant="subtitle1">Скидка %</Typography>
             </Grid>
-            <Grid display="flex" justifyContent="space-between" item xs={10}>
+            <Grid
+              display="flex"
+              justifyContent="space-between"
+              item
+              xs={8}
+              md={10}
+            >
               {percents.map(percent => (
                 <Box
                   sx={{
@@ -63,7 +86,7 @@ export const Group = ({ title, categories }: Props) => {
                 </Box>
               ))}
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={2} md={1}>
               <Typography variant="subtitle1">
                 Всего {getCurrencySymbol('cheeseCoin')}
               </Typography>
@@ -71,19 +94,23 @@ export const Group = ({ title, categories }: Props) => {
           </Grid>
           {categories.map(category => (
             <Grid
-              sx={{ width: '100%', margin: '0 0 25px 0' }}
+              sx={sx.category}
               key={category.summary}
               container
-              spacing={2}
+              spacing={{ xs: 1, md: 2 }}
             >
-              <Grid item xs={1}>
-                <Typography variant="subtitle1">{category.title}</Typography>
+              <Grid item xs={3} md={1}>
+                <Typography variant="subtitle2">{category.title}</Typography>
               </Grid>
-              <Grid item xs={10}>
-                <Item activeStep={category.summary / 100000} />
+              <Grid item xs={6} md={10}>
+                <Item
+                  stepsCount={10}
+                  percent={(category.summary % 100000) / 1000}
+                  activeStep={Math.floor(category.summary / 100000)}
+                />
               </Grid>
-              <Grid item xs={1} sx={sx.summary}>
-                <Typography variant="subtitle1">{category.summary}</Typography>
+              <Grid item xs={3} md={1} sx={sx.summary}>
+                <Typography variant="subtitle2">{category.summary}</Typography>
               </Grid>
             </Grid>
           ))}
