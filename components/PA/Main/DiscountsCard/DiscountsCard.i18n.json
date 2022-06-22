@@ -1,0 +1,12 @@
+{
+  "en": {
+    "title": "Discounts",
+    "footerText": "Go to the discounts system",
+    "emptyDiscounts": "The list of discounts is empty"
+  },
+  "ru": {
+    "title": "Скидки по категориям",
+    "footerText": "Перейти к системе скидок",
+    "emptyDiscounts": "Список заказов пуст"
+  }
+}
