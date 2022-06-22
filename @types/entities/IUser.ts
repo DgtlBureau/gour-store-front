@@ -1,6 +1,7 @@
 import { IBaseEntity } from './IBaseEntity';
 import { ICity } from './ICity';
 import { IImage } from './IImage';
+import { IReferralCode } from './IReferralCode';
 
 export interface IUser extends IBaseEntity {
   roleId: number;
@@ -13,9 +14,6 @@ export interface IUser extends IBaseEntity {
   referralCodeId: number;
   avatarId: 1;
   city: ICity;
-  referralCode: {
-    code: string;
-    discount: number;
-  };
+  referralCode: IReferralCode;
   avatar: IImage;
 }

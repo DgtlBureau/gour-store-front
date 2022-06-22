@@ -12,6 +12,7 @@ import { TextField } from '../../../UI/TextField/TextField';
 import { IconButton } from '../../../UI/IconButton/IconButton';
 import { Button } from '../../../UI/Button/Button';
 import { getValidationSchema } from './validation';
+import { UpdateUserDto } from '../../../../@types/dto/profile/update-user.dto';
 
 type UserData = {
   firstName: string;
@@ -25,11 +26,7 @@ export type PACredentialsEditorProps = {
   phone: string;
   onChangePhone(): void;
   onChangePassword(): void;
-  onSave(updatedUser: {
-    firstName?: string;
-    lastName?: string;
-    referralCode?: string;
-  }): void;
+  onSave(updatedUser: UpdateUserDto): void;
 };
 
 export function PACredentialsEditor({
@@ -50,8 +47,6 @@ export function PACredentialsEditor({
   });
 
   useEffect(() => {
-    console.log(user);
-
     values.reset(user);
   }, [user]);
 

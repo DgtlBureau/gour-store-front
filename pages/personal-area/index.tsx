@@ -12,13 +12,14 @@ import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 import { Path } from 'constants/routes';
 import { Currency } from '../../@types/entities/Currency';
+import { getFormattedAddressesList } from './personalAreaHelper';
 
 export function Main() {
   const router = useRouter();
 
   const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: addressList } = useGetOrderProfilesListQuery();
-  const { data: orderList } = useGetOrderListQuery();
+  const { data: addressList = [] } = useGetOrderProfilesListQuery();
+  const { data: orderList = [] } = useGetOrderListQuery();
 
   const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
@@ -32,18 +33,7 @@ export function Main() {
     currency,
   }));
 
-  const addresses = addressList?.map(it => {
-    const address = [
-      it.city.name[language],
-      it.street,
-      it.house,
-      it.apartment && `${language === 'ru' ? 'кв.' : 'apt.'}. ${it.apartment}`,
-    ]
-      .filter(it => !!it)
-      .join(', ');
-
-    return { title: it.title, address };
-  });
+  const addresses = getFormattedAddressesList(addressList, language);
 
   const goToCredentials = () => router.push(Path.CREDENTIALS);
   const goToAddresses = () => router.push(Path.ADDRESSES);

@@ -20,11 +20,6 @@ import { useCreateImageMutation } from 'store/api/imageApi';
 export function Profile() {
   const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
 
-  const router = useRouter();
-
-  // const currentUser = useSelector(selectCurrentUser);
-  // const isAuth = useSelector(selectIsAuth);
-
   const { data: currentUser } = useGetCurrentUserQuery();
 
   const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
@@ -37,7 +32,6 @@ export function Profile() {
   ) => {
     try {
       await fetchUpdatePassword(changePasswordData).unwrap();
-      // router.push('auth/signin');
     } catch (error) {
       console.log(error);
     }
