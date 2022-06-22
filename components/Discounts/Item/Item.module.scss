@@ -1,0 +1,39 @@
+.stepsProgress {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .step {
+        width: calc(100% / 10);
+        display: flex;
+        align-items: center;
+
+        &.active {
+            .connector,
+            .stepLabel {
+                background: #f7a400;
+            }
+        }
+    }
+
+    .connector {
+        width: calc(100% - 24px);
+        height: 2px;
+
+        background: #f4e7ce;
+    }
+
+    .stepLabel {
+        width: 24px;
+        height: 24px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f4e7ce;
+    }
+}
