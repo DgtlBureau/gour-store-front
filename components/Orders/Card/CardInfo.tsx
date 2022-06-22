@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Divider, Stack } from '@mui/material';
 import { Typography } from '../../UI/Typography/Typography';
@@ -28,6 +28,7 @@ export const OrderCardInfo = ({
   currency,
 }: OrderCardInfoProps) => {
   const { t } = useLocalTranslation(translations);
+  const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
     <Stack
       sx={{
@@ -66,20 +67,20 @@ export const OrderCardInfo = ({
             {t('economy')}
           </Typography>
           <Typography variant="body2" sx={{ color: '#f45725' }}>
-            -{summaryDiscount} {getCurrencySymbol(currency)}
+            -{summaryDiscount} {currencySymbol}
           </Typography>
         </Stack>
       )}
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h6">{t('total')}</Typography>
         <Typography variant="h6">
-          {totalPrice} {getCurrencySymbol(currency)}
+          {totalPrice} {currencySymbol}
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="body2">{t('delivery')}</Typography>
         <Typography variant="body2">
-          {deliveryCost} {getCurrencySymbol(currency)}
+          {deliveryCost} {currencySymbol}
         </Typography>
       </Stack>
     </Stack>

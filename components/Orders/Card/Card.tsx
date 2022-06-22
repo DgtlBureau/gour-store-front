@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Currency } from '../../../@types/entities/Currency';
@@ -17,6 +17,11 @@ import { OrderCardInfo } from './CardInfo';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { format } from 'date-fns';
 
+type Promotion = {
+  title: string;
+  amount: number;
+};
+
 export type OrdersCardProps = {
   title: string;
   status: {
@@ -28,10 +33,7 @@ export type OrdersCardProps = {
   client: string;
   currency: Currency;
   products: OrderProductType[];
-  promotions: {
-    title: string;
-    amount: number;
-  }[];
+  promotions: Promotion[];
   deliveryCost: number;
 };
 
@@ -58,9 +60,12 @@ export function OrdersCard({
   const createdDate = format(createdAt, 'yyyy.MM.d');
   const createdTime = format(createdAt, 'HH:mm');
 
-  const summaryDiscount = promotions.reduce((acc, currentDiscount) => {
-    return (acc += currentDiscount.amount);
-  }, 0);
+  const summaryDiscount = promotions.reduce(
+    (acc, currentDiscount) => (acc += currentDiscount.amount),
+    0
+  );
+
+  const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
   const priceWithDiscount = fullOrderPrice + deliveryCost - summaryDiscount;
 
@@ -86,7 +91,7 @@ export function OrdersCard({
               sx={{ width: '250px', textAlign: 'right' }}
               variant="h6"
             >
-              {priceWithDiscount} {getCurrencySymbol(currency)}
+              {priceWithDiscount} {currencySymbol}
             </Typography>
           </Stack>
         </Stack>
@@ -102,7 +107,11 @@ export function OrdersCard({
         </div>
         <Divider variant="fullWidth" sx={{ margin: '20px 0' }} />
         {products.map(product => (
-          <OrderCardProduct product={product} currency={currency} />
+          <OrderCardProduct
+            key={`${product.amount}_${product.photo}`}
+            product={product}
+            currency={currency}
+          />
         ))}
         <Divider variant="fullWidth" />
         <OrderCardInfo
