@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
-import { useGetOrderListQuery } from 'store/api/orderApi';
+import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PALayout } from 'layouts/PA/PA';
 import { PACredentialsCard } from 'components/PA/Main/CredentialsCard/CredentialsCard';
 import { PAAddressCard } from 'components/PA/Main/AddressCard/AddressCard';
@@ -17,10 +17,11 @@ export function Main() {
   const router = useRouter();
 
   const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: addressList } = useGetOrderProfilesListQuery();
-  const { data: orderList } = useGetOrderListQuery();
+  const { data: addressList = [] } = useGetOrderProfilesListQuery();
+  const { data: orderList = [] } = useGetOrdersListQuery();
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
   const orders = orderList?.map(it => ({

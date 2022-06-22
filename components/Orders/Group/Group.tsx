@@ -2,28 +2,28 @@ import { Stack } from '@mui/material';
 import { Currency } from '../../../@types/entities/Currency';
 import { format } from 'date-fns';
 import React from 'react';
-import { LkOrdersCard, LkOrdersCardProps } from './LkOrdersCard';
-import s from './LkOrdersCard.module.scss';
-import { Typography } from 'components/UI/Typography/Typography';
 
-export type LkOrdersCardGroupProps = {
+import { Typography } from 'components/UI/Typography/Typography';
+import { OrdersCard, OrdersCardProps } from '../Card/Card';
+
+export type OrdersGroupProps = {
   date: Date;
-  ordersList: LkOrdersCardProps[];
+  ordersList: OrdersCardProps[];
   currency: Currency;
 };
 
-export function LkOrderCardGroup({
+export function OrdersCardGroup({
   date,
   ordersList,
   currency,
-}: LkOrdersCardGroupProps) {
+}: OrdersGroupProps) {
   const groupDate = format(date, 'yyyy.MM.d');
 
   return (
     <Stack spacing={1}>
       <Typography variant="h6">{groupDate}</Typography>
       {ordersList.map(order => (
-        <LkOrdersCard
+        <OrdersCard
           key={order.title}
           title={order.title}
           status={order.status}

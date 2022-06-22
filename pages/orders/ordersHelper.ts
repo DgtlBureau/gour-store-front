@@ -1,21 +1,22 @@
 import { IOrder } from '../../@types/entities/IOrder';
 import { Currency } from '../../@types/entities/Currency';
-import { LkOrdersCardProps } from 'components/LkOrders/LkOrdersCard/LkOrdersCard';
-import { endOfDay, getTime, isSameDay } from 'date-fns';
+
+import { endOfDay, getTime } from 'date-fns';
+import { OrdersCardProps } from 'components/Orders/Card/Card';
 
 export function formatOrderData(
   order: IOrder,
   lang: 'ru' | 'en',
   currency: Currency
-): LkOrdersCardProps {
+): OrdersCardProps {
   const client = order.order.firstName + ' ' + order.order.lastName;
   const products = order.order.orderProducts.map(product => ({
-    photo: product.product.images[0]?.small || '',
-    title: product.product.title[lang],
-    weight: product.weight,
-    amount: product.amount,
-    cost: product.product.price[currency],
-    isWeightGood: product.product.isWeightGood,
+    photo: product.product?.images[0]?.small || '',
+    title: product.product?.title[lang],
+    weight: product?.weight,
+    amount: product?.amount,
+    cost: product.product?.price[currency],
+    isWeightGood: product?.product?.isWeightGood,
   }));
 
   const promotions = order.promotions.map(promotion => ({
@@ -43,13 +44,13 @@ export function formatOrderData(
 
 type formattedOrder = {
   date: Date;
-  orderList: LkOrdersCardProps[];
+  orderList: OrdersCardProps[];
 };
 
-export function groupOrdersByDate(ordersList: LkOrdersCardProps[]) {
+export function groupOrdersByDate(ordersList: OrdersCardProps[]) {
   const someObj: Record<number, formattedOrder> = {};
 
-  const test = ordersList.forEach(order => {
+  ordersList.forEach(order => {
     const createdDay = endOfDay(order.createdAt);
     const orderTime = getTime(createdDay);
     someObj[orderTime] = someObj[orderTime] || {
