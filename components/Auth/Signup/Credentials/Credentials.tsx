@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Paper, FormControlLabel, Radio } from '@mui/material';
+import { FormControlLabel, Radio } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -7,6 +7,7 @@ import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema, Translator } from './validation';
 import { SignUpFormDto } from '../../../../@types/dto/signup-form.dto';
+import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
@@ -68,9 +69,9 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onSubmit }
   const submit = (data: SignUpFormDto) => onSubmit(data);
 
   return (
-    <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submit)}>
-        <Paper square elevation={0} sx={sx.paper}>
+    <AuthCard>
+      <FormProvider {...values}>
+        <form onSubmit={values.handleSubmit(submit)}>
           <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
             {t('back')}
           </Button>
@@ -110,11 +111,11 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onSubmit }
 
           <Checkbox sx={sx.field} value={isAgree} onChange={agree} label={t('agreement')} />
 
-          <Button type="submit" disabled={formIsInvalid}>
+          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
-        </Paper>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </AuthCard>
   );
 }

@@ -1,14 +1,4 @@
 const sx = {
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '550px',
-    padding: '60px',
-    backgroundColor: 'background.default',
-    border: '4px solid',
-    borderColor: 'accent.main',
-    borderRadius: '10px',
-  },
   title: {
     fontWeight: 700,
     fontSize: '18px',
@@ -19,6 +9,11 @@ const sx = {
   },
   links: {
     display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     marginBottom: '14px',
     button: {
@@ -28,6 +23,9 @@ const sx = {
   backBtn: {
     width: 'fit-content',
     marginBottom: '20px',
+  },
+  submitBtn: {
+    width: '100%',
   },
 };
 

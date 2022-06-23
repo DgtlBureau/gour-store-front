@@ -1,11 +1,13 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 
+import StarIcon from '@mui/icons-material/Star';
+
+import translations from '../Actions/Actions.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
-
-import StarIcon from '@mui/icons-material/Star';
 import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
@@ -40,6 +42,7 @@ type Props = {
 };
 
 export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: Props) {
+  const { t } = useLocalTranslation(translations);
   return (
     <Box sx={{ ...rateSx.box, ...sx }}>
       <Box sx={rateSx.rating}>
@@ -51,7 +54,7 @@ export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: P
 
       <Typography variant="body2" sx={rateSx.text}>
         {price}
-        {getCurrencySymbol(currency)}/{isWeightGood ? 'кг' : 'шт'}
+        {getCurrencySymbol(currency)} / {isWeightGood ? t('kg') : t('pcs')}
       </Typography>
     </Box>
   );

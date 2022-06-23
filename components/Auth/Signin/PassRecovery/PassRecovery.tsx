@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Paper } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -7,6 +6,7 @@ import translations from './PassRecovery.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema, Translator } from './validation';
 import { PasswordRecoveryDto } from '../../../../@types/dto/password-recovery.dto';
+import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
@@ -60,9 +60,9 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
   const submit = (data: PasswordRecoveryDto) => onSubmit(data);
 
   return (
-    <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submit)}>
-        <Paper square elevation={0} sx={sx.paper}>
+    <AuthCard>
+      <FormProvider {...values}>
+        <form onSubmit={values.handleSubmit(submit)}>
           <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
             {t('back')}
           </Button>
@@ -87,11 +87,11 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
           />
           <HFTextField sx={sx.field} type="password" name="passwordConfirm" label={t('passwordConfirm')} />
 
-          <Button type="submit" disabled={formIsInvalid}>
+          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
-        </Paper>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </AuthCard>
   );
 }

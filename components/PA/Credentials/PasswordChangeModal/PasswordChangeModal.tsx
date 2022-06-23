@@ -9,7 +9,6 @@ import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { Modal } from '../../../UI/Modal/Modal';
 import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
-import { Button } from '../../../UI/Button/Button';
 import { HFTextField } from '../../../HookForm/HFTextField';
 
 const sx = {

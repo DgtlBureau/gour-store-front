@@ -1,11 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { SxProps } from '@mui/material';
 
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { FilterMultiselect } from 'components/Catalog/Filter/Multiselect/Multiselect';
+import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/Multiselect';
 import { CHARACTERISTICS } from '../../../constants/characteristics';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 import { ICategory } from '../../../@types/entities/ICategory';
@@ -21,14 +22,16 @@ export type Filters = {
 export type CatalogFilterProps = {
   categories: ICategory[];
   filters: Filters;
+  sx?: SxProps;
   onReverse: () => void;
   onCategoryChange: (key: string) => void;
   onCharacteristicChange: (key: string, selected: string[]) => void;
 };
 
-export function CatalogFilter({
+export function ProductFilter({
   categories,
   filters,
+  sx,
   onReverse,
   onCategoryChange,
   onCharacteristicChange,
@@ -42,7 +45,7 @@ export function CatalogFilter({
   );
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
         <ToggleButton selected={filters.isReversed} sx={{ marginRight: '10px' }} onChange={onReverse}>
           <ArrowsIcon sx={{ transform: 'rotate(90deg)' }} />
@@ -60,7 +63,7 @@ export function CatalogFilter({
       </Box>
       <Box sx={{ display: 'flex', marginTop: '10px' }}>
         {features.map(feature => (
-          <FilterMultiselect
+          <ProductFilterMultiselect
             key={feature}
             title={CHARACTERISTICS[feature].label[locale]}
             selected={filters.characteristics[feature] || []}
