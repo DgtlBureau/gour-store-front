@@ -21,7 +21,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
-import sx from './[id].styles';
+import sx from './Product.styles';
 
 export default function Product() {
   const router = useRouter();
@@ -140,18 +140,23 @@ export default function Product() {
   return (
     <ShopLayout language={language} currency={currency}>
       {isLoading && <LinearProgress />}
+
       {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+
       {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+
       {!isLoading && !isError && product && (
         <div>
           <Stack direction="row" justifyContent="space-between">
             <Box sx={sx.imageSlider}>
               <ImageSlider images={product.images} />
             </Box>
+
             <Stack width="100%">
               <Typography variant="h3" sx={sx.productTitle}>
                 {product.title[language] || ''}
               </Typography>
+
               <ProductInformation
                 rating={product.grade || 0}
                 gradesCount={product.gradesCount || 0}
@@ -159,6 +164,7 @@ export default function Product() {
                 characteristics={productCharacteristics}
                 onClickComments={() => {}}
               />
+
               <ProductActions
                 price={product.price[currency] || 0}
                 count={count}
@@ -182,6 +188,7 @@ export default function Product() {
           <Typography sx={sx.descriptionTitle} variant="h5">
             Описание товара
           </Typography>
+
           <Typography sx={sx.description} variant="body1">
             {product.description[language] || ''}
           </Typography>

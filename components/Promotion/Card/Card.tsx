@@ -1,20 +1,16 @@
 import React from 'react';
 
 import { Box } from '../../UI/Box/Box';
-import { Button } from '../../UI/Button/Button';
-import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as theme } from '../../../themes';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import translations from './Card.i18n.json';
 
 type Props = {
-  title?: string;
   image: string;
   onClickMore(): void;
 };
 
 const sx = {
   box: {
+    cursor: 'pointer',
     width: '300px',
     height: '160px',
     display: 'flex',
@@ -53,13 +49,9 @@ const sx = {
 };
 
 export function PromotionCard({ image, onClickMore }: Props) {
-  const { t } = useLocalTranslation(translations);
-
   return (
-    <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none' }}>
-      <Button size="small" onClick={onClickMore} sx={sx.btn}>
-        {t('more')}
-      </Button>
+    <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none' }} onClick={onClickMore}>
+      {}
     </Box>
   );
 }

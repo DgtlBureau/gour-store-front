@@ -1,11 +1,11 @@
 import React from 'react';
-import { Paper } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './CitySelect.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema, Translator } from './validation';
+import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFSelect } from '../../../HookForm/HFSelect';
@@ -40,9 +40,9 @@ export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCity
   const submit = (data: SignupCityFields) => onSubmit(data.city);
 
   return (
-    <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submit)}>
-        <Paper square elevation={0} sx={sx.paper}>
+    <AuthCard>
+      <FormProvider {...values}>
+        <form onSubmit={values.handleSubmit(submit)}>
           <Button onClick={onBack} sx={sx.backBtn} variant="outlined" size="small">
             {t('back')}
           </Button>
@@ -51,9 +51,11 @@ export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCity
 
           <HFSelect options={options} name="city" placeholder={t('city')} sx={sx.select} />
 
-          <Button type="submit">{t('continue')}</Button>
-        </Paper>
-      </form>
-    </FormProvider>
+          <Button type="submit" sx={sx.submitBtn}>
+            {t('continue')}
+          </Button>
+        </form>
+      </FormProvider>
+    </AuthCard>
   );
 }

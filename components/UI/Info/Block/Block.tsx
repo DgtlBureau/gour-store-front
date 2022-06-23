@@ -1,12 +1,11 @@
-import React, { CSSProperties } from 'react';
-import { Paper } from '@mui/material';
+import React from 'react';
+import { Paper, SxProps } from '@mui/material';
 
 import { Typography } from '../../Typography/Typography';
-import { Link as CustomLink } from '../../Link/Link';
+import Link from '../../Link/Link';
 
-const sx = {
+const infoSx = {
   block: {
-    maxWidth: '380px',
     padding: '16px',
     backgroundColor: 'background.default',
     border: '1px solid',
@@ -18,7 +17,7 @@ const sx = {
 };
 
 type Props = {
-  styles?: CSSProperties;
+  sx?: SxProps;
   text: string;
   link?: {
     label: string;
@@ -26,13 +25,13 @@ type Props = {
   };
 };
 
-export function InfoBlock({ text, link, styles }: Props) {
+export function InfoBlock({ text, link, sx }: Props) {
   return (
-    <Paper sx={{ ...sx.block, ...styles }} elevation={0}>
-      <Typography sx={sx.text} color="text.muted" variant="body1">
+    <Paper sx={{ ...infoSx.block, ...sx }} elevation={0}>
+      <Typography sx={infoSx.text} color="text.muted" variant="body1">
         {text}
       </Typography>
-      {link && <CustomLink path={link.path}>{link.label}</CustomLink>}
+      {link && <Link href={link.path}>{link.label}</Link>}
     </Paper>
   );
 }

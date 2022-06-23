@@ -3,111 +3,118 @@ import { defaultTheme as theme } from '../../themes';
 const sx = {
   contactsWrapper: {
     display: 'flex',
+    flexDirection: {
+      xs: 'row-reverse',
+      sm: 'row',
+    },
     justifyContent: 'space-between',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'row-reverse',
-    }
+    margin: {
+      sm: '0 0 20px 0',
+      xs: '0 0 10px 0',
     },
+  },
   contacts: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    alignItems: {
+      xs: 'flex-end',
+      sm: 'center',
+    },
+    justifyContent: {
+      sm: 'flex-end',
+    },
     flexWrap: 'wrap-reverse',
     fontFamily: 'Roboto slab',
-    marginTop: 'auto',
-    paddingBottom: '40px',
-    [theme.breakpoints.down('lg')]: {
-      marginLeft: '40px',
-      '&:lastChild': {
-        marginRight: 0,
-      },
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '16px',
-      lineHeight: '18px',
-      flexDirection: 'column-reverse',
-      alignItems: 'flex-end',
-      marginLeft: '0',
-      '&:lastChild': {
-        marginRight: '0',
-      },
-    },
   },
   contactsLink: {
     whiteSpace: 'nowrap',
-    marginRight: '40px',
-    fontSize: '24px',
-    fontWeight: 700,
-    color: '#7E5F2F',
-    flexWrap: 'wrap',
-    [theme.breakpoints.down('lg')]: {
-      marginRight: '10px',
+    margin: {
+      lg: '0 20px 0 0',
+      sm: '10px 0 10px 20px',
+      xs: '0 0 10px 0',
     },
-    [theme.breakpoints.down('sm')]: {
-      order: '1',
-      fontSize: '16px',
-      lineHeight: '18px',
-    }
+    flexWrap: 'wrap',
+    fontSize: {
+      md: '24px',
+      sm: '20px',
+      xs: '16px',
+    },
+    fontWeight: 'bold',
+    color: theme.palette.text.secondary,
   },
   social: {
     display: 'flex',
     flexWrap: 'nowrap',
-    [theme.breakpoints.down('lg')]: {
-      marginLeft: 'auto'
+    margin: {
+      sm: '0 0 0 20px',
     },
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'space-between',
-      marginLeft: '0',
-      marginTop: '20px',
-      order: '0',
-      '&:firstChild': {
-        marginLeft: '0',
-      },
-    }
   },
   socialLink: {
-    marginLeft: '20px',
-    '&:firstChild': {
-      marginLeft: 0,
+    height: '38px',
+    margin: {
+      xs: '0 10px 0 0',
+      sm: '0 0 0 20px',
     },
-    [theme.breakpoints.down('lg')]: {
-      marginRight: '0px'
+
+    '&:first-child': {
+      marginLeft: '0px',
     },
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: '0',
-      marginRight: '20px',
-    }
-   },
+  },
+
   info: {
     display: 'flex',
+    flexDirection: {
+      sm: 'row',
+      xs: 'column',
+    },
     justifyContent: 'space-between',
+
     [theme.breakpoints.down('lg')]: {
       justifyContent: 'center',
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
     },
+
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'start',
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
     },
   },
   infoLink: {
-    fontSize: '13px',
+    fontSize: {
+      sm: '13px',
+      xs: '10px',
+    },
+    margin: {
+      sm: '0 0 10px 0',
+      xs: '0 0 5px 0',
+    },
     textDecoration: 'none',
-    color: '#7E5F2F',
+    color: theme.palette.text.secondary,
   },
   divider: {
-    borderColor: '#F4E7CE',
+    opacity: {
+      lg: 1,
+      xs: 0,
+    },
     marginTop: 0,
     marginBottom: 0,
     margin: '0 15px',
-    backgroundColor: 'red',
+    borderColor: theme.palette.secondary.main,
   },
   logo: {
-    marginBottom: '20px',
-    [theme.breakpoints.down('sm')]: {
-      order: 3,
-      alignSelf: 'flex-end'
+    height: {
+      xs: '110px',
+      sm: '130px',
+      md: '150px',
+    },
+    width: {
+      xs: '90px',
+      sm: '110px',
+      md: '130px',
     },
   },
 };

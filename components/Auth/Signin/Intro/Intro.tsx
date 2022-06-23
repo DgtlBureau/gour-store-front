@@ -1,25 +1,9 @@
 import React from 'react';
-import { Paper } from '@mui/material';
 
 import translations from './Intro.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
+import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
-
-const sx = {
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '520px',
-    padding: '60px',
-    backgroundColor: 'background.default',
-    border: '4px solid',
-    borderColor: 'accent.main',
-    borderRadius: '10px',
-  },
-  authBtn: {
-    marginBottom: '20px',
-  },
-};
 
 export type SigninIntroProps = {
   onClickAuth(): void;
@@ -30,11 +14,13 @@ export function SigninIntro({ onClickAuth, onClickRegistration }: SigninIntroPro
   const { t } = useLocalTranslation(translations);
 
   return (
-    <Paper square elevation={0} sx={sx.paper}>
-      <Button onClick={onClickAuth} sx={sx.authBtn} variant="outlined">
+    <AuthCard>
+      <Button onClick={onClickAuth} sx={{ marginBottom: '20px' }} variant="outlined">
         {t('auth')}
       </Button>
-      <Button onClick={onClickRegistration}>{t('reg')}</Button>
-    </Paper>
+      <Button onClick={onClickRegistration} sx={{ width: '100%' }}>
+        {t('reg')}
+      </Button>
+    </AuthCard>
   );
 }

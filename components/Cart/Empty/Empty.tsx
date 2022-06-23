@@ -13,22 +13,37 @@ const sx = {
   notice: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: {
+      sm: 'center',
+      xs: 'flex-start',
+    },
 
     maxWidth: '490px',
   },
   title: {
-    textAlign: 'center',
+    textAlign: {
+      sm: 'center',
+      xs: 'none',
+    },
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
     color: t.palette.text.secondary,
   },
   description: {
-    textAlign: 'center',
+    textAlign: {
+      sm: 'center',
+      xs: 'none',
+    },
 
     margin: '16px 0',
 
     fontSize: '16px',
+  },
+  btn: {
+    width: {
+      xs: '100%',
+      sm: 'fit-content',
+    },
   },
 };
 
@@ -48,8 +63,14 @@ export function CartEmpty({ title, children, btn }: Props) {
         <Typography variant="h5" sx={sx.title}>
           {title}
         </Typography>
+
         <Box sx={sx.description}>{children}</Box>
-        {btn && <Button onClick={btn.onClick}>{btn.label}</Button>}
+
+        {btn && (
+          <Button onClick={btn.onClick} sx={sx.btn}>
+            {btn.label}
+          </Button>
+        )}
       </Stack>
     </Stack>
   );

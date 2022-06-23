@@ -1,23 +1,13 @@
 import React from 'react';
-import { Paper } from '@mui/material';
 
 import translations from './Greeting.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
+import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { Button } from '../../../UI/Button/Button';
 
 const sx = {
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '520px',
-    padding: '60px',
-    backgroundColor: 'background.default',
-    border: '4px solid',
-    borderColor: 'accent.main',
-    borderRadius: '10px',
-  },
   text: {
     margin: '20px 0',
   },
@@ -35,7 +25,7 @@ export function SignupGreeting({ onBack, onSubmit }: SignupGreetingProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <Paper square elevation={0} sx={sx.paper}>
+    <AuthCard>
       <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
         {t('goBack')}
       </Button>
@@ -46,6 +36,6 @@ export function SignupGreeting({ onBack, onSubmit }: SignupGreetingProps) {
       </Box>
 
       <Button onClick={onSubmit}>{t('goNext')}</Button>
-    </Paper>
+    </AuthCard>
   );
 }

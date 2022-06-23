@@ -12,7 +12,7 @@ import {
   subtractBasketProduct,
   removeProduct,
 } from '../../store/slices/orderSlice';
-import translation from './index.i18n.json';
+import translation from './basket.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
@@ -22,6 +22,18 @@ import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/Info/Block/Block';
 import { IProduct } from '../../@types/entities/IProduct';
+
+const sx = {
+  title: {
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    color: 'text.secondary',
+  },
+};
 
 export function Basket() {
   const router = useRouter();
@@ -43,81 +55,86 @@ export function Basket() {
     return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
 
-  const sumToFreeDelivery = 2990 - sum; //TODO: вынести логику стоимости заказа на бек
+  //TODO: вынести логику стоимости доставки на бек
+  const delivery = 500;
+  const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
   const goToHome = () => router.push('/');
   const goToOrder = () => router.push('/order');
 
-  const electProduct = (product: IProduct) => ({});
-  const deleteProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
   const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
     <ShopLayout currency={currency} language={language}>
-      <Stack>
-        <Typography variant="h3" sx={{ fontWeight: 'bold', fontFamily: 'Roboto slab', color: 'primary.main' }}>
-          {t('cart')}
-        </Typography>
-        {productsInOrder.length === 0 && (
-          <CartEmpty
-            title={t('emptyTitle')}
-            btn={{
-              label: t('emptyButton'),
-              onClick: () => {
-                router.push('/');
-              },
-            }}
-          >
-            <Typography variant="body1">{t('emptyText')}</Typography>
-          </CartEmpty>
-        )}
+      <Typography variant="h3" sx={sx.title}>
+        {t('cart')}
+      </Typography>
 
-        {productsInOrder.length !== 0 && (
-          <Grid container spacing={2}>
-            <Grid item xs={8}>
-              {productsInOrder.map((it, i) => (
-                <CartCard
-                  key={`${it.product.id}-${i}`}
-                  title={it.product.title[language] || '...'}
-                  price={it.product.price[currency] || 0}
-                  amount={it.amount}
-                  weight={it.weight}
-                  isWeightGood={it.product.isWeightGood}
-                  productImg={it.product.images[0]?.small}
-                  discount={10}
-                  currency={currency}
-                  onElect={() => {
-                    dispatch(addBasketProduct(it.product));
-                  }}
-                  onDelete={() => {
-                    dispatch(removeProduct(it.product));
-                  }}
-                  onAdd={() => {
-                    dispatch(addBasketProduct(it.product));
-                  }}
-                  onSubtract={() => {
-                    dispatch(subtractBasketProduct(it.product));
-                  }}
-                />
-              ))}
-              {!isDeliveryFree && (
-                <InfoBlock
-                  styles={{ margin: '10px 0 0 0' }}
-                  text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
-                  link={{ label: t('continueShopping'), path: '/' }}
-                />
-              )}
+      {productsInOrder.length === 0 && (
+        <CartEmpty
+          title={t('emptyTitle')}
+          btn={{
+            label: t('emptyButton'),
+            onClick: goToHome,
+          }}
+        >
+          <Typography variant="body1">{t('emptyText')}</Typography>
+        </CartEmpty>
+      )}
+
+      {productsInOrder.length !== 0 && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            {productsInOrder.map((it, i) => (
+              <CartCard
+                key={`${it.product.id}-${i}`}
+                title={it.product.title[language] || '...'}
+                price={it.product.price[currency] || 0}
+                amount={it.amount}
+                weight={it.weight}
+                isWeightGood={it.product.isWeightGood}
+                productImg={it.product.images[0]?.small}
+                discount={it.product.discount}
+                currency={currency}
+                onDelete={() => deleteProduct(it.product)}
+                onAdd={() => addProduct(it.product)}
+                onSubtract={() => subtractProduct(it.product)}
+              />
+            ))}
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Button onClick={goToOrder} sx={{ width: '100%', marginBottom: '10px' }}>
+              {t('orderButton')}
+            </Button>
+
+            <CartInfo
+              count={count}
+              weight={weight}
+              discount={sumDiscount}
+              delivery={isDeliveryFree ? 0 : delivery}
+              price={sum}
+              currency={currency}
+            />
+
+            {!isDeliveryFree && (
               <InfoBlock
-                styles={{ margin: '10px 0 0 0' }}
-                text={t('aboutDelivery')}
+                sx={{ marginTop: '10px' }}
+                text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
                 link={{ label: t('continueShopping'), path: '/' }}
               />
-            </Grid>
+            )}
+            <InfoBlock
+              sx={{ marginTop: '10px' }}
+              text={t('aboutDelivery')}
+              link={{ label: t('continueShopping'), path: '/' }}
+            />
           </Grid>
-        )}
-      </Stack>
+        </Grid>
+      )}
     </ShopLayout>
   );
 }

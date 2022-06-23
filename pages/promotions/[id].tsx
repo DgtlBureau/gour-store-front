@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import translations from './[id].i18n.json';
+import translations from './Promotion.i18n.json';
 import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
 import { addBasketProduct, selectProductsIdInOrder, subtractBasketProduct } from '../../store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';

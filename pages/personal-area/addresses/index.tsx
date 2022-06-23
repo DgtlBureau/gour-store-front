@@ -8,22 +8,16 @@ import {
   useDeleteOrderProfileMutation,
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import {
-  useGetCurrentUserQuery,
-  useUpdateCurrentUserMutation,
-} from 'store/api/currentUserApi';
-import translations from './index.i18n.json';
-import {
-  useLocalTranslation,
-  LocalConfig,
-} from '../../hooks/useLocalTranslation';
-import { PALayout } from '../../layouts/PA/PA';
+import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
+import translations from './Addresses.i18n.json';
+import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { PAProfilesItem } from '../../components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from '../../components/PA/Profiles/DeleteModal/DeleteModal';
-import { OrderProfileDto } from '../../@types/dto/order/profile.dto';
-import { CurrentUserUpdateDto } from '../../@types/dto/current-user-update.dto';
+import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
+import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
+import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
+import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
 
 const sx = {
   actions: {
@@ -38,8 +32,7 @@ export function Addresses() {
 
   const router = useRouter();
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const { data: profiles } = useGetOrderProfilesListQuery();
   const { data: cities } = useGetCityListQuery();
@@ -51,8 +44,7 @@ export function Addresses() {
 
   const [updateUser] = useUpdateCurrentUserMutation();
 
-  const [expandedProfileId, setExpandedProfileId] =
-    useState<number | null>(null);
+  const [expandedProfileId, setExpandedProfileId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -94,8 +86,7 @@ export function Addresses() {
 
     const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
-    if (data.isMain && !isMain && !!expandedProfileId)
-      changeMainAddress(expandedProfileId);
+    if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
   };
 
   const deleteAddress = async () => {
@@ -120,14 +111,7 @@ export function Addresses() {
           {t('newAddress')}
         </Button>
       </Box>
-      {isCreating && (
-        <PAProfilesItem
-          key={-1}
-          cities={citiesList}
-          onSave={createAddress}
-          onDelete={closeCreateForm}
-        />
-      )}
+      {isCreating && <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />}
       {profiles?.map(profile => (
         <PAProfilesItem
           key={profile.id}
@@ -140,11 +124,7 @@ export function Addresses() {
           onDelete={openDeleteModal}
         />
       ))}
-      <PAProfilesDeleteModal
-        isOpen={isDeleting}
-        onAccept={deleteAddress}
-        onClose={closeDeleteModal}
-      />
+      <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
     </PALayout>
   );
 }

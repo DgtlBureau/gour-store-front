@@ -1,11 +1,12 @@
 import React from 'react';
-import { Paper, Link } from '@mui/material';
+import { Link } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema, Translator } from './validation';
+import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
@@ -44,9 +45,9 @@ export function SigninCredentials({
   const submit = (data: SignInDto) => onSubmit(data);
 
   return (
-    <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submit)}>
-        <Paper square elevation={0} sx={sx.paper}>
+    <AuthCard>
+      <FormProvider {...values}>
+        <form onSubmit={values.handleSubmit(submit)}>
           <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
             {t('back')}
           </Button>
@@ -67,11 +68,11 @@ export function SigninCredentials({
             </Link>
           </Box>
 
-          <Button type="submit" disabled={formIsInvalid}>
+          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
-        </Paper>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </AuthCard>
   );
 }
