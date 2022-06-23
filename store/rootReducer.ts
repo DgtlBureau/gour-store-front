@@ -13,6 +13,7 @@ import { productGradeApi } from './api/productGradeApi';
 import { orderApi } from './api/orderApi';
 import { orderProfileApi } from './api/orderProfileApi';
 import { pageApi } from './api/pageApi';
+import { imageApi } from './api/imageApi';
 import { categoryApi } from './api/categoryApi';
 
 export const rootReducer = combineReducers({
@@ -29,6 +30,6 @@ export const rootReducer = combineReducers({
   [orderProfileApi.reducerPath]: orderProfileApi.reducer,
   [cityApi.reducerPath]: cityApi.reducer,
   [pageApi.reducerPath]: pageApi.reducer,
+  [imageApi.reducerPath]: imageApi.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
 });
-

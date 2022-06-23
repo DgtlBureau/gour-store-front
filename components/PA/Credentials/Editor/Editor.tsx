@@ -12,29 +12,27 @@ import { TextField } from '../../../UI/TextField/TextField';
 import { IconButton } from '../../../UI/IconButton/IconButton';
 import { Button } from '../../../UI/Button/Button';
 import { getValidationSchema } from './validation';
+import { UpdateUserDto } from '../../../../@types/dto/profile/update-user.dto';
 
 type UserData = {
   firstName: string;
   lastName: string;
+  email: string;
   referralCode: string;
 };
 
 export type PACredentialsEditorProps = {
   user: UserData;
-  email: string;
   phone: string;
-  onChangeEmail(): void;
   onChangePhone(): void;
   onChangePassword(): void;
-  onSave(updatedUser: { firstName?: string; lastName?: string; referralCode?: string }): void;
+  onSave(updatedUser: UpdateUserDto): void;
 };
 
 export function PACredentialsEditor({
   user,
-  email,
   phone,
   onSave,
-  onChangeEmail,
   onChangePhone,
   onChangePassword,
 }: PACredentialsEditorProps) {
@@ -65,15 +63,7 @@ export function PACredentialsEditor({
         <Stack spacing={2} sx={{ margin: '0 0 10px 0' }}>
           <HFTextField name="firstName" label={t('firstName')} />
           <HFTextField name="lastName" label={t('lastName')} />
-          <TextField
-            value={email}
-            label={t('email')}
-            endAdornment={
-              <IconButton onClick={onChangeEmail}>
-                <SettingsIcon />
-              </IconButton>
-            }
-          />
+          <HFTextField name="email" label={t('email')} />
           <TextField
             value={phone}
             label={t('phone')}
@@ -95,10 +85,16 @@ export function PACredentialsEditor({
           />
           <HFTextField name="referralCode" label={t('referralCode')} />
         </Stack>
-        <Button type="submit" sx={{ margin: '0 10px 0 0' }}>
+        <Button
+          type="submit"
+          disabled={!values.formState.isDirty}
+          sx={{ margin: '0 10px 0 0' }}
+        >
           {t('submit')}
         </Button>
-        <Button onClick={cancelHandler}>{t('cancel')}</Button>
+        <Button disabled={!values.formState.isDirty} onClick={cancelHandler}>
+          {t('cancel')}
+        </Button>
       </form>
     </FormProvider>
   );

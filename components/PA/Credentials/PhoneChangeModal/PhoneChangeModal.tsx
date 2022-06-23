@@ -67,7 +67,10 @@ export function PAPhoneChangeModal({
   });
 
   const formIsInvalid = !values.formState.isValid;
-  const sendingIsDisabled = !!seconds || !values.watch('phone') || !!values.getFieldState('phone').error;
+  const sendingIsDisabled =
+    !!seconds ||
+    !values.watch('phone') ||
+    !!values.getFieldState('phone').error;
 
   const startTimer = () => {
     setSeconds(30);
@@ -110,7 +113,11 @@ export function PAPhoneChangeModal({
                   endAdornment: (
                     <>
                       <Divider sx={sx.divider} orientation="vertical" />
-                      <IconButton onClick={sendSMS} color="primary" disabled={sendingIsDisabled}>
+                      <IconButton
+                        onClick={sendSMS}
+                        color="primary"
+                        disabled={sendingIsDisabled}
+                      >
                         <SendIcon />
                       </IconButton>
                     </>

@@ -34,11 +34,20 @@ export type PACredentialsCardProps = {
   onClickMore(): void;
 };
 
-export function PACredentialsCard({ name, phone, photo, onClickMore }: PACredentialsCardProps) {
+export function PACredentialsCard({
+  name,
+  phone,
+  photo,
+  onClickMore,
+}: PACredentialsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
+    <InfoCard
+      title={t('title')}
+      footerText={t('footerText')}
+      onClickMore={onClickMore}
+    >
       <Box sx={sx.content}>
         <Box>
           <Box sx={sx.name}>
@@ -57,7 +66,7 @@ export function PACredentialsCard({ name, phone, photo, onClickMore }: PACredent
         </Box>
 
         <Box sx={sx.photo}>
-          <Image src={photo || ''} objectFit="cover" height={92} width={92} alt="" />
+          <Image src={photo || ''} objectFit="cover" height={92} width={92} />
         </Box>
       </Box>
     </InfoCard>

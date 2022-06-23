@@ -30,7 +30,6 @@ export interface ShopLayoutProps {
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
-
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 

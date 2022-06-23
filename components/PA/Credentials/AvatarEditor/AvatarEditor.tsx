@@ -25,7 +25,7 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
   };
 
   return (
-    <Stack sx={{ width: '165px' }} spacing={2} alignItems="center">
+    <Stack sx={{ width: '100%' }} spacing={1} alignItems="center">
       <Avatar alt="Your profile" src={image} sx={{ width: 128, height: 128 }} />
       <div className={s.photoInput}>
         <label htmlFor="profile-photo-input">

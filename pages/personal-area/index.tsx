@@ -12,6 +12,10 @@ import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 import { Path } from 'constants/routes';
 import { Currency } from '../../@types/entities/Currency';
+import {
+  getFormattedAddressesList,
+  getFormattedOrdersList,
+} from './personalAreaHelper';
 import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
 
 export function Main() {
@@ -19,32 +23,14 @@ export function Main() {
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: addressList = [] } = useGetOrderProfilesListQuery();
-  const { data: orderList = [] } = useGetOrdersListQuery();
+  const { data: ordersList = [] } = useGetOrdersListQuery();
 
   const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
-  const orders = orderList?.map(it => ({
-    id: it.crmInfo.id,
-    date: new Date(it.order.createdAt),
-    status: it.crmInfo.status.name,
-    sum: 0,
-    currency,
-  }));
-
-  const addresses = addressList?.map(it => {
-    const address = [
-      it.city.name[language],
-      it.street,
-      it.house,
-      it.apartment && `${language === 'ru' ? 'кв.' : 'apt.'}. ${it.apartment}`,
-    ]
-      .filter(it => !!it)
-      .join(', ');
-
-    return { title: it.title, address };
-  });
+  const orders = getFormattedOrdersList(ordersList, currency);
+  const addresses = getFormattedAddressesList(addressList, language);
 
   const goToCredentials = () => router.push(Path.CREDENTIALS);
   const goToAddresses = () => router.push(Path.ADDRESSES);
@@ -59,7 +45,7 @@ export function Main() {
             <PACredentialsCard
               name={`${currentUser.firstName} ${currentUser.lastName}`}
               phone={currentUser.phone}
-              photo={currentUser.avatar.small}
+              photo={currentUser.avatar?.small}
               onClickMore={goToCredentials}
             />
           </Grid>
