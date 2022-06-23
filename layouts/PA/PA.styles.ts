@@ -16,6 +16,7 @@ const sx = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     maxWidth: '1200px',
+    width: '100%',
     paddingTop: '50px',
   },
 };

@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+
 import { Grid, Stack } from '@mui/material';
 
 import translation from './Order.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
-import { selectedProductCount, selectedProductSum, selectProductsInOrder } from '../../store/slices/orderSlice';
+import {
+  selectedProductCount,
+  selectedProductSum,
+  selectProductsInOrder,
+} from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';
-import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
+import {
+  useCreateOrderProfileMutation,
+  useGetOrderProfilesListQuery,
+} from '../../store/api/orderProfileApi';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import { DeliveryFields, OrderForm, OrderFormType } from '../../components/Order/Form/Form';
+import {
+  DeliveryFields,
+  OrderForm,
+  OrderFormType,
+} from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { OrderCard } from 'components/Order/Card/Card';
 import { Button } from '../../components/UI/Button/Button';
@@ -18,6 +30,8 @@ import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
+import { IProduct } from '../../@types/entities/IProduct';
+import { removeProduct } from 'store/slices/orderSlice';
 
 const DELIVERY_PRICE = 500;
 
@@ -26,7 +40,13 @@ export function Order() {
 
   const { t } = useLocalTranslation(translation);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const dispatch = useDispatch();
+
+  const handleRemoveProduct = (product: IProduct) => {
+    dispatch(removeProduct(product));
+  };
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -51,11 +71,17 @@ export function Order() {
     isLoading: isCitiesListLoading = false,
     isError: isCitiesListError = false,
   } = useGetCityListQuery();
+
   const productsInOrder = useSelector(selectProductsInOrder);
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
   }, 0);
 
   const [fetchCreateOrder] = useCreateOrderMutation();
@@ -89,7 +115,9 @@ export function Order() {
           floor,
         };
 
-        currentDeliveryProfileId = (await fetchCreateOrderProfile(deliveryProfileData).unwrap()).id;
+        currentDeliveryProfileId = (
+          await fetchCreateOrderProfile(deliveryProfileData).unwrap()
+        ).id;
       }
 
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
@@ -108,8 +136,12 @@ export function Order() {
         orderProducts,
       };
       await fetchCreateOrder(formattedOrderData).unwrap();
+      productsInOrder.forEach(product => {
+        console.log(product);
 
-      router.push('/');
+        handleRemoveProduct(product.product);
+      });
+      router.push('/personal-area/orders');
     } catch (error) {
       console.log(error);
       setIsSubmitError(true);
@@ -117,7 +149,9 @@ export function Order() {
   };
 
   const onChangeDeliveryProfile = (deliveryProfileId: number) => {
-    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
+    const currentProfile = deliveryProfiles.find(
+      profile => profile.id === deliveryProfileId
+    );
 
     if (!currentProfile) return;
 
@@ -166,7 +200,11 @@ export function Order() {
   return (
     <ShopLayout language={language} currency={currency}>
       <Stack>
-        <Button sx={{ width: '250px', margin: '0 0 30px 0' }} variant="contained" onClick={() => router.push('/')}>
+        <Button
+          sx={{ width: '250px', margin: '0 0 30px 0' }}
+          variant="contained"
+          onClick={() => router.push('/')}
+        >
           На главную
         </Button>
         <Typography variant="h4">{t('title')}</Typography>

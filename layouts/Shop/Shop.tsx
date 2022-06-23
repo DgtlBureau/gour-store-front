@@ -2,8 +2,14 @@ import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
-import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
+import {
+  selectedProductCount,
+  selectedProductSum,
+} from '../../store/slices/orderSlice';
+import {
+  useGetCurrentUserQuery,
+  useChangeCurrentCityMutation,
+} from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 
 import { Box } from '../../components/UI/Box/Box';
@@ -24,7 +30,6 @@ export interface ShopLayoutProps {
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
-
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
 
@@ -39,7 +44,8 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity =
+    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');

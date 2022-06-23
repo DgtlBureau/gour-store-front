@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Modal, Stack } from '@mui/material';
@@ -39,7 +39,11 @@ const sx = {
   },
 };
 
-export function PAEmailChangeModal({ isOpen, onClose, onChange }: PAEmailChangeModalProps) {
+export function PAEmailChangeModal({
+  isOpen,
+  onClose,
+  onChange,
+}: PAEmailChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -48,6 +52,10 @@ export function PAEmailChangeModal({ isOpen, onClose, onChange }: PAEmailChangeM
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    values.reset();
+  }, [isOpen]);
 
   const submitHandler = (formData: { email: string }) => {
     onChange(formData.email);
@@ -67,7 +75,11 @@ export function PAEmailChangeModal({ isOpen, onClose, onChange }: PAEmailChangeM
         <FormProvider {...values}>
           <form onSubmit={values.handleSubmit(submitHandler)}>
             <Stack spacing={2}>
-              <HFTextField type="email" name="email" label={t('passwordConfirm')} />
+              <HFTextField
+                type="email"
+                name="email"
+                label={t('passwordConfirm')}
+              />
               <Button type="submit" sx={sx.submitBtn}>
                 {t('send')}
               </Button>
