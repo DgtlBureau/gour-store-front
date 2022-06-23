@@ -18,7 +18,7 @@ import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 import { Button } from '../UI/Button/Button';
-import { Link as CustomLink } from '../UI/Link/Link';
+import Link from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { Currency } from '../../@types/entities/Currency';
@@ -120,9 +120,9 @@ export function Header({
 
               {!isGame && (
                 <>
-                  <CustomLink path={`tel:${firstPhone}`} variant="body1" color="inherit" sx={sx.phone}>
+                  <Link href={`tel:${firstPhone}`} variant="body1" color="inherit" sx={sx.phone}>
                     {firstPhone}
-                  </CustomLink>
+                  </Link>
 
                   <Box sx={sx.city} onClick={openCityModal}>
                     <PlaceOutlinedIcon />

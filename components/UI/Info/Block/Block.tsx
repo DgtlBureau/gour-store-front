@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, SxProps } from '@mui/material';
 
 import { Typography } from '../../Typography/Typography';
-import { Link as CustomLink } from '../../Link/Link';
+import Link from '../../Link/Link';
 
 const infoSx = {
   block: {
@@ -31,7 +31,7 @@ export function InfoBlock({ text, link, sx }: Props) {
       <Typography sx={infoSx.text} color="text.muted" variant="body1">
         {text}
       </Typography>
-      {link && <CustomLink path={link.path}>{link.label}</CustomLink>}
+      {link && <Link href={link.path}>{link.label}</Link>}
     </Paper>
   );
 }

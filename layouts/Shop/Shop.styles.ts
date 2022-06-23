@@ -17,9 +17,9 @@ const sx = {
     width: '100%',
     maxWidth: '1200px',
     margin: {
-      md: '50px 0px',
-      sm: '40px 0px',
-      xs: '30px 0px',
+      md: '50px 0 0 0',
+      sm: '40px 0 0 0',
+      xs: '30px 0 0 0',
     },
     padding: {
       xs: '0 10px',
@@ -28,8 +28,17 @@ const sx = {
     },
   },
   footer: {
-    marginTop: '180px',
-    marginBottom: '50px',
+    width: '100%',
+    margin: {
+      md: '100px 0 40px 0',
+      sm: '80px 0 40px 0',
+      xs: '60px 0 20px 0',
+    },
+    padding: {
+      xs: '0 10px',
+      sm: '0 20px',
+      md: 0,
+    },
   },
 };
 
