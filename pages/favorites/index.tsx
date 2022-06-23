@@ -26,7 +26,7 @@ export function Favorites() {
   const locale: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
 
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+  const currentCurrency: Currency = 'cheeseCoin';
 
   const {
     data: favoriteProducts = [],
@@ -43,8 +43,6 @@ export function Favorites() {
     dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) =>
     dispatch(subtractBasketProduct(product));
-
-  console.log('fav', favoriteProducts);
 
   const handleElect = async (id: number, isElect: boolean) => {
     if (isElect) {
@@ -65,12 +63,19 @@ export function Favorites() {
     router.push(`/products/${id}`);
   };
 
-  if (!favoriteProducts) {
-    return <></>;
+  if (favoriteProducts.length === 0) {
+    return (
+      <ShopLayout currency={'cheeseCoin'} language={'en'}>
+        <Stack spacing={2}>
+          <Typography>Избранные продукты</Typography>
+          <Typography variant="h5">Нет избранных продуктов</Typography>
+        </Stack>
+      </ShopLayout>
+    );
   }
 
   return (
-    <ShopLayout>
+    <ShopLayout currency={'cheeseCoin'} language={'en'}>
       <Stack spacing={2}>
         <Typography>Избранные продукты</Typography>
         <Grid container>

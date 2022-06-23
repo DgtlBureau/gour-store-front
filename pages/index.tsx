@@ -33,15 +33,20 @@ import { Currency } from '../@types/entities/Currency';
 import { Language } from '../@types/entities/Language';
 
 import { sx } from './index.styles';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+} from 'store/api/favoriteApi';
 
 type SliderProductCardProps = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
   language: Language;
-  addToBasket: (product: IProduct) => {};
-  removeFromBasket: (product: IProduct) => {};
-  goToProductPage: (id: number) => {};
+  addToBasket: (product: IProduct) => void;
+  removeFromBasket: (product: IProduct) => void;
+  goToProductPage: (id: number) => void;
+  onElect: (id: number, isElect: boolean) => void;
 };
 
 const Home: NextPage = () => {
@@ -64,6 +69,24 @@ const Home: NextPage = () => {
     category: 'all',
     characteristics: {},
   });
+
+  const [fetchRemoveFavorite] = useDeleteFavoriteProductMutation();
+  const [fetchAddFavorite] = useCreateFavoriteProductsMutation();
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await fetchRemoveFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await fetchAddFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
@@ -122,6 +145,7 @@ const Home: NextPage = () => {
       addToBasket={addToBasket}
       removeFromBasket={removeFromBasket}
       goToProductPage={goToProductPage}
+      onElect={handleElect}
     />
   ));
 
@@ -138,6 +162,7 @@ const Home: NextPage = () => {
         addToBasket={addToBasket}
         removeFromBasket={removeFromBasket}
         goToProductPage={goToProductPage}
+        onElect={handleElect}
       />
     ));
 
@@ -215,6 +240,7 @@ const SliderProductCard = ({
   addToBasket,
   removeFromBasket,
   goToProductPage,
+  onElect,
 }: SliderProductCardProps) => {
   const [isElect, setIsElect] = useState(false);
   const productInBasket = basket.find(it => it.product.id === product.id);
@@ -224,7 +250,8 @@ const SliderProductCard = ({
       ? productInBasket?.weight
       : productInBasket?.amount) || 0;
 
-  const onElect = () => {
+  const handleElect = () => {
+    onElect();
     setIsElect(!isElect);
   };
 
@@ -243,7 +270,7 @@ const SliderProductCard = ({
       isWeightGood={product.isWeightGood}
       onAdd={() => addToBasket(product)}
       onRemove={() => removeFromBasket(product)}
-      onElect={onElect}
+      onElect={handleElect}
       onDetail={() => goToProductPage(product.id)}
     />
   );
