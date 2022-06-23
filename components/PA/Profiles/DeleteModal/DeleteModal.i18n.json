@@ -1,0 +1,10 @@
+{
+  "ru": {
+    "title": "Удаление адреса",
+    "description": "Вы действительно хотите удалить адрес доставки?"
+  },
+  "en": {
+    "title": "Deleting an address",
+    "description": "Do you really want to delete the delivery address?"
+  }
+}

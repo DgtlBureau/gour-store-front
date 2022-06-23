@@ -1,0 +1,30 @@
+{
+  "ru": {
+    "title": "Вы уже покупали этот товар?",
+    "subtitle": "Оставьте отзыв",
+    "rate": "Оцените товар",
+    "placeholder": "Напишите отзыв",
+    "accept": "Отправить",
+    "alert": {
+      "title": "Спасибо!",
+      "message": {
+        "1": "Отзыв отправлен на модерацию.",
+        "2": "Скоро мы его опубликуем."
+      }
+    }
+  },
+  "en": {
+    "title": "Have you already bought this product?",
+    "subtitle": "Leave a review",
+    "rate": "Rate the product",
+    "placeholder": "Write a review",
+    "accept": "Send",
+    "alert": {
+      "title": "Thank you!",
+      "message": {
+        "1": "Review sent for moderation.",
+        "2": "We will publish it soon."
+      }
+    }
+  }
+}

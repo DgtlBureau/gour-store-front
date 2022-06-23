@@ -1,98 +1,43 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { commonApi } from './commonApi';
 import { IProduct } from '../../@types/entities/IProduct';
 import { ProductGetOneDto } from '../../@types/dto/product/get-one.dto';
+import { Path } from 'constants/routes';
 
-export const productApi = createApi({
-  reducerPath: 'productApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['Product'],
+export const productApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getProductList: builder.query<IProduct[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'products',
+            method: 'GET',
+            url: Path.PRODUCTS,
           };
         },
-        providesTags: result =>
-          result
-            ? [
-                ...result.map(({ id }) => ({ type: 'Product', id } as const)),
-                { type: 'Product', id: 'LIST' },
-              ]
-            : [{ type: 'Product', id: 'LIST' }],
       }),
       getNoveltiesProductList: builder.query<IProduct[], void>({
         query() {
           return {
-            method: 'get',
-            url: 'products/novelties',
+            method: 'GET',
+            url: `${Path.PRODUCTS}/${Path.NOVELTIES}`,
           };
         },
-        providesTags: result =>
-          result
-            ? [
-                ...result.map(({ id }) => ({ type: 'Product', id } as const)),
-                { type: 'Product', id: 'LIST' },
-              ]
-            : [{ type: 'Product', id: 'LIST' }],
       }),
       getProduct: builder.query<IProduct, ProductGetOneDto>({
         query({ id, ...params }) {
           return {
-            method: 'get',
-            url: `products/${id}`,
+            method: 'GET',
+            url: `${Path.PRODUCTS}/${id}`,
             params,
           };
         },
-        providesTags: (result, error, params) => [
-          { type: 'Product', id: params.id },
-        ],
-      }),
-      createProduct: builder.mutation<IProduct, Partial<IProduct>>({
-        query(product) {
-          return {
-            method: 'post',
-            url: `products`,
-            data: product,
-          };
-        },
-        invalidatesTags: [{ type: 'Product', id: 'LIST' }],
-      }),
-      updateProduct: builder.mutation<
-        IProduct,
-        Partial<IProduct> & Pick<IProduct, 'id'>
-      >({
-        query(product) {
-          return {
-            method: 'put',
-            url: `products/${product.id}`,
-            data: product,
-          };
-        },
-        invalidatesTags: (r, e, { id }) => [{ type: 'Product', id }],
-      }),
-      deleteProduct: builder.mutation<IProduct, number>({
-        query(id) {
-          return {
-            method: 'delete',
-            url: `products/${id}`,
-          };
-        },
-        invalidatesTags: [{ type: 'Product', id: 'LIST' }],
       }),
     };
   },
 });
 
 export const {
-  useCreateProductMutation,
-  useDeleteProductMutation,
   useGetProductQuery,
   useGetProductListQuery,
   useLazyGetProductQuery,
-  useUpdateProductMutation,
   useGetNoveltiesProductListQuery,
 } = productApi;

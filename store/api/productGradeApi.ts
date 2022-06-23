@@ -1,14 +1,10 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { commonApi } from './commonApi';
 import { CreateProductGradeDto } from '../../@types/dto/productGrade/create.dto';
 import { GetProductGradeListDto } from '../../@types/dto/productGrade/get-list.dto';
 import { IProductGrade } from '../../@types/entities/IProductGrade';
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { Path } from 'constants/routes';
 
-export const productGradeApi = createApi({
-  reducerPath: 'productGradeApi',
-  tagTypes: ['ProductGrade'],
-  baseQuery: baseQueryWithReauth,
-
+export const productGradeApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getProductGradeList: builder.query<
@@ -17,8 +13,8 @@ export const productGradeApi = createApi({
       >({
         query({ productId, ...params }) {
           return {
-            method: 'get',
-            url: `products/${productId}/grades`,
+            method: 'GET',
+            url: `${Path.PRODUCTS}/${productId}/${Path.GRADES}`,
             params,
           };
         },
@@ -29,8 +25,8 @@ export const productGradeApi = createApi({
       >({
         query({ productId, ...body }) {
           return {
-            method: 'post',
-            url: `products/${productId}/grades`,
+            method: 'POST',
+            url: `${Path.PRODUCTS}/${productId}/${Path.GRADES}`,
             body,
           };
         },
@@ -39,5 +35,4 @@ export const productGradeApi = createApi({
   },
 });
 
-export const { useCreateProductGradeMutation, useGetProductGradeListQuery } =
-  productGradeApi;
+export const { useCreateProductGradeMutation, useGetProductGradeListQuery } = productGradeApi;

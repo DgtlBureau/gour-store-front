@@ -1,19 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-
-import { baseQueryWithReauth } from "../../http/baseQuery";
+import { commonApi } from './commonApi';
 import { IClientRole } from '../../@types/entities/IClientRole';
+import { Path } from 'constants/routes';
 
-export const roleApi = createApi({
-  reducerPath: 'roleApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['Role'],
+export const roleApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getRoleList: builder.query<IClientRole[], void>({
         query() {
           return {
             method: 'GET',
-            url: 'clientRoles',
+            url: Path.CLIENT_ROLES,
           }
         },
       }),
@@ -21,7 +17,7 @@ export const roleApi = createApi({
         query(id) {
           return {
             method: 'GET',
-            url: `clientRoles/${id}`,
+            url: `${Path.CLIENT_ROLES}/${id}`,
           }
         },
       }),
