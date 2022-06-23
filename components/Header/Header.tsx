@@ -147,6 +147,7 @@ export function Header({
               >
                 <Typography variant="body2" sx={sx.moneyAmount}>
                   {moneyAmount}
+                  &nbsp;
                   {currencySymbol}
                 </Typography>
 
@@ -202,6 +203,7 @@ export function Header({
                       <ShoppingCartOutlinedIcon color="primary" />
                     </Badge>
                     {basketProductSum}
+                    &nbsp;
                     {currencySymbol}
                   </Button>
                 </>

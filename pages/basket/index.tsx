@@ -23,6 +23,18 @@ import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/Info/Block/Block';
 import { IProduct } from '../../@types/entities/IProduct';
 
+const sx = {
+  title: {
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    color: 'text.secondary',
+  },
+};
+
 export function Basket() {
   const router = useRouter();
 
@@ -57,7 +69,7 @@ export function Basket() {
 
   return (
     <ShopLayout currency={currency} language={language}>
-      <Typography variant="h3" sx={{ fontWeight: 'bold', fontFamily: 'Roboto slab', color: 'primary.main' }}>
+      <Typography variant="h3" sx={sx.title}>
         {t('cart')}
       </Typography>
 
@@ -74,7 +86,7 @@ export function Basket() {
       )}
 
       {productsInOrder.length !== 0 && (
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             {productsInOrder.map((it, i) => (
               <CartCard

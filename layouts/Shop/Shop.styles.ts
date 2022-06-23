@@ -24,7 +24,6 @@ const sx = {
     padding: {
       xs: '0 10px',
       sm: '0 20px',
-      md: 0,
     },
   },
   footer: {
@@ -37,7 +36,6 @@ const sx = {
     padding: {
       xs: '0 10px',
       sm: '0 20px',
-      md: 0,
     },
   },
 };

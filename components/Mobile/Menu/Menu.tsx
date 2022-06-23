@@ -99,6 +99,7 @@ export function MobileMenu({
       <Box sx={sx.money}>
         <Typography variant="body2" sx={sx.moneyAmount}>
           {moneyAmount}
+          &nbsp;
           {currencySymbol}
         </Typography>
 

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import translations from './main.i18n.json';
+import translations from './Main.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
 import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';

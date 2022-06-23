@@ -2,13 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import translations from './index.i18n.json';
+import translations from './Main.i18n.json';
 import { useLocalTranslation } from '../hooks/useLocalTranslation';
+import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Button } from '../components/UI/Button/Button';
 import { Typography } from '../components/UI/Typography/Typography';
-import { Link as CustomLink } from '../components/UI/Link/Link';
-import { ShopLayout } from '../layouts/Shop/Shop';
+import Link from '../components/UI/Link/Link';
+
 import notFound from '../assets/images/404.png';
 
 const sx = {
@@ -21,8 +22,8 @@ const sx = {
     padding: '0 20px',
   },
   title: {
-    color: '#7E5F2F',
-    fontWeight: '700',
+    color: 'text.secondary',
+    fontWeight: 'bold',
     marginTop: '55px',
   },
   button: {
@@ -31,17 +32,18 @@ const sx = {
 };
 
 export default function NotFound() {
-  const router = useRouter();
-  const goToHome = () => router.push('/');
-
   const { t } = useLocalTranslation(translations);
+
+  const router = useRouter();
+
+  const goToHome = () => router.push('/');
 
   return (
     <ShopLayout currency="cheeseCoin" language="ru">
       <Box sx={sx.notFound}>
-        <CustomLink path="/">
+        <Link href="/">
           <Image src={notFound} height="325" width="814" alt="notFound" />
-        </CustomLink>
+        </Link>
 
         <Typography variant={'h4'} sx={sx.title}>
           {t('notFound.message')}

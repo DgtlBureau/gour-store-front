@@ -99,7 +99,7 @@ export function Footer({
   ];
 
   return (
-    <Box sx={sx}>
+    <Box sx={{ ...sx, maxWidth: '1200px' }}>
       <Box sx={footerSx.contactsWrapper}>
         <Link href="/">
           <Box sx={footerSx.logo}>

@@ -14,7 +14,7 @@ const sx = {
     width: {
       xs: '170px',
       sm: '220px',
-      md: '300px',
+      md: '290px',
     },
 
     padding: {
@@ -38,7 +38,7 @@ const sx = {
     height: {
       xs: '146px',
       sm: '190px',
-      md: '245px',
+      md: '255px',
     },
 
     border: '2px solid',
