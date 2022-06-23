@@ -9,7 +9,7 @@ import {
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
-import translations from './index.i18n.json';
+import translations from './Addresses.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
 import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from 'components/UI/Box/Box';

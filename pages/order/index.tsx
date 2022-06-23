@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Grid, Stack } from '@mui/material';
 
-import translation from './index.i18n.json';
+import translation from './Order.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { selectedProductCount, selectedProductSum, selectProductsInOrder } from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';

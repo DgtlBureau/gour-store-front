@@ -3,6 +3,7 @@ import { Paper, Grid } from '@mui/material';
 
 import translations from './FavoriteInfo.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
+import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 
@@ -60,7 +61,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
   };
 
   return (
-    <Paper sx={sx.paper}>
+    <AuthCard>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Button variant="outlined" onClick={onBack}>
@@ -76,18 +77,16 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
           <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
         </Grid>
 
-        <Grid item xs={12} container>
+        <Grid item xs={12} container spacing={2}>
           {countries.map(country => (
-            <Grid item xs={2} key={country.id}>
+            <Grid item xs={3} sm={2} key={country.id}>
               <div
                 style={{
                   ...sx.circle,
                   ...(userCountries.includes(country.id) && sx.selected),
                   backgroundImage: `url(${country.image})`,
                 }}
-                onClick={() => {
-                  handleClickCountry(country.id);
-                }}
+                onClick={() => handleClickCountry(country.id)}
               >
                 <Typography variant="body2">{country.title}</Typography>
               </div>
@@ -99,9 +98,9 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
           <Typography variant="subtitle1">{t('likedTitle')}</Typography>
         </Grid>
 
-        <Grid item xs={12} container>
+        <Grid item xs={12} container spacing={2}>
           {products.map(product => (
-            <Grid item xs={2} key={product.id}>
+            <Grid item xs={3} sm={2} key={product.id}>
               <div
                 style={{
                   ...sx.circle,
@@ -124,6 +123,6 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
           </Button>
         </Grid>
       </Grid>
-    </Paper>
+    </AuthCard>
   );
 }

@@ -1,18 +1,20 @@
 import React from 'react';
 import { Card, CardContent, CardActions, CardMedia } from '@mui/material';
 
+import PlusIcon from '@mui/icons-material/Add';
+import MinusIcon from '@mui/icons-material/Remove';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+import translations from './Card.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { CartCardDocket as Docket } from './Docket';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { IconButton } from '../../UI/IconButton/IconButton';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import defaultImage from '../../../assets/no-image.svg'
-import translations from './Card.i18n.json';
 import { Currency } from '../../../@types/entities/Currency';
 
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
+import defaultImage from '../../../assets/no-image.svg';
 
 import sx from './Card.styles';
 
@@ -25,7 +27,6 @@ type Props = {
   isWeightGood: boolean;
   discount?: number;
   currency?: Currency;
-  onElect: () => void;
   onAdd: () => void;
   onSubtract: () => void;
   onDelete: () => void;
@@ -40,16 +41,13 @@ export function CartCard({
   weight,
   isWeightGood,
   currency = 'cheeseCoin',
-  onElect,
   onDelete,
   onAdd,
   onSubtract,
 }: Props) {
   const { t } = useLocalTranslation(translations);
-  const currencySymbol = getCurrencySymbol(currency);
-  const totalPrice = discount
-    ? Math.round(price * (1 - discount / 100))
-    : price;
+
+  const screenWidth = window.screen.width;
 
   return (
     <Card sx={sx.card}>
@@ -61,31 +59,19 @@ export function CartCard({
             {title}
           </Typography>
 
-          <Box sx={sx.docket}>
-            <Typography
-              variant="h5"
-              sx={sx.price}
-              color={discount ? 'error' : 'primary'}
-            >
-              {totalPrice * amount} {currencySymbol}
-            </Typography>
-            {!!discount && (
-              <Typography variant="body2" sx={sx.oldPrice}>
-                {price * amount} {currencySymbol}
-              </Typography>
-            )}
-          </Box>
+          {screenWidth > 600 ? (
+            <Docket currency={currency} discount={discount} price={price} amount={amount} />
+          ) : (
+            <IconButton size="small" onClick={onDelete} sx={sx.cancelBtn}>
+              <CancelIcon />
+            </IconButton>
+          )}
         </CardContent>
 
         <CardActions sx={sx.actions}>
-          <Box sx={sx.leftActions}>
-            <Button variant="text" onClick={onElect}>
-              {t('elect')}
-            </Button>
-            <Button variant="text" onClick={onDelete}>
-              {t('delete')}
-            </Button>
-          </Box>
+          <Button variant="text" onClick={onDelete} sx={sx.deleteBtn}>
+            {t('delete')}
+          </Button>
 
           <Box sx={sx.edit}>
             <IconButton onClick={onSubtract}>
@@ -93,14 +79,15 @@ export function CartCard({
             </IconButton>
 
             <Typography variant="body2" sx={sx.weight}>
-              {isWeightGood ? weight : amount}{' '}
-              {isWeightGood ? t('g') : t('piece')}
+              {isWeightGood ? weight : amount} {isWeightGood ? t('g') : t('piece')}
             </Typography>
 
             <IconButton onClick={onAdd}>
               <PlusIcon />
             </IconButton>
           </Box>
+
+          {screenWidth <= 600 && <Docket currency={currency} discount={discount} price={price} amount={amount} />}
         </CardActions>
       </Box>
     </Card>

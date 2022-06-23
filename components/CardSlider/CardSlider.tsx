@@ -21,6 +21,10 @@ const sliderSx = {
     flexDirection: 'column',
   } as CSSProperties,
   title: {
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: 'text.secondary',
@@ -51,7 +55,9 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
 
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
 
-  const withArrows = cardsList.length > rows * slidesPerView;
+  const screenWidth = window.screen.width;
+
+  const withArrows = cardsList.length > rows * slidesPerView || screenWidth < 1200;
 
   return (
     <Box sx={{ ...sliderSx.container, ...sx }}>

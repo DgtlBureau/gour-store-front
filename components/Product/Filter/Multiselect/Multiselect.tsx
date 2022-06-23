@@ -36,7 +36,7 @@ export type FilterMultiselectProps = {
   onChange(selected: string[]): void;
 };
 
-export function FilterMultiselect({ title, selected, options, isMobile, sx, onChange }: FilterMultiselectProps) {
+export function ProductFilterMultiselect({ title, selected, options, isMobile, sx, onChange }: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);

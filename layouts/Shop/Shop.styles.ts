@@ -16,8 +16,16 @@ const sx = {
     flexDirection: 'column',
     width: '100%',
     maxWidth: '1200px',
-    paddingTop: '50px',
-    padding: '50px 20px 20px 20px',
+    margin: {
+      md: '50px 0px',
+      sm: '40px 0px',
+      xs: '30px 0px',
+    },
+    padding: {
+      xs: '0 10px',
+      sm: '0 20px',
+      md: 0,
+    },
   },
   footer: {
     marginTop: '180px',

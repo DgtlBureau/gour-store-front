@@ -6,13 +6,13 @@ const sx = {
     flexDirection: 'column',
 
     height: {
-      xs: '320px',
-      sm: '370px',
-      md: '500px',
+      xs: '310px',
+      sm: '380px',
+      md: '520px',
     },
 
     width: {
-      xs: '180px',
+      xs: '170px',
       sm: '220px',
       md: '300px',
     },
@@ -36,7 +36,7 @@ const sx = {
   },
   previewImg: {
     height: {
-      xs: '160px',
+      xs: '146px',
       sm: '190px',
       md: '245px',
     },

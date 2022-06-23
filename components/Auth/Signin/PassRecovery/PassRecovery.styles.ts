@@ -1,14 +1,4 @@
 const sx = {
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '550px',
-    padding: '60px',
-    backgroundColor: 'background.default',
-    border: '4px solid',
-    borderColor: 'accent.main',
-    borderRadius: '10px',
-  },
   title: {
     fontWeight: 700,
     fontSize: '18px',
@@ -16,13 +6,23 @@ const sx = {
   },
   phone: {
     display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   getCodeBtn: {
     whiteSpace: 'nowrap',
-    minWidth: 'auto',
-    marginLeft: '12px',
+    minWidth: {
+      xs: '100%',
+      sm: 'auto',
+    },
+    margin: {
+      xs: '12px 0 0 0',
+      sm: '0 0 0 12px',
+    },
   },
   field: {
     marginBottom: '14px',
@@ -30,6 +30,9 @@ const sx = {
   backBtn: {
     width: 'fit-content',
     marginBottom: '20px',
+  },
+  submitBtn: {
+    width: '100%',
   },
 };
 
