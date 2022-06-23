@@ -16,6 +16,7 @@ import {
   getFormattedAddressesList,
   getFormattedOrdersList,
 } from './personalAreaHelper';
+import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
 
 export function Main() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export function Main() {
   const goToCredentials = () => router.push(Path.CREDENTIALS);
   const goToAddresses = () => router.push(Path.ADDRESSES);
   const goToOrders = () => router.push(Path.ORDERS);
+  const goToDiscounts = () => router.push(Path.DISCOUNTS);
 
   return (
     <PALayout>
@@ -51,9 +53,11 @@ export function Main() {
         <Grid item xs={6}>
           <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
         </Grid>
-
         <Grid item xs={6}>
           <PAOrdersCard orders={orders} onClickMore={goToOrders} />
+        </Grid>
+        <Grid item xs={6}>
+          <PADiscountsCard discounts={[]} onClickMore={goToDiscounts} />
         </Grid>
       </Grid>
     </PALayout>
