@@ -1,39 +1,72 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, SxProps } from '@mui/material';
 
 import translation from './Card.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from '../../UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
+import { Language } from '../../../@types/entities/Language';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 
 type Props = {
   currency: Currency;
+  language: Language;
   totalProductCount: number;
   totalCartPrice: number;
   productsList: IOrderProduct[];
+  sx?: SxProps;
 };
 
-const sx = {
+const cardSx = {
   card: {
     width: '100%',
     padding: '30px',
-    backgroundColor: 'rgba(235, 235, 235, 1)',
+    backgroundColor: 'background.paper',
+    borderRadius: '6px',
   },
   footer: {
     width: '100%',
-    borderTop: 'dashed',
+    borderTop: '1px dashed',
+    borderColor: 'text.muted',
     margin: '20px 0 0 0',
     padding: '20px 0 0 0',
   },
+  field: {
+    display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+      md: 'column',
+    },
+    gap: {
+      xs: 0,
+      sm: '20px',
+      md: 0,
+    },
+    marginBottom: '10px',
+  },
+  count: {
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    margin: '0 0 20px 0',
+  },
+  product: {
+    width: 'fit-content',
+    color: 'text.muted',
+  },
+  total: {
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    color: 'text.secondary',
+  },
 };
 
-export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, currency }: Props) => {
+export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) => {
   const { t } = useLocalTranslation(translation);
 
-  const lang = 'ru';
   const currencySymbol = getCurrencySymbol(currency);
 
   const productInfo = productsList.map(product => {
@@ -43,7 +76,7 @@ export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, cur
     const productTotalCount = product.product.isWeightGood ? product.weight / 1000 : product.amount;
     return {
       id: product.product.id,
-      title: product.product.title[lang],
+      title: product.product.title[language],
       totalPrice: productTotalPrice,
       totalCount: `${productTotalCount} ${product.product.isWeightGood ? t('kg') : t('piece')}`,
     };
@@ -56,24 +89,28 @@ export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, cur
   ]);
 
   return (
-    <Stack sx={sx.card}>
-      <Typography sx={{ margin: '0 0 20px 0' }} variant="h5">
-        {totalProductCount} {productsCountText} в заказе
+    <Stack sx={{ ...cardSx.card, ...sx }}>
+      <Typography sx={cardSx.count} variant="h6">
+        {totalProductCount} {productsCountText} {t('inOrder')}
       </Typography>
 
       {productInfo.map(product => (
-        <Stack key={product.id} sx={{ margin: '0 0 10px 0' }}>
-          <Typography variant="body1">{product.title}</Typography>
-          <Typography variant="body1">
-            {product.totalPrice}
-            {currencySymbol} • {product.totalCount}
+        <Box key={product.id} sx={cardSx.field}>
+          <Typography variant="body1" sx={cardSx.product}>
+            {product.title}
           </Typography>
-        </Stack>
+
+          <Typography variant="body1" sx={cardSx.product}>
+            {product.totalPrice} {currencySymbol} • {product.totalCount}
+          </Typography>
+        </Box>
       ))}
 
-      <Stack sx={sx.footer} direction="row" justifyContent="space-between">
-        <Typography variant="h5">Итого</Typography>
-        <Typography variant="h5">
+      <Stack sx={cardSx.footer} direction="row" justifyContent="space-between">
+        <Typography variant="h6" sx={cardSx.total}>
+          {t('total')}
+        </Typography>
+        <Typography variant="h6" sx={cardSx.total}>
           {totalCartPrice} {currencySymbol}
         </Typography>
       </Stack>

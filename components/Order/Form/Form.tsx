@@ -18,10 +18,16 @@ import { Currency } from '../../../@types/entities/Currency';
 
 const sx = {
   form: {
-    width: '100%',
+    maxWidth: {
+      xs: '100%',
+      md: '650px',
+    },
   },
   block: {
     marginBottom: '40px',
+    '&:last-child': {
+      marginBottom: 0,
+    },
   },
   title: {
     marginBottom: '20px',
