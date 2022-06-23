@@ -38,8 +38,6 @@ export function PALayout({ children }: PALayoutProps) {
 
   const currentPath = router.pathname.split('/')[1];
 
-  console.log(currentPath);
-
   const [chapter, setChapter] = useState<string>(currentPath);
 
   const convertedCities =

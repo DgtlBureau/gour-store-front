@@ -24,12 +24,25 @@ type Props = {
   categories: Category[];
 };
 
-const percents: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 const sx = {
+  title: {
+    color: '#321811',
+  },
+  headerText: {
+    color: '#c29f6c',
+  },
+  container: {
+    maxWidth: '1200px',
+    backgroundColor: '#fffef7',
+    border: '1px solid #f4e7ce',
+  },
   summary: {
+    color: '#7E5F2F',
     display: 'flex',
     justifyContent: 'flex-end',
+  },
+  categoryTitle: {
+    color: '#7E5F2F',
   },
   category: {
     width: '100%',
@@ -40,11 +53,17 @@ const sx = {
   },
 };
 
-export const Group = ({ title, categories }: Props) => {
+export const DiscountsGroup = ({ title, categories }: Props) => {
+  const percents: number[] = [];
+  for (let i = 1; i <= 10; i++) {
+    percents.push(i);
+  }
   return (
-    <Accordion sx={{ maxWidth: '1200px' }}>
+    <Accordion sx={sx.container}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="body1">Прогресс скидки "{title}"</Typography>
+        <Typography sx={sx.title} variant="h6">
+          Прогресс скидки "{title}"
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Stack>
@@ -57,20 +76,23 @@ export const Group = ({ title, categories }: Props) => {
               },
             }}
             container
-            spacing={2}
+            spacing={{ xs: 1, md: 2 }}
           >
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle1">Скидка %</Typography>
+            <Grid item xs={3} md={1}>
+              <Typography sx={sx.headerText} variant="subtitle1">
+                Скидка %
+              </Typography>
             </Grid>
             <Grid
               display="flex"
               justifyContent="space-between"
               item
-              xs={8}
+              xs={6}
               md={10}
             >
               {percents.map(percent => (
                 <Box
+                  key={percent}
                   sx={{
                     width: 'calc(100%/10)',
                     display: 'flex',
@@ -78,7 +100,11 @@ export const Group = ({ title, categories }: Props) => {
                   }}
                 >
                   <Typography
-                    sx={{ width: '24px', textAlign: 'center' }}
+                    sx={{
+                      ...sx.headerText,
+                      width: '24px',
+                      textAlign: 'center',
+                    }}
                     variant="subtitle1"
                   >
                     {percent}
@@ -86,8 +112,11 @@ export const Group = ({ title, categories }: Props) => {
                 </Box>
               ))}
             </Grid>
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle1">
+            <Grid item xs={3} md={1}>
+              <Typography
+                sx={{ ...sx.headerText, textAlign: 'end' }}
+                variant="subtitle1"
+              >
                 Всего {getCurrencySymbol('cheeseCoin')}
               </Typography>
             </Grid>
@@ -100,7 +129,9 @@ export const Group = ({ title, categories }: Props) => {
               spacing={{ xs: 1, md: 2 }}
             >
               <Grid item xs={3} md={1}>
-                <Typography variant="subtitle2">{category.title}</Typography>
+                <Typography sx={sx.categoryTitle} variant="subtitle2">
+                  {category.title}
+                </Typography>
               </Grid>
               <Grid item xs={6} md={10}>
                 <Item
