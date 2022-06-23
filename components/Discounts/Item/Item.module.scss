@@ -1,0 +1,45 @@
+.step {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    .connector {
+        width: calc(100% - 24px);
+        height: 2px;
+
+        background: #f4e7ce;
+
+        &.active {
+            background: #f7a400;
+        }
+
+        .connectorPercentage {
+            height: 100%;
+            background: #f7a400;
+        }
+    }
+
+    .stepLabel {
+        width: 24px;
+        height: 24px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f4e7ce;
+        color: #fff;
+
+        &.active {
+            background: #f7a400;
+        }
+    }
+
+    &.mobile {
+        .connector {
+            width: calc(100% - 48px);
+        }
+    }
+}

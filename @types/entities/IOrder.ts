@@ -1,22 +1,33 @@
+import { string } from 'yup/lib/locale';
+import { IBaseEntity } from './IBaseEntity';
 import { IOrderProduct } from './IOrderProduct';
+import { IOrderProfile } from './IOrderProfile';
 
 export interface IOrder {
-  order: {
-    id: number;
-    firstName: string;
-    lastName?: string;
-    phone: string;
-    email: string;
-    deliveryProfileId: number;
-    comment?: string;
-    createdAt: string,
-    orderProducts: IOrderProduct[];
-  },
-  crmInfo: {
-    id: string,
-    status: {
-      name: string,
-      color: string,
-    },
-  },
+  order: OrderData;
+  crmInfo: OrderCrmInfo;
+  promotions: OrderPromotion[];
+}
+interface OrderData extends IBaseEntity {
+  orderProducts: IOrderProduct[];
+  firstName: string;
+  lastName?: string;
+  phone: string;
+  email: string;
+  orderProfile: IOrderProfile;
+  comment?: string;
+}
+
+interface OrderCrmInfo {
+  id: string;
+  status: {
+    name: string;
+    color: string;
+  };
+}
+
+interface OrderPromotion {
+  title: string;
+  value: number;
+  currency: string;
 }

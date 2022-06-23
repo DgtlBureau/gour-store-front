@@ -6,7 +6,7 @@ import { Path } from 'constants/routes';
 export const orderApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getOrderList: builder.query<IOrder[], void>({
+      getOrdersList: builder.query<IOrder[], void>({
         query() {
           return {
             method: 'GET',
@@ -27,4 +27,4 @@ export const orderApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetOrderListQuery, useCreateOrderMutation } = orderApi;
+export const { useGetOrdersListQuery, useCreateOrderMutation } = orderApi;
