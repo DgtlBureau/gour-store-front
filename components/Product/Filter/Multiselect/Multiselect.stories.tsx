@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { FilterMultiselect, FilterMultiselectProps } from './Multiselect';
+import {
+  ProductFilterMultiselect,
+  FilterMultiselectProps,
+} from './Multiselect';
 
 export default {
-  component: FilterMultiselect,
+  component: ProductFilterMultiselect,
   title: 'Catalog/Multiselect',
 } as Meta;
 
-const Template: ComponentStory<typeof FilterMultiselect> = (args: FilterMultiselectProps) => {
+const Template: ComponentStory<typeof ProductFilterMultiselect> = (
+  args: FilterMultiselectProps
+) => {
   const [selectedList, setSelectedList] = useState<string[]>([]);
-  return <FilterMultiselect {...args} selected={selectedList} onChange={setSelectedList} />;
+  return (
+    <ProductFilterMultiselect
+      {...args}
+      selected={selectedList}
+      onChange={setSelectedList}
+    />
+  );
 };
 export const DefaultFilterMultiselect = Template.bind({});
 const props: Partial<FilterMultiselectProps> = {

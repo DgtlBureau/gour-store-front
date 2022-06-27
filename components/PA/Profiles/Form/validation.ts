@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { Translator } from '../../Auth/Signup/Credentials/validation';
+import { Translator } from '../../../Auth/Signup/Credentials/validation';
 
 export const getValidationSchema = (t: Translator) => {
   return yup.object().shape({
