@@ -1,16 +1,19 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { Group } from './Group';
+import { DiscountsGroup } from './Group';
 
 export default {
-  component: Group,
+  component: DiscountsGroup,
   title: 'Group',
 } as Meta;
 
-const Template: ComponentStory<typeof Group> = args => <Group {...args} />;
+const Template: ComponentStory<typeof DiscountsGroup> = args => (
+  <DiscountsGroup {...args} />
+);
 export const DefaultGroup = Template.bind({});
 const props = {
+  key: 'milk',
   title: 'Молоко',
   categories: [
     {

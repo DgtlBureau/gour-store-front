@@ -34,8 +34,6 @@ export function PALayout({ children }: PALayoutProps) {
 
   const currentPath = router.pathname;
 
-  console.log(router.pathname);
-
   const convertedCities =
     cities?.map(city => ({
       id: city.id,
