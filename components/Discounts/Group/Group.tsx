@@ -10,9 +10,9 @@ import {
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Typography } from '../../UI/Typography/Typography';
-import { Item } from '../Item/Item';
 import { Box } from '../../UI/Box/Box';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Stepper } from '../../UI/Stepper/Stepper';
 
 type Category = {
   title: string;
@@ -134,7 +134,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
                 </Typography>
               </Grid>
               <Grid item xs={6} md={10}>
-                <Item
+                <Stepper
                   stepsCount={10}
                   percent={(category.summary % 100000) / 1000}
                   activeStep={Math.floor(category.summary / 100000)}

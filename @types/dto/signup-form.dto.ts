@@ -6,5 +6,4 @@ export type SignUpFormDto = Readonly<{
   sms: string;
   password: string;
   passwordConfirm: string;
-  referral: string;
 }>;

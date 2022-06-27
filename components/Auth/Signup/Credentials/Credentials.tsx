@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControlLabel, Radio } from '@mui/material';
+import { FormControlLabel, Grid, Radio } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -16,17 +16,29 @@ import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
 
 import sx from './Credentials.styles';
+import { Stepper } from 'components/UI/Stepper/Stepper';
+import Image from 'next/image';
+
+import credentialsImage from './../../../../assets/icons/signup/credentials.svg';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
   onBack(): void;
-  onSendSMS(phone: string): string;
+  onSendSMS(phone: string): Promise<'success' | string>;
+  onCheckCode: (code: string) => Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
-export function SignupCredentials({ defaultValues, onBack, onSendSMS, onSubmit }: SignupCredentialsProps) {
-  const [SMS, setSMS] = useState('');
-  const [isConfirmed, setIsConfirmed] = useState(false);
+export function SignupCredentials({
+  defaultValues,
+  onBack,
+  onSendSMS,
+  onCheckCode,
+  onSubmit,
+}: SignupCredentialsProps) {
+  const [isCodeSended, setIsCodeSended] = useState(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
+
   const [isAgree, setIsAgree] = useState(false);
 
   const { t } = useLocalTranslation(translations);
@@ -42,26 +54,27 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onSubmit }
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
-  const formIsInvalid = !values.formState.isValid || !isConfirmed || !isAgree;
+  const phoneIsInvalid =
+    !values.watch('phone') || !!values.getFieldState('phone').error;
+  const codeIsValid =
+    !values.watch('sms') || !!values.getFieldState('sms').error;
+  const formIsInvalid = !values.formState.isValid || !isAgree;
 
-  const sendSMS = () => {
+  const sendSMS = async () => {
     const phone = values.watch('phone');
-    const code = onSendSMS(phone);
 
-    setSMS(code);
+    const response = await onSendSMS(phone);
+    if (response === 'success') {
+      setIsCodeSended(true);
+    } else {
+      values.setError('phone', { message: response });
+    }
   };
 
-  const blurSMSField = () => {
+  const checkCode = async () => {
     const code = values.watch('sms');
-
-    if (!code.trim()) values.setError('sms', { message: t('smsEmpty') });
-    else if (code !== SMS) values.setError('sms', { message: t('smsError') });
-    else values.clearErrors('sms');
-
-    const codeIsValid = !values.getFieldState('sms').error;
-
-    setIsConfirmed(codeIsValid);
+    const status = await onCheckCode(code);
+    setIsCodeSuccess(status);
   };
 
   const agree = () => setIsAgree(!isAgree);
@@ -69,53 +82,130 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onSubmit }
   const submit = (data: SignUpFormDto) => onSubmit(data);
 
   return (
-    <AuthCard>
-      <FormProvider {...values}>
-        <form onSubmit={values.handleSubmit(submit)}>
-          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
-            {t('back')}
-          </Button>
-
-          <Typography sx={sx.title}>{t('title')}</Typography>
-
-          <HFRadioGroup name="role" sx={sx.radioGroup}>
-            <FormControlLabel sx={sx.radioBtn} value="CLIENT" control={<Radio />} label={t('physical')} />
-            <FormControlLabel sx={sx.radioBtn} value="COMPANY" control={<Radio />} label={t('company')} />
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value="COLLECTIVE_PURCHASE"
-              control={<Radio />}
-              label={t('collectivePurchase')}
-            />
-          </HFRadioGroup>
-
-          <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField name="phone" label={t('phone')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid}>
-              {t('getCode')}
-            </Button>
+    <Grid
+      container
+      sx={{ position: 'relative' }}
+      flexDirection={{ xs: 'column-reverse', md: 'row' }}
+      alignItems="center"
+    >
+      <Grid sx={sx.imageContainer} item xs={4} md={6}>
+        <Image
+          src={credentialsImage}
+          layout="intrinsic"
+          width={500}
+          height={750}
+        />
+      </Grid>
+      <Grid
+        item
+        sx={{
+          width: '100%',
+          maxWidth: {
+            xs: 'unset',
+            md: '500px',
+          },
+        }}
+        xs={12}
+        md={6}
+      >
+        <AuthCard>
+          <Box sx={sx.stepper}>
+            <Stepper activeStep={2} stepsCount={5} percent={100} />
           </Box>
+          <FormProvider {...values}>
+            <form onSubmit={values.handleSubmit(submit)}>
+              <Button
+                sx={sx.backBtn}
+                size="small"
+                variant="outlined"
+                onClick={onBack}
+              >
+                {t('back')}
+              </Button>
 
-          {SMS && <HFTextField sx={sx.field} name="sms" label={t('sms')} onBlur={blurSMSField} />}
+              <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFTextField
-            sx={sx.field}
-            type="password"
-            name="password"
-            label={t('password')}
-            helperText={t('passwordHelper')}
-          />
-          <HFTextField sx={sx.field} type="password" name="passwordConfirm" label={t('passwordConfirm')} />
+              <HFRadioGroup name="role" sx={sx.radioGroup}>
+                <FormControlLabel
+                  sx={sx.radioBtn}
+                  value="CLIENT"
+                  control={<Radio />}
+                  label={t('physical')}
+                />
+                <FormControlLabel
+                  sx={sx.radioBtn}
+                  value="COMPANY"
+                  control={<Radio />}
+                  label={t('company')}
+                />
+                <FormControlLabel
+                  sx={sx.radioBtn}
+                  value="COLLECTIVE_PURCHASE"
+                  control={<Radio />}
+                  label={t('collectivePurchase')}
+                />
+              </HFRadioGroup>
 
-          <HFTextField sx={sx.field} name="referral" label={t('referral')} />
+              <Box sx={{ ...sx.field, ...sx.phone }}>
+                <HFTextField name="phone" label={t('phone')} />
+                <Button
+                  sx={sx.getCodeBtn}
+                  onClick={sendSMS}
+                  disabled={phoneIsInvalid}
+                >
+                  {t('getCode')}
+                </Button>
+              </Box>
 
-          <Checkbox sx={sx.field} value={isAgree} onChange={agree} label={t('agreement')} />
+              {isCodeSended && (
+                <Box sx={{ ...sx.field, ...sx.phone }}>
+                  <HFTextField
+                    disabled={isCodeSuccess}
+                    sx={sx.field}
+                    name="sms"
+                    label={t('sms')}
+                  />
+                  <Button
+                    sx={sx.getCodeBtn}
+                    onClick={checkCode}
+                    disabled={codeIsValid}
+                    color={!isCodeSuccess ? 'primary' : 'success'}
+                  >
+                    {!isCodeSuccess ? t('sendCode') : 'Код подтвержден'}
+                  </Button>
+                </Box>
+              )}
 
-          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
-            {t('submit')}
-          </Button>
-        </form>
-      </FormProvider>
-    </AuthCard>
+              {isCodeSuccess && (
+                <>
+                  <HFTextField
+                    sx={sx.field}
+                    type="password"
+                    name="password"
+                    label={t('password')}
+                    helperText={t('passwordHelper')}
+                  />
+                  <HFTextField
+                    sx={sx.field}
+                    type="password"
+                    name="passwordConfirm"
+                    label={t('passwordConfirm')}
+                  />
+                  <Checkbox
+                    sx={sx.field}
+                    value={isAgree}
+                    onChange={agree}
+                    label={t('agreement')}
+                  />
+                </>
+              )}
+              <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
+                {t('submit')}
+              </Button>
+            </form>
+          </FormProvider>
+        </AuthCard>
+      </Grid>
+    </Grid>
   );
 }

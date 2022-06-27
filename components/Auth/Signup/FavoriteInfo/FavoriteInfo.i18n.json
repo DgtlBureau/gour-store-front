@@ -4,13 +4,13 @@
     "title": "I know so much about products since I traveled half the world in my time.",
     "countriesTitle": "Where were you?",
     "likedTitle": "And what did you like there?",
-    "endRegistration": "End registration"
+    "endRegistration": "Next"
   },
   "ru": {
     "backButton": "Назад",
     "title": "Я знаю так много о продуктах, так как в своё время исколесил пол мира.",
     "countriesTitle": "А где был ты?",
     "likedTitle": "И что тебе там понравилось?",
-    "endRegistration": "Закончить регистрацию"
+    "endRegistration": "Далее"
   }
 }

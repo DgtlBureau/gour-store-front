@@ -1,0 +1,14 @@
+{
+  "en": {
+    "goBack": "Go back",
+    "firstText": "Hello, buddy, let's get acquainted!",
+    "secondText": "I am Oleg and I want you to eat delicious.",
+    "goNext": "End registration"
+  },
+  "ru": {
+    "goBack": "Назад",
+    "firstText": "Обещаю, что это последний вопрос =)",
+    "secondText": "Даже если ты никого не знаешь, то пойдём за мной",
+    "goNext": "Закончить регистрацию"
+  }
+}

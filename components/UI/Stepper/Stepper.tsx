@@ -1,7 +1,7 @@
 import React from 'react';
 import DoneIcon from '@mui/icons-material/Done';
-import s from './Item.module.scss';
-import { Box } from '../..//UI/Box/Box';
+import { Box } from '../Box/Box';
+import s from './Stepper.module.scss';
 
 type Props = {
   activeStep: number;
@@ -9,7 +9,7 @@ type Props = {
   percent: number;
 };
 
-export const Item = ({ activeStep, stepsCount, percent }: Props) => {
+export const Stepper = ({ activeStep, stepsCount, percent }: Props) => {
   const getStepsByCount = (count: number) => {
     const steps = [];
     for (let i = 1; i <= count; i++) {

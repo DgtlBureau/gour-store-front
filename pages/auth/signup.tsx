@@ -5,7 +5,10 @@ import { AuthLayout } from 'layouts/Auth/Auth';
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
+import {
+  SignupFavoriteInfo,
+  FavoriteInfo,
+} from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
@@ -13,8 +16,15 @@ import { ITranslatableString } from '../../@types/entities/ITranslatableString';
 import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
+import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
 
-type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
+type AuthStage =
+  | 'referralCode'
+  | 'greeting'
+  | 'citySelect'
+  | 'credentials'
+  | 'favoriteInfo';
 
 export default function SignUp() {
   const router = useRouter();
@@ -36,20 +46,44 @@ export default function SignUp() {
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
+  const [credentials, setCredentials] =
+    useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
+  const [referralCode, setReferralCode] = useState('');
+  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToIntro = () => router.push('/auth');
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
   const goToCredentials = () => setStage('credentials');
   const goToFavoriteInfo = () => setStage('favoriteInfo');
+  const goToReferralCode = () => setStage('referralCode');
   const goToSignIn = () => router.push('/auth/signin');
 
   // finish it later
-  const sendSMS = (phone: string) => {
-    sendCode(phone);
-    return '1234';
+  const sendSMS = async (phone: string) => {
+    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
+    try {
+      await sendCode(phone).unwrap();
+      return 'success';
+    } catch (error) {
+      console.error(error);
+      return (error as any).data.message;
+    }
+  };
+
+  const checkCode = async (code: string) => {
+    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
+
+    try {
+      // запрос на проверку кода
+      if (code !== '1234') throw new Error('Код не валиден');
+      setIsPhoneCodeValid(true);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   const saveCity = (city: string) => {
@@ -57,14 +91,23 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = (data: SignUpFormDto) => setCredentials(data);
+  const saveCredentials = (data: SignUpFormDto) => {
+    setCredentials(data);
+    registerUser;
+    goToFavoriteInfo();
+  };
 
   const saveFavoriteInfo = (info: FavoriteInfo) => {
     setFavoriteInfo(info);
+    goToReferralCode();
+  };
+
+  const saveReferralCode = (referralData: ReferralCodeDto) => {
+    setReferralCode(referralData.referralCode);
     goToSignIn();
   };
 
-  const register = async () => {
+  const registerUser = async () => {
     if (!credentials) return;
 
     const role = roles?.find(it => it.key === credentials.role);
@@ -74,7 +117,7 @@ export default function SignUp() {
       phone: credentials.phone,
       code: +credentials.sms,
       password: credentials.password,
-      referralCode: credentials.referral,
+      referralCode,
       cityId: +selectedCity,
       roleId: (role && role.id) || 1,
     };
@@ -83,23 +126,26 @@ export default function SignUp() {
       await signUp(data).unwrap();
       goToFavoriteInfo();
     } catch (e: unknown) {
+      console.error(e);
       // event bus notification
     }
   };
 
-  useEffect(() => {
-    if (credentials) register();
-  }, [credentials]);
-
   const forms = {
     greeting: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
     citySelect: (
-      <SignupCitySelect city={selectedCity} options={convertedCities} onSubmit={saveCity} onBack={goToGreeting} />
+      <SignupCitySelect
+        city={selectedCity}
+        options={convertedCities}
+        onSubmit={saveCity}
+        onBack={goToGreeting}
+      />
     ),
     credentials: (
       <SignupCredentials
         defaultValues={credentials}
         onSendSMS={sendSMS}
+        onCheckCode={checkCode}
         onSubmit={saveCredentials}
         onBack={goToCitySelect}
       />
@@ -110,6 +156,12 @@ export default function SignUp() {
         products={favoriteProducts}
         onSubmit={saveFavoriteInfo}
         onBack={goToCredentials}
+      />
+    ),
+    referralCode: (
+      <SignupReferralCode
+        onSubmit={saveReferralCode}
+        onBack={goToFavoriteInfo}
       />
     ),
   };
