@@ -23,16 +23,6 @@ const sx = {
     border: '2px solid',
     borderColor: theme.palette.accent.main,
   },
-  stepper: {
-    width: '100%',
-    margin: '0 0 20px 0',
-  },
-  imageContainer: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
-  },
 };
 
 export default sx;

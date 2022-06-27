@@ -82,130 +82,99 @@ export function SignupCredentials({
   const submit = (data: SignUpFormDto) => onSubmit(data);
 
   return (
-    <Grid
-      container
-      sx={{ position: 'relative' }}
-      flexDirection={{ xs: 'column-reverse', md: 'row' }}
-      alignItems="center"
-    >
-      <Grid sx={sx.imageContainer} item xs={4} md={6}>
-        <Image
-          src={credentialsImage}
-          layout="intrinsic"
-          width={500}
-          height={750}
-        />
-      </Grid>
-      <Grid
-        item
-        sx={{
-          width: '100%',
-          maxWidth: {
-            xs: 'unset',
-            md: '500px',
-          },
-        }}
-        xs={12}
-        md={6}
-      >
-        <AuthCard>
-          <Box sx={sx.stepper}>
-            <Stepper activeStep={2} stepsCount={5} percent={100} />
+    <AuthCard>
+      <FormProvider {...values}>
+        <form onSubmit={values.handleSubmit(submit)}>
+          <Button
+            sx={sx.backBtn}
+            size="small"
+            variant="outlined"
+            onClick={onBack}
+          >
+            {t('back')}
+          </Button>
+
+          <Typography sx={sx.title}>{t('title')}</Typography>
+
+          <HFRadioGroup name="role" sx={sx.radioGroup}>
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value="CLIENT"
+              control={<Radio />}
+              label={t('physical')}
+            />
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value="COMPANY"
+              control={<Radio />}
+              label={t('company')}
+            />
+            <FormControlLabel
+              sx={sx.radioBtn}
+              value="COLLECTIVE_PURCHASE"
+              control={<Radio />}
+              label={t('collectivePurchase')}
+            />
+          </HFRadioGroup>
+
+          <Box sx={{ ...sx.field, ...sx.phone }}>
+            <HFTextField name="phone" label={t('phone')} />
+            <Button
+              sx={sx.getCodeBtn}
+              onClick={sendSMS}
+              disabled={phoneIsInvalid}
+            >
+              {t('getCode')}
+            </Button>
           </Box>
-          <FormProvider {...values}>
-            <form onSubmit={values.handleSubmit(submit)}>
+
+          {isCodeSended && (
+            <Box sx={{ ...sx.field, ...sx.phone }}>
+              <HFTextField
+                disabled={isCodeSuccess}
+                sx={sx.field}
+                name="sms"
+                label={t('sms')}
+              />
               <Button
-                sx={sx.backBtn}
-                size="small"
-                variant="outlined"
-                onClick={onBack}
+                sx={sx.getCodeBtn}
+                onClick={checkCode}
+                disabled={codeIsValid}
+                color={!isCodeSuccess ? 'primary' : 'success'}
               >
-                {t('back')}
+                {!isCodeSuccess ? t('sendCode') : 'Код подтвержден'}
               </Button>
+            </Box>
+          )}
 
-              <Typography sx={sx.title}>{t('title')}</Typography>
-
-              <HFRadioGroup name="role" sx={sx.radioGroup}>
-                <FormControlLabel
-                  sx={sx.radioBtn}
-                  value="CLIENT"
-                  control={<Radio />}
-                  label={t('physical')}
-                />
-                <FormControlLabel
-                  sx={sx.radioBtn}
-                  value="COMPANY"
-                  control={<Radio />}
-                  label={t('company')}
-                />
-                <FormControlLabel
-                  sx={sx.radioBtn}
-                  value="COLLECTIVE_PURCHASE"
-                  control={<Radio />}
-                  label={t('collectivePurchase')}
-                />
-              </HFRadioGroup>
-
-              <Box sx={{ ...sx.field, ...sx.phone }}>
-                <HFTextField name="phone" label={t('phone')} />
-                <Button
-                  sx={sx.getCodeBtn}
-                  onClick={sendSMS}
-                  disabled={phoneIsInvalid}
-                >
-                  {t('getCode')}
-                </Button>
-              </Box>
-
-              {isCodeSended && (
-                <Box sx={{ ...sx.field, ...sx.phone }}>
-                  <HFTextField
-                    disabled={isCodeSuccess}
-                    sx={sx.field}
-                    name="sms"
-                    label={t('sms')}
-                  />
-                  <Button
-                    sx={sx.getCodeBtn}
-                    onClick={checkCode}
-                    disabled={codeIsValid}
-                    color={!isCodeSuccess ? 'primary' : 'success'}
-                  >
-                    {!isCodeSuccess ? t('sendCode') : 'Код подтвержден'}
-                  </Button>
-                </Box>
-              )}
-
-              {isCodeSuccess && (
-                <>
-                  <HFTextField
-                    sx={sx.field}
-                    type="password"
-                    name="password"
-                    label={t('password')}
-                    helperText={t('passwordHelper')}
-                  />
-                  <HFTextField
-                    sx={sx.field}
-                    type="password"
-                    name="passwordConfirm"
-                    label={t('passwordConfirm')}
-                  />
-                  <Checkbox
-                    sx={sx.field}
-                    value={isAgree}
-                    onChange={agree}
-                    label={t('agreement')}
-                  />
-                </>
-              )}
-              <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
-                {t('submit')}
-              </Button>
-            </form>
-          </FormProvider>
-        </AuthCard>
-      </Grid>
-    </Grid>
+          {isCodeSuccess && (
+            <>
+              <HFTextField
+                sx={sx.field}
+                type="password"
+                name="password"
+                label={t('password')}
+                helperText={t('passwordHelper')}
+              />
+              <HFTextField
+                sx={sx.field}
+                type="password"
+                name="passwordConfirm"
+                label={t('passwordConfirm')}
+              />
+              <Checkbox
+                sx={sx.field}
+                value={isAgree}
+                onChange={agree}
+                label={t('agreement')}
+              />
+            </>
+          )}
+          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
+            {t('submit')}
+          </Button>
+        </form>
+      </FormProvider>
+    </AuthCard>
   );
 }

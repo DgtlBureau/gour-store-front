@@ -6,13 +6,9 @@ import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
-
 import sx from './FavoriteInfo.styles';
 import { Box } from '../../../UI/Box/Box';
 import { Stepper } from '../../../UI/Stepper/Stepper';
-import Image from 'next/image';
-
-import credentialsImage from './../../../../assets/icons/signup/credentials.svg';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -71,103 +67,72 @@ export function SignupFavoriteInfo({
   };
 
   return (
-    <Grid
-      container
-      sx={{ position: 'relative' }}
-      flexDirection={{ xs: 'column-reverse', md: 'row' }}
-      alignItems="center"
-    >
-      <Grid sx={sx.imageContainer} item xs={4} md={6}>
-        <Image
-          src={credentialsImage}
-          layout="intrinsic"
-          width={500}
-          height={750}
-        />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          width: '100%',
-          maxWidth: {
-            xs: 'unset',
-            md: '500px',
-          },
-        }}
-      >
-        <AuthCard>
-          <Box sx={sx.stepper}>
-            <Stepper activeStep={4} stepsCount={5} percent={100} />
-          </Box>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Button variant="outlined" onClick={onBack}>
-                {t('backButton')}
-              </Button>
-            </Grid>
+    <AuthCard>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Button variant="outlined" onClick={onBack}>
+            {t('backButton')}
+          </Button>
+        </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">{t('title')}</Typography>
-            </Grid>
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('title')}</Typography>
+        </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
-            </Grid>
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
+        </Grid>
 
-            <Grid item xs={12} container spacing={2}>
-              {countries.map(country => (
-                <Grid item xs={3} sm={2} key={country.id}>
-                  <div
-                    style={{
-                      ...sx.circle,
-                      ...(userCountries.includes(country.id) && sx.selected),
-                      backgroundImage: `url(${country.image})`,
-                    }}
-                    onClick={() => handleClickCountry(country.id)}
-                  >
-                    <Typography variant="body2">{country.title}</Typography>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">{t('likedTitle')}</Typography>
-            </Grid>
-
-            <Grid item xs={12} container spacing={2}>
-              {products.map(product => (
-                <Grid item xs={3} sm={2} key={product.id}>
-                  <div
-                    style={{
-                      ...sx.circle,
-                      ...(userProducts.includes(product.id) && sx.selected),
-                      backgroundImage: `url(${product.image})`,
-                    }}
-                    onClick={() => {
-                      handleClickProducts(product.id);
-                    }}
-                  >
-                    <Typography variant="body2">{product.title}</Typography>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid item xs={12}>
-              <Button
-                sx={{ width: '100%' }}
-                variant="contained"
-                onClick={handleSubmit}
+        <Grid item xs={12} container spacing={2}>
+          {countries.map(country => (
+            <Grid item xs={3} sm={2} key={country.id}>
+              <div
+                style={{
+                  ...sx.circle,
+                  ...(userCountries.includes(country.id) && sx.selected),
+                  backgroundImage: `url(${country.image})`,
+                }}
+                onClick={() => handleClickCountry(country.id)}
               >
-                {t('endRegistration')}
-              </Button>
+                <Typography variant="body2">{country.title}</Typography>
+              </div>
             </Grid>
-          </Grid>
-        </AuthCard>
+          ))}
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{t('likedTitle')}</Typography>
+        </Grid>
+
+        <Grid item xs={12} container spacing={2}>
+          {products.map(product => (
+            <Grid item xs={3} sm={2} key={product.id}>
+              <div
+                style={{
+                  ...sx.circle,
+                  ...(userProducts.includes(product.id) && sx.selected),
+                  backgroundImage: `url(${product.image})`,
+                }}
+                onClick={() => {
+                  handleClickProducts(product.id);
+                }}
+              >
+                <Typography variant="body2">{product.title}</Typography>
+              </div>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            sx={{ width: '100%' }}
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            {t('endRegistration')}
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+    </AuthCard>
   );
 }

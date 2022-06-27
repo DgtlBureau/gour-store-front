@@ -18,6 +18,13 @@ import { SignUpDto } from '../../@types/dto/signup.dto';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
 import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
 import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
+import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
+
+import credentialsImage from './../../assets/icons/signup/credentials.svg';
+import greetingsImage from './../../assets/icons/signup/greetings.svg';
+import cityImage from './../../assets/icons/signup/city.svg';
+import favoritesImage from './../../assets/icons/signup/favorites.svg';
+import referralImage from './../../assets/icons/signup/referralCodes.svg';
 
 type AuthStage =
   | 'referralCode'
@@ -132,39 +139,70 @@ export default function SignUp() {
   };
 
   const forms = {
-    greeting: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
-    citySelect: (
-      <SignupCitySelect
-        city={selectedCity}
-        options={convertedCities}
-        onSubmit={saveCity}
-        onBack={goToGreeting}
-      />
-    ),
-    credentials: (
-      <SignupCredentials
-        defaultValues={credentials}
-        onSendSMS={sendSMS}
-        onCheckCode={checkCode}
-        onSubmit={saveCredentials}
-        onBack={goToCitySelect}
-      />
-    ),
-    favoriteInfo: (
-      <SignupFavoriteInfo
-        countries={favoriteCountries}
-        products={favoriteProducts}
-        onSubmit={saveFavoriteInfo}
-        onBack={goToCredentials}
-      />
-    ),
-    referralCode: (
-      <SignupReferralCode
-        onSubmit={saveReferralCode}
-        onBack={goToFavoriteInfo}
-      />
-    ),
+    greeting: {
+      component: (
+        <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />
+      ),
+      image: greetingsImage,
+      stepIndex: 1,
+    },
+    citySelect: {
+      component: (
+        <SignupCitySelect
+          city={selectedCity}
+          options={convertedCities}
+          onSubmit={saveCity}
+          onBack={goToGreeting}
+        />
+      ),
+      image: cityImage,
+      stepIndex: 2,
+    },
+    credentials: {
+      component: (
+        <SignupCredentials
+          defaultValues={credentials}
+          onSendSMS={sendSMS}
+          onCheckCode={checkCode}
+          onSubmit={saveCredentials}
+          onBack={goToCitySelect}
+        />
+      ),
+      image: credentialsImage,
+      stepIndex: 3,
+    },
+    favoriteInfo: {
+      component: (
+        <SignupFavoriteInfo
+          countries={favoriteCountries}
+          products={favoriteProducts}
+          onSubmit={saveFavoriteInfo}
+          onBack={goToCredentials}
+        />
+      ),
+      image: favoritesImage,
+      stepIndex: 4,
+    },
+    referralCode: {
+      component: (
+        <SignupReferralCode
+          onSubmit={saveReferralCode}
+          onBack={goToFavoriteInfo}
+        />
+      ),
+      image: referralImage,
+      stepIndex: 5,
+    },
   };
 
-  return <AuthLayout>{forms[stage]}</AuthLayout>;
+  return (
+    <AuthLayout>
+      <SignupLayout
+        image={forms[stage].image}
+        stepIndex={forms[stage].stepIndex}
+      >
+        {forms[stage].component}
+      </SignupLayout>
+    </AuthLayout>
+  );
 }
