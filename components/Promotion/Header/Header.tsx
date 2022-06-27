@@ -39,13 +39,12 @@ const headerSx = {
 };
 
 export type PromotionHeaderProps = {
-  title: string;
   image: string;
   end: Date;
   sx?: SxProps;
 };
 
-export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps) {
+export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
   const { t } = useLocalTranslation(translations);
 
   const [seconds, setSeconds] = useState<number>(10);
@@ -73,10 +72,6 @@ export function PromotionHeader({ title, image, end, sx }: PromotionHeaderProps)
   return (
     <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
       <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
-
-      <Typography sx={headerSx.title} variant="body1">
-        {title}
-      </Typography>
 
       <Box sx={headerSx.timer}>
         <Typography variant="body1">{seconds > 0 ? `${t('left')} ${timer}` : t('end')}</Typography>

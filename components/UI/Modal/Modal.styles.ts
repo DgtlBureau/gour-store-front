@@ -17,6 +17,7 @@ export const sx = {
       sm: 'fit-content',
       xs: '100%',
     },
+    width: '100%',
     maxWidth: {
       sm: '520px',
       xs: '100%',
@@ -26,6 +27,7 @@ export const sx = {
       xs: '40px 20px',
     },
     bgcolor: 'background.default',
+    overflowY: 'scroll',
   },
   head: {
     display: 'flex',

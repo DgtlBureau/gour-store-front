@@ -42,11 +42,7 @@ export function Orders() {
         {Object.keys(groupedOrders).map(key => {
           const orderGroup = groupedOrders[+key];
           return (
-            <OrdersCardGroup
-              date={orderGroup.date}
-              ordersList={orderGroup.orderList}
-              currency={currency}
-            />
+            <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
           );
         })}
       </Stack>

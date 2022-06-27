@@ -1,5 +1,5 @@
-import React, { CSSProperties } from 'react';
-import { Grid } from '@mui/material';
+import React from 'react';
+import { Grid, SxProps } from '@mui/material';
 
 import translations from './Reviews.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -21,7 +21,7 @@ type Review = {
 
 export type ProductReviewsProps = {
   reviews: Review[];
-  sx: CSSProperties;
+  sx: SxProps;
 };
 
 const sxReviews = {
