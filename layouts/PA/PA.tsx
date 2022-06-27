@@ -2,12 +2,9 @@ import React, { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import {
-  selectedProductCount,
-  selectedProductSum,
-} from '../../store/slices/orderSlice';
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { Box } from '../../components/UI/Box/Box';
@@ -27,8 +24,7 @@ export interface PALayoutProps {
 export function PALayout({ children }: PALayoutProps) {
   const router = useRouter();
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -36,11 +32,9 @@ export function PALayout({ children }: PALayoutProps) {
 
   const { t } = useLocalTranslation(translations);
 
-  const currentPath = router.pathname.split('/')[1];
+  const currentPath = router.pathname;
 
-  console.log(currentPath);
-
-  const [chapter, setChapter] = useState<string>(currentPath);
+  console.log(router.pathname);
 
   const convertedCities =
     cities?.map(city => ({
@@ -51,29 +45,28 @@ export function PALayout({ children }: PALayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity =
-    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const menuList = [
     {
       label: t('main'),
-      path: `${Path.MAIN}`,
+      path: `/${Path.PERSONAL_AREA}`,
     },
     {
       label: t('orders'),
-      path: `${Path.ORDERS}`,
+      path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },
     {
       label: t('credentials'),
-      path: `${Path.CREDENTIALS}`,
+      path: `/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`,
     },
     {
       label: t('addresses'),
-      path: `${Path.ADDRESSES}`,
+      path: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
     },
     {
       label: t('discounts'),
-      path: `${Path.DISCOUNTS}`,
+      path: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
     },
   ];
 
@@ -85,10 +78,7 @@ export function PALayout({ children }: PALayoutProps) {
   // TO DO
   const changeCity = (id: number) => ({});
 
-  const changeChapter = (path: string) => {
-    setChapter(path);
-    router.push(path);
-  };
+  const changeChapter = (path: string) => path !== currentPath && router.push(path);
 
   return (
     <Box sx={sx.layout}>
@@ -110,7 +100,7 @@ export function PALayout({ children }: PALayoutProps) {
       />
 
       <Box sx={sx.content}>
-        <PAMenu active={chapter} menuList={menuList} onChange={changeChapter} />
+        <PAMenu active={currentPath} menuList={menuList} onChange={changeChapter} />
         {children}
       </Box>
     </Box>

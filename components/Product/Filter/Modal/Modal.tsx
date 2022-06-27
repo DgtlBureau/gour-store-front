@@ -7,10 +7,10 @@ import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { ToggleButton } from '../../../UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
-import { CHARACTERISTICS } from '../../../../constants/characteristics';
 import { Filters } from '../List/List';
 import { ICategory } from '../../../../@types/entities/ICategory';
 import { Language } from '../../../../@types/entities/Language';
+import { CHARACTERISTICS } from '../../../../constants/characteristics';
 
 const sx = {
   title: {
@@ -53,7 +53,7 @@ export function ProductFilterModal({
       onClose={onClose}
       body={
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'flex', marginBottom: '10px' }}>
+          <Box>
             {categories?.map(category => (
               <ToggleButton
                 key={category.id}

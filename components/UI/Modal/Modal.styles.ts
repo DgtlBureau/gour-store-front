@@ -27,6 +27,7 @@ export const sx = {
       xs: '40px 20px',
     },
     bgcolor: 'background.default',
+    overflowY: 'scroll',
   },
   head: {
     display: 'flex',

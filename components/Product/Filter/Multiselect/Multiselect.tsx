@@ -10,7 +10,7 @@ import {
   ClickAwayListener,
   SxProps,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -59,13 +59,15 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
     }
 
     setSelectedOptions(oldSelectedList => [...oldSelectedList, selected]);
-
-    if (isMobile) onChange(selectedOptions);
   }
 
   function isOptionSelected(currentOption: string) {
     return selectedOptions.find(option => option === currentOption);
   }
+
+  useEffect(() => {
+    if (isMobile) onChange(selectedOptions);
+  }, [selectedOptions]);
 
   return isMobile ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>

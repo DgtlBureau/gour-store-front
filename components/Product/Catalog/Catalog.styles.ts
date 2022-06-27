@@ -13,6 +13,13 @@ export const sx = {
     fontWeight: 'bold',
     color: 'text.secondary',
   },
+  emptyTitle: {
+    marginTop: '15px',
+    fontSize: {
+      sm: '24px',
+      xs: '16px',
+    },
+  },
   filters: {
     display: {
       xs: 'none',

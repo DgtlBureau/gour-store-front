@@ -18,7 +18,11 @@ const sx = {
       md: 'space-between',
       xs: 'center',
     },
-    margin: '40px 0 60px 0',
+    width: '100%',
+    margin: {
+      xs: '20px 0 40px 0',
+      sm: '40px 0 60px 0',
+    },
   },
   list: {
     display: 'flex',
@@ -28,9 +32,10 @@ const sx = {
       md: 'fit-content',
     },
     margin: {
-      xs: '20px 0 0 0',
-      md: 0,
+      xs: '10px 0 0 0',
+      sm: '20px 0 0 0',
     },
+    overflowX: 'auto',
   },
   listItem: {
     padding: '10px 16px',
@@ -50,9 +55,13 @@ const sx = {
     color: 'text.primary',
   },
   title: {
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
-    color: 'primary.main',
+    color: 'text.secondary',
   },
 };
 

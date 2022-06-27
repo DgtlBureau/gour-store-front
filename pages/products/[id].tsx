@@ -112,7 +112,7 @@ export default function Product() {
       {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
 
       {!isLoading && !isError && product && (
-        <div>
+        <>
           <Box sx={sx.top}>
             <ImageSlider images={product.images} sx={sx.imageSlider} />
 
@@ -169,7 +169,7 @@ export default function Product() {
           {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
 
           <CommentCreateBlock onCreate={onCreateComment} />
-        </div>
+        </>
       )}
     </ShopLayout>
   );

@@ -14,19 +14,33 @@ import notFound from '../assets/images/404.png';
 
 const sx = {
   notFound: {
-    marginTop: '140px',
+    marginTop: {
+      md: '140px',
+      xs: '80px',
+    },
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '0 20px',
+    padding: {
+      xs: '0 10px',
+      sm: '0 20px',
+    },
   },
   title: {
-    color: 'text.secondary',
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
     fontWeight: 'bold',
+    color: 'text.secondary',
     marginTop: '55px',
   },
   button: {
+    width: {
+      xs: '100%',
+      sm: 'fit-content',
+    },
     margin: '45px 0',
   },
 };
@@ -45,11 +59,11 @@ export default function NotFound() {
           <Image src={notFound} height="325" width="814" alt="notFound" />
         </Link>
 
-        <Typography variant={'h4'} sx={sx.title}>
+        <Typography variant="h4" sx={sx.title}>
           {t('notFound.message')}
         </Typography>
 
-        <Button sx={sx.button} size={'medium'} onClick={goToHome}>
+        <Button sx={sx.button} onClick={goToHome}>
           {t('notFound.button')}
         </Button>
       </Box>
