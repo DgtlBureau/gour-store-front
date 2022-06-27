@@ -4,6 +4,14 @@ const sx = {
   select: {
     backgroundColor: 'background.paper',
     boxShadow: 'none',
+    borderRadius: '6px',
+    borderColor: 'none',
+    '&:before': {
+      content: 'none',
+    },
+    '&.Mui-expanded': {
+      margin: '0 0 10px 0',
+    },
   },
   optionBox: {
     padding: '6px 12px',

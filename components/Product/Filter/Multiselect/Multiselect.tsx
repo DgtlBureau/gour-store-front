@@ -75,7 +75,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
         </Typography>
       </AccordionSummary>
 
-      <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
+      <AccordionDetails sx={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
         {options.map(option => (
           <Typography
             variant="body1"

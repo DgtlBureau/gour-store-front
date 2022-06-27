@@ -17,6 +17,7 @@ export const sx = {
       sm: 'fit-content',
       xs: '100%',
     },
+    width: '100%',
     maxWidth: {
       sm: '520px',
       xs: '100%',

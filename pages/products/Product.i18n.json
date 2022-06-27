@@ -1,0 +1,10 @@
+{
+  "ru": {
+    "description": "Описание товара",
+    "similar": "Похожие товары"
+  },
+  "en": {
+    "description": "Product description",
+    "similar": "Similar products"
+  }
+}
