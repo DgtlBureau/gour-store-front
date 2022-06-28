@@ -33,7 +33,12 @@ export type PAPasswordChangeModalProps = {
   onChange(data: FormType): void;
 };
 
-export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPasswordChangeModalProps) {
+export function PAPasswordChangeModal({
+  isOpen,
+  error,
+  onClose,
+  onChange,
+}: PAPasswordChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t as Translator);
@@ -55,25 +60,36 @@ export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPa
       description={t('subTitle')}
       formId="passwordChangeForm"
       acceptIsDisabled={formIsInvalid}
-      body={
-        <Box sx={sx.body}>
-          <FormProvider {...values}>
-            <form id="passwordChangeForm" onSubmit={values.handleSubmit(submit)}>
-              <Stack spacing={2}>
-                <HFTextField type="password" name="prevPassword" label={t('currentPassword')} />
-                <HFTextField type="password" name="newPassword" label={t('newPassword')} />
-                <HFTextField type="password" name="repeatNewPassword" label={t('passwordConfirm')} />
-              </Stack>
-            </form>
-          </FormProvider>
+    >
+      <Box sx={sx.body}>
+        <FormProvider {...values}>
+          <form id="passwordChangeForm" onSubmit={values.handleSubmit(submit)}>
+            <Stack spacing={2}>
+              <HFTextField
+                type="password"
+                name="prevPassword"
+                label={t('currentPassword')}
+              />
+              <HFTextField
+                type="password"
+                name="newPassword"
+                label={t('newPassword')}
+              />
+              <HFTextField
+                type="password"
+                name="repeatNewPassword"
+                label={t('passwordConfirm')}
+              />
+            </Stack>
+          </form>
+        </FormProvider>
 
-          {!!error && (
-            <Typography sx={sx.error} variant="body2" color="error">
-              {error}
-            </Typography>
-          )}
-        </Box>
-      }
-    />
+        {!!error && (
+          <Typography sx={sx.error} variant="body2" color="error">
+            {error}
+          </Typography>
+        )}
+      </Box>
+    </Modal>
   );
 }

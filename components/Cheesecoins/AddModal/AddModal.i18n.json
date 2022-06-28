@@ -1,0 +1,10 @@
+{
+  "ru": {
+    "minCount": "Введите число больше 0!",
+    "countRequired": "Обязательное поле"
+  },
+  "en": {
+    "minCount": "Enter number more 0!",
+    "countRequired": "Field required"
+  }
+}
