@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Stack } from '@mui/material';
 import { formatOrderData, groupOrdersByDate } from './ordersHelper';
-import { OrdersCardGroup } from 'components/Orders/Group/Group';
-import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from 'components/UI/Typography/Typography';
-import { PALayout } from 'layouts/PA/PA';
+import { OrdersCardGroup } from '../../../components/Orders/Group/Group';
+import { ProgressLinear } from '../../../components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from '../../../components/UI/Typography/Typography';
+import { PALayout } from '../../../layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 
 export function Orders() {
@@ -42,7 +42,12 @@ export function Orders() {
         {Object.keys(groupedOrders).map(key => {
           const orderGroup = groupedOrders[+key];
           return (
-            <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
+            <OrdersCardGroup
+              key={key}
+              date={orderGroup.date}
+              ordersList={orderGroup.orderList}
+              currency={currency}
+            />
           );
         })}
       </Stack>
