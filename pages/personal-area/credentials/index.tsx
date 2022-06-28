@@ -2,12 +2,12 @@ import { Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
-import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
-import { PACredentialsAvatarEditor } from '../../components/PA/Credentials/AvatarEditor/AvatarEditor';
-import { PACredentialsEditor } from '../../components/PA/Credentials/Editor/Editor';
-import { PAPasswordChangeModal } from '../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
+import { ChangePasswordDto } from '../../../@types/dto/profile/change-password.dto';
+import { ChangePhoneDto } from '../../../@types/dto/profile/change-phone.dto';
+import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
+import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
+import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
+import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 import { PALayout } from 'layouts/PA/PA';
 
 import {

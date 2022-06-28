@@ -1,4 +1,4 @@
-import { AppBar, Badge, Container, Collapse, Grid } from '@mui/material';
+import { AppBar, Badge, Container, Collapse, Grid, SxProps } from '@mui/material';
 import React, { useState } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
@@ -31,7 +31,7 @@ import Logo from '../../assets/images/common-logo.svg';
 import GamepadIcon from '../../assets/icons/gamepad.svg';
 import CatalogIcon from '../../assets/icons/catalog.svg';
 
-import sx from './Header.styles';
+import headerSx from './Header.styles';
 
 export type HeaderProps = {
   isGame?: boolean;
@@ -51,6 +51,7 @@ export type HeaderProps = {
   basketProductCount: number;
   basketProductSum: number;
   moneyAmount: number;
+  sx?: SxProps;
   onChangeCity(id: number): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
@@ -74,6 +75,7 @@ export function Header({
   language,
   currency,
   moneyAmount,
+  sx,
   onChangeCity,
   onClickFavorite,
   onClickPersonalArea,
@@ -108,11 +110,11 @@ export function Header({
 
   return (
     <>
-      <AppBar sx={sx.header}>
+      <AppBar sx={{ ...headerSx.container, ...sx } as SxProps}>
         <Container sx={{ height: '100%', position: 'relative' }} maxWidth="lg">
           <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ height: '100%' }}>
             <Grid item xs={2} md={4} lg={6} container direction="row" alignItems="center" justifyContent="flex-start">
-              <Box sx={sx.logo}>
+              <Box sx={headerSx.logo}>
                 <NextLink href="/" passHref>
                   <Image src={Logo} height={49} width={58} alt="" />
                 </NextLink>
@@ -120,13 +122,13 @@ export function Header({
 
               {!isGame && (
                 <>
-                  <Link href={`tel:${firstPhone}`} variant="body1" color="inherit" sx={sx.phone}>
+                  <Link href={`tel:${firstPhone}`} variant="body1" color="inherit" sx={headerSx.phone}>
                     {firstPhone}
                   </Link>
 
-                  <Box sx={sx.city} onClick={openCityModal}>
+                  <Box sx={headerSx.city} onClick={openCityModal}>
                     <PlaceOutlinedIcon />
-                    <Typography sx={sx.cityTitle} variant="body1">
+                    <Typography sx={headerSx.cityTitle} variant="body1">
                       {currentCity?.name}
                     </Typography>
                     <KeyboardArrowDownIcon />
@@ -138,20 +140,20 @@ export function Header({
             <Grid item xs={10} md={8} lg={6} container direction="row" alignItems="center" justifyContent="flex-end">
               <Box
                 sx={{
-                  ...sx.money,
+                  ...headerSx.money,
                   display: {
                     xs: isGame ? 'flex' : 'none',
                     sm: 'flex',
                   },
                 }}
               >
-                <Typography variant="body2" sx={sx.moneyAmount}>
+                <Typography variant="body2" sx={headerSx.moneyAmount}>
                   {moneyAmount}
                   &nbsp;
                   {currencySymbol}
                 </Typography>
 
-                <IconButton onClick={onClickReplenishment} color="inherit" sx={sx.replenishment}>
+                <IconButton onClick={onClickReplenishment} color="inherit" sx={headerSx.replenishment}>
                   <AddIcon color="primary" />
                 </IconButton>
               </Box>
@@ -161,7 +163,7 @@ export function Header({
                   onClick={goToCatalog}
                   color="inherit"
                   sx={{
-                    ...sx.icon,
+                    ...headerSx.icon,
                     display: {
                       xs: isGame ? 'flex' : 'none',
                       sm: catalogIsHidden ? 'none' : 'flex',
@@ -171,22 +173,22 @@ export function Header({
                   <Image src={CatalogIcon} height={24} width={24} alt="" />
                 </IconButton>
               ) : (
-                <IconButton onClick={goToGame} color="inherit" sx={sx.icon}>
+                <IconButton onClick={goToGame} color="inherit" sx={headerSx.icon}>
                   <Image src={GamepadIcon} height={24} width={24} alt="" />
                 </IconButton>
               )}
 
               {!isGame && (
                 <>
-                  <IconButton onClick={onClickFavorite} color="inherit" sx={sx.icon}>
+                  <IconButton onClick={onClickFavorite} color="inherit" sx={headerSx.icon}>
                     <FavoriteBorderIcon />
                   </IconButton>
 
-                  <IconButton onClick={onClickPersonalArea} color="inherit" sx={sx.icon}>
+                  <IconButton onClick={onClickPersonalArea} color="inherit" sx={headerSx.icon}>
                     <PersonIcon />
                   </IconButton>
 
-                  <Box sx={sx.flag}>
+                  <Box sx={headerSx.flag}>
                     <NextLink href={router?.asPath || ''} locale={language === 'ru' ? 'en' : 'ru'} passHref>
                       <Image
                         src={language === 'ru' ? RusFlagIcon : UKFlagIcon}
@@ -198,8 +200,8 @@ export function Header({
                     </NextLink>
                   </Box>
 
-                  <Button sx={sx.cart} onClick={onClickBasket}>
-                    <Badge sx={sx.cartBadge} badgeContent={basketProductCount} color="primary">
+                  <Button sx={headerSx.cart} onClick={onClickBasket}>
+                    <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color="primary">
                       <ShoppingCartOutlinedIcon color="primary" />
                     </Badge>
                     {basketProductSum}
@@ -209,8 +211,8 @@ export function Header({
                 </>
               )}
               {!isGame && (
-                <IconButton sx={sx.menuBtn} color="inherit" onClick={deployMenu}>
-                  {!isMenuDeployed ? <MenuIcon sx={sx.menuIcon} /> : <CloseIcon sx={sx.menuIcon} />}
+                <IconButton sx={headerSx.menuBtn} color="inherit" onClick={deployMenu}>
+                  {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
                 </IconButton>
               )}
             </Grid>

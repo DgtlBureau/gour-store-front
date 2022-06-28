@@ -1,7 +1,7 @@
 import { defaultTheme as t } from '../../themes';
 
 const sx = {
-  header: {
+  container: {
     position: 'relative',
     height: '72px',
   },

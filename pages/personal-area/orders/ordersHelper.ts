@@ -1,5 +1,5 @@
-import { IOrder } from '../../@types/entities/IOrder';
-import { Currency } from '../../@types/entities/Currency';
+import { IOrder } from '../../../@types/entities/IOrder';
+import { Currency } from '../../../@types/entities/Currency';
 
 import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
