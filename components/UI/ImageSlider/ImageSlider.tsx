@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import SwiperCore, { EffectFade, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { SxProps } from '@mui/material';
 import Image from 'next/image';
 
 import { Box } from '../Box/Box';
@@ -14,8 +15,8 @@ import styles from './ImageSlider.module.scss';
 
 import defaultImage from '../../../assets/no-image.svg';
 
-const sx = {
-  slider: {
+const sliderSx = {
+  container: {
     width: {
       md: '580px',
       xs: '100%',
@@ -65,11 +66,12 @@ export type ImageSliderProps = {
     small: string;
     full: string;
   }[];
+  sx?: SxProps;
 };
 
 const defaultImages = [{ full: defaultImage, small: defaultImage }];
 
-export function ImageSlider({ images }: ImageSliderProps) {
+export function ImageSlider({ images, sx }: ImageSliderProps) {
   const [activeId, setActiveId] = useState(0);
 
   const [slider, setSlider] = useState<SwiperCore | null>(null);
@@ -83,10 +85,8 @@ export function ImageSlider({ images }: ImageSliderProps) {
     slider?.slideTo(i);
   };
 
-  useEffect(() => console.log(slider?.activeIndex), [slider]);
-
   return (
-    <Box sx={sx.slider}>
+    <Box sx={{ ...sliderSx.container, ...sx }}>
       <div className={styles.sliderWrapper}>
         <Swiper
           pagination={screenWidth < 900}
@@ -97,7 +97,7 @@ export function ImageSlider({ images }: ImageSliderProps) {
         >
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>
-              <Box sx={{ ...sx.slide, ...sx.full }}>
+              <Box sx={{ ...sliderSx.slide, ...sliderSx.full }}>
                 <Image src={image.full} layout="fill" objectFit="cover" alt="" />
               </Box>
             </SwiperSlide>
@@ -106,9 +106,12 @@ export function ImageSlider({ images }: ImageSliderProps) {
       </div>
 
       {existImages.length > 1 && (
-        <Box sx={sx.scroll}>
+        <Box sx={sliderSx.scroll}>
           {existImages.map((image, i) => (
-            <Box key={image.small + i} sx={{ ...sx.slide, ...sx.small, ...(activeId === i && sx.active) }}>
+            <Box
+              key={image.small + i}
+              sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}
+            >
               <Image src={image.small} layout="fill" objectFit="cover" alt="" onClick={() => slideTo(i)} />
             </Box>
           ))}

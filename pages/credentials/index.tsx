@@ -27,9 +27,7 @@ export function Profile() {
   const [fetchUploadImage] = useCreateImageMutation();
 
   const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = async (
-    changePasswordData: ChangePasswordDto
-  ) => {
+  const handleChangePassword = async (changePasswordData: ChangePasswordDto) => {
     try {
       await fetchUpdatePassword(changePasswordData).unwrap();
     } catch (error) {

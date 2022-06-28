@@ -21,11 +21,10 @@ import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
 import { Path } from 'constants/routes';
 
+import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
-
-import { Currency } from '../@types/entities/Currency';
 
 import sx from './Main.styles';
 

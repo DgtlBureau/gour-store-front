@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { SxProps } from '@mui/material';
 
+import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
+import { ToggleButton } from '../../UI/ToggleButton/ToggleButton';
 import { Button } from '../../UI/Button/Button';
-import { ProductFilter, Filters } from '../Filter/Filter';
+import { ProductFilterList, Filters } from '../Filter/List/List';
+import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
 import { IProduct } from '../../../@types/entities/IProduct';
 import { ICategory } from '../../../@types/entities/ICategory';
@@ -15,32 +18,7 @@ import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
 
-const catalogSx = {
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
-  filters: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
-    marginTop: {
-      xs: '20px',
-      md: '40px',
-    },
-  },
-};
+import catalogSx from './Catalog.styles';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -71,6 +49,7 @@ export function ProductCatalog({
   onElect,
   onDetail,
 }: ProductCatalogProps) {
+  const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     isReversed: false,
     category: 'all',
@@ -90,6 +69,7 @@ export function ProductCatalog({
     setFilters({
       ...filters,
       characteristics: {
+        ...filters.characteristics,
         [key]: selected,
       },
     });
@@ -120,7 +100,8 @@ export function ProductCatalog({
     else return 1;
   };
 
-  const openFilterModal = () => ({});
+  const openFilterModal = () => setFilterModalIsOpen(true);
+  const closeFilterModal = () => setFilterModalIsOpen(false);
 
   return (
     <Box sx={sx}>
@@ -130,50 +111,78 @@ export function ProductCatalog({
             {title}
           </Typography>
 
-          <Button size="small" onClick={openFilterModal}>
-            <FilterIcon fontSize="small" />
-            Фильтры
-          </Button>
+          <Box>
+            <ToggleButton
+              selected={filters.isReversed}
+              sx={{ padding: '4px', marginRight: '6px' }}
+              onChange={toggleSequence}
+            >
+              <ArrowsIcon fontSize="small" sx={{ transform: 'rotate(90deg)' }} />
+            </ToggleButton>
+
+            <Button size="small" onClick={openFilterModal} sx={catalogSx.filterBtn}>
+              <FilterIcon fontSize="small" />
+            </Button>
+          </Box>
         </Box>
       )}
 
-      <CardSlider
-        title={screenWidth > 900 || !categories ? title : undefined}
-        key={`catalog/${filters.category}`}
-        spaceBetween={0}
-        rows={rows || getCatalogRows()}
-        head={
-          !!categories && (
-            <ProductFilter
-              sx={catalogSx.filters}
-              categories={categories}
-              filters={filters}
-              onReverse={toggleSequence}
-              onCategoryChange={selectCategory}
-              onCharacteristicChange={selectCharacteristics}
+      {productList.length ? (
+        <CardSlider
+          title={screenWidth > 900 || !categories ? title : undefined}
+          key={`catalog/${filters.category}`}
+          spaceBetween={0}
+          rows={rows || getCatalogRows()}
+          head={
+            !!categories && (
+              <ProductFilterList
+                sx={catalogSx.filters}
+                categories={categories}
+                filters={filters}
+                language={language}
+                onReverse={toggleSequence}
+                onCategoryChange={selectCategory}
+                onCharacteristicChange={selectCharacteristics}
+              />
+            )
+          }
+          cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
+            <ProductCard
+              key={product.id}
+              title={product.title[language]}
+              description={product.description[language]}
+              rating={product.grade}
+              price={product.price[currency]}
+              previewSrc={product.images[0] ? product.images[0].small : ''}
+              currency={currency}
+              currentCount={getProductCount(product.id, product.isWeightGood)}
+              inCart={!!findProductInBasket(product.id)}
+              isElected={false}
+              isWeightGood={product.isWeightGood}
+              onAdd={() => onAdd(product)}
+              onRemove={() => onRemove(product)}
+              onElect={() => onElect(product)}
+              onDetail={() => onDetail(product.id)}
             />
-          )
-        }
-        cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
-          <ProductCard
-            key={product.id}
-            title={product.title[language]}
-            description={product.description[language]}
-            rating={product.grade}
-            price={product.price[currency]}
-            previewSrc={product.images[0] ? product.images[0].small : ''}
-            currency={currency}
-            currentCount={getProductCount(product.id, product.isWeightGood)}
-            inCart={!!findProductInBasket(product.id)}
-            isElected={false}
-            isWeightGood={product.isWeightGood}
-            onAdd={() => onAdd(product)}
-            onRemove={() => onRemove(product)}
-            onElect={() => onElect(product)}
-            onDetail={() => onDetail(product.id)}
-          />
-        ))}
-      />
+          ))}
+        />
+      ) : (
+        <Typography variant="h5" color="primary" sx={catalogSx.emptyTitle}>
+          Продукты не найдены
+        </Typography>
+      )}
+
+      {!!categories && (
+        <ProductFilterModal
+          categories={categories}
+          filters={filters}
+          language={language}
+          onCategoryChange={selectCategory}
+          onCharacteristicChange={selectCharacteristics}
+          isOpen={filterModalIsOpen}
+          onClose={closeFilterModal}
+        />
+      )}
     </Box>
   );
 }

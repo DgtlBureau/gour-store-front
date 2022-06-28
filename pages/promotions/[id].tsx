@@ -1,28 +1,46 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import translations from './Promotion.i18n.json';
 import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
-import { addBasketProduct, selectProductsIdInOrder, subtractBasketProduct } from '../../store/slices/orderSlice';
+import { addBasketProduct, subtractBasketProduct } from '../../store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
-import { CardSlider } from 'components/CardSlider/CardSlider';
-import { ProductCard } from 'components/Product/Card/Card';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { Link as CustomLink } from '../../components/UI/Link/Link';
+import Link from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
 import { useGetProductListQuery } from 'store/api/productApi';
 import { useAppSelector } from 'hooks/store';
+import { Path } from '../../constants/routes';
+import { IProduct } from '../../@types/entities/IProduct';
 import { defaultTheme as theme } from 'themes';
 
 const sx = {
   promotion: {
-    marginBottom: '100px',
+    margin: {
+      md: '0 0 100px 0',
+      sm: '0 0 70px 0',
+      xs: '0 0 30px 0',
+    },
   },
   header: {
     margin: '20px 0',
+  },
+  title: {
+    margin: {
+      xs: '0 0 10px 0',
+      md: '0 0 20px 0',
+    },
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
+    fontWeight: 'bold',
+    fontFamily: 'Roboto slab',
+    color: 'primary.main',
   },
   description: {
     maxWidth: '1200px',
@@ -33,8 +51,6 @@ const sx = {
 export default function Promotion() {
   const dispatch = useDispatch();
 
-  const productsIdInOrder = useSelector(selectProductsIdInOrder);
-
   const { t } = useLocalTranslation(translations);
 
   const router = useRouter();
@@ -43,70 +59,49 @@ export default function Promotion() {
   const { id } = router.query;
 
   const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
-
   const currency = 'cheeseCoin';
 
   const promotionId = id ? +id : 0;
 
   const { data: promotion } = useGetPromotionQuery(promotionId, { skip: !id });
-
   const { data: products } = useGetProductListQuery();
+
+  const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
+
+  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
     <ShopLayout language={language} currency={currency}>
-      <>
-        {promotion && (
-          <Box sx={sx.promotion}>
-            <CustomLink path="/">{t('goBack')}</CustomLink>
+      {promotion && (
+        <Box sx={sx.promotion}>
+          <Link href="/">{t('goBack')}</Link>
 
-            <PromotionHeader
-              title={promotion.title[language]}
-              image={promotion.pageImage.full}
-              end={promotion.end}
-              sx={sx.header}
-            />
+          <PromotionHeader image={promotion.pageImage.full} end={new Date(promotion.end)} sx={sx.header} />
 
-            <Typography variant="body1" sx={sx.description}>
-              {promotion.description[language]}
-            </Typography>
-          </Box>
-        )}
-        {products && (
-          <CardSlider
-            title={t('sliderTitle')}
-            slidesPerView={4}
-            spaceBetween={0}
-            rows={2}
-            cardsList={products.map(product => {
-              const productInBasket = basket.products.find(it => it.product.id === product.id);
-              const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-              return (
-                <ProductCard
-                  key={product.id}
-                  currency={currency}
-                  title={product.title ? product.title[language] : ''}
-                  description={product.description ? product.description[language] : ''}
-                  rating={product.grade}
-                  price={product.price[currency]}
-                  previewSrc={product.images[0] ? product.images[0].small : ''}
-                  inCart={productsIdInOrder.includes(product.id)}
-                  isElected={false}
-                  onAdd={() => {
-                    dispatch(addBasketProduct(product));
-                  }}
-                  onRemove={() => {
-                    dispatch(subtractBasketProduct(product));
-                  }}
-                  onElect={() => {}}
-                  onDetail={() => router.push(`products/${product.id}`)}
-                  currentCount={count}
-                  isWeightGood={product.isWeightGood}
-                />
-              );
-            })}
-          />
-        )}
-      </>
+          <Typography variant="h5" sx={sx.title}>
+            {promotion.title[language]}
+          </Typography>
+
+          <Typography variant="body1" sx={sx.description}>
+            {promotion.description[language]}
+          </Typography>
+        </Box>
+      )}
+
+      {!!products && (
+        <ProductCatalog
+          title={t('sliderTitle')}
+          products={products}
+          basket={basket.products}
+          language={language}
+          currency={currency}
+          onAdd={addToBasket}
+          onRemove={removeFromBasket}
+          onElect={() => ({})}
+          onDetail={goToProductPage}
+        />
+      )}
     </ShopLayout>
   );
 }
