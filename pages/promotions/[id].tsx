@@ -10,7 +10,7 @@ import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import Link from '../../components/UI/Link/Link';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
 import { useGetProductListQuery } from 'store/api/productApi';
 import { useAppSelector } from 'hooks/store';
@@ -63,6 +63,8 @@ export default function Promotion() {
   const currency = 'cheeseCoin';
 
   const promotionId = id ? +id : 0;
+
+  if (!promotionId) return router.push('/');
 
   const { data: promotion } = useGetPromotionQuery(promotionId, { skip: !id });
   const { data: products } = useGetProductListQuery();

@@ -8,7 +8,7 @@ import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Button } from '../components/UI/Button/Button';
 import { Typography } from '../components/UI/Typography/Typography';
-import Link from '../components/UI/Link/Link';
+import { LinkRef as Link } from '../components/UI/Link/Link';
 
 import notFound from '../assets/images/404.png';
 import { PrivateLayout } from 'layouts/Private/Private';

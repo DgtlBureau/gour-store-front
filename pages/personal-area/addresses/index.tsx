@@ -10,15 +10,16 @@ import {
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
 import translations from './Addresses.i18n.json';
-import { useLocalTranslation, LocalConfig } from '../../hooks/useLocalTranslation';
-import { PALayout } from '../../layouts/PA/PA';
-import { Box } from 'components/UI/Box/Box';
-import { Button } from 'components/UI/Button/Button';
-import { PAProfilesItem } from '../../components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from '../../components/PA/Profiles/DeleteModal/DeleteModal';
-import { OrderProfileDto } from '../../@types/dto/order/profile.dto';
-import { CurrentUserUpdateDto } from '../../@types/dto/current-user-update.dto';
+
 import { PrivateLayout } from 'layouts/Private/Private';
+import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { PALayout } from '../../../layouts/PA/PA';
+import { Box } from '../../../components/UI/Box/Box';
+import { Button } from '../../../components/UI/Button/Button';
+import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
+import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
+import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
+import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
 
 const sx = {
   actions: {

@@ -4,7 +4,7 @@ import { Divider, SxProps } from '@mui/material';
 
 import translations from './Footer.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import Link from '../UI/Link/Link';
+import { LinkRef as Link } from '../UI/Link/Link';
 import { Box } from '../UI/Box/Box';
 
 import logo from '../../assets/images/logo.svg';
@@ -109,14 +109,25 @@ export function Footer({
 
         <Box sx={footerSx.contacts}>
           {contacts.map(link => (
-            <Link key={link.path} href={link.path} underline="none" sx={footerSx.contactsLink}>
+            <Link
+              key={link.path}
+              href={link.path}
+              underline="none"
+              sx={footerSx.contactsLink}
+            >
               {link.label}
             </Link>
           ))}
 
           <Box sx={footerSx.social}>
             {social.map(link => (
-              <Link key={link.path} href={link.path} rel="noreferrer" target="_blank" sx={footerSx.socialLink}>
+              <Link
+                key={link.path}
+                href={link.path}
+                rel="noreferrer"
+                target="_blank"
+                sx={footerSx.socialLink}
+              >
                 <Image src={link.icon} height={38} width={38} alt="" />
               </Link>
             ))}
@@ -127,12 +138,22 @@ export function Footer({
       <Box sx={footerSx.info}>
         {info.map((link, i) => (
           <Fragment key={link.path}>
-            <Link href={link.path} rel="noreferrer" target="_blank" sx={footerSx.infoLink}>
+            <Link
+              href={link.path}
+              rel="noreferrer"
+              target="_blank"
+              sx={footerSx.infoLink}
+            >
               {link.label}
             </Link>
 
             {i + 1 !== info.length && (
-              <Divider sx={footerSx.divider} orientation="vertical" variant="middle" flexItem />
+              <Divider
+                sx={footerSx.divider}
+                orientation="vertical"
+                variant="middle"
+                flexItem
+              />
             )}
           </Fragment>
         ))}

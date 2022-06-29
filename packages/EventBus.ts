@@ -12,7 +12,9 @@ type EventArguments = {
   [EventTypes.removeNotification]: string;
 };
 
-type EventListenerCallback<T extends EventTypes> = (payload: EventArguments[T]) => void;
+type EventListenerCallback<T extends EventTypes> = (
+  payload: EventArguments[T]
+) => void;
 
 const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
   [EventTypes.routerPush]: [],

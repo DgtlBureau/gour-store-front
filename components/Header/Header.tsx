@@ -18,7 +18,7 @@ import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 import { Button } from '../UI/Button/Button';
-import Link from '../UI/Link/Link';
+import { LinkRef as Link } from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { Currency } from '../../@types/entities/Currency';
@@ -110,8 +110,23 @@ export function Header({
     <>
       <AppBar sx={sx.header}>
         <Container sx={{ height: '100%', position: 'relative' }} maxWidth="lg">
-          <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ height: '100%' }}>
-            <Grid item xs={2} md={4} lg={6} container direction="row" alignItems="center" justifyContent="flex-start">
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: '100%' }}
+          >
+            <Grid
+              item
+              xs={2}
+              md={4}
+              lg={6}
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-start"
+            >
               <Box sx={sx.logo}>
                 <NextLink href="/" passHref>
                   <Image src={Logo} height={49} width={58} alt="" />
@@ -120,7 +135,12 @@ export function Header({
 
               {!isGame && (
                 <>
-                  <Link href={`tel:${firstPhone}`} variant="body1" color="inherit" sx={sx.phone}>
+                  <Link
+                    href={`tel:${firstPhone}`}
+                    variant="body1"
+                    color="inherit"
+                    sx={sx.phone}
+                  >
                     {firstPhone}
                   </Link>
 
@@ -135,7 +155,16 @@ export function Header({
               )}
             </Grid>
 
-            <Grid item xs={10} md={8} lg={6} container direction="row" alignItems="center" justifyContent="flex-end">
+            <Grid
+              item
+              xs={10}
+              md={8}
+              lg={6}
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
               <Box
                 sx={{
                   ...sx.money,
@@ -151,7 +180,11 @@ export function Header({
                   {currencySymbol}
                 </Typography>
 
-                <IconButton onClick={onClickReplenishment} color="inherit" sx={sx.replenishment}>
+                <IconButton
+                  onClick={onClickReplenishment}
+                  color="inherit"
+                  sx={sx.replenishment}
+                >
                   <AddIcon color="primary" />
                 </IconButton>
               </Box>
@@ -178,16 +211,28 @@ export function Header({
 
               {!isGame && (
                 <>
-                  <IconButton onClick={onClickFavorite} color="inherit" sx={sx.icon}>
+                  <IconButton
+                    onClick={onClickFavorite}
+                    color="inherit"
+                    sx={sx.icon}
+                  >
                     <FavoriteBorderIcon />
                   </IconButton>
 
-                  <IconButton onClick={onClickPersonalArea} color="inherit" sx={sx.icon}>
+                  <IconButton
+                    onClick={onClickPersonalArea}
+                    color="inherit"
+                    sx={sx.icon}
+                  >
                     <PersonIcon />
                   </IconButton>
 
                   <Box sx={sx.flag}>
-                    <NextLink href={router?.asPath || ''} locale={language === 'ru' ? 'en' : 'ru'} passHref>
+                    <NextLink
+                      href={router?.asPath || ''}
+                      locale={language === 'ru' ? 'en' : 'ru'}
+                      passHref
+                    >
                       <Image
                         src={language === 'ru' ? RusFlagIcon : UKFlagIcon}
                         objectFit="cover"
@@ -199,7 +244,11 @@ export function Header({
                   </Box>
 
                   <Button sx={sx.cart} onClick={onClickBasket}>
-                    <Badge sx={sx.cartBadge} badgeContent={basketProductCount} color="primary">
+                    <Badge
+                      sx={sx.cartBadge}
+                      badgeContent={basketProductCount}
+                      color="primary"
+                    >
                       <ShoppingCartOutlinedIcon color="primary" />
                     </Badge>
                     {basketProductSum}
@@ -209,8 +258,16 @@ export function Header({
                 </>
               )}
               {!isGame && (
-                <IconButton sx={sx.menuBtn} color="inherit" onClick={deployMenu}>
-                  {!isMenuDeployed ? <MenuIcon sx={sx.menuIcon} /> : <CloseIcon sx={sx.menuIcon} />}
+                <IconButton
+                  sx={sx.menuBtn}
+                  color="inherit"
+                  onClick={deployMenu}
+                >
+                  {!isMenuDeployed ? (
+                    <MenuIcon sx={sx.menuIcon} />
+                  ) : (
+                    <CloseIcon sx={sx.menuIcon} />
+                  )}
                 </IconButton>
               )}
             </Grid>

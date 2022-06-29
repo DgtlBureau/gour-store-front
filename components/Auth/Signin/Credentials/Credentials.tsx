@@ -5,15 +5,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { SignInDto } from '../../../../@types/dto/signin.dto';
+import { Translator } from 'utils/Translator';
 
 import sx from './Credentials.styles';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 export type SigninCredentialsProps = {
   defaultValues?: SignInDto;
@@ -32,7 +34,7 @@ export function SigninCredentials({
 }: SigninCredentialsProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignInDto>({
     defaultValues,
@@ -48,15 +50,25 @@ export function SigninCredentials({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+          <Button
+            sx={sx.backBtn}
+            size="small"
+            variant="outlined"
+            onClick={onBack}
+          >
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFTextField sx={sx.field} name="phone" label={t('phone')} />
+          <HFPhoneInput sx={sx.field} name="phone" label={t('phone')} />
 
-          <HFTextField sx={sx.field} type="password" name="password" label={t('password')} />
+          <HFTextField
+            sx={sx.field}
+            type="password"
+            name="password"
+            label={t('password')}
+          />
 
           <Box sx={sx.links}>
             <Link component="button" variant="body2" onClick={onPasswordChange}>

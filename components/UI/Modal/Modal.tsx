@@ -16,7 +16,7 @@ export type ModalProps = {
   isOpen: boolean;
   title: string;
   description?: string;
-  body?: ReactNode;
+  children?: ReactNode;
   actions?: ReactNode;
   acceptText?: string;
   formId?: string;
@@ -29,7 +29,7 @@ export function Modal({
   isOpen,
   title,
   description,
-  body,
+  children,
   acceptText,
   formId,
   acceptIsDisabled,
@@ -46,22 +46,33 @@ export function Modal({
             {title}
           </Typography>
 
-          <IconButton sx={sx.cross} onClick={onClose}>
+          <IconButton onClick={onClose}>
             <CrossIcon color="primary" />
           </IconButton>
         </Box>
 
-        {!!description && <Typography variant="body1">{description}</Typography>}
+        {!!description && (
+          <Typography variant="body1">{description}</Typography>
+        )}
 
-        {body}
+        {children}
 
         {onAccept ? (
-          <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
+          <Button
+            sx={sx.acceptBtn}
+            onClick={onAccept}
+            disabled={acceptIsDisabled}
+          >
             {acceptText || t('acceptText')}
           </Button>
         ) : (
           !!formId && (
-            <Button sx={sx.acceptBtn} type="submit" form={formId} disabled={acceptIsDisabled}>
+            <Button
+              sx={sx.acceptBtn}
+              type="submit"
+              form={formId}
+              disabled={acceptIsDisabled}
+            >
               {acceptText || t('acceptText')}
             </Button>
           )
