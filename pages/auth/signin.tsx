@@ -7,6 +7,7 @@ import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/Pa
 import {
   useSignInMutation,
   useSendCodeMutation,
+  useSignOutMutation,
 } from '../../store/api/authApi';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';

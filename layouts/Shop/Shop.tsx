@@ -2,8 +2,14 @@ import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
-import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
+import {
+  selectedProductCount,
+  selectedProductSum,
+} from '../../store/slices/orderSlice';
+import {
+  useGetCurrentUserQuery,
+  useChangeCurrentCityMutation,
+} from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 
 import { Box } from '../../components/UI/Box/Box';
@@ -18,6 +24,7 @@ import { contacts } from '../../constants/contacts';
 import sx from './Shop.styles';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
+import { useSignOutMutation } from 'store/api/authApi';
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -33,6 +40,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [changeCity] = useChangeCurrentCityMutation();
+  const [signOut] = useSignOutMutation();
 
   const handleAddChesecoins = (data: AddCheesecoinsDto) => {
     console.log(data);
@@ -47,7 +55,8 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity =
+    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
@@ -69,7 +78,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
         onClickReplenishment={() => setIsModalOpen(true)}
-        onClickSignout={() => ({})}
+        onClickSignout={() => {
+          signOut();
+        }}
       />
 
       <Box sx={sx.content}>{children}</Box>
