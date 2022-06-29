@@ -14,6 +14,7 @@ import { Path } from 'constants/routes';
 import { Currency } from '../../@types/entities/Currency';
 import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
 import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 export function Main() {
   const router = useRouter();
@@ -34,29 +35,31 @@ export function Main() {
   const goToDiscounts = () => router.push(Path.DISCOUNTS);
 
   return (
-    <PALayout>
-      <Grid container spacing={2}>
-        {!!currentUser && (
+    <PrivateLayout>
+      <PALayout>
+        <Grid container spacing={2}>
+          {!!currentUser && (
+            <Grid item xs={12} sm={6}>
+              <PACredentialsCard
+                name={`${currentUser.firstName} ${currentUser.lastName}`}
+                phone={currentUser.phone}
+                photo={currentUser.avatar?.small}
+                onClickMore={goToCredentials}
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={6}>
-            <PACredentialsCard
-              name={`${currentUser.firstName} ${currentUser.lastName}`}
-              phone={currentUser.phone}
-              photo={currentUser.avatar?.small}
-              onClickMore={goToCredentials}
-            />
+            <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
           </Grid>
-        )}
-        <Grid item xs={12} sm={6}>
-          <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
+          <Grid item xs={12} sm={6}>
+            <PAOrdersCard orders={orders} onClickMore={goToOrders} />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <PADiscountsCard discounts={[]} onClickMore={goToDiscounts} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <PAOrdersCard orders={orders} onClickMore={goToOrders} />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <PADiscountsCard discounts={[]} onClickMore={goToDiscounts} />
-        </Grid>
-      </Grid>
-    </PALayout>
+      </PALayout>
+    </PrivateLayout>
   );
 }
 

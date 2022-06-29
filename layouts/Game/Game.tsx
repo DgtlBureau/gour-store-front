@@ -13,6 +13,7 @@ import { Language } from '../../@types/entities/Language';
 import { contacts } from '../../constants/contacts';
 
 import sx from './Game.styles';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 
 export interface GameLayoutProps {
   currency: Currency;
@@ -25,6 +26,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [changeCity] = useChangeCurrentCityMutation();
 
@@ -54,7 +56,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        moneyAmount={1000}
+        moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}

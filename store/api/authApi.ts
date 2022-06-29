@@ -66,6 +66,15 @@ export const authApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
+      signOut: builder.mutation<void, void>({
+        query(body) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/signout`,
+            body,
+          };
+        },
+      }),
     };
   },
 });

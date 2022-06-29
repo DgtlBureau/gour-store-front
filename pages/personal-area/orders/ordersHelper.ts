@@ -49,6 +49,7 @@ type formattedOrder = {
 };
 
 export function groupOrdersByDate(ordersList: OrdersCardProps[]) {
+  //FIXME:
   const someObj: Record<number, formattedOrder> = {};
 
   ordersList.forEach(order => {

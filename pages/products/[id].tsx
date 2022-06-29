@@ -24,6 +24,7 @@ import { CHARACTERISTICS } from 'constants/characteristics';
 import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -104,73 +105,75 @@ export default function Product() {
       }) || [];
 
   return (
-    <ShopLayout language={language} currency={currency}>
-      {isLoading && <LinearProgress />}
+    <PrivateLayout>
+      <ShopLayout language={language} currency={currency}>
+        {isLoading && <LinearProgress />}
 
-      {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
 
-      {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
 
-      {!isLoading && !isError && product && (
-        <>
-          <Box sx={sx.top}>
-            <ImageSlider images={product.images} sx={sx.imageSlider} />
+        {!isLoading && !isError && product && (
+          <>
+            <Box sx={sx.top}>
+              <ImageSlider images={product.images} sx={sx.imageSlider} />
 
-            <Box sx={sx.info}>
-              <Typography variant="h3" sx={sx.title}>
-                {product.title[language] || ''}
+              <Box sx={sx.info}>
+                <Typography variant="h3" sx={sx.title}>
+                  {product.title[language] || ''}
+                </Typography>
+
+                <ProductInformation
+                  rating={product.grade || 0}
+                  gradesCount={product.gradesCount || 0}
+                  commentsCount={product.commentsCount || 0}
+                  characteristics={productCharacteristics}
+                  onClickComments={() => {}}
+                />
+
+                <ProductActions
+                  price={product.price[currency] || 0}
+                  count={count}
+                  currency={currency}
+                  discount={product.discount}
+                  isWeightGood={product.isWeightGood}
+                  sx={sx.actions}
+                  onAdd={() => addToBasket(product)}
+                  onRemove={() => removeFromBasket(product)}
+                  onElect={() => console.log('add to fav')}
+                />
+              </Box>
+            </Box>
+
+            <Box sx={sx.description}>
+              <Typography sx={sx.title} variant="h5">
+                {t('description')}
               </Typography>
 
-              <ProductInformation
-                rating={product.grade || 0}
-                gradesCount={product.gradesCount || 0}
-                commentsCount={product.commentsCount || 0}
-                characteristics={productCharacteristics}
-                onClickComments={() => {}}
-              />
-
-              <ProductActions
-                price={product.price[currency] || 0}
-                count={count}
-                currency={currency}
-                discount={product.discount}
-                isWeightGood={product.isWeightGood}
-                sx={sx.actions}
-                onAdd={() => addToBasket(product)}
-                onRemove={() => removeFromBasket(product)}
-                onElect={() => console.log('add to fav')}
-              />
+              <Typography variant="body1">{product.description[language] || ''}</Typography>
             </Box>
-          </Box>
 
-          <Box sx={sx.description}>
-            <Typography sx={sx.title} variant="h5">
-              {t('description')}
-            </Typography>
+            {!!product.similarProducts && (
+              <ProductCatalog
+                title={t('similar')}
+                products={product.similarProducts}
+                basket={basket.products}
+                language={language}
+                currency={currency}
+                sx={sx.similar}
+                onAdd={addToBasket}
+                onRemove={removeFromBasket}
+                onElect={() => ({})}
+                onDetail={goToProductPage}
+              />
+            )}
 
-            <Typography variant="body1">{product.description[language] || ''}</Typography>
-          </Box>
+            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
 
-          {!!product.similarProducts && (
-            <ProductCatalog
-              title={t('similar')}
-              products={product.similarProducts}
-              basket={basket.products}
-              language={language}
-              currency={currency}
-              sx={sx.similar}
-              onAdd={addToBasket}
-              onRemove={removeFromBasket}
-              onElect={() => ({})}
-              onDetail={goToProductPage}
-            />
-          )}
-
-          {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
-
-          <CommentCreateBlock onCreate={onCreateComment} />
-        </>
-      )}
-    </ShopLayout>
+            <CommentCreateBlock onCreate={onCreateComment} />
+          </>
+        )}
+      </ShopLayout>
+    </PrivateLayout>
   );
 }

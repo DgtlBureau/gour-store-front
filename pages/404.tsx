@@ -11,6 +11,7 @@ import { Typography } from '../components/UI/Typography/Typography';
 import { LinkRef as Link } from '../components/UI/Link/Link';
 
 import notFound from '../assets/images/404.png';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
   notFound: {
@@ -53,20 +54,22 @@ export default function NotFound() {
   const goToHome = () => router.push('/');
 
   return (
-    <ShopLayout currency="cheeseCoin" language="ru">
-      <Box sx={sx.notFound}>
-        <Link href="/">
-          <Image src={notFound} height="325" width="814" alt="notFound" />
-        </Link>
+    <PrivateLayout>
+      <ShopLayout currency="cheeseCoin" language="ru">
+        <Box sx={sx.notFound}>
+          <Link href="/">
+            <Image src={notFound} height="325" width="814" alt="notFound" />
+          </Link>
 
-        <Typography variant="h4" sx={sx.title}>
-          {t('notFound.message')}
-        </Typography>
+          <Typography variant="h4" sx={sx.title}>
+            {t('notFound.message')}
+          </Typography>
 
-        <Button sx={sx.button} onClick={goToHome}>
-          {t('notFound.button')}
-        </Button>
-      </Box>
-    </ShopLayout>
+          <Button sx={sx.button} onClick={goToHome}>
+            {t('notFound.button')}
+          </Button>
+        </Box>
+      </ShopLayout>
+    </PrivateLayout>
   );
 }
