@@ -38,7 +38,7 @@ export default function SignIn() {
   const authorize = async (data: SignInDto) => {
     setCredentials(data);
     try {
-      await signIn(credentials).unwrap();
+      await signIn(data).unwrap();
       goToHome();
     } catch (e: unknown) {
       // event bus notification
