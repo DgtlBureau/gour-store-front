@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { SignUpFormDto } from '../../../../@types/dto/signup-form.dto';
 import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
@@ -14,6 +14,7 @@ import { Typography } from '../../../UI/Typography/Typography';
 import { Checkbox } from '../../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
+import { Translator } from 'utils/Translator';
 
 import sx from './Credentials.styles';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
@@ -37,7 +38,7 @@ export function SignupCredentials({
 
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignUpFormDto>({
     defaultValues: {

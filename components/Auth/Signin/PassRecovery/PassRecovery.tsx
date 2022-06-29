@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './PassRecovery.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { PasswordRecoveryDto } from '../../../../@types/dto/password-recovery.dto';
 import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
@@ -12,6 +12,7 @@ import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { Translator } from 'utils/Translator';
 
 import sx from './PassRecovery.styles';
 
@@ -33,7 +34,7 @@ export function SigninPassRecovery({
 
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<PasswordRecoveryDto>({
     defaultValues,

@@ -43,20 +43,6 @@ export const sx = {
     width: '100%',
     marginTop: '14px',
   },
-  cross: {
-    position: {
-      sm: 'absolute',
-      xs: 'none',
-    },
-    top: {
-      xs: 'none',
-      sm: '30px',
-    },
-    right: {
-      xs: 'none',
-      sm: '52px',
-    },
-  },
 };
 
 export default sx;
