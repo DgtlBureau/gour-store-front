@@ -38,6 +38,8 @@ const sx = {
     overflowX: 'auto',
   },
   listItem: {
+    whiteSpace: 'nowrap',
+    marginRight: '10px',
     padding: '10px 16px',
     color: 'text.muted',
     borderRadius: '6px',

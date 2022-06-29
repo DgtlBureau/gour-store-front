@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Stack } from '@mui/material';
 import { formatOrderData, groupOrdersByDate } from './ordersHelper';
-import { OrdersCardGroup } from '../../../components/Orders/Group/Group';
+import { OrdersCardGroup } from 'components/Orders/Group/Group';
 import { ProgressLinear } from '../../../components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from '../../../components/UI/Typography/Typography';
-import { PALayout } from '../../../layouts/PA/PA';
+import { Typography } from 'components/UI/Typography/Typography';
+import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PrivateLayout } from 'layouts/Private/Private';
 
