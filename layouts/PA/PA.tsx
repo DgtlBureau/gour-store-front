@@ -16,6 +16,7 @@ import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
 
 import sx from './PA.styles';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 
 export interface PALayoutProps {
   children?: ReactNode;
@@ -29,6 +30,7 @@ export function PALayout({ children }: PALayoutProps) {
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const { t } = useLocalTranslation(translations);
 
@@ -88,7 +90,7 @@ export function PALayout({ children }: PALayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        moneyAmount={1000}
+        moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}

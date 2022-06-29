@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -12,9 +12,12 @@ import { Footer } from '../../components/Footer/Footer';
 import { Copyright } from '../../components/Copyright/Copyright';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
+import { AddCheesecoinsDto } from '../../@types/dto/cheseecoins/add.dto';
 import { contacts } from '../../constants/contacts';
 
 import sx from './Shop.styles';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -26,8 +29,14 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: balance = 0 } = useGetCurrentBalanceQuery();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [changeCity] = useChangeCurrentCityMutation();
+
+  const handleAddChesecoins = (data: AddCheesecoinsDto) => {
+    console.log(data);
+  };
 
   const convertedCities =
     cities?.map(city => ({
@@ -43,7 +52,6 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
-  const goToReplenishment = () => router.push('/replenishment');
 
   return (
     <Box sx={sx.layout}>
@@ -55,12 +63,12 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        moneyAmount={1000}
+        moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
-        onClickReplenishment={goToReplenishment}
+        onClickReplenishment={() => setIsModalOpen(true)}
         onClickSignout={() => ({})}
       />
 
@@ -69,6 +77,13 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       <Footer {...contacts} sx={sx.footer} />
 
       <Copyright />
+
+      <CheesecoinsAddModal
+        isOpened={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Добавление чизкоинов"
+        onSubmit={handleAddChesecoins}
+      />
     </Box>
   );
 }

@@ -18,7 +18,7 @@ import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 import { Button } from '../UI/Button/Button';
-import Link from '../UI/Link/Link';
+import { LinkRef as Link } from '../UI/Link/Link';
 import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { Currency } from '../../@types/entities/Currency';

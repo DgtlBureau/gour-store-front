@@ -4,7 +4,10 @@ import { useRouter } from 'next/router';
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
 import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
-import { useSignInMutation, useSendCodeMutation } from '../../store/api/authApi';
+import {
+  useSignInMutation,
+  useSendCodeMutation,
+} from '../../store/api/authApi';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
 
@@ -34,9 +37,8 @@ export default function SignIn() {
 
   const authorize = async (data: SignInDto) => {
     setCredentials(data);
-
     try {
-      await signIn(credentials).unwrap();
+      await signIn(data).unwrap();
       goToHome();
     } catch (e: unknown) {
       // event bus notification

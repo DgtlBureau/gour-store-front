@@ -10,10 +10,12 @@ import {
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
 import translations from './Addresses.i18n.json';
+
+import { PrivateLayout } from 'layouts/Private/Private';
 import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
 import { PALayout } from '../../../layouts/PA/PA';
-import { Box } from 'components/UI/Box/Box';
-import { Button } from 'components/UI/Button/Button';
+import { Box } from '../../../components/UI/Box/Box';
+import { Button } from '../../../components/UI/Button/Button';
 import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
@@ -105,27 +107,31 @@ export function Addresses() {
   const closeDeleteModal = () => setIsDeleting(false);
 
   return (
-    <PALayout>
-      <Box sx={sx.actions}>
-        <Button size="small" disabled={isCreating} onClick={openCreateForm}>
-          {t('newAddress')}
-        </Button>
-      </Box>
-      {isCreating && <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />}
-      {profiles?.map(profile => (
-        <PAProfilesItem
-          key={profile.id}
-          isExpanded={expandedProfileId === profile.id}
-          isMain={currentUser?.mainOrderProfileId === profile.id}
-          cities={citiesList}
-          profile={profile}
-          onExpand={() => expandProfile(profile.id)}
-          onSave={data => editAddress(data, profile.id)}
-          onDelete={openDeleteModal}
-        />
-      ))}
-      <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
-    </PALayout>
+    <PrivateLayout>
+      <PALayout>
+        <Box sx={sx.actions}>
+          <Button size="small" disabled={isCreating} onClick={openCreateForm}>
+            {t('newAddress')}
+          </Button>
+        </Box>
+        {isCreating && (
+          <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+        )}
+        {profiles?.map(profile => (
+          <PAProfilesItem
+            key={profile.id}
+            isExpanded={expandedProfileId === profile.id}
+            isMain={currentUser?.mainOrderProfileId === profile.id}
+            cities={citiesList}
+            profile={profile}
+            onExpand={() => expandProfile(profile.id)}
+            onSave={data => editAddress(data, profile.id)}
+            onDelete={openDeleteModal}
+          />
+        ))}
+        <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
+      </PALayout>
+    </PrivateLayout>
   );
 }
 

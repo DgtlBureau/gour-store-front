@@ -27,6 +27,7 @@ import { IProduct } from '../@types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -53,68 +54,70 @@ const Home: NextPage = () => {
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
-    <ShopLayout currency={currency} language={language}>
-      {!!promotions && (
-        <CardSlider
-          title={t('promotions')}
-          cardsList={promotions.map(promotion => (
-            <PromotionCard
-              key={promotion.id}
-              image={promotion.cardImage.small}
-              onClickMore={() => goToPromotionPage(promotion.id)}
-            />
-          ))}
-        />
-      )}
+    <PrivateLayout>
+      <ShopLayout currency={currency} language={language}>
+        {!!promotions && (
+          <CardSlider
+            title={t('promotions')}
+            cardsList={promotions.map(promotion => (
+              <PromotionCard
+                key={promotion.id}
+                image={promotion.cardImage.small}
+                onClickMore={() => goToPromotionPage(promotion.id)}
+              />
+            ))}
+          />
+        )}
 
-      {!!novelties && (
-        <ProductCatalog
-          title={t('novelties')}
-          products={novelties}
-          basket={basket.products}
-          language={language}
-          currency={currency}
-          rows={1}
-          sx={sx.productList}
-          onAdd={addToBasket}
-          onRemove={removeFromBasket}
-          onElect={() => ({})}
-          onDetail={goToProductPage}
-        />
-      )}
+        {!!novelties && (
+          <ProductCatalog
+            title={t('novelties')}
+            products={novelties}
+            basket={basket.products}
+            language={language}
+            currency={currency}
+            rows={1}
+            sx={sx.productList}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={() => ({})}
+            onDetail={goToProductPage}
+          />
+        )}
 
-      {!!products && (
-        <ProductCatalog
-          title={t('catalog')}
-          products={products}
-          basket={basket.products}
-          categories={categories}
-          language={language}
-          currency={currency}
-          sx={sx.productList}
-          onAdd={addToBasket}
-          onRemove={removeFromBasket}
-          onElect={() => ({})}
-          onDetail={goToProductPage}
-        />
-      )}
+        {!!products && (
+          <ProductCatalog
+            title={t('catalog')}
+            products={products}
+            basket={basket.products}
+            categories={categories}
+            language={language}
+            currency={currency}
+            sx={sx.productList}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={() => ({})}
+            onDetail={goToProductPage}
+          />
+        )}
 
-      {!!page && (
-        <>
-          <Box sx={sx.banner}>
-            <Image src={bannerImg} objectFit="cover" layout="fill" alt="" />
-          </Box>
+        {!!page && (
+          <>
+            <Box sx={sx.banner}>
+              <Image src={bannerImg} objectFit="cover" layout="fill" alt="" />
+            </Box>
 
-          <Typography variant="h4" sx={sx.title}>
-            {page.info?.title?.[language]}
-          </Typography>
+            <Typography variant="h4" sx={sx.title}>
+              {page.info?.title?.[language]}
+            </Typography>
 
-          <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
-            {page.info?.description?.[language]}
-          </Typography>
-        </>
-      )}
-    </ShopLayout>
+            <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
+              {page.info?.description?.[language]}
+            </Typography>
+          </>
+        )}
+      </ShopLayout>
+    </PrivateLayout>
   );
 };
 

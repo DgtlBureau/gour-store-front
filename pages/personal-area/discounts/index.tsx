@@ -5,7 +5,6 @@ import { PALayout } from 'layouts/PA/PA';
 import { DiscountsGroup } from 'components/Discounts/Group/Group';
 import { DiscountsInfoBar } from 'components/Discounts/InfoBar/InfoBar';
 import { Typography } from 'components/UI/Typography/Typography';
-import { InfoBlock } from '../../../components/UI/Info/Block/Block';
 
 const discounts = [
   {
