@@ -49,6 +49,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   return (
     <Box sx={sx.layout}>
       <Header
+        sx={sx.header}
         isGame
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}

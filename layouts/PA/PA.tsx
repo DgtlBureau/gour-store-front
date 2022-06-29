@@ -36,8 +36,6 @@ export function PALayout({ children }: PALayoutProps) {
 
   const currentPath = router.pathname;
 
-  const [chapter, setChapter] = useState<string>(currentPath);
-
   const convertedCities =
     cities?.map(city => ({
       id: city.id,

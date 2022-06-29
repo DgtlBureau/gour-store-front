@@ -10,15 +10,25 @@ const sx = {
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',
+    transform: {
+      xs: 'rotate(90deg)',
+      md: 'none',
+    },
+  },
+  header: {
+    width: {
+      xs: '100vh',
+      md: '100%',
+    },
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    maxWidth: '1200px',
     paddingTop: '50px',
   },
   copyright: {
+    display: {
+      xs: 'none',
+      md: 'flex',
+    },
     position: 'absolute',
     bottom: 0,
     width: '100%',

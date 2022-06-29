@@ -23,7 +23,7 @@ export const sx = {
       opacity: '0.8',
       transform: 'translateY(3px)',
       boxShadow: '0 3px #666',
-    }
+    },
   },
 
   startBtn: {
@@ -44,7 +44,7 @@ export const sx = {
       opacity: '0.8',
       transform: 'translateY(3px)',
       boxShadow: '0 3px #666',
-    }
+    },
   },
 
   alarm: {
@@ -58,7 +58,7 @@ export const sx = {
 
   counter: {
     top: '94px',
-    right: '320px',
+    right: '250px',
   },
 
   topLeftBtn: {
@@ -129,6 +129,6 @@ export const sx = {
     top: '390px',
     right: '285px',
   },
-}
+};
 
 export default sx;

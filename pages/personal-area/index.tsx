@@ -29,10 +29,10 @@ export function Main() {
   const orders = getFormattedOrdersList(ordersList, currency);
   const addresses = getFormattedAddressesList(addressList, language);
 
-  const goToCredentials = () => router.push(Path.CREDENTIALS);
-  const goToAddresses = () => router.push(Path.ADDRESSES);
-  const goToOrders = () => router.push(Path.ORDERS);
-  const goToDiscounts = () => router.push(Path.DISCOUNTS);
+  const goToCredentials = () => router.push(`/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`);
+  const goToAddresses = () => router.push(`/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`);
+  const goToOrders = () => router.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`);
+  const goToDiscounts = () => router.push(`/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`);
 
   return (
     <PrivateLayout>
