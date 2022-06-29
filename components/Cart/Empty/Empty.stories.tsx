@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Link as CustomLink } from '../../UI/Link/Link';
 import { CartEmpty } from './Empty';
 
 export default {
@@ -18,13 +17,8 @@ const DEFAULT_BTN = {
 const Template: ComponentStory<typeof CartEmpty> = function (args) {
   return (
     <CartEmpty title={DEFAULT_TITLE} btn={DEFAULT_BTN}>
-      Акции, специальные предложения интересных товаров на
-      {' '}
-      <CustomLink path="#" underline="none">
-        главной странице
-      </CustomLink>
-      {' '}
-      помогут вам определиться с выбором!
+      Акции, специальные предложения интересных товаров на помогут вам
+      определиться с выбором!
     </CartEmpty>
   );
 };

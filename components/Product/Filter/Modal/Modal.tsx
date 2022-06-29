@@ -43,48 +43,50 @@ export function ProductFilterModal({
   const { t } = useLocalTranslation(translations);
 
   const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all'
+    it =>
+      CHARACTERISTICS[it].categoryKey === filters.category ||
+      CHARACTERISTICS[it].categoryKey === 'all'
   );
 
   return (
-    <Modal
-      isOpen={isOpen}
-      title={t('title')}
-      onClose={onClose}
-      body={
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box>
-            {categories?.map(category => (
-              <ToggleButton
-                key={category.id}
-                selected={filters.category === category.key}
-                sx={{ marginRight: '10px' }}
-                onChange={() => onCategoryChange(category.key)}
-              >
-                {category.title[language]}
-              </ToggleButton>
-            ))}
-          </Box>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
-            <Typography variant="h6" sx={sx.title}>
-              {t('filters')}
-            </Typography>
-
-            {features.map(feature => (
-              <ProductFilterMultiselect
-                key={feature}
-                title={CHARACTERISTICS[feature].label[language]}
-                selected={filters.characteristics[feature] || []}
-                options={CHARACTERISTICS[feature].values.map(it => ({ value: it.key, label: it.label[language] }))}
-                sx={{ marginBottom: '10px' }}
-                isMobile
-                onChange={selected => onCharacteristicChange(feature, selected)}
-              />
-            ))}
-          </Box>
+    <Modal isOpen={isOpen} title={t('title')} onClose={onClose}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box>
+          {categories?.map(category => (
+            <ToggleButton
+              key={category.id}
+              selected={filters.category === category.key}
+              sx={{ marginRight: '10px' }}
+              onChange={() => onCategoryChange(category.key)}
+            >
+              {category.title[language]}
+            </ToggleButton>
+          ))}
         </Box>
-      }
-    />
+
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}
+        >
+          <Typography variant="h6" sx={sx.title}>
+            {t('filters')}
+          </Typography>
+
+          {features.map(feature => (
+            <ProductFilterMultiselect
+              key={feature}
+              title={CHARACTERISTICS[feature].label[language]}
+              selected={filters.characteristics[feature] || []}
+              options={CHARACTERISTICS[feature].values.map(it => ({
+                value: it.key,
+                label: it.label[language],
+              }))}
+              sx={{ marginBottom: '10px' }}
+              isMobile
+              onChange={selected => onCharacteristicChange(feature, selected)}
+            />
+          ))}
+        </Box>
+      </Box>
+    </Modal>
   );
 }

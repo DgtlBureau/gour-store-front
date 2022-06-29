@@ -3,7 +3,7 @@ import { ListItem } from '@mui/material';
 import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
-import Link from '../../UI/Link/Link';
+import { LinkRef as Link } from '../../UI/Link/Link';
 
 import fbIcon from '../../../assets/icons/social/fb-white.svg';
 import instIcon from '../../../assets/icons/social/inst-white.svg';
@@ -20,7 +20,14 @@ export type MobileMenuContactsProps = {
   vk: string;
 };
 
-export function MobileMenuContacts({ firstPhone, secondPhone, email, fb, inst, vk }: MobileMenuContactsProps) {
+export function MobileMenuContacts({
+  firstPhone,
+  secondPhone,
+  email,
+  fb,
+  inst,
+  vk,
+}: MobileMenuContactsProps) {
   return (
     <>
       <ListItem sx={sx.phones}>
