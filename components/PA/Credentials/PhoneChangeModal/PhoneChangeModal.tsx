@@ -14,6 +14,7 @@ import { HFTextField } from '../../../HookForm/HFTextField';
 import { Typography } from '../../../UI/Typography/Typography';
 import { IconButton } from '../../../UI/IconButton/IconButton';
 import { PhoneChangeDto } from '../../../../@types/dto/phone-change.dto';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 const sx = {
   body: {
@@ -106,7 +107,7 @@ export function PAPhoneChangeModal({
         <Box sx={sx.body}>
           <FormProvider {...values}>
             <form id="phoneChangeForm" onSubmit={values.handleSubmit(submit)}>
-              <HFTextField
+              <HFPhoneInput
                 label={t('phone')}
                 name="phone"
                 InputProps={{

@@ -11,6 +11,7 @@ import { Box } from '../../../UI/Box/Box';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFTextField } from '../../../HookForm/HFTextField';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './PassRecovery.styles';
 
@@ -21,7 +22,12 @@ export type SigninPassRecoveryProps = {
   onSubmit(data: PasswordRecoveryDto): void;
 };
 
-export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit }: SigninPassRecoveryProps) {
+export function SigninPassRecovery({
+  defaultValues,
+  onBack,
+  onSendSMS,
+  onSubmit,
+}: SigninPassRecoveryProps) {
   const [SMS, setSMS] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -35,7 +41,8 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
+  const phoneIsInvalid =
+    !values.watch('phone') || !!values.getFieldState('phone').error;
   const formIsInvalid = !values.formState.isValid || !isConfirmed;
 
   const sendSMS = () => {
@@ -63,20 +70,36 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+          <Button
+            sx={sx.backBtn}
+            size="small"
+            variant="outlined"
+            onClick={onBack}
+          >
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField name="phone" label={t('phone')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid}>
+            <HFPhoneInput name="phone" label={t('phone')} />
+            <Button
+              sx={sx.getCodeBtn}
+              onClick={sendSMS}
+              disabled={phoneIsInvalid}
+            >
               {t('getCode')}
             </Button>
           </Box>
 
-          {SMS && <HFTextField sx={sx.field} name="sms" label={t('sms')} onBlur={blurSMSField} />}
+          {SMS && (
+            <HFTextField
+              sx={sx.field}
+              name="sms"
+              label={t('sms')}
+              onBlur={blurSMSField}
+            />
+          )}
 
           <HFTextField
             sx={sx.field}
@@ -85,7 +108,12 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
             label={t('password')}
             helperText={t('passwordHelper')}
           />
-          <HFTextField sx={sx.field} type="password" name="passwordConfirm" label={t('passwordConfirm')} />
+          <HFTextField
+            sx={sx.field}
+            type="password"
+            name="passwordConfirm"
+            label={t('passwordConfirm')}
+          />
 
           <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
