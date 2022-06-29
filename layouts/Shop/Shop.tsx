@@ -15,6 +15,7 @@ import { Language } from '../../@types/entities/Language';
 import { contacts } from '../../constants/contacts';
 
 import sx from './Shop.styles';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -26,6 +27,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const router = useRouter();
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [changeCity] = useChangeCurrentCityMutation();
 
@@ -55,7 +57,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         language={language}
         basketProductCount={count}
         basketProductSum={sum}
-        moneyAmount={1000}
+        moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}

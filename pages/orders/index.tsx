@@ -7,6 +7,7 @@ import { ProgressLinear } from '../../components/UI/ProgressLinear/ProgressLinea
 import { Typography } from 'components/UI/Typography/Typography';
 import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 export function Orders() {
   const lang = 'ru';
@@ -37,16 +38,18 @@ export function Orders() {
   }
 
   return (
-    <PALayout>
-      <Stack sx={{ margin: '15px 0 0 0' }} spacing={2}>
-        {Object.keys(groupedOrders).map(key => {
-          const orderGroup = groupedOrders[+key];
-          return (
-            <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
-          );
-        })}
-      </Stack>
-    </PALayout>
+    <PrivateLayout>
+      <PALayout>
+        <Stack sx={{ margin: '15px 0 0 0' }} spacing={2}>
+          {Object.keys(groupedOrders).map(key => {
+            const orderGroup = groupedOrders[+key];
+            return (
+              <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
+            );
+          })}
+        </Stack>
+      </PALayout>
+    </PrivateLayout>
   );
 }
 
