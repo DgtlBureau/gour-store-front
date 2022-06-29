@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Stack,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, Stack } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Typography } from '../../UI/Typography/Typography';
@@ -35,6 +29,11 @@ const sx = {
     maxWidth: '1200px',
     backgroundColor: '#fffef7',
     border: '1px solid #f4e7ce',
+    borderRadius: '6px',
+    boxShadow: 'none',
+    '&:before': {
+      content: 'none',
+    },
   },
   summary: {
     color: '#7E5F2F',
@@ -62,7 +61,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
     <Accordion sx={sx.container}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography sx={sx.title} variant="h6">
-          Прогресс скидки "{title}"
+          {`Прогресс скидки "${title}"`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -83,13 +82,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
                 Скидка %
               </Typography>
             </Grid>
-            <Grid
-              display="flex"
-              justifyContent="space-between"
-              item
-              xs={6}
-              md={10}
-            >
+            <Grid display="flex" justifyContent="space-between" item xs={6} md={10}>
               {percents.map(percent => (
                 <Box
                   key={percent}
@@ -113,21 +106,13 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
               ))}
             </Grid>
             <Grid item xs={3} md={1}>
-              <Typography
-                sx={{ ...sx.headerText, textAlign: 'end' }}
-                variant="subtitle1"
-              >
+              <Typography sx={{ ...sx.headerText, textAlign: 'end' }} variant="subtitle1">
                 Всего {getCurrencySymbol('cheeseCoin')}
               </Typography>
             </Grid>
           </Grid>
           {categories.map(category => (
-            <Grid
-              sx={sx.category}
-              key={category.summary}
-              container
-              spacing={{ xs: 1, md: 2 }}
-            >
+            <Grid sx={sx.category} key={category.summary} container spacing={{ xs: 1, md: 2 }}>
               <Grid item xs={3} md={1}>
                 <Typography sx={sx.categoryTitle} variant="subtitle2">
                   {category.title}

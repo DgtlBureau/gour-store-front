@@ -22,5 +22,9 @@ export function GameCounter({ value, sx }: GameCounterProps) {
     return value;
   };
 
-  return <Typography variant="h3" sx={{ ...counterSx, ...sx } as SxProps}>{getCount()}</Typography>;
+  return (
+    <Typography variant="h3" sx={{ ...counterSx, ...sx } as SxProps}>
+      {getCount()}
+    </Typography>
+  );
 }
