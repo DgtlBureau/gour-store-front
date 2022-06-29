@@ -1,10 +1,14 @@
-import { IOrder } from '../../@types/entities/IOrder';
-import { Currency } from '../../@types/entities/Currency';
+import { IOrder } from '../../../@types/entities/IOrder';
+import { Currency } from '../../../@types/entities/Currency';
 
 import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
 
-export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): OrdersCardProps {
+export function formatOrderData(
+  order: IOrder,
+  lang: 'ru' | 'en',
+  currency: Currency
+): OrdersCardProps {
   const client = order.order.firstName + ' ' + order.order.lastName;
   const products = order.order.orderProducts.map(product => ({
     photo: product.product?.images[0]?.small || '',

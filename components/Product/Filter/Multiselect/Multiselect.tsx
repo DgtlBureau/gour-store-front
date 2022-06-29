@@ -36,7 +36,14 @@ export type FilterMultiselectProps = {
   onChange(selected: string[]): void;
 };
 
-export function ProductFilterMultiselect({ title, selected, options, isMobile, sx, onChange }: FilterMultiselectProps) {
+export function ProductFilterMultiselect({
+  title,
+  selected,
+  options,
+  isMobile,
+  sx,
+  onChange,
+}: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
@@ -49,10 +56,14 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   };
 
   function changeOption(selected: string) {
-    const isOptionSelected = selectedOptions.find(option => option === selected);
+    const isOptionSelected = selectedOptions.find(
+      option => option === selected
+    );
 
     if (isOptionSelected) {
-      const newSelectedList = [...selectedOptions].filter(option => option !== selected);
+      const newSelectedList = [...selectedOptions].filter(
+        option => option !== selected
+      );
       setSelectedOptions(newSelectedList);
       if (isMobile) onChange(selectedOptions);
       return;
@@ -67,11 +78,13 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
 
   useEffect(() => {
     if (isMobile) onChange(selectedOptions);
-  }, [selectedOptions]);
+  }, [selectedOptions, isMobile, onChange]);
 
   return isMobile ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}
+      >
         <Typography variant="body1" sx={selectSx.title}>
           {title}
         </Typography>
@@ -83,7 +96,10 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
             variant="body1"
             key={option.value}
             onClick={() => changeOption(option.value)}
-            sx={{ ...selectSx.optionBox, ...(isOptionSelected(option.value) && selectSx.selected) }}
+            sx={{
+              ...selectSx.optionBox,
+              ...(isOptionSelected(option.value) && selectSx.selected),
+            }}
           >
             {option.label}
           </Typography>
@@ -93,17 +109,27 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   ) : (
     <Box sx={sx}>
       <Box sx={selectSx.extender} onClick={() => setIsDeployed(!isDeployed)}>
-        <Typography variant="body1" sx={{ ...selectSx.title, userSelect: 'none' }}>
+        <Typography
+          variant="body1"
+          sx={{ ...selectSx.title, userSelect: 'none' }}
+        >
           {title}
         </Typography>
-        <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
+        <ExpandMoreIcon
+          htmlColor={theme.palette.text.muted}
+          sx={{ ...(isDeployed && selectSx.rotatedArrow) }}
+        />
       </Box>
 
       <Collapse in={isDeployed} timeout="auto" unmountOnExit>
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
           <List sx={selectSx.list}>
             {options.map(option => (
-              <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
+              <ListItem
+                key={option.value}
+                onClick={() => changeOption(option.value)}
+                disablePadding
+              >
                 <ListItemButton role={undefined} dense>
                   <ListItemIcon sx={selectSx.listItemIcon}>
                     <Checkbox
@@ -123,7 +149,11 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
               <Button size="small" variant="outlined" onClick={resetOptions}>
                 {t('reset')}
               </Button>
-              <Button size="small" onClick={applyOptions} sx={selectSx.applyBtn}>
+              <Button
+                size="small"
+                onClick={applyOptions}
+                sx={selectSx.applyBtn}
+              >
                 {t('apply')}
               </Button>
             </Box>

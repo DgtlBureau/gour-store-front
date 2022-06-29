@@ -102,46 +102,45 @@ export function PAPhoneChangeModal({
       formId="phoneChangeForm"
       acceptIsDisabled={formIsInvalid}
       onClose={onClose}
-      body={
-        <Box sx={sx.body}>
-          <FormProvider {...values}>
-            <form id="phoneChangeForm" onSubmit={values.handleSubmit(submit)}>
-              <HFTextField
-                label={t('phone')}
-                name="phone"
-                InputProps={{
-                  endAdornment: (
-                    <>
-                      <Divider sx={sx.divider} orientation="vertical" />
-                      <IconButton
-                        onClick={sendSMS}
-                        color="primary"
-                        disabled={sendingIsDisabled}
-                      >
-                        <SendIcon />
-                      </IconButton>
-                    </>
-                  ),
-                }}
-              />
-              <HFTextField label={t('sms')} name="sms" sx={sx.smsField} />
-              {seconds !== 0 && (
-                <Box sx={sx.timer}>
-                  <Typography variant="body2">{t('smsHelper')}</Typography>
-                  <Typography variant="body2">
-                    {seconds} {t('seconds')}
-                  </Typography>
-                </Box>
-              )}
-              {!!error && (
-                <Typography sx={sx.error} variant="body2" color="error">
-                  {error}
+    >
+      <Box sx={sx.body}>
+        <FormProvider {...values}>
+          <form id="phoneChangeForm" onSubmit={values.handleSubmit(submit)}>
+            <HFTextField
+              label={t('phone')}
+              name="phone"
+              InputProps={{
+                endAdornment: (
+                  <>
+                    <Divider sx={sx.divider} orientation="vertical" />
+                    <IconButton
+                      onClick={sendSMS}
+                      color="primary"
+                      disabled={sendingIsDisabled}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </>
+                ),
+              }}
+            />
+            <HFTextField label={t('sms')} name="sms" sx={sx.smsField} />
+            {seconds !== 0 && (
+              <Box sx={sx.timer}>
+                <Typography variant="body2">{t('smsHelper')}</Typography>
+                <Typography variant="body2">
+                  {seconds} {t('seconds')}
                 </Typography>
-              )}
-            </form>
-          </FormProvider>
-        </Box>
-      }
-    />
+              </Box>
+            )}
+            {!!error && (
+              <Typography sx={sx.error} variant="body2" color="error">
+                {error}
+              </Typography>
+            )}
+          </form>
+        </FormProvider>
+      </Box>
+    </Modal>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, SxProps } from '@mui/material';
 
 import { Typography } from '../../Typography/Typography';
-import Link from '../../Link/Link';
+import { LinkRef as Link } from '../../Link/Link';
 
 const infoSx = {
   block: {

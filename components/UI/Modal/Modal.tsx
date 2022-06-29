@@ -46,7 +46,7 @@ export function Modal({
             {title}
           </Typography>
 
-          <IconButton sx={sx.cross} onClick={onClose}>
+          <IconButton onClick={onClose}>
             <CrossIcon color="primary" />
           </IconButton>
         </Box>
