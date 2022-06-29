@@ -3,10 +3,9 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from '../../http/baseQuery';
 import { IProduct } from '../../@types/entities/IProduct';
 import { ProductCreateFavoriteDto } from '../../@types/dto/product/add-favorite.dto';
+import { commonApi } from './commonApi';
 
-export const favoriteApi = createApi({
-  reducerPath: 'favoriteApi',
-  baseQuery: baseQueryWithReauth,
+export const favoriteApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getFavoriteProducts: builder.query<IProduct[], void>({
@@ -16,6 +15,13 @@ export const favoriteApi = createApi({
             url: `client-auth/currentUser/favorites`,
           };
         },
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'Favorite', id } as const)),
+                { type: 'Favorite', id: 'LIST' },
+              ]
+            : [{ type: 'Favorite', id: 'LIST' }],
       }),
       createFavoriteProducts: builder.mutation<void, ProductCreateFavoriteDto>({
         query(product) {
@@ -25,6 +31,7 @@ export const favoriteApi = createApi({
             body: product,
           };
         },
+        invalidatesTags: [{ type: 'Favorite', id: 'LIST' }],
       }),
       deleteFavoriteProduct: builder.mutation<void, number>({
         query(id) {
@@ -33,6 +40,7 @@ export const favoriteApi = createApi({
             url: `client-auth/currentUser/favorites/${id}`,
           };
         },
+        invalidatesTags: [{ type: 'Favorite', id: 'LIST' }],
       }),
     };
   },
