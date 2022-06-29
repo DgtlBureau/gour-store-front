@@ -33,7 +33,7 @@ export function SigninCredentials({
 }: SigninCredentialsProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignInDto>({
     defaultValues,

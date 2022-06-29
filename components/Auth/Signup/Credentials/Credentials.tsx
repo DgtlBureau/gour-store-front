@@ -37,7 +37,7 @@ export function SignupCredentials({
 
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignUpFormDto>({
     defaultValues: {

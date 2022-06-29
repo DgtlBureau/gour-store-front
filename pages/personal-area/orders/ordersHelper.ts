@@ -3,13 +3,14 @@ import { Currency } from '../../../@types/entities/Currency';
 
 import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
+import { getFullName } from 'utils/getFullName';
 
 export function formatOrderData(
   order: IOrder,
   lang: 'ru' | 'en',
   currency: Currency
 ): OrdersCardProps {
-  const client = order.order.firstName + ' ' + order.order.lastName;
+  const client = getFullName(order.order.firstName, order.order.lastName || '');
   const products = order.order.orderProducts.map(product => ({
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
@@ -60,8 +61,6 @@ export function groupOrdersByDate(ordersList: OrdersCardProps[]) {
 
     someObj[orderTime].orderList.push(order);
   });
-
-  console.log('someObj', someObj);
 
   return someObj;
 }

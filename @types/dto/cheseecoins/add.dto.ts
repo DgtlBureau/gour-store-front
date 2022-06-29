@@ -1,3 +1,3 @@
-export type AddCheesecoinsDto = {
+export type AddCheesecoinsDto = Readonly<{
   count: number;
-};
+}>;

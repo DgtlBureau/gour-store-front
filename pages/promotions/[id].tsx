@@ -23,36 +23,7 @@ import { useAppSelector } from 'hooks/store';
 import { Path } from '../../constants/routes';
 import { IProduct } from '../../@types/entities/IProduct';
 import { defaultTheme as theme } from 'themes';
-
-const sx = {
-  promotion: {
-    margin: {
-      md: '0 0 100px 0',
-      sm: '0 0 70px 0',
-      xs: '0 0 30px 0',
-    },
-  },
-  header: {
-    margin: '20px 0',
-  },
-  title: {
-    margin: {
-      xs: '0 0 10px 0',
-      md: '0 0 20px 0',
-    },
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: 'primary.main',
-  },
-  description: {
-    maxWidth: '1200px',
-    color: theme.palette.text.muted,
-  },
-};
+import { sx } from './Promotion.style';
 
 export default function Promotion() {
   const dispatch = useDispatch();
@@ -69,6 +40,8 @@ export default function Promotion() {
   const currency = 'cheeseCoin';
 
   const promotionId = id ? +id : 0;
+
+  if (!promotionId) return router.push('/');
 
   const { data: promotion } = useGetPromotionQuery(promotionId, { skip: !id });
   const { data: products } = useGetProductListQuery();
