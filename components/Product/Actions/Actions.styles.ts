@@ -48,6 +48,18 @@ export const sx = {
 
     borderRadius: '99px',
 
+    background: theme.palette.accent.main,
+    color: theme.palette.common.white,
+
+    '&: hover': {
+      background: theme.palette.common.black,
+    },
+  },
+  favoriteElect: {
+    marginLeft: '10px',
+
+    borderRadius: '99px',
+
     background: theme.palette.primary.main,
     color: theme.palette.common.white,
 
@@ -55,7 +67,6 @@ export const sx = {
       background: theme.palette.common.black,
     },
   },
-
   docket: {
     display: 'flex',
     alignItems: 'center',
