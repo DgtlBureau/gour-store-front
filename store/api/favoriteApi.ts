@@ -1,19 +1,16 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-
-import { baseQueryWithReauth } from '../../http/baseQuery';
+import { commonApi } from './commonApi';
 import { IProduct } from '../../@types/entities/IProduct';
 import { ProductCreateFavoriteDto } from '../../@types/dto/product/add-favorite.dto';
+import { Path } from '../../constants/routes';
 
-export const favoriteApi = createApi({
-  reducerPath: 'favoriteApi',
-  baseQuery: baseQueryWithReauth,
+export const favoriteApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
       getFavoriteProducts: builder.query<IProduct[], void>({
         query() {
           return {
             method: 'GET',
-            url: `client-auth/currentUser/favorites`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}`,
           };
         },
       }),
@@ -21,7 +18,7 @@ export const favoriteApi = createApi({
         query(product) {
           return {
             method: 'POST',
-            url: `client-auth/currentUser/favorites`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}`,
             body: product,
           };
         },
@@ -30,7 +27,7 @@ export const favoriteApi = createApi({
         query(id) {
           return {
             method: 'DELETE',
-            url: `client-auth/currentUser/favorites/${id}`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}/${id}`,
           };
         },
       }),
@@ -38,8 +35,5 @@ export const favoriteApi = createApi({
   },
 });
 
-export const {
-  useGetFavoriteProductsQuery,
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-} = favoriteApi;
+export const { useGetFavoriteProductsQuery, useCreateFavoriteProductsMutation, useDeleteFavoriteProductMutation } =
+  favoriteApi;
