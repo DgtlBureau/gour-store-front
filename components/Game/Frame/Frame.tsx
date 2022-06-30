@@ -18,8 +18,10 @@ const frameSx = {
   padding: '54px 141px',
   position: 'relative',
   zoom: {
-    xs: 0.6,
-    sm: 1,
+    xs: 0.3,
+    sm: 0.6,
+    md: 0.9,
+    lg: 1,
   },
 };
 

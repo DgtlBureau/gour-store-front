@@ -24,6 +24,7 @@ const blockSx = {
   },
   container: {
     padding: '20px',
+    boxShadow: 'none',
   },
   btn: {
     margin: '15px 0 0 0',
