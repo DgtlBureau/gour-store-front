@@ -1,5 +1,4 @@
 import React from 'react';
-import { Stack } from '@mui/material';
 
 import { PALayout } from 'layouts/PA/PA';
 import { DiscountsGroup } from 'components/Discounts/Group/Group';
@@ -48,21 +47,20 @@ const discounts = [
 export function Discounts() {
   return (
     <PALayout>
-      <Stack spacing={2} sx={{ marginBottom: '40px' }}>
-        <DiscountsInfoBar>
-          <Typography variant="body1">
-            Здесь Вы можете отследить прогресс своей скидки на покупку товаров по различным категориям. Чем больше
-            покупок, тем больше скидка!
-            <br />
-            Шаг для получения скидки - 100 000 ₽. Максимальная скидка - 10 %.
-            <br />
-            При покупке товара, попадающего под несколько критериев, его стоимость пойдёт в зачёт по всем критериям.
-          </Typography>
-        </DiscountsInfoBar>
-        {discounts.map(discount => (
-          <DiscountsGroup key={discount.key} title={discount.title} categories={discount.categories} />
-        ))}
-      </Stack>
+      <DiscountsInfoBar>
+        <Typography variant="body1">
+          Здесь Вы можете отследить прогресс своей скидки на покупку товаров по различным категориям. Чем больше
+          покупок, тем больше скидка!
+          <br />
+          Шаг для получения скидки - 100 000 ₽. Максимальная скидка - 10 %.
+          <br />
+          При покупке товара, попадающего под несколько критериев, его стоимость пойдёт в зачёт по всем критериям.
+        </Typography>
+      </DiscountsInfoBar>
+
+      {discounts.map(discount => (
+        <DiscountsGroup key={discount.key} title={discount.title} categories={discount.categories} />
+      ))}
     </PALayout>
   );
 }

@@ -1,21 +1,53 @@
 import React, { useMemo } from 'react';
+import { format } from 'date-fns';
+import { Divider, Stack, Typography } from '@mui/material';
+
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Currency } from '../../../@types/entities/Currency';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Chip,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
+import { Box } from '../../UI/Box/Box';
 import { OrderProductType, OrderCardProduct } from './CardProduct';
 import { OrderCardInfo } from './CardInfo';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { format } from 'date-fns';
+import { Currency } from '../../../@types/entities/Currency';
+
+const sx = {
+  header: {
+    width: '100%',
+    marginRight: '10px',
+  },
+  status: {
+    width: 'fit-content',
+    marginRight: '10px',
+    padding: '2px 8px',
+    borderRadius: '4px',
+  },
+  details: {
+    marginTop: '20px',
+    padding: 0,
+  },
+  contacts: {
+    display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+  },
+  total: {
+    textAlign: 'right',
+    fontWeight: 'bold',
+    order: {
+      xs: 2,
+      sm: 4,
+    },
+  },
+  divider: {
+    margin: '20px 0 0 0',
+  },
+  muted: {
+    color: 'text.muted',
+  },
+};
 
 type Promotion = {
   title: string;
@@ -39,6 +71,7 @@ export type OrdersCardProps = {
 
 export function OrdersCard({
   title,
+  status,
   address,
   client,
   createdAt,
@@ -60,10 +93,7 @@ export function OrdersCard({
   const createdDate = format(createdAt, 'yyyy.MM.d');
   const createdTime = format(createdAt, 'HH:mm');
 
-  const summaryDiscount = promotions.reduce(
-    (acc, currentDiscount) => (acc += currentDiscount.amount),
-    0
-  );
+  const summaryDiscount = promotions.reduce((acc, currentDiscount) => (acc += currentDiscount.amount), 0);
 
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
@@ -71,49 +101,66 @@ export function OrdersCard({
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary>
         <Stack
-          sx={{ width: '100%' }}
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          sx={sx.header}
+          direction={{ xs: 'column', sm: 'row' }}
+          alignItems={{ xs: 'none', sm: 'center' }}
+          justifyContent={{ xs: 'none', sm: 'space-between' }}
+          spacing={2}
         >
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h6">{title}</Typography>
-            <Chip label="Создан" color="primary" />
-            <Typography variant="body1">
-              {t('from')} {createdDate} {t('at')} {createdTime}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Typography variant="body1">{productCount} товара</Typography>
-            <Typography
-              sx={{ width: '250px', textAlign: 'right' }}
-              variant="h6"
-            >
+
+            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant="h6">
               {priceWithDiscount} {currencySymbol}
             </Typography>
-          </Stack>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography sx={{ ...sx.status, backgroundColor: status.color }}>{status.title}</Typography>
+
+            <Typography variant="body1" sx={sx.muted}>
+              {t('from')} {createdDate} {t('at')} {createdTime}
+            </Typography>
+          </Box>
+
+          <Typography variant="body1" sx={sx.muted}>
+            {productCount} товара
+          </Typography>
+
+          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant="h6">
+            {priceWithDiscount} {currencySymbol}
+          </Typography>
         </Stack>
       </AccordionSummary>
+
+      <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
+
       <AccordionDetails>
-        <div>
-          <Typography>
-            {t('deliveryAddress')}: {address}
+        <Box sx={sx.contacts}>
+          <Typography sx={sx.muted} variant="body1">
+            {t('deliveryAddress')}:&nbsp;
           </Typography>
-          <Typography>
-            {t('receiver')}: {client}
+
+          <Typography variant="body1">{address}</Typography>
+        </Box>
+
+        <Box sx={sx.contacts}>
+          <Typography sx={sx.muted} variant="body1">
+            {t('receiver')}:&nbsp;
           </Typography>
-        </div>
-        <Divider variant="fullWidth" sx={{ margin: '20px 0' }} />
+          <Typography variant="body1">{client}</Typography>
+        </Box>
+
+        <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
+
         {products.map(product => (
-          <OrderCardProduct
-            key={`${product.amount}_${product.photo}`}
-            product={product}
-            currency={currency}
-          />
+          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
         ))}
-        <Divider variant="fullWidth" />
+
+        {!!products.length && <Divider variant="fullWidth" />}
+
         <OrderCardInfo
           fullPrice={fullOrderPrice}
           totalPrice={priceWithDiscount}
