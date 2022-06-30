@@ -16,6 +16,7 @@ import { IProduct } from '../../@types/entities/IProduct';
 import { useAppSelector } from '../../hooks/store';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
+import { isProductFavorite } from './favoritesHelper';
 
 const sx = {
   title: {
@@ -38,24 +39,24 @@ export function Favorites() {
 
   const { data: favoriteProducts = [], isLoading, isError } = useGetFavoriteProductsQuery();
 
-  const [fetchRemoveFavorite] = useDeleteFavoriteProductMutation();
-  const [fetchAddFavorite] = useCreateFavoriteProductsMutation();
-
   const basket = useAppSelector(state => state.order);
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
   const handleElect = async (id: number, isElect: boolean) => {
     if (isElect) {
       try {
-        await fetchRemoveFavorite(id);
+        await removeFavorite(id);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        await fetchAddFavorite({ productId: id });
+        await addFavorite({ productId: id });
       } catch (error) {
         console.log(error);
       }
@@ -88,6 +89,7 @@ export function Favorites() {
               basket={basket.products}
               currency={currentCurrency}
               locale={locale}
+              isElect={isProductFavorite(product.id, favoriteProducts)}
               addToBasket={addToBasket}
               removeFromBasket={removeFromBasket}
               handleElect={handleElect}
@@ -107,6 +109,7 @@ type FavoriteProductType = {
   basket: IOrderProduct[];
   currency: Currency;
   locale: 'en' | 'ru';
+  isElect: boolean;
   addToBasket: (product: IProduct) => void;
   removeFromBasket: (product: IProduct) => void;
   handleElect: (id: number, isElect: boolean) => void;
@@ -118,18 +121,17 @@ const FavoriteProductCard = ({
   basket,
   locale,
   currency,
+  isElect,
   addToBasket,
   removeFromBasket,
   handleElect,
   goToProductPage,
 }: FavoriteProductType) => {
-  const [isElect, setIsElect] = useState(true);
   const productInBasket = basket.find(it => it.product.id === product.id);
   const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
 
   const onElect = () => {
     handleElect(product.id, isElect);
-    setIsElect(!isElect);
   };
 
   return (
