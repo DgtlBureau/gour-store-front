@@ -6,6 +6,7 @@ import { selectedProductCount, selectedProductSum } from '../../store/slices/ord
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { useSignOutMutation } from 'store/api/authApi';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
@@ -30,6 +31,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [changeCity] = useChangeCurrentCityMutation();
+  const [signOut] = useSignOutMutation();
 
   const convertedCities =
     cities?.map(city => ({
@@ -68,7 +70,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
-        onClickSignout={() => ({})}
+        onClickSignout={signOut}
         {...contacts}
       />
 

@@ -11,7 +11,7 @@ export const currentUserApi = commonApi.injectEndpoints({
           return {
             method: 'GET',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
-          }
+          };
         },
       }),
       updateCurrentUser: builder.mutation<ICurrentUser, CurrentUserUpdateDto>({
@@ -20,7 +20,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             method: 'POST',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
             body,
-          }
+          };
         },
       }),
       changeCurrentCity: builder.mutation<void, number>({
@@ -29,12 +29,11 @@ export const currentUserApi = commonApi.injectEndpoints({
             method: 'POST',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_CITY}`,
             body: id,
-          }
+          };
         },
       }),
-    }
-  }
-})
-
+    };
+  },
+});
 
 export const { useGetCurrentUserQuery, useUpdateCurrentUserMutation, useChangeCurrentCityMutation } = currentUserApi;

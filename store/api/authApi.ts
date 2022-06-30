@@ -41,7 +41,7 @@ export const authApi = commonApi.injectEndpoints({
         query() {
           return {
             method: 'GET',
-            url: `client-auth/currentUser`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}`,
           };
         },
         providesTags: [{ type: 'CurrentUser', id: 1 }],
@@ -50,7 +50,7 @@ export const authApi = commonApi.injectEndpoints({
         query(user) {
           return {
             method: 'PUT',
-            url: `client-auth/currentUser`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}`,
             body: user,
           };
         },
@@ -60,7 +60,7 @@ export const authApi = commonApi.injectEndpoints({
         query(password) {
           return {
             method: 'POST',
-            url: `client-auth/currentUser/change-password`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}/${Path.CHANGE_PASSWORD}`,
             body: password,
           };
         },
@@ -70,7 +70,7 @@ export const authApi = commonApi.injectEndpoints({
         query(body) {
           return {
             method: 'POST',
-            url: `${Path.CLIENT_AUTH}/signout`,
+            url: `${Path.CLIENT_AUTH}/${Path.SIGN_OUT}`,
             body,
           };
         },
