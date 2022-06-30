@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Copyright } from '../../components/Copyright/Copyright';
@@ -13,7 +15,6 @@ import { Language } from '../../@types/entities/Language';
 import { contacts } from '../../constants/contacts';
 
 import sx from './Game.styles';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 
 export interface GameLayoutProps {
   currency: Currency;
@@ -41,6 +42,11 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
+  const screenHeight = window.screen.height;
+  const screenWidth = window.screen.width;
+
+  const flipIsNeeded = screenWidth < 600 || (screenWidth < 900 && screenHeight > screenWidth);
+
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
@@ -49,7 +55,6 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   return (
     <Box sx={sx.layout}>
       <Header
-        sx={sx.header}
         isGame
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
@@ -67,11 +72,9 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         {...contacts}
       />
 
-      <Box sx={sx.content}>{children}</Box>
+      {flipIsNeeded ? <GameFlipWarning /> : <Box sx={sx.content}>{children}</Box>}
 
-      <Box sx={sx.copyright}>
-        <Copyright />
-      </Box>
+      <Copyright />
     </Box>
   );
 }

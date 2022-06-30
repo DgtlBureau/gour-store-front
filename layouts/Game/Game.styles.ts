@@ -2,36 +2,23 @@ import stripes from '../../assets/images/stripes.svg';
 
 const sx = {
   layout: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: '100vh',
     backgroundImage: 'url(' + `${stripes}` + ')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',
-    transform: {
-      xs: 'rotate(90deg)',
-      md: 'none',
-    },
-  },
-  header: {
-    width: {
-      xs: '100vh',
-      md: '100%',
-    },
   },
   content: {
-    paddingTop: '50px',
-  },
-  copyright: {
-    display: {
-      xs: 'none',
-      md: 'flex',
+    padding: {
+      xs: '10px 0',
+      sm: '10px 0',
+      md: '50px 0',
     },
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
   },
 };
 

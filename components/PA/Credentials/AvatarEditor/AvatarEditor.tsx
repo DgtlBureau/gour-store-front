@@ -25,8 +25,9 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
   };
 
   return (
-    <Stack sx={{ width: '100%' }} spacing={1} alignItems="center">
-      <Avatar alt="Your profile" src={image} sx={{ width: 128, height: 128 }} />
+    <Stack sx={{ width: '100%', marginBottom: '30px' }} spacing={1} alignItems="center">
+      <Avatar alt="Your profile" src={image} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
+
       <div className={s.photoInput}>
         <label htmlFor="profile-photo-input">
           <Typography variant="body1" color="#fff">
@@ -35,7 +36,8 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
         </label>
         <input id="profile-photo-input" type="file" onChange={handleChange} />
       </div>
-      <Button sx={{ width: '100%' }} variant="outlined" onClick={onRemove}>
+
+      <Button sx={{ minWidth: '165px' }} variant="outlined" onClick={onRemove}>
         {t('delete')}
       </Button>
     </Stack>

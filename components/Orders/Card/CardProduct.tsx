@@ -22,24 +22,24 @@ type OrderCardProductProps = {
   currency: Currency;
 };
 
-export const OrderCardProduct = ({
-  currency,
-  product,
-}: OrderCardProductProps) => {
+export const OrderCardProduct = ({ currency, product }: OrderCardProductProps) => {
   const { t } = useLocalTranslation(translations);
   const { photo, title, weight, amount, cost, isWeightGood } = product;
   return (
     <Card sx={sx.card}>
       <CardMedia sx={sx.image} component="img" image={photo} />
+
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
           <Typography variant="body1" sx={sx.title}>
             {title}
           </Typography>
+
           <Box sx={{ display: 'flex' }}>
             <Typography variant="body1" sx={sx.count}>
               {!isWeightGood ? `${amount}${t('pc')}.` : `${weight}${t('g')}.`}
             </Typography>
+
             <Typography variant="body1" sx={sx.productPrice}>
               {cost} {getCurrencySymbol(currency)}
             </Typography>

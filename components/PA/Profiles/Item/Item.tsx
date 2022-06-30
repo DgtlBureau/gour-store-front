@@ -1,17 +1,16 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Accordion, AccordionSummary, AccordionDetails, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 
 import LocationIcon from '@mui/icons-material/LocationOnOutlined';
-import ExpandIcon from '@mui/icons-material/ExpandMore';
 
 import { PAProfilesForm } from '../Form/Form';
+import { Accordion, AccordionSummary, AccordionDetails } from '../../../UI/Accordion/Accordion';
 import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { IOrderProfile } from '../../../../@types/entities/IOrderProfile';
 import { OrderProfileDto } from '../../../../@types/dto/order/profile.dto';
 import { LocalConfig } from 'hooks/useLocalTranslation';
-import { defaultTheme as theme } from '../../../../themes';
 
 import sx from './Item.styles';
 
@@ -66,8 +65,8 @@ export function PAProfilesItem({
     } as OrderProfileDto);
 
   return !!profile ? (
-    <Accordion expanded={isExpanded} onChange={onExpand} sx={{ ...sx.profile, ...(isExpanded && sx.expanded) }}>
-      <AccordionSummary expandIcon={<ExpandIcon htmlColor={theme.palette.text.muted} />} sx={sx.summary}>
+    <Accordion expanded={isExpanded} onChange={onExpand}>
+      <AccordionSummary>
         <Box sx={sx.header}>
           <Box sx={{ ...sx.locationIcon, ...(isMain && sx.mainAddress) }}>
             <LocationIcon />
@@ -83,7 +82,7 @@ export function PAProfilesItem({
         </Box>
       </AccordionSummary>
 
-      <AccordionDetails sx={sx.details}>
+      <AccordionDetails>
         <Divider sx={sx.divider} />
         <PAProfilesForm
           defaultValues={profile && convertToOrderProfile(profile)}
@@ -94,7 +93,7 @@ export function PAProfilesItem({
       </AccordionDetails>
     </Accordion>
   ) : (
-    <Box sx={{ ...sx.profile, ...sx.expanded }}>
+    <Box sx={sx.form}>
       <PAProfilesForm cities={cities} onSave={onSave} onDelete={onDelete} />
     </Box>
   );
