@@ -11,36 +11,38 @@ import { ProductCard } from 'components/Product/Card/Card';
 import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import {
-  addBasketProduct,
-  subtractBasketProduct,
-} from 'store/slices/orderSlice';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { IProduct } from '../../@types/entities/IProduct';
 import { useAppSelector } from '../../hooks/store';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
 import { isProductFavorite } from './favoritesHelper';
 
+const sx = {
+  title: {
+    fontSize: {
+      sm: '40px',
+      xs: '24px',
+    },
+    fontFamily: 'Roboto slab',
+    fontWeight: 'bold',
+    color: 'text.secondary',
+  },
+};
+
 export function Favorites() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currentCurrency: Currency = 'cheeseCoin';
 
-  const {
-    data: favoriteProducts = [],
-    isLoading,
-    isError,
-  } = useGetFavoriteProductsQuery();
+  const { data: favoriteProducts = [], isLoading, isError } = useGetFavoriteProductsQuery();
 
   const basket = useAppSelector(state => state.order);
 
-  const addToBasket = (product: IProduct) =>
-    dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) =>
-    dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -68,7 +70,7 @@ export function Favorites() {
     return (
       <ShopLayout currency={'cheeseCoin'} language={'en'}>
         <Stack spacing={2}>
-          <Typography>Избранные продукты</Typography>
+          <Typography sx={sx.title}>Избранные продукты</Typography>
           <Typography variant="h5">Нет избранных продуктов</Typography>
         </Stack>
       </ShopLayout>
@@ -78,10 +80,11 @@ export function Favorites() {
   return (
     <ShopLayout currency={'cheeseCoin'} language={'en'}>
       <Stack spacing={2}>
-        <Typography>Избранные продукты</Typography>
+        <Typography sx={sx.title}>Избранные продукты</Typography>
         <Grid container>
           {favoriteProducts.map(product => (
             <FavoriteProductCard
+              key={product.id}
               product={product}
               basket={basket.products}
               currency={currentCurrency}
@@ -125,10 +128,7 @@ const FavoriteProductCard = ({
   goToProductPage,
 }: FavoriteProductType) => {
   const productInBasket = basket.find(it => it.product.id === product.id);
-  const count =
-    (product.isWeightGood
-      ? productInBasket?.weight
-      : productInBasket?.amount) || 0;
+  const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
 
   const onElect = () => {
     handleElect(product.id, isElect);

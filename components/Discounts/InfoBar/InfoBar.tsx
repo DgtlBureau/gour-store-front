@@ -1,17 +1,14 @@
-import { Box } from '../../UI/Box/Box';
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
+import { Paper } from '@mui/material';
 
-type Props = { children: ReactElement };
+type Props = { children: ReactNode };
 
-const sx = {
-  container: {
-    padding: '16px',
-    width: '100%',
-    background: '#F4E7CE',
-    borderRadius: '6px',
-  },
+const paperSx = {
+  marginBottom: '10px',
+  boxShadow: 'none',
+  padding: '16px',
 };
 
 export const DiscountsInfoBar = ({ children }: Props) => {
-  return <Box sx={sx.container}>{children}</Box>;
+  return <Paper sx={paperSx}>{children}</Paper>;
 };

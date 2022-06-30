@@ -7,6 +7,8 @@ import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
+import { useSignOutMutation } from 'store/api/authApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { PAMenu } from '../../components/PA/Menu/Menu';
@@ -16,7 +18,6 @@ import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
 
 import sx from './PA.styles';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 
 export interface PALayoutProps {
   children?: ReactNode;
@@ -31,6 +32,8 @@ export function PALayout({ children }: PALayoutProps) {
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
+
+  const [signOut] = useSignOutMutation();
 
   const { t } = useLocalTranslation(translations);
 
@@ -96,7 +99,7 @@ export function PALayout({ children }: PALayoutProps) {
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
-        onClickSignout={() => ({})}
+        onClickSignout={signOut}
       />
 
       <Box sx={sx.content}>

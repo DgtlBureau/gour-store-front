@@ -85,11 +85,7 @@ export function PACredentialsEditor({
           />
           <HFTextField name="referralCode" label={t('referralCode')} />
         </Stack>
-        <Button
-          type="submit"
-          disabled={!values.formState.isDirty}
-          sx={{ margin: '0 10px 0 0' }}
-        >
+        <Button type="submit" disabled={!values.formState.isDirty} sx={{ margin: '0 10px 0 0' }}>
           {t('submit')}
         </Button>
         <Button disabled={!values.formState.isDirty} onClick={cancelHandler}>

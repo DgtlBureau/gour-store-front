@@ -1,5 +1,6 @@
 import { IWallet } from '../../@types/entities/IWallet';
 import { commonApi } from './commonApi';
+import { Path } from '../../constants/routes';
 
 export const walletApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -8,7 +9,7 @@ export const walletApi = commonApi.injectEndpoints({
         query() {
           return {
             method: 'GET',
-            url: '/wallet',
+            url: Path.WALLET,
           };
         },
       }),
@@ -16,7 +17,7 @@ export const walletApi = commonApi.injectEndpoints({
         query() {
           return {
             method: 'GET',
-            url: `wallet/current-balance`,
+            url: `${Path.WALLET}/${Path.CURRENT_BALANCE}`,
           };
         },
       }),

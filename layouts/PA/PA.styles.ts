@@ -22,8 +22,8 @@ const sx = {
       xs: '30px 0 0 0',
     },
     padding: {
-      xs: '0 10px',
-      sm: '0 20px',
+      xs: '0 10px 20px 10px',
+      sm: '0 20px 40px 20px',
     },
   },
 };

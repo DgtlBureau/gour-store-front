@@ -1,8 +1,8 @@
-import { defaultTheme as t } from '../../../themes';
-
 const sx = {
   card: {
     display: 'flex',
+    alignItems: 'center',
+
     padding: '20px 0',
 
     boxShadow: 'none',
@@ -21,27 +21,30 @@ const sx = {
 
   content: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
     justifyContent: 'space-between',
     padding: 0,
+
+    '&:last-child': {
+      padding: 0,
+    },
   },
 
   title: {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: 'text.secondary',
   },
   productPrice: {
-    width: '250px',
     fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    width: '250px',
     textAlign: 'right',
   },
   count: {
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: 'text.muted',
     textAlign: 'right',
   },
 
@@ -72,7 +75,7 @@ const sx = {
 
       padding: 0,
 
-      color: t.palette.text.secondary,
+      color: 'text.secondary',
     },
   },
 
@@ -88,8 +91,8 @@ const sx = {
 
     padding: '4px',
 
-    backgroundColor: t.palette.secondary.main,
-    color: t.palette.text.secondary,
+    backgroundColor: 'secondary.main',
+    color: 'text.secondary',
 
     borderRadius: '99px',
 

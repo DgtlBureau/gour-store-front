@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
 import { Currency } from '../../../@types/entities/Currency';
 import { format } from 'date-fns';
 import React from 'react';
 
+import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { OrdersCard, OrdersCardProps } from '../Card/Card';
 
@@ -12,15 +12,11 @@ export type OrdersGroupProps = {
   currency: Currency;
 };
 
-export function OrdersCardGroup({
-  date,
-  ordersList,
-  currency,
-}: OrdersGroupProps) {
+export function OrdersCardGroup({ date, ordersList, currency }: OrdersGroupProps) {
   const groupDate = format(date, 'yyyy.MM.d');
 
   return (
-    <Stack spacing={1}>
+    <Box>
       <Typography variant="h6">{groupDate}</Typography>
       {ordersList.map(order => (
         <OrdersCard
@@ -36,6 +32,6 @@ export function OrdersCardGroup({
           deliveryCost={order.deliveryCost}
         />
       ))}
-    </Stack>
+    </Box>
   );
 }

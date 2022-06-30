@@ -15,6 +15,7 @@ const sx = {
     },
     padding: '12px',
     backgroundColor: t.palette.common.white,
+    boxShadow: 'none',
   },
   rating: {
     display: 'flex',

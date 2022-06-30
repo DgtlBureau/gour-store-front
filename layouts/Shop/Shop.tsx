@@ -2,16 +2,13 @@ import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import {
-  selectedProductCount,
-  selectedProductSum,
-} from '../../store/slices/orderSlice';
-import {
-  useGetCurrentUserQuery,
-  useChangeCurrentCityMutation,
-} from 'store/api/currentUserApi';
+import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { useSignOutMutation } from 'store/api/authApi';
 
+import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
@@ -22,9 +19,6 @@ import { AddCheesecoinsDto } from '../../@types/dto/cheseecoins/add.dto';
 import { contacts } from '../../constants/contacts';
 
 import sx from './Shop.styles';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
-import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-import { useSignOutMutation } from 'store/api/authApi';
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -42,9 +36,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
 
-  const handleAddChesecoins = (data: AddCheesecoinsDto) => {
-    console.log(data);
-  };
+  const handleAddCheesecoins = (data: AddCheesecoinsDto) => console.log(data);
 
   const convertedCities =
     cities?.map(city => ({
@@ -55,12 +47,14 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity =
-    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
   const goToPersonalArea = () => router.push('/personal-area');
+
+  const openCheesecoinsModal = () => setIsModalOpen(true);
+  const closeCheesecoinsModal = () => setIsModalOpen(false);
 
   return (
     <Box sx={sx.layout}>
@@ -77,10 +71,8 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         onClickFavorite={goToFavorites}
         onClickPersonalArea={goToPersonalArea}
         onClickBasket={goToBasket}
-        onClickReplenishment={() => setIsModalOpen(true)}
-        onClickSignout={() => {
-          signOut();
-        }}
+        onClickReplenishment={openCheesecoinsModal}
+        onClickSignout={signOut}
       />
 
       <Box sx={sx.content}>{children}</Box>
@@ -91,9 +83,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <CheesecoinsAddModal
         isOpened={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
         title="Добавление чизкоинов"
-        onSubmit={handleAddChesecoins}
+        onClose={closeCheesecoinsModal}
+        onSubmit={handleAddCheesecoins}
       />
     </Box>
   );

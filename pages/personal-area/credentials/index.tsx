@@ -26,9 +26,7 @@ export function Profile() {
   const [fetchUploadImage] = useCreateImageMutation();
 
   const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = async (
-    changePasswordData: ChangePasswordDto
-  ) => {
+  const handleChangePassword = async (changePasswordData: ChangePasswordDto) => {
     try {
       await fetchUpdatePassword(changePasswordData).unwrap();
     } catch (error) {
@@ -80,14 +78,14 @@ export function Profile() {
   return (
     <PALayout>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={4} md={3}>
           <PACredentialsAvatarEditor
             image={currentUser.avatar?.full || ''}
             onChange={handleChangeAvatar}
             onRemove={handleRemoveAvatar}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
             onChangePhone={() => {}}
             onChangePassword={() => setIsPasswordModalOpened(true)}
