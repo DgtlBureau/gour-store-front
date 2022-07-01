@@ -12,7 +12,7 @@ import {
   subtractBasketProduct,
   removeProduct,
 } from '../../store/slices/orderSlice';
-import translation from './basket.i18n.json';
+import translation from './Basket.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
@@ -42,7 +42,8 @@ export function Basket() {
 
   const { t } = useLocalTranslation(translation);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -52,7 +53,12 @@ export function Basket() {
   const sum = useSelector(selectedProductSum);
 
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
+    return (
+      acc +
+      (currentProduct.product.price[currency] *
+        currentProduct.product.discount) /
+        100
+    );
   }, 0);
 
   //TODO: вынести логику стоимости доставки на бек
@@ -65,7 +71,8 @@ export function Basket() {
 
   const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
-  const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const subtractProduct = (product: IProduct) =>
+    dispatch(subtractBasketProduct(product));
 
   return (
     <ShopLayout currency={currency} language={language}>
@@ -107,7 +114,10 @@ export function Basket() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Button onClick={goToOrder} sx={{ width: '100%', marginBottom: '10px' }}>
+            <Button
+              onClick={goToOrder}
+              sx={{ width: '100%', marginBottom: '10px' }}
+            >
               {t('orderButton')}
             </Button>
 
@@ -123,7 +133,9 @@ export function Basket() {
             {!isDeliveryFree && (
               <InfoBlock
                 sx={{ marginTop: '10px' }}
-                text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t(
+                  'freeDeliveryText.part2'
+                )} `}
                 link={{ label: t('continueShopping'), path: '/' }}
               />
             )}
