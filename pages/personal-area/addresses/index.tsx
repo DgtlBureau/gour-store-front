@@ -8,11 +8,17 @@ import {
   useDeleteOrderProfileMutation,
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
+import {
+  useGetCurrentUserQuery,
+  useUpdateCurrentUserMutation,
+} from 'store/api/currentUserApi';
 import translations from './Addresses.i18n.json';
 
 import { PrivateLayout } from 'layouts/Private/Private';
-import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import {
+  useLocalTranslation,
+  LocalConfig,
+} from '../../../hooks/useLocalTranslation';
 import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from '../../../components/UI/Box/Box';
 import { Button } from '../../../components/UI/Button/Button';
@@ -20,6 +26,8 @@ import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
 import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../../@types/entities/Notification';
 
 const sx = {
   actions: {
@@ -34,7 +42,8 @@ export function Addresses() {
 
   const router = useRouter();
 
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const { data: profiles } = useGetOrderProfilesListQuery();
   const { data: cities } = useGetCityListQuery();
@@ -46,7 +55,8 @@ export function Addresses() {
 
   const [updateUser] = useUpdateCurrentUserMutation();
 
-  const [expandedProfileId, setExpandedProfileId] = useState<number | null>(null);
+  const [expandedProfileId, setExpandedProfileId] =
+    useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -75,24 +85,66 @@ export function Addresses() {
       avatarId: currentUser.avatar.id,
     } as CurrentUserUpdateDto;
 
-    await updateUser(updatedUser);
+    try {
+      await updateUser(updatedUser).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const createAddress = async (data: OrderProfileDto) => {
-    await createProfile(data);
+    try {
+      await createProfile(data).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Адрес доставки создан',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка создания адреса доставки',
+        type: NotificationType.SUCCESS,
+      });
+    }
     closeCreateForm();
   };
 
   const editAddress = async (data: OrderProfileDto, id: number) => {
-    await updateProfile({ ...data, id });
+    try {
+      await updateProfile({ ...data, id }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Адрес доставки обновлен',
+        type: NotificationType.SUCCESS,
+      });
+      const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
-    const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
-
-    if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
+      if (data.isMain && !isMain && !!expandedProfileId)
+        changeMainAddress(expandedProfileId);
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка обновления адреса доставки',
+        type: NotificationType.DANGER,
+      });
+    }
   };
 
   const deleteAddress = async () => {
-    if (expandedProfileId) await deleteProfile(expandedProfileId);
+    if (expandedProfileId) {
+      try {
+        await deleteProfile(expandedProfileId).unwrap();
+        eventBus.emit(EventTypes.notification, {
+          message: 'Адрес доставки удален',
+          type: NotificationType.SUCCESS,
+        });
+      } catch (error) {
+        console.error(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления адреса доставки',
+          type: NotificationType.DANGER,
+        });
+      }
+    }
     rollUpProfile();
     closeDeleteModal();
   };
@@ -115,7 +167,12 @@ export function Addresses() {
           </Button>
         </Box>
         {isCreating && (
-          <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+          <PAProfilesItem
+            key={-1}
+            cities={citiesList}
+            onSave={createAddress}
+            onDelete={closeCreateForm}
+          />
         )}
         {profiles?.map(profile => (
           <PAProfilesItem
@@ -129,7 +186,11 @@ export function Addresses() {
             onDelete={openDeleteModal}
           />
         ))}
-        <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
+        <PAProfilesDeleteModal
+          isOpen={isDeleting}
+          onAccept={deleteAddress}
+          onClose={closeDeleteModal}
+        />
       </PALayout>
     </PrivateLayout>
   );

@@ -36,4 +36,8 @@ export const currentUserApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetCurrentUserQuery, useUpdateCurrentUserMutation, useChangeCurrentCityMutation } = currentUserApi;
+export const {
+  useGetCurrentUserQuery,
+  useUpdateCurrentUserMutation,
+  useChangeCurrentCityMutation,
+} = currentUserApi;

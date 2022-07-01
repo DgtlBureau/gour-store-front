@@ -50,7 +50,7 @@ export const authApi = commonApi.injectEndpoints({
         query(user) {
           return {
             method: 'PUT',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
             body: user,
           };
         },
@@ -60,7 +60,7 @@ export const authApi = commonApi.injectEndpoints({
         query(password) {
           return {
             method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}/${Path.CHANGE_PASSWORD}`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_PASSWORD}`,
             body: password,
           };
         },

@@ -42,6 +42,10 @@ export default function SignIn() {
     setCredentials(data);
     try {
       await signIn(data).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Добро пожаловать :]',
+        type: NotificationType.SUCCESS,
+      });
       goToHome();
     } catch (e: unknown) {
       eventBus.emit(EventTypes.notification, {
