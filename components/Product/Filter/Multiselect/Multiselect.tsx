@@ -10,7 +10,7 @@ import {
   ClickAwayListener,
   SxProps,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -70,13 +70,15 @@ export function ProductFilterMultiselect({
     }
 
     setSelectedOptions(oldSelectedList => [...oldSelectedList, selected]);
-
-    if (isMobile) onChange(selectedOptions);
   }
 
   function isOptionSelected(currentOption: string) {
     return selectedOptions.find(option => option === currentOption);
   }
+
+  useEffect(() => {
+    if (isMobile) onChange(selectedOptions);
+  }, [selectedOptions, isMobile, onChange]);
 
   return isMobile ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
@@ -88,7 +90,7 @@ export function ProductFilterMultiselect({
         </Typography>
       </AccordionSummary>
 
-      <AccordionDetails sx={{ display: 'flex', columnGap: '6px' }}>
+      <AccordionDetails sx={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
         {options.map(option => (
           <Typography
             variant="body1"

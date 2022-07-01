@@ -15,4 +15,4 @@ const Link = (
   </NextLink>
 );
 
-export default forwardRef<LinkRef, NextLinkProps>(Link);
+export const LinkRef = forwardRef<LinkRef, NextLinkProps>(Link);

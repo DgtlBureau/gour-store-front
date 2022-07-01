@@ -5,7 +5,7 @@ import { Box } from '../../UI/Box/Box';
 import backgroundImage from '../../../assets/images/game/background.svg';
 
 export type GameFrameProps = {
-  children: ReactNode
+  children: ReactNode;
 };
 
 const frameSx = {
@@ -17,12 +17,14 @@ const frameSx = {
   alignItems: 'center',
   padding: '54px 141px',
   position: 'relative',
+  zoom: {
+    xs: 0.3,
+    sm: 0.6,
+    md: 0.9,
+    lg: 1,
+  },
 };
 
 export function GameFrame({ children }: GameFrameProps) {
-  return (
-    <Box sx={frameSx}>
-      {children}
-    </Box>
-  );
+  return <Box sx={frameSx}>{children}</Box>;
 }

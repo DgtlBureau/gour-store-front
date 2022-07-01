@@ -1,7 +1,12 @@
 import React, { ReactElement } from 'react';
 
 import { Box } from 'components/UI/Box/Box';
+
 import stripes from '../../assets/images/stripes.svg';
+import { useSelector } from 'react-redux';
+import { selectIsAuth } from 'store/selectors/auth';
+import { useRouter } from 'next/router';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 
 const sx = {
   layout: {
@@ -33,9 +38,16 @@ export interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  return (
-    <Box sx={sx.layout}>
-      <Box sx={sx.container}>{children}</Box>
-    </Box>
-  );
+  const { isFetching } = useGetCurrentUserQuery();
+  const isAuth = useSelector(selectIsAuth);
+  const router = useRouter();
+
+  if (isFetching) return null;
+
+  if (isAuth) {
+    router.push('/');
+    return null;
+  }
+
+  return <Box sx={sx.layout}>{children}</Box>;
 }

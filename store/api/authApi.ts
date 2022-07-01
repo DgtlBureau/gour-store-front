@@ -3,9 +3,6 @@ import { SignUpDto } from '../../@types/dto/signup.dto';
 import { Tokens } from '../../@types/dto/tokens.dto';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { Path } from 'constants/routes';
-import { IUser } from '../../@types/entities/IUser';
-import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
-import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
 
 export const authApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -37,34 +34,14 @@ export const authApi = commonApi.injectEndpoints({
           };
         },
       }),
-      getCurrentUser: builder.query<IUser, void>({
-        query() {
-          return {
-            method: 'GET',
-            url: `client-auth/currentUser`,
-          };
-        },
-        providesTags: [{ type: 'CurrentUser', id: 1 }],
-      }),
-      updateCurrentUser: builder.mutation<number, UpdateUserDto>({
-        query(user) {
-          return {
-            method: 'PUT',
-            url: `client-auth/currentUser`,
-            body: user,
-          };
-        },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
-      }),
-      updateCurrentUserPassword: builder.mutation<number, ChangePasswordDto>({
-        query(password) {
+      signOut: builder.mutation<void, void>({
+        query(body) {
           return {
             method: 'POST',
-            url: `client-auth/currentUser/change-password`,
-            body: password,
+            url: `${Path.CLIENT_AUTH}/${Path.SIGN_OUT}`,
+            body,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
     };
   },
@@ -74,7 +51,5 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useSendCodeMutation,
-  useGetCurrentUserQuery,
-  useUpdateCurrentUserMutation,
-  useUpdateCurrentUserPasswordMutation,
+  useSignOutMutation,
 } = authApi;

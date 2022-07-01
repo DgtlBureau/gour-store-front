@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {IUser} from "../../@types/entities/IUser";
+import { authApi } from 'store/api/authApi';
+import { currentUserApi } from 'store/api/currentUserApi';
+import { IUser } from '../../@types/entities/IUser';
 
 export interface AuthState {
   currentUser: IUser | null;
-  isAuth: boolean;
+  isAuthorized: boolean;
   isFetching: boolean;
 }
 
 const initialState: AuthState = {
   currentUser: null,
-  isAuth: false,
+  isAuthorized: false,
   isFetching: false,
 };
 
@@ -21,11 +23,33 @@ export const authSlice = createSlice({
       state.currentUser = action.payload;
     },
     setIsAuth: (state, action: PayloadAction<boolean>) => {
-      state.isAuth = action.payload;
+      state.isAuthorized = action.payload;
     },
     setIsFetching: (state, action: PayloadAction<boolean>) => {
       state.isFetching = action.payload;
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addMatcher(authApi.endpoints.signIn.matchFulfilled, state => {
+        state.isAuthorized = true;
+      })
+      .addMatcher(
+        currentUserApi.endpoints.getCurrentUser.matchFulfilled,
+        state => {
+          state.isAuthorized = true;
+        }
+      )
+      .addMatcher(
+        currentUserApi.endpoints.getCurrentUser.matchRejected,
+        (state, action) => {
+          if (action.error.name === 'ConditionError') return;
+          state.isAuthorized = false;
+        }
+      )
+      .addMatcher(authApi.endpoints.signOut.matchFulfilled, state => {
+        state.isAuthorized = false;
+      });
   },
 });
 

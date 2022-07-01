@@ -17,6 +17,7 @@ export const sx = {
       sm: 'fit-content',
       xs: '100%',
     },
+    width: '100%',
     maxWidth: {
       sm: '520px',
       xs: '100%',
@@ -26,6 +27,7 @@ export const sx = {
       xs: '40px 20px',
     },
     bgcolor: 'background.default',
+    overflowY: 'scroll',
   },
   head: {
     display: 'flex',
@@ -40,20 +42,6 @@ export const sx = {
   acceptBtn: {
     width: '100%',
     marginTop: '14px',
-  },
-  cross: {
-    position: {
-      sm: 'absolute',
-      xs: 'none',
-    },
-    top: {
-      xs: 'none',
-      sm: '30px',
-    },
-    right: {
-      xs: 'none',
-      sm: '52px',
-    },
   },
 };
 

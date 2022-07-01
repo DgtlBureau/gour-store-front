@@ -56,8 +56,8 @@ export const orderSlice = createSlice({
         if (product.isWeightGood) {
           state.products.push({
             product,
-            weight: 100,
             amount: 1,
+            weight: 0,
           });
         } else {
           state.products.push({

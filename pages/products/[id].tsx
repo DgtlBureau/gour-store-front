@@ -1,17 +1,25 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { LinearProgress, Stack } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 
+import translations from './Product.i18n.json';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
-import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
-import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import {
+  useCreateProductGradeMutation,
+  useGetProductGradeListQuery,
+} from 'store/api/productGradeApi';
+import {
+  addBasketProduct,
+  productsInBasketCount,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CardSlider } from 'components/CardSlider/CardSlider';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
-import { ProductCard } from 'components/Product/Card/Card';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
@@ -20,29 +28,39 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
+import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export default function Product() {
+  const { t } = useLocalTranslation(translations);
+
   const router = useRouter();
 
   const { id } = router.query;
 
   const dispatch = useDispatch();
 
-  const handleAddProduct = (product: IProduct) => {
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
+  const addToBasket = (product: IProduct) =>
     dispatch(addBasketProduct(product));
-  };
 
-  const handleRemoveProduct = (product: IProduct) => {
+  const removeFromBasket = (product: IProduct) =>
     dispatch(subtractBasketProduct(product));
-  };
 
-  const handleDetailProduct = (productId: number) => {
-    router.push(`/products/${productId}`);
-  };
+  const goToProductPage = (productId: number) =>
+    router.push(`/${Path.PRODUCTS}/${productId}`);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -61,9 +79,30 @@ export default function Product() {
     { skip: !productId }
   );
 
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
+  const count = useAppSelector(state =>
+    productsInBasketCount(state, productId, product?.isWeightGood || false)
+  );
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -81,7 +120,7 @@ export default function Product() {
   };
 
   const productComments =
-    comments.map((grade, i) => {
+    comments.map(grade => {
       return {
         id: grade.id,
         clientName: grade.client?.role?.title || 'Клиент',
@@ -89,38 +128,6 @@ export default function Product() {
         date: new Date(grade.createdAt),
         comment: grade.comment,
       };
-    }) || [];
-
-  const similarProductCards =
-    product?.similarProducts?.map(similarProduct => {
-      const productInBasket = basket.products.find(it => it.product.id === similarProduct.id);
-      const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-      return (
-        <ProductCard
-          key={similarProduct.id}
-          title={similarProduct.title[language] || ''}
-          description={similarProduct.description[language] || ''}
-          rating={similarProduct.grade}
-          price={similarProduct.price[currency]}
-          previewSrc={similarProduct.images[0]?.full || ''}
-          inCart={!!productInBasket}
-          isElected={false}
-          onAdd={() => {
-            handleAddProduct(similarProduct);
-          }}
-          onRemove={() => {
-            handleRemoveProduct(similarProduct);
-          }}
-          onDetail={() => {
-            handleDetailProduct(similarProduct.id);
-          }}
-          onElect={() => {}}
-          discount={similarProduct.discount}
-          currentCount={count}
-          isWeightGood={similarProduct.isWeightGood}
-          currency={currency}
-        />
-      );
     }) || [];
 
   const productCharacteristics =
@@ -138,76 +145,90 @@ export default function Product() {
       }) || [];
 
   return (
-    <ShopLayout language={language} currency={currency}>
-      {isLoading && <LinearProgress />}
+    <PrivateLayout>
+      <ShopLayout language={language} currency={currency}>
+        {isLoading && <LinearProgress />}
 
-      {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && isError && (
+          <Typography variant="h5">Произошла ошибка</Typography>
+        )}
 
-      {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+        {!isLoading && !isError && !product && (
+          <Typography variant="h5">Продукт не найден</Typography>
+        )}
 
-      {!isLoading && !isError && product && (
-        <div>
-          <Stack direction="row" justifyContent="space-between">
-            <Box sx={sx.imageSlider}>
-              <ImageSlider images={product.images} />
+        {!isLoading && !isError && product && (
+          <>
+            <Box sx={sx.top}>
+              <ImageSlider images={product.images} sx={sx.imageSlider} />
+
+              <Box sx={sx.info}>
+                <Typography variant="h3" sx={sx.title}>
+                  {product.title[language] || ''}
+                </Typography>
+
+                <ProductInformation
+                  rating={product.grade || 0}
+                  gradesCount={product.gradesCount || 0}
+                  commentsCount={product.commentsCount || 0}
+                  characteristics={productCharacteristics}
+                  onClickComments={() => {}}
+                />
+
+                <ProductActions
+                  price={product.price[currency] || 0}
+                  count={count}
+                  currency={currency}
+                  discount={product.discount}
+                  isWeightGood={product.isWeightGood}
+                  sx={sx.actions}
+                  onAdd={() => addToBasket(product)}
+                  onRemove={() => removeFromBasket(product)}
+                  onElect={() => {
+                    handleElect(
+                      product.id,
+                      isProductFavorite(product.id, favoriteProducts)
+                    );
+                  }}
+                  isElect={isProductFavorite(product.id, favoriteProducts)}
+                />
+              </Box>
             </Box>
 
-            <Stack width="100%">
-              <Typography variant="h3" sx={sx.productTitle}>
-                {product.title[language] || ''}
+            <Box sx={sx.description}>
+              <Typography sx={sx.title} variant="h5">
+                {t('description')}
               </Typography>
 
-              <ProductInformation
-                rating={product.grade || 0}
-                gradesCount={product.gradesCount || 0}
-                commentsCount={product.commentsCount || 0}
-                characteristics={productCharacteristics}
-                onClickComments={() => {}}
-              />
+              <Typography variant="body1">
+                {product.description[language] || ''}
+              </Typography>
+            </Box>
 
-              <ProductActions
-                price={product.price[currency] || 0}
-                count={count}
+            {!!product.similarProducts && (
+              <ProductCatalog
+                title={t('similar')}
+                products={product.similarProducts}
+                basket={basket.products}
+                language={language}
                 currency={currency}
-                discount={product.discount}
-                isWeightGood={product.isWeightGood}
-                sx={sx.productActions}
-                onAdd={() => {
-                  handleAddProduct(product);
-                }}
-                onRemove={() => {
-                  handleRemoveProduct(product);
-                }}
-                onElect={() => {
-                  console.log('add to fav');
-                }}
+                sx={sx.similar}
+                onAdd={addToBasket}
+                onRemove={removeFromBasket}
+                onElect={handleElect}
+                onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
               />
-            </Stack>
-          </Stack>
+            )}
 
-          <Typography sx={sx.descriptionTitle} variant="h5">
-            Описание товара
-          </Typography>
+            {productComments.length !== 0 && (
+              <ProductReviews sx={sx.reviews} reviews={productComments} />
+            )}
 
-          <Typography sx={sx.description} variant="body1">
-            {product.description[language] || ''}
-          </Typography>
-
-          {similarProductCards.length !== 0 && (
-            <CardSlider
-              title="Похожие товары"
-              cardsList={similarProductCards}
-              slidesPerView={4}
-              spaceBetween={0}
-              sx={sx.similar}
-            />
-          )}
-
-          {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
-
-          <CommentCreateBlock onCreate={onCreateComment} />
-        </div>
-      )}
-    </ShopLayout>
+            <CommentCreateBlock onCreate={onCreateComment} />
+          </>
+        )}
+      </ShopLayout>
+    </PrivateLayout>
   );
 }

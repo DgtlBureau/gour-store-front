@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { SignUpFormDto } from '../../../../@types/dto/signup-form.dto';
 import { AuthCard } from '../../Card/Card';
 import { Box } from '../../../UI/Box/Box';
@@ -14,12 +14,15 @@ import { Typography } from '../../../UI/Typography/Typography';
 import { Checkbox } from '../../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
+import { Translator } from 'utils/Translator';
 
 import sx from './Credentials.styles';
+
 import { Stepper } from 'components/UI/Stepper/Stepper';
 import Image from 'next/image';
 
 import credentialsImage from './../../../../assets/icons/signup/credentials.svg';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -43,7 +46,7 @@ export function SignupCredentials({
 
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignUpFormDto>({
     defaultValues: {
@@ -118,7 +121,7 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField name="phone" label={t('phone')} />
+            <HFPhoneInput name="phone" label={t('phone')} />
             <Button
               sx={sx.getCodeBtn}
               onClick={sendSMS}
@@ -127,7 +130,6 @@ export function SignupCredentials({
               {t('getCode')}
             </Button>
           </Box>
-
           {isCodeSended && (
             <Box sx={{ ...sx.field, ...sx.phone }}>
               <HFTextField

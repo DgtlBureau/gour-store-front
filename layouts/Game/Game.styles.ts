@@ -2,9 +2,11 @@ import stripes from '../../assets/images/stripes.svg';
 
 const sx = {
   layout: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: '100vh',
     backgroundImage: 'url(' + `${stripes}` + ')',
     backgroundRepeat: 'no-repeat',
@@ -12,16 +14,11 @@ const sx = {
     backgroundPosition: 'top center',
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    maxWidth: '1200px',
-    paddingTop: '50px',
-  },
-  copyright: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
+    padding: {
+      xs: '10px 0',
+      sm: '10px 0',
+      md: '50px 0',
+    },
   },
 };
 

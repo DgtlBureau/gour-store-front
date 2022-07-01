@@ -4,11 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import translations from './CitySelect.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFSelect } from '../../../HookForm/HFSelect';
+import { Translator } from 'utils/Translator';
 
 import cityImage from './../../../../assets/icons/signup/city.svg';
 
@@ -40,7 +41,7 @@ export function SignupCitySelect({
 }: SignupCitySelectProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema(t);
 
   const values = useForm<SignupCityFields>({
     defaultValues: { city },

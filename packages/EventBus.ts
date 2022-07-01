@@ -1,4 +1,4 @@
-import { Notification } from '../@types/entities/Notification';
+import { INotification } from '../@types/entities/INotification';
 
 export enum EventTypes {
   routerPush = 'router.push',
@@ -8,11 +8,13 @@ export enum EventTypes {
 
 type EventArguments = {
   [EventTypes.routerPush]: string;
-  [EventTypes.notification]: Notification;
+  [EventTypes.notification]: INotification;
   [EventTypes.removeNotification]: string;
 };
 
-type EventListenerCallback<T extends EventTypes> = (payload: EventArguments[T]) => void;
+type EventListenerCallback<T extends EventTypes> = (
+  payload: EventArguments[T]
+) => void;
 
 const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
   [EventTypes.routerPush]: [],
@@ -32,9 +34,7 @@ class EventBus {
   }
 
   off<K extends EventTypes>(key: K, callback: EventListenerCallback<K>) {
-    const index = this.listeners[key].indexOf(
-      callback as EventListenerCallback<EventTypes>
-    );
+    const index = this.listeners[key].indexOf(callback as EventListenerCallback<EventTypes>);
 
     if (index === -1) {
       return;

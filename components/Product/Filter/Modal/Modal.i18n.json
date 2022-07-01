@@ -1,0 +1,12 @@
+{
+  "ru": {
+    "title": "Сортировка",
+    "filters": "Фильтры",
+    "productType": "Тип продукта"
+  },
+  "en": {
+    "title": "Sorting",
+    "filters": "Filters",
+    "productType": "Product type"
+  }
+}

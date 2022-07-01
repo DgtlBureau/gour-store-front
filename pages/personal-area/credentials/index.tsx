@@ -1,20 +1,19 @@
 import { Grid } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
-import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
-import { PACredentialsAvatarEditor } from '../../components/PA/Credentials/AvatarEditor/AvatarEditor';
-import { PACredentialsEditor } from '../../components/PA/Credentials/Editor/Editor';
-import { PAPasswordChangeModal } from '../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
+import { ChangePasswordDto } from '../../../@types/dto/profile/change-password.dto';
+import { ChangePhoneDto } from '../../../@types/dto/profile/change-phone.dto';
+import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
+import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
+import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
+import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 import { PALayout } from 'layouts/PA/PA';
 
 import {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
-} from 'store/api/authApi';
+} from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
 
 export function Profile() {
@@ -81,14 +80,14 @@ export function Profile() {
   return (
     <PALayout>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={4} md={3}>
           <PACredentialsAvatarEditor
             image={currentUser.avatar?.full || ''}
             onChange={handleChangeAvatar}
             onRemove={handleRemoveAvatar}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
             onChangePhone={() => {}}
             onChangePassword={() => setIsPasswordModalOpened(true)}

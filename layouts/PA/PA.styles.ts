@@ -14,10 +14,17 @@ const sx = {
   content: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    maxWidth: '1200px',
     width: '100%',
-    paddingTop: '50px',
+    maxWidth: '1200px',
+    margin: {
+      md: '50px 0 0 0',
+      sm: '40px 0 0 0',
+      xs: '30px 0 0 0',
+    },
+    padding: {
+      xs: '0 10px 20px 10px',
+      sm: '0 20px 40px 20px',
+    },
   },
 };
 

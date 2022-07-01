@@ -14,18 +14,24 @@ import { defaultTheme as theme } from '../../../themes';
 
 const blockSx = {
   title: {
+    fontSize: {
+      sm: '24px',
+      xs: '16px',
+    },
     color: 'text.primary',
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
   },
   container: {
     padding: '20px',
+    boxShadow: 'none',
   },
   btn: {
     margin: '15px 0 0 0',
-    width: {
-      md: '40%',
-      sm: '100%',
+    width: '100%',
+    maxWidth: {
+      md: '300px',
+      xs: '100%',
     },
   },
   star: {
@@ -79,12 +85,12 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
     <Paper sx={{ ...blockSx.container, ...sx }}>
       <form onSubmit={e => handleSubmit(e)}>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Typography variant="h5" sx={blockSx.title}>
               {t('title')}
             </Typography>
 
-            <Typography sx={{ margin: '10px 0' }} variant="body1">
+            <Typography sx={{ margin: '10px 0' }} variant="body2">
               {t('subtitle')}
             </Typography>
 
@@ -105,7 +111,8 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={12}
+            md={8}
             sx={{
               display: 'flex',
               flexDirection: 'column',

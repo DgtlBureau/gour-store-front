@@ -5,8 +5,10 @@ export enum Path {
   AUTH = 'auth',
   SIGN_UP = 'signup',
   SIGN_IN = 'signin',
+  SIGN_OUT = 'signout',
   SEND_CODE = 'sendCode',
   CURRENT_USER = 'currentUser',
+  CURRENT_BALANCE = 'current-balance',
 
   CLIENT_AUTH = 'client-auth',
   CLIENT_ROLES = 'client-roles',
@@ -16,10 +18,15 @@ export enum Path {
   NOVELTIES = 'novelties',
   GRADES = 'grades',
 
+  FAVORITES = 'favorites',
   CATEGORIES = 'categories',
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
+  CHANGE_PASSWORD = 'change-password',
 
+  WALLET = 'wallet',
+  IMAGES = 'images',
+  UPLOAD = 'upload',
   PAGES = 'pages',
   PROMOTIONS = 'promotions',
   GAME = 'game',

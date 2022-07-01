@@ -23,7 +23,7 @@ const Template: ComponentStory<typeof ProductFilterMultiselect> = (
     />
   );
 };
-export const DefaultFilterMultiselect = Template.bind({});
+export const DefaultProductFilterMultiselect = Template.bind({});
 const props: Partial<FilterMultiselectProps> = {
   title: 'Категории сыра',
   options: [
@@ -41,7 +41,6 @@ const props: Partial<FilterMultiselectProps> = {
     },
   ],
   selected: [],
-  onChange: selected => console.log(selected),
 };
 
-DefaultFilterMultiselect.args = props;
+DefaultProductFilterMultiselect.args = props;

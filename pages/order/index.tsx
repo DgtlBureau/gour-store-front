@@ -20,6 +20,7 @@ import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 import { IProduct } from '../../@types/entities/IProduct';
 import { Path } from '../../constants/routes';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
   title: {
@@ -172,62 +173,64 @@ export function Order() {
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
   return (
-    <ShopLayout language={language} currency={currency}>
-      <Typography variant="h4" sx={sx.title}>
-        {t('title')}
-      </Typography>
+    <PrivateLayout>
+      <ShopLayout language={language} currency={currency}>
+        <Typography variant="h4" sx={sx.title}>
+          {t('title')}
+        </Typography>
 
-      {productsInOrder.length === 0 ? (
-        <Stack alignItems="center">
-          <CartEmpty
-            title={t('emptyBasket')}
-            btn={{
-              label: t('toHome'),
-              onClick: () => {
-                router.push('/');
-              },
-            }}
-          >
-            <Typography variant="body1">{t('emptyBasketText')}</Typography>
-          </CartEmpty>
-        </Stack>
-      ) : (
-        <>
-          <Grid container sx={sx.order} spacing={2}>
-            <Grid item md={8} xs={12}>
-              <OrderForm
-                defaultPersonalFields={{
-                  firstName: '',
-                  lastName: '',
-                  phone: '',
-                  email: '',
-                  comment: '',
-                }}
-                defaultDeliveryFields={deliveryFields}
-                citiesList={formattedCitiesList}
-                onChangeDeliveryProfile={onChangeDeliveryProfile}
-                discount={sumDiscount}
-                productsCount={count}
-                cost={sum}
-                delivery={delivery}
-                deliveryProfiles={formattedDeliveryProfiles}
-                onSubmit={handleSubmitForm}
-                isSubmitError={isSubmitError}
-              />
+        {productsInOrder.length === 0 ? (
+          <Stack alignItems="center">
+            <CartEmpty
+              title={t('emptyBasket')}
+              btn={{
+                label: t('toHome'),
+                onClick: () => {
+                  router.push('/');
+                },
+              }}
+            >
+              <Typography variant="body1">{t('emptyBasketText')}</Typography>
+            </CartEmpty>
+          </Stack>
+        ) : (
+          <>
+            <Grid container sx={sx.order} spacing={2}>
+              <Grid item md={8} xs={12}>
+                <OrderForm
+                  defaultPersonalFields={{
+                    firstName: '',
+                    lastName: '',
+                    phone: '',
+                    email: '',
+                    comment: '',
+                  }}
+                  defaultDeliveryFields={deliveryFields}
+                  citiesList={formattedCitiesList}
+                  onChangeDeliveryProfile={onChangeDeliveryProfile}
+                  discount={sumDiscount}
+                  productsCount={count}
+                  cost={sum}
+                  delivery={delivery}
+                  deliveryProfiles={formattedDeliveryProfiles}
+                  onSubmit={handleSubmitForm}
+                  isSubmitError={isSubmitError}
+                />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <OrderCard
+                  totalCartPrice={sum}
+                  currency={currency}
+                  language={language}
+                  totalProductCount={count}
+                  productsList={productsInOrder}
+                />
+              </Grid>
             </Grid>
-            <Grid item md={4} xs={12}>
-              <OrderCard
-                totalCartPrice={sum}
-                currency={currency}
-                language={language}
-                totalProductCount={count}
-                productsList={productsInOrder}
-              />
-            </Grid>
-          </Grid>
-        </>
-      )}
-    </ShopLayout>
+          </>
+        )}
+      </ShopLayout>
+    </PrivateLayout>
   );
 }
 
