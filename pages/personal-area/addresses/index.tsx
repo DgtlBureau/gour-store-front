@@ -25,9 +25,10 @@ import { Button } from '../../../components/UI/Button/Button';
 import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
-import { CurrentUserUpdateDto } from '../../../@types/dto/current-user-update.dto';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
+
+import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 
 const sx = {
   actions: {
@@ -83,7 +84,8 @@ export function Addresses() {
       ...userData,
       mainOrderProfileId: newOrderProfileId,
       avatarId: currentUser.avatar.id,
-    } as CurrentUserUpdateDto;
+      referralCode: currentUser.referralCode?.code,
+    } as UpdateUserDto;
 
     try {
       await updateUser(updatedUser).unwrap();

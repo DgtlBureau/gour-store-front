@@ -1,5 +1,6 @@
 import { IBaseEntity } from './IBaseEntity';
 import { IImage } from './IImage';
+import { IReferralCode } from './IReferralCode';
 
 export interface ICurrentUser extends IBaseEntity {
   firstName: string;
@@ -11,4 +12,5 @@ export interface ICurrentUser extends IBaseEntity {
   mainOrderProfileId: number;
   cityId: number;
   avatar: IImage;
+  referralCode: IReferralCode;
 }

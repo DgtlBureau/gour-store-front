@@ -12,6 +12,11 @@ import { PALayout } from 'layouts/PA/PA';
 import { useCreateImageMutation } from 'store/api/imageApi';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
+import {
+  useGetCurrentUserQuery,
+  useUpdateCurrentUserMutation,
+  useUpdateCurrentUserPasswordMutation,
+} from 'store/api/currentUserApi';
 
 export function Profile() {
   const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
