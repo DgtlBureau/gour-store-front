@@ -9,11 +9,6 @@ import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/E
 import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 import { PALayout } from 'layouts/PA/PA';
 
-import {
-  useGetCurrentUserQuery,
-  useUpdateCurrentUserMutation,
-  useUpdateCurrentUserPasswordMutation,
-} from 'store/api/authApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';

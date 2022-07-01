@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
-import { Store, iNotification } from 'react-notifications-component';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 
-export const baseNotification: iNotification = {
-  insert: 'bottom',
-  container: 'bottom-right',
-  animationIn: ['animate__animated', 'animate__fadeInRight'],
-  animationOut: ['animate__animated', 'animate__fadeOutRight'],
-  dismiss: {
-    pauseOnHover: true,
-    duration: 7000,
-    onScreen: true,
+import { eventBus, EventTypes } from '../../packages/EventBus';
+import {
+  Notification,
+  NotificationType,
+} from '../../@types/entities/Notification';
+import { toast } from 'react-toastify';
+import { ToastOptions } from 'react-toastify';
+
+const baseNotification: ToastOptions = {
+  theme: 'light',
+  autoClose: 7000,
+  style: {
+    maxWidth: '500px',
+    width: '100%',
   },
 };
 
@@ -23,32 +25,39 @@ export function Notifications() {
           return 'Произошла ошибка!';
         case NotificationType.SUCCESS:
           return 'Успешно!';
-        case NotificationType.DEFAULT:
         case NotificationType.INFO:
         case NotificationType.WARNING:
           return 'Внимание!';
         default:
           break;
       }
-      return null;
     };
 
-    eventBus.on(EventTypes.notification, res => {
-      console.log('on');
-
-      Store.addNotification({
+    function toastNotify(res: Notification) {
+      const message = (
+        <>
+          {res.title && <h4 style={{ marginBottom: '5px' }}>{res.title}</h4>}
+          {res.message && <p>{res.message}</p>}
+        </>
+      );
+      toast(res?.message ? message : getNotificationTitle(res.type), {
         ...baseNotification,
         ...res,
-        title: res.title ? res.title : getNotificationTitle(res.type),
-        message: res?.message || 'Нет сообщения',
         type: res.type,
       });
-    });
+    }
 
-    eventBus.on(EventTypes.removeNotification, (id: string) => {
-      console.log('off');
-      Store.removeNotification(id);
-    });
+    function dismissNotify(id: number | string) {
+      id && toast.dismiss(id);
+    }
+
+    eventBus.on(EventTypes.notification, toastNotify);
+    eventBus.on(EventTypes.removeNotification, dismissNotify);
+
+    return () => {
+      eventBus.off(EventTypes.notification, toastNotify);
+      eventBus.off(EventTypes.removeNotification, dismissNotify);
+    };
   }, []);
 
   return null;
