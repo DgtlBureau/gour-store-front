@@ -49,5 +49,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
     return null;
   }
 
-  return <Box sx={sx.layout}>{children}</Box>;
+  return (
+    <Box sx={sx.layout}>
+      <Box sx={sx.container}>{children}</Box>
+    </Box>
+  );
 }

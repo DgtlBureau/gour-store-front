@@ -67,7 +67,6 @@ export default function SignUp() {
   const goToReferralCode = () => setStage('referralCode');
   const goToSignIn = () => router.push('/auth/signin');
 
-  // finish it later
   const sendSMS = async (phone: string) => {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
@@ -78,7 +77,6 @@ export default function SignUp() {
       return (error as any).data.message;
     }
   };
-
   const checkCode = async (code: string) => {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
 
@@ -100,7 +98,6 @@ export default function SignUp() {
 
   const saveCredentials = (data: SignUpFormDto) => {
     setCredentials(data);
-    registerUser;
     goToFavoriteInfo();
   };
 
@@ -111,6 +108,7 @@ export default function SignUp() {
 
   const saveReferralCode = (referralData: ReferralCodeDto) => {
     setReferralCode(referralData.referralCode);
+    registerUser();
     goToSignIn();
   };
 
@@ -120,7 +118,8 @@ export default function SignUp() {
     const role = roles?.find(it => it.key === credentials.role);
 
     const data: SignUpDto = {
-      name: '',
+      firstName: credentials.firstName,
+      lastName: credentials.lastName,
       phone: credentials.phone,
       code: +credentials.sms,
       password: credentials.password,

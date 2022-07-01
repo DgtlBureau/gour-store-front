@@ -33,6 +33,8 @@ const props: Partial<SignupCredentialsProps> = {
   defaultValues: {
     role: 'CLIENT',
     phone: '',
+    firstName: '',
+    lastName: '',
     sms: '',
     password: '',
     passwordConfirm: '',

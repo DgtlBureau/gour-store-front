@@ -1,5 +1,6 @@
 export type SignUpDto = {
-  name: string;
+  firstName: string;
+  lastName: string;
   phone: string;
   code: number;
   password: string;

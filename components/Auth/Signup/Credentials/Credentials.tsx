@@ -14,15 +14,9 @@ import { Typography } from '../../../UI/Typography/Typography';
 import { Checkbox } from '../../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
-import { Translator } from 'utils/Translator';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
-
-import { Stepper } from 'components/UI/Stepper/Stepper';
-import Image from 'next/image';
-
-import credentialsImage from './../../../../assets/icons/signup/credentials.svg';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -151,6 +145,18 @@ export function SignupCredentials({
 
           {isCodeSuccess && (
             <>
+              <HFTextField
+                sx={sx.field}
+                type="text"
+                name="firstName"
+                label={t('firstName')}
+              />
+              <HFTextField
+                sx={sx.field}
+                type="text"
+                name="lastName"
+                label={t('lastName')}
+              />
               <HFTextField
                 sx={sx.field}
                 type="password"

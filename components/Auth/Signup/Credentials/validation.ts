@@ -10,6 +10,8 @@ export const getSchema = (t: Translator) =>
       .oneOf(['physical', 'organization', 'procurementOrganizer']),
     sms: yup.string().required(t('smsEmpty')),
     phone: yup.string().required(t('phoneEmpty')),
+    firstName: yup.string().required(t('firstNameRequired')),
+    lastName: yup.string().required(t('lastNameRequired')),
     password: yup.string().matches(passRegExp, t('passwordError')),
     passwordConfirm: yup
       .string()
