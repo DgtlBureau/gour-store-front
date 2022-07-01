@@ -6,12 +6,18 @@ import Image from 'next/image';
 
 import translations from './Main.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
+import {
+  addBasketProduct,
+  subtractBasketProduct,
+} from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
+import {
+  useGetNoveltiesProductListQuery,
+  useGetProductListQuery,
+} from '../store/api/productApi';
 
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
@@ -28,6 +34,8 @@ import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -44,14 +52,18 @@ const Home: NextPage = () => {
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
-  const goToPromotionPage = (id: number) => router.push(`${Path.PROMOTIONS}/${id}`);
+  const goToPromotionPage = (id: number) =>
+    router.push(`${Path.PROMOTIONS}/${id}`);
   const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct) =>
+    dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) =>
+    dispatch(subtractBasketProduct(product));
 
   return (
     <PrivateLayout>
@@ -111,7 +123,10 @@ const Home: NextPage = () => {
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
+            <Typography
+              variant="body1"
+              sx={{ marginTop: { xs: '20px', md: '40px' } }}
+            >
               {page.info?.description?.[language]}
             </Typography>
           </>

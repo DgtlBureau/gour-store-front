@@ -41,7 +41,7 @@ export const authApi = commonApi.injectEndpoints({
         query() {
           return {
             method: 'GET',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}}`,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
           };
         },
         providesTags: [{ type: 'CurrentUser', id: 1 }],

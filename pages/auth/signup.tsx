@@ -5,7 +5,10 @@ import { AuthLayout } from 'layouts/Auth/Auth';
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
+import {
+  SignupFavoriteInfo,
+  FavoriteInfo,
+} from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
@@ -13,6 +16,8 @@ import { ITranslatableString } from '../../@types/entities/ITranslatableString';
 import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
 
@@ -36,7 +41,8 @@ export default function SignUp() {
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
+  const [credentials, setCredentials] =
+    useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
 
   const goToIntro = () => router.push('/auth');
@@ -83,7 +89,10 @@ export default function SignUp() {
       await signUp(data).unwrap();
       goToFavoriteInfo();
     } catch (e: unknown) {
-      // event bus notification
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка авторизации',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
@@ -94,7 +103,12 @@ export default function SignUp() {
   const forms = {
     greeting: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
     citySelect: (
-      <SignupCitySelect city={selectedCity} options={convertedCities} onSubmit={saveCity} onBack={goToGreeting} />
+      <SignupCitySelect
+        city={selectedCity}
+        options={convertedCities}
+        onSubmit={saveCity}
+        onBack={goToGreeting}
+      />
     ),
     credentials: (
       <SignupCredentials
