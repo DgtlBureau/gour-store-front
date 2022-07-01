@@ -4,7 +4,7 @@ import { Box } from 'components/UI/Box/Box';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'store/selectors/auth';
 import { useRouter } from 'next/router';
-import { useGetCurrentUserQuery } from 'store/api/authApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 
 const sx = {
   layout: {

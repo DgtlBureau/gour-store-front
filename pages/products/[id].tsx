@@ -7,8 +7,15 @@ import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
-import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
-import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import {
+  useCreateProductGradeMutation,
+  useGetProductGradeListQuery,
+} from 'store/api/productGradeApi';
+import {
+  addBasketProduct,
+  productsInBasketCount,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
@@ -25,6 +32,12 @@ import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -35,13 +48,19 @@ export default function Product() {
 
   const dispatch = useDispatch();
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct) =>
+    dispatch(addBasketProduct(product));
 
-  const goToProductPage = (productId: number) => router.push(`/${Path.PRODUCTS}/${productId}`);
+  const removeFromBasket = (product: IProduct) =>
+    dispatch(subtractBasketProduct(product));
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const goToProductPage = (productId: number) =>
+    router.push(`/${Path.PRODUCTS}/${productId}`);
+
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -60,9 +79,30 @@ export default function Product() {
     { skip: !productId }
   );
 
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
+  const count = useAppSelector(state =>
+    productsInBasketCount(state, productId, product?.isWeightGood || false)
+  );
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -109,9 +149,13 @@ export default function Product() {
       <ShopLayout language={language} currency={currency}>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && isError && (
+          <Typography variant="h5">Произошла ошибка</Typography>
+        )}
 
-        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+        {!isLoading && !isError && !product && (
+          <Typography variant="h5">Продукт не найден</Typography>
+        )}
 
         {!isLoading && !isError && product && (
           <>
@@ -140,7 +184,13 @@ export default function Product() {
                   sx={sx.actions}
                   onAdd={() => addToBasket(product)}
                   onRemove={() => removeFromBasket(product)}
-                  onElect={() => console.log('add to fav')}
+                  onElect={() => {
+                    handleElect(
+                      product.id,
+                      isProductFavorite(product.id, favoriteProducts)
+                    );
+                  }}
+                  isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
               </Box>
             </Box>
@@ -150,7 +200,9 @@ export default function Product() {
                 {t('description')}
               </Typography>
 
-              <Typography variant="body1">{product.description[language] || ''}</Typography>
+              <Typography variant="body1">
+                {product.description[language] || ''}
+              </Typography>
             </Box>
 
             {!!product.similarProducts && (
@@ -163,12 +215,15 @@ export default function Product() {
                 sx={sx.similar}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
-                onElect={() => ({})}
+                onElect={handleElect}
                 onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
               />
             )}
 
-            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
+            {productComments.length !== 0 && (
+              <ProductReviews sx={sx.reviews} reviews={productComments} />
+            )}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>
