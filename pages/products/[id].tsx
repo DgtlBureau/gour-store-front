@@ -34,6 +34,12 @@ import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -43,6 +49,8 @@ export default function Product() {
   const { id } = router.query;
 
   const dispatch = useDispatch();
+
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
   const addToBasket = (product: IProduct) =>
     dispatch(addBasketProduct(product));
@@ -72,6 +80,25 @@ export default function Product() {
     },
     { skip: !productId }
   );
+
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const basket = useAppSelector(state => state.order);
 
@@ -170,7 +197,13 @@ export default function Product() {
                   sx={sx.actions}
                   onAdd={() => addToBasket(product)}
                   onRemove={() => removeFromBasket(product)}
-                  onElect={() => console.log('add to fav')}
+                  onElect={() => {
+                    handleElect(
+                      product.id,
+                      isProductFavorite(product.id, favoriteProducts)
+                    );
+                  }}
+                  isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
               </Box>
             </Box>
@@ -195,8 +228,9 @@ export default function Product() {
                 sx={sx.similar}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
-                onElect={() => ({})}
+                onElect={handleElect}
                 onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
               />
             )}
 

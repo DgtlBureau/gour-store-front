@@ -24,6 +24,7 @@ export type ProductActionsProps = {
   currency: Currency;
   count: number;
   sx?: SxProps;
+  isElect: boolean;
   onAdd: () => void;
   onRemove: () => void;
   onElect: () => void;
@@ -35,6 +36,7 @@ export const ProductActions = ({
   discount = 0,
   currency,
   sx,
+  isElect,
   onAdd,
   onRemove,
   onElect,
@@ -50,7 +52,11 @@ export const ProductActions = ({
     <Box sx={{ ...sxActions.container, ...sx }}>
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
-          <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sxActions.price}>
+          <Typography
+            variant="h6"
+            color={discount ? 'error' : 'primary'}
+            sx={sxActions.price}
+          >
             {total}
             {getCurrencySymbol(currency)}
           </Typography>
@@ -80,7 +86,11 @@ export const ProductActions = ({
             <Grid container xs>
               <Grid item xs={4} sx={sxActions.action}>
                 <IconButton onClick={onRemove}>
-                  {count === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
+                  {count === 1 ? (
+                    <TrashIcon sx={sxActions.icon} />
+                  ) : (
+                    <MinusIcon sx={sxActions.icon} />
+                  )}
                 </IconButton>
               </Grid>
 
@@ -97,7 +107,10 @@ export const ProductActions = ({
           )}
         </Box>
 
-        <IconButton sx={sxActions.favoriteBtn} onClick={onElect}>
+        <IconButton
+          sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect}
+          onClick={onElect}
+        >
           <FavoriteIcon sx={sxActions.icon} />
         </IconButton>
       </Box>

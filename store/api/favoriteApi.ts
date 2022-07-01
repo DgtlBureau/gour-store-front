@@ -13,6 +13,13 @@ export const favoriteApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}`,
           };
         },
+        providesTags: result =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: 'Favorite', id } as const)),
+                { type: 'Favorite', id: 'LIST' },
+              ]
+            : [{ type: 'Favorite', id: 'LIST' }],
       }),
       createFavoriteProducts: builder.mutation<void, ProductCreateFavoriteDto>({
         query(product) {
@@ -22,6 +29,7 @@ export const favoriteApi = commonApi.injectEndpoints({
             body: product,
           };
         },
+        invalidatesTags: [{ type: 'Favorite', id: 'LIST' }],
       }),
       deleteFavoriteProduct: builder.mutation<void, number>({
         query(id) {
@@ -30,10 +38,14 @@ export const favoriteApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}/${id}`,
           };
         },
+        invalidatesTags: [{ type: 'Favorite', id: 'LIST' }],
       }),
     };
   },
 });
 
-export const { useGetFavoriteProductsQuery, useCreateFavoriteProductsMutation, useDeleteFavoriteProductMutation } =
-  favoriteApi;
+export const {
+  useGetFavoriteProductsQuery,
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+} = favoriteApi;

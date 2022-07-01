@@ -36,6 +36,12 @@ import sx from './Main.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../@types/entities/Notification';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from './favorites/favoritesHelper';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -43,11 +49,13 @@ const Home: NextPage = () => {
   const router = useRouter();
   const basket = useAppSelector(state => state.order);
 
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
   const dispatch = useDispatch();
 
   const { data: categories } = useGetCategoryListQuery();
   const { data: products } = useGetProductListQuery();
-  const { data: novelties } = useGetNoveltiesProductListQuery();
+  const { data: novelties = [] } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
@@ -64,6 +72,25 @@ const Home: NextPage = () => {
     dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) =>
     dispatch(subtractBasketProduct(product));
+
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <PrivateLayout>
@@ -85,6 +112,7 @@ const Home: NextPage = () => {
           <ProductCatalog
             title={t('novelties')}
             products={novelties}
+            favoritesList={favoriteProducts}
             basket={basket.products}
             language={language}
             currency={currency}
@@ -92,7 +120,7 @@ const Home: NextPage = () => {
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
-            onElect={() => ({})}
+            onElect={handleElect}
             onDetail={goToProductPage}
           />
         )}
@@ -100,6 +128,7 @@ const Home: NextPage = () => {
         {!!products && (
           <ProductCatalog
             title={t('catalog')}
+            favoritesList={favoriteProducts}
             products={products}
             basket={basket.products}
             categories={categories}
@@ -108,7 +137,7 @@ const Home: NextPage = () => {
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
-            onElect={() => ({})}
+            onElect={handleElect}
             onDetail={goToProductPage}
           />
         )}
