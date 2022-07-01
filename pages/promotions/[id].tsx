@@ -3,8 +3,14 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
 import translations from './Promotion.i18n.json';
-import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from '../../store/slices/orderSlice';
+import {
+  useLocalTranslation,
+  LocalConfig,
+} from './../../hooks/useLocalTranslation';
+import {
+  addBasketProduct,
+  subtractBasketProduct,
+} from '../../store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
@@ -18,6 +24,11 @@ import { Path } from '../../constants/routes';
 import { IProduct } from '../../@types/entities/IProduct';
 import { defaultTheme as theme } from 'themes';
 import { PrivateLayout } from 'layouts/Private/Private';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 
 const sx = {
   promotion: {
@@ -59,10 +70,13 @@ export default function Promotion() {
 
   const { id } = router.query;
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency = 'cheeseCoin';
 
   const promotionId = id ? +id : 0;
+
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
   if (!promotionId) return router.push('/');
 
@@ -71,8 +85,29 @@ export default function Promotion() {
 
   const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const addToBasket = (product: IProduct) =>
+    dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) =>
+    dispatch(subtractBasketProduct(product));
 
   return (
     <PrivateLayout>
@@ -81,7 +116,11 @@ export default function Promotion() {
           <Box sx={sx.promotion}>
             <Link href="/">{t('goBack')}</Link>
 
-            <PromotionHeader image={promotion.pageImage.full} end={new Date(promotion.end)} sx={sx.header} />
+            <PromotionHeader
+              image={promotion.pageImage.full}
+              end={new Date(promotion.end)}
+              sx={sx.header}
+            />
 
             <Typography variant="h5" sx={sx.title}>
               {promotion.title[language]}
@@ -104,6 +143,7 @@ export default function Promotion() {
             onRemove={removeFromBasket}
             onElect={() => ({})}
             onDetail={goToProductPage}
+            favoritesList={favoriteProducts}
           />
         )}
       </ShopLayout>

@@ -53,4 +53,5 @@ export const {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
   useChangeCurrentCityMutation,
+  useUpdateCurrentUserPasswordMutation,
 } = currentUserApi;

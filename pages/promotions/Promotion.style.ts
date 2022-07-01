@@ -1,3 +1,5 @@
+import { defaultTheme as theme } from '../../themes';
+
 export const sx = {
   promotion: {
     margin: {
