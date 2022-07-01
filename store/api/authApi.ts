@@ -47,9 +47,4 @@ export const authApi = commonApi.injectEndpoints({
   },
 });
 
-export const {
-  useSignUpMutation,
-  useSignInMutation,
-  useSendCodeMutation,
-  useSignOutMutation,
-} = authApi;
+export const { useSignUpMutation, useSignInMutation, useSendCodeMutation, useSignOutMutation } = authApi;
