@@ -60,7 +60,7 @@ export function Notifications() {
     };
   }, []);
 
-  return null;
+  return <></>;
 }
 
 export default Notifications;

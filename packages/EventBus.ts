@@ -21,7 +21,6 @@ const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
 
 class EventBus {
   listeners = listeners;
-
   emit<K extends EventTypes>(key: K, payload: EventArguments[K]) {
     this.listeners[key].forEach(callback => callback(payload));
   }
@@ -34,7 +33,6 @@ class EventBus {
     const index = this.listeners[key].indexOf(
       callback as EventListenerCallback<EventTypes>
     );
-
     if (index === -1) {
       return;
     }
