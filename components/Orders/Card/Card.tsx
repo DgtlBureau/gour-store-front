@@ -4,7 +4,11 @@ import { Divider, Stack, Typography } from '@mui/material';
 
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from '../../UI/Accordion/Accordion';
 import { Box } from '../../UI/Box/Box';
 import { OrderProductType, OrderCardProduct } from './CardProduct';
 import { OrderCardInfo } from './CardInfo';
@@ -93,7 +97,10 @@ export function OrdersCard({
   const createdDate = format(createdAt, 'yyyy.MM.d');
   const createdTime = format(createdAt, 'HH:mm');
 
-  const summaryDiscount = promotions.reduce((acc, currentDiscount) => (acc += currentDiscount.amount), 0);
+  const summaryDiscount = promotions.reduce(
+    (acc, currentDiscount) => (acc += currentDiscount.amount),
+    0
+  );
 
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
@@ -112,13 +119,18 @@ export function OrdersCard({
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h6">{title}</Typography>
 
-            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant="h6">
+            <Typography
+              sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }}
+              variant="h6"
+            >
               {priceWithDiscount} {currencySymbol}
             </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ ...sx.status, backgroundColor: status.color }}>{status.title}</Typography>
+            <Typography sx={{ ...sx.status, backgroundColor: status.color }}>
+              {status.title}
+            </Typography>
 
             <Typography variant="body1" sx={sx.muted}>
               {t('from')} {createdDate} {t('at')} {createdTime}
@@ -129,7 +141,10 @@ export function OrdersCard({
             {productCount} товара
           </Typography>
 
-          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant="h6">
+          <Typography
+            sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }}
+            variant="h6"
+          >
             {priceWithDiscount} {currencySymbol}
           </Typography>
         </Stack>
@@ -156,7 +171,11 @@ export function OrdersCard({
         <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
 
         {products.map(product => (
-          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
+          <OrderCardProduct
+            key={`${product.amount}_${product.photo}`}
+            product={product}
+            currency={currency}
+          />
         ))}
 
         {!!products.length && <Divider variant="fullWidth" />}

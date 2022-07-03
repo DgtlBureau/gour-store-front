@@ -5,7 +5,11 @@ import { Divider } from '@mui/material';
 import LocationIcon from '@mui/icons-material/LocationOnOutlined';
 
 import { PAProfilesForm } from '../Form/Form';
-import { Accordion, AccordionSummary, AccordionDetails } from '../../../UI/Accordion/Accordion';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '../../../UI/Accordion/Accordion';
 import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { IOrderProfile } from '../../../../@types/entities/IOrderProfile';
@@ -13,6 +17,7 @@ import { OrderProfileDto } from '../../../../@types/dto/order/profile.dto';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import sx from './Item.styles';
+import { getFullAddress } from 'utils/getFullAddress';
 
 export type PAProfilesItemProps = {
   isExpanded?: boolean;
@@ -38,17 +43,17 @@ export function PAProfilesItem({
 }: PAProfilesItemProps) {
   const router = useRouter();
 
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
 
   const address = profile
-    ? [
+    ? getFullAddress(
         profile.city.name[locale],
         profile.street,
         profile.house,
-        profile.apartment && `${locale === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
-      ]
-        .filter(it => !!it)
-        .join(', ')
+        profile.apartment &&
+          `${locale === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`
+      )
     : '';
 
   const convertToOrderProfile = (profile: IOrderProfile) =>

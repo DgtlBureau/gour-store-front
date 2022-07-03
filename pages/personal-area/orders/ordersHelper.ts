@@ -4,6 +4,7 @@ import { Currency } from '../../../@types/entities/Currency';
 import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
 import { getFullName } from 'utils/getFullName';
+import { getFullAddress } from 'utils/getFullAddress';
 
 export function formatOrderData(
   order: IOrder,
@@ -11,6 +12,15 @@ export function formatOrderData(
   currency: Currency
 ): OrdersCardProps {
   const client = getFullName(order.order.firstName, order.order.lastName || '');
+  const { city, street, house, apartment } = order.order.orderProfile;
+  const apartmentString =
+    apartment && `${lang === 'ru' ? 'кв.' : 'apt.'}${apartment}`;
+  const address = getFullAddress(
+    city.name[lang],
+    street,
+    house,
+    apartmentString
+  );
   const products = order.order.orderProducts.map(product => ({
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
@@ -34,7 +44,7 @@ export function formatOrderData(
       color: order.crmInfo.status.color,
     },
     createdAt,
-    address: 'Test',
+    address,
     client,
     currency,
     products,

@@ -19,6 +19,8 @@ export function Orders() {
     return formatOrderData(order, lang, currency);
   });
 
+  console.log('orders', ordersList);
+
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
 
   if (isLoading) {
@@ -44,7 +46,12 @@ export function Orders() {
           {Object.keys(groupedOrders).map(key => {
             const orderGroup = groupedOrders[+key];
             return (
-              <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
+              <OrdersCardGroup
+                key={key}
+                date={orderGroup.date}
+                ordersList={orderGroup.orderList}
+                currency={currency}
+              />
             );
           })}
         </Stack>

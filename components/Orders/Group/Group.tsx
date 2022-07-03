@@ -12,7 +12,11 @@ export type OrdersGroupProps = {
   currency: Currency;
 };
 
-export function OrdersCardGroup({ date, ordersList, currency }: OrdersGroupProps) {
+export function OrdersCardGroup({
+  date,
+  ordersList,
+  currency,
+}: OrdersGroupProps) {
   const groupDate = format(date, 'yyyy.MM.d');
 
   return (
