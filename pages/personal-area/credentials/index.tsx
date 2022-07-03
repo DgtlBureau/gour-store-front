@@ -37,10 +37,17 @@ export function Profile() {
   const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
     try {
       await sendPhoneCode(sendCode).unwrap();
-      //TODO: eventBus, сделать обработку ошибок))
+      eventBus.emit(EventTypes.notification, {
+        message: 'Код отправлен',
+        type: NotificationType.SUCCESS,
+      });
       return true;
     } catch (error) {
       console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка отправки кода',
+        type: NotificationType.DANGER,
+      });
       return false;
     }
   };
@@ -50,9 +57,16 @@ export function Profile() {
         phone: changePhoneData.phone,
         code: +changePhoneData.code,
       }).unwrap();
-      //TODO: eventBus
+      eventBus.emit(EventTypes.notification, {
+        message: 'Телефон изменен',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
