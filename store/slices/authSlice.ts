@@ -34,19 +34,13 @@ export const authSlice = createSlice({
       .addMatcher(authApi.endpoints.signIn.matchFulfilled, state => {
         state.isAuthorized = true;
       })
-      .addMatcher(
-        currentUserApi.endpoints.getCurrentUser.matchFulfilled,
-        state => {
-          state.isAuthorized = true;
-        }
-      )
-      .addMatcher(
-        currentUserApi.endpoints.getCurrentUser.matchRejected,
-        (state, action) => {
-          if (action.error.name === 'ConditionError') return;
-          state.isAuthorized = false;
-        }
-      )
+      .addMatcher(currentUserApi.endpoints.getCurrentUser.matchFulfilled, state => {
+        state.isAuthorized = true;
+      })
+      .addMatcher(currentUserApi.endpoints.getCurrentUser.matchRejected, (state, action) => {
+        if (action.error.name === 'ConditionError') return;
+        state.isAuthorized = false;
+      })
       .addMatcher(authApi.endpoints.signOut.matchFulfilled, state => {
         state.isAuthorized = false;
       });

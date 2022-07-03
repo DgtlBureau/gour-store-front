@@ -9,12 +9,14 @@ import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/E
 import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 import { PALayout } from 'layouts/PA/PA';
 
+import { useCreateImageMutation } from 'store/api/imageApi';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../../@types/entities/Notification';
 import {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
 } from 'store/api/currentUserApi';
-import { useCreateImageMutation } from 'store/api/imageApi';
 
 export function Profile() {
   const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
@@ -31,31 +33,52 @@ export function Profile() {
   ) => {
     try {
       await fetchUpdatePassword(changePasswordData).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Пароль изменен',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Пароль не изменен',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
   const handleChangeAvatar = async (file: File) => {
-    console.log('file', file);
-
     const formData = new FormData();
     formData.append('image', file);
 
     try {
       const image = await fetchUploadImage(formData).unwrap();
       if (!image) return;
-
       await fetchUpdateCurrentUser({ avatarId: image.id });
+      eventBus.emit(EventTypes.notification, {
+        message: 'Фото профиля изменено',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка изменения фото',
+        type: NotificationType.DANGER,
+      });
     }
   };
   const handleRemoveAvatar = async () => {
     try {
       await fetchUpdateCurrentUser({ avatarId: null }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Фото профиля удалено',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка удаления фото',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
@@ -64,8 +87,16 @@ export function Profile() {
   const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
     try {
       await fetchUpdateCurrentUser(updatedUser).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Данные профиля изменены',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка изменения данных',
+        type: NotificationType.SUCCESS,
+      });
     }
   };
 

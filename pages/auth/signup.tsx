@@ -32,6 +32,10 @@ type AuthStage =
   | 'citySelect'
   | 'credentials'
   | 'favoriteInfo';
+  
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
+
 
 export default function SignUp() {
   const router = useRouter();
@@ -132,8 +136,10 @@ export default function SignUp() {
       await signUp(data).unwrap();
       goToFavoriteInfo();
     } catch (e: unknown) {
-      console.error(e);
-      // event bus notification
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка авторизации',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
@@ -192,6 +198,7 @@ export default function SignUp() {
       image: referralImage,
       stepIndex: 5,
     },
+
   };
 
   return (

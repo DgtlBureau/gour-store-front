@@ -12,7 +12,7 @@ import {
   subtractBasketProduct,
   removeProduct,
 } from '../../store/slices/orderSlice';
-import translation from './basket.i18n.json';
+import translation from './Basket.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
