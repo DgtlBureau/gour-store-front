@@ -3,9 +3,12 @@ import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
-
 import { persistor, store } from '../store/store';
 import { defaultTheme } from '../themes';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Notifications from 'components/Notifications/Notifications';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,8 +16,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <PersistGate persistor={persistor}>
         <ThemeProvider theme={defaultTheme}>
           <CssBaseline />
+          <ToastContainer />
+          <Notifications />
           <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+            />
           </Head>
           <Component {...pageProps} />
         </ThemeProvider>
