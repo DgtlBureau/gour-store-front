@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 
 import { AuthLayout } from '../../layouts/Auth/Auth';
 import { SigninIntro } from 'components/Auth/Signin/Intro/Intro';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 export default function Auth() {
   const router = useRouter();

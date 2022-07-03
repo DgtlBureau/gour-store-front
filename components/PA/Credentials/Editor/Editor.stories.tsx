@@ -16,10 +16,9 @@ const props: Partial<PACredentialsEditorProps> = {
   user: {
     firstName: 'Михаил',
     lastName: 'Барулин',
-    email: 'bebzhyzh@gmail.com',
+    email: 'test@test.com',
     referralCode: '123456789',
   },
-
   phone: '89218650538',
 };
 

@@ -11,12 +11,18 @@ type Props = {
   helperText?: string;
   type?: string;
   sx?: SxProps;
+  disabled?: boolean;
   InputProps?: InputProps;
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFTextField({ name, defaultValue, helperText, ...props }: Props) {
+export function HFTextField({
+  name,
+  defaultValue,
+  helperText,
+  ...props
+}: Props) {
   const {
     control,
     formState: { errors },

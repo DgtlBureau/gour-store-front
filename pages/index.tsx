@@ -34,6 +34,8 @@ import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,

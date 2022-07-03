@@ -11,7 +11,13 @@ import { Typography } from '../../../UI/Typography/Typography';
 import { HFSelect } from '../../../HookForm/HFSelect';
 import { Translator } from 'utils/Translator';
 
+import cityImage from './../../../../assets/icons/signup/city.svg';
+
 import sx from './CitySelect.styles';
+import { Stepper } from 'components/UI/Stepper/Stepper';
+import { Box } from '../../../UI/Box/Box';
+import { Grid } from '@mui/material';
+import Image from 'next/image';
 
 type SignupCityFields = {
   city: string;
@@ -24,7 +30,7 @@ export type SignupCitySelectProps = {
     value: string;
   }[];
   onBack(): void;
-  onSubmit(city: string): void;
+  onSubmit(cityId: string): void;
 };
 
 export function SignupCitySelect({
@@ -42,6 +48,8 @@ export function SignupCitySelect({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
+
+  console.log(options);
 
   const submit = (data: SignupCityFields) => onSubmit(data.city);
 

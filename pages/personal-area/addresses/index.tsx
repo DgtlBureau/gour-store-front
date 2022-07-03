@@ -25,6 +25,9 @@ import { Button } from '../../../components/UI/Button/Button';
 import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../../@types/entities/Notification';
+
 import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 
 const sx = {
@@ -84,25 +87,66 @@ export function Addresses() {
       referralCode: currentUser.referralCode?.code,
     } as UpdateUserDto;
 
-    await updateUser(updatedUser);
+    try {
+      await updateUser(updatedUser).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const createAddress = async (data: OrderProfileDto) => {
-    await createProfile(data);
+    try {
+      await createProfile(data).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Адрес доставки создан',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка создания адреса доставки',
+        type: NotificationType.SUCCESS,
+      });
+    }
     closeCreateForm();
   };
 
   const editAddress = async (data: OrderProfileDto, id: number) => {
-    await updateProfile({ ...data, id });
+    try {
+      await updateProfile({ ...data, id }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Адрес доставки обновлен',
+        type: NotificationType.SUCCESS,
+      });
+      const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
-    const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
-
-    if (data.isMain && !isMain && !!expandedProfileId)
-      changeMainAddress(expandedProfileId);
+      if (data.isMain && !isMain && !!expandedProfileId)
+        changeMainAddress(expandedProfileId);
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка обновления адреса доставки',
+        type: NotificationType.DANGER,
+      });
+    }
   };
 
   const deleteAddress = async () => {
-    if (expandedProfileId) await deleteProfile(expandedProfileId);
+    if (expandedProfileId) {
+      try {
+        await deleteProfile(expandedProfileId).unwrap();
+        eventBus.emit(EventTypes.notification, {
+          message: 'Адрес доставки удален',
+          type: NotificationType.SUCCESS,
+        });
+      } catch (error) {
+        console.error(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления адреса доставки',
+          type: NotificationType.DANGER,
+        });
+      }
+    }
     rollUpProfile();
     closeDeleteModal();
   };

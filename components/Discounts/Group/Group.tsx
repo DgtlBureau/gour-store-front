@@ -1,11 +1,15 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 
-import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from '../../UI/Accordion/Accordion';
 import { Typography } from '../../UI/Typography/Typography';
-import { Item } from '../Item/Item';
 import { Box } from '../../UI/Box/Box';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Stepper } from '../../UI/Stepper/Stepper';
 
 type Category = {
   title: string;
@@ -62,7 +66,13 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
             </Typography>
           </Grid>
 
-          <Grid display="flex" justifyContent="space-between" item xs={6} md={10}>
+          <Grid
+            display="flex"
+            justifyContent="space-between"
+            item
+            xs={6}
+            md={10}
+          >
             {percents.map(percent => (
               <Box
                 key={percent}
@@ -87,14 +97,22 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
           </Grid>
 
           <Grid item xs={3} md={1}>
-            <Typography sx={{ ...sx.headerText, textAlign: 'end' }} variant="subtitle1">
+            <Typography
+              sx={{ ...sx.headerText, textAlign: 'end' }}
+              variant="subtitle1"
+            >
               Всего {getCurrencySymbol('cheeseCoin')}
             </Typography>
           </Grid>
         </Grid>
 
         {categories.map(category => (
-          <Grid sx={sx.category} key={category.summary} container spacing={{ xs: 1, md: 2 }}>
+          <Grid
+            sx={sx.category}
+            key={category.summary}
+            container
+            spacing={{ xs: 1, md: 2 }}
+          >
             <Grid item xs={3} md={1}>
               <Typography sx={sx.categoryTitle} variant="subtitle2">
                 {category.title}
@@ -102,7 +120,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
             </Grid>
 
             <Grid item xs={6} md={10}>
-              <Item
+              <Stepper
                 stepsCount={10}
                 percent={(category.summary % 100000) / 1000}
                 activeStep={Math.floor(category.summary / 100000)}

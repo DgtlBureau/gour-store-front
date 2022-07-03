@@ -11,6 +11,8 @@ import {
 } from '../../store/api/authApi';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 type SignInStage = 'credentials' | 'recovery';
 
@@ -40,9 +42,16 @@ export default function SignIn() {
     setCredentials(data);
     try {
       await signIn(data).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Добро пожаловать :]',
+        type: NotificationType.SUCCESS,
+      });
       goToHome();
     } catch (e: unknown) {
-      // event bus notification
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка авторизации',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
@@ -53,7 +62,10 @@ export default function SignIn() {
       // await recoverPassword(recoveryData).unwrap();
       goToCredentials();
     } catch (e: unknown) {
-      // event bus notification
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка восстановления пароля',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
