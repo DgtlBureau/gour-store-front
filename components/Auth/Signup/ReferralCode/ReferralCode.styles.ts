@@ -27,7 +27,6 @@ const sx = {
   },
   getCodeBtn: {
     whiteSpace: 'nowrap',
-    height: '100%',
     minWidth: {
       xs: '100%',
       sm: 'auto',
@@ -50,12 +49,6 @@ const sx = {
   stepper: {
     width: '100%',
     margin: '0 0 20px 0',
-  },
-  imageContainer: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
   },
 };
 

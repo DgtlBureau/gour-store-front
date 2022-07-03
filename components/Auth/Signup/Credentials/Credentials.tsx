@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControlLabel, Radio } from '@mui/material';
+import { FormControlLabel, Grid, Radio } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -14,15 +14,15 @@ import { Typography } from '../../../UI/Typography/Typography';
 import { Checkbox } from '../../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
-import { Translator } from 'utils/Translator';
+import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
   onBack(): void;
-  onSendSMS(phone: string): string;
+  onSendSMS(phone: string): Promise<'success' | string>;
+  onCheckCode: (code: string) => Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
@@ -30,10 +30,12 @@ export function SignupCredentials({
   defaultValues,
   onBack,
   onSendSMS,
+  onCheckCode,
   onSubmit,
 }: SignupCredentialsProps) {
-  const [SMS, setSMS] = useState('');
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isCodeSended, setIsCodeSended] = useState(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
+
   const [isAgree, setIsAgree] = useState(false);
 
   const { t } = useLocalTranslation(translations);
@@ -51,25 +53,25 @@ export function SignupCredentials({
 
   const phoneIsInvalid =
     !values.watch('phone') || !!values.getFieldState('phone').error;
-  const formIsInvalid = !values.formState.isValid || !isConfirmed || !isAgree;
+  const codeIsValid =
+    !values.watch('sms') || !!values.getFieldState('sms').error;
+  const formIsInvalid = !values.formState.isValid || !isAgree;
 
-  const sendSMS = () => {
+  const sendSMS = async () => {
     const phone = values.watch('phone');
-    const code = onSendSMS(phone);
 
-    setSMS(code);
+    const response = await onSendSMS(phone);
+    if (response === 'success') {
+      setIsCodeSended(true);
+    } else {
+      values.setError('phone', { message: response });
+    }
   };
 
-  const blurSMSField = () => {
+  const checkCode = async () => {
     const code = values.watch('sms');
-
-    if (!code.trim()) values.setError('sms', { message: t('smsEmpty') });
-    else if (code !== SMS) values.setError('sms', { message: t('smsError') });
-    else values.clearErrors('sms');
-
-    const codeIsValid = !values.getFieldState('sms').error;
-
-    setIsConfirmed(codeIsValid);
+    const status = await onCheckCode(code);
+    setIsCodeSuccess(status);
   };
 
   const agree = () => setIsAgree(!isAgree);
@@ -122,39 +124,60 @@ export function SignupCredentials({
               {t('getCode')}
             </Button>
           </Box>
-
-          {SMS && (
-            <HFTextField
-              sx={sx.field}
-              name="sms"
-              label={t('sms')}
-              onBlur={blurSMSField}
-            />
+          {isCodeSended && (
+            <Box sx={{ ...sx.field, ...sx.phone }}>
+              <HFTextField
+                disabled={isCodeSuccess}
+                sx={sx.field}
+                name="sms"
+                label={t('sms')}
+              />
+              <Button
+                sx={sx.getCodeBtn}
+                onClick={checkCode}
+                disabled={codeIsValid}
+                color={!isCodeSuccess ? 'primary' : 'success'}
+              >
+                {!isCodeSuccess ? t('sendCode') : 'Код подтвержден'}
+              </Button>
+            </Box>
           )}
 
-          <HFTextField
-            sx={sx.field}
-            type="password"
-            name="password"
-            label={t('password')}
-            helperText={t('passwordHelper')}
-          />
-          <HFTextField
-            sx={sx.field}
-            type="password"
-            name="passwordConfirm"
-            label={t('passwordConfirm')}
-          />
-
-          <HFTextField sx={sx.field} name="referral" label={t('referral')} />
-
-          <Checkbox
-            sx={sx.field}
-            value={isAgree}
-            onChange={agree}
-            label={t('agreement')}
-          />
-
+          {isCodeSuccess && (
+            <>
+              <HFTextField
+                sx={sx.field}
+                type="text"
+                name="firstName"
+                label={t('firstName')}
+              />
+              <HFTextField
+                sx={sx.field}
+                type="text"
+                name="lastName"
+                label={t('lastName')}
+              />
+              <HFTextField
+                sx={sx.field}
+                type="password"
+                name="password"
+                label={t('password')}
+                helperText={t('passwordHelper')}
+              />
+              <HFTextField
+                sx={sx.field}
+                type="password"
+                name="passwordConfirm"
+                label={t('passwordConfirm')}
+              />
+              <Checkbox
+                sx={sx.field}
+                value={isAgree}
+                onChange={agree}
+                label={t('agreement')}
+              />
+            </>
+          )}
           <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>

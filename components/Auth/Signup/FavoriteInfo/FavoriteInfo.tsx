@@ -6,8 +6,9 @@ import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
-
 import sx from './FavoriteInfo.styles';
+import { Box } from '../../../UI/Box/Box';
+import { Stepper } from '../../../UI/Stepper/Stepper';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -29,7 +30,12 @@ export type SignupFavoriteInfoProps = {
   onSubmit(info: FavoriteInfo): void;
 };
 
-export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: SignupFavoriteInfoProps) {
+export function SignupFavoriteInfo({
+  countries,
+  products,
+  onBack,
+  onSubmit,
+}: SignupFavoriteInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const [userCountries, setUserCountries] = useState<number[]>([]);
@@ -118,7 +124,11 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         </Grid>
 
         <Grid item xs={12}>
-          <Button sx={{ width: '100%' }} variant="contained" onClick={handleSubmit}>
+          <Button
+            sx={{ width: '100%' }}
+            variant="contained"
+            onClick={handleSubmit}
+          >
             {t('endRegistration')}
           </Button>
         </Grid>

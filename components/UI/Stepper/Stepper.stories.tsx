@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { Item } from './Item';
+import { Stepper } from './Stepper';
 
 export default {
-  component: Item,
+  component: Stepper,
   title: 'Item',
 } as Meta;
 
-const Template: ComponentStory<typeof Item> = args => <Item {...args} />;
+const Template: ComponentStory<typeof Stepper> = args => <Stepper {...args} />;
 export const DefaultItem = Template.bind({});
 const props = {
   activeStep: 5,

@@ -18,7 +18,9 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCredentials> = function (args: SignupCredentialsProps) {
+const Template: ComponentStory<typeof SignupCredentials> = function (
+  args: SignupCredentialsProps
+) {
   return (
     <Box sx={boxSx}>
       <SignupCredentials {...args} />
@@ -31,12 +33,12 @@ const props: Partial<SignupCredentialsProps> = {
   defaultValues: {
     role: 'CLIENT',
     phone: '',
+    firstName: '',
+    lastName: '',
     sms: '',
     password: '',
     passwordConfirm: '',
-    referral: '',
   },
-  onSendSMS: (phone: string) => '1234',
   onSubmit: (data: SignUpFormDto) => console.log(data),
 };
 
