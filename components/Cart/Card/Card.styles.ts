@@ -3,7 +3,15 @@ import { defaultTheme as t } from '../../../themes';
 const sx = {
   card: {
     display: 'flex',
+
+    maxWidth: {
+      md: '700px',
+      xs: '100%',
+    },
+
     padding: '20px 0',
+
+    marginRight: 0,
 
     boxShadow: 'none',
     background: 'transparent',
@@ -11,13 +19,32 @@ const sx = {
   },
 
   image: {
-    height: '125px',
-    width: '125px',
+    height: {
+      sm: '125px',
+      xs: '80px',
+    },
+    width: {
+      sm: '125px',
+      xs: '80px',
+    },
 
     border: '2px solid #FDCE85',
     borderRadius: '10px',
 
     objectFit: 'cover',
+  },
+
+  info: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+
+    width: '100%',
+
+    margin: {
+      sm: '0 0 0 20px',
+      xs: '0 0 0 15px',
+    },
   },
 
   content: {
@@ -29,27 +56,34 @@ const sx = {
   },
 
   title: {
+    fontSize: {
+      xs: '14px',
+      sm: '16px',
+      md: '18px',
+    },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
   },
 
-  info: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-
-    width: 'calc(100% - 145px)',
-    paddingLeft: '20px',
-  },
-
   docket: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: {
+      sm: 'column',
+      xs: 'row-reverse',
+    },
     alignItems: 'flex-end',
   },
   price: {
+    fontSize: {
+      xs: '14px',
+      sm: '24px',
+    },
     fontWeight: 'bold',
+    margin: {
+      xs: '0 0 0 10px',
+      sm: 0,
+    },
   },
   oldPrice: {
     position: 'relative',
@@ -84,6 +118,19 @@ const sx = {
     },
   },
 
+  deleteBtn: {
+    display: {
+      xs: 'none',
+      sm: 'flex',
+    },
+  },
+
+  cancelBtn: {
+    height: 'fit-content',
+    padding: 0,
+    color: t.palette.secondary.main,
+  },
+
   leftActions: {
     'button:first-child': {
       marginRight: '20px',
@@ -114,6 +161,11 @@ const sx = {
 
   weight: {
     margin: '0 8px',
+
+    fontSize: {
+      xs: '13px',
+      sm: '15px',
+    },
   },
 };
 

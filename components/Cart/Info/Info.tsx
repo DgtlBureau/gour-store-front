@@ -8,11 +8,13 @@ import { defaultTheme as t } from '../../../themes';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Info.i18n.json';
+import { Currency } from '../../../@types/entities/Currency';
 
 const sx = {
   paper: {
     width: '100%',
     padding: '16px',
+    boxShadow: 'none',
     '*': {
       display: 'flex',
       justifyContent: 'space-between',
@@ -37,24 +39,13 @@ type CartInfoProps = {
   price: number;
   delivery: number;
   discount: number;
-  currency?: 'rub' | 'usd' | 'eur';
+  currency?: Currency;
 };
 
-export function CartInfo({
-  count,
-  weight,
-  price,
-  delivery,
-  discount,
-  currency = 'rub',
-}: CartInfoProps) {
+export function CartInfo({ count, weight, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
   const { t } = useLocalTranslation(translations);
 
-  const productsCountText = getDeclensionWordByCount(count, [
-    t('manyProducts'),
-    t('oneProduct'),
-    t('someProducts'),
-  ]);
+  const productsCountText = getDeclensionWordByCount(count, [t('manyProducts'), t('oneProduct'), t('someProducts')]);
 
   const currencySymbol = getCurrencySymbol(currency);
 
@@ -69,8 +60,7 @@ export function CartInfo({
       </Box>
       <Box sx={sx.footnote}>
         <Typography variant="body1">
-          {t('all')}: {count} {productsCountText}{' '}
-          {weight ? `• ${weight} ${t('kg')}` : ''}
+          {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''}
         </Typography>
         <Typography variant="body1">
           {price}

@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
-import NextLink from 'next/link';
 import Image from 'next/image';
 import { Divider, SxProps } from '@mui/material';
 
 import translations from './Footer.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import { Link as CustomLink } from '../UI/Link/Link';
+import { LinkRef as Link } from '../UI/Link/Link';
 import { Box } from '../UI/Box/Box';
 
 import logo from '../../assets/images/logo.svg';
@@ -100,53 +99,54 @@ export function Footer({
   ];
 
   return (
-    <Box sx={sx}>
+    <Box sx={{ ...sx, maxWidth: '1200px' }}>
       <Box sx={footerSx.contactsWrapper}>
-        <CustomLink path="/">
+        <Link href="/">
           <Box sx={footerSx.logo}>
             <Image src={logo} height={150} width={125} alt="" />
           </Box>
-        </CustomLink>
+        </Link>
 
         <Box sx={footerSx.contacts}>
           {contacts.map(link => (
-            <CustomLink
+            <Link
               key={link.path}
-              path={link.path}
+              href={link.path}
               underline="none"
               sx={footerSx.contactsLink}
             >
               {link.label}
-            </CustomLink>
+            </Link>
           ))}
+
           <Box sx={footerSx.social}>
             {social.map(link => (
-              <a
+              <Link
                 key={link.path}
                 href={link.path}
                 rel="noreferrer"
                 target="_blank"
-                style={footerSx.socialLink}
+                sx={footerSx.socialLink}
               >
                 <Image src={link.icon} height={38} width={38} alt="" />
-              </a>
+              </Link>
             ))}
           </Box>
         </Box>
       </Box>
+
       <Box sx={footerSx.info}>
         {info.map((link, i) => (
           <Fragment key={link.path}>
-            <NextLink href={link.path} passHref>
-              <a
-                href="replace"
-                rel="noreferrer"
-                target="_blank"
-                style={footerSx.infoLink}
-              >
-                {link.label}
-              </a>
-            </NextLink>
+            <Link
+              href={link.path}
+              rel="noreferrer"
+              target="_blank"
+              sx={footerSx.infoLink}
+            >
+              {link.label}
+            </Link>
+
             {i + 1 !== info.length && (
               <Divider
                 sx={footerSx.divider}

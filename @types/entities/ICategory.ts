@@ -1,9 +1,9 @@
-import {ITranslatableString} from "./ITranslatableString";
-import {ITranslatableText} from "./ITranslatableText";
-import {IBaseEntity} from "./IBaseEntity";
+import { IBaseEntity } from "./IBaseEntity";
+import { ITranslatableString } from "./ITranslatableString";
+import { ITranslatableText } from "./ITranslatableText";
 
 export interface ICategory extends IBaseEntity {
-    title: ITranslatableString;
-    description: ITranslatableText;
-    icon: string;
+  key: string;
+  title: ITranslatableString;
+  description: ITranslatableText;
 }

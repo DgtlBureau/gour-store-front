@@ -1,13 +1,15 @@
-import React, { CSSProperties } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Grid, Stack } from '@mui/material';
+import React from 'react';
+import { Grid, SxProps } from '@mui/material';
 
-import { Comment } from '../..//UI/Comment/Comment';
+import translations from './Reviews.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from '../../UI/Box/Box';
+import { CardSlider } from '../../CardSlider/CardSlider';
+import { CommentCard } from '../../Comment/Card/Card';
 import { Typography } from '../../UI/Typography/Typography';
 import { ReviewsCounter } from './ReviewsCounter';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import translations from './Reviews.i18n.json';
 import { formatDate } from '../../../helpers/dateHelper';
+import { defaultTheme as theme } from '../../../themes';
 
 type Review = {
   id: number;
@@ -19,13 +21,31 @@ type Review = {
 
 export type ProductReviewsProps = {
   reviews: Review[];
-  sx: CSSProperties;
+  sx: SxProps;
 };
 
-const containerBoxSx: CSSProperties = {
-  background: '#EBEBEB',
-  borderRadius: '6px',
-  padding: '20px',
+const sxReviews = {
+  container: {
+    background: theme.palette.background.paper,
+    borderRadius: '6px',
+    padding: '20px',
+  },
+  title: {
+    marginBottom: '20px',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto slab',
+    color: 'text.primary',
+  },
+  slider: {
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+  stats: {
+    margin: {
+      xs: 0,
+      md: '0 20px 0 0',
+    },
+  },
 };
 
 export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
@@ -43,10 +63,12 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
   }
 
   return (
-    <Grid sx={sx} container spacing={1} direction="row" style={containerBoxSx}>
-      <Grid item xs={3}>
-        <Stack>
-          <Typography variant="h5">{t('reviews')}</Typography>
+    <Grid sx={{ ...sxReviews.container, ...sx }} container direction="row">
+      <Grid item xs={12} md={3}>
+        <Box sx={sxReviews.stats}>
+          <Typography variant="h5" color="primary" sx={sxReviews.title}>
+            {t('reviews')}
+          </Typography>
           {ratingStats.map(stat => (
             <ReviewsCounter
               key={`${stat.grade}/${stat.count}/${stat.percent}`}
@@ -55,24 +77,27 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
               percent={stat.percent}
             />
           ))}
-        </Stack>
+        </Box>
       </Grid>
-      <Grid item xs={9}>
-        <Swiper slidesPerView={3}>
-          {reviews.length === 0 && (
-            <Typography variant="h5">{t('noReviews')}</Typography>
-          )}
-          {reviews.map(review => (
-            <SwiperSlide key={review.id}>
-              <Comment
+
+      <Grid item xs={12} md={9}>
+        {reviews.length === 0 ? (
+          <Typography variant="h5">{t('noReviews')}</Typography>
+        ) : (
+          <CardSlider
+            sx={sxReviews.slider}
+            slidesPerView={3}
+            cardsList={reviews.map(review => (
+              <CommentCard
+                key={review.id}
                 title={review.clientName}
                 grade={review.value}
                 date={formatDate(review.date)}
                 text={review.comment}
               />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          />
+        )}
       </Grid>
     </Grid>
   );

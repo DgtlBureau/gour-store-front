@@ -1,47 +1,18 @@
-import React, { ReactNode } from 'react';
-import { Link as MUILink, SxProps } from '@mui/material';
+import React, { forwardRef, Ref } from 'react';
+import NextLink, { LinkProps } from 'next/link';
+import { Link as MuiLink, LinkProps as MuiLinkProps } from '@mui/material';
 
-import { defaultTheme } from '../../../themes';
+type LinkRef = HTMLAnchorElement;
+type NextLinkProps = Omit<MuiLinkProps, 'href' | 'classes'> &
+  Pick<LinkProps, 'href' | 'as' | 'prefetch'>;
 
-type Props = {
-  children: ReactNode;
-  path?: string;
-  underline?: 'none' | 'hover' | 'always';
-  className?: string;
-  color?: string;
-  sx?: SxProps;
-  variant?: 
-    "button" | 
-    "caption" | 
-    "h1" | 
-    "h2" | 
-    "h3" | 
-    "h4" | 
-    "h5" | 
-    "h6" | 
-    "inherit" | 
-    "body1" | 
-    "overline" | 
-    "subtitle1" | 
-    "subtitle2" | 
-    "body2" | 
-    undefined;
-}
+const Link = (
+  { href, as, prefetch, ...props }: LinkProps,
+  ref: Ref<LinkRef>
+) => (
+  <NextLink href={href} as={as} prefetch={prefetch} passHref>
+    <MuiLink ref={ref} {...props} />
+  </NextLink>
+);
 
-export function Link(props: Props) {
-  const { children, path, underline = 'always', className, variant, color, sx } = props;
-
-  return (
-    <MUILink
-      href={path || '#'}
-      underline={underline}
-      className={className}
-      variant={variant}
-      color={color || defaultTheme.palette.accent.main}
-      sx={sx}
-    >
-      {children}
-    </MUILink>
-
-  );
-}
+export const LinkRef = forwardRef<LinkRef, NextLinkProps>(Link);

@@ -1,6 +1,0 @@
-export enum Roles {
-  CLIENT = 'CLIENT',
-  ADMIN = 'ADMIN',
-  COMPANY = 'COMPANY',
-  COLLECTIVE_PURCHASE = 'COLLECTIVE_PURCHASE',
-}

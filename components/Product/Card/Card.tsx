@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, CardActions } from '@mui/material';
+import { CardMedia } from '@mui/material';
 import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
@@ -9,7 +9,7 @@ import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
 import { Currency } from '../../../@types/entities/Currency';
 import { getCountryFlag } from '../../../helpers/productCardIconHelper';
-
+import defaultImage from '../../../assets/no-image.svg';
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import sx from './Card.styles';
@@ -51,77 +51,68 @@ export function ProductCard({
   onDetail,
 }: ProductCardProps) {
   return (
-    <Card sx={sx.card} color="white">
-      <CardContent sx={sx.content}>
-        <Box sx={sx.preview}>
-          <HeartIcon
-            sx={{ ...sx.heart, ...(isElected && sx.elected) }}
-            onClick={onElect}
-          />
-
-          <CardMedia
-            sx={sx.previewImg}
-            component="img"
-            image={previewSrc}
-            alt=""
-            onClick={onDetail}
-          />
-          {!!country && (
-            <Box sx={sx.country}>
-              <Image
-                src={getCountryFlag(country)}
-                objectFit="cover"
-                height={26}
-                width={26}
-                alt={"country" + country}
-              />
-            </Box>
-          )}
-        </Box>
-
-        <Rate
-          currency={currency}
-          rating={rating}
-          price={price}
-          isWeightGood={isWeightGood}
+    <Box sx={sx.card}>
+      <Box sx={sx.preview}>
+        <HeartIcon
+          sx={{ ...sx.heart, ...(isElected && sx.elected) }}
+          onClick={onElect}
         />
 
-        <Box sx={sx.info}>
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyPress={undefined}
-            onClick={onDetail}
-          >
-            <Typography sx={sx.title} variant="h6">
-              {title}
-            </Typography>
-          </div>
+        <CardMedia
+          sx={sx.previewImg}
+          component="img"
+          image={previewSrc || defaultImage}
+          alt=""
+          onClick={onDetail}
+        />
 
-          <Typography variant="body2" sx={sx.description}>
-            {description}
-          </Typography>
-        </Box>
-      </CardContent>
+        {!!country && (
+          <Box sx={sx.country}>
+            <Image
+              src={getCountryFlag(country)}
+              objectFit="cover"
+              height={26}
+              width={26}
+              alt={'country' + country}
+            />
+          </Box>
+        )}
+      </Box>
 
-      <CardActions
-        sx={{ ...sx.actions, ...(currentCount !== 0 && sx.deployed) }}
-      >
+      <Rate
+        currency={currency}
+        rating={rating}
+        price={price}
+        isWeightGood={isWeightGood}
+        sx={sx.rate}
+      />
+
+      <div role="button" tabIndex={0} onKeyPress={undefined} onClick={onDetail}>
+        <Typography sx={sx.title} variant="h6">
+          {title}
+        </Typography>
+      </div>
+
+      <Typography variant="body2" sx={sx.description}>
+        {description}
+      </Typography>
+
+      <Box sx={{ ...sx.actions, ...(currentCount !== 0 && sx.deployed) }}>
         <Docket
           inCart={currentCount !== 0}
           price={price}
           discount={discount}
-          isWeightGood={false}
+          isWeightGood={isWeightGood}
           currency={currency}
         />
 
         <Cart
+          isWeightGood={isWeightGood}
           currentCount={currentCount}
           onAdd={onAdd}
           onRemove={onRemove}
-          isWeightGood={isWeightGood}
         />
-      </CardActions>
-    </Card>
+      </Box>
+    </Box>
   );
 }

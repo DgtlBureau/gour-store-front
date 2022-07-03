@@ -4,13 +4,15 @@ import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import Image from 'next/image';
 
+import AddIcon from '@mui/icons-material/Add';
+
 import translations from './Menu.i18n.json';
-import {
-  useLocalTranslation,
-  LocalConfig,
-} from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Currency } from '../../../@types/entities/Currency';
 
 import locationIcon from '../../../assets/icons/mobile/location.svg';
 import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
@@ -34,10 +36,10 @@ const languages = [
 ];
 
 export type MobileMenuProps = {
-  selectedCity: string;
+  selectedCityId: number;
   cities: {
-    title: string;
-    value: string;
+    name: string;
+    id: number;
   }[];
   firstPhone: string;
   secondPhone: string;
@@ -45,14 +47,18 @@ export type MobileMenuProps = {
   fb: string;
   inst: string;
   vk: string;
-  onChangeCity(value: string): void;
+  moneyAmount: number;
+  currency: Currency;
+  onChangeCity(id: number): void;
   onClickFavorite(): void;
   onClickPersonalArea(): void;
   onClickSignout(): void;
+  onClickReplenishment(): void;
+  onClickGame(): void;
 };
 
 export function MobileMenu({
-  selectedCity,
+  selectedCityId,
   cities,
   firstPhone,
   secondPhone,
@@ -60,10 +66,14 @@ export function MobileMenu({
   fb,
   inst,
   vk,
+  moneyAmount,
+  currency,
   onChangeCity,
   onClickFavorite,
   onClickPersonalArea,
   onClickSignout,
+  onClickReplenishment,
+  onClickGame,
 }: MobileMenuProps) {
   const [citiesIsOpened, setCitiesIsOpened] = useState(false);
   const [languagesIsOpened, setLanguagesIsOpened] = useState(false);
@@ -72,34 +82,44 @@ export function MobileMenu({
 
   const router = useRouter();
 
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
-  const currentCity = cities.find(city => city.value === selectedCity);
+  const currentCity = cities.find(city => city.id === selectedCityId);
   const currentLanguage = languages.find(language => language.value === locale);
 
-  const selectCity = (value: string) => {
-    onChangeCity(value);
+  const currencySymbol = getCurrencySymbol(currency);
+
+  const selectCity = (id: number) => {
+    onChangeCity(id);
     setCitiesIsOpened(false);
   };
 
   return (
     <List sx={sx.list} disablePadding>
-      <ListItemButton
-        sx={sx.listItem}
-        onClick={() => setCitiesIsOpened(!citiesIsOpened)}
-      >
+      <Box sx={sx.money}>
+        <Typography variant="body2" sx={sx.moneyAmount}>
+          {moneyAmount}
+          &nbsp;
+          {currencySymbol}
+        </Typography>
+
+        <IconButton onClick={onClickReplenishment} color="inherit" sx={sx.replenishment}>
+          <AddIcon color="primary" />
+        </IconButton>
+      </Box>
+
+      <Divider sx={sx.divider} />
+
+      <ListItemButton sx={sx.listItem} onClick={() => setCitiesIsOpened(!citiesIsOpened)}>
         <Box sx={sx.city}>
           <Box sx={sx.locationIcon}>
             <Image src={locationIcon} layout="fill" alt="" />
           </Box>
 
-          <Typography sx={sx.title}>{currentCity?.title}</Typography>
+          <Typography sx={sx.title}>{currentCity?.name}</Typography>
         </Box>
 
-        <Box
-          sx={Object.assign([sx.arrowIcon, citiesIsOpened && sx.invertedArrow])}
-        >
+        <Box sx={Object.assign([sx.arrowIcon, citiesIsOpened && sx.invertedArrow])}>
           <Image src={arrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
@@ -109,19 +129,10 @@ export function MobileMenu({
       <Collapse in={citiesIsOpened} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {cities.map(city => (
-            <Fragment key={city.title}>
-              <ListItemButton
-                sx={sx.listItem}
-                onClick={() => selectCity(city.value)}
-              >
-                <Typography
-                  sx={Object.assign([
-                    sx.title,
-                    sx.cityTitle,
-                    city.value === currentCity?.value && sx.accent,
-                  ])}
-                >
-                  {city.title}
+            <Fragment key={city.name}>
+              <ListItemButton sx={sx.listItem} onClick={() => selectCity(city.id)}>
+                <Typography sx={Object.assign([sx.title, sx.cityTitle, city.id === currentCity?.id && sx.accent])}>
+                  {city.name}
                 </Typography>
               </ListItemButton>
               <Divider sx={sx.divider} />
@@ -142,12 +153,7 @@ export function MobileMenu({
           <Typography sx={sx.title}>{currentLanguage?.title}</Typography>
         </Box>
 
-        <Box
-          sx={Object.assign([
-            sx.arrowIcon,
-            languagesIsOpened && sx.invertedArrow,
-          ])}
-        >
+        <Box sx={Object.assign([sx.arrowIcon, languagesIsOpened && sx.invertedArrow])}>
           <Image src={arrowIcon} layout="fill" alt="" />
         </Box>
       </ListItemButton>
@@ -158,15 +164,8 @@ export function MobileMenu({
         <List component="div" disablePadding>
           {languages.map(language => (
             <Fragment key={language.title}>
-              <ListItemButton
-                sx={{ ...sx.listItem, ...sx.languageItem }}
-                onClick={() => setLanguagesIsOpened(false)}
-              >
-                <NextLink
-                  href={router.asPath}
-                  locale={locale === 'ru' ? 'en' : 'ru'}
-                  passHref
-                >
+              <ListItemButton sx={{ ...sx.listItem, ...sx.languageItem }} onClick={() => setLanguagesIsOpened(false)}>
+                <NextLink href={router?.asPath || ''} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
                   <Typography
                     sx={Object.assign([
                       sx.title,
@@ -184,10 +183,17 @@ export function MobileMenu({
         </List>
       </Collapse>
 
-      <ListItemButton
-        sx={{ ...sx.listItem, ...sx.bigItem }}
-        onClick={onClickPersonalArea}
-      >
+      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickGame}>
+        <Typography sx={sx.title}>{t('game')}</Typography>
+
+        <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
+          <Image src={lightArrowIcon} layout="fill" alt="" />
+        </Box>
+      </ListItemButton>
+
+      <Divider sx={sx.divider} />
+
+      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickPersonalArea}>
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -197,10 +203,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemButton
-        sx={{ ...sx.listItem, ...sx.bigItem }}
-        onClick={onClickFavorite}
-      >
+      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickFavorite}>
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -216,14 +219,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <MobileMenuContacts
-        firstPhone={firstPhone}
-        secondPhone={secondPhone}
-        email={email}
-        fb={fb}
-        inst={inst}
-        vk={vk}
-      />
+      <MobileMenuContacts firstPhone={firstPhone} secondPhone={secondPhone} email={email} fb={fb} inst={inst} vk={vk} />
     </List>
   );
 }

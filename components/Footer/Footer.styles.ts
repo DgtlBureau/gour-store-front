@@ -1,50 +1,121 @@
+import { defaultTheme as theme } from '../../themes';
+
 const sx = {
   contactsWrapper: {
     display: 'flex',
+    flexDirection: {
+      xs: 'row-reverse',
+      sm: 'row',
+    },
     justifyContent: 'space-between',
     alignItems: 'center',
+    margin: {
+      sm: '0 0 20px 0',
+      xs: '0 0 10px 0',
+    },
   },
   contacts: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    alignItems: {
+      xs: 'flex-end',
+      sm: 'center',
+    },
+    justifyContent: {
+      sm: 'flex-end',
+    },
     flexWrap: 'wrap-reverse',
     fontFamily: 'Roboto slab',
   },
   contactsLink: {
     whiteSpace: 'nowrap',
-    marginRight: '40px',
-    fontSize: '24px',
-    fontWeight: 700,
-    color: '#7E5F2F',
+    margin: {
+      lg: '0 20px 0 0',
+      sm: '10px 0 10px 20px',
+      xs: '0 0 10px 0',
+    },
+    flexWrap: 'wrap',
+    fontSize: {
+      md: '24px',
+      sm: '20px',
+      xs: '16px',
+    },
+    fontWeight: 'bold',
+    color: theme.palette.text.secondary,
   },
   social: {
     display: 'flex',
     flexWrap: 'nowrap',
-  },
-  socialLink: {
-    marginLeft: '20px',
-    '&:firstChild': {
-      marginLeft: 0,
+    margin: {
+      sm: '0 0 0 20px',
     },
   },
+  socialLink: {
+    height: '38px',
+    margin: {
+      xs: '0 10px 0 0',
+      sm: '0 0 0 20px',
+    },
+
+    '&:first-child': {
+      marginLeft: '0px',
+    },
+  },
+
   info: {
     display: 'flex',
+    flexDirection: {
+      sm: 'row',
+      xs: 'column',
+    },
     justifyContent: 'space-between',
+
+    [theme.breakpoints.down('lg')]: {
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'start',
+      flexWrap: 'wrap',
+    },
   },
   infoLink: {
-    fontSize: '13px',
+    fontSize: {
+      sm: '13px',
+      xs: '10px',
+    },
+    margin: {
+      sm: '0 0 10px 0',
+      xs: '0 0 5px 0',
+    },
     textDecoration: 'none',
-    color: '#7E5F2F',
+    color: theme.palette.text.secondary,
   },
   divider: {
-    borderColor: '#F4E7CE',
+    opacity: {
+      lg: 1,
+      xs: 0,
+    },
     marginTop: 0,
     marginBottom: 0,
     margin: '0 15px',
+    borderColor: theme.palette.secondary.main,
   },
   logo: {
-    marginBottom: '20px',
+    height: {
+      xs: '110px',
+      sm: '130px',
+      md: '150px',
+    },
+    width: {
+      xs: '90px',
+      sm: '110px',
+      md: '130px',
+    },
   },
 };
 

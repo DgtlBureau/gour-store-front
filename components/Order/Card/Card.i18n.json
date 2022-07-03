@@ -1,0 +1,20 @@
+{
+  "ru": {
+    "kg": "кг",
+    "piece": "шт",
+    "oneProduct": "товар",
+    "someProducts": "товара",
+    "manyProducts": "товаров",
+    "inOrder": "в заказе",
+    "total": "Итого"
+  },
+  "en": {
+    "kg": "kg",
+    "piece": "pc",
+    "oneProduct": "product",
+    "someProducts": "products",
+    "manyProducts": "products",
+    "inOrder": "in the order",
+    "total": "Total"
+  }
+}

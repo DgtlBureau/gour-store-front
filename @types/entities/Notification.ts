@@ -1,16 +1,14 @@
 import { ReactNode } from 'react';
-import { iNotification, iNotificationDismiss } from 'react-notifications-component';
+import { ToastProps } from 'react-toastify/dist/types';
 
 export enum NotificationType {
-  DANGER = 'danger',
+  DANGER = 'error',
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
-  DEFAULT = 'default',
 }
-export interface Notification extends Partial<iNotification> {
+export interface Notification extends Partial<ToastProps> {
   type: NotificationType;
   message: string | ReactNode;
   title?: string;
-  dismiss?: iNotificationDismiss;
 }

@@ -3,8 +3,7 @@ import { ListItem } from '@mui/material';
 import Image from 'next/image';
 
 import { Box } from '../../UI/Box/Box';
-import { Link as CustomLink } from '../../UI/Link/Link';
-import { BlankLink } from '../../UI/BlankLink/BlankLink';
+import { LinkRef as Link } from '../../UI/Link/Link';
 
 import fbIcon from '../../../assets/icons/social/fb-white.svg';
 import instIcon from '../../../assets/icons/social/inst-white.svg';
@@ -19,7 +18,7 @@ export type MobileMenuContactsProps = {
   fb: string;
   inst: string;
   vk: string;
-}
+};
 
 export function MobileMenuContacts({
   firstPhone,
@@ -32,49 +31,37 @@ export function MobileMenuContacts({
   return (
     <>
       <ListItem sx={sx.phones}>
-        <CustomLink
-          path={`tel:${firstPhone}`}
-          sx={sx.link}
-          underline="always"
-        >
+        <Link href={`tel:${firstPhone}`} sx={sx.link} underline="always">
           {firstPhone}
-        </CustomLink>
-        <CustomLink
-          path={`tel:${secondPhone}`}
-          sx={sx.link}
-          underline="always"
-        >
+        </Link>
+        <Link href={`tel:${secondPhone}`} sx={sx.link} underline="always">
           {secondPhone}
-        </CustomLink>
+        </Link>
       </ListItem>
 
       <ListItem sx={sx.socials}>
-        <CustomLink
-          path={`mailto:${email}`}
-          sx={sx.link}
-          underline="always"
-        >
+        <Link href={`mailto:${email}`} sx={sx.link} underline="always">
           {email}
-        </CustomLink>
+        </Link>
 
         <Box sx={sx.socialIcons}>
-          <BlankLink href={fb}>
+          <Link href={fb} rel="noreferrer" target="_blank">
             <Box sx={sx.socialIcon}>
               <Image src={fbIcon} layout="fill" alt="" />
             </Box>
-          </BlankLink>
+          </Link>
 
-          <BlankLink href={inst}>
+          <Link href={inst} rel="noreferrer" target="_blank">
             <Box sx={sx.socialIcon}>
               <Image src={instIcon} layout="fill" alt="" />
             </Box>
-          </BlankLink>
+          </Link>
 
-          <BlankLink href={vk}>
+          <Link href={vk} rel="noreferrer" target="_blank">
             <Box sx={sx.socialIcon}>
               <Image src={vkIcon} layout="fill" alt="" />
             </Box>
-          </BlankLink>
+          </Link>
         </Box>
       </ListItem>
     </>

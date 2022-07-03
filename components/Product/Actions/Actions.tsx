@@ -1,82 +1,119 @@
-import React, { CSSProperties } from 'react';
-import { Button, ButtonGroup, Stack } from '@mui/material';
+import React from 'react';
+import { Grid, SxProps } from '@mui/material';
 
+import CartIcon from '@mui/icons-material/ShoppingCart';
+import PlusIcon from '@mui/icons-material/Add';
+import MinusIcon from '@mui/icons-material/Remove';
+import TrashIcon from '@mui/icons-material/DeleteForever';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import translations from './Actions.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { IconButton } from '../../UI/IconButton/IconButton';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import translations from './Actions.i18n.json';
-
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import RemoveIcon from '@mui/icons-material/Remove';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Currency } from '../../../@types/entities/Currency';
+
+import sxActions from './Actions.styles';
 
 export type ProductActionsProps = {
   price: number;
   discount?: number;
-  isWeightGood: boolean;
-  currency: 'rub' | 'usd' | 'eur';
+  isWeightGood?: boolean;
+  currency: Currency;
   count: number;
-  onAddToCart: () => void;
-  onRemoveFromCart: () => void;
-  onAddToFavorite: () => void;
-};
-
-const containerSx: CSSProperties = {
-  margin: '50px 0 0 0',
-  width: '100%',
+  sx?: SxProps;
+  isElect: boolean;
+  onAdd: () => void;
+  onRemove: () => void;
+  onElect: () => void;
 };
 
 export const ProductActions = ({
   price,
   count,
-  discount,
+  discount = 0,
   currency,
-  onAddToCart,
-  onRemoveFromCart,
-  onAddToFavorite,
+  sx,
+  isElect,
+  onAdd,
+  onRemove,
+  onElect,
   isWeightGood,
 }: ProductActionsProps) => {
   const { t } = useLocalTranslation(translations);
+
+  const pricePerCount = isWeightGood ? price / 100 : price;
+
+  const total = pricePerCount * ((100 - discount) / 100);
+
   return (
-    <Stack sx={containerSx} direction="row" justifyContent="space-between">
-      <Stack>
-        <Typography variant="body1">
-          {discount ? <s>{price}</s> : ''} /100{t('g')}
-        </Typography>
-        <Typography variant="h5" color={discount ? 'rgba(244, 87, 37, 1)' : ''}>
-          {discount ? price * (1 - discount / 100) : price}{' '}
-          {getCurrencySymbol(currency)}
-        </Typography>
-      </Stack>
-      <Stack direction="row">
-        {count === 0 && (
-          <Button onClick={onAddToCart} variant="contained">
-            {t('addToCart')}
-          </Button>
-        )}
-        {count !== 0 && (
-          <ButtonGroup
-            variant="contained"
-            aria-label="outlined primary button group"
+    <Box sx={{ ...sxActions.container, ...sx }}>
+      <Box sx={sxActions.docket}>
+        <Box sx={sxActions.total}>
+          <Typography
+            variant="h6"
+            color={discount ? 'error' : 'primary'}
+            sx={sxActions.price}
           >
-            <Button onClick={onRemoveFromCart}>
-              {/* {count !== 1 ? <RemoveIcon /> : <DeleteIcon />} */}
-              <RemoveIcon />
-            </Button>
-            <Typography sx={{ padding: '0 20px' }} variant="h5">
-              {count} {isWeightGood && t('g')}
+            {total}
+            {getCurrencySymbol(currency)}
+          </Typography>
+        </Box>
+
+        {!!discount && (
+          <>
+            <Typography variant="body2" sx={sxActions.oldPrice}>
+              {pricePerCount}
+              {getCurrencySymbol(currency)}
             </Typography>
-            <Button onClick={onAddToCart}>
-              <AddIcon />
-            </Button>
-          </ButtonGroup>
+          </>
         )}
-        <IconButton onClick={onAddToFavorite} component={'symbol'}>
-          <FavoriteIcon />
+
+        <Typography variant="body2">
+          {'/'} {isWeightGood ? `100${t('g')}` : t('pcs')}
+        </Typography>
+      </Box>
+
+      <Box sx={sxActions.actions}>
+        <Box sx={sxActions.cart}>
+          {count === 0 ? (
+            <IconButton onClick={onAdd}>
+              <CartIcon sx={sxActions.icon} />
+            </IconButton>
+          ) : (
+            <Grid container xs>
+              <Grid item xs={4} sx={sxActions.action}>
+                <IconButton onClick={onRemove}>
+                  {count === 1 ? (
+                    <TrashIcon sx={sxActions.icon} />
+                  ) : (
+                    <MinusIcon sx={sxActions.icon} />
+                  )}
+                </IconButton>
+              </Grid>
+
+              <Grid item xs={4} sx={sxActions.action}>
+                {count} {isWeightGood ? t('kg') : t('pcs')}
+              </Grid>
+
+              <Grid item xs={4} sx={sxActions.action}>
+                <IconButton onClick={onAdd}>
+                  <PlusIcon sx={sxActions.icon} />
+                </IconButton>
+              </Grid>
+            </Grid>
+          )}
+        </Box>
+
+        <IconButton
+          sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect}
+          onClick={onElect}
+        >
+          <FavoriteIcon sx={sxActions.icon} />
         </IconButton>
-      </Stack>
-    </Stack>
+      </Box>
+    </Box>
   );
 };

@@ -1,18 +1,11 @@
-import { LinearProgress, Stack } from '@mui/material';
-import { IProduct } from '../../@types/entities/IProduct';
-import { CardSlider } from 'components/CardSlider/CardSlider';
-import { CreateCommentBlock } from 'components/CreateCommentBlock/CreateCommentBlock';
-import { ProductActions } from 'components/Product/Actions/Actions';
-import { ProductCard } from 'components/Product/Card/Card';
-import { ProductInformation } from 'components/Product/Information/Information';
-import { ProductReviews } from 'components/Product/Reviews/Reviews';
-import { Box } from 'components/UI/Box/Box';
-import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
-import { Typography } from 'components/UI/Typography/Typography';
-import { useAppSelector } from 'hooks/store';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { LinearProgress } from '@mui/material';
+
+import translations from './Product.i18n.json';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import {
   useCreateProductGradeMutation,
@@ -23,31 +16,55 @@ import {
   productsInBasketCount,
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
-
 import { ShopLayout } from '../../layouts/Shop/Shop';
+import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductActions } from 'components/Product/Actions/Actions';
+import { ProductInformation } from 'components/Product/Information/Information';
+import { ProductReviews } from 'components/Product/Reviews/Reviews';
+import { Box } from 'components/UI/Box/Box';
+import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
+import { Typography } from 'components/UI/Typography/Typography';
+import { LocalConfig } from 'hooks/useLocalTranslation';
+import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
-import { Currency } from '../../@types/entities/Currency';
+import { Path } from '../../constants/routes';
+
+import sx from './Product.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export default function Product() {
+  const { t } = useLocalTranslation(translations);
+
   const router = useRouter();
+
   const { id } = router.query;
 
   const dispatch = useDispatch();
 
-  const handleAddProduct = (product: IProduct) => {
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
+  const addToBasket = (product: IProduct) =>
     dispatch(addBasketProduct(product));
-  };
 
-  const handleRemoveProduct = (product: IProduct) => {
+  const removeFromBasket = (product: IProduct) =>
     dispatch(subtractBasketProduct(product));
-  };
 
-  const handleDetailProduct = (productId: number) => {
-    router.push(`/products/${productId}`);
-  };
+  const goToProductPage = (productId: number) =>
+    router.push(`/${Path.PRODUCTS}/${productId}`);
 
-  const lang: 'ru' | 'en' = 'ru';
-  const currency: Currency = 'rub';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
+
+  const currency = 'cheeseCoin';
 
   const productId = id ? +id : 0;
 
@@ -64,6 +81,25 @@ export default function Product() {
     { skip: !productId }
   );
 
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const basket = useAppSelector(state => state.order);
 
   const count = useAppSelector(state =>
@@ -77,16 +113,27 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = (comment: { value: number; comment: string }) => {
+  const onCreateComment = async (comment: {
+    value: number;
+    comment: string;
+  }) => {
     try {
-      fetchCreateProductGrade({ productId, ...comment }).unwrap();
+      await fetchCreateProductGrade({ productId, ...comment }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Комментарий создан',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка создания комментария',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
   const productComments =
-    comments.map((grade, i) => {
+    comments.map(grade => {
       return {
         id: grade.id,
         clientName: grade.client?.role?.title || 'Клиент',
@@ -94,43 +141,6 @@ export default function Product() {
         date: new Date(grade.createdAt),
         comment: grade.comment,
       };
-    }) || [];
-
-  const similarProductCards =
-    product?.similarProducts?.map(similarProduct => {
-      const productInBasket = basket.products.find(
-        it => it.product.id === similarProduct.id
-      );
-      const count =
-        (product.isWeightGood
-          ? productInBasket?.weight
-          : productInBasket?.amount) || 0;
-      return (
-        <ProductCard
-          key={similarProduct.id}
-          title={similarProduct.title[lang] || ''}
-          description={similarProduct.description[lang] || ''}
-          rating={similarProduct.grade}
-          price={similarProduct.price[currency]}
-          previewSrc={similarProduct.images[0]?.full || ''}
-          inCart={!!productInBasket}
-          isElected={false}
-          onAdd={() => {
-            handleAddProduct(similarProduct);
-          }}
-          onRemove={() => {
-            handleRemoveProduct(similarProduct);
-          }}
-          onDetail={() => {
-            handleDetailProduct(similarProduct.id);
-          }}
-          onElect={() => {}}
-          discount={similarProduct.discount}
-          currentCount={count}
-          isWeightGood={similarProduct.isWeightGood}
-          currency={currency}
-        />
-      );
     }) || [];
 
   const productCharacteristics =
@@ -142,31 +152,34 @@ export default function Product() {
         );
 
         return {
-          label: CHARACTERISTICS[key]?.label[lang] || '',
-          value: characteristicValue?.label[lang] || 'нет информации',
+          label: CHARACTERISTICS[key]?.label[language] || '',
+          value: characteristicValue?.label[language] || 'нет информации',
         };
       }) || [];
 
   return (
-    <ShopLayout>
-      <>
+    <PrivateLayout>
+      <ShopLayout language={language} currency={currency}>
         {isLoading && <LinearProgress />}
+
         {!isLoading && isError && (
           <Typography variant="h5">Произошла ошибка</Typography>
         )}
+
         {!isLoading && !isError && !product && (
           <Typography variant="h5">Продукт не найден</Typography>
         )}
+
         {!isLoading && !isError && product && (
-          <div>
-            <Stack direction="row" justifyContent="space-between">
-              <Box sx={{ width: '580px', margin: '0 40px 0 0' }}>
-                <ImageSlider images={product.images} />
-              </Box>
-              <Stack width="100%">
-                <Typography variant="h3" sx={{ margin: '0 0 35px 0' }}>
-                  {product.title[lang] || ''}
+          <>
+            <Box sx={sx.top}>
+              <ImageSlider images={product.images} sx={sx.imageSlider} />
+
+              <Box sx={sx.info}>
+                <Typography variant="h3" sx={sx.title}>
+                  {product.title[language] || ''}
                 </Typography>
+
                 <ProductInformation
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
@@ -174,50 +187,61 @@ export default function Product() {
                   characteristics={productCharacteristics}
                   onClickComments={() => {}}
                 />
+
                 <ProductActions
                   price={product.price[currency] || 0}
                   count={count}
                   currency={currency}
                   discount={product.discount}
                   isWeightGood={product.isWeightGood}
-                  onAddToCart={() => {
-                    handleAddProduct(product);
+                  sx={sx.actions}
+                  onAdd={() => addToBasket(product)}
+                  onRemove={() => removeFromBasket(product)}
+                  onElect={() => {
+                    handleElect(
+                      product.id,
+                      isProductFavorite(product.id, favoriteProducts)
+                    );
                   }}
-                  onRemoveFromCart={() => {
-                    handleRemoveProduct(product);
-                  }}
-                  onAddToFavorite={() => {
-                    console.log('add to fav');
-                  }}
+                  isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
-              </Stack>
-            </Stack>
+              </Box>
+            </Box>
 
-            <Typography sx={{ margin: '100px 0 0 0' }} variant="h5">
-              Описание товара
-            </Typography>
-            <Typography variant="body1">
-              {product.description[lang] || ''}
-            </Typography>
+            <Box sx={sx.description}>
+              <Typography sx={sx.title} variant="h5">
+                {t('description')}
+              </Typography>
 
-            {similarProductCards.length !== 0 && (
-              <CardSlider
-                title="Похожие товары"
-                cardsList={similarProductCards}
-                slidesPerView={4}
-                spaceBetween={0}
+              <Typography variant="body1">
+                {product.description[language] || ''}
+              </Typography>
+            </Box>
+
+            {!!product.similarProducts && (
+              <ProductCatalog
+                title={t('similar')}
+                products={product.similarProducts}
+                basket={basket.products}
+                language={language}
+                currency={currency}
+                sx={sx.similar}
+                onAdd={addToBasket}
+                onRemove={removeFromBasket}
+                onElect={handleElect}
+                onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
               />
             )}
 
-            <ProductReviews
-              sx={{ margin: '50px 0' }}
-              reviews={productComments}
-            />
+            {productComments.length !== 0 && (
+              <ProductReviews sx={sx.reviews} reviews={productComments} />
+            )}
 
-            <CreateCommentBlock onCreate={onCreateComment} />
-          </div>
+            <CommentCreateBlock onCreate={onCreateComment} />
+          </>
         )}
-      </>
-    </ShopLayout>
+      </ShopLayout>
+    </PrivateLayout>
   );
 }

@@ -1,16 +1,17 @@
+import React from 'react';
 import type { NextPage } from 'next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
+import translations from './Main.i18n.json';
+import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
 import {
   addBasketProduct,
-  selectProductsIdInOrder,
   subtractBasketProduct,
 } from '../store/slices/orderSlice';
-import translations from './index.i18n.json';
-import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
 import { useAppSelector } from 'hooks/store';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
 import {
@@ -18,32 +19,29 @@ import {
   useGetProductListQuery,
 } from '../store/api/productApi';
 
-import { ShopLayout } from '../layouts/Shop/Shop';
+import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
+import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
+import { PromotionCard } from '../components/Promotion/Card/Card';
+import { Path } from 'constants/routes';
 
-import { PromotionCard } from '../components/PromotionCard/PromotionCard';
+import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
-import { ProductCard } from '../components/Product/Card/Card';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
-import { sx } from '../styles/index.styles';
-import { Currency } from '../@types/entities/Currency';
-import { IOrderProduct } from '../@types/entities/IOrderProduct';
-import exports from 'webpack';
-import hasOwnProperty = exports.RuntimeGlobals.hasOwnProperty;
-
-type SliderProductCardProps = {
-  product: IProduct;
-  basket: IOrderProduct[];
-  currency: Currency;
-  locale: 'en' | 'ru';
-  addToBasket: (product: IProduct) => {};
-  removeFromBasket: (product: IProduct) => {};
-  goToProductPage: (id: number) => {};
-};
+import sx from './Main.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { isProductFavorite } from './favorites/favoritesHelper';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -51,152 +49,120 @@ const Home: NextPage = () => {
   const router = useRouter();
   const basket = useAppSelector(state => state.order);
 
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
   const dispatch = useDispatch();
 
+  const { data: categories } = useGetCategoryListQuery();
   const { data: products } = useGetProductListQuery();
-  const { data: novelties } = useGetNoveltiesProductListQuery();
+  const { data: novelties = [] } = useGetNoveltiesProductListQuery();
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const locale: keyof LocalConfig =
+  const language: keyof LocalConfig =
     (router?.locale as keyof LocalConfig) || 'ru';
-  const currentCurrency = locale === 'ru' ? 'rub' : 'eur';
+  const currency: Currency = 'cheeseCoin';
 
-  const productsIdInOrder = useSelector(selectProductsIdInOrder);
-
-  const goToPromotionPage = (id: number) => router.push(`promotions/${id}`);
-  const goToProductPage = (id: number) => router.push(`products/${id}`);
+  const goToPromotionPage = (id: number) =>
+    router.push(`${Path.PROMOTIONS}/${id}`);
+  const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
   const addToBasket = (product: IProduct) =>
     dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) =>
     dispatch(subtractBasketProduct(product));
 
-  const promotionsList = promotions?.map(promotion => (
-    <PromotionCard
-      key={promotion.id}
-      title={promotion.title[locale]}
-      image={promotion.cardImage.small}
-      onClickMore={() => goToPromotionPage(promotion.id)}
-    />
-  ));
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const noveltiesList = novelties?.map(product => (
-    <SliderProductCard
-      product={product}
-      basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
-      addToBasket={addToBasket}
-      removeFromBasket={removeFromBasket}
-      goToProductPage={goToProductPage}
-    />
-  ));
-
-  const catalogList = products?.map(product => (
-    <SliderProductCard
-      product={product}
-      basket={basket.products}
-      currency={currentCurrency}
-      locale={locale}
-      addToBasket={addToBasket}
-      removeFromBasket={removeFromBasket}
-      goToProductPage={goToProductPage}
-    />
-  ));
-
-  const getCatalogRows = () => {
-    const length = catalogList?.length || 0;
-    if (length > 8) return 3;
-    else if (length > 4) return 2;
-    else return 1;
+  const handleElect = async (id: number, isElect: boolean) => {
+    if (isElect) {
+      try {
+        await removeFavorite(id);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await addFavorite({ productId: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
-    <ShopLayout>
-      {!!promotionsList && (
-        <CardSlider title={t('promotions')} cardsList={promotionsList} />
-      )}
-      {!!noveltiesList && (
-        <CardSlider
-          title={t('novelties')}
-          slidesPerView={4}
-          spaceBetween={0}
-          rows={1}
-          cardsList={noveltiesList}
-          sx={sx.novelties}
-        />
-      )}
-      {!!catalogList && (
-        <CardSlider
-          title={t('catalog')}
-          slidesPerView={4}
-          spaceBetween={0}
-          rows={getCatalogRows()}
-          cardsList={catalogList}
-        />
-      )}
-      {!!page && (
-        <>
-          <Box sx={sx.banner}>
-            <Image
-              src={bannerImg}
-              objectFit="cover"
-              width={1200}
-              height={350}
-              alt=""
-            />
-            <Typography variant="h4" sx={sx.bannerTitle}>
-              {page.info?.title?.[locale]}
-            </Typography>
-          </Box>
+    <PrivateLayout>
+      <ShopLayout currency={currency} language={language}>
+        {!!promotions && (
+          <CardSlider
+            title={t('promotions')}
+            cardsList={promotions.map(promotion => (
+              <PromotionCard
+                key={promotion.id}
+                image={promotion.cardImage.small}
+                onClickMore={() => goToPromotionPage(promotion.id)}
+              />
+            ))}
+          />
+        )}
 
-          <Typography variant="body1">
-            {page.info?.description?.[locale]}
-          </Typography>
-        </>
-      )}
-    </ShopLayout>
+        {!!novelties && (
+          <ProductCatalog
+            title={t('novelties')}
+            products={novelties}
+            favoritesList={favoriteProducts}
+            basket={basket.products}
+            language={language}
+            currency={currency}
+            rows={1}
+            sx={sx.productList}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={handleElect}
+            onDetail={goToProductPage}
+          />
+        )}
+
+        {!!products && (
+          <ProductCatalog
+            title={t('catalog')}
+            favoritesList={favoriteProducts}
+            products={products}
+            basket={basket.products}
+            categories={categories}
+            language={language}
+            currency={currency}
+            sx={sx.productList}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={handleElect}
+            onDetail={goToProductPage}
+          />
+        )}
+
+        {!!page && (
+          <>
+            <Box sx={sx.banner}>
+              <Image src={bannerImg} objectFit="cover" layout="fill" alt="" />
+            </Box>
+
+            <Typography variant="h4" sx={sx.title}>
+              {page.info?.title?.[language]}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              sx={{ marginTop: { xs: '20px', md: '40px' } }}
+            >
+              {page.info?.description?.[language]}
+            </Typography>
+          </>
+        )}
+      </ShopLayout>
+    </PrivateLayout>
   );
 };
 
 export default Home;
-
-const SliderProductCard = ({
-  product,
-  basket,
-  currency,
-  locale,
-  addToBasket,
-  removeFromBasket,
-  goToProductPage,
-}: SliderProductCardProps) => {
-  const productInBasket = basket.find(it => it.product.id === product.id);
-
-  const count =
-    (product.isWeightGood
-      ? productInBasket?.weight
-      : productInBasket?.amount) || 0;
-
-  return (
-    <ProductCard
-      key={product.id}
-      title={product.title[locale]}
-      description={product.description[locale]}
-      rating={product.grade}
-      price={product.price[currency]}
-      previewSrc={product.images[0] ? product.images[0].small : ''}
-      currency={currency}
-      currentCount={count}
-      inCart={!!productInBasket}
-      isElected={false}
-      isWeightGood={product.isWeightGood}
-      onAdd={() => addToBasket(product)}
-      onRemove={() => removeFromBasket(product)}
-      onElect={() => {}}
-      onDetail={() => goToProductPage(product.id)}
-      country={product.characteristics.country ? `${product.characteristics.country}` : '' }
-    />
-  );
-};

@@ -4,7 +4,6 @@ const sx = {
   list: {
     position: 'absolute',
     width: '100%',
-    maxWidth: '375px',
     backgroundColor: t.palette.primary.main,
     color: t.palette.common.white,
   },
@@ -70,8 +69,9 @@ const sx = {
       borderRadius: '6px',
     },
   },
-
   phones: {
+    display: 'flex',
+    justifyContent: 'space-between',
     padding: '20px',
   },
   socials: {
@@ -95,6 +95,23 @@ const sx = {
     height: '38px',
     width: '38px',
     marginLeft: '10px',
+  },
+  money: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 10px 10px 10px',
+  },
+  moneyAmount: {
+    marginRight: '10px',
+  },
+  replenishment: {
+    padding: '4px 16px',
+    backgroundColor: 'common.white',
+    borderRadius: '50px',
+    '&:hover': {
+      backgroundColor: 'secondary.main',
+    },
   },
 };
 

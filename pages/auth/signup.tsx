@@ -1,20 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { AuthLayout } from 'layouts/AuthLayout';
-import { RegGreeting } from 'components/registration/RegGreeting/RegGreeting';
-import { RegCitySelect } from 'components/registration/RegCitySelect/RegCitySelect';
-import { RegCredentials } from 'components/registration/RegCredentials/RegCredentials';
-import { RegFavoriteInfo, FavoriteInfo } from 'components/registration/RegFavoriteInfo/RegFavoriteInfo';
+import { AuthLayout } from 'layouts/Auth/Auth';
+import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
+import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
+import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
+import {
+  SignupFavoriteInfo,
+  FavoriteInfo,
+} from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { ITranslatableString } from '../../@types/entities/ITranslatableString';
+import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
-import { RegistrationData } from '../../@types/entities/RegistrationData';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
+import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
+import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
 
-type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
+import credentialsImage from './../../assets/icons/signup/credentials.svg';
+import greetingsImage from './../../assets/icons/signup/greetings.svg';
+import cityImage from './../../assets/icons/signup/city.svg';
+import favoritesImage from './../../assets/icons/signup/favorites.svg';
+import referralImage from './../../assets/icons/signup/referralCodes.svg';
+
+type AuthStage =
+  | 'referralCode'
+  | 'greeting'
+  | 'citySelect'
+  | 'credentials'
+  | 'favoriteInfo';
+  
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
+
 
 export default function SignUp() {
   const router = useRouter();
@@ -24,32 +45,54 @@ export default function SignUp() {
   const { data: cities } = useGetCityListQuery();
   const { data: roles } = useGetRoleListQuery();
 
-  const convertedCities = cities ? cities.map(city => (
-    {
-      label: city.name[locale].toString(),
-      value: city.id.toString(),
-    }
-  )) : [];
+  const convertedCities = cities
+    ? cities.map(city => ({
+        label: city.name[locale].toString(),
+        value: city.id.toString(),
+      }))
+    : [];
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpDto | undefined>(undefined);
+  const [credentials, setCredentials] =
+    useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
+  const [referralCode, setReferralCode] = useState('');
+  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToIntro = () => router.push('/auth');
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
   const goToCredentials = () => setStage('credentials');
   const goToFavoriteInfo = () => setStage('favoriteInfo');
+  const goToReferralCode = () => setStage('referralCode');
   const goToSignIn = () => router.push('/auth/signin');
 
-  // finish it later 
-  const sendSMS = (phone: string) => {
-    sendCode(phone);
-    return '1234';
+  const sendSMS = async (phone: string) => {
+    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
+    try {
+      await sendCode(phone).unwrap();
+      return 'success';
+    } catch (error) {
+      console.error(error);
+      return (error as any).data.message;
+    }
+  };
+  const checkCode = async (code: string) => {
+    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
+
+    try {
+      // запрос на проверку кода
+      if (code !== '1234') throw new Error('Код не валиден');
+      setIsPhoneCodeValid(true);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   const saveCity = (city: string) => {
@@ -57,72 +100,115 @@ export default function SignUp() {
     goToCredentials();
   };
 
-  const saveCredentials = (data: SignUpDto) => setCredentials(data);
+  const saveCredentials = (data: SignUpFormDto) => {
+    setCredentials(data);
+    goToFavoriteInfo();
+  };
 
   const saveFavoriteInfo = (info: FavoriteInfo) => {
     setFavoriteInfo(info);
+    goToReferralCode();
+  };
+
+  const saveReferralCode = (referralData: ReferralCodeDto) => {
+    setReferralCode(referralData.referralCode);
+    registerUser();
     goToSignIn();
   };
 
-  const register = async () => {
+  const registerUser = async () => {
     if (!credentials) return;
 
     const role = roles?.find(it => it.key === credentials.role);
 
-    const data: RegistrationData = {
-      name: '',
+    const data: SignUpDto = {
+      firstName: credentials.firstName,
+      lastName: credentials.lastName,
       phone: credentials.phone,
       code: +credentials.sms,
       password: credentials.password,
-      referralCode: credentials.referral,
+      referralCode,
       cityId: +selectedCity,
-      roleId: role && role.id || 1,
+      roleId: (role && role.id) || 1,
     };
 
     try {
       await signUp(data).unwrap();
       goToFavoriteInfo();
-    } catch(e: unknown) {
-      // event bus notification
+    } catch (e: unknown) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка авторизации',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
-  useEffect(() => {
-    if (credentials) register();
-  }, [credentials])
-
   const forms = {
-    greeting: (
-      <RegGreeting
-        onSubmit={goToCitySelect}
-        onBack={goToIntro}
-      />
-    ),
-    citySelect: (
-      <RegCitySelect
-        city={selectedCity}
-        options={convertedCities}
-        onSubmit={saveCity}
-        onBack={goToGreeting}
-      />
-    ),
-    credentials: (
-      <RegCredentials
-        defaultValues={credentials}
-        onSendSMS={sendSMS}
-        onSubmit={saveCredentials}
-        onBack={goToCitySelect}
-      />
-    ),
-    favoriteInfo: (
-      <RegFavoriteInfo
-        countries={favoriteCountries}
-        products={favoriteProducts}
-        onSubmit={saveFavoriteInfo}
-        onBack={goToCredentials}
-      />
-    ),
+    greeting: {
+      component: (
+        <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />
+      ),
+      image: greetingsImage,
+      stepIndex: 1,
+    },
+    citySelect: {
+      component: (
+        <SignupCitySelect
+          city={selectedCity}
+          options={convertedCities}
+          onSubmit={saveCity}
+          onBack={goToGreeting}
+        />
+      ),
+      image: cityImage,
+      stepIndex: 2,
+    },
+    credentials: {
+      component: (
+        <SignupCredentials
+          defaultValues={credentials}
+          onSendSMS={sendSMS}
+          onCheckCode={checkCode}
+          onSubmit={saveCredentials}
+          onBack={goToCitySelect}
+        />
+      ),
+      image: credentialsImage,
+      stepIndex: 3,
+    },
+    favoriteInfo: {
+      component: (
+        <SignupFavoriteInfo
+          countries={favoriteCountries}
+          products={favoriteProducts}
+          onSubmit={saveFavoriteInfo}
+          onBack={goToCredentials}
+        />
+      ),
+      image: favoritesImage,
+      stepIndex: 4,
+    },
+    referralCode: {
+      component: (
+        <SignupReferralCode
+          onSubmit={saveReferralCode}
+          onBack={goToFavoriteInfo}
+        />
+      ),
+      image: referralImage,
+      stepIndex: 5,
+    },
+
   };
 
-  return <AuthLayout>{forms[stage]}</AuthLayout>;
+  return (
+    <AuthLayout>
+      <SignupLayout
+        image={forms[stage].image}
+        stepIndex={forms[stage].stepIndex}
+      >
+        {forms[stage].component}
+      </SignupLayout>
+    </AuthLayout>
+  );
 }

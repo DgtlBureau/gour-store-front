@@ -26,7 +26,7 @@ const Template: ComponentStory<typeof CartCard> = function () {
   };
 
   return (
-    <div style={{ maxWidth: '750px' }}>
+    <div>
       <CartCard
         title="Chevrano XO Козий Элитный Сыр"
         amount={amount}
@@ -35,7 +35,6 @@ const Template: ComponentStory<typeof CartCard> = function () {
         isWeightGood={true}
         discount={DISCOUNT}
         productImg="https://www.gastronom.ru/binfiles/images/20190731/b05fb007.jpg"
-        onElect={() => ({})}
         onDelete={() => ({})}
         onAdd={() => edit('increase')}
         onSubtract={() => edit('increase')}

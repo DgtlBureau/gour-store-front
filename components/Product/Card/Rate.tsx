@@ -1,14 +1,17 @@
 import React from 'react';
+import { SxProps } from '@mui/material';
 
+import StarIcon from '@mui/icons-material/Star';
+
+import translations from '../Actions/Actions.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
-
-import StarIcon from '@mui/icons-material/Star';
 import { Currency } from '../../../@types/entities/Currency';
-import {getCurrencySymbol} from "../../../helpers/currencyHelper";
+import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
-const sx = {
+const rateSx = {
   box: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -21,6 +24,13 @@ const sx = {
   star: {
     marginRight: '6px',
   },
+  text: {
+    fontSize: {
+      xs: '12px',
+      sm: '13px',
+      md: '14px',
+    },
+  },
 };
 
 type Props = {
@@ -28,24 +38,23 @@ type Props = {
   price: number;
   isWeightGood: boolean;
   currency: Currency;
+  sx?: SxProps;
 };
 
-export function ProductCardRate({
-  rating,
-  price,
-  isWeightGood,
-  currency,
-}: Props) {
+export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: Props) {
+  const { t } = useLocalTranslation(translations);
   return (
-    <Box sx={sx.box}>
-      <Box sx={sx.rating}>
-        <StarIcon fontSize="small" sx={sx.star} />
-        <Typography variant="body2">{rating}</Typography>
+    <Box sx={{ ...rateSx.box, ...sx }}>
+      <Box sx={rateSx.rating}>
+        <StarIcon fontSize="small" sx={rateSx.star} />
+        <Typography variant="body2" sx={rateSx.text}>
+          {rating}
+        </Typography>
       </Box>
 
-      <Typography variant="body2">
+      <Typography variant="body2" sx={rateSx.text}>
         {price}
-        {getCurrencySymbol(currency)}/{isWeightGood ? 'кг' : 'шт'}
+        {getCurrencySymbol(currency)} / {isWeightGood ? t('kg') : t('pcs')}
       </Typography>
     </Box>
   );

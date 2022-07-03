@@ -1,37 +1,67 @@
-import React, {ChangeEventHandler, CSSProperties, FocusEventHandler, ReactNode} from 'react';
-import { TextField } from '@mui/material';
-import InputMask from 'react-input-mask';
+import React, {
+  ReactElement,
+  ChangeEventHandler,
+  FocusEventHandler,
+} from 'react';
+import { TextField as MUITextField, SxProps } from '@mui/material';
+import { onPhoneInput, onPhoneKeyDown, onPhonePaste } from './phoneValidator';
 
 type Props = {
-  placeholder?: string;
-  style?: CSSProperties;
-  defaultValue?: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  onBlur?: FocusEventHandler<HTMLInputElement>;
+  value?: unknown;
+  id?: string;
+  label?: string;
+  sx?: SxProps;
+  name?: string;
+  variant?: 'standard' | 'outlined' | 'filled' | undefined;
+  isError?: boolean;
+  type?: string;
+  helperText?: string;
+  endAdornment?: ReactElement;
+  multiline?: boolean;
+  rows?: number;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
-  value: string;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 export function PhoneInput({
-  placeholder,
-  style,
-  defaultValue,
-  onChange,
-  onBlur,
-  onFocus,
   value,
+  id,
+  sx,
+  label,
+  variant,
+  type = 'text',
+  isError,
+  helperText,
+  endAdornment,
+  name,
+  onChange,
+  onFocus,
+  onBlur,
+  ...props
 }: Props) {
   return (
-    <InputMask
-      style={style}
-      placeholder={placeholder}
-      value={value || defaultValue}
-      mask="+7 (999) 999 99 99"
+    <MUITextField
+      fullWidth
+      sx={sx}
+      label={label}
+      value={value}
+      error={isError}
+      id={id}
+      variant={variant}
       onChange={onChange}
-      onBlur={onBlur}
+      name={name}
       onFocus={onFocus}
-    >
-      {() => <TextField />}
-    </InputMask>
+      onBlur={onBlur}
+      type={type}
+      helperText={helperText}
+      InputProps={{
+        onInput: onPhoneInput,
+        onKeyDown: onPhoneKeyDown,
+        onPaste: onPhonePaste,
+        endAdornment,
+      }}
+      {...props}
+    />
   );
 }

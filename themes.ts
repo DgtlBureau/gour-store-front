@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface Palette {
     accent: Palette['primary'];
   }
@@ -8,7 +8,7 @@ declare module "@mui/material/styles" {
   interface PaletteOptions {
     accent: PaletteOptions['primary'];
   }
-  
+
   interface TypeText {
     muted?: string;
   }
@@ -42,12 +42,12 @@ export const defaultTheme = createTheme({
     background: {
       default: '#FFFEF7',
       paper: '#F4E7CE',
-    }
+    },
   },
   shape: {
     borderRadius: 6,
   },
   typography: {
-    fontFamily: ['Nunito', 'Roboto slab', 'Roboto', '-apple-system', 'sans-serif'].join(','),
+    fontFamily: ['Nunito', 'Roboto slab', 'Roboto', 'Coming Soon', '-apple-system', 'sans-serif'].join(','),
   },
 });

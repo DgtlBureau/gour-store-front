@@ -1,0 +1,20 @@
+{
+  "en": {
+    "promotions": "Promotions and discounts",
+    "novelties": "Novelties",
+    "catalog": "Product catalog",
+    "notFound": {
+      "message": "We can't seem to find the page you are looking for",
+      "button": "Go to home page"
+    }
+  },
+  "ru": {
+    "promotions": "Акции и скидки",
+    "novelties": "Новинки",
+    "catalog": "Каталог товаров",
+    "notFound": {
+      "message": "Кажется, мы не можем найти страницу, которую вы ищете",
+      "button": "Перейти на главную страницу"
+    }
+  }
+}

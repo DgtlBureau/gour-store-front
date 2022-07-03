@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { AuthLayout } from 'layouts/AuthLayout';
-import { LoginCredentials } from '../../components/login/LoginCredentials/LoginCredentials';
-import { LoginPassRecovery } from '../../components/login/LoginPassRecovery/LoginPassRecovery';
-import { useSignInMutation, useSendCodeMutation } from '../../store/api/authApi';
+import { AuthLayout } from 'layouts/Auth/Auth';
+import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
+import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
+import {
+  useSignInMutation,
+  useSendCodeMutation,
+  useSignOutMutation,
+} from '../../store/api/authApi';
 import { SignInDto } from '../../@types/dto/signin.dto';
 import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 type SignInStage = 'credentials' | 'recovery';
 
@@ -18,7 +24,7 @@ export default function SignIn() {
 
   const [stage, setStage] = useState<SignInStage>('credentials');
   const [credentials, setCredentials] = useState({} as SignInDto);
-  const [recoveryData, setRecoveryData] = useState({} as PasswordRecoveryDto)
+  const [recoveryData, setRecoveryData] = useState({} as PasswordRecoveryDto);
 
   const goToIntro = () => router.push('/auth');
   const goToCredentials = () => setStage('credentials');
@@ -26,7 +32,7 @@ export default function SignIn() {
   const goToRegistration = () => router.push('/auth/signup');
   const goToHome = () => router.push('/');
 
-   // finish it later 
+  // finish it later
   const sendSMS = (phone: string) => {
     sendCode(phone);
     return '1234';
@@ -34,12 +40,18 @@ export default function SignIn() {
 
   const authorize = async (data: SignInDto) => {
     setCredentials(data);
-
     try {
-      await signIn(credentials).unwrap();
+      await signIn(data).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Добро пожаловать :]',
+        type: NotificationType.SUCCESS,
+      });
       goToHome();
-    } catch(e: unknown) {
-      // event bus notification
+    } catch (e: unknown) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка авторизации',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
@@ -49,14 +61,17 @@ export default function SignIn() {
     try {
       // await recoverPassword(recoveryData).unwrap();
       goToCredentials();
-    } catch(e: unknown) {
-      // event bus notification
+    } catch (e: unknown) {
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка восстановления пароля',
+        type: NotificationType.DANGER,
+      });
     }
   };
 
   const forms = {
     credentials: (
-      <LoginCredentials
+      <SigninCredentials
         defaultValues={credentials}
         onBack={goToIntro}
         onPasswordChange={goToRecovery}
@@ -65,7 +80,7 @@ export default function SignIn() {
       />
     ),
     recovery: (
-      <LoginPassRecovery
+      <SigninPassRecovery
         defaultValues={recoveryData}
         onSendSMS={sendSMS}
         onBack={goToCredentials}
