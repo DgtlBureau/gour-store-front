@@ -39,7 +39,6 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { isProductFavorite } from './favorites/favoritesHelper';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);

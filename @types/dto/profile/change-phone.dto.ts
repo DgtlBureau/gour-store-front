@@ -1,4 +1,4 @@
 export type ChangePhoneDto = Readonly<{
   phone: string;
-  code: string;
+  code: number;
 }>;

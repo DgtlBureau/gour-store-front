@@ -26,4 +26,3 @@ export const cityApi = commonApi.injectEndpoints({
 });
 
 export const { useGetCityQuery, useGetCityListQuery } = cityApi;
-

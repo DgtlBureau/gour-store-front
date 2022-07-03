@@ -7,63 +7,86 @@ import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
 import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
 import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
-import { PALayout } from 'layouts/PA/PA';
 
 import {
   useGetCurrentUserQuery,
+  useSendChangePhoneCodeMutation,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
+  useUpdateCurrentUserPhoneMutation,
 } from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
+import { PAPhoneChangeModal } from 'components/PA/Credentials/PhoneChangeModal/PhoneChangeModal';
+import { PALayout } from '../../../layouts/PA/PA';
+import { SendCodeDto } from '../../../@types/dto/profile/send-code.dto';
 
 export function Profile() {
-  const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
 
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
-  const [fetchUpdatePassword] = useUpdateCurrentUserPasswordMutation();
-  const [fetchUploadImage] = useCreateImageMutation();
+  const [updateCurrentUser] = useUpdateCurrentUserMutation();
+  const [updatePassword] = useUpdateCurrentUserPasswordMutation();
+  const [uploadImage] = useCreateImageMutation();
+  const [sendPhoneCode] = useSendChangePhoneCodeMutation();
+  const [updatePhone] = useUpdateCurrentUserPhoneMutation();
 
-  const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = async (
-    changePasswordData: ChangePasswordDto
-  ) => {
+  const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
     try {
-      await fetchUpdatePassword(changePasswordData).unwrap();
+      await sendPhoneCode(sendCode).unwrap();
+      //TODO: eventBus, сделать обработку ошибок))
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+  const changePhone = async (changePhoneData: ChangePhoneDto) => {
+    try {
+      await updatePhone({
+        phone: changePhoneData.phone,
+        code: +changePhoneData.code,
+      }).unwrap();
+      //TODO: eventBus
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const changePassword = async (changePasswordData: ChangePasswordDto) => {
+    try {
+      await updatePassword(changePasswordData).unwrap();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleChangeAvatar = async (file: File) => {
+  const changeAvatar = async (file: File) => {
     console.log('file', file);
 
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-      const image = await fetchUploadImage(formData).unwrap();
+      const image = await uploadImage(formData).unwrap();
       if (!image) return;
 
-      await fetchUpdateCurrentUser({ avatarId: image.id });
+      await updateCurrentUser({ avatarId: image.id });
     } catch (error) {
       console.log(error);
     }
   };
-  const handleRemoveAvatar = async () => {
+  const removeAvatar = async () => {
     try {
-      await fetchUpdateCurrentUser({ avatarId: null }).unwrap();
+      await updateCurrentUser({ avatarId: null }).unwrap();
     } catch (error) {
       console.log(error);
     }
   };
-
-  const handleSendCode = (phone: string) => {};
 
   const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
     try {
-      await fetchUpdateCurrentUser(updatedUser).unwrap();
+      await updateCurrentUser(updatedUser).unwrap();
     } catch (error) {
       console.log(error);
     }
@@ -83,14 +106,16 @@ export function Profile() {
         <Grid item xs={12} sm={4} md={3}>
           <PACredentialsAvatarEditor
             image={currentUser.avatar?.full || ''}
-            onChange={handleChangeAvatar}
-            onRemove={handleRemoveAvatar}
+            onChange={changeAvatar}
+            onRemove={removeAvatar}
           />
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
-            onChangePhone={() => {}}
-            onChangePassword={() => setIsPasswordModalOpened(true)}
+            onChangePhone={() => {
+              setIsPhoneModalOpen(true);
+            }}
+            onChangePassword={() => setIsPasswordModalOpen(true)}
             user={{
               firstName: currentUser.firstName || '',
               lastName: currentUser.lastName || '',
@@ -103,12 +128,19 @@ export function Profile() {
         </Grid>
       </Grid>
 
+      <PAPhoneChangeModal
+        isOpen={isPhoneModalOpen}
+        onClose={() => setIsPhoneModalOpen(false)}
+        onSendSMS={sendChangePasswordCode}
+        onSubmit={changePhone}
+      />
+
       <PAPasswordChangeModal
-        isOpen={isPasswordModalOpened}
+        isOpen={isPasswordModalOpen}
         onClose={() => {
-          setIsPasswordModalOpened(false);
+          setIsPasswordModalOpen(false);
         }}
-        onChange={handleChangePassword}
+        onChange={changePassword}
       />
     </PALayout>
   );
