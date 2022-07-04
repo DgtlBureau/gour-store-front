@@ -7,7 +7,7 @@ const nextConfig = withImages({
   },
   images: {
     disableStaticImages: true,
-    domains: ['gour-store.devshift.ru', 'resizer.mail.ru'],
+    domains: ['gour-store.devshift.ru', 'localhost'],
   },
   pageExtensions: ['tsx'],
   reactStrictMode: true,
