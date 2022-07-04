@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Theme } from '@mui/material/styles/createTheme';
-import { differenceInSeconds, intervalToDuration } from 'date-fns';
+import { differenceInSeconds } from 'date-fns';
 import { Stack, SxProps } from '@mui/material';
 import Image from 'next/image';
 
 import translations from './Header.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { formatSeconds } from '../../../helpers/timeHelper';
 import { headerSx } from './Header.styles';
@@ -42,20 +41,11 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
 
   return (
     <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
-      <Image
-        src={image}
-        objectFit="cover"
-        layout="responsive"
-        height={400}
-        width={500}
-        alt=""
-      />
+      <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
 
-      <Box sx={headerSx}>
-        <Typography variant="body1">
-          {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
-        </Typography>
-      </Box>
+      <Typography variant="body1" sx={headerSx.timer}>
+        {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
+      </Typography>
     </Stack>
   );
 }
