@@ -32,6 +32,8 @@ import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -111,11 +113,22 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = (comment: { value: number; comment: string }) => {
+  const onCreateComment = async (comment: {
+    value: number;
+    comment: string;
+  }) => {
     try {
-      fetchCreateProductGrade({ productId, ...comment }).unwrap();
+      await fetchCreateProductGrade({ productId, ...comment }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Комментарий создан',
+        type: NotificationType.SUCCESS,
+      });
     } catch (error) {
       console.log(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка создания комментария',
+        type: NotificationType.DANGER,
+      });
     }
   };
 

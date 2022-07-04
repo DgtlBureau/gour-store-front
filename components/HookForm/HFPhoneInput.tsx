@@ -1,4 +1,4 @@
-import React, { FocusEventHandler } from 'react';
+import React, { FocusEventHandler, ReactNode } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from '../UI/TextField/TextField';
@@ -12,7 +12,7 @@ type Props = {
   helperText?: string;
   type?: string;
   sx?: SxProps;
-  InputProps?: InputProps;
+  endAdornment?: ReactNode;
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };

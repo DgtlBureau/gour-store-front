@@ -4,6 +4,8 @@ import { UpdateUserDto } from '../../@types/dto/profile/update-user.dto';
 import { ChangePasswordDto } from '../../@types/dto/profile/change-password.dto';
 import { ChangeCityDto } from '../../@types/dto/profile/change-city.dto';
 import { Path } from 'constants/routes';
+import { ChangePhoneDto } from '../../@types/dto/profile/change-phone.dto';
+import { SendCodeDto } from '../../@types/dto/profile/send-code.dto';
 
 export const currentUserApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -37,6 +39,25 @@ export const currentUserApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
+      sendChangePhoneCode: builder.mutation<number, SendCodeDto>({
+        query(phone) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_PHONE_CODE}`,
+            body: phone,
+          };
+        },
+      }),
+      updateCurrentUserPhone: builder.mutation<number, ChangePhoneDto>({
+        query(dto) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_PHONE}`,
+            body: dto,
+          };
+        },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+      }),
       changeCurrentCity: builder.mutation<void, number>({
         query(cityId) {
           return {
@@ -56,4 +77,6 @@ export const {
   useUpdateCurrentUserMutation,
   useChangeCurrentCityMutation,
   useUpdateCurrentUserPasswordMutation,
+  useSendChangePhoneCodeMutation,
+  useUpdateCurrentUserPhoneMutation,
 } = currentUserApi;

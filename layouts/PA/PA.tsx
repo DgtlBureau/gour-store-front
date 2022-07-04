@@ -4,7 +4,10 @@ import { useRouter } from 'next/router';
 
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import {
+  selectedProductCount,
+  selectedProductSum,
+} from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { useSignOutMutation } from 'store/api/authApi';
@@ -26,7 +29,8 @@ export interface PALayoutProps {
 export function PALayout({ children }: PALayoutProps) {
   const router = useRouter();
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig =
+    (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -48,7 +52,8 @@ export function PALayout({ children }: PALayoutProps) {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity =
+    cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
   const menuList = [
     {
@@ -81,7 +86,8 @@ export function PALayout({ children }: PALayoutProps) {
   // TO DO
   const changeCity = (id: number) => ({});
 
-  const changeChapter = (path: string) => path !== currentPath && router.push(path);
+  const changeChapter = (path: string) =>
+    path !== currentPath && router.push(path);
 
   return (
     <Box sx={sx.layout}>
@@ -103,7 +109,11 @@ export function PALayout({ children }: PALayoutProps) {
       />
 
       <Box sx={sx.content}>
-        <PAMenu active={currentPath} menuList={menuList} onChange={changeChapter} />
+        <PAMenu
+          active={currentPath}
+          menuList={menuList}
+          onChange={changeChapter}
+        />
         {children}
       </Box>
     </Box>

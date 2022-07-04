@@ -1,8 +1,4 @@
-import React, {
-  ReactElement,
-  ChangeEventHandler,
-  FocusEventHandler,
-} from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
 import { TextField as MUITextField, SxProps } from '@mui/material';
 import { onPhoneInput, onPhoneKeyDown, onPhonePaste } from './phoneValidator';
 
@@ -16,7 +12,7 @@ type Props = {
   isError?: boolean;
   type?: string;
   helperText?: string;
-  endAdornment?: ReactElement;
+  endAdornment?: ReactNode;
   multiline?: boolean;
   rows?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;

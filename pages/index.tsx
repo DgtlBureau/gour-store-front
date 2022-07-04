@@ -34,12 +34,13 @@ import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { isProductFavorite } from './favorites/favoritesHelper';
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
