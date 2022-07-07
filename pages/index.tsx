@@ -12,6 +12,11 @@ import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
@@ -19,6 +24,9 @@ import { Typography } from '../components/UI/Typography/Typography';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 import { Path } from 'constants/routes';
 
 import { Currency } from '../@types/entities/Currency';
@@ -27,14 +35,8 @@ import { IProduct } from '../@types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../@types/entities/Notification';
-import {
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-  useGetFavoriteProductsQuery,
-} from 'store/api/favoriteApi';
+
+const NOW = new Date();
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -47,8 +49,8 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
 
   const { data: categories } = useGetCategoryListQuery();
-  const { data: products } = useGetProductListQuery();
-  const { data: novelties = [] } = useGetNoveltiesProductListQuery();
+  const { data: products } = useGetProductListQuery({ withPromotions: true });
+  const { data: novelties = [] } = useGetNoveltiesProductListQuery({ withPromotions: true });
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
@@ -87,13 +89,15 @@ const Home: NextPage = () => {
         {!!promotions && (
           <CardSlider
             title={t('promotions')}
-            cardsList={promotions.map(promotion => (
-              <PromotionCard
-                key={promotion.id}
-                image={promotion.cardImage.small}
-                onClickMore={() => goToPromotionPage(promotion.id)}
-              />
-            ))}
+            cardsList={promotions
+              .filter(it => new Date(it.end) > NOW)
+              .map(promotion => (
+                <PromotionCard
+                  key={promotion.id}
+                  image={promotion.cardImage.small}
+                  onClickMore={() => goToPromotionPage(promotion.id)}
+                />
+              ))}
           />
         )}
 

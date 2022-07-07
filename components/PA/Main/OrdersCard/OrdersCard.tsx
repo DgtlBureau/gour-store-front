@@ -45,7 +45,7 @@ export function PAOrdersCard({ orders, onClickMore }: PAOrdersCardProps) {
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {orders ? (
+      {orders && orders.length !== 0 ? (
         orders.map(order => (
           <Box key={order.id} sx={sx.order}>
             <Box sx={sx.orderHeader}>

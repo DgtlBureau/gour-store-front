@@ -8,6 +8,7 @@ import { IPrice } from './IPrice';
 import { IRoleDiscount } from './IRoleDiscount';
 import { IBaseEntity } from './IBaseEntity';
 import { IPageMeta } from './IPageMeta';
+import { IPromotion } from './IPromotion';
 
 export interface IProduct extends IBaseEntity {
   title: ITranslatableString;
@@ -26,6 +27,7 @@ export interface IProduct extends IBaseEntity {
   characteristics: { [key: string]: string };
   meta: IPageMeta;
   weight: number;
-  discount: number;
+  discount?: number;
   isWeightGood: boolean;
+  promotions?: IPromotion[];
 }

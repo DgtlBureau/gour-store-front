@@ -150,11 +150,7 @@ export function Profile() {
     <PALayout>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4} md={3}>
-          <PACredentialsAvatarEditor
-            image={currentUser.avatar?.full || ''}
-            onChange={changeAvatar}
-            onRemove={removeAvatar}
-          />
+          <PACredentialsAvatarEditor image={currentUser.avatar?.full} onChange={changeAvatar} onRemove={removeAvatar} />
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
