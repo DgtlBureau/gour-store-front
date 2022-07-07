@@ -13,6 +13,7 @@ type Props = {
   sx?: SxProps;
   disabled?: boolean;
   InputProps?: InputProps;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
@@ -21,6 +22,7 @@ export function HFTextField({
   name,
   defaultValue,
   helperText,
+  onChange,
   ...props
 }: Props) {
   const {
@@ -33,9 +35,13 @@ export function HFTextField({
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}
+          onChange={event => {
+            HFOnChange(event);
+            onChange && onChange(event);
+          }}
           isError={!!errors[name]}
           helperText={helperText || errors[name]?.message}
           {...props}
