@@ -8,7 +8,7 @@ const sx = {
     height: {
       xs: '310px',
       sm: '380px',
-      md: '520px',
+      md: '530px',
     },
 
     width: {
