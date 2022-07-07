@@ -13,7 +13,7 @@ const sx = {
     padding: {
       xs: '100px 0 0 0',
     },
-    height: {
+    minHeight: {
       md: '100vh',
     },
     display: 'flex',

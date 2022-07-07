@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Paper, Grid } from '@mui/material';
 
 import translations from './FavoriteInfo.i18n.json';
@@ -9,6 +9,9 @@ import { Typography } from '../../../UI/Typography/Typography';
 import sx from './FavoriteInfo.styles';
 import { Box } from '../../../UI/Box/Box';
 import { Stepper } from '../../../UI/Stepper/Stepper';
+
+import s from './FavoriteInfo.module.scss';
+import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -22,7 +25,7 @@ export type SignupFavoriteInfoProps = {
     id: number;
   }[];
   products: {
-    image: string;
+    iconKey: string;
     title: string;
     id: number;
   }[];
@@ -106,18 +109,21 @@ export function SignupFavoriteInfo({
 
         <Grid item xs={12} container spacing={2}>
           {products.map(product => (
-            <Grid item xs={3} sm={2} key={product.id}>
+            <Grid
+              item
+              xs={4}
+              sm={3}
+              onClick={() => {
+                handleClickProducts(product.id);
+              }}
+              key={product.id}
+            >
               <div
-                style={{
-                  ...sx.circle,
-                  ...(userProducts.includes(product.id) && sx.selected),
-                  backgroundImage: `url(${product.image})`,
-                }}
-                onClick={() => {
-                  handleClickProducts(product.id);
-                }}
+                className={`${s.icon} ${
+                  userProducts.includes(product.id) ? s.selected : ''
+                }`}
               >
-                <Typography variant="body2">{product.title}</Typography>
+                {ProductSvgSelector(product.iconKey, s.outline)}
               </div>
             </Grid>
           ))}

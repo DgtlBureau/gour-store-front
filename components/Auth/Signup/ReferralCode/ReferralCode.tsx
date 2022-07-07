@@ -37,17 +37,11 @@ export function SignupReferralCode({
   return (
     <AuthCard>
       <Typography variant="h6">{t('firstText')}</Typography>
+      <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+        {t('goBack')}
+      </Button>
       <FormProvider {...values}>
         <form id="referralCodeForm" onSubmit={values.handleSubmit(submit)}>
-          <Button
-            sx={sx.backBtn}
-            size="small"
-            variant="outlined"
-            onClick={onBack}
-          >
-            {t('goBack')}
-          </Button>
-
           <HFTextField
             sx={sx.field}
             type="text"
