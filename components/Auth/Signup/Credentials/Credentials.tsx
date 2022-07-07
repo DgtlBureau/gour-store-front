@@ -17,6 +17,8 @@ import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
+import { CodeInput } from 'components/UI/CodeInput/CodeInput';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -34,7 +36,7 @@ export function SignupCredentials({
   onSubmit,
 }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
-  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState<boolean>(false);
 
   const [isAgree, setIsAgree] = useState(false);
 
@@ -131,16 +133,13 @@ export function SignupCredentials({
           </Box>
           {isCodeSended && (
             <Stack sx={sx.field}>
-              <HFTextField
-                disabled={isCodeSuccess}
-                sx={sx.field}
+              <HFCodeInput
                 name="sms"
-                onChange={e => {
-                  if (e.target.value.length === 4) {
+                onChange={value => {
+                  if (value.length === 4) {
                     checkCode();
                   }
                 }}
-                label={t('sms')}
               />
               {isCodeSuccess && (
                 <Typography variant="body1">Код подтвержден</Typography>
