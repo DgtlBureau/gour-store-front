@@ -36,18 +36,11 @@ export type PADiscountsCardProps = {
   onClickMore(): void;
 };
 
-export function PADiscountsCard({
-  discounts,
-  onClickMore,
-}: PADiscountsCardProps) {
+export function PADiscountsCard({ discounts, onClickMore }: PADiscountsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard
-      title={t('title')}
-      footerText={t('footerText')}
-      onClickMore={onClickMore}
-    >
+    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
       {discounts.length !== 0 ? (
         <Grid sx={sx.discounts} container spacing={2}>
           {discounts.map(discount => (
@@ -55,7 +48,9 @@ export function PADiscountsCard({
           ))}
         </Grid>
       ) : (
-        <Typography variant="h6">{t('emptyDiscounts')}</Typography>
+        <Typography variant="body1" color="text.muted">
+          {t('emptyDiscounts')}
+        </Typography>
       )}
     </InfoCard>
   );

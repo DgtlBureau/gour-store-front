@@ -7,15 +7,8 @@ import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
-import {
-  useCreateProductGradeMutation,
-  useGetProductGradeListQuery,
-} from 'store/api/productGradeApi';
-import {
-  addBasketProduct,
-  productsInBasketCount,
-  subtractBasketProduct,
-} from 'store/slices/orderSlice';
+import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
+import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
@@ -52,17 +45,13 @@ export default function Product() {
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
-  const addToBasket = (product: IProduct) =>
-    dispatch(addBasketProduct(product));
+  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
-  const removeFromBasket = (product: IProduct) =>
-    dispatch(subtractBasketProduct(product));
+  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
-  const goToProductPage = (productId: number) =>
-    router.push(`/${Path.PRODUCTS}/${productId}`);
+  const goToProductPage = (productId: number) => router.push(`/${Path.PRODUCTS}/${productId}`);
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -77,6 +66,7 @@ export default function Product() {
       id: productId,
       withSimilarProducts: true,
       withMetrics: true,
+      withPromotions: true,
     },
     { skip: !productId }
   );
@@ -102,9 +92,7 @@ export default function Product() {
 
   const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector(state =>
-    productsInBasketCount(state, productId, product?.isWeightGood || false)
-  );
+  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -113,10 +101,7 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = async (comment: {
-    value: number;
-    comment: string;
-  }) => {
+  const onCreateComment = async (comment: { value: number; comment: string }) => {
     try {
       await fetchCreateProductGrade({ productId, ...comment }).unwrap();
       eventBus.emit(EventTypes.notification, {
@@ -162,13 +147,9 @@ export default function Product() {
       <ShopLayout language={language} currency={currency}>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && (
-          <Typography variant="h5">Произошла ошибка</Typography>
-        )}
+        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !product && (
-          <Typography variant="h5">Продукт не найден</Typography>
-        )}
+        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
 
         {!isLoading && !isError && product && (
           <>
@@ -198,10 +179,7 @@ export default function Product() {
                   onAdd={() => addToBasket(product)}
                   onRemove={() => removeFromBasket(product)}
                   onElect={() => {
-                    handleElect(
-                      product.id,
-                      isProductFavorite(product.id, favoriteProducts)
-                    );
+                    handleElect(product.id, isProductFavorite(product.id, favoriteProducts));
                   }}
                   isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
@@ -213,9 +191,7 @@ export default function Product() {
                 {t('description')}
               </Typography>
 
-              <Typography variant="body1">
-                {product.description[language] || ''}
-              </Typography>
+              <Typography variant="body1">{product.description[language] || ''}</Typography>
             </Box>
 
             {!!product.similarProducts && (
@@ -234,9 +210,7 @@ export default function Product() {
               />
             )}
 
-            {productComments.length !== 0 && (
-              <ProductReviews sx={sx.reviews} reviews={productComments} />
-            )}
+            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>

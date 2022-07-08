@@ -89,6 +89,7 @@ const sx = {
     color: t.palette.text.secondary,
 
     maxHeight: {
+      xs: '45px',
       sm: '26px',
       md: '64px',
     },

@@ -134,7 +134,8 @@ export const selectedProductSum = (state: RootState) =>
 
 export const selectedProductDiscount = (state: RootState) =>
   state.order.products.reduce((acc, it) => {
-    return acc + (it.product.price.cheeseCoin / 100) * it.product.discount * it.amount;
+    const discount = it.product.discount || 0;
+    return acc + (it.product.price.cheeseCoin / 100) * discount * it.amount;
   }, 0);
 
 export const checkProductInBasket = (state: RootState, productId: number): boolean => {

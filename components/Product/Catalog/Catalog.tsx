@@ -17,9 +17,9 @@ import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import catalogSx from './Catalog.styles';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -29,6 +29,7 @@ export type ProductCatalogProps = {
   basket: IOrderProduct[];
   language: Language;
   currency?: Currency;
+  discount?: number;
   rows?: number;
   sx?: SxProps;
   onAdd: (product: IProduct) => void;
@@ -45,6 +46,7 @@ export function ProductCatalog({
   favoritesList,
   language,
   currency = 'cheeseCoin',
+  discount,
   rows,
   sx,
   onAdd,
@@ -161,7 +163,7 @@ export function ProductCatalog({
               description={product.description[language]}
               rating={product.grade}
               price={product.price[currency]}
-              discount={product.discount}
+              discount={discount || product.discount}
               previewSrc={product.images[0] ? product.images[0].small : ''}
               currency={currency}
               currentCount={getProductCount(product.id, product.isWeightGood)}

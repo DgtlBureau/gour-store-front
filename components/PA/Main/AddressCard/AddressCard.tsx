@@ -28,7 +28,7 @@ export function PAAddressCard({ addresses, onClickMore }: PAAddressCardProps) {
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {addresses ? (
+      {addresses && addresses.length !== 0 ? (
         addresses.map(address => (
           <Box key={address.address} sx={sx.address}>
             <Typography variant="body2" color="text.muted">

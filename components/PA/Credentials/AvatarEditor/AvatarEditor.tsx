@@ -6,10 +6,12 @@ import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 
+import noImage from './../../../../assets/no-image.svg';
+
 import s from './AvatarEditor.module.scss';
 
 export type PACredentialsAvatarEditorProps = {
-  image: string;
+  image?: string;
   onChange(file: File): void;
   onRemove(): void;
 };
@@ -26,7 +28,7 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
 
   return (
     <Stack sx={{ width: '100%', marginBottom: '30px' }} spacing={1} alignItems="center">
-      <Avatar alt="Your profile" src={image} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
+      <Avatar alt="Your profile" src={image || noImage} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
 
       <div className={s.photoInput}>
         <label htmlFor="profile-photo-input">

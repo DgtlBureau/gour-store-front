@@ -20,6 +20,7 @@ export function Orders() {
   });
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
+  const orderKeys = Object.keys(groupedOrders);
 
   if (isLoading) {
     return (
@@ -32,7 +33,7 @@ export function Orders() {
   if (!isLoading && isError) {
     return (
       <PALayout>
-        <Typography variant="h4">Произошла ошибка</Typography>
+        <Typography variant="h5">Произошла ошибка</Typography>
       </PALayout>
     );
   }
@@ -41,12 +42,21 @@ export function Orders() {
     <PrivateLayout>
       <PALayout>
         <Stack sx={{ margin: '15px 0 0 0' }} spacing={2}>
-          {Object.keys(groupedOrders).map(key => {
-            const orderGroup = groupedOrders[+key];
-            return (
-              <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} currency={currency} />
-            );
-          })}
+          {orderKeys.length !== 0 ? (
+            orderKeys.map(key => {
+              const orderGroup = groupedOrders[+key];
+              return (
+                <OrdersCardGroup
+                  key={key}
+                  date={orderGroup.date}
+                  ordersList={orderGroup.orderList}
+                  currency={currency}
+                />
+              );
+            })
+          ) : (
+            <Typography variant="h5">Список заказов пуст</Typography>
+          )}
         </Stack>
       </PALayout>
     </PrivateLayout>
