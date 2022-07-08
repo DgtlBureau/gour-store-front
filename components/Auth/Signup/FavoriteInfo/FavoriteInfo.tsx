@@ -11,7 +11,7 @@ import { Box } from '../../../UI/Box/Box';
 import { Stepper } from '../../../UI/Stepper/Stepper';
 
 import s from './FavoriteInfo.module.scss';
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
+import { ProductSvgSelector } from 'assets/icons/favoriteProducts/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];

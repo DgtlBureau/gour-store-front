@@ -1,4 +1,4 @@
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
+import { ProductSvgSelector } from 'assets/icons/favoriteProducts/ProductsSvgSelector';
 
 export const favoriteCountries = [
   {
@@ -30,38 +30,38 @@ export const favoriteProducts = [
     id: 1,
   },
   {
-    iconKey: 'cheese',
-    title: 'Сыр',
+    iconKey: 'fish',
+    title: 'Рыба',
     id: 2,
   },
   {
-    iconKey: 'sausage',
-    title: 'Паста',
+    iconKey: 'bird',
+    title: 'Птица',
     id: 3,
   },
   {
-    iconKey: 'fish',
-    title: 'Пицца',
+    iconKey: 'wine',
+    title: 'Вино',
     id: 4,
   },
   {
-    iconKey: 'fish',
-    title: 'Фрукты',
+    iconKey: 'jamon',
+    title: 'Хамон',
     id: 5,
   },
   {
-    iconKey: 'meat',
-    title: 'Сыр',
+    iconKey: 'ham',
+    title: 'Ветчина',
     id: 6,
   },
   {
     iconKey: 'cheese',
-    title: 'Паста',
+    title: 'Сыр',
     id: 7,
   },
   {
     iconKey: 'sausage',
-    title: 'Пицца',
+    title: 'Колбаса',
     id: 8,
   },
 ];
