@@ -2,24 +2,29 @@ import { ProductSvgSelector } from 'assets/icons/favoriteProducts/ProductsSvgSel
 
 export const favoriteCountries = [
   {
-    image: '',
+    iconKey: 'russia',
     title: 'Россия',
     id: 1,
   },
   {
-    image: '',
-    title: 'Англия',
+    iconKey: 'france',
+    title: 'Франция',
     id: 2,
   },
   {
-    image: '',
-    title: 'Испания',
+    iconKey: 'italy',
+    title: 'Италия',
     id: 3,
   },
   {
-    image: '',
-    title: 'Италия',
+    iconKey: 'spain',
+    title: 'Испания',
     id: 4,
+  },
+  {
+    iconKey: 'usa',
+    title: 'Америка',
+    id: 5,
   },
 ];
 

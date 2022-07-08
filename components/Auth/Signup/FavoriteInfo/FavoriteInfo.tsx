@@ -12,6 +12,7 @@ import { Stepper } from '../../../UI/Stepper/Stepper';
 
 import s from './FavoriteInfo.module.scss';
 import { ProductSvgSelector } from 'assets/icons/favoriteProducts/ProductsSvgSelector';
+import { CountrySvgSelector } from 'assets/icons/favoriteCountries/CountrySvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -20,7 +21,7 @@ export type FavoriteInfo = {
 
 export type SignupFavoriteInfoProps = {
   countries: {
-    image: string;
+    iconKey: string;
     title: string;
     id: number;
   }[];
@@ -90,14 +91,12 @@ export function SignupFavoriteInfo({
           {countries.map(country => (
             <Grid item xs={3} sm={2} key={country.id}>
               <div
-                style={{
-                  ...sx.circle,
-                  ...(userCountries.includes(country.id) && sx.selected),
-                  backgroundImage: `url(${country.image})`,
-                }}
                 onClick={() => handleClickCountry(country.id)}
+                className={`${s.icon} ${
+                  userCountries.includes(country.id) ? s.selected : ''
+                }`}
               >
-                <Typography variant="body2">{country.title}</Typography>
+                {CountrySvgSelector(country.iconKey, s.outline)}
               </div>
             </Grid>
           ))}

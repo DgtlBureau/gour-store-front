@@ -13,28 +13,7 @@ const Template: ComponentStory<typeof SignupFavoriteInfo> = (
 ) => <SignupFavoriteInfo {...args} />;
 export const DefaultSignupFavoriteInfo = Template.bind({});
 const props: Partial<SignupFavoriteInfoProps> = {
-  countries: [
-    {
-      image: '',
-      title: 'Россия',
-      id: 1,
-    },
-    {
-      image: '',
-      title: 'Англия',
-      id: 2,
-    },
-    {
-      image: '',
-      title: 'Испания',
-      id: 3,
-    },
-    {
-      image: '',
-      title: 'Италия',
-      id: 4,
-    },
-  ],
+  countries: [],
   products: [],
 };
 
