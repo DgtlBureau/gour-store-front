@@ -11,6 +11,7 @@ type Props = {
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
+  disabled?: boolean;
   helperText?: string;
   endAdornment?: ReactNode;
   multiline?: boolean;
@@ -30,6 +31,7 @@ export function PhoneInput({
   isError,
   helperText,
   endAdornment,
+  disabled,
   name,
   onChange,
   onFocus,
@@ -44,6 +46,7 @@ export function PhoneInput({
       value={value}
       error={isError}
       id={id}
+      disabled={disabled}
       variant={variant}
       onChange={onChange}
       name={name}

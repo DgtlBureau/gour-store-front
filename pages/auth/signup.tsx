@@ -32,10 +32,9 @@ type AuthStage =
   | 'citySelect'
   | 'credentials'
   | 'favoriteInfo';
-  
+
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
-
 
 export default function SignUp() {
   const router = useRouter();
@@ -55,7 +54,7 @@ export default function SignUp() {
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
-  const [stage, setStage] = useState<AuthStage>('greeting');
+  const [stage, setStage] = useState<AuthStage>('favoriteInfo');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] =
     useState<SignUpFormDto | undefined>(undefined);
@@ -198,7 +197,6 @@ export default function SignUp() {
       image: referralImage,
       stepIndex: 5,
     },
-
   };
 
   return (

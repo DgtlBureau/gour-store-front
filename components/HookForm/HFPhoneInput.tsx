@@ -10,6 +10,7 @@ type Props = {
   multiline?: boolean;
   label?: string;
   helperText?: string;
+  disabled?: boolean;
   type?: string;
   sx?: SxProps;
   endAdornment?: ReactNode;

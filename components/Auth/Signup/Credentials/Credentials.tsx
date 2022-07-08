@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControlLabel, Grid, Radio } from '@mui/material';
+import { FormControlLabel, Grid, Radio, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -17,6 +17,8 @@ import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
+import { CodeInput } from 'components/UI/CodeInput/CodeInput';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -34,7 +36,7 @@ export function SignupCredentials({
   onSubmit,
 }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
-  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState<boolean>(false);
 
   const [isAgree, setIsAgree] = useState(false);
 
@@ -58,6 +60,7 @@ export function SignupCredentials({
   const formIsInvalid = !values.formState.isValid || !isAgree;
 
   const sendSMS = async () => {
+    if (isCodeSended) return;
     const phone = values.watch('phone');
 
     const response = await onSendSMS(phone);
@@ -115,32 +118,33 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput name="phone" label={t('phone')} />
+            <HFPhoneInput
+              name="phone"
+              disabled={isCodeSended}
+              label={t('phone')}
+            />
             <Button
               sx={sx.getCodeBtn}
               onClick={sendSMS}
-              disabled={phoneIsInvalid}
+              disabled={phoneIsInvalid || isCodeSended}
             >
               {t('getCode')}
             </Button>
           </Box>
           {isCodeSended && (
-            <Box sx={{ ...sx.field, ...sx.phone }}>
-              <HFTextField
-                disabled={isCodeSuccess}
-                sx={sx.field}
+            <Stack sx={sx.field}>
+              <HFCodeInput
                 name="sms"
-                label={t('sms')}
+                onChange={value => {
+                  if (value.length === 4) {
+                    checkCode();
+                  }
+                }}
               />
-              <Button
-                sx={sx.getCodeBtn}
-                onClick={checkCode}
-                disabled={codeIsValid}
-                color={!isCodeSuccess ? 'primary' : 'success'}
-              >
-                {!isCodeSuccess ? t('sendCode') : 'Код подтвержден'}
-              </Button>
-            </Box>
+              {isCodeSuccess && (
+                <Typography variant="body1">Код подтвержден</Typography>
+              )}
+            </Stack>
           )}
 
           {isCodeSuccess && (

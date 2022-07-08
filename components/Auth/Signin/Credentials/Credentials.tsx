@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,6 +42,10 @@ export function SigninCredentials({
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    values.reset(defaultValues);
+  }, [defaultValues]);
+
   const formIsInvalid = !values.formState.isValid;
 
   const submit = (data: SignInDto) => onSubmit(data);
@@ -50,7 +54,12 @@ export function SigninCredentials({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+          <Button
+            sx={sx.backBtn}
+            size="small"
+            variant="outlined"
+            onClick={onBack}
+          >
             {t('back')}
           </Button>
 
@@ -58,7 +67,12 @@ export function SigninCredentials({
 
           <HFPhoneInput sx={sx.field} name="phone" label={t('phone')} />
 
-          <HFTextField sx={sx.field} type="password" name="password" label={t('password')} />
+          <HFTextField
+            sx={sx.field}
+            type="password"
+            name="password"
+            label={t('password')}
+          />
 
           <Box sx={sx.links}>
             <Link component="button" variant="body2" onClick={onPasswordChange}>
