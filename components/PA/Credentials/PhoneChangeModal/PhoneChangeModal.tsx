@@ -13,8 +13,9 @@ import { Box } from '../../../UI/Box/Box';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { Typography } from '../../../UI/Typography/Typography';
 import { IconButton } from '../../../UI/IconButton/IconButton';
-import { PhoneChangeDto } from '../../../../@types/dto/phone-change.dto';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { SendCodeDto } from '../../../../@types/dto/profile/send-code.dto';
+import { ChangePhoneDto } from '../../../../@types/dto/profile/change-phone.dto';
 
 const sx = {
   body: {
@@ -40,11 +41,11 @@ const sx = {
 
 export type PAPhoneChangeModalProps = {
   isOpen: boolean;
-  defaultValues?: PhoneChangeDto;
+  defaultValues?: ChangePhoneDto;
   error?: string;
   onClose(): void;
-  onSendSMS(phone: string): void;
-  onSubmit(data: PhoneChangeDto): void;
+  onSendSMS(phone: SendCodeDto): Promise<boolean>;
+  onSubmit(changePhoneData: ChangePhoneDto): void;
 };
 
 export function PAPhoneChangeModal({
@@ -55,15 +56,16 @@ export function PAPhoneChangeModal({
   onSendSMS,
   onSubmit,
 }: PAPhoneChangeModalProps) {
+  const [isCodeSended, setIsCodeSended] = useState(false);
   const [seconds, setSeconds] = useState(0);
 
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t);
 
-  const values = useForm<PhoneChangeDto>({
+  const values = useForm<ChangePhoneDto>({
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues,
   });
 
@@ -83,17 +85,17 @@ export function PAPhoneChangeModal({
     setTimeout(() => clearInterval(intervalId), 30000);
   };
 
-  const sendSMS = () => {
+  const sendSMS = async () => {
     if (seconds !== 0) return;
-
     const phone = values.watch('phone');
-
-    onSendSMS(phone);
-
-    startTimer();
+    const code = await onSendSMS({ phone });
+    if (code) {
+      setIsCodeSended(code);
+      startTimer();
+    }
   };
 
-  const submit = (data: PhoneChangeDto) => onSubmit(data);
+  const submit = (data: ChangePhoneDto) => onSubmit(data);
 
   return (
     <Modal
@@ -107,25 +109,25 @@ export function PAPhoneChangeModal({
       <Box sx={sx.body}>
         <FormProvider {...values}>
           <form id="phoneChangeForm" onSubmit={values.handleSubmit(submit)}>
-            <HFTextField
+            <HFPhoneInput
               label={t('phone')}
               name="phone"
-              InputProps={{
-                endAdornment: (
-                  <>
-                    <Divider sx={sx.divider} orientation="vertical" />
-                    <IconButton
-                      onClick={sendSMS}
-                      color="primary"
-                      disabled={sendingIsDisabled}
-                    >
-                      <SendIcon />
-                    </IconButton>
-                  </>
-                ),
-              }}
+              endAdornment={
+                <>
+                  <Divider sx={sx.divider} orientation="vertical" />
+                  <IconButton
+                    onClick={sendSMS}
+                    color="primary"
+                    disabled={sendingIsDisabled}
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </>
+              }
             />
-            <HFTextField label={t('sms')} name="sms" sx={sx.smsField} />
+            {isCodeSended && (
+              <HFTextField label={t('sms')} name="sms" sx={sx.smsField} />
+            )}
             {seconds !== 0 && (
               <Box sx={sx.timer}>
                 <Typography variant="body2">{t('smsHelper')}</Typography>

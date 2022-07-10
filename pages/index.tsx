@@ -6,18 +6,17 @@ import Image from 'next/image';
 
 import translations from './Main.i18n.json';
 import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
-import {
-  addBasketProduct,
-  subtractBasketProduct,
-} from '../store/slices/orderSlice';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 import {
-  useGetNoveltiesProductListQuery,
-  useGetProductListQuery,
-} from '../store/api/productApi';
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
@@ -25,6 +24,9 @@ import { Typography } from '../components/UI/Typography/Typography';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../@types/entities/Notification';
 import { Path } from 'constants/routes';
 
 import { Currency } from '../@types/entities/Currency';
@@ -33,15 +35,8 @@ import { IProduct } from '../@types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../@types/entities/Notification';
-import {
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-  useGetFavoriteProductsQuery,
-} from 'store/api/favoriteApi';
-import { isProductFavorite } from './favorites/favoritesHelper';
+
+const NOW = new Date();
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -54,24 +49,20 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
 
   const { data: categories } = useGetCategoryListQuery();
-  const { data: products } = useGetProductListQuery();
-  const { data: novelties = [] } = useGetNoveltiesProductListQuery();
+  const { data: products } = useGetProductListQuery({ withPromotions: true });
+  const { data: novelties = [] } = useGetNoveltiesProductListQuery({ withPromotions: true });
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
 
-  const goToPromotionPage = (id: number) =>
-    router.push(`${Path.PROMOTIONS}/${id}`);
+  const goToPromotionPage = (id: number) => router.push(`${Path.PROMOTIONS}/${id}`);
   const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
-  const addToBasket = (product: IProduct) =>
-    dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) =>
-    dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -98,13 +89,15 @@ const Home: NextPage = () => {
         {!!promotions && (
           <CardSlider
             title={t('promotions')}
-            cardsList={promotions.map(promotion => (
-              <PromotionCard
-                key={promotion.id}
-                image={promotion.cardImage.small}
-                onClickMore={() => goToPromotionPage(promotion.id)}
-              />
-            ))}
+            cardsList={promotions
+              .filter(it => new Date(it.end) > NOW)
+              .map(promotion => (
+                <PromotionCard
+                  key={promotion.id}
+                  image={promotion.cardImage.small}
+                  onClickMore={() => goToPromotionPage(promotion.id)}
+                />
+              ))}
           />
         )}
 
@@ -152,10 +145,7 @@ const Home: NextPage = () => {
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography
-              variant="body1"
-              sx={{ marginTop: { xs: '20px', md: '40px' } }}
-            >
+            <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
               {page.info?.description?.[language]}
             </Typography>
           </>

@@ -17,9 +17,9 @@ import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import catalogSx from './Catalog.styles';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -29,6 +29,7 @@ export type ProductCatalogProps = {
   basket: IOrderProduct[];
   language: Language;
   currency?: Currency;
+  discount?: number;
   rows?: number;
   sx?: SxProps;
   onAdd: (product: IProduct) => void;
@@ -45,6 +46,7 @@ export function ProductCatalog({
   favoritesList,
   language,
   currency = 'cheeseCoin',
+  discount,
   rows,
   sx,
   onAdd,
@@ -66,8 +68,7 @@ export function ProductCatalog({
 
   const screenWidth = window.screen.width;
 
-  const toggleSequence = () =>
-    setFilters({ ...filters, isReversed: !filters.isReversed });
+  const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
   const selectCategory = (value: string) =>
     setFilters({
       ...filters,
@@ -83,13 +84,10 @@ export function ProductCatalog({
       },
     });
 
-  const checkCategory = (key: string) =>
-    filters.category === 'all' || key === filters.category;
+  const checkCategory = (key: string) => filters.category === 'all' || key === filters.category;
   const checkCharacteristics = (characteristics: { [key: string]: string }) =>
     Object.keys(filters.characteristics).every(
-      it =>
-        filters.characteristics[it].length === 0 ||
-        filters.characteristics[it].includes(characteristics[it])
+      it => filters.characteristics[it].length === 0 || filters.characteristics[it].includes(characteristics[it])
     );
 
   const productList = categories
@@ -98,14 +96,11 @@ export function ProductCatalog({
         .filter(product => checkCharacteristics(product.characteristics))
     : productsWidthElect;
 
-  const findProductInBasket = (productId: number) =>
-    basket.find(it => it.product.id === productId);
+  const findProductInBasket = (productId: number) => basket.find(it => it.product.id === productId);
 
   const getProductCount = (productId: number, isWeightGood: boolean) => {
     const productInBasket = findProductInBasket(productId);
-    return (
-      (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0
-    );
+    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
   };
 
   const getCatalogRows = () => {
@@ -132,17 +127,10 @@ export function ProductCatalog({
               sx={{ padding: '4px', marginRight: '6px' }}
               onChange={toggleSequence}
             >
-              <ArrowsIcon
-                fontSize="small"
-                sx={{ transform: 'rotate(90deg)' }}
-              />
+              <ArrowsIcon fontSize="small" sx={{ transform: 'rotate(90deg)' }} />
             </ToggleButton>
 
-            <Button
-              size="small"
-              onClick={openFilterModal}
-              sx={catalogSx.filterBtn}
-            >
+            <Button size="small" onClick={openFilterModal} sx={catalogSx.filterBtn}>
               <FilterIcon fontSize="small" />
             </Button>
           </Box>
@@ -168,16 +156,14 @@ export function ProductCatalog({
               />
             )
           }
-          cardsList={(filters.isReversed
-            ? productList.reverse()
-            : productList
-          ).map(product => (
+          cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
             <ProductCard
               key={product.id}
               title={product.title[language]}
               description={product.description[language]}
               rating={product.grade}
               price={product.price[currency]}
+              discount={discount || product.discount}
               previewSrc={product.images[0] ? product.images[0].small : ''}
               currency={currency}
               currentCount={getProductCount(product.id, product.isWeightGood)}

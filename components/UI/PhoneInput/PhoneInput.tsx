@@ -1,8 +1,4 @@
-import React, {
-  ReactElement,
-  ChangeEventHandler,
-  FocusEventHandler,
-} from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
 import { TextField as MUITextField, SxProps } from '@mui/material';
 import { onPhoneInput, onPhoneKeyDown, onPhonePaste } from './phoneValidator';
 
@@ -15,8 +11,9 @@ type Props = {
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
   isError?: boolean;
   type?: string;
+  disabled?: boolean;
   helperText?: string;
-  endAdornment?: ReactElement;
+  endAdornment?: ReactNode;
   multiline?: boolean;
   rows?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -34,6 +31,7 @@ export function PhoneInput({
   isError,
   helperText,
   endAdornment,
+  disabled,
   name,
   onChange,
   onFocus,
@@ -48,6 +46,7 @@ export function PhoneInput({
       value={value}
       error={isError}
       id={id}
+      disabled={disabled}
       variant={variant}
       onChange={onChange}
       name={name}

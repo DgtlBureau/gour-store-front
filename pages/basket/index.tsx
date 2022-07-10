@@ -8,6 +8,7 @@ import {
   selectedProductCount,
   selectedProductSum,
   selectedProductWeight,
+  selectedProductDiscount,
   selectProductsInOrder,
   subtractBasketProduct,
   removeProduct,
@@ -42,8 +43,7 @@ export function Basket() {
 
   const { t } = useLocalTranslation(translation);
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -51,15 +51,7 @@ export function Basket() {
   const count = useSelector(selectedProductCount);
   const weight = useSelector(selectedProductWeight);
   const sum = useSelector(selectedProductSum);
-
-  const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return (
-      acc +
-      (currentProduct.product.price[currency] *
-        currentProduct.product.discount) /
-        100
-    );
-  }, 0);
+  const sumDiscount = useSelector(selectedProductDiscount);
 
   //TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
@@ -71,8 +63,7 @@ export function Basket() {
 
   const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
-  const subtractProduct = (product: IProduct) =>
-    dispatch(subtractBasketProduct(product));
+  const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   return (
     <ShopLayout currency={currency} language={language}>
@@ -114,10 +105,7 @@ export function Basket() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Button
-              onClick={goToOrder}
-              sx={{ width: '100%', marginBottom: '10px' }}
-            >
+            <Button onClick={goToOrder} sx={{ width: '100%', marginBottom: '10px' }}>
               {t('orderButton')}
             </Button>
 
@@ -133,10 +121,7 @@ export function Basket() {
             {!isDeliveryFree && (
               <InfoBlock
                 sx={{ marginTop: '10px' }}
-                text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t(
-                  'freeDeliveryText.part2'
-                )} `}
-                link={{ label: t('continueShopping'), path: '/' }}
+                text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
               />
             )}
             <InfoBlock

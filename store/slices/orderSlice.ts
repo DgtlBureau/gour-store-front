@@ -35,9 +35,7 @@ export const orderSlice = createSlice({
   reducers: {
     addBasketProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
-      const foundIndex = state.products.findIndex(
-        it => it.product.id === product.id
-      );
+      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
       if (foundIndex > -1) {
         const foundOrderProduct = state.products[foundIndex];
         console.log('Added product info: ', product);
@@ -70,9 +68,7 @@ export const orderSlice = createSlice({
     },
     subtractBasketProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
-      const foundIndex = state.products.findIndex(
-        it => it.product.id === product.id
-      );
+      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
       const foundOrderProduct = state.products[foundIndex];
       if (!foundOrderProduct) return;
 
@@ -98,9 +94,7 @@ export const orderSlice = createSlice({
     },
     removeProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
-      const foundIndex = state.products.findIndex(
-        it => it.product.id === product.id
-      );
+      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
       if (foundIndex === -1) return;
       state.products.splice(foundIndex, 1);
     },
@@ -128,6 +122,7 @@ export const selectedProductWeight = (state: RootState) =>
   state.order.products.reduce((acc, item) => {
     return acc + item.weight;
   }, 0);
+
 export const selectedProductSum = (state: RootState) =>
   state.order.products.reduce((acc, it) => {
     if (it.product.isWeightGood) {
@@ -137,21 +132,18 @@ export const selectedProductSum = (state: RootState) =>
     }
   }, 0);
 
-export const checkProductInBasket = (
-  state: RootState,
-  productId: number
-): boolean => {
+export const selectedProductDiscount = (state: RootState) =>
+  state.order.products.reduce((acc, it) => {
+    const discount = it.product.discount || 0;
+    return acc + (it.product.price.cheeseCoin / 100) * discount * it.amount;
+  }, 0);
+
+export const checkProductInBasket = (state: RootState, productId: number): boolean => {
   return state.order.products.some(it => it.product.id === productId);
 };
 
-export const productsInBasketCount = (
-  state: RootState,
-  productId: number,
-  isWeightGood: boolean
-): number => {
-  const currentProduct = state.order.products.find(
-    it => it.product.id === productId
-  );
+export const productsInBasketCount = (state: RootState, productId: number, isWeightGood: boolean): number => {
+  const currentProduct = state.order.products.find(it => it.product.id === productId);
   if (!currentProduct) return 0;
   if (isWeightGood) {
     return currentProduct.weight;
@@ -169,7 +161,6 @@ export const selectProductsIdInOrder = (state: RootState): number[] => {
   }, [] as number[]);
 };
 
-export const { addBasketProduct, subtractBasketProduct, removeProduct } =
-  orderSlice.actions;
+export const { addBasketProduct, subtractBasketProduct, removeProduct } = orderSlice.actions;
 
 export default orderSlice.reducer;

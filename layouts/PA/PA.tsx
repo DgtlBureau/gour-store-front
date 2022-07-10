@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { useSignOutMutation } from 'store/api/authApi';
@@ -47,6 +47,7 @@ export function PALayout({ children }: PALayoutProps) {
 
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
+  const sumDiscount = useSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
@@ -92,7 +93,7 @@ export function PALayout({ children }: PALayoutProps) {
         currency={currency}
         language={language}
         basketProductCount={count}
-        basketProductSum={sum}
+        basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}

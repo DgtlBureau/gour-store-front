@@ -7,32 +7,72 @@ import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
 import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
 import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
 import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
-import { PALayout } from 'layouts/PA/PA';
 
-import { useCreateImageMutation } from 'store/api/imageApi';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
 import {
   useGetCurrentUserQuery,
+  useSendChangePhoneCodeMutation,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
+  useUpdateCurrentUserPhoneMutation,
 } from 'store/api/currentUserApi';
+import { useCreateImageMutation } from 'store/api/imageApi';
+import { PAPhoneChangeModal } from 'components/PA/Credentials/PhoneChangeModal/PhoneChangeModal';
+import { PALayout } from '../../../layouts/PA/PA';
+import { SendCodeDto } from '../../../@types/dto/profile/send-code.dto';
 
 export function Profile() {
-  const [isPasswordModalOpened, setIsPasswordModalOpened] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
 
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  const [fetchUpdateCurrentUser] = useUpdateCurrentUserMutation();
-  const [fetchUpdatePassword] = useUpdateCurrentUserPasswordMutation();
-  const [fetchUploadImage] = useCreateImageMutation();
+  const [updateCurrentUser] = useUpdateCurrentUserMutation();
+  const [updatePassword] = useUpdateCurrentUserPasswordMutation();
+  const [uploadImage] = useCreateImageMutation();
+  const [sendPhoneCode] = useSendChangePhoneCodeMutation();
+  const [updatePhone] = useUpdateCurrentUserPhoneMutation();
 
-  const handleChangePhone = (changePhoneData: ChangePhoneDto) => {};
-  const handleChangePassword = async (
-    changePasswordData: ChangePasswordDto
-  ) => {
+  const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
     try {
-      await fetchUpdatePassword(changePasswordData).unwrap();
+      await sendPhoneCode(sendCode).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Код отправлен',
+        type: NotificationType.SUCCESS,
+      });
+      return true;
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка отправки кода',
+        type: NotificationType.DANGER,
+      });
+      return false;
+    }
+  };
+  const changePhone = async (changePhoneData: ChangePhoneDto) => {
+    try {
+      await updatePhone({
+        phone: changePhoneData.phone,
+        code: +changePhoneData.code,
+      }).unwrap();
+      eventBus.emit(EventTypes.notification, {
+        message: 'Телефон изменен',
+        type: NotificationType.SUCCESS,
+      });
+    } catch (error) {
+      console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Произошла ошибка',
+        type: NotificationType.DANGER,
+      });
+    }
+  };
+
+  const changePassword = async (changePasswordData: ChangePasswordDto) => {
+    try {
+      await updatePassword(changePasswordData).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Пароль изменен',
         type: NotificationType.SUCCESS,
@@ -46,14 +86,14 @@ export function Profile() {
     }
   };
 
-  const handleChangeAvatar = async (file: File) => {
+  const changeAvatar = async (file: File) => {
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-      const image = await fetchUploadImage(formData).unwrap();
+      const image = await uploadImage(formData).unwrap();
       if (!image) return;
-      await fetchUpdateCurrentUser({ avatarId: image.id });
+      await updateCurrentUser({ avatarId: image.id });
       eventBus.emit(EventTypes.notification, {
         message: 'Фото профиля изменено',
         type: NotificationType.SUCCESS,
@@ -66,9 +106,9 @@ export function Profile() {
       });
     }
   };
-  const handleRemoveAvatar = async () => {
+  const removeAvatar = async () => {
     try {
-      await fetchUpdateCurrentUser({ avatarId: null }).unwrap();
+      await updateCurrentUser({ avatarId: null }).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Фото профиля удалено',
         type: NotificationType.SUCCESS,
@@ -82,11 +122,9 @@ export function Profile() {
     }
   };
 
-  const handleSendCode = (phone: string) => {};
-
   const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
     try {
-      await fetchUpdateCurrentUser(updatedUser).unwrap();
+      await updateCurrentUser(updatedUser).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Данные профиля изменены',
         type: NotificationType.SUCCESS,
@@ -112,16 +150,14 @@ export function Profile() {
     <PALayout>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4} md={3}>
-          <PACredentialsAvatarEditor
-            image={currentUser.avatar?.full || ''}
-            onChange={handleChangeAvatar}
-            onRemove={handleRemoveAvatar}
-          />
+          <PACredentialsAvatarEditor image={currentUser.avatar?.full} onChange={changeAvatar} onRemove={removeAvatar} />
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
-            onChangePhone={() => {}}
-            onChangePassword={() => setIsPasswordModalOpened(true)}
+            onChangePhone={() => {
+              setIsPhoneModalOpen(true);
+            }}
+            onChangePassword={() => setIsPasswordModalOpen(true)}
             user={{
               firstName: currentUser.firstName || '',
               lastName: currentUser.lastName || '',
@@ -134,12 +170,19 @@ export function Profile() {
         </Grid>
       </Grid>
 
+      <PAPhoneChangeModal
+        isOpen={isPhoneModalOpen}
+        onClose={() => setIsPhoneModalOpen(false)}
+        onSendSMS={sendChangePasswordCode}
+        onSubmit={changePhone}
+      />
+
       <PAPasswordChangeModal
-        isOpen={isPasswordModalOpened}
+        isOpen={isPasswordModalOpen}
         onClose={() => {
-          setIsPasswordModalOpened(false);
+          setIsPasswordModalOpen(false);
         }}
-        onChange={handleChangePassword}
+        onChange={changePassword}
       />
     </PALayout>
   );

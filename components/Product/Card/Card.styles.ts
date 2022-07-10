@@ -8,7 +8,7 @@ const sx = {
     height: {
       xs: '310px',
       sm: '380px',
-      md: '520px',
+      md: '530px',
     },
 
     width: {
@@ -89,6 +89,7 @@ const sx = {
     color: t.palette.text.secondary,
 
     maxHeight: {
+      xs: '45px',
       sm: '26px',
       md: '64px',
     },

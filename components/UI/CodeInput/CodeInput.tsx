@@ -1,10 +1,12 @@
-import React, {Component, ComponentClass, CSSProperties} from 'react';
+import React, { CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 
-const ReactCodeInput = dynamic(() => import('react-code-input')) as unknown as React.FunctionComponent<ReactCodeInputProps>;
+const ReactCodeInput = dynamic(
+  () => import('react-code-input')
+) as unknown as React.FunctionComponent<ReactCodeInputProps>;
 
 import { defaultTheme } from '../../../themes';
-import {InputModeTypes, ReactCodeInputProps} from "react-code-input";
+import { InputModeTypes, ReactCodeInputProps } from 'react-code-input';
 
 const inputSx = {
   border: '1px solid lightgrey',
@@ -19,28 +21,31 @@ const inputSx = {
   outlineColor: defaultTheme.palette.primary.main,
 };
 
-export type CodeInputProps = {
+type Props = {
   name: string;
   sx?: CSSProperties;
   value?: string;
+  disabled?: boolean;
   fieldsCount?: number;
   type?: 'number' | 'text' | 'password' | 'tel' | undefined;
   inputMode?: InputModeTypes;
   onChange: (value: string) => void;
 };
 
-export function CodeInput({
+export const CodeInput = ({
   name,
   sx,
   value,
-  onChange,
+  disabled,
   fieldsCount = 4,
   type = 'text',
   inputMode = 'numeric',
-}: CodeInputProps) {
+  onChange,
+}: Props) => {
   return (
     <ReactCodeInput
       style={sx}
+      disabled={disabled}
       name={name}
       value={value}
       onChange={onChange}
@@ -50,4 +55,4 @@ export function CodeInput({
       inputStyle={inputSx as CSSProperties}
     />
   );
-}
+};

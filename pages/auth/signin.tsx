@@ -52,6 +52,7 @@ export default function SignIn() {
         message: 'Ошибка авторизации',
         type: NotificationType.DANGER,
       });
+      setCredentials(prevState => ({ ...prevState, password: '' }));
     }
   };
 

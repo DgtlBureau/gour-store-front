@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { selectedProductCount, selectedProductSum } from '../../store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
@@ -46,6 +46,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
+  const sumDiscount = useSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
 
@@ -65,7 +66,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         currency={currency}
         language={language}
         basketProductCount={count}
-        basketProductSum={sum}
+        basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
         onClickFavorite={goToFavorites}
