@@ -70,6 +70,8 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
 
   const pricePerCount = isWeightGood ? price / 100 : price;
 
+  const totalPrice = Math.round(pricePerCount * (1 - discount / 100));
+
   return (
     <Box sx={{ ...sx.docket, ...(inCart && sx.deployed) }}>
       <Box sx={sx.weight}>
@@ -93,7 +95,7 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
 
       <Box sx={sx.total}>
         <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sx.price}>
-          {pricePerCount * (1 - discount / 100)}
+          {totalPrice}
           {getCurrencySymbol(currency)}
         </Typography>
       </Box>

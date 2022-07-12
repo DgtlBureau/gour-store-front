@@ -88,7 +88,7 @@ export function Basket() {
           <Grid item xs={12} md={8}>
             {productsInOrder.map((it, i) => (
               <CartCard
-                key={`${it.product.id}-${i}`}
+                key={`order-product/${it.product.id}`}
                 title={it.product.title[language] || '...'}
                 price={it.product.price[currency] || 0}
                 amount={it.amount}
