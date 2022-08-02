@@ -85,7 +85,7 @@ const sx = {
       xs: 'none',
       sm: 'flex',
     },
-    marginLeft: '20px',
+    margin: '0 10px',
   },
   menuBtn: {
     display: {
