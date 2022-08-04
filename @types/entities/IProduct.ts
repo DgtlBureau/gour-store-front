@@ -27,7 +27,7 @@ export interface IProduct extends IBaseEntity {
   characteristics: { [key: string]: string };
   meta: IPageMeta;
   weight: number;
-  discount?: number;
+  discount: number;
   isWeightGood: boolean;
   promotions?: IPromotion[];
 }
