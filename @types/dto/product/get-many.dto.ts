@@ -4,5 +4,5 @@ export type ProductGetManyDto = Readonly<{
   withRoleDiscount?: boolean;
   withGrades?: boolean;
   withMetrics?: boolean;
-  withPromotions?: boolean;
+  withDiscount?: boolean;
 }>;

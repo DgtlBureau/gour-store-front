@@ -49,8 +49,8 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
 
   const { data: categories } = useGetCategoryListQuery();
-  const { data: products } = useGetProductListQuery({ withPromotions: true });
-  const { data: novelties = [] } = useGetNoveltiesProductListQuery({ withPromotions: true });
+  const { data: products } = useGetProductListQuery({ withDiscount: true });
+  const { data: novelties = [] } = useGetNoveltiesProductListQuery({ withDiscount: true });
   const { data: promotions } = useGetPromotionListQuery();
 
   const { data: page } = useGetPageQuery('MAIN');

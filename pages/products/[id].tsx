@@ -66,7 +66,7 @@ export default function Product() {
       id: productId,
       withSimilarProducts: true,
       withMetrics: true,
-      withPromotions: true,
+      withDiscount: true,
     },
     { skip: !productId }
   );
