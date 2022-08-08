@@ -15,13 +15,16 @@ import { Currency } from '../../@types/entities/Currency';
 import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
 import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 export function Main() {
   const router = useRouter();
 
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: addressList = [] } = useGetOrderProfilesListQuery();
-  const { data: ordersList = [] } = useGetOrdersListQuery();
+  const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
+  const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
+  const { data: ordersList = [], isLoading: ordersListIsLoading } = useGetOrdersListQuery();
+
+  const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading;
 
   const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
@@ -37,6 +40,8 @@ export function Main() {
   return (
     <PrivateLayout>
       <PALayout>
+        {isLoading && <ProgressLinear />}
+
         <Grid container spacing={2}>
           {!!currentUser && (
             <Grid item xs={12} sm={6}>

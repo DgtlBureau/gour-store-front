@@ -5,6 +5,7 @@ export const sx = {
       xs: 'column',
       md: 'row',
     },
+    marginTop: '20px',
   },
   imageSlider: {
     margin: {

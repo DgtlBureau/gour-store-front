@@ -10,6 +10,7 @@ import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -153,6 +154,8 @@ export default function Product() {
 
         {!isLoading && !isError && product && (
           <>
+            <Link href="/">Вернуться на главную</Link>
+
             <Box sx={sx.top}>
               <ImageSlider images={product.images} sx={sx.imageSlider} />
 

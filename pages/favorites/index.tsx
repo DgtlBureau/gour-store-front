@@ -9,6 +9,7 @@ import {
 } from 'store/api/favoriteApi';
 import { ProductCard } from 'components/Product/Card/Card';
 import { LocalConfig } from '../../hooks/useLocalTranslation';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
@@ -17,6 +18,8 @@ import { useAppSelector } from '../../hooks/store';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
 import { isProductFavorite } from './favoritesHelper';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Path } from 'constants/routes';
 
 const sx = {
   title: {
@@ -37,7 +40,7 @@ export function Favorites() {
 
   const currentCurrency: Currency = 'cheeseCoin';
 
-  const { data: favoriteProducts = [], isLoading, isError } = useGetFavoriteProductsQuery();
+  const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
 
   const basket = useAppSelector(state => state.order);
 
@@ -62,41 +65,41 @@ export function Favorites() {
       }
     }
   };
-  const handleDetail = (id: number) => {
-    router.push(`/products/${id}`);
+  const goToProduct = (id: number) => {
+    router.push(`/${Path.PRODUCTS}/${id}`);
   };
 
-  if (favoriteProducts.length === 0) {
-    return (
-      <ShopLayout currency={'cheeseCoin'} language={'en'}>
-        <Stack spacing={2}>
-          <Typography sx={sx.title}>Избранные продукты</Typography>
-          <Typography variant="h5">Нет избранных продуктов</Typography>
-        </Stack>
-      </ShopLayout>
-    );
-  }
-
   return (
-    <ShopLayout currency={'cheeseCoin'} language={'en'}>
-      <Stack spacing={2}>
+    <ShopLayout currency="cheeseCoin" language="ru">
+      <Link href="/" sx={{ marginBottom: '20px' }}>
+        Вернуться на главную
+      </Link>
+
+      <Stack spacing={3}>
         <Typography sx={sx.title}>Избранные продукты</Typography>
-        <Grid container>
-          {favoriteProducts.map(product => (
-            <FavoriteProductCard
-              key={product.id}
-              product={product}
-              basket={basket.products}
-              currency={currentCurrency}
-              locale={locale}
-              isElect={isProductFavorite(product.id, favoriteProducts)}
-              addToBasket={addToBasket}
-              removeFromBasket={removeFromBasket}
-              handleElect={handleElect}
-              goToProductPage={handleDetail}
-            />
-          ))}
-        </Grid>
+
+        {isFetching && <ProgressLinear />}
+
+        {favoriteProducts.length === 0 ? (
+          <Typography variant="h5">Нет избранных продуктов</Typography>
+        ) : (
+          <Grid container>
+            {favoriteProducts.map(product => (
+              <FavoriteProductCard
+                key={product.id}
+                product={product}
+                basket={basket.products}
+                currency={currentCurrency}
+                locale={locale}
+                isElect={isProductFavorite(product.id, favoriteProducts)}
+                addToBasket={addToBasket}
+                removeFromBasket={removeFromBasket}
+                handleElect={handleElect}
+                goToProductPage={goToProduct}
+              />
+            ))}
+          </Grid>
+        )}
       </Stack>
     </ShopLayout>
   );
