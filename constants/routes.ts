@@ -1,6 +1,9 @@
 export enum Path {
   HOME = '/',
+
   PERSONAL_AREA = 'personal-area',
+
+  BASKET = 'basket',
 
   AUTH = 'auth',
   SIGN_UP = 'signup',

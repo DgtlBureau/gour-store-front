@@ -2,10 +2,7 @@ import { Currency } from '../../@types/entities/Currency';
 import { IOrder } from '../../@types/entities/IOrder';
 import { IOrderProfile } from '../../@types/entities/IOrderProfile';
 
-export const getFormattedAddressesList = (
-  addressList: IOrderProfile[],
-  language: 'en' | 'ru'
-) => {
+export const getFormattedAddressesList = (addressList: IOrderProfile[], language: 'en' | 'ru') => {
   return addressList.map(it => {
     const address = [
       it.city.name[language],
@@ -20,10 +17,7 @@ export const getFormattedAddressesList = (
   });
 };
 
-export const getFormattedOrdersList = (
-  orderList: IOrder[],
-  currency: Currency
-) => {
+export const getFormattedOrdersList = (orderList: IOrder[], currency: Currency) => {
   return orderList.map(it => ({
     id: it.crmInfo.id,
     date: new Date(it.order.createdAt),

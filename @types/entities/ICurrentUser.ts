@@ -1,4 +1,5 @@
 import { IBaseEntity } from './IBaseEntity';
+import { ICity } from './ICity';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 
@@ -10,7 +11,7 @@ export interface ICurrentUser extends IBaseEntity {
   favoriteIds: string[];
   countries: string[];
   mainOrderProfileId: number;
-  cityId: number;
+  city: ICity;
   avatar: IImage;
   referralCode: IReferralCode;
 }

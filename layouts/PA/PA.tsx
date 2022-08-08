@@ -50,7 +50,7 @@ export function PALayout({ children }: PALayoutProps) {
   const sum = useSelector(selectedProductSum);
   const sumDiscount = useSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
   const menuList = [
     {
