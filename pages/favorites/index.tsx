@@ -20,6 +20,7 @@ import { Currency } from '../../@types/entities/Currency';
 import { isProductFavorite } from './favoritesHelper';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { Path } from 'constants/routes';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
   title: {
@@ -70,38 +71,40 @@ export function Favorites() {
   };
 
   return (
-    <ShopLayout currency="cheeseCoin" language="ru">
-      <Link href="/" sx={{ marginBottom: '20px' }}>
-        Вернуться на главную
-      </Link>
+    <PrivateLayout>
+      <ShopLayout currency="cheeseCoin" language="ru">
+        <Link href="/" sx={{ marginBottom: '20px' }}>
+          Вернуться на главную
+        </Link>
 
-      <Stack spacing={3}>
-        <Typography sx={sx.title}>Избранные продукты</Typography>
+        <Stack spacing={3}>
+          <Typography sx={sx.title}>Избранные продукты</Typography>
 
-        {isFetching && <ProgressLinear />}
+          {isFetching && <ProgressLinear />}
 
-        {favoriteProducts.length === 0 ? (
-          <Typography variant="h5">Нет избранных продуктов</Typography>
-        ) : (
-          <Grid container>
-            {favoriteProducts.map(product => (
-              <FavoriteProductCard
-                key={product.id}
-                product={product}
-                basket={basket.products}
-                currency={currentCurrency}
-                locale={locale}
-                isElect={isProductFavorite(product.id, favoriteProducts)}
-                addToBasket={addToBasket}
-                removeFromBasket={removeFromBasket}
-                handleElect={handleElect}
-                goToProductPage={goToProduct}
-              />
-            ))}
-          </Grid>
-        )}
-      </Stack>
-    </ShopLayout>
+          {favoriteProducts.length === 0 ? (
+            <Typography variant="h5">Нет избранных продуктов</Typography>
+          ) : (
+            <Grid container>
+              {favoriteProducts.map(product => (
+                <FavoriteProductCard
+                  key={product.id}
+                  product={product}
+                  basket={basket.products}
+                  currency={currentCurrency}
+                  locale={locale}
+                  isElect={isProductFavorite(product.id, favoriteProducts)}
+                  addToBasket={addToBasket}
+                  removeFromBasket={removeFromBasket}
+                  handleElect={handleElect}
+                  goToProductPage={goToProduct}
+                />
+              ))}
+            </Grid>
+          )}
+        </Stack>
+      </ShopLayout>
+    </PrivateLayout>
   );
 }
 
