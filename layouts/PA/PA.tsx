@@ -1,24 +1,24 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
-import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { PAMenu } from '../../components/PA/Menu/Menu';
 import { LocalConfig } from '../../hooks/useLocalTranslation';
-import { Path } from '../../constants/routes';
 import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { Path } from '../../constants/routes';
 
 import sx from './PA.styles';
-import { PrivateLayout } from 'layouts/Private/Private';
 
 export interface PALayoutProps {
   children?: ReactNode;
@@ -35,6 +35,7 @@ export function PALayout({ children }: PALayoutProps) {
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [signOut] = useSignOutMutation();
+  const [changeCity] = useChangeCurrentCityMutation();
 
   const { t } = useLocalTranslation(translations);
 
@@ -75,13 +76,10 @@ export function PALayout({ children }: PALayoutProps) {
     },
   ];
 
-  const goToFavorites = () => router.push('/favorites');
-  const goToBasket = () => router.push('/basket');
-  const goToPersonalArea = () => router.push('/personal-area');
-  const goToReplenishment = () => router.push('/replenishment');
-
-  // TO DO
-  const changeCity = (id: number) => ({});
+  const goToFavorites = () => router.push(`/${Path.FAVORITES}`);
+  const goToBasket = () => router.push(`/${Path.BASKET}`);
+  const goToPersonalArea = () => router.push(`/${Path.PERSONAL_AREA}`);
+  const goToReplenishment = () => router.push(`/${Path.REPLENISHMENT}`);
 
   const changeChapter = (path: string) => path !== currentPath && router.push(path);
 

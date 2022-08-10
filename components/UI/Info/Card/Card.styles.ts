@@ -16,7 +16,7 @@ const sx = {
   },
   children: {
     width: '100%',
-    height: '140px',
+    height: '150px',
     overflow: 'auto',
   },
   title: {
