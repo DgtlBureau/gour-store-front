@@ -21,15 +21,10 @@ export default function Auth() {
     <AuthLayout>
       <Stack alignItems="center">
         <div style={{ maxWidth: '500px' }}>
-          <SigninIntro
-            onClickAuth={goToSignIn}
-            onClickRegistration={goToSignUp}
-          />
+          <SigninIntro onClickAuth={goToSignIn} onClickRegistration={goToSignUp} />
         </div>
-        <Box
-          sx={{ margin: '40px 0 0 0', display: { xs: 'none', md: 'block' } }}
-        >
-          <Image src={gameImage} width={1000} height={560} />
+        <Box sx={{ margin: '40px 0 0 0', display: { xs: 'none', md: 'block' } }}>
+          <Image src={gameImage} width={1000} height={560} alt="" />
         </Box>
         <Box
           sx={{

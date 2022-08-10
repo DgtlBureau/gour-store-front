@@ -130,7 +130,6 @@ export function Profile() {
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
-      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Ошибка изменения данных',
         type: NotificationType.SUCCESS,
@@ -146,11 +145,17 @@ export function Profile() {
     );
   }
 
+  console.log(currentUser.avatar);
+
   return (
     <PALayout>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4} md={3}>
-          <PACredentialsAvatarEditor image={currentUser.avatar?.full} onChange={changeAvatar} onRemove={removeAvatar} />
+          <PACredentialsAvatarEditor
+            image={currentUser.avatar?.full || currentUser.avatar?.small}
+            onChange={changeAvatar}
+            onRemove={removeAvatar}
+          />
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor

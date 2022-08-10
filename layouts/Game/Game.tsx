@@ -43,7 +43,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const sum = useSelector(selectedProductSum);
   const sumDiscount = useSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
   const screenHeight = window.screen.height;
   const screenWidth = window.screen.width;

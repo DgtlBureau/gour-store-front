@@ -92,7 +92,7 @@ export function ProductCatalog({
 
   const productList = categories
     ? productsWidthElect
-        ?.filter(product => checkCategory(product.category.key))
+        ?.filter(product => checkCategory(product.category?.key))
         .filter(product => checkCharacteristics(product.characteristics))
     : productsWidthElect;
 

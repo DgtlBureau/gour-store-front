@@ -18,6 +18,7 @@ import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
 
 import sx from './PA.styles';
+import { PrivateLayout } from 'layouts/Private/Private';
 
 export interface PALayoutProps {
   children?: ReactNode;
@@ -49,7 +50,7 @@ export function PALayout({ children }: PALayoutProps) {
   const sum = useSelector(selectedProductSum);
   const sumDiscount = useSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
   const menuList = [
     {
@@ -85,28 +86,30 @@ export function PALayout({ children }: PALayoutProps) {
   const changeChapter = (path: string) => path !== currentPath && router.push(path);
 
   return (
-    <Box sx={sx.layout}>
-      <Header
-        {...contacts}
-        selectedCityId={selectedCity?.id || 0}
-        cities={convertedCities}
-        currency={currency}
-        language={language}
-        basketProductCount={count}
-        basketProductSum={sum - sumDiscount}
-        moneyAmount={balance}
-        onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
-        onClickReplenishment={goToReplenishment}
-        onClickSignout={signOut}
-      />
+    <PrivateLayout>
+      <Box sx={sx.layout}>
+        <Header
+          {...contacts}
+          selectedCityId={selectedCity?.id || 0}
+          cities={convertedCities}
+          currency={currency}
+          language={language}
+          basketProductCount={count}
+          basketProductSum={sum - sumDiscount}
+          moneyAmount={balance}
+          onChangeCity={changeCity}
+          onClickFavorite={goToFavorites}
+          onClickPersonalArea={goToPersonalArea}
+          onClickBasket={goToBasket}
+          onClickReplenishment={goToReplenishment}
+          onClickSignout={signOut}
+        />
 
-      <Box sx={sx.content}>
-        <PAMenu active={currentPath} menuList={menuList} onChange={changeChapter} />
-        {children}
+        <Box sx={sx.content}>
+          <PAMenu active={currentPath} menuList={menuList} onChange={changeChapter} />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </PrivateLayout>
   );
 }

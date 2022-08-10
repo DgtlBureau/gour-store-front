@@ -5,24 +5,13 @@ import { Grid, Stack } from '@mui/material';
 
 import translation from './Order.i18n.json';
 import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
-import {
-  selectedProductCount,
-  selectedProductSum,
-  selectProductsInOrder,
-} from '../../store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum, selectProductsInOrder } from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';
-import {
-  useCreateOrderProfileMutation,
-  useGetOrderProfilesListQuery,
-} from '../../store/api/orderProfileApi';
+import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { removeProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import {
-  DeliveryFields,
-  OrderForm,
-  OrderFormType,
-} from '../../components/Order/Form/Form';
+import { DeliveryFields, OrderForm, OrderFormType } from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { OrderCard } from 'components/Order/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
@@ -66,8 +55,7 @@ export function Order() {
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [fetchCreateOrder] = useCreateOrderMutation();
 
-  const language: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -89,12 +77,7 @@ export function Order() {
   const count = useSelector(selectedProductCount);
   const sum = useSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return (
-      acc +
-      (currentProduct.product.price[currency] *
-        currentProduct.product.discount) /
-        100
-    );
+    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
 
   const goToOrders = () => router.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`);
@@ -132,9 +115,7 @@ export function Order() {
           floor,
         };
 
-        currentDeliveryProfileId = (
-          await fetchCreateOrderProfile(deliveryProfileData).unwrap()
-        ).id;
+        currentDeliveryProfileId = (await fetchCreateOrderProfile(deliveryProfileData).unwrap()).id;
       }
 
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
@@ -174,9 +155,7 @@ export function Order() {
   };
 
   const onChangeDeliveryProfile = (deliveryProfileId: number) => {
-    const currentProfile = deliveryProfiles.find(
-      profile => profile.id === deliveryProfileId
-    );
+    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
     if (!currentProfile) return;
 

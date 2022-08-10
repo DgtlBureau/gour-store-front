@@ -3,15 +3,7 @@ import MUICircularProgress from '@mui/material/CircularProgress';
 import { SxProps } from '@mui/material';
 
 type Props = {
-  color?:
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | 'inherit'
-    | undefined;
+  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'inherit' | undefined;
   size?: number;
   disableShrink?: boolean;
   thickness?: number;
@@ -27,7 +19,7 @@ export function ProgressCircular({
   thickness,
   value,
   sx,
-  variant,
+  variant = 'indeterminate',
 }: Props) {
   return (
     <MUICircularProgress

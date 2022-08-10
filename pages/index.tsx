@@ -35,6 +35,7 @@ import { IProduct } from '../@types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 const NOW = new Date();
 
@@ -48,12 +49,17 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch();
 
-  const { data: categories } = useGetCategoryListQuery();
-  const { data: products } = useGetProductListQuery({ withPromotions: true });
-  const { data: novelties = [] } = useGetNoveltiesProductListQuery({ withPromotions: true });
-  const { data: promotions } = useGetPromotionListQuery();
+  const { data: categories, isLoading: categoriesIsLoading } = useGetCategoryListQuery();
+  const { data: products, isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
+  const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
+    withDiscount: true,
+  });
+  const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
-  const { data: page } = useGetPageQuery('MAIN');
+  const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('MAIN');
+
+  const isLoading =
+    categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
   const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
@@ -86,6 +92,8 @@ const Home: NextPage = () => {
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
+        {isLoading && <ProgressLinear />}
+
         {!!promotions && (
           <CardSlider
             title={t('promotions')}

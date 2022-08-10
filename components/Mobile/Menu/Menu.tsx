@@ -141,7 +141,7 @@ export function MobileMenu({
         </List>
       </Collapse>
 
-      <ListItemButton
+      {/* <ListItemButton
         sx={{ ...sx.listItem, ...sx.languageItem }}
         onClick={() => setLanguagesIsOpened(!languagesIsOpened)}
       >
@@ -156,11 +156,11 @@ export function MobileMenu({
         <Box sx={Object.assign([sx.arrowIcon, languagesIsOpened && sx.invertedArrow])}>
           <Image src={arrowIcon} layout="fill" alt="" />
         </Box>
-      </ListItemButton>
+      </ListItemButton> */}
 
       <Divider sx={sx.divider} />
 
-      <Collapse in={languagesIsOpened} timeout="auto" unmountOnExit>
+      {/* <Collapse in={languagesIsOpened} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {languages.map(language => (
             <Fragment key={language.title}>
@@ -181,7 +181,7 @@ export function MobileMenu({
             </Fragment>
           ))}
         </List>
-      </Collapse>
+      </Collapse> */}
 
       <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickGame}>
         <Typography sx={sx.title}>{t('game')}</Typography>

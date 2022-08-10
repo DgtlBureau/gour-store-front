@@ -17,6 +17,7 @@ import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
 import { AddCheesecoinsDto } from '../../@types/dto/cheseecoins/add.dto';
 import { contacts } from '../../constants/contacts';
+import { Path } from '../../constants/routes';
 
 import sx from './Shop.styles';
 
@@ -48,11 +49,11 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const sum = useSelector(selectedProductSum);
   const sumDiscount = useSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.cityId) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
-  const goToFavorites = () => router.push('/favorites');
-  const goToBasket = () => router.push('/basket');
-  const goToPersonalArea = () => router.push('/personal-area');
+  const goToFavorites = () => router.push(`/${Path.FAVORITES}`);
+  const goToBasket = () => router.push(`/${Path.BASKET}`);
+  const goToPersonalArea = () => router.push(`/${Path.PERSONAL_AREA}`);
 
   const openCheesecoinsModal = () => setIsModalOpen(true);
   const closeCheesecoinsModal = () => setIsModalOpen(false);

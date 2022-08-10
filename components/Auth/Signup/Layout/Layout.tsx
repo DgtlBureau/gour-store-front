@@ -21,9 +21,7 @@ export const SignupLayout = ({ children, image, stepIndex }: Props) => {
       spacing={0}
     >
       <Grid sx={sx.imageContainer} item xs={4} md={6}>
-        {!!image && (
-          <Image src={image} layout="intrinsic" width={500} height={750} />
-        )}
+        {!!image && <Image src={image} layout="intrinsic" width={500} height={750} alt="" />}
       </Grid>
       <Grid
         item

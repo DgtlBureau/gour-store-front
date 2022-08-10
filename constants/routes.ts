@@ -1,13 +1,15 @@
 export enum Path {
   HOME = '/',
+
   PERSONAL_AREA = 'personal-area',
+
+  BASKET = 'basket',
 
   AUTH = 'auth',
   SIGN_UP = 'signup',
   SIGN_IN = 'signin',
   SIGN_OUT = 'signout',
-  SEND_CODE = 'sendCode',
-  CURRENT_USER = 'currentUser',
+  CURRENT_USER = 'current-user',
   CURRENT_BALANCE = 'current-balance',
 
   CLIENT_AUTH = 'client-auth',
@@ -23,8 +25,8 @@ export enum Path {
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
   CHANGE_PASSWORD = 'change-password',
-  CHANGE_PHONE_CODE = 'phone/sendCode',
-  CHANGE_PHONE = 'phone/change',
+  SEND_CODE = 'send-sms',
+  CHANGE_PHONE = 'change-phone',
 
   WALLET = 'wallet',
   IMAGES = 'images',

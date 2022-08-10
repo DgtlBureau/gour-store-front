@@ -2,6 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 import translations from './Promotion.i18n.json';
 import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
 import { addBasketProduct, subtractBasketProduct } from '../../store/slices/orderSlice';
@@ -12,18 +17,13 @@ import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
-import { useGetProductListQuery } from 'store/api/productApi';
 import { useAppSelector } from 'hooks/store';
 import { Path } from '../../constants/routes';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
-import {
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-  useGetFavoriteProductsQuery,
-} from 'store/api/favoriteApi';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
-import { sx } from './Promotion.style';
+import { sx } from './Promotion.styles';
 
 export default function Promotion() {
   const dispatch = useDispatch();
@@ -34,8 +34,7 @@ export default function Promotion() {
   const { id } = router.query;
   const promotionId = id ? +id : 0;
 
-  const { data: promotion } = useGetPromotionQuery(promotionId, { skip: !id });
-  const { data: products } = useGetProductListQuery({});
+  const { data: promotion, isLoading, isError } = useGetPromotionQuery(promotionId, { skip: !id });
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -49,7 +48,7 @@ export default function Promotion() {
 
   if (!promotionId) return router.push('/');
 
-  const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
+  const goToProductPage = (id: number) => router.push(`/${Path.PRODUCTS}/${id}`);
 
   const elect = async (id: number, isElect: boolean) => {
     if (isElect) {
@@ -73,35 +72,43 @@ export default function Promotion() {
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
-        {promotion && (
-          <Box sx={sx.promotion}>
-            <Link href="/">{t('goBack')}</Link>
+        {isLoading && <ProgressLinear />}
 
-            <PromotionHeader image={promotion.pageImage.full} end={new Date(promotion.end)} sx={sx.header} />
+        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
 
-            <Typography variant="h5" sx={sx.title}>
-              {promotion.title[language]}
-            </Typography>
+        {!isLoading && !isError && !promotion && <Typography variant="h5">Продукт не найден</Typography>}
 
-            <Typography variant="body1" sx={sx.description}>
-              {promotion.description[language]}
-            </Typography>
-          </Box>
+        {!isLoading && !isError && promotion && (
+          <>
+            <Box sx={sx.promotion}>
+              <Link href="/">{t('goBack')}</Link>
+
+              <PromotionHeader image={promotion.pageImage.full} end={new Date(promotion.end)} sx={sx.header} />
+
+              <Typography variant="h5" sx={sx.title}>
+                {promotion.title[language]}
+              </Typography>
+
+              <Typography variant="body1" sx={sx.description}>
+                {promotion.description[language]}
+              </Typography>
+            </Box>
+
+            <ProductCatalog
+              title={t('sliderTitle')}
+              products={promotion?.products || []}
+              basket={basket.products}
+              language={language}
+              currency={currency}
+              discount={promotion?.discount}
+              onAdd={addToBasket}
+              onRemove={removeFromBasket}
+              onElect={elect}
+              onDetail={goToProductPage}
+              favoritesList={favoriteProducts}
+            />
+          </>
         )}
-
-        <ProductCatalog
-          title={t('sliderTitle')}
-          products={promotion?.products || []}
-          basket={basket.products}
-          language={language}
-          currency={currency}
-          discount={promotion?.discount}
-          onAdd={addToBasket}
-          onRemove={removeFromBasket}
-          onElect={elect}
-          onDetail={goToProductPage}
-          favoritesList={favoriteProducts}
-        />
       </ShopLayout>
     </PrivateLayout>
   );

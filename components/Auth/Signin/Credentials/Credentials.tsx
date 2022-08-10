@@ -54,12 +54,7 @@ export function SigninCredentials({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button
-            sx={sx.backBtn}
-            size="small"
-            variant="outlined"
-            onClick={onBack}
-          >
+          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
             {t('back')}
           </Button>
 
@@ -67,12 +62,7 @@ export function SigninCredentials({
 
           <HFPhoneInput sx={sx.field} name="phone" label={t('phone')} />
 
-          <HFTextField
-            sx={sx.field}
-            type="password"
-            name="password"
-            label={t('password')}
-          />
+          <HFTextField sx={sx.field} type="password" name="password" label={t('password')} />
 
           <Box sx={sx.links}>
             <Link component="button" variant="body2" onClick={onPasswordChange}>
