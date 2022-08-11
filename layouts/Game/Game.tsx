@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { useMediaQuery } from '@mui/material';
 
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
@@ -45,10 +46,10 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
-  const screenHeight = window.screen.height;
-  const screenWidth = window.screen.width;
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isPortrait = useMediaQuery('(orientation: portrait)');
 
-  const flipIsNeeded = screenWidth < 600 || (screenWidth < 900 && screenHeight > screenWidth);
+  const flipIsNeeded = isMobile && isPortrait;
 
   const goToFavorites = () => router.push('/favorites');
   const goToBasket = () => router.push('/basket');
