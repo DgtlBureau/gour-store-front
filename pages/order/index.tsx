@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Grid, Stack } from '@mui/material';
 
@@ -24,6 +23,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 
 const sx = {
   title: {
@@ -51,7 +51,7 @@ export function Order() {
 
   const { t } = useLocalTranslation(translation);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [fetchCreateOrder] = useCreateOrderMutation();
@@ -84,9 +84,9 @@ export function Order() {
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
   const { data: citiesList = [] } = useGetCityListQuery();
 
-  const productsInOrder = useSelector(selectProductsInOrder);
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
+  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
     return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);

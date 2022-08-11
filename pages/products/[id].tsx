@@ -1,11 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppSelector } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
@@ -42,7 +41,7 @@ export default function Product() {
 
   const { id } = router.query;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 

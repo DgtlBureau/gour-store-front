@@ -1,7 +1,7 @@
 import { Grid, Stack } from '@mui/material';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -11,10 +11,9 @@ import { ProductCard } from 'components/Product/Card/Card';
 import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { IProduct } from '../../@types/entities/IProduct';
-import { useAppSelector } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
 import { isProductFavorite } from './favoritesHelper';
@@ -35,8 +34,9 @@ const sx = {
 };
 
 export function Favorites() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
   const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currentCurrency: Currency = 'cheeseCoin';

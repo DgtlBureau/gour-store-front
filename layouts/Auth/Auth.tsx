@@ -3,10 +3,11 @@ import React, { ReactElement } from 'react';
 import { Box } from 'components/UI/Box/Box';
 
 import stripes from '../../assets/images/stripes.svg';
-import { useSelector } from 'react-redux';
+
 import { selectIsAuth } from 'store/selectors/auth';
 import { useRouter } from 'next/router';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useAppSelector } from 'hooks/store';
 
 const sx = {
   layout: {
@@ -39,7 +40,7 @@ export interface AuthLayoutProps {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   const { isFetching } = useGetCurrentUserQuery();
-  const isAuth = useSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
   const router = useRouter();
 
   if (isFetching) return null;

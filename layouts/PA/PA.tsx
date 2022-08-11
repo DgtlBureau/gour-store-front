@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import translations from './PA.i18n.json';
@@ -9,6 +8,7 @@ import { selectedProductCount, selectedProductSum, selectedProductDiscount } fro
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { useAppSelector } from 'hooks/store';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { PAMenu } from '../../components/PA/Menu/Menu';
@@ -47,9 +47,9 @@ export function PALayout({ children }: PALayoutProps) {
       name: city.name[language],
     })) || [];
 
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
