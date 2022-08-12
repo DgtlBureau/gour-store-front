@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
@@ -35,10 +35,11 @@ import { useAppNavigation } from 'components/Navigation'
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
-
   const { goToProductPage, language, query: { id } } = useAppNavigation();
 
   const dispatch = useDispatch();
+
+  const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -110,6 +111,8 @@ export default function Product() {
     }
   };
 
+  const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
+
   const productComments =
     comments.map(grade => {
       return {
@@ -161,7 +164,7 @@ export default function Product() {
                   gradesCount={product.gradesCount || 0}
                   commentsCount={product.commentsCount || 0}
                   characteristics={productCharacteristics}
-                  onClickComments={() => {}}
+                  onClickComments={onClickComments}
                 />
 
                 <ProductActions
@@ -205,7 +208,7 @@ export default function Product() {
               />
             )}
 
-            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
+            {productComments.length && <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>
