@@ -63,7 +63,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
       pathname: router.pathname,
       query: router.query,
     }),
-    [router.pathname]
+    [router]
   );
 
   return <AppNavigationCtx.Provider value={navigation}>{children}</AppNavigationCtx.Provider>;
