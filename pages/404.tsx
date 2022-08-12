@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 import translations from './Main.i18n.json';
 import { useLocalTranslation } from '../hooks/useLocalTranslation';
+import { useAppNavigation } from 'components/Navigation';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Button } from '../components/UI/Button/Button';
@@ -47,11 +47,8 @@ const sx = {
 };
 
 export default function NotFound() {
+  const { goToHome } = useAppNavigation();
   const { t } = useLocalTranslation(translations);
-
-  const router = useRouter();
-
-  const goToHome = () => router.push('/');
 
   return (
     <PrivateLayout>

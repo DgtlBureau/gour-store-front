@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
 import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
@@ -19,10 +18,8 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
-import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -34,13 +31,12 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+import { useAppNavigation } from 'components/Navigation'
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
 
-  const router = useRouter();
-
-  const { id } = router.query;
+  const { goToProductPage, language, query: { id } } = useAppNavigation();
 
   const dispatch = useDispatch();
 
@@ -49,10 +45,6 @@ export default function Product() {
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
-
-  const goToProductPage = (productId: number) => router.push(`/${Path.PRODUCTS}/${productId}`);
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 

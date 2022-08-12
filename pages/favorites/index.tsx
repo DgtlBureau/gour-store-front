@@ -7,10 +7,9 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
+import { useAppNavigation } from 'components/Navigation';
 import { ProductCard } from 'components/Product/Card/Card';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { IProduct } from '../../@types/entities/IProduct';
@@ -19,7 +18,6 @@ import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
 import { isProductFavorite } from './favoritesHelper';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { Path } from 'constants/routes';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
@@ -36,8 +34,7 @@ const sx = {
 
 export function Favorites() {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { language, goToProductPage } = useAppNavigation();
 
   const currentCurrency: Currency = 'cheeseCoin';
 
@@ -66,9 +63,6 @@ export function Favorites() {
       }
     }
   };
-  const goToProduct = (id: number) => {
-    router.push(`/${Path.PRODUCTS}/${id}`);
-  };
 
   return (
     <PrivateLayout>
@@ -92,12 +86,12 @@ export function Favorites() {
                   product={product}
                   basket={basket.products}
                   currency={currentCurrency}
-                  locale={locale}
+                  locale={language}
                   isElect={isProductFavorite(product.id, favoriteProducts)}
                   addToBasket={addToBasket}
                   removeFromBasket={removeFromBasket}
                   handleElect={handleElect}
-                  goToProductPage={goToProduct}
+                  goToProductPage={goToProductPage}
                 />
               ))}
             </Grid>

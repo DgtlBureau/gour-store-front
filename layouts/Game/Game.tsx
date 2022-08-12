@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { useMediaQuery } from '@mui/material';
 
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
@@ -8,6 +7,7 @@ import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { useSignOutMutation } from 'store/api/authApi';
+import { useAppNavigation } from 'components/Navigation';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
@@ -25,7 +25,7 @@ export interface GameLayoutProps {
 }
 
 export function GameLayout({ currency, language, children }: GameLayoutProps) {
-  const router = useRouter();
+  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -50,11 +50,6 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const isPortrait = useMediaQuery('(orientation: portrait)');
 
   const flipIsNeeded = isMobile && isPortrait;
-
-  const goToFavorites = () => router.push('/favorites');
-  const goToBasket = () => router.push('/basket');
-  const goToPersonalArea = () => router.push('/personal-area');
-  const goToReplenishment = () => router.push('/replenishment');
 
   return (
     <Box sx={sx.layout}>

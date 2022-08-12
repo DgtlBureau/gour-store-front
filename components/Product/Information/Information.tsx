@@ -67,7 +67,6 @@ export function ProductInformation({
           role="button"
           style={{...sx.stat, ...sx.comments}} 
           onClick={onClickComments}
-          onKeyPress={undefined}
           tabIndex={0}
         >
           <ChatBubbleIcon fontSize="small" />

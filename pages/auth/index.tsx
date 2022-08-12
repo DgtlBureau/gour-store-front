@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 
+import { useAppNavigation } from 'components/Navigation';
 import { AuthLayout } from '../../layouts/Auth/Auth';
 import { SigninIntro } from 'components/Auth/Signin/Intro/Intro';
 import Image from 'next/image';
@@ -11,11 +11,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from '@mui/system';
 
 export default function Auth() {
-  const router = useRouter();
-
-  const goToSignIn = () => router.push('/auth/signin');
-
-  const goToSignUp = () => router.push('/auth/signup');
+  const { goToSignIn, goToSignUp } = useAppNavigation();
 
   return (
     <AuthLayout>
