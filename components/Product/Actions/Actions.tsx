@@ -57,7 +57,7 @@ export const ProductActions = ({
             color={discount ? 'error' : 'primary'}
             sx={sxActions.price}
           >
-            {total}
+            {total}&nbsp;
             {getCurrencySymbol(currency)}
           </Typography>
         </Box>
