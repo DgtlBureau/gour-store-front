@@ -83,7 +83,7 @@ export function MobileMenu({
   const { language } = useAppNavigation();
 
   const currentCity = cities.find(city => city.id === selectedCityId);
-  const currentLanguage = languages.find(language => language.value === locale);
+  const currentLanguage = languages.find(i => i.value === language);
 
   const currencySymbol = getCurrencySymbol(currency);
 

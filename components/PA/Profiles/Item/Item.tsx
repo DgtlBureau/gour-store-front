@@ -39,10 +39,10 @@ export function PAProfilesItem({
 
   const address = profile
     ? [
-        profile.city.name[locale],
+        profile.city.name[language],
         profile.street,
         profile.house,
-        profile.apartment && `${locale === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
+        profile.apartment && `${language === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
       ]
         .filter(it => !!it)
         .join(', ')
