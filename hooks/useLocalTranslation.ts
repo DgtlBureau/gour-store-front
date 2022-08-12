@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router';
 import get from 'lodash.get';
+
+import { useAppNavigation } from 'components/Navigation';
 
 export type LocalConfig = {
   en: Record<string, string | object>;
@@ -7,10 +8,9 @@ export type LocalConfig = {
 };
 
 export const useLocalTranslation = (config: LocalConfig) => {
-  const router = useRouter();
-  const locale: keyof LocalConfig =
-    (router?.locale as keyof LocalConfig) || 'ru';
+  const { language } = useAppNavigation();
+
   return {
-    t: (str: string) => get(config[locale], str) as string,
+    t: (str: string) => get(config[language], str) as string,
   };
 };

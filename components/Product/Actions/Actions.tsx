@@ -95,7 +95,7 @@ export const ProductActions = ({
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
-                {count} {isWeightGood ? t('kg') : t('pcs')}
+                {count}&nbsp;{isWeightGood ? t('kg') : t('pcs')}
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { Grid, Stack } from '@mui/material';
 
 import {
@@ -14,7 +13,8 @@ import {
   removeProduct,
 } from '../../store/slices/orderSlice';
 import translation from './Basket.i18n.json';
-import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useAppNavigation } from 'components/Navigation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
 import { ShopLayout } from '../../layouts/Shop/Shop';
@@ -38,13 +38,11 @@ const sx = {
 };
 
 export function Basket() {
-  const router = useRouter();
+  const { goToHome, goToOrder, language } = useAppNavigation();
 
   const dispatch = useDispatch();
 
   const { t } = useLocalTranslation(translation);
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -58,9 +56,6 @@ export function Basket() {
   const delivery = 500;
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
-
-  const goToHome = () => router.push('/');
-  const goToOrder = () => router.push('/order');
 
   const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));

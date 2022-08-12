@@ -1,11 +1,10 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import translations from './Main.i18n.json';
-import { useLocalTranslation, LocalConfig } from '../hooks/useLocalTranslation';
+import { useLocalTranslation } from '../hooks/useLocalTranslation';
 import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
@@ -18,6 +17,8 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { useAppNavigation } from 'components/Navigation'
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
@@ -25,9 +26,6 @@ import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../@types/entities/Notification';
-import { Path } from 'constants/routes';
 
 import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
@@ -35,14 +33,13 @@ import { IProduct } from '../@types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
-import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 const NOW = new Date();
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const router = useRouter();
+  const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
   const basket = useAppSelector(state => state.order);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
@@ -61,11 +58,7 @@ const Home: NextPage = () => {
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency: Currency = 'cheeseCoin';
-
-  const goToPromotionPage = (id: number) => router.push(`${Path.PROMOTIONS}/${id}`);
-  const goToProductPage = (id: number) => router.push(`${Path.PRODUCTS}/${id}`);
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
