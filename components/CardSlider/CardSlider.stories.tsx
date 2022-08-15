@@ -20,7 +20,7 @@ const defaultImg =
   'https://images.unsplash.com/photo-1646309244219-9583e1341a00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80';
 
 DefaultState.args = {
-  title: 'Акции и скидки',
+  title: 'Акции и скидкиыроаыорва',
   cardsList: [
     <PromotionCard key="test1" image={defaultImg} onClickMore={() => ({})} />,
     <PromotionCard key="test2" image={defaultImg} onClickMore={() => ({})} />,

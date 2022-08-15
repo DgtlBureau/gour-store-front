@@ -124,6 +124,7 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
               rows={3}
               name="comment"
               value={formData.comment}
+              label={t('review')}
               onChange={e => onChange('comment', e.target.value)}
             />
             <Button sx={blockSx.btn} type="submit" disabled={formData.value === 0} onClick={openAlert}>

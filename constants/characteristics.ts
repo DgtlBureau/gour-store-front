@@ -56,35 +56,35 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
         key: 'without',
         label: {
           ru: 'Без выдержки',
-          en: 'Без выдержки',
+          en: 'Without exposure',
         },
       },
       {
         key: 'oneMonth',
         label: {
           ru: 'От 1 месяца',
-          en: 'От 1 месяца',
+          en: 'From 1 month',
         },
       },
       {
         key: 'threeMonth',
         label: {
           ru: 'От 3 месяцев',
-          en: 'От 3 месяцев',
+          en: 'From 3 month',
         },
       },
       {
         key: 'sixMonth',
         label: {
           ru: 'От 6 месяцев',
-          en: 'От 6 месяцев',
+          en: 'From 6 month',
         },
       },
       {
         key: 'oneYear',
         label: {
           ru: 'От 1 года',
-          en: 'От 1 года',
+          en: 'From 1 year',
         },
       },
     ],

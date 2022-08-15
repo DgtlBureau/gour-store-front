@@ -124,12 +124,13 @@ export function Basket() {
                 <InfoBlock
                   sx={{ marginTop: '10px' }}
                   text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  link={{ label: t('continueShopping'), path: '/' }}
                 />
               )}
               <InfoBlock
                 sx={{ marginTop: '10px' }}
                 text={t('aboutDelivery')}
-                link={{ label: t('continueShopping'), path: '/' }}
+                link={{ label: t('detailed'), path: '/' }}
               />
             </Grid>
           </Grid>

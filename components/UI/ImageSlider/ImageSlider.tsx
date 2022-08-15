@@ -21,6 +21,9 @@ const sliderSx = {
       md: '580px',
       xs: '100%',
     },
+    maxWidth: {
+      sm: '660px',
+    },
     marginLeft: 0,
     marginRight: 0,
   },

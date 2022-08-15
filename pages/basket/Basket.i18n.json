@@ -10,7 +10,8 @@
     "freeDeliveryText": {
       "part1": "Добавьте ещё товаров на",
       "part2": "для бесплатной доставки по Москве и Санкт-Петербургу"
-    }
+    },
+    "detailed": "Подробнее"
   },
   "en": {
     "cart": "Cart",
@@ -23,6 +24,7 @@
     "freeDeliveryText": {
       "part1": "Add more items for",
       "part2": "for free delivery in Moscow and St. Petersburg"
-    }
+    },
+    "detailed": "More detailed"
   }
 }

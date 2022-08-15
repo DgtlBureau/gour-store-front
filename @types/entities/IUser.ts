@@ -11,8 +11,8 @@ export interface IUser extends IBaseEntity {
   phone: string;
   email: string;
   cityId: number;
-  referralCodeId: number;
-  avatarId: 1;
+  referralCodeId?: number;
+  avatarId?: number;
   city: ICity;
   referralCode: IReferralCode;
   avatar: IImage;

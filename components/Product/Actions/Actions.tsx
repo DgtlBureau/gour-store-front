@@ -52,11 +52,7 @@ export const ProductActions = ({
     <Box sx={{ ...sxActions.container, ...sx }}>
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
-          <Typography
-            variant="h6"
-            color={discount ? 'error' : 'primary'}
-            sx={sxActions.price}
-          >
+          <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sxActions.price}>
             {total}
             {getCurrencySymbol(currency)}
           </Typography>
@@ -83,19 +79,15 @@ export const ProductActions = ({
               <CartIcon sx={sxActions.icon} />
             </IconButton>
           ) : (
-            <Grid container xs>
+            <Grid container sx={sxActions.btnGroup}>
               <Grid item xs={4} sx={sxActions.action}>
                 <IconButton onClick={onRemove}>
-                  {count === 1 ? (
-                    <TrashIcon sx={sxActions.icon} />
-                  ) : (
-                    <MinusIcon sx={sxActions.icon} />
-                  )}
+                  {count === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
                 </IconButton>
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
-                {count} {isWeightGood ? t('kg') : t('pcs')}
+                {count} {isWeightGood ? t('g') : t('pcs')}
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
@@ -107,10 +99,7 @@ export const ProductActions = ({
           )}
         </Box>
 
-        <IconButton
-          sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect}
-          onClick={onElect}
-        >
+        <IconButton sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect} onClick={onElect}>
           <FavoriteIcon sx={sxActions.icon} />
         </IconButton>
       </Box>
