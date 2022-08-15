@@ -1,10 +1,10 @@
 import { IProduct } from './IProduct';
-import { IClient } from './IClient';
+import { IUser } from './IUser';
 import { IBaseEntity } from './IBaseEntity';
 
 export interface IProductGrade extends IBaseEntity {
   product: IProduct;
-  client: IClient;
+  client: IUser;
   value: number;
   comment: string;
 }

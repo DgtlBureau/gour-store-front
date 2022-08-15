@@ -1,13 +1,12 @@
 import { ReactNode, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { useSignOutMutation } from 'store/api/authApi';
-
 import { useAppNavigation } from 'components/Navigation';
+import { useAppSelector } from 'hooks/store';
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
@@ -44,9 +43,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       name: city.name[language],
     })) || [];
 
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 

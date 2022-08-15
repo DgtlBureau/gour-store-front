@@ -3,19 +3,17 @@ import { IBaseEntity } from './IBaseEntity';
 import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';
 
-export interface IOrder {
-  order: OrderData;
-  crmInfo: OrderCrmInfo;
-  promotions: OrderPromotion[];
-}
-interface OrderData extends IBaseEntity {
-  orderProducts: IOrderProduct[];
+export interface IOrder extends IBaseEntity {
   firstName: string;
   lastName?: string;
   phone: string;
   email: string;
   orderProfile: IOrderProfile;
   comment?: string;
+  crmInfo: OrderCrmInfo;
+  totalSum: number;
+  promotions: OrderPromotion[];
+  orderProducts: IOrderProduct[];
 }
 
 interface OrderCrmInfo {

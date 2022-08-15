@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { Grid, Stack } from '@mui/material';
 
 import translation from './Order.i18n.json';
@@ -11,7 +10,7 @@ import { useGetCityListQuery } from '../../store/api/cityApi';
 import { removeProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { useAppNavigation } from 'components/Navigation';
-import { DeliveryFields, OrderForm, OrderFormType } from '../../components/Order/Form/Form';
+import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { OrderCard } from 'components/Order/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
@@ -22,6 +21,8 @@ import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 
 const sx = {
   title: {
@@ -49,7 +50,7 @@ export function Order() {
 
   const { t } = useLocalTranslation(translation);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [fetchCreateOrder] = useCreateOrderMutation();
@@ -57,6 +58,13 @@ export function Order() {
   const currency = 'cheeseCoin';
 
   const [isSubmitError, setIsSubmitError] = useState(false);
+
+  const [personalFields, setPersonalFields] = useState<PersonalFields>({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+  });
 
   const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>({
     deliveryProfileId: 0,
@@ -66,22 +74,23 @@ export function Order() {
     apartment: '',
     entrance: '',
     floor: '',
+    comment: '',
   });
+
+  const { data: currentUser } = useGetCurrentUserQuery();
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
   const { data: citiesList = [] } = useGetCityListQuery();
 
-  const productsInOrder = useSelector(selectProductsInOrder);
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
+  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
     return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
 
-  const handleRemoveProduct = (product: IProduct) => {
-    dispatch(removeProduct(product));
-  };
+  const deleteProductFromOrder = (product: IProduct) => dispatch(removeProduct(product));
 
-  const handleSubmitForm = async (orderData: OrderFormType) => {
+  const submit = async (orderData: OrderFormType) => {
     const {
       firstName,
       lastName,
@@ -99,7 +108,8 @@ export function Order() {
 
     try {
       let currentDeliveryProfileId = deliveryProfileId;
-      if (currentDeliveryProfileId !== 0) {
+
+      if (currentDeliveryProfileId === 0) {
         const deliveryProfileData: CreateOrderProfileDto = {
           title: `${street}, ${house}`,
           cityId,
@@ -110,7 +120,9 @@ export function Order() {
           floor,
         };
 
-        currentDeliveryProfileId = (await fetchCreateOrderProfile(deliveryProfileData).unwrap()).id;
+        const currentDeliveryProfile = await fetchCreateOrderProfile(deliveryProfileData).unwrap();
+
+        currentDeliveryProfileId = currentDeliveryProfile.id;
       }
 
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
@@ -134,9 +146,8 @@ export function Order() {
         message: 'Заказ оформлен',
         type: NotificationType.SUCCESS,
       });
-      productsInOrder.forEach(product => {
-        handleRemoveProduct(product.product);
-      });
+
+      productsInOrder.forEach(product => deleteProductFromOrder(product.product));
 
       goToOrders();
     } catch (error) {
@@ -145,6 +156,7 @@ export function Order() {
         message: 'Ошибка оформления заказа',
         type: NotificationType.DANGER,
       });
+
       setIsSubmitError(true);
     }
   };
@@ -165,6 +177,23 @@ export function Order() {
     });
   };
 
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const { firstName, lastName, phone, email, mainOrderProfileId } = currentUser;
+
+    setPersonalFields({
+      ...personalFields,
+      firstName,
+      lastName,
+      phone,
+      email,
+    });
+
+    if (mainOrderProfileId && mainOrderProfileId !== 0)
+      setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
+  }, [currentUser]);
+
   const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
     label: profile.title,
     value: profile.id,
@@ -174,6 +203,7 @@ export function Order() {
     value: city.id,
     label: city.name[language],
   }));
+
   //TODO: вынести на бек
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
@@ -190,7 +220,7 @@ export function Order() {
               title={t('emptyBasket')}
               btn={{
                 label: t('toHome'),
-                onClick: goToHome,
+                onClick: () => goToHome,
               }}
             >
               <Typography variant="body1">{t('emptyBasketText')}</Typography>
@@ -201,25 +231,20 @@ export function Order() {
             <Grid container sx={sx.order} spacing={2}>
               <Grid item md={8} xs={12}>
                 <OrderForm
-                  defaultPersonalFields={{
-                    firstName: '',
-                    lastName: '',
-                    phone: '',
-                    email: '',
-                    comment: '',
-                  }}
+                  defaultPersonalFields={personalFields}
                   defaultDeliveryFields={deliveryFields}
                   citiesList={formattedCitiesList}
-                  onChangeDeliveryProfile={onChangeDeliveryProfile}
+                  isSubmitError={isSubmitError}
                   discount={sumDiscount}
                   productsCount={count}
                   cost={sum}
                   delivery={delivery}
                   deliveryProfiles={formattedDeliveryProfiles}
-                  onSubmit={handleSubmitForm}
-                  isSubmitError={isSubmitError}
+                  onChangeDeliveryProfile={onChangeDeliveryProfile}
+                  onSubmit={submit}
                 />
               </Grid>
+
               <Grid item md={4} xs={12}>
                 <OrderCard
                   totalCartPrice={sum}

@@ -3,8 +3,8 @@
     "title": "Вы уже покупали этот товар?",
     "subtitle": "Оставьте отзыв",
     "rate": "Оцените товар",
-    "placeholder": "Напишите отзыв",
-    "accept": "Отправить",
+    "review": "Текст отзыва",
+    "accept": "Отправить отзыв",
     "alert": {
       "title": "Спасибо!",
       "message": {
@@ -17,8 +17,8 @@
     "title": "Have you already bought this product?",
     "subtitle": "Leave a review",
     "rate": "Rate the product",
-    "placeholder": "Write a review",
-    "accept": "Send",
+    "review": "Review text",
+    "accept": "Send review",
     "alert": {
       "title": "Thank you!",
       "message": {

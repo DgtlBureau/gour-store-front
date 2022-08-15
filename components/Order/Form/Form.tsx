@@ -3,6 +3,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
+import translations from './Form.i18n.json';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { getValidationSchema } from './validation';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
@@ -11,54 +13,9 @@ import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';
-import { defaultTheme as theme } from '../../../themes';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import translations from './Form.i18n.json';
 import { Currency } from '../../../@types/entities/Currency';
 
-const sx = {
-  form: {
-    maxWidth: {
-      xs: '100%',
-      md: '650px',
-    },
-  },
-  block: {
-    marginBottom: '40px',
-    '&:last-child': {
-      marginBottom: 0,
-    },
-  },
-  title: {
-    marginBottom: '20px',
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: theme.palette.text.secondary,
-  },
-  promo: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: '20px',
-  },
-  promoText: {
-    color: theme.palette.text.muted,
-  },
-  select: {
-    marginBottom: '20px',
-  },
-  textarea: {
-    margin: 0,
-  },
-  btn: {
-    width: '100%',
-  },
-  agreement: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px',
-    color: theme.palette.text.muted,
-  },
-};
+import sx from './Form.styles';
 
 const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
 
@@ -84,7 +41,6 @@ export type PersonalFields = {
   lastName: string;
   phone: string;
   email: string;
-  comment: string;
 };
 
 export type DeliveryFields = {
@@ -95,6 +51,7 @@ export type DeliveryFields = {
   apartment: string;
   entrance: string;
   floor: string;
+  comment?: string;
 };
 
 export type OrderFormProps = {
@@ -133,8 +90,10 @@ export function OrderForm({
   onSubmit,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
-  const [isAgree, setIsAgree] = useState(false);
+
   const schema = getValidationSchema(t);
+
+  const [isAgree, setIsAgree] = useState(false);
 
   const values = useForm<OrderFormType>({
     resolver: yupResolver(schema),
@@ -152,16 +111,22 @@ export function OrderForm({
     });
   }, [defaultDeliveryFields]);
 
+  useEffect(() => {
+    values.reset({
+      ...values.getValues(),
+      ...defaultPersonalFields,
+    });
+  }, [defaultPersonalFields]);
+
   const submitHandler = (data: OrderFormType) => onSubmit(data);
-  const changeHandler = () => {
-    values.setValue('deliveryProfileId', 0);
-  };
+
+  const changeDeliveryHandler = () => values.setValue('deliveryProfileId', 0);
 
   const agree = () => setIsAgree(!isAgree);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)} onChange={changeHandler}>
+      <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant="h6" sx={sx.title}>
@@ -196,15 +161,18 @@ export function OrderForm({
               <Grid item xs={12} sm={6}>
                 <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
               </Grid>
+
               {addressFields.map(field => (
                 <Grid key={field} item xs={12} sm={6}>
-                  <HFTextField name={field} label={t(field)} />
+                  <HFTextField name={field} label={t(field)} onChange={changeDeliveryHandler} />
                 </Grid>
               ))}
+
               <Grid item xs>
                 <HFTextField sx={sx.textarea} multiline rows={3} name="comment" label={t('comment')} />
               </Grid>
             </Grid>
+
             <OrderFormDocket
               productsCount={productsCount}
               cost={cost}

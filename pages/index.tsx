@@ -1,12 +1,11 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
 import translations from './Main.i18n.json';
 import { useLocalTranslation } from '../hooks/useLocalTranslation';
 import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
-import { useAppSelector } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetPageQuery } from '../store/api/pageApi';
 import { useGetPromotionListQuery } from '../store/api/promotionApi';
@@ -18,7 +17,7 @@ import {
 } from 'store/api/favoriteApi';
 
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { useAppNavigation } from 'components/Navigation'
+import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
@@ -44,7 +43,7 @@ const Home: NextPage = () => {
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { data: categories, isLoading: categoriesIsLoading } = useGetCategoryListQuery();
   const { data: products, isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });

@@ -1,9 +1,6 @@
 import { ITranslatableString } from '../@types/entities/ITranslatableString';
 
-type TranslatableString = Omit<
-  ITranslatableString,
-  'id' | 'createdAt' | 'updatedAt'
->;
+type TranslatableString = Omit<ITranslatableString, 'id' | 'createdAt' | 'updatedAt'>;
 
 type Characteristic = {
   label: TranslatableString;
@@ -26,6 +23,26 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
         key: 'Russia',
         label: { ru: 'Россия', en: 'Russia' },
       },
+      {
+        key: 'Spain',
+        label: { ru: 'Испания', en: 'Spain' },
+      },
+      {
+        key: 'Italy',
+        label: { ru: 'Италия', en: 'Italy' },
+      },
+      {
+        key: 'France',
+        label: { ru: 'Франция', en: 'France' },
+      },
+      {
+        key: 'Holland',
+        label: { ru: 'Голландия', en: 'Holland' },
+      },
+      {
+        key: 'GreatBritain',
+        label: { ru: 'Великобритания', en: 'Great Britain' },
+      },
     ],
   },
   timeOfOrigin: {
@@ -36,31 +53,38 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
     categoryKey: 'all',
     values: [
       {
+        key: 'without',
+        label: {
+          ru: 'Без выдержки',
+          en: 'Without exposure',
+        },
+      },
+      {
         key: 'oneMonth',
         label: {
           ru: 'От 1 месяца',
-          en: 'От 1 месяца',
+          en: 'From 1 month',
         },
       },
       {
         key: 'threeMonth',
         label: {
           ru: 'От 3 месяцев',
-          en: 'От 3 месяцев',
+          en: 'From 3 month',
         },
       },
       {
         key: 'sixMonth',
         label: {
           ru: 'От 6 месяцев',
-          en: 'От 6 месяцев',
+          en: 'From 6 month',
         },
       },
       {
         key: 'oneYear',
         label: {
           ru: 'От 1 года',
-          en: 'От 1 года',
+          en: 'From 1 year',
         },
       },
     ],
@@ -73,7 +97,51 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
     categoryKey: 'meat',
     values: [
       {
-        key: 'sausages',
+        key: 'beef',
+        label: {
+          ru: 'Говядина',
+          en: 'Beef',
+        },
+      },
+      {
+        key: 'pork',
+        label: {
+          ru: 'Свинина',
+          en: 'Pork',
+        },
+      },
+      {
+        key: 'sheep',
+        label: {
+          ru: 'Овечье',
+          en: 'Sheep',
+        },
+      },
+      {
+        key: 'goat',
+        label: {
+          ru: 'Козье',
+          en: 'Goat',
+        },
+      },
+      {
+        key: 'mixed',
+        label: {
+          ru: 'Смешанный',
+          en: 'Mixed',
+        },
+      },
+    ],
+  },
+  productType: {
+    label: {
+      ru: 'Тип продукта',
+      en: 'Product type',
+    },
+    categoryKey: 'meat',
+    values: [
+      {
+        key: 'sausage',
         label: {
           ru: 'Колбаса',
           en: 'Sausage',
@@ -103,10 +171,10 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
     ],
   },
   processingType: {
-    label: { ru: 'Тип приготовления', en: 'Processing type' },
+    label: { ru: 'Тип обработки', en: 'Processing type' },
     categoryKey: 'meat',
     values: [
-      { key: 'Boiled', label: { ru: 'Вареная', en: 'Boiled' } },
+      { key: 'boiled', label: { ru: 'Варёное', en: 'Boiled' } },
       {
         key: 'hotSmoked',
         label: { ru: 'Горячего копчения', en: 'Hot smoked' },
@@ -120,7 +188,7 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
         label: { ru: 'Вяленое', en: 'Dried' },
       },
       {
-        key: 'Dry-cured',
+        key: 'dryCured',
         label: { ru: 'Сыровяленое', en: 'Dry-cured' },
       },
     ],
@@ -221,7 +289,7 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
         },
       },
       {
-        key: 'Washed',
+        key: 'washed',
         label: {
           ru: 'Мытая',
           en: 'Washed',

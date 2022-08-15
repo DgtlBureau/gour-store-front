@@ -40,6 +40,7 @@ export function Main() {
               <PACredentialsCard
                 name={`${currentUser.firstName} ${currentUser.lastName}`}
                 phone={currentUser.phone}
+                email={currentUser.email}
                 photo={currentUser.avatar?.small}
                 onClickMore={goToCredentials}
               />

@@ -4,6 +4,7 @@ export enum Path {
   PERSONAL_AREA = 'personal-area',
 
   BASKET = 'basket',
+  REPLENISHMENT = 'replenishment',
 
   AUTH = 'auth',
   SIGN_UP = 'signup',

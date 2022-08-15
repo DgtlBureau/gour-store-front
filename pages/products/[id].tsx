@@ -4,7 +4,7 @@ import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppSelector } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
@@ -31,13 +31,17 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-import { useAppNavigation } from 'components/Navigation'
+import { useAppNavigation } from 'components/Navigation';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
-  const { goToProductPage, language, query: { id } } = useAppNavigation();
+  const {
+    goToProductPage,
+    language,
+    query: { id },
+  } = useAppNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
@@ -208,7 +212,9 @@ export default function Product() {
               />
             )}
 
-            {productComments.length && <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />}
+            {productComments.length && (
+              <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
+            )}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>

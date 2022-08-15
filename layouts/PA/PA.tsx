@@ -1,29 +1,31 @@
 import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCityListQuery } from '../../store/api/cityApi';
-import { useGetCurrentUserQuery } from '../../store/api/currentUserApi';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { useAppNavigation } from 'components/Navigation';
+import { useAppSelector } from 'hooks/store';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { PAMenu } from '../../components/PA/Menu/Menu';
-import { Path } from '../../constants/routes';
 import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { Path } from '../../constants/routes';
 
 import sx from './PA.styles';
-import { PrivateLayout } from 'layouts/Private/Private';
+
 export interface PALayoutProps {
   children?: ReactNode;
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } = useAppNavigation();
+  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } =
+    useAppNavigation();
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -31,6 +33,7 @@ export function PALayout({ children }: PALayoutProps) {
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [signOut] = useSignOutMutation();
+  const [changeCity] = useChangeCurrentCityMutation();
 
   const { t } = useLocalTranslation(translations);
 
@@ -40,9 +43,9 @@ export function PALayout({ children }: PALayoutProps) {
       name: city.name[language],
     })) || [];
 
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
@@ -68,9 +71,6 @@ export function PALayout({ children }: PALayoutProps) {
       path: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
     },
   ];
-
-  // TO DO
-  const changeCity = (id: number) => ({});
 
   return (
     <PrivateLayout>

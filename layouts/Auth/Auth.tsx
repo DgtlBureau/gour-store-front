@@ -7,6 +7,7 @@ import stripes from '../../assets/images/stripes.svg';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'store/selectors/auth';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useAppSelector } from 'hooks/store';
 
 const sx = {
   layout: {
@@ -40,7 +41,7 @@ export interface AuthLayoutProps {
 export function AuthLayout({ children }: AuthLayoutProps) {
   const { goToHome } = useAppNavigation();
   const { isFetching } = useGetCurrentUserQuery();
-  const isAuth = useSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
 
   if (isFetching) return null;
 

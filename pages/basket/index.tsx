@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import {
   addBasketProduct,
@@ -24,6 +23,7 @@ import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/Info/Block/Block';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 
 const sx = {
   title: {
@@ -40,17 +40,17 @@ const sx = {
 export function Basket() {
   const { goToHome, goToOrder, language } = useAppNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
   const currency = 'cheeseCoin';
 
-  const productsInOrder = useSelector(selectProductsInOrder);
-  const count = useSelector(selectedProductCount);
-  const weight = useSelector(selectedProductWeight);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const count = useAppSelector(selectedProductCount);
+  const weight = useAppSelector(selectedProductWeight);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   //TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
@@ -119,12 +119,13 @@ export function Basket() {
                 <InfoBlock
                   sx={{ marginTop: '10px' }}
                   text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  link={{ label: t('continueShopping'), path: '/' }}
                 />
               )}
               <InfoBlock
                 sx={{ marginTop: '10px' }}
                 text={t('aboutDelivery')}
-                link={{ label: t('continueShopping'), path: '/' }}
+                link={{ label: t('detailed'), path: '/' }}
               />
             </Grid>
           </Grid>

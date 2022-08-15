@@ -37,10 +37,14 @@ export const sx = {
   icon: {
     color: theme.palette.common.white,
   },
+  btnGroup: {
+    minWidth: '180px',
+  },
   action: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    whiteSpace: 'nowrap',
   },
 
   favoriteBtn: {
