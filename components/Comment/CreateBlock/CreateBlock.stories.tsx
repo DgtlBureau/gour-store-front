@@ -13,6 +13,8 @@ const Template: ComponentStory<typeof CommentCreateBlock> = function (args: Comm
 };
 export const DefaultCommentCreateBlock = Template.bind({});
 
-const props: Partial<CommentCreateBlockProps> = {};
+const props: Partial<CommentCreateBlockProps> = {
+  onCreate: () => Promise.reject(1),
+};
 
 DefaultCommentCreateBlock.args = props;

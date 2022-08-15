@@ -6,10 +6,13 @@
     "review": "Текст отзыва",
     "accept": "Отправить отзыв",
     "alert": {
-      "title": "Спасибо!",
-      "message": {
-        "1": "Отзыв отправлен на модерацию.",
-        "2": "Скоро мы его опубликуем."
+      "positive": {
+        "title": "Спасибо!",
+        "message": "Отзыв отправлен на модерацию.\nСкоро мы его опубликуем."
+      },
+      "negative": {
+        "title": "Ошибка создания комментария.",
+        "message": "Пожалуйста, повторите позже."
       }
     }
   },
@@ -20,10 +23,13 @@
     "review": "Review text",
     "accept": "Send review",
     "alert": {
-      "title": "Thank you!",
-      "message": {
-        "1": "Review sent for moderation.",
-        "2": "We will publish it soon."
+      "positive": {
+        "title": "Thank you!",
+        "message": "Review sent for moderation.\nWe will publish it soon."
+      },
+      "negative": {
+        "title": "Error creating comment.",
+        "message": "Please try again later."
       }
     }
   }

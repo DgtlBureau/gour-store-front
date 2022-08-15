@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import { CommentDto } from '../../@types/dto/comment.dto';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
@@ -99,21 +100,8 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = async (comment: { value: number; comment: string }) => {
-    try {
-      await fetchCreateProductGrade({ productId, ...comment }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Комментарий создан',
-        type: NotificationType.SUCCESS,
-      });
-    } catch (error) {
-      console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания комментария',
-        type: NotificationType.DANGER,
-      });
-    }
-  };
+  const onCreateComment = (comment: CommentDto) =>
+    fetchCreateProductGrade({ productId, ...comment }).unwrap();
 
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
@@ -212,7 +200,7 @@ export default function Product() {
               />
             )}
 
-            {productComments.length && (
+            {!!productComments.length && (
               <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
             )}
 
