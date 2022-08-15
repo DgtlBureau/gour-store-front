@@ -84,7 +84,7 @@ export function MobileMenu({
 
   const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
-  const currentCity = cities.find(city => city.id === selectedCityId);
+  const currentCity = cities.find(city => city?.id === selectedCityId);
   const currentLanguage = languages.find(language => language.value === locale);
 
   const currencySymbol = getCurrencySymbol(currency);

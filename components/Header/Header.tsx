@@ -92,7 +92,7 @@ export function Header({
 
   const catalogIsHidden = moneyAmount < 1000;
 
-  const currentCity = cities.find(it => it.id === selectedCityId);
+  const currentCity = cities.find(it => it?.id === selectedCityId);
 
   const deployMenu = () => setIsMenuDeployed(!isMenuDeployed);
 
