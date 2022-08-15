@@ -11,10 +11,12 @@ export default {
 const Template: ComponentStory<typeof CommentCreateBlock> = function (args: CommentCreateBlockProps) {
   return <CommentCreateBlock {...args} />;
 };
-export const DefaultCommentCreateBlock = Template.bind({});
 
-const props: Partial<CommentCreateBlockProps> = {
-  onCreate: () => Promise.reject(1),
+export const PositiveCommentCreateBlock = Template.bind({});
+PositiveCommentCreateBlock.args = {} as Partial<CommentCreateBlockProps>;
+
+export const NegativeCommentCreateBlock = Template.bind({});
+NegativeCommentCreateBlock.args = {
+  onCreate: () => Promise.reject(),
 };
 
-DefaultCommentCreateBlock.args = props;
