@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
 import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppSelector } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
@@ -19,10 +18,8 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { LocalConfig } from 'hooks/useLocalTranslation';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
-import { Path } from '../../constants/routes';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -34,25 +31,25 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+import { useAppNavigation } from 'components/Navigation';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
+  const {
+    goToProductPage,
+    language,
+    query: { id },
+  } = useAppNavigation();
 
-  const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const { id } = router.query;
-
-  const dispatch = useDispatch();
+  const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
-
-  const goToProductPage = (productId: number) => router.push(`/${Path.PRODUCTS}/${productId}`);
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -118,6 +115,8 @@ export default function Product() {
     }
   };
 
+  const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
+
   const productComments =
     comments.map(grade => {
       return {
@@ -169,7 +168,7 @@ export default function Product() {
                   gradesCount={product.gradesCount || 0}
                   commentsCount={product.commentsCount || 0}
                   characteristics={productCharacteristics}
-                  onClickComments={() => {}}
+                  onClickComments={onClickComments}
                 />
 
                 <ProductActions
@@ -213,7 +212,9 @@ export default function Product() {
               />
             )}
 
-            {productComments.length !== 0 && <ProductReviews sx={sx.reviews} reviews={productComments} />}
+            {productComments.length && (
+              <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
+            )}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>

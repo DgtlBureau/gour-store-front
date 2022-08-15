@@ -19,10 +19,10 @@ export const getFormattedAddressesList = (addressList: IOrderProfile[], language
 
 export const getFormattedOrdersList = (orderList: IOrder[], currency: Currency) => {
   return orderList.map(it => ({
-    id: it.crmInfo.id,
-    date: new Date(it.order.createdAt),
-    status: it.crmInfo.status.name,
-    sum: 0,
+    id: it.crmInfo?.id || '####',
+    date: new Date(it.createdAt),
+    status: it.crmInfo?.status.name,
+    sum: it.totalSum,
     currency,
   }));
 };

@@ -1,7 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import {
   addBasketProduct,
@@ -14,7 +12,8 @@ import {
   removeProduct,
 } from '../../store/slices/orderSlice';
 import translation from './Basket.i18n.json';
-import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useAppNavigation } from 'components/Navigation';
 import { Button } from '../../components/UI/Button/Button';
 import { CartInfo } from '../../components/Cart/Info/Info';
 import { ShopLayout } from '../../layouts/Shop/Shop';
@@ -24,6 +23,7 @@ import { Typography } from '../../components/UI/Typography/Typography';
 import { InfoBlock } from '../../components/UI/Info/Block/Block';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 
 const sx = {
   title: {
@@ -38,29 +38,24 @@ const sx = {
 };
 
 export function Basket() {
-  const router = useRouter();
+  const { goToHome, goToOrder, language } = useAppNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
-
   const currency = 'cheeseCoin';
 
-  const productsInOrder = useSelector(selectProductsInOrder);
-  const count = useSelector(selectedProductCount);
-  const weight = useSelector(selectedProductWeight);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const count = useAppSelector(selectedProductCount);
+  const weight = useAppSelector(selectedProductWeight);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   //TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
-
-  const goToHome = () => router.push('/');
-  const goToOrder = () => router.push('/order');
 
   const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
@@ -124,12 +119,13 @@ export function Basket() {
                 <InfoBlock
                   sx={{ marginTop: '10px' }}
                   text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
+                  link={{ label: t('continueShopping'), path: '/' }}
                 />
               )}
               <InfoBlock
                 sx={{ marginTop: '10px' }}
                 text={t('aboutDelivery')}
-                link={{ label: t('continueShopping'), path: '/' }}
+                link={{ label: t('detailed'), path: '/' }}
               />
             </Grid>
           </Grid>

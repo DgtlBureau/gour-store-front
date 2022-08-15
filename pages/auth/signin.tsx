@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
+import { useAppNavigation } from 'components/Navigation'
 import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
 import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
 import {
@@ -17,7 +17,7 @@ import { NotificationType } from '../../@types/entities/Notification';
 type SignInStage = 'credentials' | 'recovery';
 
 export default function SignIn() {
-  const router = useRouter();
+  const { goToIntro, goToSignUp, goToHome } = useAppNavigation();
 
   const [sendCode] = useSendCodeMutation();
   const [signIn] = useSignInMutation();
@@ -26,11 +26,8 @@ export default function SignIn() {
   const [credentials, setCredentials] = useState({} as SignInDto);
   const [recoveryData, setRecoveryData] = useState({} as PasswordRecoveryDto);
 
-  const goToIntro = () => router.push('/auth');
   const goToCredentials = () => setStage('credentials');
   const goToRecovery = () => setStage('recovery');
-  const goToRegistration = () => router.push('/auth/signup');
-  const goToHome = () => router.push('/');
 
   // finish it later
   const sendSMS = (phone: string) => {
@@ -76,7 +73,7 @@ export default function SignIn() {
         defaultValues={credentials}
         onBack={goToIntro}
         onPasswordChange={goToRecovery}
-        onRegister={goToRegistration}
+        onRegister={goToSignUp}
         onSubmit={authorize}
       />
     ),

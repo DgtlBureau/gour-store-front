@@ -2,7 +2,6 @@ import { AppBar, Badge, Container, Collapse, Grid, SxProps } from '@mui/material
 import React, { useState } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -13,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { useAppNavigation } from 'components/Navigation';
 import { CitySelect } from './CitySelect';
 import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from '../UI/Box/Box';
@@ -23,7 +23,6 @@ import { IconButton } from '../UI/IconButton/IconButton';
 import { getCurrencySymbol } from '../../helpers/currencyHelper';
 import { Currency } from '../../@types/entities/Currency';
 import { Language } from '../../@types/entities/Language';
-import { Path } from '../../constants/routes';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RusFlagIcon from './../../assets/icons/flags/rus.svg';
 import UKFlagIcon from './../../assets/icons/flags/uk.svg';
@@ -83,7 +82,7 @@ export function Header({
   onClickReplenishment,
   onClickSignout,
 }: HeaderProps) {
-  const router = useRouter();
+  const { goToGame, goToHome } = useAppNavigation();
 
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
@@ -104,9 +103,6 @@ export function Header({
     onChangeCity(id);
     closeCityModal();
   };
-
-  const goToGame = () => router.push(`/${Path.GAME}`);
-  const goToCatalog = () => router.push(Path.HOME);
 
   return (
     <>
@@ -160,7 +156,7 @@ export function Header({
 
               {isGame ? (
                 <IconButton
-                  onClick={goToCatalog}
+                  onClick={goToHome}
                   color="inherit"
                   sx={{
                     ...headerSx.icon,

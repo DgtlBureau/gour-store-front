@@ -8,15 +8,13 @@ import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 
 import noPhoto from './../../../../assets/no-image.svg';
+import { Stack } from '@mui/material';
 
 const sx = {
   content: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  name: {
-    marginBottom: '10px',
   },
   photo: {
     height: '92px',
@@ -30,17 +28,18 @@ export type PACredentialsCardProps = {
   name: string;
   phone: string;
   photo?: string;
+  email?: string;
   onClickMore(): void;
 };
 
-export function PACredentialsCard({ name, phone, photo, onClickMore }: PACredentialsCardProps) {
+export function PACredentialsCard({ name, phone, photo, email, onClickMore }: PACredentialsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
       <Box sx={sx.content}>
-        <Box>
-          <Box sx={sx.name}>
+        <Stack spacing={1}>
+          <Box>
             <Typography variant="body2" color="text.muted">
               {t('name')}
             </Typography>
@@ -53,7 +52,16 @@ export function PACredentialsCard({ name, phone, photo, onClickMore }: PACredent
             </Typography>
             <Typography variant="body1">{phone}</Typography>
           </Box>
-        </Box>
+
+          {email && (
+            <Box>
+              <Typography variant="body2" color="text.muted">
+                E-mail
+              </Typography>
+              <Typography variant="body1">{email}</Typography>
+            </Box>
+          )}
+        </Stack>
 
         <Box sx={sx.photo}>
           <Image src={photo || noPhoto} objectFit="cover" height={92} width={92} alt="" />

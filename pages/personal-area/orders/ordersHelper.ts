@@ -5,13 +5,9 @@ import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
 import { getFullName } from 'utils/getFullName';
 
-export function formatOrderData(
-  order: IOrder,
-  lang: 'ru' | 'en',
-  currency: Currency
-): OrdersCardProps {
-  const client = getFullName(order.order.firstName, order.order.lastName || '');
-  const products = order.order.orderProducts.map(product => ({
+export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): OrdersCardProps {
+  const client = getFullName(order.firstName, order.lastName || '');
+  const products = order.orderProducts.map(product => ({
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
     weight: product?.weight,
@@ -25,16 +21,18 @@ export function formatOrderData(
     amount: promotion.value,
   }));
 
-  const createdAt = new Date(order.order.createdAt);
+  const createdAt = new Date(order.createdAt);
+
+  const { city, street, house, apartment } = order.orderProfile;
 
   return {
-    title: order.crmInfo.id,
+    title: order.crmInfo?.id || '####',
     status: {
-      title: order.crmInfo.status.name,
-      color: order.crmInfo.status.color,
+      title: order.crmInfo?.status.name,
+      color: order.crmInfo?.status.color,
     },
     createdAt,
-    address: 'Test',
+    address: `${city}, ${street}, ${house}, кв. ${apartment},`,
     client,
     currency,
     products,

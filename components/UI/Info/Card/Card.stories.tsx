@@ -13,7 +13,7 @@ export const DefaultInfoCard = Template.bind({});
 const props: Partial<InfoCardProps> = {
   title: 'title',
   footerText: 'footer text',
-  children: 'children',
+  children: 'Lorem ipsum con-tent '.repeat(100),
 };
 
 DefaultInfoCard.args = props;

@@ -1,19 +1,20 @@
-import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
-import { useSelector } from 'react-redux';
+
+import { useAppSelector } from 'hooks/store';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { selectIsAuth } from 'store/selectors/auth';
+import { useAppNavigation } from 'components/Navigation';
 
 export type PrivateLayoutProps = PropsWithChildren<{}>;
 
 export function PrivateLayout({ children }: PrivateLayoutProps) {
   const { isLoading, isError } = useGetCurrentUserQuery();
-  const router = useRouter();
-  const isAuth = useSelector(selectIsAuth);
+  const { goToIntro } = useAppNavigation();
+  const isAuth = useAppSelector(selectIsAuth);
 
   if (isLoading) return null;
   if (isError || !isAuth) {
-    router.push('/auth');
+    goToIntro();
     return null;
   }
   return <>{children}</>;

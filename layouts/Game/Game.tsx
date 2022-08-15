@@ -1,12 +1,13 @@
 import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { useMediaQuery } from '@mui/material';
 
 import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { useSignOutMutation } from 'store/api/authApi';
+import { useAppNavigation } from 'components/Navigation';
+import { useAppSelector } from 'hooks/store';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
@@ -24,7 +25,7 @@ export interface GameLayoutProps {
 }
 
 export function GameLayout({ currency, language, children }: GameLayoutProps) {
-  const router = useRouter();
+  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -39,21 +40,16 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
       name: city.name[language],
     })) || [];
 
-  const count = useSelector(selectedProductCount);
-  const sum = useSelector(selectedProductSum);
-  const sumDiscount = useSelector(selectedProductDiscount);
+  const count = useAppSelector(selectedProductCount);
+  const sum = useAppSelector(selectedProductSum);
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
-  const screenHeight = window.screen.height;
-  const screenWidth = window.screen.width;
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isPortrait = useMediaQuery('(orientation: portrait)');
 
-  const flipIsNeeded = screenWidth < 600 || (screenWidth < 900 && screenHeight > screenWidth);
-
-  const goToFavorites = () => router.push('/favorites');
-  const goToBasket = () => router.push('/basket');
-  const goToPersonalArea = () => router.push('/personal-area');
-  const goToReplenishment = () => router.push('/replenishment');
+  const flipIsNeeded = isMobile && isPortrait;
 
   return (
     <Box sx={sx.layout}>

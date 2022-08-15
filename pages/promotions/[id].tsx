@@ -8,7 +8,7 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import translations from './Promotion.i18n.json';
-import { useLocalTranslation, LocalConfig } from './../../hooks/useLocalTranslation';
+import { useLocalTranslation } from './../../hooks/useLocalTranslation';
 import { addBasketProduct, subtractBasketProduct } from '../../store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
@@ -17,21 +17,26 @@ import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
-import { useAppSelector } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { Path } from '../../constants/routes';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 import { sx } from './Promotion.styles';
+import { useAppNavigation } from 'components/Navigation';
 
 export default function Promotion() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translations);
 
-  const router = useRouter();
-  const { id } = router.query;
+  const {
+    goToHome,
+    goToProductPage,
+    language,
+    query: { id },
+  } = useAppNavigation();
   const promotionId = id ? +id : 0;
 
   const { data: promotion, isLoading, isError } = useGetPromotionQuery(promotionId, { skip: !id });
@@ -41,14 +46,11 @@ export default function Promotion() {
 
   const basket = useAppSelector(state => state.order);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
   const currency = 'cheeseCoin';
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
-  if (!promotionId) return router.push('/');
-
-  const goToProductPage = (id: number) => router.push(`/${Path.PRODUCTS}/${id}`);
+  if (!promotionId) return goToHome();
 
   const elect = async (id: number, isElect: boolean) => {
     if (isElect) {

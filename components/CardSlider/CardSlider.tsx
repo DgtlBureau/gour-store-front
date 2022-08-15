@@ -1,12 +1,13 @@
-import React, { CSSProperties, ReactNode, useState } from 'react';
+import React, { CSSProperties, ReactNode, useEffect, useState } from 'react';
 
-import { Button, ButtonGroup, Stack, SxProps } from '@mui/material';
+import { ButtonGroup, Stack, SxProps } from '@mui/material';
 // eslint-disable-next-line
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Grid } from 'swiper';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box } from '../UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
 import { Typography } from '../UI/Typography/Typography';
 import cardCss from './CardSlider.module.scss';
 
@@ -53,12 +54,18 @@ type Props = {
 export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4, spaceBetween = 10, sx }: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
+  const [edge, setEdge] = useState({
+    isBeginning: true,
+    isEnd: false,
+  });
+
   const cardHeight = slider?.el?.children[0]?.children[0]?.scrollHeight || 0;
 
   const screenWidth = window.screen.width;
 
   const withArrows = cardsList.length > rows * slidesPerView || screenWidth < 1200;
 
+  const slideChangeHandler = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
   return (
     <Box sx={{ ...sliderSx.container, ...sx }}>
       <Stack sx={{ width: '100%' }} direction="row" alignItems="center" justifyContent="space-between">
@@ -68,11 +75,11 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
 
         {withArrows && (
           <ButtonGroup sx={sliderSx.arrows}>
-            <Button onClick={() => slider?.slidePrev()}>
+            <Button variant="outlined" disabled={edge.isBeginning} onClick={() => slider?.slidePrev()}>
               <ArrowForwardIosIcon fontSize="small" sx={sliderSx.backArrow} />
             </Button>
 
-            <Button onClick={() => slider?.slideNext()}>
+            <Button variant="outlined" disabled={edge.isEnd} onClick={() => slider?.slideNext()}>
               <ArrowForwardIosIcon fontSize="small" />
             </Button>
           </ButtonGroup>
@@ -96,6 +103,7 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
           modules={[Grid]}
           className="mySwiper"
           slidesPerView="auto"
+          onSlideChange={slideChangeHandler}
         >
           {cardsList.map((card, i) => (
             <SwiperSlide key={i} style={{ height: `${cardHeight}px` }} className={cardCss.fit}>

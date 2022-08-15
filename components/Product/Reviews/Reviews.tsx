@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { Grid, SxProps } from '@mui/material';
 
 import translations from './Reviews.i18n.json';
@@ -48,13 +48,16 @@ const sxReviews = {
   },
 };
 
-export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
+export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(function ProductReviews(
+  { reviews, sx },
+  ref
+) {
   const { t } = useLocalTranslation(translations);
 
   let ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
-    const reviewsCount = reviews.filter(review => review.value === i).length;
+    const reviewsCount = reviews.filter((review) => review.value === i).length;
     ratingStats.push({
       grade: i,
       count: reviewsCount,
@@ -63,7 +66,7 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
   }
 
   return (
-    <Grid sx={{ ...sxReviews.container, ...sx }} container direction="row">
+    <Grid sx={{ ...sxReviews.container, ...sx }} container direction="row" ref={ref}>
       <Grid item xs={12} md={3}>
         <Box sx={sxReviews.stats}>
           <Typography variant="h5" color="primary" sx={sxReviews.title}>
@@ -101,4 +104,4 @@ export const ProductReviews = ({ reviews, sx }: ProductReviewsProps) => {
       </Grid>
     </Grid>
   );
-};
+});

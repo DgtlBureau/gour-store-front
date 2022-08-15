@@ -1,5 +1,6 @@
 {
   "ru": {
+    "personal-area": "Личный кабинет",
     "main": "Главная",
     "orders": "Заказы",
     "credentials": "Личные данные",
@@ -7,6 +8,7 @@
     "discounts": "Система скидок"
   },
   "en": {
+    "personal-area": "Personal area",
     "main": "Main",
     "orders": "Orders",
     "credentials": "Credentials",
