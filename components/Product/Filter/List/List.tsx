@@ -9,18 +9,17 @@ import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/
 import { CHARACTERISTICS } from '../../../../constants/characteristics';
 import { ICategory } from '../../../../@types/entities/ICategory';
 import { Language } from '../../../../@types/entities/Language';
+import { ProductCharacteristics, FiltersCharacteristic } from '../../../../@types/entities/IProduct'
 
 export type Filters = {
   isReversed: boolean;
   category: string;
-  characteristics: {
-    [key: string]: string[];
-  };
+  characteristics: FiltersCharacteristic;
 };
 
 export type CatalogFilterProps = {
   categories: ICategory[];
-  filters: Filters;
+  filters: FiltersCharacteristic;
   language: Language;
   sx?: SxProps;
   onReverse: () => void;
@@ -37,7 +36,8 @@ export function ProductFilterList({
   onCategoryChange,
   onCharacteristicChange,
 }: CatalogFilterProps) {
-  const features = Object.keys(CHARACTERISTICS).filter(
+  const characteristicKeys = Object.keys(CHARACTERISTICS) as (keyof ProductCharacteristics)[];
+  const features = characteristicKeys.filter(
     it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all'
   );
 
@@ -69,7 +69,7 @@ export function ProductFilterList({
           <ProductFilterMultiselect
             key={feature}
             title={CHARACTERISTICS[feature].label[language]}
-            selected={filters.characteristics[feature] || []}
+            selected={filters.characteristics[feature] || []} // FIXME: remove type error
             options={CHARACTERISTICS[feature].values.map(it => ({ value: it.key, label: it.label[language] }))}
             sx={{ marginRight: '10px' }}
             onChange={selected => onCharacteristicChange(feature, selected)}

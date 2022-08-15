@@ -12,11 +12,12 @@ import { Button } from '../../UI/Button/Button';
 import { ProductFilterList, Filters } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-import { IProduct } from '../../../@types/entities/IProduct';
+import { IProduct, ProductCharacteristics, FiltersCharacteristic } from '../../../@types/entities/IProduct';
 import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
+import { KeysMatching } from '../../../@types';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import catalogSx from './Catalog.styles';
@@ -55,7 +56,7 @@ export function ProductCatalog({
   onDetail,
 }: ProductCatalogProps) {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<FiltersCharacteristic>({
     isReversed: false,
     category: 'all',
     characteristics: {},
@@ -85,9 +86,10 @@ export function ProductCatalog({
     });
 
   const checkCategory = (key: string) => filters.category === 'all' || key === filters.category;
-  const checkCharacteristics = (characteristics: { [key: string]: string }) =>
-    Object.keys(filters.characteristics).every(
-      it => filters.characteristics[it].length === 0 || filters.characteristics[it].includes(characteristics[it])
+
+  const checkCharacteristics = (characteristics: ProductCharacteristics) =>
+    (Object.keys(filters.characteristics) as (keyof ProductCharacteristics)[]).every(
+      it => filters.characteristics[it]?.length === 0 || filters.characteristics[it]?.includes(characteristics[it]!)
     );
 
   const productList = categories

@@ -18,7 +18,7 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { IProduct } from '../../@types/entities/IProduct';
+import { IProduct, ProductCharacteristics } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
 import sx from './Product.styles';
@@ -128,8 +128,9 @@ export default function Product() {
       };
     }) || [];
 
+  const characteristicKeys = Object.keys(product?.characteristics || {}) as (keyof ProductCharacteristics)[]
   const productCharacteristics =
-    Object.keys(product?.characteristics || {})
+    characteristicKeys
       .filter(key => product?.characteristics[key])
       .map(key => {
         const characteristicValue = CHARACTERISTICS[key]?.values.find(
