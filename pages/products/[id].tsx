@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
@@ -24,8 +23,6 @@ import { CHARACTERISTICS } from 'constants/characteristics';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
