@@ -76,7 +76,7 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
         {!!discount && (
           <>
             <Typography variant="body2" sx={sx.oldPrice}>
-              {pricePerCount}
+              {pricePerCount}&nbsp;
               {getCurrencySymbol(currency)}
             </Typography>
             &nbsp;
@@ -93,7 +93,7 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
 
       <Box sx={sx.total}>
         <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sx.price}>
-          {pricePerCount * (1 - discount / 100)}
+          {pricePerCount * (1 - discount / 100)}&nbsp;
           {getCurrencySymbol(currency)}
         </Typography>
       </Box>
