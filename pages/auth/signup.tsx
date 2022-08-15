@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
@@ -12,10 +11,10 @@ import {
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
-import { ITranslatableString } from '../../@types/entities/ITranslatableString';
 import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
 import { SignUpDto } from '../../@types/dto/signup.dto';
 import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
+import { useAppNavigation } from 'components/Navigation';
 import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
 import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
@@ -37,16 +36,14 @@ import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 
 export default function SignUp() {
-  const router = useRouter();
-
-  const locale = (router.locale || 'ru') as keyof ITranslatableString;
+  const { goToIntro, goToSignIn, language } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: roles } = useGetRoleListQuery();
 
   const convertedCities = cities
     ? cities.map(city => ({
-        label: city.name[locale].toString(),
+        label: city.name[language].toString(),
         value: city.id.toString(),
       }))
     : [];
@@ -62,13 +59,11 @@ export default function SignUp() {
   const [referralCode, setReferralCode] = useState('');
   const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
-  const goToIntro = () => router.push('/auth');
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
   const goToCredentials = () => setStage('credentials');
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
-  const goToSignIn = () => router.push('/auth/signin');
 
   const sendSMS = async (phone: string) => {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success

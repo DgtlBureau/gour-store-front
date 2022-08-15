@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Grid, Stack } from '@mui/material';
 
 import translation from './Order.i18n.json';
-import { useLocalTranslation, LocalConfig } from 'hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { selectedProductCount, selectedProductSum, selectProductsInOrder } from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { removeProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
+import { useAppNavigation } from 'components/Navigation';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
 import { OrderCard } from 'components/Order/Card/Card';
@@ -18,7 +18,6 @@ import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 import { IProduct } from '../../@types/entities/IProduct';
-import { Path } from '../../constants/routes';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
@@ -47,7 +46,7 @@ const sx = {
 const DELIVERY_PRICE = 500;
 
 export function Order() {
-  const router = useRouter();
+  const { goToOrders, goToHome, language } = useAppNavigation();
 
   const { t } = useLocalTranslation(translation);
 
@@ -55,8 +54,6 @@ export function Order() {
 
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [fetchCreateOrder] = useCreateOrderMutation();
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency = 'cheeseCoin';
 
@@ -90,9 +87,6 @@ export function Order() {
   const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
     return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
   }, 0);
-
-  const goToMain = () => router.push('/');
-  const goToOrders = () => router.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`);
 
   const deleteProductFromOrder = (product: IProduct) => dispatch(removeProduct(product));
 
@@ -226,7 +220,7 @@ export function Order() {
               title={t('emptyBasket')}
               btn={{
                 label: t('toHome'),
-                onClick: goToMain,
+                onClick: () => goToHome,
               }}
             >
               <Typography variant="body1">{t('emptyBasketText')}</Typography>

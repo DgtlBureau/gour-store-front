@@ -1,13 +1,13 @@
 import React, { useState, Fragment } from 'react';
 import { Box, List, ListItemButton, Collapse, Divider } from '@mui/material';
-import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import Image from 'next/image';
 
 import AddIcon from '@mui/icons-material/Add';
 
 import translations from './Menu.i18n.json';
-import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useAppNavigation } from 'components/Navigation';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';
@@ -80,12 +80,10 @@ export function MobileMenu({
 
   const { t } = useLocalTranslation(translations);
 
-  const router = useRouter();
-
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { language } = useAppNavigation();
 
   const currentCity = cities.find(city => city.id === selectedCityId);
-  const currentLanguage = languages.find(language => language.value === locale);
+  const currentLanguage = languages.find(i => i.value === language);
 
   const currencySymbol = getCurrencySymbol(currency);
 

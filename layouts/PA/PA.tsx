@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { useRouter } from 'next/router';
 
 import translations from './PA.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
@@ -8,11 +7,11 @@ import { selectedProductCount, selectedProductSum, selectedProductDiscount } fro
 import { useGetCityListQuery } from '../../store/api/cityApi';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { useAppNavigation } from 'components/Navigation';
 import { useAppSelector } from 'hooks/store';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { PAMenu } from '../../components/PA/Menu/Menu';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
 import { contacts } from '../../constants/contacts';
 import { Currency } from '../../@types/entities/Currency';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -25,9 +24,8 @@ export interface PALayoutProps {
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const router = useRouter();
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } =
+    useAppNavigation();
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -38,8 +36,6 @@ export function PALayout({ children }: PALayoutProps) {
   const [changeCity] = useChangeCurrentCityMutation();
 
   const { t } = useLocalTranslation(translations);
-
-  const currentPath = router.pathname;
 
   const convertedCities =
     cities?.map(city => ({
@@ -76,13 +72,6 @@ export function PALayout({ children }: PALayoutProps) {
     },
   ];
 
-  const goToFavorites = () => router.push(`/${Path.FAVORITES}`);
-  const goToBasket = () => router.push(`/${Path.BASKET}`);
-  const goToPersonalArea = () => router.push(`/${Path.PERSONAL_AREA}`);
-  const goToReplenishment = () => router.push(`/${Path.REPLENISHMENT}`);
-
-  const changeChapter = (path: string) => path !== currentPath && router.push(path);
-
   return (
     <PrivateLayout>
       <Box sx={sx.layout}>
@@ -104,7 +93,7 @@ export function PALayout({ children }: PALayoutProps) {
         />
 
         <Box sx={sx.content}>
-          <PAMenu active={currentPath} menuList={menuList} onChange={changeChapter} />
+          <PAMenu active={pathname} menuList={menuList} onChange={changeChapter} />
           {children}
         </Box>
       </Box>

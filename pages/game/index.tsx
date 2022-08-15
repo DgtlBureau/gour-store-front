@@ -1,15 +1,12 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 
-import { LocalConfig } from 'hooks/useLocalTranslation';
 import { GameLayout } from 'layouts/Game/Game';
+import { useAppNavigation } from 'components/Navigation';
 import { GameMain } from 'components/Game/Main/Main';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 export function Game() {
-  const router = useRouter();
-
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { language } = useAppNavigation();
 
   const currency = 'cheeseCoin';
 

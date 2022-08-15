@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import {
   useGetOrderProfilesListQuery,
@@ -12,7 +11,7 @@ import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/
 import translations from './Addresses.i18n.json';
 
 import { PrivateLayout } from 'layouts/Private/Private';
-import { useLocalTranslation, LocalConfig } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from '../../../components/UI/Box/Box';
 import { Button } from '../../../components/UI/Button/Button';
@@ -24,6 +23,7 @@ import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
 
 import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
+import { useAppNavigation } from 'components/Navigation'
 
 const sx = {
   actions: {
@@ -36,9 +36,7 @@ const sx = {
 export function Addresses() {
   const { t } = useLocalTranslation(translations);
 
-  const router = useRouter();
-
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { language } = useAppNavigation();
 
   const { data: profiles } = useGetOrderProfilesListQuery();
   const { data: cities } = useGetCityListQuery();
@@ -57,7 +55,7 @@ export function Addresses() {
   const citiesList =
     cities?.map(city => ({
       value: city.id,
-      label: city.name[locale],
+      label: city.name[language],
     })) || [];
 
   const rollUpProfile = () => setExpandedProfileId(null);

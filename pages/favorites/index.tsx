@@ -1,24 +1,24 @@
-import { Grid, Stack } from '@mui/material';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { ShopLayout } from '../../layouts/Shop/Shop';
 import React from 'react';
+import { Grid, Stack } from '@mui/material';
+
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { ProductCard } from 'components/Product/Card/Card';
-import { LocalConfig } from '../../hooks/useLocalTranslation';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
-import { useRouter } from 'next/router';
+import { useAppNavigation } from 'components/Navigation';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
-import { IProduct } from '../../@types/entities/IProduct';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { ShopLayout } from '../../layouts/Shop/Shop';
+import { Typography } from '../../components/UI/Typography/Typography';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
+import { ProductCard } from 'components/Product/Card/Card';
+import { IProduct } from '../../@types/entities/IProduct';
 import { IOrderProduct } from '../../@types/entities/IOrderProduct';
 import { Currency } from '../../@types/entities/Currency';
+import { Language } from '../../@types/entities/Language';
 import { isProductFavorite } from './favoritesHelper';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { Path } from 'constants/routes';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
@@ -35,9 +35,7 @@ const sx = {
 
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const locale: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const { language, goToProductPage } = useAppNavigation();
 
   const currentCurrency: Currency = 'cheeseCoin';
 
@@ -66,9 +64,6 @@ export function Favorites() {
       }
     }
   };
-  const goToProduct = (id: number) => {
-    router.push(`/${Path.PRODUCTS}/${id}`);
-  };
 
   return (
     <PrivateLayout>
@@ -92,12 +87,12 @@ export function Favorites() {
                   product={product}
                   basket={basket.products}
                   currency={currentCurrency}
-                  locale={locale}
+                  language={language}
                   isElect={isProductFavorite(product.id, favoriteProducts)}
                   addToBasket={addToBasket}
                   removeFromBasket={removeFromBasket}
                   handleElect={handleElect}
-                  goToProductPage={goToProduct}
+                  goToProductPage={goToProductPage}
                 />
               ))}
             </Grid>
@@ -114,7 +109,7 @@ type FavoriteProductType = {
   product: IProduct;
   basket: IOrderProduct[];
   currency: Currency;
-  locale: 'en' | 'ru';
+  language: Language;
   isElect: boolean;
   addToBasket: (product: IProduct) => void;
   removeFromBasket: (product: IProduct) => void;
@@ -125,7 +120,7 @@ type FavoriteProductType = {
 const FavoriteProductCard = ({
   product,
   basket,
-  locale,
+  language,
   currency,
   isElect,
   addToBasket,
@@ -136,14 +131,12 @@ const FavoriteProductCard = ({
   const productInBasket = basket.find(it => it.product.id === product.id);
   const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
 
-  const onElect = () => {
-    handleElect(product.id, isElect);
-  };
+  const elect = () => handleElect(product.id, isElect);
 
   return (
     <ProductCard
-      title={product.title[locale]}
-      description={product.description[locale]}
+      title={product.title[language]}
+      description={product.description[language]}
       rating={product.grade}
       discount={product.discount}
       currentCount={count}
@@ -153,16 +146,10 @@ const FavoriteProductCard = ({
       currency={currency}
       inCart={!!productInBasket}
       isElected={isElect}
-      onAdd={() => {
-        addToBasket(product);
-      }}
-      onRemove={() => {
-        removeFromBasket(product);
-      }}
-      onElect={onElect}
-      onDetail={() => {
-        goToProductPage(product.id);
-      }}
+      onElect={elect}
+      onAdd={() => addToBasket(product)}
+      onRemove={() => removeFromBasket(product)}
+      onDetail={() => goToProductPage(product.id)}
     />
   );
 };

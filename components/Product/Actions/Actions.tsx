@@ -53,7 +53,7 @@ export const ProductActions = ({
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
           <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sxActions.price}>
-            {total}
+            {total}&nbsp;
             {getCurrencySymbol(currency)}
           </Typography>
         </Box>
@@ -87,7 +87,7 @@ export const ProductActions = ({
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
-                {count} {isWeightGood ? t('g') : t('pcs')}
+                {count}&nbsp;{isWeightGood ? t('kg') : t('pcs')}
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
