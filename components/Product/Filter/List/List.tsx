@@ -9,18 +9,11 @@ import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/
 import { CHARACTERISTICS } from '../../../../constants/characteristics';
 import { ICategory } from '../../../../@types/entities/ICategory';
 import { Language } from '../../../../@types/entities/Language';
-
-export type Filters = {
-  isReversed: boolean;
-  category: string;
-  characteristics: {
-    [key: string]: string[];
-  };
-};
+import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct'
 
 export type CatalogFilterProps = {
   categories: ICategory[];
-  filters: Filters;
+  filters: IFiltersCharacteristic;
   language: Language;
   sx?: SxProps;
   onReverse: () => void;

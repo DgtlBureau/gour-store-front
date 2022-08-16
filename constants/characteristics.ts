@@ -1,3 +1,4 @@
+import { IProductCharacteristics } from '../@types/entities/IProduct'
 import { ITranslatableString } from '../@types/entities/ITranslatableString';
 
 type TranslatableString = Omit<ITranslatableString, 'id' | 'createdAt' | 'updatedAt'>;
@@ -11,7 +12,7 @@ type Characteristic = {
   }[];
 };
 
-export const CHARACTERISTICS: Record<string, Characteristic> = {
+export const CHARACTERISTICS: Record<keyof IProductCharacteristics, Characteristic> = {
   country: {
     label: {
       ru: 'Страна происхождения',
@@ -327,4 +328,5 @@ export const CHARACTERISTICS: Record<string, Characteristic> = {
       },
     ],
   },
+  // TODO: добавить интеграцию с бэком/админкой по названиям ключей в соответствующей задаче
 };

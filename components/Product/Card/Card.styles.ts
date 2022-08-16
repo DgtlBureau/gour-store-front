@@ -66,7 +66,9 @@ const sx = {
     bottom: 6,
     right: 6,
     height: '26px',
-    borderRadius: '99px',
+    width: '26px',
+    overflow: 'hidden',
+    borderRadius: '50%',
   },
   rate: {
     margin: {

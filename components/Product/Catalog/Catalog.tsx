@@ -9,15 +9,17 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { ToggleButton } from '../../UI/ToggleButton/ToggleButton';
 import { Button } from '../../UI/Button/Button';
-import { ProductFilterList, Filters } from '../Filter/List/List';
+import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-import { IProduct } from '../../../@types/entities/IProduct';
+import { IProduct, IProductCharacteristics, IFiltersCharacteristic, ICharacteristicsList } from '../../../@types/entities/IProduct';
 import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+import { checkCategory, checkCharacteristics } from './CatalogHelpers';
+import { getCountryImage } from 'helpers/countryHelper';
 
 import catalogSx from './Catalog.styles';
 
@@ -26,7 +28,7 @@ export type ProductCatalogProps = {
   products: IProduct[];
   favoritesList: IProduct[];
   categories?: ICategory[];
-  basket: IOrderProduct[];
+  basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
   discount?: number;
@@ -55,7 +57,7 @@ export function ProductCatalog({
   onDetail,
 }: ProductCatalogProps) {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<IFiltersCharacteristic>({
     isReversed: false,
     category: 'all',
     characteristics: {},
@@ -84,19 +86,14 @@ export function ProductCatalog({
       },
     });
 
-  const checkCategory = (key: string) => filters.category === 'all' || key === filters.category;
-  const checkCharacteristics = (characteristics: { [key: string]: string }) =>
-    Object.keys(filters.characteristics).every(
-      it => filters.characteristics[it].length === 0 || filters.characteristics[it].includes(characteristics[it])
-    );
-
   const productList = categories
-    ? productsWidthElect
-        ?.filter(product => checkCategory(product.category?.key))
-        .filter(product => checkCharacteristics(product.characteristics))
+    ? productsWidthElect?.filter(
+        (product) =>
+          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters)
+      )
     : productsWidthElect;
 
-  const findProductInBasket = (productId: number) => basket.find(it => it.product.id === productId);
+  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
 
   const getProductCount = (productId: number, isWeightGood: boolean) => {
     const productInBasket = findProductInBasket(productId);
@@ -166,6 +163,7 @@ export function ProductCatalog({
               discount={discount || product.discount}
               previewSrc={product.images[0] ? product.images[0].small : ''}
               currency={currency}
+              countrySrc={getCountryImage(product.characteristics.country)}
               currentCount={getProductCount(product.id, product.isWeightGood)}
               inCart={!!findProductInBasket(product.id)}
               isElected={product.isElected}

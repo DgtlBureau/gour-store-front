@@ -24,10 +24,36 @@ export interface IProduct extends IBaseEntity {
   pieces: IProductModification[];
   price: IPrice;
   roleDiscounts: IRoleDiscount[];
-  characteristics: { [key: string]: string };
+  characteristics: IProductCharacteristics;
   meta: IPageMeta;
   weight: number;
   discount: number;
   isWeightGood: boolean;
   promotions?: IPromotion[];
 }
+
+export interface IProductCharacteristics { // TODO: add valid union types for other properties
+  country?: ProductCountry;
+  meatType?: string;
+
+  productType?: string;
+  processingType?: string;
+
+  cheeseCategory?: string;
+  crustType?: string;
+  milk?: string;
+  rennet?: string;
+  timeOfOrigin?: string;
+};
+
+export type ProductCountry = 'Russia' | 'Spain' | 'Italy' | 'France' | 'Holland' | 'GreatBritain';
+
+export type ICharacteristicsList = {
+  [K in keyof Required<IProductCharacteristics>]?: NonNullable<IProductCharacteristics[K]>[];
+};
+
+export interface IFiltersCharacteristic {
+  isReversed: boolean,
+  category: string,
+  characteristics: ICharacteristicsList,
+};

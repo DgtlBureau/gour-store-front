@@ -46,20 +46,15 @@ type formattedOrder = {
   orderList: OrdersCardProps[];
 };
 
-export function groupOrdersByDate(ordersList: OrdersCardProps[]) {
-  //FIXME:
-  const someObj: Record<number, formattedOrder> = {};
-
-  ordersList.forEach(order => {
+export const groupOrdersByDate = (ordersList: OrdersCardProps[]) =>
+  ordersList.reduce<Record<number, formattedOrder>>((acc, order) => {
     const createdDay = endOfDay(order.createdAt);
     const orderTime = getTime(createdDay);
-    someObj[orderTime] = someObj[orderTime] || {
+    acc[orderTime] ??= {
       date: order.createdAt,
       orderList: [],
     };
 
-    someObj[orderTime].orderList.push(order);
-  });
-
-  return someObj;
-}
+    acc[orderTime].orderList.push(order);
+    return acc;
+  }, {});
