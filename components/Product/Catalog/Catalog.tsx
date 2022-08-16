@@ -19,6 +19,7 @@ import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { checkCategory, checkCharacteristics } from './CatalogHelpers';
+import { getCountryImage } from 'helpers/countryHelper';
 
 import catalogSx from './Catalog.styles';
 
@@ -27,7 +28,7 @@ export type ProductCatalogProps = {
   products: IProduct[];
   favoritesList: IProduct[];
   categories?: ICategory[];
-  basket: IOrderProduct[];
+  basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
   discount?: number;
@@ -92,7 +93,7 @@ export function ProductCatalog({
       )
     : productsWidthElect;
 
-  const findProductInBasket = (productId: number) => basket.find(it => it.product.id === productId);
+  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
 
   const getProductCount = (productId: number, isWeightGood: boolean) => {
     const productInBasket = findProductInBasket(productId);
@@ -162,6 +163,7 @@ export function ProductCatalog({
               discount={discount || product.discount}
               previewSrc={product.images[0] ? product.images[0].small : ''}
               currency={currency}
+              countrySrc={getCountryImage(product.characteristics.country)}
               currentCount={getProductCount(product.id, product.isWeightGood)}
               inCart={!!findProductInBasket(product.id)}
               isElected={product.isElected}
