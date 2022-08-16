@@ -93,7 +93,6 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
           style={{
             width: '100%',
             height: 'auto',
-            // height: `${cardHeight * rows + spaceBetween * (rows - 1)}px`,
           }}
           spaceBetween={spaceBetween}
           grid={{

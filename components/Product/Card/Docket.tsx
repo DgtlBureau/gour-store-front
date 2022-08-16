@@ -6,6 +6,7 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
+import { getPriceWithDiscount } from 'helpers/currencyHelper';
 import { defaultTheme as t } from '../../../themes';
 
 const sx = {
@@ -93,7 +94,7 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
 
       <Box sx={sx.total}>
         <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sx.price}>
-          {pricePerCount * (1 - discount / 100)}&nbsp;
+          {getPriceWithDiscount(pricePerCount, discount)}&nbsp;
           {getCurrencySymbol(currency)}
         </Typography>
       </Box>

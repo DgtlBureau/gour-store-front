@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { getCurrencySymbol, getPriceWithDiscount } from 'helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
 
 import sx from './Card.styles';
@@ -17,7 +17,7 @@ type Props = {
 export function CartCardDocket({ currency, discount, price, amount }: Props) {
   const currencySymbol = getCurrencySymbol(currency);
 
-  const totalPrice = discount ? Math.round(price * (1 - discount / 100)) : price;
+  const totalPrice = getPriceWithDiscount(price, discount);
 
   return (
     <Box sx={sx.docket}>
