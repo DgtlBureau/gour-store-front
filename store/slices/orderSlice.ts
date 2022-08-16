@@ -30,15 +30,16 @@ const initialState: BasketState = {
 };
 
 export const orderSlice = createSlice({
-  name: 'auth',
+  name: 'order',
   initialState,
   reducers: {
     addBasketProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
       const foundIndex = state.products.findIndex(it => it.product.id === product.id);
+
       if (foundIndex > -1) {
         const foundOrderProduct = state.products[foundIndex];
-        console.log('Added product info: ', product);
+
         if (product.isWeightGood) {
           state.products.splice(foundIndex, 1, {
             ...foundOrderProduct,
@@ -66,10 +67,12 @@ export const orderSlice = createSlice({
         }
       }
     },
+
     subtractBasketProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
       const foundIndex = state.products.findIndex(it => it.product.id === product.id);
       const foundOrderProduct = state.products[foundIndex];
+
       if (!foundOrderProduct) return;
 
       if (product.isWeightGood) {
@@ -92,6 +95,7 @@ export const orderSlice = createSlice({
         }
       }
     },
+
     removeProduct: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
       const foundIndex = state.products.findIndex(it => it.product.id === product.id);

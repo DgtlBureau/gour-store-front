@@ -20,6 +20,7 @@ export enum Path {
   PRODUCTS = 'products',
   NOVELTIES = 'novelties',
   GRADES = 'grades',
+  SIMILAR = 'similar',
 
   FAVORITES = 'favorites',
   CATEGORIES = 'categories',
@@ -37,6 +38,7 @@ export enum Path {
   GAME = 'game',
 
   MAIN = 'main',
+  ORDER = 'order',
   ORDERS = 'orders',
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',

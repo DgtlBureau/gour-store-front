@@ -27,6 +27,7 @@ type Props = {
   isWeightGood: boolean;
   discount?: number;
   currency?: Currency;
+  onDetail: () => void;
   onAdd: () => void;
   onSubtract: () => void;
   onDelete: () => void;
@@ -41,6 +42,7 @@ export function CartCard({
   weight,
   isWeightGood,
   currency = 'cheeseCoin',
+  onDetail,
   onDelete,
   onAdd,
   onSubtract,
@@ -51,11 +53,11 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={productImg || defaultImage} />
+      <CardMedia sx={sx.image} component="img" image={productImg || defaultImage} onClick={onDetail} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant="h6" sx={sx.title}>
+          <Typography variant="h6" sx={sx.title} onClick={onDetail}>
             {title}
           </Typography>
 

@@ -32,6 +32,10 @@ const sx = {
     borderRadius: '10px',
 
     objectFit: 'cover',
+
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
 
   info: {
@@ -64,6 +68,11 @@ const sx = {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
+
+    '&:hover': {
+      cursor: 'pointer',
+      opacity: '0.75',
+    },
   },
 
   docket: {
