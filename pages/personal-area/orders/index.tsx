@@ -8,15 +8,15 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppNavigation } from 'components/Navigation';
 
 export function Orders() {
-  const lang = 'ru';
-  const currency = 'cheeseCoin';
+  const { language, currency } = useAppNavigation();
 
   const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
 
   const formattedOrdersList = ordersList.map(order => {
-    return formatOrderData(order, lang, currency);
+    return formatOrderData(order, language, currency);
   });
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);

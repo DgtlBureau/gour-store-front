@@ -1,6 +1,11 @@
 import React, { useRef } from 'react';
 import { LinearProgress } from '@mui/material';
 
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
@@ -20,22 +25,20 @@ import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
-
-import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
-import {
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-  useGetFavoriteProductsQuery,
-} from 'store/api/favoriteApi';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { useAppNavigation } from 'components/Navigation';
+
+import sx from './Product.styles';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
     goToProductPage,
     language,
+    currency,
     query: { id },
   } = useAppNavigation();
 
@@ -48,8 +51,6 @@ export default function Product() {
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
-
-  const currency = 'cheeseCoin';
 
   const productId = id ? +id : 0;
 
@@ -97,8 +98,7 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = (comment: CommentDto) =>
-    fetchCreateProductGrade({ productId, ...comment }).unwrap();
+  const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
 
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { NextRouter } from 'next/router';
 
 import { LocalConfig } from 'hooks/useLocalTranslation';
+import { Currency } from '../../@types/entities/Currency';
 
 export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   changeChapter: (path: string) => void;
@@ -23,6 +24,7 @@ export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   goToReplenishment: () => void;
   goToPromotionPage: (id: number) => void;
   language: keyof LocalConfig;
+  currency: Currency;
 };
 
 export const AppNavigationCtx = React.createContext({} as Navigation);

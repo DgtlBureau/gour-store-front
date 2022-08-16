@@ -6,9 +6,7 @@ import { GameMain } from 'components/Game/Main/Main';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 export function Game() {
-  const { language } = useAppNavigation();
-
-  const currency = 'cheeseCoin';
+  const { currency, language } = useAppNavigation();
 
   return (
     <PrivateLayout>

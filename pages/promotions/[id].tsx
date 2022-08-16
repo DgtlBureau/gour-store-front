@@ -1,6 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 
 import {
   useCreateFavoriteProductsMutation,
@@ -18,13 +16,12 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
-import { Path } from '../../constants/routes';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { useAppNavigation } from 'components/Navigation';
 
 import { sx } from './Promotion.styles';
-import { useAppNavigation } from 'components/Navigation';
 
 export default function Promotion() {
   const dispatch = useAppDispatch();
@@ -35,8 +32,10 @@ export default function Promotion() {
     goToHome,
     goToProductPage,
     language,
+    currency,
     query: { id },
   } = useAppNavigation();
+
   const promotionId = id ? +id : 0;
 
   const { data: promotion, isLoading, isError } = useGetPromotionQuery(promotionId, { skip: !id });
@@ -45,8 +44,6 @@ export default function Promotion() {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const basket = useAppSelector(state => state.order);
-
-  const currency = 'cheeseCoin';
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 

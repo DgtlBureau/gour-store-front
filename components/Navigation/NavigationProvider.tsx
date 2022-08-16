@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Path } from 'constants/routes';
 import { AppNavigationCtx } from './NavigationContext';
 import { LocalConfig } from 'hooks/useLocalTranslation';
+import { Currency } from '../../@types/entities/Currency';
 
 const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const goBack = useCallback(() => router.back(), []);
   const goToHome = useCallback(() => router.push(Path.HOME), []);
-  const goToOrder = useCallback(() => router.push('/order'), []);
+  const goToOrder = useCallback(() => router.push(`/${Path.ORDER}`), []);
 
   const goToIntro = useCallback(() => router.push(`/${Path.AUTH}`), []);
   const goToSignIn = useCallback(() => router.push(`/${Path.AUTH}/${Path.SIGN_IN}`), []);
@@ -32,12 +33,14 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const goToFavorites = useCallback(() => router.push(`/${Path.FAVORITES}`), []);
   const goToBasket = useCallback(() => router.push(`/${Path.BASKET}`), []);
-  const goToPersonalArea = useCallback(() => router.push('/personal-area'), []);
-  const goToReplenishment = useCallback(() => router.push('/replenishment'), []);
+  const goToPersonalArea = useCallback(() => router.push(`/${Path.PERSONAL_AREA}`), []);
+  const goToReplenishment = useCallback(() => router.push(`/${Path.REPLENISHMENT}`), []);
 
   const goToPromotionPage = useCallback((id: number) => router.push(`/${Path.PROMOTIONS}/${id}`), []);
 
-  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router.locale as keyof LocalConfig) || 'ru';
+
+  const currency: Currency = 'cheeseCoin';
 
   const navigation = useMemo(
     () => ({
@@ -60,8 +63,9 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
       goToReplenishment,
       goToPromotionPage,
       language,
-      pathname: router?.pathname,
-      query: router?.query,
+      currency,
+      pathname: router.pathname,
+      query: router.query,
     }),
     [router]
   );
