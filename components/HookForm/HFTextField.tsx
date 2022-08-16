@@ -3,7 +3,7 @@ import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from '../UI/TextField/TextField';
 
-type Props = {
+export type HFTextFieldProps = {
   name: string;
   defaultValue?: string;
   multiline?: boolean;
@@ -24,7 +24,7 @@ export function HFTextField({
   helperText,
   onChange,
   ...props
-}: Props) {
+}: HFTextFieldProps) {
   const {
     control,
     formState: { errors },
@@ -40,7 +40,7 @@ export function HFTextField({
           {...rest}
           onChange={event => {
             HFOnChange(event);
-            onChange && onChange(event);
+            onChange?.(event);
           }}
           isError={!!errors[name]}
           helperText={helperText || errors[name]?.message}

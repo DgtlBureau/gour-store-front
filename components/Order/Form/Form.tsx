@@ -6,18 +6,25 @@ import { Grid } from '@mui/material';
 import translations from './Form.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { getValidationSchema } from './validation';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
-import { HFTextField } from '../../HookForm/HFTextField';
+import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';
 import { Currency } from '../../../@types/entities/Currency';
+import { Path } from 'constants/routes';
 
 import sx from './Form.styles';
 
-const contactsFields = ['firstName', 'lastName', 'phone', 'email'];
+const contactsFields: HFTextFieldProps[] = [
+  { name: 'firstName' },
+  { name: 'lastName' },
+  { name: 'phone', type: 'number' },
+  { name: 'email', type: 'email' },
+];
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -134,9 +141,9 @@ export function OrderForm({
             </Typography>
 
             <Grid container spacing={1}>
-              {contactsFields.map(field => (
-                <Grid key={field} item xs={12} sm={6}>
-                  <HFTextField name={field} label={t(field)} />
+              {contactsFields.map(({ name, ...fieldProps }) => (
+                <Grid key={name} item xs={12} sm={6}>
+                  <HFTextField name={name} label={t(name)} {...fieldProps} />
                 </Grid>
               ))}
             </Grid>
@@ -181,7 +188,19 @@ export function OrderForm({
               currency={currency}
             />
 
-            <Checkbox sx={sx.agreement} label={t('agreement')} value={isAgree} onChange={agree} />
+            <Checkbox
+              sx={sx.agreement}
+              value={isAgree}
+              onChange={agree}
+              label={
+                <span style={sx.agreementLabel}>
+                  Даю свое согласие с <Link href={Path.OFERTA} target="_blank">условиями обслуживания</Link>, а также с
+                  &nbsp;<Link href={Path.PRIVACY} target="_blank">
+                    политикой конфиденциальности и правилами хранения моих персональных данных
+                  </Link>.
+                </span>
+              }
+            />
 
             <Button
               sx={sx.btn}
