@@ -42,5 +42,10 @@ export enum Path {
   ADDRESSES = 'addresses',
   DISCOUNTS = 'discounts',
 
+  RULES = 'rules',
+  PRIVACY = 'privacy',
+  COOKIE = 'cookie',
+  OFERTA = 'oferta',
+
   ERROR_PAGE = '404',
 }
