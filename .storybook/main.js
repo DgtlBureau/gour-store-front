@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/addon-interactions',
     'storybook-css-modules-preset',
     '@storybook/preset-scss',
+    'storybook-addon-next-router',
   ],
   framework: '@storybook/react',
   core: {

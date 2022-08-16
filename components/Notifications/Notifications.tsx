@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { ToastOptions } from 'react-toastify';
 
+import { Typography } from 'components/UI/Typography/Typography'
 import { eventBus, EventTypes } from '../../packages/EventBus';
 import {
   Notification,
   NotificationType,
 } from '../../@types/entities/Notification';
-import { toast } from 'react-toastify';
-import { ToastOptions } from 'react-toastify';
+import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {
   theme: 'light',
-  autoClose: 7000,
+  autoClose: 7000000,
   style: {
     maxWidth: '500px',
     width: '100%',
@@ -36,8 +38,8 @@ export function Notifications() {
     function toastNotify(res: Notification) {
       const message = (
         <>
-          {res.title && <h4 style={{ marginBottom: '5px' }}>{res.title}</h4>}
-          {res.message && <p>{res.message}</p>}
+          {res.title && <Typography sx={sx.title}>{res.title}</Typography>}
+          {res.message && <Typography variant='body1' sx={sx.message}>{res.message}</Typography>}
         </>
       );
       toast(res?.message ? message : getNotificationTitle(res.type), {

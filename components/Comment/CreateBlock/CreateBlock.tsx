@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Alert, AlertTitle, Snackbar, Paper, Grid, Rating, SxProps } from '@mui/material';
+import { Paper, Grid, Rating, SxProps } from '@mui/material';
 
 import StarIcon from '@mui/icons-material/Star';
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 
+import { eventBus, EventTypes } from 'packages/EventBus'
+import { NotificationType } from '../../../@types/entities/Notification';
+import type { CommentDto } from '../../../@types/dto/comment.dto';
+import { IProductGrade } from '../../../@types/entities/IProductGrade';
 import translations from './CreateBlock.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
@@ -11,79 +14,43 @@ import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
 import { TextField } from '../../UI/TextField/TextField';
 import { defaultTheme as theme } from '../../../themes';
+import { negativeEventMessage, positiveEventMessage } from './CreateBlockHelpers';
+import { blockSx } from './CreateBlock.styles';
 
-const blockSx = {
-  title: {
-    fontSize: {
-      sm: '24px',
-      xs: '16px',
-    },
-    color: 'text.primary',
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-  },
-  container: {
-    padding: '20px',
-    boxShadow: 'none',
-  },
-  btn: {
-    margin: '15px 0 0 0',
-    width: '100%',
-    maxWidth: {
-      md: '300px',
-      xs: '100%',
-    },
-  },
-  star: {
-    color: theme.palette.accent.main,
-  },
-  emptyStar: {
-    color: theme.palette.text.muted,
-  },
-  alertTitle: {
-    fontWeight: 'Bold',
-  },
-};
+const initComment: CommentDto = { value: 0, comment: '' };
 
 export type CommentCreateBlockProps = {
   sx?: SxProps;
-  onCreate(comment: { value: number; comment: string }): void;
+  onCreate: (comment: CommentDto) => Promise<IProductGrade>;
 };
+
+type OnChangeFn = <K extends keyof CommentDto>(name: K, value: CommentDto[K]) => void;
 
 export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
   const { t } = useLocalTranslation(translations);
 
-  const [formData, setFormData] = useState<{ value: number; comment: string }>({
-    value: 0,
-    comment: '',
-  });
+  const [formData, setFormData] = useState<CommentDto>(initComment);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormData({ value: 0, comment: '' });
-    if (formData.value !== 0) onCreate(formData);
+
+    try {
+      await onCreate(formData);
+      setFormData(initComment);
+      eventBus.emit(EventTypes.notification, positiveEventMessage);
+    } catch (error) {
+      console.error('[Create Comment]:', error);
+      eventBus.emit(EventTypes.notification, negativeEventMessage);
+    }
   };
 
-  const onChange = (name: string, value: string | number) => {
+  const onChange: OnChangeFn = (name, value) => {
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const [isAlertOpen, setIsAlert] = useState<boolean>(false);
-
-  const openAlert = () => {
-    setIsAlert(true);
-  };
-
-  const closeAlert = () => {
-    setIsAlert(false);
-  };
-
-  const vertical = 'bottom';
-  const horizontal = 'right';
-
   return (
     <Paper sx={{ ...blockSx.container, ...sx }}>
-      <form onSubmit={e => handleSubmit(e)}>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <Typography variant="h5" sx={blockSx.title}>
@@ -97,7 +64,7 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Rating
                 name="value"
-                onChange={(e, value) => onChange('value', value || 0)}
+                onChange={(_, value) => onChange('value', Number(value) || 0)}
                 value={formData.value}
                 size="large"
                 icon={<StarIcon sx={blockSx.star} />}
@@ -127,23 +94,9 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
               label={t('review')}
               onChange={e => onChange('comment', e.target.value)}
             />
-            <Button sx={blockSx.btn} type="submit" disabled={formData.value === 0} onClick={openAlert}>
+            <Button sx={blockSx.btn} type="submit" disabled={!formData.value}>
               {t('accept')}
             </Button>
-            <Snackbar
-              anchorOrigin={{ vertical, horizontal }}
-              open={isAlertOpen}
-              autoHideDuration={6000}
-              onClose={closeAlert}
-              message="sda"
-            >
-              <Alert icon={<CheckCircleOutlineRoundedIcon fontSize="inherit" />} severity="success">
-                <AlertTitle sx={blockSx.alertTitle}>{t('alert.title')}</AlertTitle>
-                {t('alert.message.1')}
-                <br></br>
-                {t('alert.message.2')}
-              </Alert>
-            </Snackbar>
           </Grid>
         </Grid>
       </form>

@@ -10,8 +10,8 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
   const router = useRouter();
 
   const changeChapter = useCallback(
-    (newPath: string) => newPath !== router.pathname && router.push(newPath),
-    [router.pathname]
+    (newPath: string) => newPath !== router?.pathname && router.push(newPath),
+    [router?.pathname]
   );
 
   const goBack = useCallback(() => router.back(), []);
@@ -37,7 +37,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const goToPromotionPage = useCallback((id: number) => router.push(`/${Path.PROMOTIONS}/${id}`), []);
 
-  const language: keyof LocalConfig = (router.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const navigation = useMemo(
     () => ({
@@ -60,8 +60,8 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
       goToReplenishment,
       goToPromotionPage,
       language,
-      pathname: router.pathname,
-      query: router.query,
+      pathname: router?.pathname,
+      query: router?.query,
     }),
     [router]
   );

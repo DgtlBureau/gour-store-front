@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
 import translations from './Product.i18n.json';
@@ -8,6 +7,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import { CommentDto } from '../../@types/dto/comment.dto';
 import { ShopLayout } from '../../layouts/Shop/Shop';
 import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
@@ -23,8 +23,6 @@ import { CHARACTERISTICS } from 'constants/characteristics';
 
 import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -99,21 +97,8 @@ export default function Product() {
     { skip: !productId }
   );
 
-  const onCreateComment = async (comment: { value: number; comment: string }) => {
-    try {
-      await fetchCreateProductGrade({ productId, ...comment }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Комментарий создан',
-        type: NotificationType.SUCCESS,
-      });
-    } catch (error) {
-      console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания комментария',
-        type: NotificationType.DANGER,
-      });
-    }
-  };
+  const onCreateComment = (comment: CommentDto) =>
+    fetchCreateProductGrade({ productId, ...comment }).unwrap();
 
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
@@ -212,7 +197,7 @@ export default function Product() {
               />
             )}
 
-            {productComments.length && (
+            {!!productComments.length && (
               <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
             )}
 
