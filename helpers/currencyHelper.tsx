@@ -8,3 +8,9 @@ export function getCurrencySymbol(currencyAbbreviation: Currency) {
       return <></>;
   }
 }
+
+export function getPriceWithDiscount(price: number, discount?: number) {
+  if (!discount) return price;
+  const pricePercent = 1 - discount / 100;
+  return Math.round(price * pricePercent);
+}

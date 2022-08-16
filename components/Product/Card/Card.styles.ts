@@ -5,11 +5,7 @@ const sx = {
     display: 'flex',
     flexDirection: 'column',
 
-    height: {
-      xs: '310px',
-      sm: '380px',
-      md: '530px',
-    },
+    height: '100%',
 
     width: {
       xs: '170px',
@@ -87,6 +83,16 @@ const sx = {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
+    display: '-webkit-box',
+
+    height: '100%',
+    overflow: 'hidden',
+    '-webkit-line-clamp': {
+      xs: '2',
+      sm: '1',
+      md: '2',
+    },
+    '-webkit-box-orient': 'vertical',
 
     maxHeight: {
       xs: '45px',
@@ -94,7 +100,6 @@ const sx = {
       md: '64px',
     },
     textOverflow: 'ellipsis',
-    overflow: 'hidden',
     whiteSpace: 'normal',
 
     '&:hover': {
@@ -104,19 +109,17 @@ const sx = {
   },
   description: {
     display: {
-      md: 'inline-block',
-      sm: 'inline-block',
+      sm: '-webkit-box',
       xs: 'none',
     },
     height: '100%',
-    maxHeight: {
-      md: '44px',
-      sm: '22px',
-    },
+    maxHeight: '44px',
     margin: {
       xs: '5px 0',
       md: '10px 0',
     },
+    '-webkit-line-clamp': '2',
+    '-webkit-box-orient': 'vertical',
 
     textOverflow: 'ellipsis',
     overflow: 'hidden',

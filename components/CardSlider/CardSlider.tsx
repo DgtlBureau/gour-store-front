@@ -92,7 +92,7 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
         <Swiper
           style={{
             width: '100%',
-            height: `${cardHeight * rows + spaceBetween * (rows - 1)}px`,
+            height: 'auto',
           }}
           spaceBetween={spaceBetween}
           grid={{
@@ -106,7 +106,7 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
           onSlideChange={slideChangeHandler}
         >
           {cardsList.map((card, i) => (
-            <SwiperSlide key={i} style={{ height: `${cardHeight}px` }} className={cardCss.fit}>
+            <SwiperSlide key={i} className={cardCss.fit}>
               {card}
             </SwiperSlide>
           ))}

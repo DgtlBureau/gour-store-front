@@ -54,7 +54,7 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
       <Box sx={sx.total}>
         <Typography variant="h6">{t('total')}</Typography>
         <Typography variant="h6">
-          {price + delivery - discount}
+          {price + delivery - discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
@@ -63,7 +63,7 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
           {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''}
         </Typography>
         <Typography variant="body1">
-          {price}
+          {price}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
@@ -72,7 +72,7 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
         <Typography variant="body1">
           {delivery ? (
             <>
-              {delivery} {currencySymbol}
+              {delivery}&nbsp;{currencySymbol}
             </>
           ) : (
             t('free')
@@ -82,7 +82,7 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
       <Box sx={sx.footnote}>
         <Typography variant="body1">{t('discount')}</Typography>
         <Typography variant="body1" color="error">
-          {discount}
+          {discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
