@@ -7,11 +7,10 @@ import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { ToggleButton } from '../../../UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
-import { Filters } from '../List/List';
 import { ICategory } from '../../../../@types/entities/ICategory';
 import { Language } from '../../../../@types/entities/Language';
+import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct';
 import { CHARACTERISTICS } from '../../../../constants/characteristics';
-import { FiltersCharacteristic, ProductCharacteristics } from '../../../../@types/entities/IProduct'
 
 const sx = {
   title: {
@@ -25,7 +24,7 @@ const sx = {
 export type ProductFilterModalProps = {
   isOpen: boolean;
   categories: ICategory[];
-  filters: FiltersCharacteristic;
+  filters: IFiltersCharacteristic;
   language: Language;
   onCategoryChange: (key: string) => void;
   onCharacteristicChange: (key: string, selected: string[]) => void;
@@ -43,8 +42,7 @@ export function ProductFilterModal({
 }: ProductFilterModalProps) {
   const { t } = useLocalTranslation(translations);
 
-  const characteristicKeys = Object.keys(CHARACTERISTICS) as (keyof ProductCharacteristics)[];
-  const features = characteristicKeys.filter(
+  const features = Object.keys(CHARACTERISTICS).filter(
     it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all'
   );
 

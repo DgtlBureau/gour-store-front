@@ -1,4 +1,4 @@
-import { ProductCharacteristics } from '../@types/entities/IProduct'
+import { IProductCharacteristics } from '../@types/entities/IProduct'
 import { ITranslatableString } from '../@types/entities/ITranslatableString';
 
 type TranslatableString = Omit<ITranslatableString, 'id' | 'createdAt' | 'updatedAt'>;
@@ -12,7 +12,7 @@ type Characteristic = {
   }[];
 };
 
-export const CHARACTERISTICS: Record<keyof ProductCharacteristics, Characteristic> = {
+export const CHARACTERISTICS: Record<keyof IProductCharacteristics, Characteristic> = {
   country: {
     label: {
       ru: 'Страна происхождения',
@@ -328,5 +328,5 @@ export const CHARACTERISTICS: Record<keyof ProductCharacteristics, Characteristi
       },
     ],
   },
-  meatHardness: {} as any, // FIXME: уточнить про характеристику
+  // TODO: добавить интеграцию с бэком/админкой по названиям ключей в соответствующей задаче
 };
