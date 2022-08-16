@@ -18,7 +18,13 @@ export type HFTextFieldProps = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFTextField({ name, defaultValue, helperText, onChange, ...props }: HFTextFieldProps) {
+export function HFTextField({
+  name,
+  defaultValue,
+  helperText,
+  onChange,
+  ...props
+}: HFTextFieldProps) {
   const {
     control,
     formState: { errors },
