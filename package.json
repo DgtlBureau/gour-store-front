@@ -13,7 +13,8 @@
     "check-lint": "eslint . --ext ts --ext tsx --ext js",
     "check-lint:fix": "eslint --fix . --ext ts --ext tsx --ext js",
     "format": "prettier --write . --config ./.prettierrc",
-    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
+    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "~11.8.2",
@@ -80,6 +81,7 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "~0.5.7",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1",
     "sass-loader": "~12.6.0",
     "storybook-addon-next-router": "^4.0.0",
