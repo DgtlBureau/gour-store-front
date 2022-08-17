@@ -109,6 +109,7 @@ export function OrderForm({
       ...values.getValues(),
       ...defaultDeliveryFields,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultDeliveryFields]);
 
   useEffect(() => {
@@ -116,6 +117,7 @@ export function OrderForm({
       ...values.getValues(),
       ...defaultPersonalFields,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultPersonalFields]);
 
   const submitHandler = (data: OrderFormType) => onSubmit(data);

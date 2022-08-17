@@ -19,22 +19,15 @@ const baseNotification: ToastOptions = {
   },
 };
 
+const notificationTitleByType: Readonly<Record<NotificationType, string>> = {
+  error: 'Произошла ошибка!',
+  success: 'Успешно!',
+  info: 'Внимание!',
+  warning: 'Внимание!',
+};
+
 export function Notifications() {
   useEffect(() => {
-    const getNotificationTitle = (type: NotificationType) => {
-      switch (type) {
-        case NotificationType.DANGER:
-          return 'Произошла ошибка!';
-        case NotificationType.SUCCESS:
-          return 'Успешно!';
-        case NotificationType.INFO:
-        case NotificationType.WARNING:
-          return 'Внимание!';
-        default:
-          break;
-      }
-    };
-
     function toastNotify(res: Notification) {
       const message = (
         <>
@@ -42,7 +35,7 @@ export function Notifications() {
           {res.message && <Typography variant='body1' sx={sx.message}>{res.message}</Typography>}
         </>
       );
-      toast(res?.message ? message : getNotificationTitle(res.type), {
+      toast(res?.message ? message : notificationTitleByType[res.type], {
         ...baseNotification,
         ...res,
         type: res.type,

@@ -19,7 +19,7 @@ import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
@@ -142,21 +142,14 @@ export function Order() {
       };
 
       await fetchCreateOrder(formattedOrderData).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Заказ оформлен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Заказ оформлен');
 
       productsInOrder.forEach(product => deleteProductFromOrder(product.product));
 
       goToOrders();
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка оформления заказа',
-        type: NotificationType.DANGER,
-      });
-
+      dispatchNotification('Ошибка оформления заказа', { type: NotificationType.DANGER });
       setIsSubmitError(true);
     }
   };
@@ -192,6 +185,7 @@ export function Order() {
 
     if (mainOrderProfileId && mainOrderProfileId !== 0)
       setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({

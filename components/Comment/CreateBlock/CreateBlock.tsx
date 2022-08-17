@@ -3,7 +3,7 @@ import { Paper, Grid, Rating, SxProps } from '@mui/material';
 
 import StarIcon from '@mui/icons-material/Star';
 
-import { eventBus, EventTypes } from 'packages/EventBus'
+import { dispatchNotification } from 'packages/EventBus'
 import { NotificationType } from '../../../@types/entities/Notification';
 import type { CommentDto } from '../../../@types/dto/comment.dto';
 import { IProductGrade } from '../../../@types/entities/IProductGrade';
@@ -14,7 +14,6 @@ import { Button } from '../../UI/Button/Button';
 import { Typography } from '../../UI/Typography/Typography';
 import { TextField } from '../../UI/TextField/TextField';
 import { defaultTheme as theme } from '../../../themes';
-import { negativeEventMessage, positiveEventMessage } from './CreateBlockHelpers';
 import { blockSx } from './CreateBlock.styles';
 
 const initComment: CommentDto = { value: 0, comment: '' };
@@ -37,10 +36,13 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
     try {
       await onCreate(formData);
       setFormData(initComment);
-      eventBus.emit(EventTypes.notification, positiveEventMessage);
+      dispatchNotification('Отзыв отправлен на модерацию.\nСкоро мы его опубликуем.', { title: 'Спасибо!' });
     } catch (error) {
       console.error('[Create Comment]:', error);
-      eventBus.emit(EventTypes.notification, negativeEventMessage);
+      dispatchNotification('Пожалуйста, повторите позже.', {
+        title: 'Ошибка создания комментария.',
+        type: NotificationType.DANGER,
+      });
     }
   };
 

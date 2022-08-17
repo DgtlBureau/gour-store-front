@@ -19,7 +19,7 @@ import { Typography } from '../../../components/UI/Typography/Typography';
 import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
-import { eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
 
 import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
@@ -88,16 +88,10 @@ export function Addresses() {
   const createAddress = async (data: OrderProfileDto) => {
     try {
       await createProfile(data).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Адрес доставки создан',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Адрес доставки создан');
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания адреса доставки',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Ошибка создания адреса доставки', { type: NotificationType.DANGER });
     }
     closeCreateForm();
   };
@@ -105,19 +99,13 @@ export function Addresses() {
   const editAddress = async (data: OrderProfileDto, id: number) => {
     try {
       await updateProfile({ ...data, id }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Адрес доставки обновлен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Адрес доставки обновлен');
       const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
       if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка обновления адреса доставки',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка обновления адреса доставки', { type: NotificationType.DANGER });
     }
   };
 
@@ -125,16 +113,10 @@ export function Addresses() {
     if (expandedProfileId) {
       try {
         await deleteProfile(expandedProfileId).unwrap();
-        eventBus.emit(EventTypes.notification, {
-          message: 'Адрес доставки удален',
-          type: NotificationType.SUCCESS,
-        });
+        dispatchNotification('Адрес доставки удален');
       } catch (error) {
         console.error(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка удаления адреса доставки',
-          type: NotificationType.DANGER,
-        });
+        dispatchNotification('Ошибка удаления адреса доставки', { type: NotificationType.DANGER });
       }
     }
     rollUpProfile();

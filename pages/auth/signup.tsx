@@ -32,7 +32,7 @@ type AuthStage =
   | 'credentials'
   | 'favoriteInfo';
 
-import { eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
 
 export default function SignUp() {
@@ -130,10 +130,7 @@ export default function SignUp() {
       await signUp(data).unwrap();
       goToFavoriteInfo();
     } catch (e: unknown) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка авторизации',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка авторизации', { type: NotificationType.DANGER });
     }
   };
 

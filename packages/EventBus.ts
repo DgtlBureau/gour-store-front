@@ -1,4 +1,4 @@
-import { Notification } from '../@types/entities/Notification';
+import { Notification, NotificationType } from '../@types/entities/Notification';
 
 export enum EventTypes {
   notification = 'notification',
@@ -13,6 +13,8 @@ type EventArguments = {
 type EventListenerCallback<T extends EventTypes> = (
   payload: EventArguments[T]
 ) => void;
+
+type NotificationOptions = Omit<Notification, 'message'>;
 
 const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
   [EventTypes.notification]: [],
@@ -42,3 +44,11 @@ class EventBus {
 }
 
 export const eventBus = new EventBus();
+
+export const dispatchNotification = (
+  message: Notification['message'],
+  options: Partial<NotificationOptions> = {},
+) => {
+  options.type ??= NotificationType.SUCCESS;
+  eventBus.emit(EventTypes.notification, { message, ...options as NotificationOptions });
+};
