@@ -52,22 +52,20 @@ export function ProductActions({
     <Box sx={{ ...sxActions.container, ...sx }}>
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
-          <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sxActions.price}>
+          <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
             {total}&nbsp;
             {getCurrencySymbol(currency)}
           </Typography>
         </Box>
 
         {!!discount && (
-          <Typography variant="body2" sx={sxActions.oldPrice}>
-              {pricePerCount}
-              {getCurrencySymbol(currency)}
-            </Typography>
+          <Typography variant='body2' sx={sxActions.oldPrice}>
+            {pricePerCount}
+            {getCurrencySymbol(currency)}
+          </Typography>
         )}
 
-        <Typography variant="body2">
-          / {isWeightGood ? `100${t('g')}` : t('pcs')}
-        </Typography>
+        <Typography variant='body2'>/ {isWeightGood ? `100${t('g')}` : t('pcs')}</Typography>
       </Box>
 
       <Box sx={sxActions.actions}>

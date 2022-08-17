@@ -63,7 +63,7 @@ export function DiscountsGroup({ title, categories }: Props) {
           </Grid>
 
           <Grid display='flex' justifyContent='space-between' item xs={6} md={10}>
-            {percents.map((percent) => (
+            {percents.map(percent => (
               <Box
                 key={percent}
                 sx={{
@@ -93,7 +93,7 @@ export function DiscountsGroup({ title, categories }: Props) {
           </Grid>
         </Grid>
 
-        {categories.map((category) => (
+        {categories.map(category => (
           <Grid sx={sx.category} key={category.summary} container spacing={{ xs: 1, md: 2 }}>
             <Grid item xs={3} md={1}>
               <Typography sx={sx.categoryTitle} variant='subtitle2'>

@@ -58,9 +58,9 @@ type Props = {
 
 export function CartEmpty({ title, children, btn }: Props) {
   return (
-    <Stack sx={sx.container} alignItems="center">
+    <Stack sx={sx.container} alignItems='center'>
       <Stack sx={sx.notice}>
-        <Typography variant="h5" sx={sx.title}>
+        <Typography variant='h5' sx={sx.title}>
           {title}
         </Typography>
 

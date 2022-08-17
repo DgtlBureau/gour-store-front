@@ -23,7 +23,7 @@ export function Orders() {
   if (isLoading) {
     return (
       <PALayout>
-        <ProgressLinear variant="buffer" />
+        <ProgressLinear variant='buffer' />
       </PALayout>
     );
   }
@@ -31,7 +31,7 @@ export function Orders() {
   if (!isLoading && isError) {
     return (
       <PALayout>
-        <Typography variant="h5">Произошла ошибка</Typography>
+        <Typography variant='h5'>Произошла ошибка</Typography>
       </PALayout>
     );
   }
@@ -53,7 +53,7 @@ export function Orders() {
               );
             })
           ) : (
-            <Typography variant="h5">Список заказов пуст</Typography>
+            <Typography variant='h5'>Список заказов пуст</Typography>
           )}
         </Stack>
       </PALayout>

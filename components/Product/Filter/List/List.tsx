@@ -9,7 +9,7 @@ import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/
 import { CHARACTERISTICS } from '../../../../constants/characteristics';
 import { ICategory } from '../../../../@types/entities/ICategory';
 import { Language } from '../../../../@types/entities/Language';
-import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct'
+import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct';
 
 export type CatalogFilterProps = {
   categories: ICategory[];
@@ -31,7 +31,7 @@ export function ProductFilterList({
   onCharacteristicChange,
 }: CatalogFilterProps) {
   const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all'
+    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all',
   );
 
   return (

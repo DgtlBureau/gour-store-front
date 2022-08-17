@@ -17,9 +17,7 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupReferralCode> = function (
-  args: SignupReferralCodeProps
-) {
+const Template: ComponentStory<typeof SignupReferralCode> = function (args: SignupReferralCodeProps) {
   return (
     <Box sx={boxSx}>
       <SignupReferralCode {...args} />

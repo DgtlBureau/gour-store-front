@@ -48,7 +48,7 @@ export function Discounts() {
   return (
     <PALayout>
       <DiscountsInfoBar>
-        <Typography variant="body1">
+        <Typography variant='body1'>
           Здесь Вы можете отследить прогресс своей скидки на покупку товаров по различным категориям. Чем больше
           покупок, тем больше скидка!
           <br />

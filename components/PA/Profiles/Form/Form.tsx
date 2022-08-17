@@ -68,7 +68,7 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
         <Grid container spacing={2}>
           <Grid item xs={12} md={6} container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <HFSelect name="cityId" options={cities} label={t('city')} placeholder={t('cityPlaceholder')} />
+              <HFSelect name='cityId' options={cities} label={t('city')} placeholder={t('cityPlaceholder')} />
             </Grid>
             {addressFields.map(field => (
               <Grid key={field} item xs={12} sm={6}>
@@ -79,23 +79,23 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
 
           <Grid item xs={12} md={6} container spacing={2}>
             <Grid item xs={12}>
-              <HFTextField name="title" label={t('title')} />
+              <HFTextField name='title' label={t('title')} />
             </Grid>
 
             <Grid item xs={12}>
-              <HFTextField rows={4} multiline name="comment" label={t('comment')} />
+              <HFTextField rows={4} multiline name='comment' label={t('comment')} />
             </Grid>
           </Grid>
 
           <Grid item xs={12} md={6} sx={sx.mainCheck}>
-            <HFCheckbox name="isMain" label={t('isMain')} sx={sx.checkbox} />
+            <HFCheckbox name='isMain' label={t('isMain')} sx={sx.checkbox} />
           </Grid>
 
           <Grid item xs={12} md={6} container sx={sx.actions}>
-            <Button type="submit" size="small">
+            <Button type='submit' size='small'>
               {t('save')}
             </Button>
-            <Button variant="outlined" size="small" onClick={reset} sx={sx.closeBtn}>
+            <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
               {t('cancel')}
             </Button>
             <IconButton>

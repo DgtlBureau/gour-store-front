@@ -10,9 +10,7 @@ type EventArguments = {
   [EventTypes.removeNotification]: string;
 };
 
-type EventListenerCallback<T extends EventTypes> = (
-  payload: EventArguments[T]
-) => void;
+type EventListenerCallback<T extends EventTypes> = (payload: EventArguments[T]) => void;
 
 type NotificationOptions = Omit<Notification, 'message'>;
 
@@ -33,9 +31,7 @@ class EventBus {
   }
 
   off<K extends EventTypes>(key: K, callback: EventListenerCallback<K>) {
-    const index = this.listeners[key].indexOf(
-      callback as EventListenerCallback<EventTypes>
-    );
+    const index = this.listeners[key].indexOf(callback as EventListenerCallback<EventTypes>);
     if (index === -1) {
       return;
     }
@@ -46,10 +42,7 @@ class EventBus {
 
 export const eventBus = new EventBus();
 
-export const dispatchNotification = (
-  message: Notification['message'],
-  options: Partial<NotificationOptions> = {},
-) => {
+export const dispatchNotification = (message: Notification['message'], options: Partial<NotificationOptions> = {}) => {
   options.type ??= NotificationType.SUCCESS;
-  eventBus.emit(EventTypes.notification, { message, ...options as NotificationOptions });
+  eventBus.emit(EventTypes.notification, { message, ...(options as NotificationOptions) });
 };

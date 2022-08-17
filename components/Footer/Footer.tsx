@@ -101,34 +101,23 @@ export function Footer({
   return (
     <Box sx={{ ...sx, maxWidth: '1200px' }}>
       <Box sx={footerSx.contactsWrapper}>
-        <Link href="/">
+        <Link href='/'>
           <Box sx={footerSx.logo}>
-            <Image src={logo} height={150} width={125} alt="" />
+            <Image src={logo} height={150} width={125} alt='' />
           </Box>
         </Link>
 
         <Box sx={footerSx.contacts}>
           {contacts.map(link => (
-            <Link
-              key={link.path}
-              href={link.path}
-              underline="none"
-              sx={footerSx.contactsLink}
-            >
+            <Link key={link.path} href={link.path} underline='none' sx={footerSx.contactsLink}>
               {link.label}
             </Link>
           ))}
 
           <Box sx={footerSx.social}>
             {social.map(link => (
-              <Link
-                key={link.path}
-                href={link.path}
-                rel="noreferrer"
-                target="_blank"
-                sx={footerSx.socialLink}
-              >
-                <Image src={link.icon} height={38} width={38} alt="" />
+              <Link key={link.path} href={link.path} rel='noreferrer' target='_blank' sx={footerSx.socialLink}>
+                <Image src={link.icon} height={38} width={38} alt='' />
               </Link>
             ))}
           </Box>
@@ -138,22 +127,12 @@ export function Footer({
       <Box sx={footerSx.info}>
         {info.map((link, i) => (
           <Fragment key={link.path}>
-            <Link
-              href={link.path}
-              rel="noreferrer"
-              target="_blank"
-              sx={footerSx.infoLink}
-            >
+            <Link href={link.path} rel='noreferrer' target='_blank' sx={footerSx.infoLink}>
               {link.label}
             </Link>
 
             {i + 1 !== info.length && (
-              <Divider
-                sx={footerSx.divider}
-                orientation="vertical"
-                variant="middle"
-                flexItem
-              />
+              <Divider sx={footerSx.divider} orientation='vertical' variant='middle' flexItem />
             )}
           </Fragment>
         ))}

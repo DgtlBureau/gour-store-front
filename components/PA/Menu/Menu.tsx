@@ -83,7 +83,7 @@ export function PAMenu({ active, menuList, onChange }: PAMenuProps) {
 
   return (
     <Box sx={sx.menu}>
-      <Typography variant="h4" sx={sx.title}>
+      <Typography variant='h4' sx={sx.title}>
         {currentChapter?.label}
       </Typography>
 
@@ -91,7 +91,7 @@ export function PAMenu({ active, menuList, onChange }: PAMenuProps) {
         {menuList.map(link => (
           <Typography
             key={link.path}
-            variant="body1"
+            variant='body1'
             sx={{ ...sx.listItem, ...(link.path === active && sx.active) }}
             onClick={() => onChange(link.path)}
           >

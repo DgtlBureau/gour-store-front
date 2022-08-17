@@ -9,7 +9,12 @@ import { dispatchNotification } from 'packages/EventBus';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import translation from './Order.i18n.json';
-import { selectedProductCount, selectedProductSum, selectProductsInOrder , removeProduct } from '../../store/slices/orderSlice';
+import {
+  selectedProductCount,
+  selectedProductSum,
+  selectProductsInOrder,
+  removeProduct,
+} from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
 import { useGetCityListQuery } from '../../store/api/cityApi';
@@ -83,7 +88,10 @@ export function Order() {
   const productsInOrder = useAppSelector(selectProductsInOrder);
   const count = useAppSelector(selectedProductCount);
   const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = productsInOrder.reduce((acc, currentProduct) => acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100, 0);
+  const sumDiscount = productsInOrder.reduce(
+    (acc, currentProduct) => acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100,
+    0,
+  );
 
   const deleteProductFromOrder = (product: IProduct) => dispatch(removeProduct(product));
 
@@ -182,7 +190,7 @@ export function Order() {
 
     if (mainOrderProfileId && mainOrderProfileId !== 0)
       setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
@@ -201,12 +209,12 @@ export function Order() {
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
-        <Typography variant="h4" sx={sx.title}>
+        <Typography variant='h4' sx={sx.title}>
           {t('title')}
         </Typography>
 
         {productsInOrder.length === 0 ? (
-          <Stack alignItems="center">
+          <Stack alignItems='center'>
             <CartEmpty
               title={t('emptyBasket')}
               btn={{
@@ -214,37 +222,37 @@ export function Order() {
                 onClick: () => goToHome,
               }}
             >
-              <Typography variant="body1">{t('emptyBasketText')}</Typography>
+              <Typography variant='body1'>{t('emptyBasketText')}</Typography>
             </CartEmpty>
           </Stack>
         ) : (
           <Grid container sx={sx.order} spacing={2}>
-              <Grid item md={8} xs={12}>
-                <OrderForm
-                  defaultPersonalFields={personalFields}
-                  defaultDeliveryFields={deliveryFields}
-                  citiesList={formattedCitiesList}
-                  isSubmitError={isSubmitError}
-                  discount={sumDiscount}
-                  productsCount={count}
-                  cost={sum}
-                  delivery={delivery}
-                  deliveryProfiles={formattedDeliveryProfiles}
-                  onChangeDeliveryProfile={onChangeDeliveryProfile}
-                  onSubmit={submit}
-                />
-              </Grid>
-
-              <Grid item md={4} xs={12}>
-                <OrderCard
-                  totalCartPrice={sum}
-                  currency={currency}
-                  language={language}
-                  totalProductCount={count}
-                  productsList={productsInOrder}
-                />
-              </Grid>
+            <Grid item md={8} xs={12}>
+              <OrderForm
+                defaultPersonalFields={personalFields}
+                defaultDeliveryFields={deliveryFields}
+                citiesList={formattedCitiesList}
+                isSubmitError={isSubmitError}
+                discount={sumDiscount}
+                productsCount={count}
+                cost={sum}
+                delivery={delivery}
+                deliveryProfiles={formattedDeliveryProfiles}
+                onChangeDeliveryProfile={onChangeDeliveryProfile}
+                onSubmit={submit}
+              />
             </Grid>
+
+            <Grid item md={4} xs={12}>
+              <OrderCard
+                totalCartPrice={sum}
+                currency={currency}
+                language={language}
+                totalProductCount={count}
+                productsList={productsInOrder}
+              />
+            </Grid>
+          </Grid>
         )}
       </ShopLayout>
     </PrivateLayout>

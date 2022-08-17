@@ -155,7 +155,7 @@ export function OrdersCard({
 
         <Divider variant='fullWidth' sx={{ margin: '20px 0 0 0' }} />
 
-        {products.map((product) => (
+        {products.map(product => (
           <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
         ))}
 

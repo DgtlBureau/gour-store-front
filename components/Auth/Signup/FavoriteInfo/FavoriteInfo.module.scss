@@ -1,14 +1,14 @@
 .icon {
+  width: 100%;
+  svg {
     width: 100%;
-    svg {
-        width: 100%;
-    }
+  }
 
-    &.selected {
-        svg {
-            .outline {
-                fill: #ffa900;
-            }
-        }
+  &.selected {
+    svg {
+      .outline {
+        fill: #ffa900;
+      }
     }
+  }
 }

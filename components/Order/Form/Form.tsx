@@ -109,7 +109,7 @@ export function OrderForm({
       ...values.getValues(),
       ...defaultDeliveryFields,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultDeliveryFields]);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export function OrderForm({
       ...values.getValues(),
       ...defaultPersonalFields,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultPersonalFields]);
 
   const submitHandler = (data: OrderFormType) => onSubmit(data);
@@ -131,7 +131,7 @@ export function OrderForm({
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('details')}
             </Typography>
 
@@ -145,14 +145,14 @@ export function OrderForm({
           </Box>
 
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('address')}
             </Typography>
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
                 onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfileId'))}
-                name="deliveryProfileId"
+                name='deliveryProfileId'
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
                 sx={sx.select}
@@ -161,7 +161,7 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
+                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} sx={sx.select} />
               </Grid>
 
               {addressFields.map(field => (
@@ -171,7 +171,7 @@ export function OrderForm({
               ))}
 
               <Grid item xs>
-                <HFTextField sx={sx.textarea} multiline rows={3} name="comment" label={t('comment')} />
+                <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
               </Grid>
             </Grid>
 
@@ -187,7 +187,7 @@ export function OrderForm({
 
             <Button
               sx={sx.btn}
-              type="submit"
+              type='submit'
               disabled={!values.formState.isValid || !isAgree}
               color={!isSubmitError ? 'primary' : 'error'}
             >

@@ -29,7 +29,7 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
     setSeconds(differenceInSeconds(end, nowDate));
 
     intervalId = +setInterval(() => {
-      setSeconds((sec) => sec - 1);
+      setSeconds(sec => sec - 1);
     }, 1000);
   }, []);
 

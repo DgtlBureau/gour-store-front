@@ -36,8 +36,7 @@ const WEIGHTS = [
 
 const PRICE = 350;
 
-const PREVIEW_SRC =
-  'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
+const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
 
 const Template: ComponentStory<typeof ProductCard> = function () {
   const [weightId, setWeightId] = useState(0);
@@ -48,8 +47,8 @@ const Template: ComponentStory<typeof ProductCard> = function () {
     <ProductCard
       currentCount={1}
       isWeightGood
-      currency="cheeseCoin"
-      title="Chevrano XO Козий Элитный Сыр"
+      currency='cheeseCoin'
+      title='Chevrano XO Козий Элитный Сыр'
       description={DESCRIPTION}
       rating={4.3}
       price={PRICE}

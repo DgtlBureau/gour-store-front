@@ -43,19 +43,19 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
   const handleClickCountry = (countryId: number) => {
     const isSelected = userCountries.includes(countryId);
     if (isSelected) {
-      const newList = userCountries.filter((id) => id !== countryId);
+      const newList = userCountries.filter(id => id !== countryId);
       return setUserCountries(newList);
     }
-    return setUserCountries((prevList) => [...prevList, countryId]);
+    return setUserCountries(prevList => [...prevList, countryId]);
   };
 
   const handleClickProducts = (productId: number) => {
     const isSelected = userProducts.includes(productId);
     if (isSelected) {
-      const newList = userProducts.filter((id) => id !== productId);
+      const newList = userProducts.filter(id => id !== productId);
       return setUserProducts(newList);
     }
-    return setUserProducts((prevList) => [...prevList, productId]);
+    return setUserProducts(prevList => [...prevList, productId]);
   };
 
   const handleSubmit = () => {
@@ -83,7 +83,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
-          {countries.map((country) => (
+          {countries.map(country => (
             <Grid item xs={3} sm={2} key={country.id}>
               <div
                 style={{
@@ -104,7 +104,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
-          {products.map((product) => (
+          {products.map(product => (
             <Grid
               item
               xs={4}

@@ -58,7 +58,7 @@ export function Addresses() {
   const closeDeleteModal = () => setIsDeleting(false);
 
   const citiesList =
-    cities?.map((city) => ({
+    cities?.map(city => ({
       value: city.id,
       label: city.name[language],
     })) || [];
@@ -145,7 +145,7 @@ export function Addresses() {
           <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
         )}
         {!!profiles && profiles.length !== 0 ? (
-          profiles.map((profile) => (
+          profiles.map(profile => (
             <PAProfilesItem
               key={profile.id}
               isExpanded={expandedProfileId === profile.id}
@@ -153,7 +153,7 @@ export function Addresses() {
               cities={citiesList}
               profile={profile}
               onExpand={() => expandProfile(profile.id)}
-              onSave={(data) => editAddress(data, profile.id)}
+              onSave={data => editAddress(data, profile.id)}
               onDelete={openDeleteModal}
             />
           ))

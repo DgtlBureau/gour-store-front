@@ -17,11 +17,7 @@ export type SignupReferralCodeProps = {
   onSubmit(data: ReferralCodeDto): void;
 };
 
-export function SignupReferralCode({
-  defaultValues,
-  onBack,
-  onSubmit,
-}: SignupReferralCodeProps) {
+export function SignupReferralCode({ defaultValues, onBack, onSubmit }: SignupReferralCodeProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t as Translator);
@@ -36,27 +32,27 @@ export function SignupReferralCode({
 
   return (
     <AuthCard>
-      <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+      <Button sx={sx.backBtn} size='small' variant='outlined' onClick={onBack}>
         {t('goBack')}
       </Button>
-      <Typography variant="h6">{t('firstText')}</Typography>
-      <Typography variant="h6">{t('secondText')}</Typography>
+      <Typography variant='h6'>{t('firstText')}</Typography>
+      <Typography variant='h6'>{t('secondText')}</Typography>
       <FormProvider {...values}>
-        <form id="referralCodeForm" onSubmit={values.handleSubmit(submit)}>
+        <form id='referralCodeForm' onSubmit={values.handleSubmit(submit)}>
           <HFTextField
             sx={sx.field}
-            type="text"
-            name="referralCode"
+            type='text'
+            name='referralCode'
             label={t('referralCode')}
             helperText={t('referralCodeHelper')}
           />
         </form>
       </FormProvider>
-      <Typography sx={{ margin: '0 0 10px 0' }} variant="h6">
+      <Typography sx={{ margin: '0 0 10px 0' }} variant='h6'>
         {t('thirdText')}
       </Typography>
 
-      <Button form="referralCodeForm" type="submit" sx={sx.submitBtn}>
+      <Button form='referralCodeForm' type='submit' sx={sx.submitBtn}>
         {t('goNext')}
       </Button>
     </AuthCard>

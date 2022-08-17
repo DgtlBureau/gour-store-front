@@ -26,13 +26,13 @@ export function SignupGreeting({ onBack, onSubmit }: SignupGreetingProps) {
 
   return (
     <AuthCard>
-      <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+      <Button sx={sx.backBtn} size='small' variant='outlined' onClick={onBack}>
         {t('goBack')}
       </Button>
 
       <Box sx={sx.text}>
-        <Typography variant="h6">{t('firstText')}</Typography>
-        <Typography variant="h6">{t('secondText')}</Typography>
+        <Typography variant='h6'>{t('firstText')}</Typography>
+        <Typography variant='h6'>{t('secondText')}</Typography>
       </Box>
 
       <Button onClick={onSubmit}>{t('goNext')}</Button>

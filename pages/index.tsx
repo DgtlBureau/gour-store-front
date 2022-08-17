@@ -40,7 +40,7 @@ const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
   const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
-  const basket = useAppSelector((state) => state.order);
+  const basket = useAppSelector(state => state.order);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -91,8 +91,8 @@ const Home: NextPage = () => {
           <CardSlider
             title={t('promotions')}
             cardsList={promotions
-              .filter((it) => new Date(it.end) > NOW)
-              .map((promotion) => (
+              .filter(it => new Date(it.end) > NOW)
+              .map(promotion => (
                 <PromotionCard
                   key={promotion.id}
                   image={promotion.cardImage.small}

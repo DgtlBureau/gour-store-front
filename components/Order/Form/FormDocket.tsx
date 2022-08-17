@@ -66,11 +66,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
   return (
     <Box sx={sx.docket}>
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {productsCount} {productsDeclision}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h6" sx={sx.value}>
+        <Typography variant='h6' sx={sx.value}>
           {cost}
           {currencySymbol}
         </Typography>
@@ -78,11 +78,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
 
       {!!discount && (
         <Box sx={sx.field}>
-          <Typography variant="body1" sx={sx.label}>
+          <Typography variant='body1' sx={sx.label}>
             {t('discount')}
           </Typography>
           <hr style={sx.divider} />
-          <Typography variant="h6" sx={{ ...sx.value, ...sx.discountValue }}>
+          <Typography variant='h6' sx={{ ...sx.value, ...sx.discountValue }}>
             -{discount}
             {currencySymbol}
           </Typography>
@@ -90,11 +90,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
       )}
 
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {t('delivery')}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h6" sx={sx.value}>
+        <Typography variant='h6' sx={sx.value}>
           {delivery === 0 ? (
             t('free')
           ) : (
@@ -107,11 +107,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
       </Box>
 
       <Box sx={{ ...sx.field, ...sx.total }}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {t('total')}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h5" sx={sx.value}>
+        <Typography variant='h5' sx={sx.value}>
           {total}
           {currencySymbol}
         </Typography>

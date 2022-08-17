@@ -107,24 +107,24 @@ export function Header({
   return (
     <>
       <AppBar sx={{ ...headerSx.container, ...sx } as SxProps}>
-        <Container sx={{ height: '100%', position: 'relative' }} maxWidth="lg">
-          <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ height: '100%' }}>
-            <Grid item xs={2} md={4} lg={6} container direction="row" alignItems="center" justifyContent="flex-start">
+        <Container sx={{ height: '100%', position: 'relative' }} maxWidth='lg'>
+          <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
+            <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
-                <NextLink href="/" passHref>
-                  <Image src={Logo} height={49} width={58} alt="" />
+                <NextLink href='/' passHref>
+                  <Image src={Logo} height={49} width={58} alt='' />
                 </NextLink>
               </Box>
 
               {!isGame && (
                 <>
-                  <Link href={`tel:${firstPhone}`} variant="body1" color="inherit" sx={headerSx.phone}>
+                  <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
                     {firstPhone}
                   </Link>
 
                   <Box sx={headerSx.city} onClick={openCityModal}>
                     <PlaceOutlinedIcon />
-                    <Typography sx={headerSx.cityTitle} variant="body1">
+                    <Typography sx={headerSx.cityTitle} variant='body1'>
                       {currentCity?.name}
                     </Typography>
                     <KeyboardArrowDownIcon />
@@ -133,7 +133,7 @@ export function Header({
               )}
             </Grid>
 
-            <Grid item xs={10} md={8} lg={6} container direction="row" alignItems="center" justifyContent="flex-end">
+            <Grid item xs={10} md={8} lg={6} container direction='row' alignItems='center' justifyContent='flex-end'>
               <Box
                 sx={{
                   ...headerSx.money,
@@ -143,21 +143,21 @@ export function Header({
                   },
                 }}
               >
-                <Typography variant="body2" sx={headerSx.moneyAmount}>
+                <Typography variant='body2' sx={headerSx.moneyAmount}>
                   {moneyAmount}
                   &nbsp;
                   {currencySymbol}
                 </Typography>
 
-                <IconButton onClick={onClickReplenishment} color="inherit" sx={headerSx.replenishment}>
-                  <AddIcon color="primary" />
+                <IconButton onClick={onClickReplenishment} color='inherit' sx={headerSx.replenishment}>
+                  <AddIcon color='primary' />
                 </IconButton>
               </Box>
 
               {isGame ? (
                 <IconButton
                   onClick={goToHome}
-                  color="inherit"
+                  color='inherit'
                   sx={{
                     ...headerSx.icon,
                     display: {
@@ -166,21 +166,21 @@ export function Header({
                     },
                   }}
                 >
-                  <Image src={CatalogIcon} height={24} width={24} alt="" />
+                  <Image src={CatalogIcon} height={24} width={24} alt='' />
                 </IconButton>
               ) : (
-                <IconButton onClick={goToGame} color="inherit" sx={headerSx.icon}>
-                  <Image src={GamepadIcon} height={24} width={24} alt="" />
+                <IconButton onClick={goToGame} color='inherit' sx={headerSx.icon}>
+                  <Image src={GamepadIcon} height={24} width={24} alt='' />
                 </IconButton>
               )}
 
               {!isGame && (
                 <>
-                  <IconButton onClick={onClickFavorite} color="inherit" sx={headerSx.icon}>
+                  <IconButton onClick={onClickFavorite} color='inherit' sx={headerSx.icon}>
                     <FavoriteBorderIcon />
                   </IconButton>
 
-                  <IconButton onClick={onClickPersonalArea} color="inherit" sx={headerSx.icon}>
+                  <IconButton onClick={onClickPersonalArea} color='inherit' sx={headerSx.icon}>
                     <PersonIcon />
                   </IconButton>
 
@@ -197,20 +197,20 @@ export function Header({
                   </Box> */}
 
                   <Button sx={headerSx.cart} onClick={onClickBasket}>
-                    <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color="primary">
-                      <ShoppingCartOutlinedIcon color="primary" />
+                    <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
+                      <ShoppingCartOutlinedIcon color='primary' />
                     </Badge>
                     {basketProductSum}
                     &nbsp;
                     {currencySymbol}
                   </Button>
-                  <IconButton onClick={onClickSignout} color="inherit" sx={headerSx.icon}>
+                  <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
                     <LogoutIcon />
                   </IconButton>
                 </>
               )}
               {!isGame && (
-                <IconButton sx={headerSx.menuBtn} color="inherit" onClick={deployMenu}>
+                <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
                   {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
                 </IconButton>
               )}
@@ -218,7 +218,7 @@ export function Header({
           </Grid>
         </Container>
 
-        <Collapse in={isMenuDeployed} timeout="auto" unmountOnExit>
+        <Collapse in={isMenuDeployed} timeout='auto' unmountOnExit>
           <MobileMenu
             selectedCityId={selectedCityId}
             cities={cities}

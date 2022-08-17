@@ -17,7 +17,7 @@ export function OrdersCardGroup({ date, ordersList, currency }: OrdersGroupProps
 
   return (
     <Box>
-      <Typography variant="h6">{groupDate}</Typography>
+      <Typography variant='h6'>{groupDate}</Typography>
       {ordersList.map(order => (
         <OrdersCard
           key={order.title}

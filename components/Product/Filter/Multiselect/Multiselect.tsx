@@ -49,10 +49,10 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   };
 
   function changeOption(selectedOption: string) {
-    const isSelected = selectedOptions.find((option) => option === selectedOption);
+    const isSelected = selectedOptions.find(option => option === selectedOption);
 
     const newSelectedList = isSelected
-      ? [...selectedOptions].filter((option) => option !== selectedOption)
+      ? [...selectedOptions].filter(option => option !== selectedOption)
       : [...selectedOptions, selectedOption];
 
     setSelectedOptions(newSelectedList);
@@ -61,7 +61,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   }
 
   function isOptionSelected(currentOption: string) {
-    return selectedOptions.find((option) => option === currentOption);
+    return selectedOptions.find(option => option === currentOption);
   }
 
   return isMobile ? (
@@ -73,7 +73,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
       </AccordionSummary>
 
       <AccordionDetails sx={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-        {options.map((option) => (
+        {options.map(option => (
           <Typography
             variant='body1'
             key={option.value}
@@ -100,7 +100,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
           <List sx={selectSx.list}>
-            {options.map((option) => (
+            {options.map(option => (
               <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
                 <ListItemButton role={undefined} dense>
                   <ListItemIcon sx={selectSx.listItemIcon}>

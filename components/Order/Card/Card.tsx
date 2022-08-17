@@ -90,27 +90,27 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
 
   return (
     <Stack sx={{ ...cardSx.card, ...sx }}>
-      <Typography sx={cardSx.count} variant="h6">
+      <Typography sx={cardSx.count} variant='h6'>
         {totalProductCount} {productsCountText} {t('inOrder')}
       </Typography>
 
       {productInfo.map(product => (
         <Box key={product.id} sx={cardSx.field}>
-          <Typography variant="body1" sx={cardSx.product}>
+          <Typography variant='body1' sx={cardSx.product}>
             {product.title}
           </Typography>
 
-          <Typography variant="body1" sx={cardSx.product}>
+          <Typography variant='body1' sx={cardSx.product}>
             {product.totalPrice} {currencySymbol} • {product.totalCount}
           </Typography>
         </Box>
       ))}
 
-      <Stack sx={cardSx.footer} direction="row" justifyContent="space-between">
-        <Typography variant="h6" sx={cardSx.total}>
+      <Stack sx={cardSx.footer} direction='row' justifyContent='space-between'>
+        <Typography variant='h6' sx={cardSx.total}>
           {t('total')}
         </Typography>
-        <Typography variant="h6" sx={cardSx.total}>
+        <Typography variant='h6' sx={cardSx.total}>
           {totalCartPrice} {currencySymbol}
         </Typography>
       </Stack>

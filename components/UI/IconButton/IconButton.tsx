@@ -8,30 +8,12 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   disabled?: boolean;
-  color?:
-    | 'inherit'
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | undefined;
+  color?: 'inherit' | 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;
   sx?: SxProps;
   component?: ElementType;
 };
 
-export function IconButton({
-  size,
-  children,
-  color,
-  onClick,
-  type,
-  disabled,
-  component = 'button',
-  sx,
-}: Props) {
+export function IconButton({ size, children, color, onClick, type, disabled, component = 'button', sx }: Props) {
   return (
     <MUIIconButton
       size={size}

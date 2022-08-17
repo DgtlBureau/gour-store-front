@@ -34,7 +34,7 @@ export default function SignUp() {
   const { data: roles } = useGetRoleListQuery();
 
   const convertedCities = cities
-    ? cities.map((city) => ({
+    ? cities.map(city => ({
         label: city.name[language].toString(),
         value: city.id.toString(),
       }))
@@ -98,7 +98,7 @@ export default function SignUp() {
   const registerUser = async () => {
     if (!credentials) return;
 
-    const role = roles?.find((it) => it.key === credentials.role);
+    const role = roles?.find(it => it.key === credentials.role);
 
     const data: SignUpDto = {
       firstName: credentials.firstName,

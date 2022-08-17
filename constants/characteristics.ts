@@ -1,4 +1,4 @@
-import { IProductCharacteristics } from '../@types/entities/IProduct'
+import { IProductCharacteristics } from '../@types/entities/IProduct';
 import { ITranslatableString } from '../@types/entities/ITranslatableString';
 
 type TranslatableString = Omit<ITranslatableString, 'id' | 'createdAt' | 'updatedAt'>;

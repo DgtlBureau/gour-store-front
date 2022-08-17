@@ -39,11 +39,7 @@ const sx = {
   },
 };
 
-export function PAEmailChangeModal({
-  isOpen,
-  onClose,
-  onChange,
-}: PAEmailChangeModalProps) {
+export function PAEmailChangeModal({ isOpen, onClose, onChange }: PAEmailChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -68,19 +64,15 @@ export function PAEmailChangeModal({
           <CloseIcon />
         </IconButton>
 
-        <Typography variant="h6">{t('title')}</Typography>
+        <Typography variant='h6'>{t('title')}</Typography>
 
-        <Typography variant="body1">{t('subTitle')}</Typography>
+        <Typography variant='body1'>{t('subTitle')}</Typography>
 
         <FormProvider {...values}>
           <form onSubmit={values.handleSubmit(submitHandler)}>
             <Stack spacing={2}>
-              <HFTextField
-                type="email"
-                name="email"
-                label={t('passwordConfirm')}
-              />
-              <Button type="submit" sx={sx.submitBtn}>
+              <HFTextField type='email' name='email' label={t('passwordConfirm')} />
+              <Button type='submit' sx={sx.submitBtn}>
                 {t('send')}
               </Button>
             </Stack>

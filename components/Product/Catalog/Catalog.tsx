@@ -14,7 +14,12 @@ import { Button } from '../../UI/Button/Button';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-import { IProduct, IProductCharacteristics, IFiltersCharacteristic, ICharacteristicsList } from '../../../@types/entities/IProduct';
+import {
+  IProduct,
+  IProductCharacteristics,
+  IFiltersCharacteristic,
+  ICharacteristicsList,
+} from '../../../@types/entities/IProduct';
 import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
@@ -88,8 +93,8 @@ export function ProductCatalog({
 
   const productList = categories
     ? productsWidthElect?.filter(
-        (product) =>
-          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters)
+        product =>
+          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters),
       )
     : productsWidthElect;
 
@@ -114,7 +119,7 @@ export function ProductCatalog({
     <Box sx={sx}>
       {!!categories && screenWidth <= 900 && (
         <Box sx={catalogSx.header}>
-          <Typography variant="h4" sx={catalogSx.title}>
+          <Typography variant='h4' sx={catalogSx.title}>
             {title}
           </Typography>
 
@@ -124,11 +129,11 @@ export function ProductCatalog({
               sx={{ padding: '4px', marginRight: '6px' }}
               onChange={toggleSequence}
             >
-              <ArrowsIcon fontSize="small" sx={{ transform: 'rotate(90deg)' }} />
+              <ArrowsIcon fontSize='small' sx={{ transform: 'rotate(90deg)' }} />
             </ToggleButton>
 
-            <Button size="small" onClick={openFilterModal} sx={catalogSx.filterBtn}>
-              <FilterIcon fontSize="small" />
+            <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
+              <FilterIcon fontSize='small' />
             </Button>
           </Box>
         </Box>
@@ -176,7 +181,7 @@ export function ProductCatalog({
           ))}
         />
       ) : (
-        <Typography variant="h5" color="primary" sx={catalogSx.emptyTitle}>
+        <Typography variant='h5' color='primary' sx={catalogSx.emptyTitle}>
           Продукты не найдены
         </Typography>
       )}

@@ -44,7 +44,7 @@ function FavoriteProductCard({
   handleElect,
   goToProductPage,
 }: FavoriteProductType) {
-  const productInBasket = basket.find((it) => it.product.id === product.id);
+  const productInBasket = basket.find(it => it.product.id === product.id);
   const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
 
   const elect = () => handleElect(product.id, isElect);
@@ -78,7 +78,7 @@ export function Favorites() {
 
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
 
-  const basket = useAppSelector((state) => state.order);
+  const basket = useAppSelector(state => state.order);
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
@@ -118,7 +118,7 @@ export function Favorites() {
             <Typography variant='h5'>Нет избранных продуктов</Typography>
           ) : (
             <Grid container>
-              {favoriteProducts.map((product) => (
+              {favoriteProducts.map(product => (
                 <FavoriteProductCard
                   key={product.id}
                   product={product}

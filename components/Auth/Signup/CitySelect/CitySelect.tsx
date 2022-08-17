@@ -33,12 +33,7 @@ export type SignupCitySelectProps = {
   onSubmit(cityId: string): void;
 };
 
-export function SignupCitySelect({
-  city,
-  options,
-  onBack,
-  onSubmit,
-}: SignupCitySelectProps) {
+export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCitySelectProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t);
@@ -57,25 +52,15 @@ export function SignupCitySelect({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button
-            onClick={onBack}
-            sx={sx.backBtn}
-            variant="outlined"
-            size="small"
-          >
+          <Button onClick={onBack} sx={sx.backBtn} variant='outlined' size='small'>
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFSelect
-            options={options}
-            name="city"
-            placeholder={t('city')}
-            sx={sx.select}
-          />
+          <HFSelect options={options} name='city' placeholder={t('city')} sx={sx.select} />
 
-          <Button type="submit" sx={sx.submitBtn}>
+          <Button type='submit' sx={sx.submitBtn}>
             {t('continue')}
           </Button>
         </form>

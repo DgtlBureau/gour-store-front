@@ -170,7 +170,7 @@ export class GameCore {
     // Функция возвращает случайный тип из пула доступных продуктов
 
     const availableProducts = Object.keys(this.products).filter(
-      (it) => this.products[it as GameProductType] === 0,
+      it => this.products[it as GameProductType] === 0,
     ) as GameProductType[];
 
     const productTypeId = Math.floor(Math.random() * availableProducts.length);

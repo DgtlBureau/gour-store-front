@@ -15,7 +15,7 @@ export function SigninIntro({ onClickAuth, onClickRegistration }: SigninIntroPro
 
   return (
     <AuthCard>
-      <Button onClick={onClickAuth} sx={{ marginBottom: '20px' }} variant="outlined">
+      <Button onClick={onClickAuth} sx={{ marginBottom: '20px' }} variant='outlined'>
         {t('auth')}
       </Button>
       <Button onClick={onClickRegistration} sx={{ width: '100%' }}>

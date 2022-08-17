@@ -65,7 +65,7 @@ export function ProductInformation({
           </Typography>
         </div>
       </Box>
-      {characteristics.map((characteristic) => (
+      {characteristics.map(characteristic => (
         <Box key={characteristic.label} sx={sx.characteristic}>
           <Typography variant='body2'>{characteristic.label}</Typography>
 

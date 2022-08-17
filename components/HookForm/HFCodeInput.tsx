@@ -31,7 +31,7 @@ export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
       render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
         <CodeInput
           {...rest}
-          onChange={(value) => {
+          onChange={value => {
             HFOnChange(value);
             onChange?.(value);
           }}

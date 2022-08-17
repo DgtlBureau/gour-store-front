@@ -1,7 +1,7 @@
-import {ICity} from './ICity';
-import {IBaseEntity} from './IBaseEntity';
+import { ICity } from './ICity';
+import { IBaseEntity } from './IBaseEntity';
 
 export interface IWarehouse extends IBaseEntity {
-    title: string;
-    city: ICity;
+  title: string;
+  city: ICity;
 }

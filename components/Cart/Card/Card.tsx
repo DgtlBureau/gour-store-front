@@ -51,25 +51,25 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={productImg || defaultImage} />
+      <CardMedia sx={sx.image} component='img' image={productImg || defaultImage} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant="h6" sx={sx.title}>
+          <Typography variant='h6' sx={sx.title}>
             {title}
           </Typography>
 
           {screenWidth > 600 ? (
             <Docket currency={currency} discount={discount} price={price} amount={amount} />
           ) : (
-            <IconButton size="small" onClick={onDelete} sx={sx.cancelBtn}>
+            <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
               <CancelIcon />
             </IconButton>
           )}
         </CardContent>
 
         <CardActions sx={sx.actions}>
-          <Button variant="text" onClick={onDelete} sx={sx.deleteBtn}>
+          <Button variant='text' onClick={onDelete} sx={sx.deleteBtn}>
             {t('delete')}
           </Button>
 
@@ -78,7 +78,7 @@ export function CartCard({
               <MinusIcon />
             </IconButton>
 
-            <Typography variant="body2" sx={sx.weight}>
+            <Typography variant='body2' sx={sx.weight}>
               {isWeightGood ? weight : amount} {isWeightGood ? t('g') : t('piece')}
             </Typography>
 

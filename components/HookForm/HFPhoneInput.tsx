@@ -18,12 +18,7 @@ type Props = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFPhoneInput({
-  name,
-  defaultValue,
-  helperText,
-  ...props
-}: Props) {
+export function HFPhoneInput({ name, defaultValue, helperText, ...props }: Props) {
   const {
     control,
     formState: { errors },
@@ -35,12 +30,7 @@ export function HFPhoneInput({
       control={control}
       defaultValue={defaultValue || ''}
       render={({ field: { ref, ...rest } }) => (
-        <PhoneInput
-          {...rest}
-          isError={!!errors[name]}
-          helperText={helperText || errors[name]?.message}
-          {...props}
-        />
+        <PhoneInput {...rest} isError={!!errors[name]} helperText={helperText || errors[name]?.message} {...props} />
       )}
     />
   );

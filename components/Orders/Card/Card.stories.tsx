@@ -8,9 +8,7 @@ export default {
   title: 'components/LkOrders/LkOrdersCard',
 } as Meta;
 
-const Template: ComponentStory<typeof OrdersCard> = (args: OrdersCardProps) => (
-  <OrdersCard {...args} />
-);
+const Template: ComponentStory<typeof OrdersCard> = (args: OrdersCardProps) => <OrdersCard {...args} />;
 export const DefaultLkOrdersCard = Template.bind({});
 const props: Partial<OrdersCardProps> = {
   title: 'Заказ T212486314',

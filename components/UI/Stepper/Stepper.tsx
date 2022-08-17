@@ -40,17 +40,9 @@ export function Stepper({ activeStep, stepsCount, percent }: Props) {
         }}
       >
         {getStepsByCount(stepsCount).map(step => (
-          <div
-            key={step.index}
-            className={s.step}
-            style={{ width: `calc(100%/${stepsCount})` }}
-          >
-            <div
-              className={`${s.connector} ${step.isActive ? s.active : ''}`}
-             />
-            <div className={`${s.stepLabel} ${step.isActive ? s.active : ''}`}>
-              {step.isActive && <DoneIcon />}
-            </div>
+          <div key={step.index} className={s.step} style={{ width: `calc(100%/${stepsCount})` }}>
+            <div className={`${s.connector} ${step.isActive ? s.active : ''}`} />
+            <div className={`${s.stepLabel} ${step.isActive ? s.active : ''}`}>{step.isActive && <DoneIcon />}</div>
           </div>
         ))}
       </Box>
@@ -69,10 +61,7 @@ export function Stepper({ activeStep, stepsCount, percent }: Props) {
         <div className={`${s.step} ${s.mobile}`}>
           <div className={`${s.stepLabel} ${s.active}`}>{activeStep}</div>
           <div className={s.connector}>
-            <div
-              className={s.connectorPercentage}
-              style={{ width: `${percent}%` }}
-             />
+            <div className={s.connectorPercentage} style={{ width: `${percent}%` }} />
           </div>
           <div className={s.stepLabel}>{activeStep + 1}</div>
         </div>

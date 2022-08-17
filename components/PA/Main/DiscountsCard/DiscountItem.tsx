@@ -38,17 +38,17 @@ const sx = {
 export function DiscountItem({ discount }: Props) {
   return (
     <Grid item xs={4}>
-      <Typography sx={sx.title} variant="subtitle1">
+      <Typography sx={sx.title} variant='subtitle1'>
         {discount.title}
       </Typography>
-      <Typography sx={sx.percent} variant="subtitle1">
+      <Typography sx={sx.percent} variant='subtitle1'>
         {discount.percent} %
       </Typography>
 
       <Box sx={sx.progress}>
         <div style={{ ...sx.progressFill, width: `${discount.percent}%` }} />
       </Box>
-      <Typography sx={sx.category} variant="caption">
+      <Typography sx={sx.category} variant='caption'>
         {discount.category}
       </Typography>
     </Grid>

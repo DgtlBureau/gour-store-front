@@ -96,7 +96,7 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
           modules={[EffectFade, Pagination]}
           effect='fade'
           onSwiper={setSlider}
-          onSlideChange={(swiper) => slideTo(swiper.activeIndex)}
+          onSlideChange={swiper => slideTo(swiper.activeIndex)}
         >
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>

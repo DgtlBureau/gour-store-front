@@ -9,7 +9,7 @@ export const baseQuery = fetchBaseQuery({
 export const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
-  extraOptions
+  extraOptions,
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 

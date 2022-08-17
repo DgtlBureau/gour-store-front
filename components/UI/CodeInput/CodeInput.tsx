@@ -5,7 +5,7 @@ import { InputModeTypes, ReactCodeInputProps } from 'react-code-input';
 import { defaultTheme } from '../../../themes';
 
 const ReactCodeInput = dynamic(
-  () => import('react-code-input')
+  () => import('react-code-input'),
 ) as unknown as React.FunctionComponent<ReactCodeInputProps>;
 
 const inputSx = {

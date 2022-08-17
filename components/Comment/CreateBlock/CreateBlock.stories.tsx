@@ -19,4 +19,3 @@ export const NegativeCommentCreateBlock = Template.bind({});
 NegativeCommentCreateBlock.args = {
   onCreate: () => Promise.reject(),
 };
-

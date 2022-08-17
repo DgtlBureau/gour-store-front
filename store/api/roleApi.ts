@@ -10,7 +10,7 @@ export const roleApi = commonApi.injectEndpoints({
           return {
             method: 'GET',
             url: Path.CLIENT_ROLES,
-          }
+          };
         },
       }),
       getRole: builder.query<IClientRole, number>({
@@ -18,11 +18,11 @@ export const roleApi = commonApi.injectEndpoints({
           return {
             method: 'GET',
             url: `${Path.CLIENT_ROLES}/${id}`,
-          }
+          };
         },
       }),
-    } 
-  }
+    };
+  },
 });
 
 export const { useGetRoleQuery, useGetRoleListQuery } = roleApi;

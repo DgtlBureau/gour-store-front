@@ -7,7 +7,6 @@ import franceImg from '../assets/images/countries/france.png';
 import hollandImg from '../assets/images/countries/holland.png';
 import britainImg from '../assets/images/countries/britain.png';
 
-
 const imageByCountry: Record<ProductCountry, string> = {
   Russia: russiaImg,
   Spain: spainImg,

@@ -43,7 +43,7 @@ export function ProductFilterModal({
   const { t } = useLocalTranslation(translations);
 
   const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all'
+    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all',
   );
 
   return (
@@ -63,7 +63,7 @@ export function ProductFilterModal({
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
-          <Typography variant="h6" sx={sx.title}>
+          <Typography variant='h6' sx={sx.title}>
             {t('filters')}
           </Typography>
 

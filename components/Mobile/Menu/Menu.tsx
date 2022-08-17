@@ -95,14 +95,14 @@ export function MobileMenu({
   return (
     <List sx={sx.list} disablePadding>
       <Box sx={sx.money}>
-        <Typography variant="body2" sx={sx.moneyAmount}>
+        <Typography variant='body2' sx={sx.moneyAmount}>
           {moneyAmount}
           &nbsp;
           {currencySymbol}
         </Typography>
 
-        <IconButton onClick={onClickReplenishment} color="inherit" sx={sx.replenishment}>
-          <AddIcon color="primary" />
+        <IconButton onClick={onClickReplenishment} color='inherit' sx={sx.replenishment}>
+          <AddIcon color='primary' />
         </IconButton>
       </Box>
 
@@ -111,21 +111,21 @@ export function MobileMenu({
       <ListItemButton sx={sx.listItem} onClick={() => setCitiesIsOpened(!citiesIsOpened)}>
         <Box sx={sx.city}>
           <Box sx={sx.locationIcon}>
-            <Image src={locationIcon} layout="fill" alt="" />
+            <Image src={locationIcon} layout='fill' alt='' />
           </Box>
 
           <Typography sx={sx.title}>{currentCity?.name}</Typography>
         </Box>
 
         <Box sx={Object.assign([sx.arrowIcon, citiesIsOpened && sx.invertedArrow])}>
-          <Image src={arrowIcon} layout="fill" alt="" />
+          <Image src={arrowIcon} layout='fill' alt='' />
         </Box>
       </ListItemButton>
 
       <Divider sx={sx.divider} />
 
-      <Collapse in={citiesIsOpened} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+      <Collapse in={citiesIsOpened} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
           {cities.map(city => (
             <Fragment key={city.name}>
               <ListItemButton sx={sx.listItem} onClick={() => selectCity(city.id)}>
@@ -185,7 +185,7 @@ export function MobileMenu({
         <Typography sx={sx.title}>{t('game')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
-          <Image src={lightArrowIcon} layout="fill" alt="" />
+          <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
       </ListItemButton>
 
@@ -195,7 +195,7 @@ export function MobileMenu({
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
-          <Image src={lightArrowIcon} layout="fill" alt="" />
+          <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
       </ListItemButton>
 
@@ -205,7 +205,7 @@ export function MobileMenu({
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
-          <Image src={lightArrowIcon} layout="fill" alt="" />
+          <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
       </ListItemButton>
 

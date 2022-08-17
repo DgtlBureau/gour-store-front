@@ -28,7 +28,7 @@ type Props = {
 export function InfoBlock({ text, link, sx }: Props) {
   return (
     <Paper sx={{ ...infoSx.block, ...sx }} elevation={0}>
-      <Typography sx={infoSx.text} color="text.muted" variant="body1">
+      <Typography sx={infoSx.text} color='text.muted' variant='body1'>
         {text}
       </Typography>
       {link && <Link href={link.path}>{link.label}</Link>}

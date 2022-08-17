@@ -32,7 +32,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, ...props
       render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}
-          onChange={(event) => {
+          onChange={event => {
             HFOnChange(event);
             onChange?.(event);
           }}

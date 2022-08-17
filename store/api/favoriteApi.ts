@@ -15,10 +15,7 @@ export const favoriteApi = commonApi.injectEndpoints({
         },
         providesTags: result =>
           result
-            ? [
-                ...result.map(({ id }) => ({ type: 'Favorite', id } as const)),
-                { type: 'Favorite', id: 'LIST' },
-              ]
+            ? [...result.map(({ id }) => ({ type: 'Favorite', id } as const)), { type: 'Favorite', id: 'LIST' }]
             : [{ type: 'Favorite', id: 'LIST' }],
       }),
       createFavoriteProducts: builder.mutation<void, ProductCreateFavoriteDto>({
@@ -44,8 +41,5 @@ export const favoriteApi = commonApi.injectEndpoints({
   },
 });
 
-export const {
-  useGetFavoriteProductsQuery,
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-} = favoriteApi;
+export const { useGetFavoriteProductsQuery, useCreateFavoriteProductsMutation, useDeleteFavoriteProductMutation } =
+  favoriteApi;

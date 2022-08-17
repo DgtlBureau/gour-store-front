@@ -31,14 +31,14 @@ export function PAAddressCard({ addresses, onClickMore }: PAAddressCardProps) {
       {addresses && addresses.length !== 0 ? (
         addresses.map(address => (
           <Box key={address.address} sx={sx.address}>
-            <Typography variant="body2" color="text.muted">
+            <Typography variant='body2' color='text.muted'>
               {address.title}
             </Typography>
-            <Typography variant="body1">{address.address}</Typography>
+            <Typography variant='body1'>{address.address}</Typography>
           </Box>
         ))
       ) : (
-        <Typography variant="body1" color="text.muted">
+        <Typography variant='body1' color='text.muted'>
           {t('emptyAddresses')}
         </Typography>
       )}

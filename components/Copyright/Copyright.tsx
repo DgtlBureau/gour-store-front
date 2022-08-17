@@ -25,7 +25,7 @@ const copyrightSx = {
   author: {
     textDecoration: 'underline',
   },
-}
+};
 
 type CopyrightProps = {
   sx?: SxProps;
@@ -36,20 +36,13 @@ export function Copyright({ sx }: CopyrightProps) {
 
   return (
     <Box sx={{ ...copyrightSx.wrapper, ...sx } as SxProps}>
-      <NextLink href="https://newshift.ru/" passHref>
-        <a
-          href="replace"
-          rel="noreferrer"
-          target="_blank"
-          style={copyrightSx.link}
-        >
+      <NextLink href='https://newshift.ru/' passHref>
+        <a href='replace' rel='noreferrer' target='_blank' style={copyrightSx.link}>
           {t('developed')}
           &nbsp;
-          <div style={copyrightSx.author}>
-            {t('author')}
-          </div>
+          <div style={copyrightSx.author}>{t('author')}</div>
         </a>
       </NextLink>
     </Box>
-  )
+  );
 }

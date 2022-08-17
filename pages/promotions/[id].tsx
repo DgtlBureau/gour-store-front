@@ -44,7 +44,7 @@ export default function Promotion() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const basket = useAppSelector((state) => state.order);
+  const basket = useAppSelector(state => state.order);
 
   const currency = 'cheeseCoin';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, IconButton } from '@mui/material';
 
-
 import CartIcon from '@mui/icons-material/ShoppingCart';
 import PlusIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';

@@ -35,7 +35,7 @@ export function HFSelect<V>({ name, defaultValue, sx, onChange: onControllChange
           <Select
             {...rest}
             isMulti={false}
-            onChange={(newValue) => onChange(newValue?.value)}
+            onChange={newValue => onChange(newValue?.value)}
             isError={!!errors[name]}
             error={errors[name]?.message ?? ''}
             {...props}

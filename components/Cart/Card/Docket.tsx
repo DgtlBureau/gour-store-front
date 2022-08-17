@@ -21,12 +21,12 @@ export function CartCardDocket({ currency, discount, price, amount }: Props) {
 
   return (
     <Box sx={sx.docket}>
-      <Typography variant="h5" sx={sx.price} color={discount ? 'error' : 'primary'}>
+      <Typography variant='h5' sx={sx.price} color={discount ? 'error' : 'primary'}>
         {totalPrice * amount} {currencySymbol}
       </Typography>
 
       {!!discount && (
-        <Typography variant="body2" sx={sx.oldPrice}>
+        <Typography variant='body2' sx={sx.oldPrice}>
           {price * amount} {currencySymbol}
         </Typography>
       )}

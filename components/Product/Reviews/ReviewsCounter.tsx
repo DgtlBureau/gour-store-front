@@ -48,15 +48,15 @@ export function ReviewsCounter({ grade, percent, count }: Props) {
 
   return (
     <Box sx={sx.counter}>
-      <Typography variant="body2">{grade}</Typography>
+      <Typography variant='body2'>{grade}</Typography>
 
-      <StarIcon fontSize="small" sx={sx.star} />
+      <StarIcon fontSize='small' sx={sx.star} />
 
       <Box sx={sx.progress}>
         <div style={{ ...sx.progressFill, width: `${percent}%` }} />
       </Box>
 
-      <Typography variant="body2" sx={sx.reviews}>
+      <Typography variant='body2' sx={sx.reviews}>
         {count} {reviewsCountText}
       </Typography>
     </Box>

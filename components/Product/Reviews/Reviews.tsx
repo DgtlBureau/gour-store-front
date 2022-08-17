@@ -48,16 +48,13 @@ const sxReviews = {
   },
 };
 
-export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>((
-  { reviews, sx },
-  ref
-) => {
+export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({ reviews, sx }, ref) => {
   const { t } = useLocalTranslation(translations);
 
   const ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
-    const reviewsCount = reviews.filter((review) => review.value === i).length;
+    const reviewsCount = reviews.filter(review => review.value === i).length;
     ratingStats.push({
       grade: i,
       count: reviewsCount,
@@ -66,10 +63,10 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>((
   }
 
   return (
-    <Grid sx={{ ...sxReviews.container, ...sx }} container direction="row" ref={ref}>
+    <Grid sx={{ ...sxReviews.container, ...sx }} container direction='row' ref={ref}>
       <Grid item xs={12} md={3}>
         <Box sx={sxReviews.stats}>
-          <Typography variant="h5" color="primary" sx={sxReviews.title}>
+          <Typography variant='h5' color='primary' sx={sxReviews.title}>
             {t('reviews')}
           </Typography>
           {ratingStats.map(stat => (
@@ -85,7 +82,7 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>((
 
       <Grid item xs={12} md={9}>
         {reviews.length === 0 ? (
-          <Typography variant="h5">{t('noReviews')}</Typography>
+          <Typography variant='h5'>{t('noReviews')}</Typography>
         ) : (
           <CardSlider
             sx={sxReviews.slider}

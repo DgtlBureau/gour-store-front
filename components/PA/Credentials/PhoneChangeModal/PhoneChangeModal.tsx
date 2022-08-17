@@ -76,7 +76,7 @@ export function PAPhoneChangeModal({
     setSeconds(30);
 
     const intervalId = setInterval(() => {
-      setSeconds((sec) => sec - 1);
+      setSeconds(sec => sec - 1);
     }, 1000);
 
     setTimeout(() => clearInterval(intervalId), 30000);

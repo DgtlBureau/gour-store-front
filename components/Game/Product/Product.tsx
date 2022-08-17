@@ -28,20 +28,22 @@ export type GameProductProps = {
 
 export function GameProduct({ isActive, type, angle, sx }: GameProductProps) {
   const images = {
-    cheese: <Image src={cheese} height={47} width={48} alt="" />,
-    sausage: <Image src={sausage} height={33} width={55} alt="" />,
-    jamon: <Image src={jamon} height={88} width={61} alt="" />,
-    chicken: <Image src={chicken} height={53} width={49} alt="" />,
-  }
+    cheese: <Image src={cheese} height={47} width={48} alt='' />,
+    sausage: <Image src={sausage} height={33} width={55} alt='' />,
+    jamon: <Image src={jamon} height={88} width={61} alt='' />,
+    chicken: <Image src={chicken} height={53} width={49} alt='' />,
+  };
 
   return (
-    <Box 
-      sx={{ 
-        ...productSx, 
-        ...(!isActive && mutedSx), 
-        transform: `rotate(${angle}deg)`,
-        ...sx,
-      } as SxProps}
+    <Box
+      sx={
+        {
+          ...productSx,
+          ...(!isActive && mutedSx),
+          transform: `rotate(${angle}deg)`,
+          ...sx,
+        } as SxProps
+      }
     >
       {images[type]}
     </Box>

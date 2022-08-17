@@ -79,7 +79,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <CheesecoinsAddModal
         isOpened={isModalOpen}
-        title="Добавление чизкоинов"
+        title='Добавление чизкоинов'
         onClose={closeCheesecoinsModal}
         onSubmit={handleAddCheesecoins}
       />

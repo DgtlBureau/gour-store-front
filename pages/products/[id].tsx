@@ -86,9 +86,9 @@ export default function Product() {
     }
   };
 
-  const basket = useAppSelector((state) => state.order);
+  const basket = useAppSelector(state => state.order);
 
-  const count = useAppSelector((state) => productsInBasketCount(state, productId, product?.isWeightGood || false));
+  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
@@ -102,7 +102,7 @@ export default function Product() {
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   const productComments =
-    comments.map((grade) => ({
+    comments.map(grade => ({
       id: grade.id,
       clientName: grade.client?.role?.title || 'Клиент',
       value: grade.value,
@@ -112,10 +112,10 @@ export default function Product() {
 
   const productCharacteristics =
     Object.keys(product?.characteristics || {})
-      .filter((key) => product?.characteristics[key])
-      .map((key) => {
+      .filter(key => product?.characteristics[key])
+      .map(key => {
         const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          (value) => value.key === product?.characteristics[key],
+          value => value.key === product?.characteristics[key],
         );
 
         return {

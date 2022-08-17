@@ -1,4 +1,3 @@
-
 import { endOfDay, getTime } from 'date-fns';
 import { OrdersCardProps } from 'components/Orders/Card/Card';
 import { getFullName } from 'utils/getFullName';

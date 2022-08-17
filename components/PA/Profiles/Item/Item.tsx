@@ -44,7 +44,7 @@ export function PAProfilesItem({
         profile.house,
         profile.apartment && `${language === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
       ]
-        .filter((it) => !!it)
+        .filter(it => !!it)
         .join(', ')
     : '';
 

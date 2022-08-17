@@ -3,7 +3,7 @@ import { Paper, Grid, Rating, SxProps } from '@mui/material';
 
 import StarIcon from '@mui/icons-material/Star';
 
-import { dispatchNotification } from 'packages/EventBus'
+import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
 import type { CommentDto } from '../../../@types/dto/comment.dto';
 import { IProductGrade } from '../../../@types/entities/IProductGrade';
@@ -55,25 +55,25 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h5" sx={blockSx.title}>
+            <Typography variant='h5' sx={blockSx.title}>
               {t('title')}
             </Typography>
 
-            <Typography sx={{ margin: '10px 0' }} variant="body2">
+            <Typography sx={{ margin: '10px 0' }} variant='body2'>
               {t('subtitle')}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Rating
-                name="value"
+                name='value'
                 onChange={(_, value) => onChange('value', Number(value) || 0)}
                 value={formData.value}
-                size="large"
+                size='large'
                 icon={<StarIcon sx={blockSx.star} />}
                 emptyIcon={<StarIcon sx={blockSx.emptyStar} />}
               />
 
-              <Typography sx={{ margin: '0 0 0 10px' }} variant="caption" color={theme.palette.text.muted}>
+              <Typography sx={{ margin: '0 0 0 10px' }} variant='caption' color={theme.palette.text.muted}>
                 {t('rate')}
               </Typography>
             </Box>
@@ -91,12 +91,12 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
             <TextField
               multiline
               rows={3}
-              name="comment"
+              name='comment'
               value={formData.comment}
               label={t('review')}
               onChange={e => onChange('comment', e.target.value)}
             />
-            <Button sx={blockSx.btn} type="submit" disabled={!formData.value}>
+            <Button sx={blockSx.btn} type='submit' disabled={!formData.value}>
               {t('accept')}
             </Button>
           </Grid>

@@ -52,13 +52,13 @@ export default function NotFound() {
 
   return (
     <PrivateLayout>
-      <ShopLayout currency="cheeseCoin" language="ru">
+      <ShopLayout currency='cheeseCoin' language='ru'>
         <Box sx={sx.notFound}>
-          <Link href="/">
-            <Image src={notFound} height="325" width="814" alt="notFound" />
+          <Link href='/'>
+            <Image src={notFound} height='325' width='814' alt='notFound' />
           </Link>
 
-          <Typography variant="h4" sx={sx.title}>
+          <Typography variant='h4' sx={sx.title}>
             {t('notFound.message')}
           </Typography>
 

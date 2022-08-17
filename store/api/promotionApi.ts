@@ -25,8 +25,4 @@ export const promotionApi = commonApi.injectEndpoints({
   },
 });
 
-export const {
-  useGetPromotionQuery,
-  useGetPromotionListQuery,
-  useLazyGetPromotionQuery,
-} = promotionApi;
+export const { useGetPromotionQuery, useGetPromotionListQuery, useLazyGetPromotionQuery } = promotionApi;

@@ -20,46 +20,39 @@ export type MobileMenuContactsProps = {
   vk: string;
 };
 
-export function MobileMenuContacts({
-  firstPhone,
-  secondPhone,
-  email,
-  fb,
-  inst,
-  vk,
-}: MobileMenuContactsProps) {
+export function MobileMenuContacts({ firstPhone, secondPhone, email, fb, inst, vk }: MobileMenuContactsProps) {
   return (
     <>
       <ListItem sx={sx.phones}>
-        <Link href={`tel:${firstPhone}`} sx={sx.link} underline="always">
+        <Link href={`tel:${firstPhone}`} sx={sx.link} underline='always'>
           {firstPhone}
         </Link>
-        <Link href={`tel:${secondPhone}`} sx={sx.link} underline="always">
+        <Link href={`tel:${secondPhone}`} sx={sx.link} underline='always'>
           {secondPhone}
         </Link>
       </ListItem>
 
       <ListItem sx={sx.socials}>
-        <Link href={`mailto:${email}`} sx={sx.link} underline="always">
+        <Link href={`mailto:${email}`} sx={sx.link} underline='always'>
           {email}
         </Link>
 
         <Box sx={sx.socialIcons}>
-          <Link href={fb} rel="noreferrer" target="_blank">
+          <Link href={fb} rel='noreferrer' target='_blank'>
             <Box sx={sx.socialIcon}>
-              <Image src={fbIcon} layout="fill" alt="" />
+              <Image src={fbIcon} layout='fill' alt='' />
             </Box>
           </Link>
 
-          <Link href={inst} rel="noreferrer" target="_blank">
+          <Link href={inst} rel='noreferrer' target='_blank'>
             <Box sx={sx.socialIcon}>
-              <Image src={instIcon} layout="fill" alt="" />
+              <Image src={instIcon} layout='fill' alt='' />
             </Box>
           </Link>
 
-          <Link href={vk} rel="noreferrer" target="_blank">
+          <Link href={vk} rel='noreferrer' target='_blank'>
             <Box sx={sx.socialIcon}>
-              <Image src={vkIcon} layout="fill" alt="" />
+              <Image src={vkIcon} layout='fill' alt='' />
             </Box>
           </Link>
         </Box>

@@ -7,10 +7,7 @@ import { IProductGrade } from '../../@types/entities/IProductGrade';
 export const productGradeApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getProductGradeList: builder.query<
-        IProductGrade[],
-        GetProductGradeListDto
-      >({
+      getProductGradeList: builder.query<IProductGrade[], GetProductGradeListDto>({
         query({ productId, ...params }) {
           return {
             method: 'GET',
@@ -19,10 +16,7 @@ export const productGradeApi = commonApi.injectEndpoints({
           };
         },
       }),
-      createProductGrade: builder.mutation<
-        IProductGrade,
-        CreateProductGradeDto
-      >({
+      createProductGrade: builder.mutation<IProductGrade, CreateProductGradeDto>({
         query({ productId, ...body }) {
           return {
             method: 'POST',

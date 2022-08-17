@@ -18,12 +18,7 @@ type Props = {
   onSubmit: (data: AddCheesecoinsDto) => void;
 };
 
-export function CheesecoinsAddModal({
-  isOpened,
-  onClose,
-  title,
-  onSubmit,
-}: Props) {
+export function CheesecoinsAddModal({ isOpened, onClose, title, onSubmit }: Props) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -36,8 +31,8 @@ export function CheesecoinsAddModal({
     <Modal title={title} isOpen={isOpened} onClose={onClose}>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(onSubmit)}>
-          <HFTextField name="count" label="Сырные монетки" type="number" />
-          <Button sx={sx.button} type="submit">
+          <HFTextField name='count' label='Сырные монетки' type='number' />
+          <Button sx={sx.button} type='submit'>
             Пополнить сырный счет
           </Button>
         </form>

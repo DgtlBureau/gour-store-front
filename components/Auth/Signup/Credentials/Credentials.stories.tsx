@@ -18,9 +18,7 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCredentials> = function (
-  args: SignupCredentialsProps
-) {
+const Template: ComponentStory<typeof SignupCredentials> = function (args: SignupCredentialsProps) {
   return (
     <Box sx={boxSx}>
       <SignupCredentials {...args} />

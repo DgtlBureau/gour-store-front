@@ -18,9 +18,7 @@ export function HFCheckbox({ name, defaultValue = false, sx, label }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field: { ref, ...rest } }) => (
-        <Checkbox {...rest} name={name} sx={sx} label={label} />
-      )}
+      render={({ field: { ref, ...rest } }) => <Checkbox {...rest} name={name} sx={sx} label={label} />}
     />
   );
 }

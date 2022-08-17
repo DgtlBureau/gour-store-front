@@ -5,15 +5,11 @@ const passRegExp = /^(?=.*?[0-9]).{8,}$/;
 
 export const getSchema = (t: Translator) =>
   yup.object().shape({
-    type: yup
-      .string()
-      .oneOf(['physical', 'organization', 'procurementOrganizer']),
+    type: yup.string().oneOf(['physical', 'organization', 'procurementOrganizer']),
     sms: yup.string().required(t('smsEmpty')),
     phone: yup.string().required(t('phoneEmpty')),
     firstName: yup.string().required(t('firstNameRequired')),
     lastName: yup.string().required(t('lastNameRequired')),
     password: yup.string().matches(passRegExp, t('passwordError')),
-    passwordConfirm: yup
-      .string()
-      .oneOf([yup.ref('password'), null], t('passwordsDoNotMatch')),
+    passwordConfirm: yup.string().oneOf([yup.ref('password'), null], t('passwordsDoNotMatch')),
   });

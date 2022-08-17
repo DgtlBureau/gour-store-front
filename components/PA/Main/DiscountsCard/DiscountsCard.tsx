@@ -48,7 +48,7 @@ export function PADiscountsCard({ discounts, onClickMore }: PADiscountsCardProps
           ))}
         </Grid>
       ) : (
-        <Typography variant="body1" color="text.muted">
+        <Typography variant='body1' color='text.muted'>
           {t('emptyDiscounts')}
         </Typography>
       )}

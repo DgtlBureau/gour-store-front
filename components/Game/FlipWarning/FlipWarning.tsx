@@ -30,13 +30,13 @@ type Props = {
 export function GameFlipWarning({ sx }: Props) {
   return (
     <Box sx={{ ...warningSx.container, ...sx } as SxProps}>
-      <Image src={screenFlip} height={60} width={60} alt="" />
+      <Image src={screenFlip} height={60} width={60} alt='' />
 
-      <Typography variant="h6" sx={{ ...warningSx.text, ...warningSx.title }}>
+      <Typography variant='h6' sx={{ ...warningSx.text, ...warningSx.title }}>
         Чтобы сыграть в игру, поверните устройство
       </Typography>
 
-      <Typography variant="body1" sx={warningSx.text}>
+      <Typography variant='body1' sx={warningSx.text}>
         Игра работает только в горизонтальной ориентации
       </Typography>
     </Box>

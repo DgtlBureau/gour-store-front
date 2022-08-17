@@ -13,17 +13,12 @@ export const orderProfileApi = commonApi.injectEndpoints({
             url: Path.ORDER_PROFILES,
           };
         },
-        providesTags: result => result ? (
-          [
-            ...result.map(({ id }) => ({ type: 'OrderProfile', id } as const)),
-            { type: 'OrderProfile', id: 'LIST' },
-          ]
-        ) : [{ type: 'OrderProfile', id: 'LIST' }],
+        providesTags: result =>
+          result
+            ? [...result.map(({ id }) => ({ type: 'OrderProfile', id } as const)), { type: 'OrderProfile', id: 'LIST' }]
+            : [{ type: 'OrderProfile', id: 'LIST' }],
       }),
-      createOrderProfile: builder.mutation<
-        IOrderProfile,
-        CreateOrderProfileDto
-      >({
+      createOrderProfile: builder.mutation<IOrderProfile, CreateOrderProfileDto>({
         query(profile) {
           return {
             method: 'POST',
@@ -33,10 +28,7 @@ export const orderProfileApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
       }),
-      updateOrderProfile: builder.mutation<
-        IOrderProfile,
-        Partial<CreateOrderProfileDto> & Pick<IOrderProfile, 'id'>
-      >({
+      updateOrderProfile: builder.mutation<IOrderProfile, Partial<CreateOrderProfileDto> & Pick<IOrderProfile, 'id'>>({
         query({ id, ...body }) {
           return {
             method: 'PUT',
@@ -54,7 +46,7 @@ export const orderProfileApi = commonApi.injectEndpoints({
           };
         },
         invalidatesTags: [{ type: 'OrderProfile', id: 'LIST' }],
-      })
+      }),
     };
   },
 });
