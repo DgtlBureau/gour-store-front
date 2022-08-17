@@ -5,9 +5,9 @@ import Image from 'next/image';
 
 import AddIcon from '@mui/icons-material/Add';
 
+import { useAppNavigation } from 'components/Navigation';
 import translations from './Menu.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
 import { IconButton } from '../../UI/IconButton/IconButton';
 import { Typography } from '../../UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';

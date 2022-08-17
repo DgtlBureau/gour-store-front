@@ -30,7 +30,7 @@ export type ProductActionsProps = {
   onElect: () => void;
 };
 
-export const ProductActions = ({
+export function ProductActions({
   price,
   count,
   discount = 0,
@@ -41,7 +41,7 @@ export const ProductActions = ({
   onRemove,
   onElect,
   isWeightGood,
-}: ProductActionsProps) => {
+}: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
 
   const pricePerCount = isWeightGood ? price / 100 : price;
@@ -59,16 +59,14 @@ export const ProductActions = ({
         </Box>
 
         {!!discount && (
-          <>
-            <Typography variant="body2" sx={sxActions.oldPrice}>
+          <Typography variant="body2" sx={sxActions.oldPrice}>
               {pricePerCount}
               {getCurrencySymbol(currency)}
             </Typography>
-          </>
         )}
 
         <Typography variant="body2">
-          {'/'} {isWeightGood ? `100${t('g')}` : t('pcs')}
+          / {isWeightGood ? `100${t('g')}` : t('pcs')}
         </Typography>
       </Box>
 
@@ -105,4 +103,4 @@ export const ProductActions = ({
       </Box>
     </Box>
   );
-};
+}

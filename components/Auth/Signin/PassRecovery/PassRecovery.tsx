@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { Translator } from 'utils/Translator';
 import translations from './PassRecovery.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
@@ -12,7 +13,6 @@ import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
-import { Translator } from 'utils/Translator';
 
 import sx from './PassRecovery.styles';
 

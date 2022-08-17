@@ -11,7 +11,7 @@ type Props = {
   stepIndex: number;
 };
 
-export const SignupLayout = ({ children, image, stepIndex }: Props) => {
+export function SignupLayout({ children, image, stepIndex }: Props) {
   return (
     <Grid
       container
@@ -42,4 +42,4 @@ export const SignupLayout = ({ children, image, stepIndex }: Props) => {
       </Grid>
     </Grid>
   );
-};
+}

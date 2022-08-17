@@ -6,7 +6,7 @@ import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 
-import noImage from './../../../../assets/no-image.svg';
+import noImage from '../../../../assets/no-image.svg';
 
 const sx = {
   image: {

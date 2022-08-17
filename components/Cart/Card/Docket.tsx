@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { getCurrencySymbol, getPriceWithDiscount } from 'helpers/currencyHelper';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
-import { getCurrencySymbol, getPriceWithDiscount } from 'helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
 
 import sx from './Card.styles';

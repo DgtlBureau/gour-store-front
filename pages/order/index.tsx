@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Stack } from '@mui/material';
 
-import translation from './Order.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { selectedProductCount, selectedProductSum, selectProductsInOrder } from '../../store/slices/orderSlice';
+import { useAppNavigation } from 'components/Navigation';
+import { OrderCard } from 'components/Order/Card/Card';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { dispatchNotification } from 'packages/EventBus';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import translation from './Order.i18n.json';
+import { selectedProductCount, selectedProductSum, selectProductsInOrder , removeProduct } from '../../store/slices/orderSlice';
 import { useCreateOrderMutation } from '../../store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
 import { useGetCityListQuery } from '../../store/api/cityApi';
-import { removeProduct } from 'store/slices/orderSlice';
 import { ShopLayout } from '../../layouts/Shop/Shop';
-import { useAppNavigation } from 'components/Navigation';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from '../../components/Order/Form/Form';
 import { Typography } from '../../components/UI/Typography/Typography';
-import { OrderCard } from 'components/Order/Card/Card';
 import { CartEmpty } from '../../components/Cart/Empty/Empty';
 import { CreateOrderDto } from '../../@types/dto/order/create.dto';
 import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from '../../@types/dto/order/product.dto';
 import { IProduct } from '../../@types/entities/IProduct';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
-import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 
 const sx = {
   title: {
@@ -84,9 +83,7 @@ export function Order() {
   const productsInOrder = useAppSelector(selectProductsInOrder);
   const count = useAppSelector(selectedProductCount);
   const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = productsInOrder.reduce((acc, currentProduct) => {
-    return acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100;
-  }, 0);
+  const sumDiscount = productsInOrder.reduce((acc, currentProduct) => acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100, 0);
 
   const deleteProductFromOrder = (product: IProduct) => dispatch(removeProduct(product));
 
@@ -198,7 +195,7 @@ export function Order() {
     label: city.name[language],
   }));
 
-  //TODO: вынести на бек
+  // TODO: вынести на бек
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
   return (
@@ -221,8 +218,7 @@ export function Order() {
             </CartEmpty>
           </Stack>
         ) : (
-          <>
-            <Grid container sx={sx.order} spacing={2}>
+          <Grid container sx={sx.order} spacing={2}>
               <Grid item md={8} xs={12}>
                 <OrderForm
                   defaultPersonalFields={personalFields}
@@ -249,7 +245,6 @@ export function Order() {
                 />
               </Grid>
             </Grid>
-          </>
         )}
       </ShopLayout>
     </PrivateLayout>

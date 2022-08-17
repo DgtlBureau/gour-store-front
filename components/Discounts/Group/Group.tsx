@@ -1,11 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-} from '../../UI/Accordion/Accordion';
+import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
 import { Typography } from '../../UI/Typography/Typography';
 import { Box } from '../../UI/Box/Box';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
@@ -37,7 +33,7 @@ const sx = {
   },
 };
 
-export const DiscountsGroup = ({ title, categories }: Props) => {
+export function DiscountsGroup({ title, categories }: Props) {
   const percents: number[] = [];
   for (let i = 1; i <= 10; i++) {
     percents.push(i);
@@ -45,7 +41,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
   return (
     <Accordion>
       <AccordionSummary>
-        <Typography variant="h6">{`Прогресс скидки "${title}"`}</Typography>
+        <Typography variant='h6'>{`Прогресс скидки "${title}"`}</Typography>
       </AccordionSummary>
 
       <AccordionDetails>
@@ -61,19 +57,13 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
           spacing={{ xs: 1, md: 2 }}
         >
           <Grid item xs={3} md={1}>
-            <Typography sx={sx.headerText} variant="subtitle1">
+            <Typography sx={sx.headerText} variant='subtitle1'>
               Скидка %
             </Typography>
           </Grid>
 
-          <Grid
-            display="flex"
-            justifyContent="space-between"
-            item
-            xs={6}
-            md={10}
-          >
-            {percents.map(percent => (
+          <Grid display='flex' justifyContent='space-between' item xs={6} md={10}>
+            {percents.map((percent) => (
               <Box
                 key={percent}
                 sx={{
@@ -88,7 +78,7 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
                     width: '24px',
                     textAlign: 'center',
                   }}
-                  variant="subtitle1"
+                  variant='subtitle1'
                 >
                   {percent}
                 </Typography>
@@ -97,24 +87,16 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
           </Grid>
 
           <Grid item xs={3} md={1}>
-            <Typography
-              sx={{ ...sx.headerText, textAlign: 'end' }}
-              variant="subtitle1"
-            >
+            <Typography sx={{ ...sx.headerText, textAlign: 'end' }} variant='subtitle1'>
               Всего {getCurrencySymbol('cheeseCoin')}
             </Typography>
           </Grid>
         </Grid>
 
-        {categories.map(category => (
-          <Grid
-            sx={sx.category}
-            key={category.summary}
-            container
-            spacing={{ xs: 1, md: 2 }}
-          >
+        {categories.map((category) => (
+          <Grid sx={sx.category} key={category.summary} container spacing={{ xs: 1, md: 2 }}>
             <Grid item xs={3} md={1}>
-              <Typography sx={sx.categoryTitle} variant="subtitle2">
+              <Typography sx={sx.categoryTitle} variant='subtitle2'>
                 {category.title}
               </Typography>
             </Grid>
@@ -128,11 +110,11 @@ export const DiscountsGroup = ({ title, categories }: Props) => {
             </Grid>
 
             <Grid item xs={3} md={1}>
-              <Typography variant="subtitle2">{category.summary}</Typography>
+              <Typography variant='subtitle2'>{category.summary}</Typography>
             </Grid>
           </Grid>
         ))}
       </AccordionDetails>
     </Accordion>
   );
-};
+}

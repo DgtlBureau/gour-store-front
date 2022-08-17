@@ -1,9 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 
+import { useAppNavigation } from 'components/Navigation';
+import { PrivateLayout } from 'layouts/Private/Private';
 import translations from './Main.i18n.json';
 import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { Box } from '../components/UI/Box/Box';
 import { Button } from '../components/UI/Button/Button';
@@ -11,7 +12,6 @@ import { Typography } from '../components/UI/Typography/Typography';
 import { LinkRef as Link } from '../components/UI/Link/Link';
 
 import notFound from '../assets/images/404.png';
-import { PrivateLayout } from 'layouts/Private/Private';
 
 const sx = {
   notFound: {

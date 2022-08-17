@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import { toast } from 'react-toastify';
-import { ToastOptions } from 'react-toastify';
+import { toast, ToastOptions } from 'react-toastify';
 
-import { Typography } from 'components/UI/Typography/Typography'
+import { Typography } from 'components/UI/Typography/Typography';
 import { eventBus, EventTypes } from '../../packages/EventBus';
-import {
-  Notification,
-  NotificationType,
-} from '../../@types/entities/Notification';
+import { Notification, NotificationType } from '../../@types/entities/Notification';
 import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {
@@ -32,7 +28,11 @@ export function Notifications() {
       const message = (
         <>
           {res.title && <Typography sx={sx.title}>{res.title}</Typography>}
-          {res.message && <Typography variant='body1' sx={sx.message}>{res.message}</Typography>}
+          {res.message && (
+            <Typography variant='body1' sx={sx.message}>
+              {res.message}
+            </Typography>
+          )}
         </>
       );
       toast(res?.message ? message : notificationTitleByType[res.type], {
@@ -42,9 +42,9 @@ export function Notifications() {
       });
     }
 
-    function dismissNotify(id: number | string) {
-      id && toast.dismiss(id);
-    }
+    const dismissNotify = (id?: number | string) => {
+      if (id) toast.dismiss(id);
+    };
 
     eventBus.on(EventTypes.notification, toastNotify);
     eventBus.on(EventTypes.removeNotification, dismissNotify);
@@ -55,7 +55,7 @@ export function Notifications() {
     };
   }, []);
 
-  return <></>;
+  return null;
 }
 
 export default Notifications;

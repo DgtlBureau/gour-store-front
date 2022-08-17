@@ -1,7 +1,7 @@
 import { IBaseEntity } from './IBaseEntity';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
-import { IClientRole } from '../entities/IClientRole';
+import { IClientRole } from './IClientRole';
 import { ICity } from './ICity';
 
 export interface IUser extends IBaseEntity {

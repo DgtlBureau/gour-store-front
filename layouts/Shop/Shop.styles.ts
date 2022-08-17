@@ -6,7 +6,7 @@ const sx = {
     flexDirection: 'column',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundImage: 'url(' + `${stripes}` + ')',
+    backgroundImage: `url(${stripes})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',

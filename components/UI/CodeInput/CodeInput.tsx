@@ -1,12 +1,12 @@
 import React, { CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 
+import { InputModeTypes, ReactCodeInputProps } from 'react-code-input';
+import { defaultTheme } from '../../../themes';
+
 const ReactCodeInput = dynamic(
   () => import('react-code-input')
 ) as unknown as React.FunctionComponent<ReactCodeInputProps>;
-
-import { defaultTheme } from '../../../themes';
-import { InputModeTypes, ReactCodeInputProps } from 'react-code-input';
 
 const inputSx = {
   border: '1px solid lightgrey',
@@ -32,7 +32,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export const CodeInput = ({
+export function CodeInput({
   name,
   sx,
   value,
@@ -41,7 +41,7 @@ export const CodeInput = ({
   type = 'text',
   inputMode = 'numeric',
   onChange,
-}: Props) => {
+}: Props) {
   return (
     <ReactCodeInput
       style={sx}
@@ -55,4 +55,4 @@ export const CodeInput = ({
       inputStyle={inputSx as CSSProperties}
     />
   );
-};
+}

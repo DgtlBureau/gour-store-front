@@ -1,5 +1,5 @@
-/* eslint-disable import/no-unresolved */
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/no-array-index-key */
+import React, { useState } from 'react';
 import SwiperCore, { EffectFade, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SxProps } from '@mui/material';
@@ -94,14 +94,14 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
         <Swiper
           pagination={screenWidth < 900}
           modules={[EffectFade, Pagination]}
-          effect="fade"
+          effect='fade'
           onSwiper={setSlider}
-          onSlideChange={swiper => slideTo(swiper.activeIndex)}
+          onSlideChange={(swiper) => slideTo(swiper.activeIndex)}
         >
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>
               <Box sx={{ ...sliderSx.slide, ...sliderSx.full }}>
-                <Image src={image.full} layout="fill" objectFit="cover" alt="" />
+                <Image src={image.full} layout='fill' objectFit='cover' alt='' />
               </Box>
             </SwiperSlide>
           ))}
@@ -115,7 +115,7 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
               key={image.small + i}
               sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}
             >
-              <Image src={image.small} layout="fill" objectFit="cover" alt="" onClick={() => slideTo(i)} />
+              <Image src={image.small} layout='fill' objectFit='cover' alt='' onClick={() => slideTo(i)} />
             </Box>
           ))}
         </Box>

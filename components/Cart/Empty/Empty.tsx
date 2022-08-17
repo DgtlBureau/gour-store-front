@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
+import { Stack } from '@mui/material';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { defaultTheme as t } from '../../../themes';
-import { Stack } from '@mui/material';
 
 const sx = {
   container: {

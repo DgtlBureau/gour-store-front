@@ -44,7 +44,7 @@ export interface IProductCharacteristics { // TODO: add valid union types for ot
   milk?: string;
   rennet?: string;
   timeOfOrigin?: string;
-};
+}
 
 export type ProductCountry = 'Russia' | 'Spain' | 'Italy' | 'France' | 'Holland' | 'GreatBritain';
 
@@ -56,4 +56,4 @@ export interface IFiltersCharacteristic {
   isReversed: boolean,
   category: string,
   characteristics: ICharacteristicsList,
-};
+}

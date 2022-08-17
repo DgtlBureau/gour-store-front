@@ -2,8 +2,8 @@ import React from 'react';
 import NextLink from 'next/link';
 import { SxProps } from '@mui/material';
 
-import translations from './Copyright.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import translations from './Copyright.i18n.json';
 import { Box } from '../UI/Box/Box';
 import { Typography } from '../UI/Typography/Typography';
 

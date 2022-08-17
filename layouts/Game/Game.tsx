@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { useMediaQuery } from '@mui/material';
 
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
@@ -9,6 +8,7 @@ import { useSignOutMutation } from 'store/api/authApi';
 import { useAppNavigation } from 'components/Navigation';
 import { useAppSelector } from 'hooks/store';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
+import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { Box } from '../../components/UI/Box/Box';
 import { Header } from '../../components/Header/Header';
 import { Copyright } from '../../components/Copyright/Copyright';

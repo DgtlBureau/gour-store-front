@@ -7,7 +7,7 @@ import translations from '../Actions/Actions.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
+import { defaultTheme } from '../../../themes';
 import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 
@@ -15,7 +15,7 @@ const rateSx = {
   box: {
     display: 'flex',
     justifyContent: 'space-between',
-    color: t.palette.text.muted,
+    color: defaultTheme.palette.text.muted,
   },
   rating: {
     display: 'flex',
@@ -46,13 +46,13 @@ export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: P
   return (
     <Box sx={{ ...rateSx.box, ...sx }}>
       <Box sx={rateSx.rating}>
-        <StarIcon fontSize="small" sx={rateSx.star} />
-        <Typography variant="body2" sx={rateSx.text}>
+        <StarIcon fontSize='small' sx={rateSx.star} />
+        <Typography variant='body2' sx={rateSx.text}>
           {rating}
         </Typography>
       </Box>
 
-      <Typography variant="body2" sx={rateSx.text}>
+      <Typography variant='body2' sx={rateSx.text}>
         {price}
         {getCurrencySymbol(currency)} / {isWeightGood ? t('kg') : t('pcs')}
       </Typography>

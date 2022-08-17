@@ -16,7 +16,7 @@ type Props<V> = {
   sx?: SxProps;
 };
 
-export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Props<V>) {
+export function HFSelect<V>({ name, defaultValue, sx, onChange: onControllChange, ...props }: Props<V>) {
   const {
     control,
     formState: { errors },
@@ -27,7 +27,7 @@ export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Prop
       <Controller
         name={name}
         rules={{
-          onChange,
+          onChange: onControllChange,
         }}
         control={control}
         defaultValue={defaultValue || ''}
@@ -35,7 +35,7 @@ export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Prop
           <Select
             {...rest}
             isMulti={false}
-            onChange={newValue => onChange(newValue?.value)}
+            onChange={(newValue) => onChange(newValue?.value)}
             isError={!!errors[name]}
             error={errors[name]?.message ?? ''}
             {...props}

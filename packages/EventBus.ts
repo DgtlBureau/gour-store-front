@@ -23,6 +23,7 @@ const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
 
 class EventBus {
   listeners = listeners;
+
   emit<K extends EventTypes>(key: K, payload: EventArguments[K]) {
     this.listeners[key].forEach(callback => callback(payload));
   }

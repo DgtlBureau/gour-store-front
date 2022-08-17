@@ -1,11 +1,11 @@
 import React from 'react';
 import { Paper, Rating } from '@mui/material';
 
+import StarIcon from '@mui/icons-material/Star';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { defaultTheme as t } from '../../../themes';
 
-import StarIcon from '@mui/icons-material/Star';
 
 const sx = {
   comment: {

@@ -1,15 +1,11 @@
 import React, { useRef } from 'react';
 import { LinearProgress } from '@mui/material';
 
-import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
-import { CommentDto } from '../../@types/dto/comment.dto';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -18,10 +14,8 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { IProduct } from '../../@types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
 
-import sx from './Product.styles';
 import { PrivateLayout } from 'layouts/Private/Private';
 import {
   useCreateFavoriteProductsMutation,
@@ -30,13 +24,19 @@ import {
 } from 'store/api/favoriteApi';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { useAppNavigation } from 'components/Navigation';
+import sx from './Product.styles';
+import { IProduct } from '../../@types/entities/IProduct';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
+import { ShopLayout } from '../../layouts/Shop/Shop';
+import { CommentDto } from '../../@types/dto/comment.dto';
+import translations from './Product.i18n.json';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
     goToProductPage,
     language,
-    query: { id },
+    query: { id: queryId },
   } = useAppNavigation();
 
   const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ export default function Product() {
 
   const currency = 'cheeseCoin';
 
-  const productId = id ? +id : 0;
+  const productId = queryId ? +queryId : 0;
 
   const {
     data: product,
@@ -64,7 +64,7 @@ export default function Product() {
       withMetrics: true,
       withDiscount: true,
     },
-    { skip: !productId }
+    { skip: !productId },
   );
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
@@ -86,39 +86,36 @@ export default function Product() {
     }
   };
 
-  const basket = useAppSelector(state => state.order);
+  const basket = useAppSelector((state) => state.order);
 
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
+  const count = useAppSelector((state) => productsInBasketCount(state, productId, product?.isWeightGood || false));
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
   const { data: comments = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
-    { skip: !productId }
+    { skip: !productId },
   );
 
-  const onCreateComment = (comment: CommentDto) =>
-    fetchCreateProductGrade({ productId, ...comment }).unwrap();
+  const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
 
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   const productComments =
-    comments.map(grade => {
-      return {
-        id: grade.id,
-        clientName: grade.client?.role?.title || 'Клиент',
-        value: grade.value,
-        date: new Date(grade.createdAt),
-        comment: grade.comment,
-      };
-    }) || [];
+    comments.map((grade) => ({
+      id: grade.id,
+      clientName: grade.client?.role?.title || 'Клиент',
+      value: grade.value,
+      date: new Date(grade.createdAt),
+      comment: grade.comment,
+    })) || [];
 
   const productCharacteristics =
     Object.keys(product?.characteristics || {})
-      .filter(key => product?.characteristics[key])
-      .map(key => {
+      .filter((key) => product?.characteristics[key])
+      .map((key) => {
         const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          value => value.key === product?.characteristics[key]
+          (value) => value.key === product?.characteristics[key],
         );
 
         return {
@@ -132,19 +129,19 @@ export default function Product() {
       <ShopLayout language={language} currency={currency}>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+        {!isLoading && !isError && !product && <Typography variant='h5'>Продукт не найден</Typography>}
 
         {!isLoading && !isError && product && (
           <>
-            <Link href="/">Вернуться на главную</Link>
+            <Link href='/'>Вернуться на главную</Link>
 
             <Box sx={sx.top}>
               <ImageSlider images={product.images} sx={sx.imageSlider} />
 
               <Box sx={sx.info}>
-                <Typography variant="h3" sx={sx.title}>
+                <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
 
@@ -174,11 +171,11 @@ export default function Product() {
             </Box>
 
             <Box sx={sx.description}>
-              <Typography sx={sx.title} variant="h5">
+              <Typography sx={sx.title} variant='h5'>
                 {t('description')}
               </Typography>
 
-              <Typography variant="body1">{product.description[language] || ''}</Typography>
+              <Typography variant='body1'>{product.description[language] || ''}</Typography>
             </Box>
 
             {!!product.similarProducts && (

@@ -5,7 +5,7 @@ import { Footer, FooterProps } from './Footer';
 
 export default {
     component: Footer,
-    title: "Footer",
+    title: 'Footer',
 } as Meta;
 
 const Template: ComponentStory<typeof Footer> = function (args: FooterProps) {

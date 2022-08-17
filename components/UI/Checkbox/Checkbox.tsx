@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox as MUICheckbox, SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
 
 const boxSx = {

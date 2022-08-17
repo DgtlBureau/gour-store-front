@@ -3,6 +3,8 @@ import { FormControlLabel, Grid, Radio, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { CodeInput } from 'components/UI/CodeInput/CodeInput';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
@@ -17,8 +19,6 @@ import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
-import { CodeInput } from 'components/UI/CodeInput/CodeInput';
-import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;

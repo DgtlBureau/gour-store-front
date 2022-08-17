@@ -2,29 +2,29 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
-import translations from './Main.i18n.json';
-import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
-import { useGetPageQuery } from '../store/api/pageApi';
-import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { useAppNavigation } from 'components/Navigation';
+import { PrivateLayout } from 'layouts/Private/Private';
+import translations from './Main.i18n.json';
+import { useLocalTranslation } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
+import { useGetPageQuery } from '../store/api/pageApi';
+import { useGetPromotionListQuery } from '../store/api/promotionApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
+
 import { ProductCatalog } from '../components/Product/Catalog/Catalog';
 import { Box } from '../components/UI/Box/Box';
 import { Typography } from '../components/UI/Typography/Typography';
 import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
-import { PrivateLayout } from 'layouts/Private/Private';
 
 import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
@@ -35,11 +35,12 @@ import sx from './Main.styles';
 
 const NOW = new Date();
 
+// eslint-disable-next-line react/function-component-definition
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
   const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
-  const basket = useAppSelector(state => state.order);
+  const basket = useAppSelector((state) => state.order);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -90,8 +91,8 @@ const Home: NextPage = () => {
           <CardSlider
             title={t('promotions')}
             cardsList={promotions
-              .filter(it => new Date(it.end) > NOW)
-              .map(promotion => (
+              .filter((it) => new Date(it.end) > NOW)
+              .map((promotion) => (
                 <PromotionCard
                   key={promotion.id}
                   image={promotion.cardImage.small}
@@ -138,14 +139,14 @@ const Home: NextPage = () => {
         {!!page && (
           <>
             <Box sx={sx.banner}>
-              <Image src={bannerImg} objectFit="cover" layout="fill" alt="" />
+              <Image src={bannerImg} objectFit='cover' layout='fill' alt='' />
             </Box>
 
-            <Typography variant="h4" sx={sx.title}>
+            <Typography variant='h4' sx={sx.title}>
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
+            <Typography variant='body1' sx={{ marginTop: { xs: '20px', md: '40px' } }}>
               {page.info?.description?.[language]}
             </Typography>
           </>

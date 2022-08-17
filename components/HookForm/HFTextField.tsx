@@ -18,13 +18,7 @@ type Props = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFTextField({
-  name,
-  defaultValue,
-  helperText,
-  onChange,
-  ...props
-}: Props) {
+export function HFTextField({ name, defaultValue, helperText, onChange, ...props }: Props) {
   const {
     control,
     formState: { errors },
@@ -38,9 +32,9 @@ export function HFTextField({
       render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}
-          onChange={event => {
+          onChange={(event) => {
             HFOnChange(event);
-            onChange && onChange(event);
+            onChange?.(event);
           }}
           isError={!!errors[name]}
           helperText={helperText || errors[name]?.message}

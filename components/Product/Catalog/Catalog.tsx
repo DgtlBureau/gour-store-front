@@ -4,6 +4,8 @@ import { SxProps } from '@mui/material';
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+import { getCountryImage } from 'helpers/countryHelper';
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
@@ -17,9 +19,7 @@ import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { checkCategory, checkCharacteristics } from './CatalogHelpers';
-import { getCountryImage } from 'helpers/countryHelper';
 
 import catalogSx from './Catalog.styles';
 
@@ -103,8 +103,8 @@ export function ProductCatalog({
   const getCatalogRows = () => {
     const length = productList?.length || 0;
     if (length > 8) return 3;
-    else if (length > 4) return 2;
-    else return 1;
+    if (length > 4) return 2;
+    return 1;
   };
 
   const openFilterModal = () => setFilterModalIsOpen(true);

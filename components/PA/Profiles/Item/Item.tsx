@@ -44,24 +44,22 @@ export function PAProfilesItem({
         profile.house,
         profile.apartment && `${language === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
       ]
-        .filter(it => !!it)
+        .filter((it) => !!it)
         .join(', ')
     : '';
 
-  const convertToOrderProfile = (profile: IOrderProfile) =>
-    ({
-      title: profile.title,
-      cityId: profile.city.id,
-      street: profile.street,
-      house: profile.house,
-      apartment: profile.apartment,
-      entrance: profile.entrance,
-      floor: profile.floor,
-      comment: profile.comment,
-      isMain,
-    } as OrderProfileDto);
+  const convertToOrderProfile = ({
+    city: { id: cityId },
+    id,
+    createdAt,
+    ...fields
+  }: IOrderProfile): OrderProfileDto => ({
+    ...fields,
+    cityId,
+    isMain: !!isMain,
+  });
 
-  return !!profile ? (
+  return profile ? (
     <Accordion expanded={isExpanded} onChange={onExpand}>
       <AccordionSummary>
         <Box sx={sx.header}>
@@ -69,11 +67,11 @@ export function PAProfilesItem({
             <LocationIcon />
           </Box>
 
-          <Typography variant="h5" sx={sx.title}>
+          <Typography variant='h5' sx={sx.title}>
             {profile?.title}
           </Typography>
 
-          <Typography variant="body1" color="text.muted">
+          <Typography variant='body1' color='text.muted'>
             {address}
           </Typography>
         </Box>

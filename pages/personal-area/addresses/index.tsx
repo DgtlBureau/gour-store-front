@@ -8,9 +8,11 @@ import {
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { dispatchNotification } from 'packages/EventBus';
+import { useAppNavigation } from 'components/Navigation';
 import translations from './Addresses.i18n.json';
 
-import { PrivateLayout } from 'layouts/Private/Private';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { PALayout } from '../../../layouts/PA/PA';
 import { Box } from '../../../components/UI/Box/Box';
@@ -19,11 +21,9 @@ import { Typography } from '../../../components/UI/Typography/Typography';
 import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
 import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
-import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from '../../../@types/entities/Notification';
 
 import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
-import { useAppNavigation } from 'components/Navigation'
 
 const sx = {
   actions: {
@@ -52,8 +52,13 @@ export function Addresses() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
+  const closeCreateForm = () => setIsCreating(false);
+
+  const openDeleteModal = () => setIsDeleting(true);
+  const closeDeleteModal = () => setIsDeleting(false);
+
   const citiesList =
-    cities?.map(city => ({
+    cities?.map((city) => ({
       value: city.id,
       label: city.name[language],
     })) || [];
@@ -127,16 +132,12 @@ export function Addresses() {
     rollUpProfile();
     setIsCreating(true);
   };
-  const closeCreateForm = () => setIsCreating(false);
-
-  const openDeleteModal = () => setIsDeleting(true);
-  const closeDeleteModal = () => setIsDeleting(false);
 
   return (
     <PrivateLayout>
       <PALayout>
         <Box sx={sx.actions}>
-          <Button size="small" disabled={isCreating} onClick={openCreateForm}>
+          <Button size='small' disabled={isCreating} onClick={openCreateForm}>
             {t('newAddress')}
           </Button>
         </Box>
@@ -144,7 +145,7 @@ export function Addresses() {
           <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
         )}
         {!!profiles && profiles.length !== 0 ? (
-          profiles.map(profile => (
+          profiles.map((profile) => (
             <PAProfilesItem
               key={profile.id}
               isExpanded={expandedProfileId === profile.id}
@@ -152,12 +153,12 @@ export function Addresses() {
               cities={citiesList}
               profile={profile}
               onExpand={() => expandProfile(profile.id)}
-              onSave={data => editAddress(data, profile.id)}
+              onSave={(data) => editAddress(data, profile.id)}
               onDelete={openDeleteModal}
             />
           ))
         ) : (
-          <Typography variant="h5">Список адресов пуст</Typography>
+          <Typography variant='h5'>Список адресов пуст</Typography>
         )}
         <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
       </PALayout>

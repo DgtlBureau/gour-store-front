@@ -47,7 +47,7 @@ const Template: ComponentStory<typeof ProductCard> = function () {
   return (
     <ProductCard
       currentCount={1}
-      isWeightGood={true}
+      isWeightGood
       currency="cheeseCoin"
       title="Chevrano XO Козий Элитный Сыр"
       description={DESCRIPTION}

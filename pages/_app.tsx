@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { NavigationProvider } from 'components/Navigation';
+import { ToastContainer } from 'react-toastify';
+import Notifications from 'components/Notifications/Notifications';
 import { persistor, store } from '../store/store';
 import { defaultTheme } from '../themes';
 
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Notifications from 'components/Notifications/Notifications';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

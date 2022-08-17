@@ -1,6 +1,6 @@
+import { Path } from 'constants/routes';
 import { commonApi } from './commonApi';
 import { IClientRole } from '../../@types/entities/IClientRole';
-import { Path } from 'constants/routes';
 
 export const roleApi = commonApi.injectEndpoints({
   endpoints(builder) {

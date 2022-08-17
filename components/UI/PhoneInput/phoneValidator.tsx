@@ -19,7 +19,7 @@ export const onPhonePaste = function (e: ClipboardEvent<HTMLInputElement>) {
 export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
   const input = e.currentTarget;
   let inputNumbersValue = getInputNumbersValue(input);
-  const selectionStart = input.selectionStart;
+  const { selectionStart } = input;
   let formattedInputValue = '';
 
   if (!inputNumbersValue) {
@@ -35,24 +35,24 @@ export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
   }
 
   if (['7', '8', '9'].indexOf(inputNumbersValue[0]) > -1) {
-    if (inputNumbersValue[0] === '9')
-      inputNumbersValue = '7' + inputNumbersValue;
+    if (inputNumbersValue[0] === '9') inputNumbersValue = `7${inputNumbersValue}`;
     const firstSymbols = '+7';
-    formattedInputValue = input.value = firstSymbols + ' ';
+    input.value = `${firstSymbols} `;
+    formattedInputValue = input.value;
     if (inputNumbersValue.length > 1) {
-      formattedInputValue += '(' + inputNumbersValue.substring(1, 4);
+      formattedInputValue += `(${inputNumbersValue.substring(1, 4)}`;
     }
     if (inputNumbersValue.length >= 5) {
-      formattedInputValue += ') ' + inputNumbersValue.substring(4, 7);
+      formattedInputValue += `) ${inputNumbersValue.substring(4, 7)}`;
     }
     if (inputNumbersValue.length >= 8) {
-      formattedInputValue += '-' + inputNumbersValue.substring(7, 9);
+      formattedInputValue += `-${inputNumbersValue.substring(7, 9)}`;
     }
     if (inputNumbersValue.length >= 10) {
-      formattedInputValue += '-' + inputNumbersValue.substring(9, 11);
+      formattedInputValue += `-${inputNumbersValue.substring(9, 11)}`;
     }
   } else {
-    formattedInputValue = '+' + inputNumbersValue.substring(0, 16);
+    formattedInputValue = `+${inputNumbersValue.substring(0, 16)}`;
   }
   input.value = formattedInputValue;
 };

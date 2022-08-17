@@ -1,11 +1,11 @@
-import React from "react";
-import { ComponentStory, Meta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import { GameFrame, GameFrameProps } from "./Frame";
+import { GameFrame, GameFrameProps } from './Frame';
 
 export default {
   component: GameFrame,
-  title: "Game/Frame",
+  title: 'Game/Frame',
 } as Meta;
 
 const Template: ComponentStory<typeof GameFrame> = (args: GameFrameProps) => <GameFrame {...args} />;

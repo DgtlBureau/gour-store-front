@@ -1,6 +1,6 @@
+import { Path } from 'constants/routes';
 import { commonApi } from './commonApi';
 import { IPage } from '../../@types/entities/IPage';
-import { Path } from 'constants/routes';
 
 export const pageApi = commonApi.injectEndpoints({
   endpoints(builder) {

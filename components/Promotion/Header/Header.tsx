@@ -19,8 +19,8 @@ export type PromotionHeaderProps = {
 export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
   const { t } = useLocalTranslation(translations);
 
-  const [seconds, setSeconds] = useState<number>(10);
-  const [timer, setTimer] = useState<string>('');
+  const [seconds, setSeconds] = useState(10);
+  const [timer, setTimer] = useState('');
 
   let intervalId = -1;
 
@@ -29,21 +29,21 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
     setSeconds(differenceInSeconds(end, nowDate));
 
     intervalId = +setInterval(() => {
-      setSeconds(seconds => seconds - 1);
+      setSeconds((sec) => sec - 1);
     }, 1000);
   }, []);
 
   useEffect(() => {
     const time = formatSeconds(seconds);
     setTimer(time);
-    if (seconds < 0) return clearInterval(intervalId);
+    if (seconds < 0) clearInterval(intervalId);
   }, [seconds]);
 
   return (
     <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
-      <Image src={image} objectFit="cover" layout="responsive" height={400} width={500} alt="" />
+      <Image src={image} objectFit='cover' layout='responsive' height={400} width={500} alt='' />
 
-      <Typography variant="body1" sx={headerSx.timer}>
+      <Typography variant='body1' sx={headerSx.timer}>
         {seconds > 0 ? `${t('left')} ${timer}` : t('end')}
       </Typography>
     </Stack>

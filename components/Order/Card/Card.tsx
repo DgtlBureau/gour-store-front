@@ -1,12 +1,12 @@
 import React from 'react';
 import { Stack, SxProps } from '@mui/material';
 
-import translation from './Card.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Box } from '../../UI/Box/Box';
+import translation from './Card.i18n.json';
 import { Currency } from '../../../@types/entities/Currency';
 import { Language } from '../../../@types/entities/Language';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
@@ -64,7 +64,7 @@ const cardSx = {
   },
 };
 
-export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) => {
+export function OrderCard({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) {
   const { t } = useLocalTranslation(translation);
 
   const currencySymbol = getCurrencySymbol(currency);
@@ -116,4 +116,4 @@ export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, cur
       </Stack>
     </Stack>
   );
-};
+}

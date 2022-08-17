@@ -6,13 +6,11 @@ type LinkRef = HTMLAnchorElement;
 type NextLinkProps = Omit<MuiLinkProps, 'href' | 'classes'> &
   Pick<LinkProps, 'href' | 'as' | 'prefetch'>;
 
-const Link = (
-  { href, as, prefetch, ...props }: LinkProps,
-  ref: Ref<LinkRef>
-) => (
-  <NextLink href={href} as={as} prefetch={prefetch} passHref>
+function Link({ href, as, prefetch, ...props }: LinkProps,
+  ref: Ref<LinkRef>) {
+  return <NextLink href={href} as={as} prefetch={prefetch} passHref>
     <MuiLink ref={ref} {...props} />
   </NextLink>
-);
+}
 
 export const LinkRef = forwardRef<LinkRef, NextLinkProps>(Link);

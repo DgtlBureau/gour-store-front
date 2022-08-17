@@ -41,7 +41,7 @@ const sx = {
 
 type Props = { grade: number; count: number; percent: number };
 
-export const ReviewsCounter = ({ grade, percent, count }: Props) => {
+export function ReviewsCounter({ grade, percent, count }: Props) {
   const { t } = useLocalTranslation(translations);
 
   const reviewsCountText = getDeclensionWordByCount(count, [t('manyReviews'), t('oneReview'), t('someReviews')]);
@@ -61,4 +61,4 @@ export const ReviewsCounter = ({ grade, percent, count }: Props) => {
       </Typography>
     </Box>
   );
-};
+}

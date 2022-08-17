@@ -8,7 +8,7 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     minHeight: '100vh',
-    backgroundImage: 'url(' + `${stripes}` + ')',
+    backgroundImage: `url(${stripes})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',

@@ -48,13 +48,13 @@ const sxReviews = {
   },
 };
 
-export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(function ProductReviews(
+export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>((
   { reviews, sx },
   ref
-) {
+) => {
   const { t } = useLocalTranslation(translations);
 
-  let ratingStats = [];
+  const ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
     const reviewsCount = reviews.filter((review) => review.value === i).length;

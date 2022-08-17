@@ -1,6 +1,6 @@
 import { Grid, Stack } from '@mui/material';
-import { Box } from '../../../UI/Box/Box';
 import React from 'react';
+import { Box } from '../../../UI/Box/Box';
 import { defaultTheme as theme } from '../../../../themes';
 import { Typography } from '../../../UI/Typography/Typography';
 
@@ -35,7 +35,7 @@ const sx = {
     color: theme.palette.text.secondary,
   },
 };
-export const DiscountItem = ({ discount }: Props) => {
+export function DiscountItem({ discount }: Props) {
   return (
     <Grid item xs={4}>
       <Typography sx={sx.title} variant="subtitle1">
@@ -53,4 +53,4 @@ export const DiscountItem = ({ discount }: Props) => {
       </Typography>
     </Grid>
   );
-};
+}

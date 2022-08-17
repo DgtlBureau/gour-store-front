@@ -17,7 +17,6 @@ export type ModalProps = {
   title: string;
   description?: string;
   children?: ReactNode;
-  actions?: ReactNode;
   acceptText?: string;
   formId?: string;
   acceptIsDisabled?: boolean;
@@ -42,37 +41,26 @@ export function Modal({
     <MUIModal open={isOpen} onClose={onClose}>
       <Box sx={sx.modal}>
         <Box sx={sx.head}>
-          <Typography sx={sx.title} variant="h6" color="primary">
+          <Typography sx={sx.title} variant='h6' color='primary'>
             {title}
           </Typography>
 
           <IconButton onClick={onClose}>
-            <CrossIcon color="primary" />
+            <CrossIcon color='primary' />
           </IconButton>
         </Box>
 
-        {!!description && (
-          <Typography variant="body1">{description}</Typography>
-        )}
+        {!!description && <Typography variant='body1'>{description}</Typography>}
 
         {children}
 
         {onAccept ? (
-          <Button
-            sx={sx.acceptBtn}
-            onClick={onAccept}
-            disabled={acceptIsDisabled}
-          >
+          <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
             {acceptText || t('acceptText')}
           </Button>
         ) : (
           !!formId && (
-            <Button
-              sx={sx.acceptBtn}
-              type="submit"
-              form={formId}
-              disabled={acceptIsDisabled}
-            >
+            <Button sx={sx.acceptBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
               {acceptText || t('acceptText')}
             </Button>
           )

@@ -9,13 +9,13 @@ type Props = {
   percent: number;
 };
 
-export const Stepper = ({ activeStep, stepsCount, percent }: Props) => {
+export function Stepper({ activeStep, stepsCount, percent }: Props) {
   const getStepsByCount = (count: number) => {
     const steps = [];
     for (let i = 1; i <= count; i++) {
       const isActive = i <= activeStep;
       <div className={`${s.step} ${isActive ? s.active : ''}`}>
-        <div className={s.connector}></div>
+        <div className={s.connector} />
         <div className={s.stepLabel}>{isActive && <DoneIcon />}</div>
       </div>;
       steps.push({
@@ -47,7 +47,7 @@ export const Stepper = ({ activeStep, stepsCount, percent }: Props) => {
           >
             <div
               className={`${s.connector} ${step.isActive ? s.active : ''}`}
-            ></div>
+             />
             <div className={`${s.stepLabel} ${step.isActive ? s.active : ''}`}>
               {step.isActive && <DoneIcon />}
             </div>
@@ -72,11 +72,11 @@ export const Stepper = ({ activeStep, stepsCount, percent }: Props) => {
             <div
               className={s.connectorPercentage}
               style={{ width: `${percent}%` }}
-            ></div>
+             />
           </div>
           <div className={s.stepLabel}>{activeStep + 1}</div>
         </div>
       </Box>
     </>
   );
-};
+}

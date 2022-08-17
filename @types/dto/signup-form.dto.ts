@@ -1,4 +1,4 @@
-import { Role } from '../../@types/entities/Role';
+import { Role } from '../entities/Role';
 
 export type SignUpFormDto = Readonly<{
   role: Role;

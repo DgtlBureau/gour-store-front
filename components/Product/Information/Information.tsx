@@ -1,14 +1,14 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { Rating } from '@mui/material';
 
+import StarIcon from '@mui/icons-material/Star';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { getDeclensionWordByCount } from '../../../utils/wordHelper';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import translations from './Information.i18n.json';
-
-import StarIcon from '@mui/icons-material/Star';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 import sx from './Information.styles';
 
@@ -32,11 +32,7 @@ export function ProductInformation({
 }: ProductInformationProps) {
   const { t } = useLocalTranslation(translations);
 
-  const gradesCountText = getDeclensionWordByCount(gradesCount, [
-    t('manyGrades'),
-    t('oneGrade'),
-    t('someGrades'),
-  ]);
+  const gradesCountText = getDeclensionWordByCount(gradesCount, [t('manyGrades'), t('oneGrade'), t('someGrades')]);
   const commentsCountText = getDeclensionWordByCount(commentsCount, [
     t('manyReviews'),
     t('oneReview'),
@@ -50,49 +46,36 @@ export function ProductInformation({
           <Rating
             value={rating}
             precision={0.5}
-            size="small"
+            size='small'
             readOnly
-            icon={<StarIcon fontSize="small" sx={sx.star} />}
-            emptyIcon={<StarIcon fontSize="small" sx={sx.emptyStar} />}
+            icon={<StarIcon fontSize='small' sx={sx.star} />}
+            emptyIcon={<StarIcon fontSize='small' sx={sx.emptyStar} />}
           />
 
-          <Typography variant="body2" sx={sx.count}>
-            {gradesCount}
-            {' '}
-            {gradesCountText}
+          <Typography variant='body2' sx={sx.count}>
+            {gradesCount} {gradesCountText}
           </Typography>
         </Box>
 
-        <div 
-          role="button"
-          style={{...sx.stat, ...sx.comments}} 
-          onClick={onClickComments}
-          tabIndex={0}
-        >
-          <ChatBubbleIcon fontSize="small" />
+        <div role='button' style={{ ...sx.stat, ...sx.comments }} onClick={onClickComments} tabIndex={0}>
+          <ChatBubbleIcon fontSize='small' />
 
-          <Typography variant="body2" sx={sx.count}>
-              {commentsCount}
-              {' '}
-              {commentsCountText}
+          <Typography variant='body2' sx={sx.count}>
+            {commentsCount} {commentsCountText}
           </Typography>
         </div>
       </Box>
-      {
-        characteristics.map(characteristic => (
-          <Box key={characteristic.label} sx={sx.characteristic}>
-            <Typography variant="body2">
-              {characteristic.label}
-            </Typography>
+      {characteristics.map((characteristic) => (
+        <Box key={characteristic.label} sx={sx.characteristic}>
+          <Typography variant='body2'>{characteristic.label}</Typography>
 
-            <div style={sx.divider} />
+          <div style={sx.divider} />
 
-            <Typography variant="body2" sx={sx.value}>
-              {characteristic.value}
-            </Typography>
-          </Box>
-        ))
-      }
+          <Typography variant='body2' sx={sx.value}>
+            {characteristic.value}
+          </Typography>
+        </Box>
+      ))}
     </Box>
   );
 }

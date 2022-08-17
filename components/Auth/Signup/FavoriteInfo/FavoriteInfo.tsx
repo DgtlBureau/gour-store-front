@@ -1,17 +1,18 @@
-import React, { ReactNode, useState } from 'react';
-import { Paper, Grid } from '@mui/material';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+// FIXME: fix eslint errors
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 
+import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 import translations from './FavoriteInfo.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { AuthCard } from '../../Card/Card';
 import { Button } from '../../../UI/Button/Button';
 import { Typography } from '../../../UI/Typography/Typography';
 import sx from './FavoriteInfo.styles';
-import { Box } from '../../../UI/Box/Box';
-import { Stepper } from '../../../UI/Stepper/Stepper';
 
 import s from './FavoriteInfo.module.scss';
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -33,12 +34,7 @@ export type SignupFavoriteInfoProps = {
   onSubmit(info: FavoriteInfo): void;
 };
 
-export function SignupFavoriteInfo({
-  countries,
-  products,
-  onBack,
-  onSubmit,
-}: SignupFavoriteInfoProps) {
+export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: SignupFavoriteInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const [userCountries, setUserCountries] = useState<number[]>([]);
@@ -47,19 +43,19 @@ export function SignupFavoriteInfo({
   const handleClickCountry = (countryId: number) => {
     const isSelected = userCountries.includes(countryId);
     if (isSelected) {
-      const newList = userCountries.filter(id => id !== countryId);
+      const newList = userCountries.filter((id) => id !== countryId);
       return setUserCountries(newList);
     }
-    return setUserCountries(prevList => [...prevList, countryId]);
+    return setUserCountries((prevList) => [...prevList, countryId]);
   };
 
   const handleClickProducts = (productId: number) => {
     const isSelected = userProducts.includes(productId);
     if (isSelected) {
-      const newList = userProducts.filter(id => id !== productId);
+      const newList = userProducts.filter((id) => id !== productId);
       return setUserProducts(newList);
     }
-    return setUserProducts(prevList => [...prevList, productId]);
+    return setUserProducts((prevList) => [...prevList, productId]);
   };
 
   const handleSubmit = () => {
@@ -73,21 +69,21 @@ export function SignupFavoriteInfo({
     <AuthCard>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <Button variant="outlined" onClick={onBack}>
+          <Button variant='outlined' onClick={onBack}>
             {t('backButton')}
           </Button>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('title')}</Typography>
+          <Typography variant='subtitle1'>{t('title')}</Typography>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
+          <Typography variant='subtitle1'>{t('countriesTitle')}</Typography>
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
-          {countries.map(country => (
+          {countries.map((country) => (
             <Grid item xs={3} sm={2} key={country.id}>
               <div
                 style={{
@@ -97,18 +93,18 @@ export function SignupFavoriteInfo({
                 }}
                 onClick={() => handleClickCountry(country.id)}
               >
-                <Typography variant="body2">{country.title}</Typography>
+                <Typography variant='body2'>{country.title}</Typography>
               </div>
             </Grid>
           ))}
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('likedTitle')}</Typography>
+          <Typography variant='subtitle1'>{t('likedTitle')}</Typography>
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
-          {products.map(product => (
+          {products.map((product) => (
             <Grid
               item
               xs={4}
@@ -118,11 +114,7 @@ export function SignupFavoriteInfo({
               }}
               key={product.id}
             >
-              <div
-                className={`${s.icon} ${
-                  userProducts.includes(product.id) ? s.selected : ''
-                }`}
-              >
+              <div className={`${s.icon} ${userProducts.includes(product.id) ? s.selected : ''}`}>
                 {ProductSvgSelector(product.iconKey, s.outline)}
               </div>
             </Grid>
@@ -130,11 +122,7 @@ export function SignupFavoriteInfo({
         </Grid>
 
         <Grid item xs={12}>
-          <Button
-            sx={{ width: '100%' }}
-            variant="contained"
-            onClick={handleSubmit}
-          >
+          <Button sx={{ width: '100%' }} variant='contained' onClick={handleSubmit}>
             {t('endRegistration')}
           </Button>
         </Grid>

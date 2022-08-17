@@ -47,7 +47,7 @@ type PAProfilesFormProps = {
   onDelete(): void;
 };
 
-export const PAProfilesForm = ({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) => {
+export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -106,4 +106,4 @@ export const PAProfilesForm = ({ defaultValues, cities, onSave, onDelete }: PAPr
       </form>
     </FormProvider>
   );
-};
+}

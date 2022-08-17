@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { Translator } from 'utils/Translator';
 import translations from './PasswordChangeModal.i18n.json';
 import { getSchema } from './validation';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
@@ -10,7 +11,6 @@ import { Modal } from '../../../UI/Modal/Modal';
 import { Box } from '../../../UI/Box/Box';
 import { Typography } from '../../../UI/Typography/Typography';
 import { HFTextField } from '../../../HookForm/HFTextField';
-import { Translator } from 'utils/Translator';
 
 const sx = {
   body: {

@@ -85,15 +85,15 @@ export function OrdersCard({
   const productCount = products.length;
   const fullOrderPrice = products.reduce((acc, currentProduct) => {
     if (!currentProduct.isWeightGood) {
-      return (acc += currentProduct.cost * currentProduct.amount);
+      return acc + currentProduct.cost * currentProduct.amount;
     }
-    return (acc += (currentProduct.cost * currentProduct.weight) / 100);
+    return acc + (currentProduct.cost * currentProduct.weight) / 100;
   }, 0);
 
   const createdDate = format(createdAt, 'yyyy.MM.d');
   const createdTime = format(createdAt, 'HH:mm');
 
-  const summaryDiscount = promotions.reduce((acc, currentDiscount) => (acc += currentDiscount.amount), 0);
+  const summaryDiscount = promotions.reduce((acc, currentDiscount) => acc + currentDiscount.amount, 0);
 
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
@@ -110,9 +110,9 @@ export function OrdersCard({
           spacing={2}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="h6">{title}</Typography>
+            <Typography variant='h6'>{title}</Typography>
 
-            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant="h6">
+            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant='h6'>
               {priceWithDiscount} {currencySymbol}
             </Typography>
           </Box>
@@ -120,46 +120,46 @@ export function OrdersCard({
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography sx={{ ...sx.status, backgroundColor: status.color }}>{status.title}</Typography>
 
-            <Typography variant="body1" sx={sx.muted}>
+            <Typography variant='body1' sx={sx.muted}>
               {t('from')} {createdDate} {t('at')} {createdTime}
             </Typography>
           </Box>
 
-          <Typography variant="body1" sx={sx.muted}>
+          <Typography variant='body1' sx={sx.muted}>
             {productCount} товара
           </Typography>
 
-          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant="h6">
+          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant='h6'>
             {priceWithDiscount} {currencySymbol}
           </Typography>
         </Stack>
       </AccordionSummary>
 
-      <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
+      <Divider variant='fullWidth' sx={{ margin: '20px 0 0 0' }} />
 
       <AccordionDetails>
         <Box sx={sx.contacts}>
-          <Typography sx={sx.muted} variant="body1">
+          <Typography sx={sx.muted} variant='body1'>
             {t('deliveryAddress')}:&nbsp;
           </Typography>
 
-          <Typography variant="body1">{address}</Typography>
+          <Typography variant='body1'>{address}</Typography>
         </Box>
 
         <Box sx={sx.contacts}>
-          <Typography sx={sx.muted} variant="body1">
+          <Typography sx={sx.muted} variant='body1'>
             {t('receiver')}:&nbsp;
           </Typography>
-          <Typography variant="body1">{client}</Typography>
+          <Typography variant='body1'>{client}</Typography>
         </Box>
 
-        <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
+        <Divider variant='fullWidth' sx={{ margin: '20px 0 0 0' }} />
 
-        {products.map(product => (
+        {products.map((product) => (
           <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
         ))}
 
-        {!!products.length && <Divider variant="fullWidth" />}
+        {!!products.length && <Divider variant='fullWidth' />}
 
         <OrderCardInfo
           fullPrice={fullOrderPrice}
