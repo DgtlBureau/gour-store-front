@@ -16,14 +16,15 @@ export const onPhonePaste = function (e: ClipboardEvent<HTMLInputElement>) {
   }
 };
 
-export const onPhoneInput = function (e: FormEvent<HTMLInputElement>) {
-  const input = e.target as HTMLInputElement;
+export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
+  const input = e.currentTarget;
   let inputNumbersValue = getInputNumbersValue(input);
   const selectionStart = input.selectionStart;
   let formattedInputValue = '';
 
   if (!inputNumbersValue) {
-    return (input.value = '');
+    input.value = '';
+    return;
   }
 
   if (input.value.length !== selectionStart) {
@@ -55,8 +56,9 @@ export const onPhoneInput = function (e: FormEvent<HTMLInputElement>) {
   }
   input.value = formattedInputValue;
 };
-export const onPhoneKeyDown = function (e: KeyboardEvent<HTMLInputElement>) {
-  const inputValue = (e.target as HTMLInputElement).value.replace(/\D/g, '');
+
+export const onPhoneKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const inputValue = e.currentTarget.value.replace(/\D/g, '');
   if (e.key === '8' && inputValue.length === 1) {
     (e.target as HTMLInputElement).value = '';
   }
