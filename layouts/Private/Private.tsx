@@ -6,7 +6,7 @@ import { selectIsAuth } from 'store/selectors/auth';
 import { useAppNavigation } from 'components/Navigation';
 
 type Props = {
-  children: ReactNode;
+  children: any;
 };
 
 export function PrivateLayout({ children }: Props) {

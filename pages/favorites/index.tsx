@@ -60,7 +60,6 @@ function FavoriteProductCard({
       price={product.price[currency]}
       previewSrc={product.images[0]?.small || ''}
       currency={currency}
-      inCart={!!productInBasket}
       isElected={isElect}
       onElect={elect}
       onAdd={() => addToBasket(product)}

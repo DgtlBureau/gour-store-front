@@ -54,7 +54,6 @@ const Template: ComponentStory<typeof ProductCard> = function () {
       price={PRICE}
       previewSrc={PREVIEW_SRC}
       countrySrc={russiaIcon}
-      inCart={inCart}
       isElected={isElected}
       onAdd={() => setInCart(true)}
       onRemove={() => setInCart(false)}

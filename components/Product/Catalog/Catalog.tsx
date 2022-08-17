@@ -170,7 +170,6 @@ export function ProductCatalog({
               currency={currency}
               countrySrc={getCountryImage(product.characteristics.country)}
               currentCount={getProductCount(product.id, product.isWeightGood)}
-              inCart={!!findProductInBasket(product.id)}
               isElected={product.isElected}
               isWeightGood={product.isWeightGood}
               onAdd={() => onAdd(product)}
