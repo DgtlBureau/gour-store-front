@@ -15,6 +15,8 @@ import instIcon from '../../assets/icons/social/inst.svg';
 import vkIcon from '../../assets/icons/social/vk.svg';
 
 import footerSx from './Footer.styles';
+import { Typography } from 'components/UI/Typography/Typography'
+import { Path } from 'constants/routes'
 
 export type FooterProps = {
   firstPhone: string;
