@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, Grid } from '@mui/material';
 
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -10,51 +10,16 @@ import { OrderProductType, OrderCardProduct } from './CardProduct';
 import { OrderCardInfo } from './CardInfo';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
 import { Currency } from '../../../@types/entities/Currency';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
 
-const sx = {
-  header: {
-    width: '100%',
-    marginRight: '10px',
-  },
-  status: {
-    width: 'fit-content',
-    marginRight: '10px',
-    padding: '2px 8px',
-    borderRadius: '4px',
-  },
-  details: {
-    marginTop: '20px',
-    padding: 0,
-  },
-  contacts: {
-    display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
-  },
-  total: {
-    textAlign: 'right',
-    fontWeight: 'bold',
-    order: {
-      xs: 2,
-      sm: 4,
-    },
-  },
-  divider: {
-    margin: '20px 0 0 0',
-  },
-  muted: {
-    color: 'text.muted',
-  },
-};
+import sx from './Card.styles';
 
 type Promotion = {
   title: string;
   amount: number;
 };
 
-export type OrdersCardProps = {
+export type FullOrder = {
   title: string;
   status: {
     title: string;
@@ -63,23 +28,20 @@ export type OrdersCardProps = {
   createdAt: Date;
   address: string;
   client: string;
-  currency: Currency;
   products: OrderProductType[];
   promotions: Promotion[];
   deliveryCost: number;
+  currency: Currency;
 };
 
-export function OrdersCard({
-  title,
-  status,
-  address,
-  client,
-  createdAt,
-  products,
-  currency,
-  promotions,
-  deliveryCost,
-}: OrdersCardProps) {
+export type OrdersCardProps = {
+  order: FullOrder;
+  onDetail: (id: number) => void;
+};
+
+export function OrdersCard({ order, onDetail }: OrdersCardProps) {
+  const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost } = order;
+
   const { t } = useLocalTranslation(translations);
 
   const productCount = products.length;
@@ -89,6 +51,12 @@ export function OrdersCard({
     }
     return (acc += (currentProduct.cost * currentProduct.weight) / 100);
   }, 0);
+
+  const productsCountText = getDeclensionWordByCount(productCount, [
+    t('manyProducts'),
+    t('oneProduct'),
+    t('someProducts'),
+  ]);
 
   const createdDate = format(createdAt, 'yyyy.MM.d');
   const createdTime = format(createdAt, 'HH:mm');
@@ -126,7 +94,7 @@ export function OrdersCard({
           </Box>
 
           <Typography variant="body1" sx={sx.muted}>
-            {productCount} товара
+            {productCount} {productsCountText}
           </Typography>
 
           <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant="h6">
@@ -156,7 +124,12 @@ export function OrdersCard({
         <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
 
         {products.map(product => (
-          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
+          <OrderCardProduct
+            key={`${product.amount}_${product.photo}`}
+            product={product}
+            currency={currency}
+            onDetail={onDetail}
+          />
         ))}
 
         {!!products.length && <Divider variant="fullWidth" />}

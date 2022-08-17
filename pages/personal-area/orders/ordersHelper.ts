@@ -2,12 +2,14 @@ import { IOrder } from '../../../@types/entities/IOrder';
 import { Currency } from '../../../@types/entities/Currency';
 
 import { endOfDay, getTime } from 'date-fns';
-import { OrdersCardProps } from 'components/Orders/Card/Card';
+import { FullOrder } from 'components/Orders/Card/Card';
 import { getFullName } from 'utils/getFullName';
 
-export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): OrdersCardProps {
+export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
+
   const products = order.orderProducts.map(product => ({
+    id: product.product?.id || -1,
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
     weight: product?.weight,
@@ -34,19 +36,19 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     createdAt,
     address: `${city}, ${street}, ${house}, кв. ${apartment},`,
     client,
-    currency,
     products,
     promotions,
-    deliveryCost: 500, //TODO: данные должны идти с бека©
+    deliveryCost: 500, //TODO: данные должны идти с бека©,
+    currency,
   };
 }
 
 type formattedOrder = {
   date: Date;
-  orderList: OrdersCardProps[];
+  orderList: FullOrder[];
 };
 
-export const groupOrdersByDate = (ordersList: OrdersCardProps[]) =>
+export const groupOrdersByDate = (ordersList: FullOrder[]) =>
   ordersList.reduce<Record<number, formattedOrder>>((acc, order) => {
     const createdDay = endOfDay(order.createdAt);
     const orderTime = getTime(createdDay);

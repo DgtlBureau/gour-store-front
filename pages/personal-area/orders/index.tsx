@@ -11,7 +11,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { useAppNavigation } from 'components/Navigation';
 
 export function Orders() {
-  const { language, currency } = useAppNavigation();
+  const { language, currency, goToProductPage } = useAppNavigation();
 
   const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
 
@@ -20,6 +20,7 @@ export function Orders() {
   });
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
+
   const orderKeys = Object.keys(groupedOrders);
 
   if (isLoading) {
@@ -45,12 +46,13 @@ export function Orders() {
           {orderKeys.length !== 0 ? (
             orderKeys.map(key => {
               const orderGroup = groupedOrders[+key];
+
               return (
                 <OrdersCardGroup
                   key={key}
                   date={orderGroup.date}
                   ordersList={orderGroup.orderList}
-                  currency={currency}
+                  onDetail={goToProductPage}
                 />
               );
             })
