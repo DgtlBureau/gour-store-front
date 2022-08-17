@@ -4,10 +4,7 @@ import { AuthLayout } from 'layouts/Auth/Auth';
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import {
-  SignupFavoriteInfo,
-  FavoriteInfo,
-} from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
+import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
@@ -25,12 +22,7 @@ import cityImage from './../../assets/icons/signup/city.svg';
 import favoritesImage from './../../assets/icons/signup/favorites.svg';
 import referralImage from './../../assets/icons/signup/referralCodes.svg';
 
-type AuthStage =
-  | 'referralCode'
-  | 'greeting'
-  | 'citySelect'
-  | 'credentials'
-  | 'favoriteInfo';
+type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
 
 import { eventBus, EventTypes } from 'packages/EventBus';
 import { NotificationType } from '../../@types/entities/Notification';
@@ -51,10 +43,9 @@ export default function SignUp() {
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
-  const [stage, setStage] = useState<AuthStage>('favoriteInfo');
+  const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] =
-    useState<SignUpFormDto | undefined>(undefined);
+  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
   const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
@@ -69,12 +60,23 @@ export default function SignUp() {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
       await sendCode(phone).unwrap();
+
+      eventBus.emit(EventTypes.notification, {
+        message: 'SMS код отправлен',
+        type: NotificationType.SUCCESS,
+      });
+
       return 'success';
     } catch (error) {
       console.error(error);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка при отправке кода',
+        type: NotificationType.DANGER,
+      });
       return (error as any).data.message;
     }
   };
+
   const checkCode = async (code: string) => {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
 
@@ -107,7 +109,6 @@ export default function SignUp() {
   const saveReferralCode = (referralData: ReferralCodeDto) => {
     setReferralCode(referralData.referralCode);
     registerUser();
-    goToSignIn();
   };
 
   const registerUser = async () => {
@@ -119,7 +120,7 @@ export default function SignUp() {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
       phone: credentials.phone,
-      code: +credentials.sms,
+      code: credentials.sms,
       password: credentials.password,
       referralCode,
       cityId: +selectedCity,
@@ -128,10 +129,17 @@ export default function SignUp() {
 
     try {
       await signUp(data).unwrap();
-      goToFavoriteInfo();
-    } catch (e: unknown) {
+
       eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка авторизации',
+        message: 'Регистрация прошла успешно',
+        type: NotificationType.SUCCESS,
+      });
+
+      goToSignIn();
+    } catch (e: unknown) {
+      console.log(e);
+      eventBus.emit(EventTypes.notification, {
+        message: 'Ошибка регистрации',
         type: NotificationType.DANGER,
       });
     }
@@ -139,20 +147,13 @@ export default function SignUp() {
 
   const forms = {
     greeting: {
-      component: (
-        <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />
-      ),
+      component: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
       image: greetingsImage,
       stepIndex: 1,
     },
     citySelect: {
       component: (
-        <SignupCitySelect
-          city={selectedCity}
-          options={convertedCities}
-          onSubmit={saveCity}
-          onBack={goToGreeting}
-        />
+        <SignupCitySelect city={selectedCity} options={convertedCities} onSubmit={saveCity} onBack={goToGreeting} />
       ),
       image: cityImage,
       stepIndex: 2,
@@ -183,12 +184,7 @@ export default function SignUp() {
       stepIndex: 4,
     },
     referralCode: {
-      component: (
-        <SignupReferralCode
-          onSubmit={saveReferralCode}
-          onBack={goToFavoriteInfo}
-        />
-      ),
+      component: <SignupReferralCode onSubmit={saveReferralCode} onBack={goToFavoriteInfo} />,
       image: referralImage,
       stepIndex: 5,
     },
@@ -196,10 +192,7 @@ export default function SignUp() {
 
   return (
     <AuthLayout>
-      <SignupLayout
-        image={forms[stage].image}
-        stepIndex={forms[stage].stepIndex}
-      >
+      <SignupLayout image={forms[stage].image} stepIndex={forms[stage].stepIndex}>
         {forms[stage].component}
       </SignupLayout>
     </AuthLayout>

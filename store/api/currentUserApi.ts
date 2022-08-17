@@ -19,11 +19,11 @@ export const currentUserApi = commonApi.injectEndpoints({
         providesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
       updateCurrentUser: builder.mutation<number, UpdateUserDto>({
-        query(user) {
+        query(body) {
           return {
             method: 'PUT',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
-            body: user,
+            body,
           };
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],

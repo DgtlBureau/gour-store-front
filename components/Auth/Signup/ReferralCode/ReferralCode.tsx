@@ -17,11 +17,7 @@ export type SignupReferralCodeProps = {
   onSubmit(data: ReferralCodeDto): void;
 };
 
-export function SignupReferralCode({
-  defaultValues,
-  onBack,
-  onSubmit,
-}: SignupReferralCodeProps) {
+export function SignupReferralCode({ defaultValues, onBack, onSubmit }: SignupReferralCodeProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t as Translator);
@@ -52,9 +48,7 @@ export function SignupReferralCode({
           />
         </form>
       </FormProvider>
-      <Typography sx={{ margin: '0 0 10px 0' }} variant="h6">
-        {t('thirdText')}
-      </Typography>
+      <Typography variant="h6">{t('thirdText')}</Typography>
 
       <Button form="referralCodeForm" type="submit" sx={sx.submitBtn}>
         {t('goNext')}

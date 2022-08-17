@@ -37,7 +37,7 @@ const sx = {
     },
   },
   field: {
-    marginBottom: '14px',
+    margin: '10px 0',
   },
   backBtn: {
     width: 'fit-content',
@@ -45,6 +45,7 @@ const sx = {
   },
   submitBtn: {
     width: '100%',
+    marginTop: '10px',
   },
   stepper: {
     width: '100%',

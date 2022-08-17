@@ -20,7 +20,7 @@ export type FavoriteInfo = {
 
 export type SignupFavoriteInfoProps = {
   countries: {
-    image: string;
+    image?: string;
     title: string;
     id: number;
   }[];
@@ -33,12 +33,7 @@ export type SignupFavoriteInfoProps = {
   onSubmit(info: FavoriteInfo): void;
 };
 
-export function SignupFavoriteInfo({
-  countries,
-  products,
-  onBack,
-  onSubmit,
-}: SignupFavoriteInfoProps) {
+export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: SignupFavoriteInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const [userCountries, setUserCountries] = useState<number[]>([]);
@@ -97,7 +92,7 @@ export function SignupFavoriteInfo({
                 }}
                 onClick={() => handleClickCountry(country.id)}
               >
-                <Typography variant="body2">{country.title}</Typography>
+                {!country.image && <Typography variant="body2">{country.title}</Typography>}
               </div>
             </Grid>
           ))}
@@ -118,11 +113,7 @@ export function SignupFavoriteInfo({
               }}
               key={product.id}
             >
-              <div
-                className={`${s.icon} ${
-                  userProducts.includes(product.id) ? s.selected : ''
-                }`}
-              >
+              <div className={`${s.icon} ${userProducts.includes(product.id) ? s.selected : ''}`}>
                 {ProductSvgSelector(product.iconKey, s.outline)}
               </div>
             </Grid>
@@ -130,11 +121,7 @@ export function SignupFavoriteInfo({
         </Grid>
 
         <Grid item xs={12}>
-          <Button
-            sx={{ width: '100%' }}
-            variant="contained"
-            onClick={handleSubmit}
-          >
+          <Button sx={{ width: '100%' }} variant="contained" onClick={handleSubmit}>
             {t('endRegistration')}
           </Button>
         </Grid>

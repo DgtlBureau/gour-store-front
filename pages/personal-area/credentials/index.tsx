@@ -51,6 +51,7 @@ export function Profile() {
       return false;
     }
   };
+
   const changePhone = async (changePhoneData: ChangePhoneDto) => {
     try {
       await updatePhone({
@@ -92,7 +93,9 @@ export function Profile() {
 
     try {
       const image = await uploadImage(formData).unwrap();
+
       if (!image) return;
+
       await updateCurrentUser({ avatarId: image.id });
       eventBus.emit(EventTypes.notification, {
         message: 'Фото профиля изменено',
@@ -122,17 +125,23 @@ export function Profile() {
     }
   };
 
-  const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
+  const saveBaseInfo = async (data: UpdateUserDto) => {
     try {
+      const updatedUser: UpdateUserDto = {
+        ...data,
+        email: !!data.email ? data.email : undefined,
+      };
+
       await updateCurrentUser(updatedUser).unwrap();
       eventBus.emit(EventTypes.notification, {
         message: 'Данные профиля изменены',
         type: NotificationType.SUCCESS,
       });
     } catch (error) {
+      console.log(error);
       eventBus.emit(EventTypes.notification, {
         message: 'Ошибка изменения данных',
-        type: NotificationType.SUCCESS,
+        type: NotificationType.DANGER,
       });
     }
   };
@@ -145,8 +154,6 @@ export function Profile() {
     );
   }
 
-  console.log(currentUser.avatar);
-
   return (
     <PALayout>
       <Grid container spacing={2}>
@@ -157,20 +164,19 @@ export function Profile() {
             onRemove={removeAvatar}
           />
         </Grid>
+
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
-            onChangePhone={() => {
-              setIsPhoneModalOpen(true);
-            }}
+            onChangePhone={() => setIsPhoneModalOpen(true)}
             onChangePassword={() => setIsPasswordModalOpen(true)}
             user={{
-              firstName: currentUser.firstName || '',
-              lastName: currentUser.lastName || '',
-              referralCode: currentUser.referralCode?.code || '',
-              email: currentUser.email || '',
+              firstName: currentUser.firstName,
+              lastName: currentUser.lastName,
+              referralCode: currentUser.referralCode?.code,
+              email: currentUser.email,
             }}
             phone={currentUser.phone}
-            onSave={handleSaveBaseInfo}
+            onSave={saveBaseInfo}
           />
         </Grid>
       </Grid>
@@ -184,9 +190,7 @@ export function Profile() {
 
       <PAPasswordChangeModal
         isOpen={isPasswordModalOpen}
-        onClose={() => {
-          setIsPasswordModalOpen(false);
-        }}
+        onClose={() => setIsPasswordModalOpen(false)}
         onChange={changePassword}
       />
     </PALayout>

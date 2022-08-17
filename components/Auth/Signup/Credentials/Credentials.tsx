@@ -15,10 +15,9 @@ import { Checkbox } from '../../../UI/Checkbox/Checkbox';
 import { HFTextField } from '../../../HookForm/HFTextField';
 import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
 import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 import sx from './Credentials.styles';
-import { CodeInput } from 'components/UI/CodeInput/CodeInput';
-import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -28,13 +27,7 @@ export type SignupCredentialsProps = {
   onSubmit(data: SignUpFormDto): void;
 };
 
-export function SignupCredentials({
-  defaultValues,
-  onBack,
-  onSendSMS,
-  onCheckCode,
-  onSubmit,
-}: SignupCredentialsProps) {
+export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCode, onSubmit }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState<boolean>(false);
 
@@ -53,10 +46,8 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid =
-    !values.watch('phone') || !!values.getFieldState('phone').error;
-  const codeIsValid =
-    !values.watch('sms') || !!values.getFieldState('sms').error;
+  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
+  const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
   const formIsInvalid = !values.formState.isValid || !isAgree;
 
   const sendSMS = async () => {
@@ -85,30 +76,15 @@ export function SignupCredentials({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button
-            sx={sx.backBtn}
-            size="small"
-            variant="outlined"
-            onClick={onBack}
-          >
+          <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <HFRadioGroup name="role" sx={sx.radioGroup}>
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value="CLIENT"
-              control={<Radio />}
-              label={t('physical')}
-            />
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value="COMPANY"
-              control={<Radio />}
-              label={t('company')}
-            />
+            <FormControlLabel sx={sx.radioBtn} value="CLIENT" control={<Radio />} label={t('physical')} />
+            <FormControlLabel sx={sx.radioBtn} value="COMPANY" control={<Radio />} label={t('company')} />
             <FormControlLabel
               sx={sx.radioBtn}
               value="COLLECTIVE_PURCHASE"
@@ -118,16 +94,8 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput
-              name="phone"
-              disabled={isCodeSended}
-              label={t('phone')}
-            />
-            <Button
-              sx={sx.getCodeBtn}
-              onClick={sendSMS}
-              disabled={phoneIsInvalid || isCodeSended}
-            >
+            <HFPhoneInput name="phone" disabled={isCodeSended} label={t('phone')} />
+            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid || isCodeSended}>
               {t('getCode')}
             </Button>
           </Box>
@@ -141,26 +109,14 @@ export function SignupCredentials({
                   }
                 }}
               />
-              {isCodeSuccess && (
-                <Typography variant="body1">Код подтвержден</Typography>
-              )}
+              {isCodeSuccess && <Typography variant="body1">Код подтвержден</Typography>}
             </Stack>
           )}
 
           {isCodeSuccess && (
             <>
-              <HFTextField
-                sx={sx.field}
-                type="text"
-                name="firstName"
-                label={t('firstName')}
-              />
-              <HFTextField
-                sx={sx.field}
-                type="text"
-                name="lastName"
-                label={t('lastName')}
-              />
+              <HFTextField sx={sx.field} type="text" name="firstName" label={t('firstName')} />
+              <HFTextField sx={sx.field} type="text" name="lastName" label={t('lastName')} />
               <HFTextField
                 sx={sx.field}
                 type="password"
@@ -168,18 +124,8 @@ export function SignupCredentials({
                 label={t('password')}
                 helperText={t('passwordHelper')}
               />
-              <HFTextField
-                sx={sx.field}
-                type="password"
-                name="passwordConfirm"
-                label={t('passwordConfirm')}
-              />
-              <Checkbox
-                sx={sx.field}
-                value={isAgree}
-                onChange={agree}
-                label={t('agreement')}
-              />
+              <HFTextField sx={sx.field} type="password" name="passwordConfirm" label={t('passwordConfirm')} />
+              <Checkbox sx={sx.field} value={isAgree} onChange={agree} label={t('agreement')} />
             </>
           )}
           <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
