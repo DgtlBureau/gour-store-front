@@ -19,6 +19,8 @@ const sx = {
   },
 
   image: {
+    cursor: 'pointer',
+
     height: {
       sm: '125px',
       xs: '80px',
@@ -32,10 +34,6 @@ const sx = {
     borderRadius: '10px',
 
     objectFit: 'cover',
-
-    '&:hover': {
-      cursor: 'pointer',
-    },
   },
 
   info: {
@@ -60,6 +58,7 @@ const sx = {
   },
 
   title: {
+    cursor: 'pointer',
     fontSize: {
       xs: '14px',
       sm: '16px',
@@ -70,7 +69,6 @@ const sx = {
     color: t.palette.text.secondary,
 
     '&:hover': {
-      cursor: 'pointer',
       opacity: '0.75',
     },
   },

@@ -77,12 +77,20 @@ export default function Product() {
         await removeFavorite(id);
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления из избранного',
+          type: NotificationType.DANGER,
+        });
       }
     } else {
       try {
         await addFavorite({ productId: id });
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка добавления в избранное',
+          type: NotificationType.DANGER,
+        });
       }
     }
   };
@@ -181,7 +189,7 @@ export default function Product() {
               <Typography variant="body1">{product.description[language] || ''}</Typography>
             </Box>
 
-            {!!product.similarProducts && (
+            {!!product.similarProducts.length && (
               <ProductCatalog
                 title={t('similar')}
                 products={product.similarProducts}

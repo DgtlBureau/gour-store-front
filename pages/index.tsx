@@ -25,7 +25,9 @@ import { ShopLayout } from '../layouts/Shop/Shop';
 import { CardSlider } from '../components/CardSlider/CardSlider';
 import { PromotionCard } from '../components/Promotion/Card/Card';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
 
+import { NotificationType } from '../@types/entities/Notification';
 import { Currency } from '../@types/entities/Currency';
 import { IProduct } from '../@types/entities/IProduct';
 
@@ -45,8 +47,8 @@ const Home: NextPage = () => {
 
   const dispatch = useAppDispatch();
 
-  const { data: categories, isLoading: categoriesIsLoading } = useGetCategoryListQuery();
-  const { data: products, isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
+  const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
+  const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
   const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
   });
@@ -71,12 +73,20 @@ const Home: NextPage = () => {
         await removeFavorite(id);
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления из избранного',
+          type: NotificationType.DANGER,
+        });
       }
     } else {
       try {
         await addFavorite({ productId: id });
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка добавления в избранное',
+          type: NotificationType.DANGER,
+        });
       }
     }
   };
@@ -86,7 +96,7 @@ const Home: NextPage = () => {
       <ShopLayout currency={currency} language={language}>
         {isLoading && <ProgressLinear />}
 
-        {!!promotions && (
+        {promotions && (
           <CardSlider
             title={t('promotions')}
             cardsList={promotions
@@ -101,39 +111,35 @@ const Home: NextPage = () => {
           />
         )}
 
-        {!!novelties && (
-          <ProductCatalog
-            title={t('novelties')}
-            products={novelties}
-            favoritesList={favoriteProducts}
-            basket={basket.products}
-            language={language}
-            currency={currency}
-            rows={1}
-            sx={sx.productList}
-            onAdd={addToBasket}
-            onRemove={removeFromBasket}
-            onElect={handleElect}
-            onDetail={goToProductPage}
-          />
-        )}
+        <ProductCatalog
+          title={t('novelties')}
+          products={novelties}
+          favoritesList={favoriteProducts}
+          basket={basket.products}
+          language={language}
+          currency={currency}
+          rows={1}
+          sx={sx.productList}
+          onAdd={addToBasket}
+          onRemove={removeFromBasket}
+          onElect={handleElect}
+          onDetail={goToProductPage}
+        />
 
-        {!!products && (
-          <ProductCatalog
-            title={t('catalog')}
-            favoritesList={favoriteProducts}
-            products={products}
-            basket={basket.products}
-            categories={categories}
-            language={language}
-            currency={currency}
-            sx={sx.productList}
-            onAdd={addToBasket}
-            onRemove={removeFromBasket}
-            onElect={handleElect}
-            onDetail={goToProductPage}
-          />
-        )}
+        <ProductCatalog
+          title={t('catalog')}
+          favoritesList={favoriteProducts}
+          products={products}
+          basket={basket.products}
+          categories={categories}
+          language={language}
+          currency={currency}
+          sx={sx.productList}
+          onAdd={addToBasket}
+          onRemove={removeFromBasket}
+          onElect={handleElect}
+          onDetail={goToProductPage}
+        />
 
         {!!page && (
           <>

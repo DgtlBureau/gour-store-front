@@ -20,6 +20,8 @@ import { Language } from '../../@types/entities/Language';
 import { isProductFavorite } from './favoritesHelper';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 const sx = {
   title: {
@@ -55,12 +57,20 @@ export function Favorites() {
         await removeFavorite(id);
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления из избранного',
+          type: NotificationType.DANGER,
+        });
       }
     } else {
       try {
         await addFavorite({ productId: id });
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка добавления в избранное',
+          type: NotificationType.DANGER,
+        });
       }
     }
   };

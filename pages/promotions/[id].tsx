@@ -93,19 +93,21 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            <ProductCatalog
-              title={t('sliderTitle')}
-              products={promotion?.products || []}
-              basket={basket.products}
-              language={language}
-              currency={currency}
-              discount={promotion?.discount}
-              onAdd={addToBasket}
-              onRemove={removeFromBasket}
-              onElect={elect}
-              onDetail={goToProductPage}
-              favoritesList={favoriteProducts}
-            />
+            {promotion?.products?.length && (
+              <ProductCatalog
+                title={t('sliderTitle')}
+                products={promotion.products}
+                basket={basket.products}
+                language={language}
+                currency={currency}
+                discount={promotion?.discount}
+                onAdd={addToBasket}
+                onRemove={removeFromBasket}
+                onElect={elect}
+                onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
+              />
+            )}
           </>
         )}
       </ShopLayout>

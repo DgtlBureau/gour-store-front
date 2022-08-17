@@ -32,6 +32,8 @@ import { IProduct } from '../../@types/entities/IProduct';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { NotificationType } from '../../@types/entities/Notification';
 
 const sx = {
   title: {
@@ -45,6 +47,15 @@ const sx = {
   },
   divider: {
     borderColor: 'secondary.main',
+  },
+  desktopOrderBtn: {
+    display: { xs: 'none', md: 'flex' },
+    width: '100%',
+    marginBottom: '10px',
+  },
+  mobileOrderBtn: {
+    width: '100%',
+    marginTop: '10px',
   },
 };
 
@@ -85,12 +96,20 @@ export function Basket() {
         await removeFavorite(id);
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка удаления из избранного',
+          type: NotificationType.DANGER,
+        });
       }
     } else {
       try {
         await addFavorite({ productId: id });
       } catch (error) {
         console.log(error);
+        eventBus.emit(EventTypes.notification, {
+          message: 'Ошибка добавления в избранное',
+          type: NotificationType.DANGER,
+        });
       }
     }
   };
@@ -141,10 +160,7 @@ export function Basket() {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Button
-                onClick={goToOrder}
-                sx={{ display: { xs: 'none', md: 'flex' }, width: '100%', marginBottom: '10px' }}
-              >
+              <Button onClick={goToOrder} sx={sx.desktopOrderBtn}>
                 {t('orderButton')}
               </Button>
 
@@ -188,7 +204,7 @@ export function Basket() {
             )}
 
             <Grid item xs={12} sx={{ display: { md: 'none' } }}>
-              <Button onClick={goToOrder} sx={{ width: '100%', marginTop: '10px' }}>
+              <Button onClick={goToOrder} sx={sx.mobileOrderBtn}>
                 {t('orderButton')}
               </Button>
             </Grid>

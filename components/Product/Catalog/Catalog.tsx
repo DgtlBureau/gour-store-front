@@ -12,7 +12,7 @@ import { Button } from '../../UI/Button/Button';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-import { IProduct, IProductCharacteristics, IFiltersCharacteristic, ICharacteristicsList } from '../../../@types/entities/IProduct';
+import { IProduct, IFiltersCharacteristic } from '../../../@types/entities/IProduct';
 import { ICategory } from '../../../@types/entities/ICategory';
 import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
 import { Currency } from '../../../@types/entities/Currency';
@@ -25,6 +25,7 @@ import catalogSx from './Catalog.styles';
 
 export type ProductCatalogProps = {
   title?: string;
+  emptyTitle?: string;
   products: IProduct[];
   favoritesList: IProduct[];
   categories?: ICategory[];
@@ -42,6 +43,7 @@ export type ProductCatalogProps = {
 
 export function ProductCatalog({
   title,
+  emptyTitle,
   products,
   categories,
   basket,
@@ -88,7 +90,7 @@ export function ProductCatalog({
 
   const productList = categories
     ? productsWidthElect?.filter(
-        (product) =>
+        product =>
           checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters)
       )
     : productsWidthElect;
@@ -134,52 +136,47 @@ export function ProductCatalog({
         </Box>
       )}
 
-      {productList.length ? (
-        <CardSlider
-          title={screenWidth > 900 || !categories ? title : undefined}
-          key={`catalog/${filters.category}`}
-          spaceBetween={0}
-          rows={rows || getCatalogRows()}
-          head={
-            !!categories && (
-              <ProductFilterList
-                sx={catalogSx.filters}
-                categories={categories}
-                filters={filters}
-                language={language}
-                onReverse={toggleSequence}
-                onCategoryChange={selectCategory}
-                onCharacteristicChange={selectCharacteristics}
-              />
-            )
-          }
-          cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
-            <ProductCard
-              key={product.id}
-              title={product.title[language]}
-              description={product.description[language]}
-              rating={product.grade}
-              price={product.price[currency]}
-              discount={discount || product.discount}
-              previewSrc={product.images[0] ? product.images[0].small : ''}
-              currency={currency}
-              countrySrc={getCountryImage(product.characteristics.country)}
-              currentCount={getProductCount(product.id, product.isWeightGood)}
-              inCart={!!findProductInBasket(product.id)}
-              isElected={product.isElected}
-              isWeightGood={product.isWeightGood}
-              onAdd={() => onAdd(product)}
-              onRemove={() => onRemove(product)}
-              onElect={() => onElect(product.id, product.isElected)}
-              onDetail={() => onDetail(product.id)}
+      <CardSlider
+        title={screenWidth > 900 || !categories ? title : undefined}
+        emptyTitle={emptyTitle || 'Продукты не найдены'}
+        key={`catalog/${filters.category}`}
+        spaceBetween={0}
+        rows={rows || getCatalogRows()}
+        head={
+          !!categories && (
+            <ProductFilterList
+              sx={catalogSx.filters}
+              categories={categories}
+              filters={filters}
+              language={language}
+              onReverse={toggleSequence}
+              onCategoryChange={selectCategory}
+              onCharacteristicChange={selectCharacteristics}
             />
-          ))}
-        />
-      ) : (
-        <Typography variant="h5" color="primary" sx={catalogSx.emptyTitle}>
-          Продукты не найдены
-        </Typography>
-      )}
+          )
+        }
+        cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
+          <ProductCard
+            key={product.id}
+            title={product.title[language]}
+            description={product.description[language]}
+            rating={product.grade}
+            price={product.price[currency]}
+            discount={discount || product.discount}
+            previewSrc={product.images[0] ? product.images[0].small : ''}
+            currency={currency}
+            countrySrc={getCountryImage(product.characteristics.country)}
+            currentCount={getProductCount(product.id, product.isWeightGood)}
+            inCart={!!findProductInBasket(product.id)}
+            isElected={product.isElected}
+            isWeightGood={product.isWeightGood}
+            onAdd={() => onAdd(product)}
+            onRemove={() => onRemove(product)}
+            onElect={() => onElect(product.id, product.isElected)}
+            onDetail={() => onDetail(product.id)}
+          />
+        ))}
+      />
 
       {!!categories && (
         <ProductFilterModal
