@@ -5,9 +5,4 @@ export const contacts = {
   fb: 'https://www.facebook.com/gourfood.spb/',
   inst: 'https://www.instagram.com/gourfood_/',
   vk: 'https://vk.com/gour_food',
-  copyright: '',
-  rules: '',
-  privacy: '',
-  cookie: '',
-  terms: '',
 };

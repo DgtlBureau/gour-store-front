@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import Image from 'next/image';
 import { Divider, SxProps } from '@mui/material';
 
+import { Typography } from 'components/UI/Typography/Typography'
+import { Path } from 'constants/routes'
 import translations from './Footer.i18n.json';
 import { useLocalTranslation } from '../../hooks/useLocalTranslation';
 import { LinkRef as Link } from '../UI/Link/Link';
@@ -16,31 +18,19 @@ import footerSx from './Footer.styles';
 
 export type FooterProps = {
   firstPhone: string;
-  secondPhone: string;
   email: string;
   fb: string;
   inst: string;
   vk: string;
-  copyright: string;
-  rules: string;
-  privacy: string;
-  cookie: string;
-  terms: string;
   sx?: SxProps;
 };
 
 export function Footer({
   firstPhone,
-  secondPhone,
   email,
   fb,
   inst,
   vk,
-  copyright,
-  rules,
-  privacy,
-  cookie,
-  terms,
   sx,
 }: FooterProps) {
   const { t } = useLocalTranslation(translations);
@@ -49,10 +39,6 @@ export function Footer({
     {
       label: firstPhone,
       path: `tel:${firstPhone}`,
-    },
-    {
-      label: secondPhone,
-      path: `tel:${secondPhone}`,
     },
     {
       label: email,
@@ -77,24 +63,20 @@ export function Footer({
 
   const info = [
     {
-      label: t('copyright'),
-      path: copyright,
-    },
-    {
       label: t('rules'),
-      path: rules,
+      path: `/${Path.RULES}`,
     },
     {
       label: t('privacy'),
-      path: privacy,
+      path: `/${Path.PRIVACY}`,
     },
     {
       label: t('cookie'),
-      path: cookie,
+      path: `/${Path.COOKIE}`,
     },
     {
       label: t('terms'),
-      path: terms,
+      path: `/${Path.OFERTA}`,
     },
   ];
 
@@ -125,17 +107,28 @@ export function Footer({
       </Box>
 
       <Box sx={footerSx.info}>
-        {info.map((link, i) => (
+        <Typography sx={footerSx.infoLink}>
+          {t('copyright')}
+        </Typography>
+
+        {info.map((link) => (
           <Fragment key={link.path}>
-            <Link href={link.path} rel='noreferrer' target='_blank' sx={footerSx.infoLink}>
+            <Divider
+              sx={footerSx.divider}
+              orientation="vertical"
+              variant="middle"
+              flexItem
+            />
+            <Link
+              href={link.path}
+              rel="noreferrer"
+              target="_blank"
+              sx={footerSx.infoLink}
+            >
               {link.label}
             </Link>
-
-            {i + 1 !== info.length && (
-              <Divider sx={footerSx.divider} orientation='vertical' variant='middle' flexItem />
-            )}
           </Fragment>
-        ))}
+        ))} 
       </Box>
     </Box>
   );
