@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
-import { FormControlLabel, Grid, Radio, Stack } from '@mui/material';
+import { FormControlLabel, Radio, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import translations from './Credentials.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
-import { SignUpFormDto } from '../../../../@types/dto/signup-form.dto';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
-import { Checkbox } from '../../../UI/Checkbox/Checkbox';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { HFRadioGroup } from '../../../HookForm/HFRadioGroup';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Checkbox } from 'components/UI/Checkbox/Checkbox';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
-import { CodeInput } from 'components/UI/CodeInput/CodeInput';
-import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -106,7 +105,7 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCod
             <Stack sx={sx.field}>
               <HFCodeInput
                 name='sms'
-                onChange={(value) => {
+                onChange={value => {
                   if (value.length === 4) {
                     checkCode();
                   }

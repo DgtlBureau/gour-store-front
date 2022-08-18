@@ -8,9 +8,9 @@ export default {
   title: 'Signup/FavoriteInfo',
 } as Meta;
 
-const Template: ComponentStory<typeof SignupFavoriteInfo> = (
-  args: SignupFavoriteInfoProps
-) => <SignupFavoriteInfo {...args} />;
+const Template: ComponentStory<typeof SignupFavoriteInfo> = (args: SignupFavoriteInfoProps) => (
+  <SignupFavoriteInfo {...args} />
+);
 export const DefaultSignupFavoriteInfo = Template.bind({});
 const props: Partial<SignupFavoriteInfoProps> = {
   countries: [

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import translations from './Greeting.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { Button } from '../../../UI/Button/Button';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
 
 const sx = {
   text: {
@@ -26,13 +26,13 @@ export function SignupGreeting({ onBack, onSubmit }: SignupGreetingProps) {
 
   return (
     <AuthCard>
-      <Button sx={sx.backBtn} size="small" variant="outlined" onClick={onBack}>
+      <Button sx={sx.backBtn} size='small' variant='outlined' onClick={onBack}>
         {t('goBack')}
       </Button>
 
       <Box sx={sx.text}>
-        <Typography variant="h6">{t('firstText')}</Typography>
-        <Typography variant="h6">{t('secondText')}</Typography>
+        <Typography variant='h6'>{t('firstText')}</Typography>
+        <Typography variant='h6'>{t('secondText')}</Typography>
       </Box>
 
       <Button onClick={onSubmit}>{t('goNext')}</Button>

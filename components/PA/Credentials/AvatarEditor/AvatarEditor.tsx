@@ -2,11 +2,11 @@ import React, { ChangeEvent } from 'react';
 import { Avatar, Stack } from '@mui/material';
 
 import translations from './AvatarEditor.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import noImage from './../../../../assets/no-image.svg';
+import noImage from 'assets/no-image.svg';
 
 const sx = {
   image: {
@@ -51,19 +51,19 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
   };
 
   return (
-    <Stack sx={{ width: '100%', marginBottom: '30px' }} spacing={1} alignItems="center">
-      <Avatar alt="Your profile" src={image || noImage} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
+    <Stack sx={{ width: '100%', marginBottom: '30px' }} spacing={1} alignItems='center'>
+      <Avatar alt='Your profile' src={image || noImage} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
 
       <div style={sx.btn}>
-        <label htmlFor="profile-photo-input" style={sx.label}>
-          <Typography variant="body1" color="#fff">
+        <label htmlFor='profile-photo-input' style={sx.label}>
+          <Typography variant='body1' color='#fff'>
             {t('changePhoto')}
           </Typography>
         </label>
-        <input id="profile-photo-input" type="file" onChange={handleChange} style={sx.input} />
+        <input id='profile-photo-input' type='file' onChange={handleChange} style={sx.input} />
       </div>
 
-      <Button sx={sx.btn} variant="outlined" onClick={onRemove}>
+      <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
         {t('delete')}
       </Button>
     </Stack>

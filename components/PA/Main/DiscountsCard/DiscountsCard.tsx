@@ -1,9 +1,9 @@
 import React from 'react';
-import translations from './DiscountsCard.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Typography } from '../../../UI/Typography/Typography';
-import { InfoCard } from '../../../UI/Info/Card/Card';
 import { Grid } from '@mui/material';
+import translations from './DiscountsCard.i18n.json';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoCard } from 'components/UI/Info/Card/Card';
 import { DiscountItem } from './DiscountItem';
 
 const sx = {
@@ -48,7 +48,7 @@ export function PADiscountsCard({ discounts, onClickMore }: PADiscountsCardProps
           ))}
         </Grid>
       ) : (
-        <Typography variant="body1" color="text.muted">
+        <Typography variant='body1' color='text.muted'>
           {t('emptyDiscounts')}
         </Typography>
       )}

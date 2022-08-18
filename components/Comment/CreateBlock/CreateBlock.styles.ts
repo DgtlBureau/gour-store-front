@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from '../../../themes';
+import { defaultTheme as theme } from 'themes';
 
 export const blockSx = {
   title: {

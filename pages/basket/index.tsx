@@ -1,6 +1,10 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useAppNavigation } from 'components/Navigation';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import {
   addBasketProduct,
   selectedProductCount,
@@ -10,20 +14,16 @@ import {
   selectProductsInOrder,
   subtractBasketProduct,
   removeProduct,
-} from '../../store/slices/orderSlice';
+} from 'store/slices/orderSlice';
 import translation from './Basket.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
-import { Button } from '../../components/UI/Button/Button';
-import { CartInfo } from '../../components/Cart/Info/Info';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CartCard } from '../../components/Cart/Card/Card';
-import { CartEmpty } from '../../components/Cart/Empty/Empty';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { InfoBlock } from '../../components/UI/Info/Block/Block';
-import { IProduct } from '../../@types/entities/IProduct';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { Button } from 'components/UI/Button/Button';
+import { CartInfo } from 'components/Cart/Info/Info';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { CartCard } from 'components/Cart/Card/Card';
+import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoBlock } from 'components/UI/Info/Block/Block';
+import { IProduct } from 'types/entities/IProduct';
 
 const sx = {
   title: {
@@ -52,7 +52,7 @@ export function Basket() {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  //TODO: вынести логику стоимости доставки на бек
+  // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
@@ -64,7 +64,7 @@ export function Basket() {
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
-        <Typography variant="h3" sx={sx.title}>
+        <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>
 
@@ -76,7 +76,7 @@ export function Basket() {
               onClick: goToHome,
             }}
           >
-            <Typography variant="body1">{t('emptyText')}</Typography>
+            <Typography variant='body1'>{t('emptyText')}</Typography>
           </CartEmpty>
         )}
 
@@ -85,11 +85,11 @@ export function Basket() {
             <Grid item xs={12} md={8}>
               {productsInOrder.map((it, i) => (
                 <CartCard
-                  key={`${it.product.id}-${i}`}
+                  key={it.product.id}
                   title={it.product.title[language] || '...'}
                   price={it.product.price[currency] || 0}
                   amount={it.amount}
-                  weight={it.weight}
+                  weight={it.amount}
                   isWeightGood={it.product.isWeightGood}
                   productImg={it.product.images[0]?.small}
                   discount={it.product.discount}

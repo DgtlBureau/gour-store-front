@@ -4,11 +4,11 @@ import { SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
-import { defaultTheme } from '../../../themes';
+import { defaultTheme } from 'themes';
 
 const font = defaultTheme.typography.fontFamily;
 
-const selectColors: Pick<Colors, 'primary' | 'primary25'| 'primary50'> = {
+const selectColors: Pick<Colors, 'primary' | 'primary25' | 'primary50'> = {
   primary: defaultTheme.palette.primary.main,
   primary25: defaultTheme.palette.secondary.main,
   primary50: 'none',
@@ -41,22 +41,20 @@ export function Select<V, isMulti extends boolean>({
   label,
   ...props
 }: Props<V, isMulti>) {
-  const selectValue = value ?
-    {
-      value,
-      label: options.find(it => it.value === value)?.label,
-    } :
-    null;
+  const selectValue = value
+    ? {
+        value,
+        label: options.find(it => it.value === value)?.label,
+      }
+    : null;
 
   return (
     <Box>
-      {
-        label && (
-          <Typography variant="body2" color="primary">
-            {label}
-          </Typography>
-        )
-      }
+      {label && (
+        <Typography variant='body2' color='primary'>
+          {label}
+        </Typography>
+      )}
       <ReactSelect
         value={selectValue}
         options={options}
@@ -82,13 +80,11 @@ export function Select<V, isMulti extends boolean>({
         }}
         {...props}
       />
-      {
-        error && isError && (
-          <Typography variant="caption" color="error">
-            {error}
-          </Typography>
-        )
-      }
+      {error && isError && (
+        <Typography variant='caption' color='error'>
+          {error}
+        </Typography>
+      )}
     </Box>
   );
 }

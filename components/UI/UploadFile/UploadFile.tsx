@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { Button } from '../Button/Button';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './UploadFile.i18n.json';
 
 type Props = {
@@ -20,16 +20,10 @@ export function UploadFile({ id, allowedFileTypes, onChange }: Props) {
   });
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction='row' alignItems='center' spacing={2}>
       <label htmlFor={id}>
-        <Input
-          accept={allowedFileTypes.join(',')}
-          onChange={onChange}
-          id={id}
-          multiple
-          type="file"
-        />
-        <Button variant="contained" component="span">
+        <Input accept={allowedFileTypes.join(',')} onChange={onChange} id={id} multiple type='file' />
+        <Button variant='contained' component='span'>
           {t('upload')}
         </Button>
       </label>

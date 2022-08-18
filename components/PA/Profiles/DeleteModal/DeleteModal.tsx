@@ -1,8 +1,8 @@
 import React from 'react';
 
 import translations from './DeleteModal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Modal } from 'components/UI/Modal/Modal';
 
 export type PAProfilesDeleteModalProps = {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 
-import { Typography } from '../../UI/Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const counterSx: SxProps = {
   position: 'absolute',
@@ -23,7 +23,7 @@ export function GameCounter({ value, sx }: GameCounterProps) {
   };
 
   return (
-    <Typography variant="h3" sx={{ ...counterSx, ...sx } as SxProps}>
+    <Typography variant='h3' sx={{ ...counterSx, ...sx } as SxProps}>
       {getCount()}
     </Typography>
   );

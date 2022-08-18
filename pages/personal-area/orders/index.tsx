@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Stack } from '@mui/material';
-import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 import { OrdersCardGroup } from 'components/Orders/Group/Group';
-import { ProgressLinear } from '../../../components/UI/ProgressLinear/ProgressLinear';
 import { Typography } from 'components/UI/Typography/Typography';
 import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 
 export function Orders() {
   const lang = 'ru';
@@ -15,9 +15,7 @@ export function Orders() {
 
   const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
 
-  const formattedOrdersList = ordersList.map(order => {
-    return formatOrderData(order, lang, currency);
-  });
+  const formattedOrdersList = ordersList.map(order => formatOrderData(order, lang, currency));
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
   const orderKeys = Object.keys(groupedOrders);
@@ -25,7 +23,7 @@ export function Orders() {
   if (isLoading) {
     return (
       <PALayout>
-        <ProgressLinear variant={'buffer'} />
+        <ProgressLinear variant='buffer' />
       </PALayout>
     );
   }
@@ -33,7 +31,7 @@ export function Orders() {
   if (!isLoading && isError) {
     return (
       <PALayout>
-        <Typography variant="h5">Произошла ошибка</Typography>
+        <Typography variant='h5'>Произошла ошибка</Typography>
       </PALayout>
     );
   }
@@ -55,7 +53,7 @@ export function Orders() {
               );
             })
           ) : (
-            <Typography variant="h5">Список заказов пуст</Typography>
+            <Typography variant='h5'>Список заказов пуст</Typography>
           )}
         </Stack>
       </PALayout>

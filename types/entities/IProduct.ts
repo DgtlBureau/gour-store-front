@@ -32,7 +32,8 @@ export interface IProduct extends IBaseEntity {
   promotions?: IPromotion[];
 }
 
-export interface IProductCharacteristics { // TODO: add valid union types for other properties
+export interface IProductCharacteristics {
+  // TODO: add valid union types for other properties
   country?: ProductCountry;
   meatType?: string;
 
@@ -44,7 +45,7 @@ export interface IProductCharacteristics { // TODO: add valid union types for ot
   milk?: string;
   rennet?: string;
   timeOfOrigin?: string;
-};
+}
 
 export type ProductCountry = 'Russia' | 'Spain' | 'Italy' | 'France' | 'Holland' | 'GreatBritain';
 
@@ -53,7 +54,7 @@ export type ICharacteristicsList = {
 };
 
 export interface IFiltersCharacteristic {
-  isReversed: boolean,
-  category: string,
-  characteristics: ICharacteristicsList,
-};
+  isReversed: boolean;
+  category: string;
+  characteristics: ICharacteristicsList;
+}

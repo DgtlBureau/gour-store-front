@@ -1,11 +1,11 @@
-import React from "react";
-import { ComponentStory, Meta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, Meta } from '@storybook/react';
 
-import { GameProduct, GameProductProps } from "./Product";
+import { GameProduct, GameProductProps } from './Product';
 
 export default {
   component: GameProduct,
-  title: "Game/Product",
+  title: 'Game/Product',
 } as Meta;
 
 const Template: ComponentStory<typeof GameProduct> = (args: GameProductProps) => <GameProduct {...args} />;

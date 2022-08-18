@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 
 import { Divider, Stack } from '@mui/material';
-import { Typography } from '../../UI/Typography/Typography';
-import { Currency } from '../../../@types/entities/Currency';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Currency } from 'types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Card.i18n.json';
-import { defaultTheme as theme } from '../../../themes';
+import { defaultTheme as theme } from 'themes';
 
 const sx = {
   card: {
@@ -45,73 +45,73 @@ type OrderCardInfoProps = {
   currency: Currency;
 };
 
-export const OrderCardInfo = ({
+export function OrderCardInfo({
   fullPrice,
   promotions,
   summaryDiscount,
   totalPrice,
   deliveryCost,
   currency,
-}: OrderCardInfoProps) => {
+}: OrderCardInfoProps) {
   const { t } = useLocalTranslation(translations);
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
     <Stack sx={sx.card}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" sx={sx.total}>
+      <Stack direction='row' alignItems='center' justifyContent='space-between'>
+        <Typography variant='h6' sx={sx.total}>
           {t('goodsWorth')}
         </Typography>
 
-        <Typography variant="h6" sx={sx.total}>
+        <Typography variant='h6' sx={sx.total}>
           {fullPrice} {getCurrencySymbol(currency)}
         </Typography>
       </Stack>
 
       {promotions.map((promotion, i) => (
-        <Stack key={`${promotion.title}-${i}`} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="body2" sx={sx.price}>
+        <Stack key={promotion.title} direction='row' alignItems='center' justifyContent='space-between'>
+          <Typography variant='body2' sx={sx.price}>
             {promotion.title}
           </Typography>
 
-          <Typography variant="body2" sx={{ ...sx.price, ...sx.discount }}>
+          <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
             -{promotion.amount} {getCurrencySymbol(currency)}
           </Typography>
         </Stack>
       ))}
 
-      <Divider variant="fullWidth" sx={{ margin: '10px 0' }} />
+      <Divider variant='fullWidth' sx={{ margin: '10px 0' }} />
 
       {summaryDiscount && (
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="body2" sx={{ ...sx.price, ...sx.discount }}>
+        <Stack direction='row' alignItems='center' justifyContent='space-between'>
+          <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
             {t('economy')}
           </Typography>
 
-          <Typography variant="body2" sx={{ ...sx.price, ...sx.discount }}>
+          <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
             -{summaryDiscount} {currencySymbol}
           </Typography>
         </Stack>
       )}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" sx={sx.total}>
+      <Stack direction='row' alignItems='center' justifyContent='space-between'>
+        <Typography variant='h6' sx={sx.total}>
           {t('total')}
         </Typography>
 
-        <Typography variant="h6" sx={sx.total}>
+        <Typography variant='h6' sx={sx.total}>
           {totalPrice} {currencySymbol}
         </Typography>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="body2" sx={sx.price}>
+      <Stack direction='row' alignItems='center' justifyContent='space-between'>
+        <Typography variant='body2' sx={sx.price}>
           {t('delivery')}
         </Typography>
 
-        <Typography variant="body2" sx={sx.price}>
+        <Typography variant='body2' sx={sx.price}>
           {deliveryCost} {currencySymbol}
         </Typography>
       </Stack>
     </Stack>
   );
-};
+}

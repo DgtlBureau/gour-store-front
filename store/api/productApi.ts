@@ -1,8 +1,8 @@
 import { commonApi } from './commonApi';
-import { IProduct } from '../../@types/entities/IProduct';
-import { ProductGetOneDto } from '../../@types/dto/product/get-one.dto';
-import { ProductGetManyDto } from '../../@types/dto/product/get-many.dto';
-import { Path } from '../../constants/routes';
+import { IProduct } from 'types/entities/IProduct';
+import { ProductGetOneDto } from 'types/dto/product/get-one.dto';
+import { ProductGetManyDto } from 'types/dto/product/get-many.dto';
+import { Path } from 'constants/routes';
 
 export const productApi = commonApi.injectEndpoints({
   endpoints(builder) {

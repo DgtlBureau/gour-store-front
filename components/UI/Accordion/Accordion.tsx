@@ -10,7 +10,7 @@ import {
 
 import ExpandIcon from '@mui/icons-material/ExpandMore';
 
-import { defaultTheme as theme } from '../../../themes';
+import { defaultTheme as theme } from 'themes';
 
 const accordionSx = {
   marginBottom: '10px',

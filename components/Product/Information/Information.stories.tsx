@@ -8,9 +8,7 @@ export default {
   title: 'Product/Information',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductInformation> = function (
-  args: ProductInformationProps
-) {
+const Template: ComponentStory<typeof ProductInformation> = function (args: ProductInformationProps) {
   return <ProductInformation {...args} />;
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { Box } from '../../../UI/Box/Box';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { Box } from 'components/UI/Box/Box';
 import { SignupCredentials, SignupCredentialsProps } from './Credentials';
-import { SignUpFormDto } from '../../../../@types/dto/signup-form.dto';
 
 export default {
   component: SignupCredentials,
@@ -18,9 +18,7 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCredentials> = function (
-  args: SignupCredentialsProps
-) {
+const Template: ComponentStory<typeof SignupCredentials> = function (args: SignupCredentialsProps) {
   return (
     <Box sx={boxSx}>
       <SignupCredentials {...args} />

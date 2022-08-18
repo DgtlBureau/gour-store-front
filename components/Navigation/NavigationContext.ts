@@ -31,7 +31,7 @@ const useAppNavigation = () => {
   const appNavigation = useContext(AppNavigationCtx);
 
   if (typeof appNavigation === 'undefined') {
-    throw Error(`Use useAppNavigation() inside <NavigationProvider>`);
+    throw Error('Use useAppNavigation() inside <NavigationProvider>');
   }
 
   return appNavigation;

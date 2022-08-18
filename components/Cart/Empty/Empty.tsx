@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { defaultTheme as t } from '../../../themes';
 import { Stack } from '@mui/material';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   container: {
@@ -58,9 +58,9 @@ type Props = {
 
 export function CartEmpty({ title, children, btn }: Props) {
   return (
-    <Stack sx={sx.container} alignItems="center">
+    <Stack sx={sx.container} alignItems='center'>
       <Stack sx={sx.notice}>
-        <Typography variant="h5" sx={sx.title}>
+        <Typography variant='h5' sx={sx.title}>
           {title}
         </Typography>
 

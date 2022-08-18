@@ -8,12 +8,12 @@ import TrashIcon from '@mui/icons-material/DeleteForever';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import translations from './Actions.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { Currency } from '../../../@types/entities/Currency';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Currency } from 'types/entities/Currency';
 
 import sxActions from './Actions.styles';
 
@@ -30,7 +30,7 @@ export type ProductActionsProps = {
   onElect: () => void;
 };
 
-export const ProductActions = ({
+export function ProductActions({
   price,
   count,
   discount = 0,
@@ -41,7 +41,7 @@ export const ProductActions = ({
   onRemove,
   onElect,
   isWeightGood,
-}: ProductActionsProps) => {
+}: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
 
   const pricePerCount = isWeightGood ? price / 100 : price;
@@ -52,24 +52,20 @@ export const ProductActions = ({
     <Box sx={{ ...sxActions.container, ...sx }}>
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
-          <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sxActions.price}>
+          <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
             {total}&nbsp;
             {getCurrencySymbol(currency)}
           </Typography>
         </Box>
 
         {!!discount && (
-          <>
-            <Typography variant="body2" sx={sxActions.oldPrice}>
-              {pricePerCount}
-              {getCurrencySymbol(currency)}
-            </Typography>
-          </>
+          <Typography variant='body2' sx={sxActions.oldPrice}>
+            {pricePerCount}
+            {getCurrencySymbol(currency)}
+          </Typography>
         )}
 
-        <Typography variant="body2">
-          {'/'} {isWeightGood ? `100${t('g')}` : t('pcs')}
-        </Typography>
+        <Typography variant='body2'>/ {isWeightGood ? `100${t('g')}` : t('pcs')}</Typography>
       </Box>
 
       <Box sx={sxActions.actions}>
@@ -105,4 +101,4 @@ export const ProductActions = ({
       </Box>
     </Box>
   );
-};
+}

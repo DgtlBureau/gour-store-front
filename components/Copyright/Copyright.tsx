@@ -2,10 +2,10 @@ import React from 'react';
 import NextLink from 'next/link';
 import { SxProps } from '@mui/material';
 
-import translations from './Copyright.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Box } from '../UI/Box/Box';
-import { Typography } from '../UI/Typography/Typography';
+import translations from './Copyright.i18n.json';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const copyrightSx = {
   wrapper: {
@@ -25,7 +25,7 @@ const copyrightSx = {
   author: {
     textDecoration: 'underline',
   },
-}
+};
 
 type CopyrightProps = {
   sx?: SxProps;
@@ -36,20 +36,13 @@ export function Copyright({ sx }: CopyrightProps) {
 
   return (
     <Box sx={{ ...copyrightSx.wrapper, ...sx } as SxProps}>
-      <NextLink href="https://newshift.ru/" passHref>
-        <a
-          href="replace"
-          rel="noreferrer"
-          target="_blank"
-          style={copyrightSx.link}
-        >
+      <NextLink href='https://newshift.ru/' passHref>
+        <a href='replace' rel='noreferrer' target='_blank' style={copyrightSx.link}>
           {t('developed')}
           &nbsp;
-          <div style={copyrightSx.author}>
-            {t('author')}
-          </div>
+          <div style={copyrightSx.author}>{t('author')}</div>
         </a>
       </NextLink>
     </Box>
-  )
+  );
 }

@@ -22,11 +22,11 @@ const defaultImg =
 DefaultState.args = {
   title: 'Акции и скидкиыроаыорва',
   cardsList: [
-    <PromotionCard key="test1" image={defaultImg} onClickMore={() => ({})} />,
-    <PromotionCard key="test2" image={defaultImg} onClickMore={() => ({})} />,
-    <PromotionCard key="test3" image={defaultImg} onClickMore={() => ({})} />,
-    <PromotionCard key="test4" image={defaultImg} onClickMore={() => ({})} />,
-    <PromotionCard key="test5" image={defaultImg} onClickMore={() => ({})} />,
+    <PromotionCard key='test1' image={defaultImg} onClickMore={() => ({})} />,
+    <PromotionCard key='test2' image={defaultImg} onClickMore={() => ({})} />,
+    <PromotionCard key='test3' image={defaultImg} onClickMore={() => ({})} />,
+    <PromotionCard key='test4' image={defaultImg} onClickMore={() => ({})} />,
+    <PromotionCard key='test5' image={defaultImg} onClickMore={() => ({})} />,
   ],
   slidesPerView: 4,
 };

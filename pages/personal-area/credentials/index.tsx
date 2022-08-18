@@ -1,15 +1,7 @@
 import { Grid } from '@mui/material';
 import { useState } from 'react';
 
-import { ChangePasswordDto } from '../../../@types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from '../../../@types/dto/profile/change-phone.dto';
-import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
-import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
-import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
-import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
-
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../../@types/entities/Notification';
+import { dispatchNotification } from 'packages/EventBus';
 import {
   useGetCurrentUserQuery,
   useSendChangePhoneCodeMutation,
@@ -19,8 +11,16 @@ import {
 } from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
 import { PAPhoneChangeModal } from 'components/PA/Credentials/PhoneChangeModal/PhoneChangeModal';
-import { PALayout } from '../../../layouts/PA/PA';
-import { SendCodeDto } from '../../../@types/dto/profile/send-code.dto';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { PACredentialsAvatarEditor } from 'components/PA/Credentials/AvatarEditor/AvatarEditor';
+import { PACredentialsEditor } from 'components/PA/Credentials/Editor/Editor';
+import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
+
+import { NotificationType } from 'types/entities/Notification';
+import { PALayout } from 'layouts/PA/PA';
+import { SendCodeDto } from 'types/dto/profile/send-code.dto';
 
 export function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -37,17 +37,11 @@ export function Profile() {
   const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
     try {
       await sendPhoneCode(sendCode).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Код отправлен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Код отправлен');
       return true;
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка отправки кода',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка отправки кода', { type: NotificationType.DANGER });
       return false;
     }
   };
@@ -57,32 +51,20 @@ export function Profile() {
         phone: changePhoneData.phone,
         code: +changePhoneData.code,
       }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Телефон изменен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Телефон изменен');
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Произошла ошибка',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Произошла ошибка', { type: NotificationType.DANGER });
     }
   };
 
   const changePassword = async (changePasswordData: ChangePasswordDto) => {
     try {
       await updatePassword(changePasswordData).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Пароль изменен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Пароль изменен');
     } catch (error) {
       console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Пароль не изменен',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Пароль не изменен', { type: NotificationType.DANGER });
     }
   };
 
@@ -94,46 +76,28 @@ export function Profile() {
       const image = await uploadImage(formData).unwrap();
       if (!image) return;
       await updateCurrentUser({ avatarId: image.id });
-      eventBus.emit(EventTypes.notification, {
-        message: 'Фото профиля изменено',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Фото профиля изменено');
     } catch (error) {
       console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка изменения фото',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка изменения фото', { type: NotificationType.DANGER });
     }
   };
   const removeAvatar = async () => {
     try {
       await updateCurrentUser({ avatarId: null }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Фото профиля удалено',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Фото профиля удалено');
     } catch (error) {
       console.log(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка удаления фото',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка удаления фото', { type: NotificationType.DANGER });
     }
   };
 
   const handleSaveBaseInfo = async (updatedUser: UpdateUserDto) => {
     try {
       await updateCurrentUser(updatedUser).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Данные профиля изменены',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Данные профиля изменены');
     } catch (error) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка изменения данных',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Ошибка изменения данных', { type: NotificationType.DANGER });
     }
   };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 import { GameOleg } from './Oleg';
 
 const playerSx = {
@@ -26,16 +26,8 @@ export function GamePlayer({ position = 'basic', sx }: GamePlayerProps) {
 
   return (
     <Box sx={{ ...playerSx, ...sx } as SxProps}>
-      <GameOleg
-        isActive={!isBasic && isLeft}
-        direction="left"
-        handsPosition={handsPosition}
-      />
-      <GameOleg
-        isActive={!isBasic && !isLeft}
-        direction="right"
-        handsPosition={handsPosition}
-      />
+      <GameOleg isActive={!isBasic && isLeft} direction='left' handsPosition={handsPosition} />
+      <GameOleg isActive={!isBasic && !isLeft} direction='right' handsPosition={handsPosition} />
     </Box>
   );
 }
