@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 
-import backgroundImage from '../../../assets/images/game/background.svg';
+import backgroundImage from 'assets/images/game/background.svg';
 
 export type GameFrameProps = {
   children: ReactNode;

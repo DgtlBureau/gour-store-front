@@ -2,8 +2,8 @@ import React from 'react';
 import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Box } from '../UI/Box/Box';
-import { Select, SelectOption } from '../UI/Select/Select';
+import { Box } from 'components/UI/Box/Box';
+import { Select, SelectOption } from 'components/UI/Select/Select';
 
 type Props<V> = {
   name: string;
@@ -16,7 +16,7 @@ type Props<V> = {
   sx?: SxProps;
 };
 
-export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Props<V>) {
+export function HFSelect<V>({ name, defaultValue, sx, onChange: onControllChange, ...props }: Props<V>) {
   const {
     control,
     formState: { errors },
@@ -27,7 +27,7 @@ export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Prop
       <Controller
         name={name}
         rules={{
-          onChange,
+          onChange: onControllChange,
         }}
         control={control}
         defaultValue={defaultValue || ''}

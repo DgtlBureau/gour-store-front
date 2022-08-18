@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { useGetRoleListQuery } from 'store/api/roleApi';
+import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { NotificationType } from 'types/entities/Notification';
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
+import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
+
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
 import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
-import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
-import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
-import { SignUpDto } from '../../@types/dto/signup.dto';
-import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
 import { useAppNavigation } from 'components/Navigation';
 import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
-import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
 
-import credentialsImage from './../../assets/icons/signup/credentials.svg';
-import greetingsImage from './../../assets/icons/signup/greetings.svg';
-import cityImage from './../../assets/icons/signup/city.svg';
-import favoritesImage from './../../assets/icons/signup/favorites.svg';
-import referralImage from './../../assets/icons/signup/referralCodes.svg';
+import credentialsImage from 'assets/icons/signup/credentials.svg';
+import greetingsImage from 'assets/icons/signup/greetings.svg';
+import cityImage from 'assets/icons/signup/city.svg';
+import favoritesImage from 'assets/icons/signup/favorites.svg';
+import referralImage from 'assets/icons/signup/referralCodes.svg';
 
 type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
-
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
 
 export default function SignUp() {
   const { goToIntro, goToSignIn, language } = useAppNavigation();
@@ -60,19 +60,11 @@ export default function SignUp() {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
       await sendCode(phone).unwrap();
-
-      eventBus.emit(EventTypes.notification, {
-        message: 'SMS код отправлен',
-        type: NotificationType.SUCCESS,
-      });
-
+      dispatchNotification('SMS код отправлен');
       return 'success';
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка при отправке кода',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
       return (error as any).data.message;
     }
   };
@@ -106,11 +98,6 @@ export default function SignUp() {
     goToReferralCode();
   };
 
-  const saveReferralCode = (referralData: ReferralCodeDto) => {
-    setReferralCode(referralData.referralCode);
-    registerUser();
-  };
-
   const registerUser = async () => {
     if (!credentials) return;
 
@@ -124,12 +111,13 @@ export default function SignUp() {
       password: credentials.password,
       referralCode,
       cityId: +selectedCity,
-      roleId: (role && role.id) || 1,
+      roleId: role?.id || 1,
     };
 
     try {
       await signUp(data).unwrap();
 
+      // FIXME: переписать вызов eventBus через функцию dispatchNotification
       eventBus.emit(EventTypes.notification, {
         message: 'Регистрация прошла успешно',
         type: NotificationType.SUCCESS,
@@ -143,6 +131,11 @@ export default function SignUp() {
         type: NotificationType.DANGER,
       });
     }
+  };
+
+  const saveReferralCode = (referralData: ReferralCodeDto) => {
+    setReferralCode(referralData.referralCode);
+    registerUser();
   };
 
   const forms = {

@@ -3,14 +3,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { Translator } from 'utils/Translator';
 import translations from './PasswordChangeModal.i18n.json';
 import { getSchema } from './validation';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { Translator } from 'utils/Translator';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { HFTextField } from 'components/HookForm/HFTextField';
 
 const sx = {
   body: {
@@ -34,12 +34,7 @@ export type PAPasswordChangeModalProps = {
   onChange(data: FormType): void;
 };
 
-export function PAPasswordChangeModal({
-  isOpen,
-  error,
-  onClose,
-  onChange,
-}: PAPasswordChangeModalProps) {
+export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPasswordChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t);
@@ -59,34 +54,22 @@ export function PAPasswordChangeModal({
       onClose={onClose}
       title={t('title')}
       description={t('subTitle')}
-      formId="passwordChangeForm"
+      formId='passwordChangeForm'
       acceptIsDisabled={formIsInvalid}
     >
       <Box sx={sx.body}>
         <FormProvider {...values}>
-          <form id="passwordChangeForm" onSubmit={values.handleSubmit(submit)}>
+          <form id='passwordChangeForm' onSubmit={values.handleSubmit(submit)}>
             <Stack spacing={2}>
-              <HFTextField
-                type="password"
-                name="prevPassword"
-                label={t('currentPassword')}
-              />
-              <HFTextField
-                type="password"
-                name="newPassword"
-                label={t('newPassword')}
-              />
-              <HFTextField
-                type="password"
-                name="repeatNewPassword"
-                label={t('passwordConfirm')}
-              />
+              <HFTextField type='password' name='prevPassword' label={t('currentPassword')} />
+              <HFTextField type='password' name='newPassword' label={t('newPassword')} />
+              <HFTextField type='password' name='repeatNewPassword' label={t('passwordConfirm')} />
             </Stack>
           </form>
         </FormProvider>
 
         {!!error && (
-          <Typography sx={sx.error} variant="body2" color="error">
+          <Typography sx={sx.error} variant='body2' color='error'>
             {error}
           </Typography>
         )}

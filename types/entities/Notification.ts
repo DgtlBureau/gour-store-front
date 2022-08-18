@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { ToastProps } from 'react-toastify/dist/types';
+// eslint-disable-next-line import/no-unresolved
+import { ToastProps } from 'react-toastify/dist/types'; // FIXME: убрать ошибки eslint'a
 
 export enum NotificationType {
   DANGER = 'error',

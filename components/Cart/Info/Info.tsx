@@ -1,14 +1,14 @@
 import React from 'react';
 import { Paper } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { getDeclensionWordByCount } from '../../../utils/wordHelper';
-import { defaultTheme as t } from '../../../themes';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { defaultTheme } from 'themes';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Info.i18n.json';
-import { Currency } from '../../../@types/entities/Currency';
+import { Currency } from 'types/entities/Currency';
 
 const sx = {
   paper: {
@@ -23,13 +23,13 @@ const sx = {
 
   total: {
     fontWeight: 700,
-    color: t.palette.text.secondary,
+    color: defaultTheme.palette.text.secondary,
   },
 
   footnote: {
     marginTop: '10px',
 
-    color: t.palette.text.muted,
+    color: defaultTheme.palette.text.muted,
   },
 };
 
@@ -52,24 +52,24 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
   return (
     <Paper sx={sx.paper}>
       <Box sx={sx.total}>
-        <Typography variant="h6">{t('total')}</Typography>
-        <Typography variant="h6">
+        <Typography variant='h6'>{t('total')}</Typography>
+        <Typography variant='h6'>
           {price + delivery - discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
-        <Typography variant="body1">
+        <Typography variant='body1'>
           {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''}
         </Typography>
-        <Typography variant="body1">
+        <Typography variant='body1'>
           {price}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
-        <Typography variant="body1">{t('delivery')}</Typography>
-        <Typography variant="body1">
+        <Typography variant='body1'>{t('delivery')}</Typography>
+        <Typography variant='body1'>
           {delivery ? (
             <>
               {delivery}&nbsp;{currencySymbol}
@@ -80,8 +80,8 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
-        <Typography variant="body1">{t('discount')}</Typography>
-        <Typography variant="body1" color="error">
+        <Typography variant='body1'>{t('discount')}</Typography>
+        <Typography variant='body1' color='error'>
           {discount}&nbsp;
           {currencySymbol}
         </Typography>

@@ -8,9 +8,7 @@ export default {
   title: 'Promotion/Header',
 } as Meta;
 
-const Template: ComponentStory<typeof PromotionHeader> = (
-  args: PromotionHeaderProps
-) => <PromotionHeader {...args} />;
+const Template: ComponentStory<typeof PromotionHeader> = (args: PromotionHeaderProps) => <PromotionHeader {...args} />;
 
 export const DefaultPromotionHeader = Template.bind({});
 const props: Partial<PromotionHeaderProps> = {

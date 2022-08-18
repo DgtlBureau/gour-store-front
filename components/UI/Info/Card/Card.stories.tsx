@@ -8,7 +8,9 @@ export default {
   title: 'UI/Info/Card',
 } as Meta;
 
-const Template: ComponentStory<typeof InfoCard> = (args: InfoCardProps) => <InfoCard {...args} />;
+const Template: ComponentStory<typeof InfoCard> = function (args: InfoCardProps) {
+  return <InfoCard {...args} />;
+};
 export const DefaultInfoCard = Template.bind({});
 const props: Partial<InfoCardProps> = {
   title: 'title',

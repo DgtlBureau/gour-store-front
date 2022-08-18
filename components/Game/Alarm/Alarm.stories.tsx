@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { ComponentStory, Meta } from "@storybook/react";
-import { GameAlarm, GameAlarmProps } from "./Alarm";
+import { ComponentStory, Meta } from '@storybook/react';
+import { GameAlarm, GameAlarmProps } from './Alarm';
 
 export default {
-    component: GameAlarm,
-    title: "Game/Alarm",
+  component: GameAlarm,
+  title: 'Game/Alarm',
 } as Meta;
 
 const Template: ComponentStory<typeof GameAlarm> = (args: GameAlarmProps) => <GameAlarm {...args} />;

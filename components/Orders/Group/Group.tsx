@@ -1,4 +1,3 @@
-import { Currency } from '../../../@types/entities/Currency';
 import { format } from 'date-fns';
 import React from 'react';
 
@@ -16,7 +15,7 @@ export function OrdersCardGroup({ date, ordersList }: OrdersGroupProps) {
 
   return (
     <Box>
-      <Typography variant="h6">{groupDate}</Typography>
+      <Typography variant='h6'>{groupDate}</Typography>
 
       {ordersList.map(order => (
         <OrdersCard key={order.title} order={order} />

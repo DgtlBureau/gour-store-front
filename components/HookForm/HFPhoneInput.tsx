@@ -1,8 +1,8 @@
 import React, { FocusEventHandler, ReactNode } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
 import { PhoneInput } from 'components/UI/PhoneInput/PhoneInput';
+import { TextField } from 'components/UI/TextField/TextField';
 
 type Props = {
   name: string;
@@ -18,12 +18,7 @@ type Props = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFPhoneInput({
-  name,
-  defaultValue,
-  helperText,
-  ...props
-}: Props) {
+export function HFPhoneInput({ name, defaultValue, helperText, ...props }: Props) {
   const {
     control,
     formState: { errors },
@@ -35,12 +30,7 @@ export function HFPhoneInput({
       control={control}
       defaultValue={defaultValue || ''}
       render={({ field: { ref, ...rest } }) => (
-        <PhoneInput
-          {...rest}
-          isError={!!errors[name]}
-          helperText={helperText || errors[name]?.message}
-          {...props}
-        />
+        <PhoneInput {...rest} isError={!!errors[name]} helperText={helperText || errors[name]?.message} {...props} />
       )}
     />
   );

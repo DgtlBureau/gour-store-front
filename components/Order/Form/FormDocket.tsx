@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { getDeclensionWordByCount } from '../../../utils/wordHelper';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { defaultTheme as theme } from '../../../themes';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { defaultTheme as theme } from 'themes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Form.i18n.json';
-import { Currency } from '../../../@types/entities/Currency';
+import { Currency } from 'types/entities/Currency';
 
 const sx = {
   docket: {
@@ -66,11 +66,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
   return (
     <Box sx={sx.docket}>
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {productsCount} {productsDeclision}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h6" sx={sx.value}>
+        <Typography variant='h6' sx={sx.value}>
           {cost}
           {currencySymbol}
         </Typography>
@@ -78,11 +78,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
 
       {!!discount && (
         <Box sx={sx.field}>
-          <Typography variant="body1" sx={sx.label}>
+          <Typography variant='body1' sx={sx.label}>
             {t('discount')}
           </Typography>
           <hr style={sx.divider} />
-          <Typography variant="h6" sx={{ ...sx.value, ...sx.discountValue }}>
+          <Typography variant='h6' sx={{ ...sx.value, ...sx.discountValue }}>
             -{discount}
             {currencySymbol}
           </Typography>
@@ -90,11 +90,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
       )}
 
       <Box sx={sx.field}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {t('delivery')}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h6" sx={sx.value}>
+        <Typography variant='h6' sx={sx.value}>
           {delivery === 0 ? (
             t('free')
           ) : (
@@ -107,11 +107,11 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
       </Box>
 
       <Box sx={{ ...sx.field, ...sx.total }}>
-        <Typography variant="body1" sx={sx.label}>
+        <Typography variant='body1' sx={sx.label}>
           {t('total')}
         </Typography>
         <hr style={sx.divider} />
-        <Typography variant="h5" sx={sx.value}>
+        <Typography variant='h5' sx={sx.value}>
           {total}
           {currencySymbol}
         </Typography>

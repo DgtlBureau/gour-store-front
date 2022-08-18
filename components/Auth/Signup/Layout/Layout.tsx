@@ -11,17 +11,17 @@ type Props = {
   stepIndex: number;
 };
 
-export const SignupLayout = ({ children, image, stepIndex }: Props) => {
+export function SignupLayout({ children, image, stepIndex }: Props) {
   return (
     <Grid
       container
       sx={{ position: 'relative' }}
       flexDirection={{ xs: 'column-reverse', md: 'row' }}
-      alignItems="center"
+      alignItems='center'
       spacing={0}
     >
       <Grid sx={sx.imageContainer} item xs={4} md={6}>
-        {!!image && <Image src={image} layout="intrinsic" width={500} height={750} alt="" />}
+        {!!image && <Image src={image} layout='intrinsic' width={500} height={750} alt='' />}
       </Grid>
       <Grid
         item
@@ -42,4 +42,4 @@ export const SignupLayout = ({ children, image, stepIndex }: Props) => {
       </Grid>
     </Grid>
   );
-};
+}

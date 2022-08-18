@@ -1,6 +1,6 @@
-import { IWallet } from '../../@types/entities/IWallet';
+import { IWallet } from 'types/entities/IWallet';
 import { commonApi } from './commonApi';
-import { Path } from '../../constants/routes';
+import { Path } from 'constants/routes';
 
 export const walletApi = commonApi.injectEndpoints({
   endpoints(builder) {

@@ -6,15 +6,19 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import translations from './Product.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
-import { CommentDto } from '../../@types/dto/comment.dto';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
+import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
+import { CHARACTERISTICS } from 'constants/characteristics';
+import { NotificationType } from 'types/entities/Notification';
+import { IProduct } from 'types/entities/IProduct';
+import { CommentDto } from 'types/dto/comment.dto';
+
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { PrivateLayout } from 'layouts/Private/Private';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -23,13 +27,11 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { IProduct } from '../../@types/entities/IProduct';
-import { CHARACTERISTICS } from 'constants/characteristics';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { useAppNavigation } from 'components/Navigation';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+import translations from './Product.i18n.json';
 
 import sx from './Product.styles';
 
@@ -39,7 +41,7 @@ export default function Product() {
     goToProductPage,
     language,
     currency,
-    query: { id },
+    query: { id: queryId },
   } = useAppNavigation();
 
   const dispatch = useAppDispatch();
@@ -52,7 +54,7 @@ export default function Product() {
 
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
-  const productId = id ? +id : 0;
+  const productId = queryId ? +queryId : 0;
 
   const {
     data: product,
@@ -65,33 +67,22 @@ export default function Product() {
       withMetrics: true,
       withDiscount: true,
     },
-    { skip: !productId }
+    { skip: !productId },
   );
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
-        await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка удаления из избранного',
-          type: NotificationType.DANGER,
-        });
-      }
-    } else {
-      try {
+    try {
+      if (isElect) {
+        await removeFavorite(id); // FIXME: TODO: избавиться от дублирования кода в разных компонентах
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка добавления в избранное',
-          type: NotificationType.DANGER,
-        });
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
     }
   };
 
@@ -103,7 +94,7 @@ export default function Product() {
 
   const { data: comments = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
-    { skip: !productId }
+    { skip: !productId },
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
@@ -111,22 +102,20 @@ export default function Product() {
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   const productComments =
-    comments.map(grade => {
-      return {
-        id: grade.id,
-        clientName: grade.client?.role?.title || 'Клиент',
-        value: grade.value,
-        date: new Date(grade.createdAt),
-        comment: grade.comment,
-      };
-    }) || [];
+    comments.map(grade => ({
+      id: grade.id,
+      clientName: grade.client?.role?.title || 'Клиент',
+      value: grade.value,
+      date: new Date(grade.createdAt),
+      comment: grade.comment,
+    })) || [];
 
   const productCharacteristics =
     Object.keys(product?.characteristics || {})
       .filter(key => product?.characteristics[key])
       .map(key => {
         const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          value => value.key === product?.characteristics[key]
+          value => value.key === product?.characteristics[key],
         );
 
         return {
@@ -140,19 +129,19 @@ export default function Product() {
       <ShopLayout language={language} currency={currency}>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && <Typography variant="h5">Произошла ошибка</Typography>}
+        {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !product && <Typography variant="h5">Продукт не найден</Typography>}
+        {!isLoading && !isError && !product && <Typography variant='h5'>Продукт не найден</Typography>}
 
         {!isLoading && !isError && product && (
           <>
-            <Link href="/">Вернуться на главную</Link>
+            <Link href='/'>Вернуться на главную</Link>
 
             <Box sx={sx.top}>
               <ImageSlider images={product.images} sx={sx.imageSlider} />
 
               <Box sx={sx.info}>
-                <Typography variant="h3" sx={sx.title}>
+                <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
 
@@ -182,11 +171,11 @@ export default function Product() {
             </Box>
 
             <Box sx={sx.description}>
-              <Typography sx={sx.title} variant="h5">
+              <Typography sx={sx.title} variant='h5'>
                 {t('description')}
               </Typography>
 
-              <Typography variant="body1">{product.description[language] || ''}</Typography>
+              <Typography variant='body1'>{product.description[language] || ''}</Typography>
             </Box>
 
             {!!product.similarProducts.length && (

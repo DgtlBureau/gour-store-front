@@ -5,14 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import translations from './Editor.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { TextField } from '../../../UI/TextField/TextField';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { Button } from '../../../UI/Button/Button';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { TextField } from 'components/UI/TextField/TextField';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Button } from 'components/UI/Button/Button';
 import { getValidationSchema } from './validation';
-import { UpdateUserDto } from '../../../../@types/dto/profile/update-user.dto';
 
 type UserData = {
   firstName: string;
@@ -58,9 +58,9 @@ export function PACredentialsEditor({
     <FormProvider {...values}>
       <form onSubmit={values.handleSubmit(submit)}>
         <Stack spacing={2} sx={{ margin: '0 0 10px 0' }}>
-          <HFTextField name="firstName" label={t('firstName')} />
-          <HFTextField name="lastName" label={t('lastName')} />
-          <HFTextField name="email" label={t('email')} />
+          <HFTextField name='firstName' label={t('firstName')} />
+          <HFTextField name='lastName' label={t('lastName')} />
+          <HFTextField name='email' label={t('email')} />
           <TextField
             value={phone}
             label={t('phone')}
@@ -71,8 +71,8 @@ export function PACredentialsEditor({
             }
           />
           <TextField
-            type="password"
-            value="1234567890"
+            type='password'
+            value='1234567890'
             label={t('password')}
             endAdornment={
               <IconButton onClick={onChangePassword}>
@@ -80,9 +80,9 @@ export function PACredentialsEditor({
               </IconButton>
             }
           />
-          <HFTextField name="referralCode" label={t('referralCode')} />
+          <HFTextField name='referralCode' label={t('referralCode')} />
         </Stack>
-        <Button type="submit" disabled={!values.formState.isDirty} sx={{ margin: '0 10px 0 0' }}>
+        <Button type='submit' disabled={!values.formState.isDirty} sx={{ margin: '0 10px 0 0' }}>
           {t('submit')}
         </Button>
         <Button disabled={!values.formState.isDirty} onClick={cancel}>

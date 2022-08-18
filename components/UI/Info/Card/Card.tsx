@@ -4,7 +4,7 @@ import { Paper } from '@mui/material';
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Box } from '../../Box/Box';
-import { Typography } from '../../Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 
 import sx from './Card.styles';
 
@@ -19,7 +19,7 @@ export function InfoCard({ title, footerText, onClickMore, children }: InfoCardP
   return (
     <Paper sx={sx.card}>
       <Box sx={sx.content}>
-        <Typography variant="h5" sx={sx.title}>
+        <Typography variant='h5' sx={sx.title}>
           {title}
         </Typography>
 
@@ -27,8 +27,8 @@ export function InfoCard({ title, footerText, onClickMore, children }: InfoCardP
       </Box>
 
       <Box sx={sx.link} onClick={onClickMore}>
-        <Typography variant="body1">{footerText}</Typography>
-        <ArrowIcon fontSize="small" />
+        <Typography variant='body1'>{footerText}</Typography>
+        <ArrowIcon fontSize='small' />
       </Box>
     </Paper>
   );

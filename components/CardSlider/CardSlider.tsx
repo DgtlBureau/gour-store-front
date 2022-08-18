@@ -1,17 +1,16 @@
+/* eslint-disable react/no-array-index-key */
 import React, { CSSProperties, ReactNode, useState } from 'react';
 
 import { ButtonGroup, Stack, SxProps } from '@mui/material';
-// eslint-disable-next-line
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Grid } from 'swiper';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box } from '../UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { Typography } from '../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 import cardCss from './CardSlider.module.scss';
 
-import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/grid';
 
@@ -83,19 +82,19 @@ export function CardSlider({
   const slideChangeHandler = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
   return (
     <Box sx={{ ...sliderSx.container, ...sx }}>
-      <Stack sx={{ width: '100%' }} direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h4" sx={sliderSx.title}>
+      <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+        <Typography variant='h4' sx={sliderSx.title}>
           {title}
         </Typography>
 
         {withArrows && (
           <ButtonGroup sx={sliderSx.arrows}>
-            <Button variant="outlined" disabled={edge.isBeginning} onClick={() => slider?.slidePrev()}>
-              <ArrowForwardIosIcon fontSize="small" sx={sliderSx.backArrow} />
+            <Button variant='outlined' disabled={edge.isBeginning} onClick={() => slider?.slidePrev()}>
+              <ArrowForwardIosIcon fontSize='small' sx={sliderSx.backArrow} />
             </Button>
 
-            <Button variant="outlined" disabled={edge.isEnd} onClick={() => slider?.slideNext()}>
-              <ArrowForwardIosIcon fontSize="small" />
+            <Button variant='outlined' disabled={edge.isEnd} onClick={() => slider?.slideNext()}>
+              <ArrowForwardIosIcon fontSize='small' />
             </Button>
           </ButtonGroup>
         )}
@@ -113,12 +112,12 @@ export function CardSlider({
             spaceBetween={spaceBetween}
             grid={{
               fill: 'row',
-              rows: rows,
+              rows,
             }}
             onSwiper={setSlider}
             modules={[Grid]}
-            className="mySwiper"
-            slidesPerView="auto"
+            className='mySwiper'
+            slidesPerView='auto'
             onSlideChange={slideChangeHandler}
           >
             {cardsList.map((card, i) => (
@@ -129,7 +128,7 @@ export function CardSlider({
           </Swiper>
         </Box>
       ) : (
-        <Typography variant="h5" color="primary" sx={sliderSx.emptyTitle}>
+        <Typography variant='h5' color='primary' sx={sliderSx.emptyTitle}>
           {emptyTitle || 'Список карточек пуст'}
         </Typography>
       )}

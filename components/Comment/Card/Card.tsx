@@ -1,11 +1,10 @@
 import React from 'react';
 import { Paper, Rating } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
-
 import StarIcon from '@mui/icons-material/Star';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   comment: {
@@ -42,7 +41,7 @@ export type CommentCardProps = {
 export function CommentCard({ title, grade, date, text }: CommentCardProps) {
   return (
     <Paper sx={sx.comment} elevation={0}>
-      <Typography variant="body1" color="primary">
+      <Typography variant='body1' color='primary'>
         {title}
       </Typography>
 
@@ -51,15 +50,15 @@ export function CommentCard({ title, grade, date, text }: CommentCardProps) {
           value={grade}
           precision={0.5}
           readOnly
-          icon={<StarIcon fontSize="small" htmlColor={t.palette.accent.main} />}
-          emptyIcon={<StarIcon fontSize="small" htmlColor={t.palette.text.muted} />}
+          icon={<StarIcon fontSize='small' htmlColor={t.palette.accent.main} />}
+          emptyIcon={<StarIcon fontSize='small' htmlColor={t.palette.text.muted} />}
         />
-        <Typography sx={sx.date} variant="body2" color="text.muted">
+        <Typography sx={sx.date} variant='body2' color='text.muted'>
           {date}
         </Typography>
       </Box>
 
-      <Typography sx={sx.text} variant="body2" color="text.muted">
+      <Typography sx={sx.text} variant='body2' color='text.muted'>
         {text}
       </Typography>
     </Paper>

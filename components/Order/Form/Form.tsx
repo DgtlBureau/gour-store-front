@@ -3,19 +3,20 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
-import translations from './Form.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { getValidationSchema } from './validation';
 import { LinkRef as Link } from 'components/UI/Link/Link';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { Checkbox } from '../../UI/Checkbox/Checkbox';
-import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
-import { HFSelect } from '../../HookForm/HFSelect';
-import { OrderFormDocket } from './FormDocket';
-import { Currency } from '../../../@types/entities/Currency';
 import { Path } from 'constants/routes';
+import translations from './Form.i18n.json';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getValidationSchema } from './validation';
+
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { Checkbox } from 'components/UI/Checkbox/Checkbox';
+import { HFTextField, HFTextFieldProps } from 'components/HookForm/HFTextField';
+import { HFSelect } from 'components/HookForm/HFSelect';
+import { OrderFormDocket } from './FormDocket';
+import { Currency } from 'types/entities/Currency';
 
 import sx from './Form.styles';
 
@@ -136,7 +137,7 @@ export function OrderForm({
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('details')}
             </Typography>
 
@@ -150,14 +151,14 @@ export function OrderForm({
           </Box>
 
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('address')}
             </Typography>
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
                 onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfileId'))}
-                name="deliveryProfileId"
+                name='deliveryProfileId'
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
                 sx={sx.select}
@@ -166,7 +167,7 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
+                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} sx={sx.select} />
               </Grid>
 
               {addressFields.map(field => (
@@ -176,7 +177,7 @@ export function OrderForm({
               ))}
 
               <Grid item xs>
-                <HFTextField sx={sx.textarea} multiline rows={3} name="comment" label={t('comment')} />
+                <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
               </Grid>
             </Grid>
 
@@ -194,17 +195,22 @@ export function OrderForm({
               onChange={agree}
               label={
                 <span style={sx.agreementLabel}>
-                  Даю свое согласие с <Link href={Path.OFERTA} target="_blank">условиями обслуживания</Link>, а также с
-                  &nbsp;<Link href={Path.PRIVACY} target="_blank">
+                  Даю свое согласие с{' '}
+                  <Link href={Path.OFERTA} target='_blank'>
+                    условиями обслуживания
+                  </Link>
+                  , а также с &nbsp;
+                  <Link href={Path.PRIVACY} target='_blank'>
                     политикой конфиденциальности и правилами хранения моих персональных данных
-                  </Link>.
+                  </Link>
+                  .
                 </span>
               }
             />
 
             <Button
               sx={sx.btn}
-              type="submit"
+              type='submit'
               disabled={!values.formState.isValid || !isAgree}
               color={!isSubmitError ? 'primary' : 'error'}
             >

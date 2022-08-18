@@ -15,6 +15,4 @@ const Template: ComponentStory<typeof DatePicker> = function (args) {
 
 export const DefaultState = Template.bind({});
 
-DefaultState.args = {
-
-};
+DefaultState.args = {};

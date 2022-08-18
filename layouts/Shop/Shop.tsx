@@ -1,6 +1,5 @@
 import { ReactNode, useState } from 'react';
 
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
 import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
@@ -8,14 +7,15 @@ import { useSignOutMutation } from 'store/api/authApi';
 import { useAppNavigation } from 'components/Navigation';
 import { useAppSelector } from 'hooks/store';
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-import { Box } from '../../components/UI/Box/Box';
-import { Header } from '../../components/Header/Header';
-import { Footer } from '../../components/Footer/Footer';
-import { Copyright } from '../../components/Copyright/Copyright';
-import { Currency } from '../../@types/entities/Currency';
-import { Language } from '../../@types/entities/Language';
-import { AddCheesecoinsDto } from '../../@types/dto/cheseecoins/add.dto';
-import { contacts } from '../../constants/contacts';
+import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
+import { Box } from 'components/UI/Box/Box';
+import { Header } from 'components/Header/Header';
+import { Footer } from 'components/Footer/Footer';
+import { Copyright } from 'components/Copyright/Copyright';
+import { Currency } from 'types/entities/Currency';
+import { Language } from 'types/entities/Language';
+import { AddCheesecoinsDto } from 'types/dto/cheseecoins/add.dto';
+import { contacts } from 'constants/contacts';
 
 import sx from './Shop.styles';
 
@@ -79,7 +79,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <CheesecoinsAddModal
         isOpened={isModalOpen}
-        title="Добавление чизкоинов"
+        title='Добавление чизкоинов'
         onClose={closeCheesecoinsModal}
         onSubmit={handleAddCheesecoins}
       />

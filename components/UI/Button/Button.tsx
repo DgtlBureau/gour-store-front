@@ -10,7 +10,7 @@ type Props = {
   isLoading?: boolean;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'medium' | 'large';
-  color?:'primary' | 'secondary' | 'inherit' | 'error' | 'info' | 'success' | 'warning' | undefined;
+  color?: 'primary' | 'secondary' | 'inherit' | 'error' | 'info' | 'success' | 'warning' | undefined;
   onClick?: () => void;
   disabled?: boolean;
   component?: ElementType;
@@ -30,14 +30,12 @@ export function Button({
 }: Props) {
   return (
     <MUIButton variant={variant} component={component} color={color} {...props}>
-      {
-        isLoading && (
-          <>
-            <ProgressCircular size={15} />
-            &nbsp;
-          </>
-        )
-      }
+      {isLoading && (
+        <>
+          <ProgressCircular size={15} />
+          &nbsp;
+        </>
+      )}
       {children}
     </MUIButton>
   );

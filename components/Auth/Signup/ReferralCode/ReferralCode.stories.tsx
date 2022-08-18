@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { Box } from '../../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 import { SignupReferralCode, SignupReferralCodeProps } from './ReferralCode';
 
 export default {
@@ -17,9 +17,7 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupReferralCode> = function (
-  args: SignupReferralCodeProps
-) {
+const Template: ComponentStory<typeof SignupReferralCode> = function (args: SignupReferralCodeProps) {
   return (
     <Box sx={boxSx}>
       <SignupReferralCode {...args} />

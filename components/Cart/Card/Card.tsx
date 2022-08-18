@@ -6,15 +6,15 @@ import MinusIcon from '@mui/icons-material/Remove';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import translations from './Card.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { CartCardDocket as Docket } from './Docket';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Currency } from '../../../@types/entities/Currency';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Currency } from 'types/entities/Currency';
 
-import defaultImage from '../../../assets/no-image.svg';
+import defaultImage from 'assets/no-image.svg';
 
 import sx from './Card.styles';
 
@@ -53,25 +53,25 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={productImg || defaultImage} onClick={onDetail} />
+      <CardMedia sx={sx.image} component='img' image={productImg || defaultImage} onClick={onDetail} />
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant="h6" sx={sx.title} onClick={onDetail}>
+          <Typography variant='h6' sx={sx.title} onClick={onDetail}>
             {title}
           </Typography>
 
           {screenWidth > 600 ? (
             <Docket currency={currency} discount={discount} price={price} amount={amount} />
           ) : (
-            <IconButton size="small" onClick={onDelete} sx={sx.cancelBtn}>
+            <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
               <CancelIcon />
             </IconButton>
           )}
         </CardContent>
 
         <CardActions sx={sx.actions}>
-          <Button variant="text" onClick={onDelete} sx={sx.deleteBtn}>
+          <Button variant='text' onClick={onDelete} sx={sx.deleteBtn}>
             {t('delete')}
           </Button>
 
@@ -80,7 +80,7 @@ export function CartCard({
               <MinusIcon />
             </IconButton>
 
-            <Typography variant="body2" sx={sx.weight}>
+            <Typography variant='body2' sx={sx.weight}>
               {isWeightGood ? weight : amount} {isWeightGood ? t('g') : t('piece')}
             </Typography>
 

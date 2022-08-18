@@ -1,9 +1,9 @@
 import React from 'react';
 
 import translations from './Intro.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { AuthCard } from '../../Card/Card';
-import { Button } from '../../../UI/Button/Button';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Button } from 'components/UI/Button/Button';
 
 export type SigninIntroProps = {
   onClickAuth(): void;
@@ -15,7 +15,7 @@ export function SigninIntro({ onClickAuth, onClickRegistration }: SigninIntroPro
 
   return (
     <AuthCard>
-      <Button onClick={onClickAuth} sx={{ marginBottom: '20px' }} variant="outlined">
+      <Button onClick={onClickAuth} sx={{ marginBottom: '20px' }} variant='outlined'>
         {t('auth')}
       </Button>
       <Button onClick={onClickRegistration} sx={{ width: '100%' }}>

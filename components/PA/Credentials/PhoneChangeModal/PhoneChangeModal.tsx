@@ -5,17 +5,17 @@ import { Divider } from '@mui/material';
 
 import SendIcon from '@mui/icons-material/Send';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
 import { getSchema } from './validation';
 import translations from './PhoneChangeModal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
-import { Box } from '../../../UI/Box/Box';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { Typography } from '../../../UI/Typography/Typography';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
-import { SendCodeDto } from '../../../../@types/dto/profile/send-code.dto';
-import { ChangePhoneDto } from '../../../../@types/dto/profile/change-phone.dto';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Box } from 'components/UI/Box/Box';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Typography } from 'components/UI/Typography/Typography';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 const sx = {
   body: {
@@ -70,16 +70,13 @@ export function PAPhoneChangeModal({
   });
 
   const formIsInvalid = !values.formState.isValid;
-  const sendingIsDisabled =
-    !!seconds ||
-    !values.watch('phone') ||
-    !!values.getFieldState('phone').error;
+  const sendingIsDisabled = !!seconds || !values.watch('phone') || !!values.getFieldState('phone').error;
 
   const startTimer = () => {
     setSeconds(30);
 
-    let intervalId = setInterval(() => {
-      setSeconds(seconds => seconds - 1);
+    const intervalId = setInterval(() => {
+      setSeconds(sec => sec - 1);
     }, 1000);
 
     setTimeout(() => clearInterval(intervalId), 30000);
@@ -102,42 +99,36 @@ export function PAPhoneChangeModal({
       isOpen={isOpen}
       title={t('title')}
       description={t('description')}
-      formId="phoneChangeForm"
+      formId='phoneChangeForm'
       acceptIsDisabled={formIsInvalid}
       onClose={onClose}
     >
       <Box sx={sx.body}>
         <FormProvider {...values}>
-          <form id="phoneChangeForm" onSubmit={values.handleSubmit(submit)}>
+          <form id='phoneChangeForm' onSubmit={values.handleSubmit(submit)}>
             <HFPhoneInput
               label={t('phone')}
-              name="phone"
+              name='phone'
               endAdornment={
                 <>
-                  <Divider sx={sx.divider} orientation="vertical" />
-                  <IconButton
-                    onClick={sendSMS}
-                    color="primary"
-                    disabled={sendingIsDisabled}
-                  >
+                  <Divider sx={sx.divider} orientation='vertical' />
+                  <IconButton onClick={sendSMS} color='primary' disabled={sendingIsDisabled}>
                     <SendIcon />
                   </IconButton>
                 </>
               }
             />
-            {isCodeSended && (
-              <HFTextField label={t('sms')} name="sms" sx={sx.smsField} />
-            )}
+            {isCodeSended && <HFTextField label={t('sms')} name='sms' sx={sx.smsField} />}
             {seconds !== 0 && (
               <Box sx={sx.timer}>
-                <Typography variant="body2">{t('smsHelper')}</Typography>
-                <Typography variant="body2">
+                <Typography variant='body2'>{t('smsHelper')}</Typography>
+                <Typography variant='body2'>
                   {seconds} {t('seconds')}
                 </Typography>
               </Box>
             )}
             {!!error && (
-              <Typography sx={sx.error} variant="body2" color="error">
+              <Typography sx={sx.error} variant='body2' color='error'>
                 {error}
               </Typography>
             )}

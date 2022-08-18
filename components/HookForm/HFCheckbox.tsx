@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { RadioGroup, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Checkbox } from '../UI/Checkbox/Checkbox';
+import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 
 type Props = {
   name: string;
@@ -18,9 +18,7 @@ export function HFCheckbox({ name, defaultValue = false, sx, label }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field: { ref, ...rest } }) => (
-        <Checkbox {...rest} name={name} sx={sx} label={label} />
-      )}
+      render={({ field: { ref, ...rest } }) => <Checkbox {...rest} name={name} sx={sx} label={label} />}
     />
   );
 }

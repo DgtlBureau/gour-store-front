@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
-import { useAppNavigation } from 'components/Navigation'
-import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
-import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
-import {
-  useSignInMutation,
-  useSendCodeMutation,
-  useSignOutMutation,
-} from '../../store/api/authApi';
-import { SignInDto } from '../../@types/dto/signin.dto';
-import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
+import { useAppNavigation } from 'components/Navigation';
+import { dispatchNotification } from 'packages/EventBus';
+import { SigninCredentials } from 'components/Auth/Signin/Credentials/Credentials';
+import { SigninPassRecovery } from 'components/Auth/Signin/PassRecovery/PassRecovery';
+import { useSignInMutation, useSendCodeMutation, useSignOutMutation } from 'store/api/authApi';
+import { SignInDto } from 'types/dto/signin.dto';
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { NotificationType } from 'types/entities/Notification';
 
 type SignInStage = 'credentials' | 'recovery';
 
@@ -39,16 +35,10 @@ export default function SignIn() {
     setCredentials(data);
     try {
       await signIn(data).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Добро пожаловать :]',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Добро пожаловать :]');
       goToHome();
     } catch (e: unknown) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка авторизации',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка авторизации', { type: NotificationType.DANGER });
       setCredentials(prevState => ({ ...prevState, password: '' }));
     }
   };
@@ -60,10 +50,7 @@ export default function SignIn() {
       // await recoverPassword(recoveryData).unwrap();
       goToCredentials();
     } catch (e: unknown) {
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка восстановления пароля',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка восстановления пароля', { type: NotificationType.DANGER });
     }
   };
 

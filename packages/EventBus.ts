@@ -1,4 +1,4 @@
-import { Notification } from '../@types/entities/Notification';
+import { Notification, NotificationType } from '../types/entities/Notification';
 
 export enum EventTypes {
   notification = 'notification',
@@ -10,9 +10,9 @@ type EventArguments = {
   [EventTypes.removeNotification]: string;
 };
 
-type EventListenerCallback<T extends EventTypes> = (
-  payload: EventArguments[T]
-) => void;
+type EventListenerCallback<T extends EventTypes> = (payload: EventArguments[T]) => void;
+
+type NotificationOptions = Omit<Notification, 'message'>;
 
 const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
   [EventTypes.notification]: [],
@@ -21,6 +21,7 @@ const listeners: Record<EventTypes, EventListenerCallback<EventTypes>[]> = {
 
 class EventBus {
   listeners = listeners;
+
   emit<K extends EventTypes>(key: K, payload: EventArguments[K]) {
     this.listeners[key].forEach(callback => callback(payload));
   }
@@ -30,9 +31,7 @@ class EventBus {
   }
 
   off<K extends EventTypes>(key: K, callback: EventListenerCallback<K>) {
-    const index = this.listeners[key].indexOf(
-      callback as EventListenerCallback<EventTypes>
-    );
+    const index = this.listeners[key].indexOf(callback as EventListenerCallback<EventTypes>);
     if (index === -1) {
       return;
     }
@@ -42,3 +41,8 @@ class EventBus {
 }
 
 export const eventBus = new EventBus();
+
+export const dispatchNotification = (message: Notification['message'], options: Partial<NotificationOptions> = {}) => {
+  options.type ??= NotificationType.SUCCESS;
+  eventBus.emit(EventTypes.notification, { message, ...(options as NotificationOptions) });
+};

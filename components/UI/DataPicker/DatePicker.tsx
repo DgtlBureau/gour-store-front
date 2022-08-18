@@ -17,17 +17,11 @@ type Props = {
   onChange: () => void;
 };
 
-export function DatePicker({
-  value,
-  label,
-  onChange,
-  locale = ruLocale,
-  ...inputProps
-}: Props) {
+export function DatePicker({ value, label, onChange, locale = ruLocale, ...inputProps }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={locale}>
       <MUIDatePicker
-        mask="__.__.____"
+        mask='__.__.____'
         label={label}
         value={value}
         onChange={onChange}

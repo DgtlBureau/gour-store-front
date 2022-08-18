@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Box } from '../../UI/Box/Box';
-import { defaultTheme as theme } from '../../../themes';
+import { Box } from 'components/UI/Box/Box';
+import { defaultTheme as theme } from 'themes';
 
 type Props = {
   image: string;

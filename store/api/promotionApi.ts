@@ -1,6 +1,6 @@
-import { commonApi } from './commonApi';
-import { IPromotion } from '../../@types/entities/IPromotion';
 import { Path } from 'constants/routes';
+import { commonApi } from './commonApi';
+import { IPromotion } from 'types/entities/IPromotion';
 
 export const promotionApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -25,8 +25,4 @@ export const promotionApi = commonApi.injectEndpoints({
   },
 });
 
-export const {
-  useGetPromotionQuery,
-  useGetPromotionListQuery,
-  useLazyGetPromotionQuery,
-} = promotionApi;
+export const { useGetPromotionQuery, useGetPromotionListQuery, useLazyGetPromotionQuery } = promotionApi;

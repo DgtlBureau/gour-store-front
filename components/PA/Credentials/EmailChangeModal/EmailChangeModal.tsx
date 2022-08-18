@@ -6,12 +6,12 @@ import { Modal, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import translations from './EmailChangeModal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Typography } from 'components/UI/Typography/Typography';
 import { getValidationSchema } from './validation';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { Button } from '../../../UI/Button/Button';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
 
 export type PAEmailChangeModalProps = {
   isOpen: boolean;
@@ -39,11 +39,7 @@ const sx = {
   },
 };
 
-export function PAEmailChangeModal({
-  isOpen,
-  onClose,
-  onChange,
-}: PAEmailChangeModalProps) {
+export function PAEmailChangeModal({ isOpen, onClose, onChange }: PAEmailChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -68,19 +64,15 @@ export function PAEmailChangeModal({
           <CloseIcon />
         </IconButton>
 
-        <Typography variant="h6">{t('title')}</Typography>
+        <Typography variant='h6'>{t('title')}</Typography>
 
-        <Typography variant="body1">{t('subTitle')}</Typography>
+        <Typography variant='body1'>{t('subTitle')}</Typography>
 
         <FormProvider {...values}>
           <form onSubmit={values.handleSubmit(submitHandler)}>
             <Stack spacing={2}>
-              <HFTextField
-                type="email"
-                name="email"
-                label={t('passwordConfirm')}
-              />
-              <Button type="submit" sx={sx.submitBtn}>
+              <HFTextField type='email' name='email' label={t('passwordConfirm')} />
+              <Button type='submit' sx={sx.submitBtn}>
                 {t('send')}
               </Button>
             </Stack>
