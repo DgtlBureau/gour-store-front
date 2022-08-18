@@ -9,10 +9,9 @@ import { OrdersCard, FullOrder } from '../Card/Card';
 export type OrdersGroupProps = {
   date: Date;
   ordersList: FullOrder[];
-  onDetail: (id: number) => void;
 };
 
-export function OrdersCardGroup({ date, ordersList, onDetail }: OrdersGroupProps) {
+export function OrdersCardGroup({ date, ordersList }: OrdersGroupProps) {
   const groupDate = format(date, 'yyyy.MM.d');
 
   return (
@@ -20,7 +19,7 @@ export function OrdersCardGroup({ date, ordersList, onDetail }: OrdersGroupProps
       <Typography variant="h6">{groupDate}</Typography>
 
       {ordersList.map(order => (
-        <OrdersCard key={order.title} order={order} onDetail={onDetail} />
+        <OrdersCard key={order.title} order={order} />
       ))}
     </Box>
   );

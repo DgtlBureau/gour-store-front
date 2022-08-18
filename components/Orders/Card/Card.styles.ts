@@ -1,6 +1,7 @@
 export const sx = {
   header: {
-    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
     marginRight: '10px',
   },
   status: {
@@ -21,18 +22,23 @@ export const sx = {
     },
   },
   total: {
-    textAlign: 'right',
-    fontWeight: 'bold',
+    justifyContent: 'end',
     order: {
       xs: 2,
       sm: 4,
     },
+  },
+  totalText: {
+    fontWeight: 'bold',
   },
   divider: {
     margin: '20px 0 0 0',
   },
   muted: {
     color: 'text.muted',
+  },
+  count: {
+    textAlign: { sm: 'center', xs: 'left' },
   },
 };
 

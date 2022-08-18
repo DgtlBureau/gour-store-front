@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
-import { Divider, Stack, Typography, Grid } from '@mui/material';
+import { Divider, Typography, Grid } from '@mui/material';
 
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -36,10 +36,9 @@ export type FullOrder = {
 
 export type OrdersCardProps = {
   order: FullOrder;
-  onDetail: (id: number) => void;
 };
 
-export function OrdersCard({ order, onDetail }: OrdersCardProps) {
+export function OrdersCard({ order }: OrdersCardProps) {
   const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost } = order;
 
   const { t } = useLocalTranslation(translations);
@@ -58,7 +57,7 @@ export function OrdersCard({ order, onDetail }: OrdersCardProps) {
     t('someProducts'),
   ]);
 
-  const createdDate = format(createdAt, 'yyyy.MM.d');
+  const createdDate = format(createdAt, 'dd.MM.yyyy');
   const createdTime = format(createdAt, 'HH:mm');
 
   const summaryDiscount = promotions.reduce((acc, currentDiscount) => (acc += currentDiscount.amount), 0);
@@ -70,37 +69,39 @@ export function OrdersCard({ order, onDetail }: OrdersCardProps) {
   return (
     <Accordion>
       <AccordionSummary>
-        <Stack
-          sx={sx.header}
-          direction={{ xs: 'column', sm: 'row' }}
-          alignItems={{ xs: 'none', sm: 'center' }}
-          justifyContent={{ xs: 'none', sm: 'space-between' }}
-          spacing={2}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="h6">{title}</Typography>
+        <Grid container sx={sx.header}>
+          <Grid item sm={3} xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h6">{`Заказ ${title}`}</Typography>
 
-            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant="h6">
-              {priceWithDiscount} {currencySymbol}
+            <Box sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }}>
+              <Typography variant="h6" sx={sx.totalText}>
+                {priceWithDiscount} {currencySymbol}
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item sm={5} xs={12} sx={{ display: 'flex', alignItems: 'center', margin: { xs: '5px 0' } }}>
+            <Typography sx={{ ...sx.status, backgroundColor: status.color || 'secondary.main' }}>
+              {status.title || 'ожидание'}
             </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ ...sx.status, backgroundColor: status.color }}>{status.title}</Typography>
 
             <Typography variant="body1" sx={sx.muted}>
               {t('from')} {createdDate} {t('at')} {createdTime}
             </Typography>
-          </Box>
+          </Grid>
 
-          <Typography variant="body1" sx={sx.muted}>
-            {productCount} {productsCountText}
-          </Typography>
+          <Grid item sm={2} xs={12}>
+            <Typography variant="body1" sx={{ ...sx.muted, ...sx.count }}>
+              {productCount} {productsCountText}
+            </Typography>
+          </Grid>
 
-          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant="h6">
-            {priceWithDiscount} {currencySymbol}
-          </Typography>
-        </Stack>
+          <Grid item sm={2} xs={12} sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }}>
+            <Typography variant="h6" sx={sx.totalText}>
+              {priceWithDiscount} {currencySymbol}
+            </Typography>
+          </Grid>
+        </Grid>
       </AccordionSummary>
 
       <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
@@ -124,12 +125,7 @@ export function OrdersCard({ order, onDetail }: OrdersCardProps) {
         <Divider variant="fullWidth" sx={{ margin: '20px 0 0 0' }} />
 
         {products.map(product => (
-          <OrderCardProduct
-            key={`${product.amount}_${product.photo}`}
-            product={product}
-            currency={currency}
-            onDetail={onDetail}
-          />
+          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
         ))}
 
         {!!products.length && <Divider variant="fullWidth" />}

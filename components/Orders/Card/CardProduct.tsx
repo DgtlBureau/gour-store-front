@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardMedia } from '@mui/material';
+import { Card, CardContent, CardMedia, Grid } from '@mui/material';
 
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
@@ -7,6 +7,7 @@ import { Typography } from '../../UI/Typography/Typography';
 import { Box } from '../../UI/Box/Box';
 import { Currency } from '../../../@types/entities/Currency';
 import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { useAppNavigation } from 'components/Navigation';
 
 import sx from './CardProduct.styles';
 
@@ -23,37 +24,52 @@ export type OrderProductType = {
 type OrderCardProductProps = {
   product: OrderProductType;
   currency: Currency;
-  onDetail: (id: number) => void;
 };
 
-export const OrderCardProduct = ({ currency, product, onDetail }: OrderCardProductProps) => {
+export const OrderCardProduct = ({ currency, product }: OrderCardProductProps) => {
+  const { goToProductPage } = useAppNavigation();
+
   const { t } = useLocalTranslation(translations);
 
   const { photo, title, weight, amount, cost, isWeightGood } = product;
 
-  const handleClickDetail = () => onDetail(product.id);
+  const handleClickDetail = () => goToProductPage(product.id);
 
   return (
-    <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component="img" image={photo} onClick={handleClickDetail} />
+    <Box sx={sx.card}>
+      <CardMedia
+        sx={{ ...sx.image, display: { sm: 'none', xs: 'flex' } }}
+        component="img"
+        image={photo}
+        onClick={handleClickDetail}
+      />
 
-      <Box sx={sx.info}>
-        <CardContent sx={sx.content}>
+      <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+        <Grid container item xs={12} sm={8} sx={{ display: 'flex', alignItems: 'center' }}>
+          <CardMedia
+            sx={{ ...sx.image, display: { sm: 'flex', xs: 'none' } }}
+            component="img"
+            image={photo}
+            onClick={handleClickDetail}
+          />
+
           <Typography variant="body1" sx={sx.title} onClick={handleClickDetail}>
             {title}
           </Typography>
+        </Grid>
 
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant="body1" sx={sx.count}>
-              {!isWeightGood ? `${amount}${t('pc')}.` : `${weight}${t('g')}.`}
-            </Typography>
+        <Grid item sm={2} xs={6} sx={sx.count}>
+          <Typography variant="body1" sx={sx.countText} color="text.muted">
+            {!isWeightGood ? `${amount} ${t('pc')}.` : `${weight} ${t('g')}.`}
+          </Typography>
+        </Grid>
 
-            <Typography variant="body1" sx={sx.productPrice}>
-              {cost} {getCurrencySymbol(currency)}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Box>
-    </Card>
+        <Grid item sm={2} xs={6} sx={sx.price}>
+          <Typography variant="body1" sx={sx.priceText}>
+            {cost} {getCurrencySymbol(currency)}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };

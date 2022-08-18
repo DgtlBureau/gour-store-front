@@ -3,34 +3,19 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
 
-    padding: '20px 0',
-
-    boxShadow: 'none',
-    background: 'transparent',
-    borderRadius: 0,
+    paddingRight: '34px',
+    margin: '10px 0',
   },
 
   image: {
     height: '52px',
     width: '52px',
 
+    marginRight: '10px',
+
     borderRadius: '2px',
 
     objectFit: 'cover',
-  },
-
-  content: {
-    display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
-    justifyContent: 'space-between',
-    padding: 0,
-
-    '&:last-child': {
-      padding: 0,
-    },
   },
 
   title: {
@@ -38,31 +23,22 @@ const sx = {
     fontFamily: 'Roboto slab',
     color: 'text.secondary',
   },
-  productPrice: {
-    fontWeight: 'bold',
-    width: '250px',
-    textAlign: 'right',
-  },
-  count: {
-    color: 'text.muted',
-    textAlign: 'right',
-  },
 
-  info: {
-    width: 'calc(100% - 48px)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: '0 24px',
+  price: {},
+  count: {},
+  priceText: {
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  countText: {
+    color: 'text.muted',
+    textAlign: { sm: 'center', xs: 'left' },
   },
 
   docket: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
-  },
-  price: {
-    fontWeight: 'bold',
   },
   actions: {
     display: 'flex',

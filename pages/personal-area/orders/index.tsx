@@ -11,7 +11,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { useAppNavigation } from 'components/Navigation';
 
 export function Orders() {
-  const { language, currency, goToProductPage } = useAppNavigation();
+  const { language, currency } = useAppNavigation();
 
   const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
 
@@ -47,14 +47,7 @@ export function Orders() {
             orderKeys.map(key => {
               const orderGroup = groupedOrders[+key];
 
-              return (
-                <OrdersCardGroup
-                  key={key}
-                  date={orderGroup.date}
-                  ordersList={orderGroup.orderList}
-                  onDetail={goToProductPage}
-                />
-              );
+              return <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} />;
             })
           ) : (
             <Typography variant="h5">Список заказов пуст</Typography>
