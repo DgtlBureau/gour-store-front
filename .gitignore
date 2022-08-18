@@ -38,6 +38,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 .idea
-.vscode
+/.vscode
 /yarn.lock
-yarn.lock

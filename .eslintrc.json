@@ -46,7 +46,15 @@
         "peerDependencies": true
       }
     ],
-    "react/function-component-definition": "warn"
+    "react/function-component-definition": "warn",
+    "jsx-a11y/label-has-for": [
+      2,
+      {
+        "required": {
+          "every": ["id"]
+        }
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
