@@ -1,4 +1,4 @@
-import { Notification, NotificationType } from '../@types/entities/Notification';
+import { Notification, NotificationType } from '../types/entities/Notification';
 
 export enum EventTypes {
   notification = 'notification',

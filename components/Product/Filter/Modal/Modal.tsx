@@ -1,16 +1,16 @@
 import React from 'react';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { ICategory } from 'types/entities/ICategory';
+import { Language } from 'types/entities/Language';
+import { IFiltersCharacteristic } from 'types/entities/IProduct';
+import { CHARACTERISTICS } from 'constants/characteristics';
 import translations from './Modal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { ToggleButton } from '../../../UI/ToggleButton/ToggleButton';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
-import { ICategory } from '../../../../@types/entities/ICategory';
-import { Language } from '../../../../@types/entities/Language';
-import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct';
-import { CHARACTERISTICS } from '../../../../constants/characteristics';
 
 const sx = {
   title: {

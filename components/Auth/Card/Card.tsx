@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 
 const cardSx: SxProps = {
   display: 'flex',

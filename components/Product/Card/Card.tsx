@@ -3,13 +3,13 @@ import { CardMedia } from '@mui/material';
 import Image from 'next/image';
 
 import HeartIcon from '@mui/icons-material/Favorite';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
-import { Currency } from '../../../@types/entities/Currency';
-import defaultImage from '../../../assets/no-image.svg';
+import { Currency } from 'types/entities/Currency';
+import defaultImage from 'assets/no-image.svg';
 
 import sx from './Card.styles';
 

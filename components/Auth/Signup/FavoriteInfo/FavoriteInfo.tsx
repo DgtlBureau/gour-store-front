@@ -6,10 +6,10 @@ import { Grid } from '@mui/material';
 
 import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 import translations from './FavoriteInfo.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { AuthCard } from '../../Card/Card';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
 import sx from './FavoriteInfo.styles';
 
 import s from './FavoriteInfo.module.scss';

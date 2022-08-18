@@ -11,16 +11,16 @@ import {
 } from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
 import { PAPhoneChangeModal } from 'components/PA/Credentials/PhoneChangeModal/PhoneChangeModal';
-import { ChangePasswordDto } from '../../../@types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from '../../../@types/dto/profile/change-phone.dto';
-import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
-import { PACredentialsAvatarEditor } from '../../../components/PA/Credentials/AvatarEditor/AvatarEditor';
-import { PACredentialsEditor } from '../../../components/PA/Credentials/Editor/Editor';
-import { PAPasswordChangeModal } from '../../../components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { PACredentialsAvatarEditor } from 'components/PA/Credentials/AvatarEditor/AvatarEditor';
+import { PACredentialsEditor } from 'components/PA/Credentials/Editor/Editor';
+import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 
-import { NotificationType } from '../../../@types/entities/Notification';
-import { PALayout } from '../../../layouts/PA/PA';
-import { SendCodeDto } from '../../../@types/dto/profile/send-code.dto';
+import { NotificationType } from 'types/entities/Notification';
+import { PALayout } from 'layouts/PA/PA';
+import { SendCodeDto } from 'types/dto/profile/send-code.dto';
 
 export function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);

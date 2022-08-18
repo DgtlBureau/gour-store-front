@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { Button } from '../Button/Button';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './UploadFile.i18n.json';
 
 type Props = {

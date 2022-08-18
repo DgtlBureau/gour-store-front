@@ -7,8 +7,8 @@ import { Stack } from '@mui/material';
 import { AuthCard } from 'components/Auth/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from 'components/UI/Box/Box';
-import gameImage from '../../assets/images/game/game-mockup.png';
-import { AuthLayout } from '../../layouts/Auth/Auth';
+import gameImage from 'assets/images/game/game-mockup.png';
+import { AuthLayout } from 'layouts/Auth/Auth';
 
 export default function Auth() {
   const { goToSignIn, goToSignUp } = useAppNavigation();

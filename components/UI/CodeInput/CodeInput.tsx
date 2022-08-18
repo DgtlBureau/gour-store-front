@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 
 import { InputModeTypes, ReactCodeInputProps } from 'react-code-input';
-import { defaultTheme } from '../../../themes';
+import { defaultTheme } from 'themes';
 
 const ReactCodeInput = dynamic(
   () => import('react-code-input'),

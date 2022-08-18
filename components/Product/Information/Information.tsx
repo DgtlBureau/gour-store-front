@@ -4,10 +4,10 @@ import { Rating } from '@mui/material';
 
 import StarIcon from '@mui/icons-material/Star';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { getDeclensionWordByCount } from '../../../utils/wordHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Information.i18n.json';
 
 import sx from './Information.styles';

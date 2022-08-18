@@ -4,7 +4,7 @@ import { Modal as MUIModal } from '@mui/material';
 import CrossIcon from '@mui/icons-material/Clear';
 
 import translations from './Modal.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';

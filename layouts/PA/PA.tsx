@@ -6,16 +6,16 @@ import { useAppNavigation } from 'components/Navigation';
 import { useAppSelector } from 'hooks/store';
 import { PrivateLayout } from 'layouts/Private/Private';
 import translations from './PA.i18n.json';
-import { useLocalTranslation } from '../../hooks/useLocalTranslation';
-import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from '../../store/api/currentUserApi';
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from '../../store/slices/orderSlice';
-import { useGetCityListQuery } from '../../store/api/cityApi';
-import { Box } from '../../components/UI/Box/Box';
-import { Header } from '../../components/Header/Header';
-import { PAMenu } from '../../components/PA/Menu/Menu';
-import { contacts } from '../../constants/contacts';
-import { Currency } from '../../@types/entities/Currency';
-import { Path } from '../../constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { Box } from 'components/UI/Box/Box';
+import { Header } from 'components/Header/Header';
+import { PAMenu } from 'components/PA/Menu/Menu';
+import { contacts } from 'constants/contacts';
+import { Currency } from 'types/entities/Currency';
+import { Path } from 'constants/routes';
 
 import sx from './PA.styles';
 

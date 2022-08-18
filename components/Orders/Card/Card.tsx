@@ -3,13 +3,13 @@ import { format } from 'date-fns';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import translations from './Card.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
-import { Box } from '../../UI/Box/Box';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
+import { Box } from 'components/UI/Box/Box';
 import { OrderProductType, OrderCardProduct } from './CardProduct';
 import { OrderCardInfo } from './CardInfo';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { Currency } from '../../../@types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Currency } from 'types/entities/Currency';
 
 const sx = {
   header: {

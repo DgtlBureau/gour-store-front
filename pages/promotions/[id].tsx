@@ -16,14 +16,14 @@ import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { useAppNavigation } from 'components/Navigation';
-import { Path } from '../../constants/routes';
-import { IProduct } from '../../@types/entities/IProduct';
+import { Path } from 'constants/routes';
+import { IProduct } from 'types/entities/IProduct';
 
 import { sx } from './Promotion.styles';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { addBasketProduct, subtractBasketProduct } from '../../store/slices/orderSlice';
-import { useLocalTranslation } from '../../hooks/useLocalTranslation';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Promotion.i18n.json';
 
 export default function Promotion() {

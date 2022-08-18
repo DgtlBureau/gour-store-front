@@ -59,7 +59,11 @@ export function Checkbox({
         disableRipple={disableRipple}
         onChange={onChange}
       />
-      {label && <MUIInputLabel htmlFor={id} sx={labelSx}>{label}</MUIInputLabel>}
+      {label && (
+        <MUIInputLabel htmlFor={id} sx={labelSx}>
+          {label}
+        </MUIInputLabel>
+      )}
     </Box>
   );
 }

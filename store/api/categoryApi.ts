@@ -1,6 +1,6 @@
 import { Path } from 'constants/routes';
 import { commonApi } from './commonApi';
-import { ICategory } from '../../@types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints(builder) {

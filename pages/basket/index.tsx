@@ -14,16 +14,16 @@ import {
   selectProductsInOrder,
   subtractBasketProduct,
   removeProduct,
-} from '../../store/slices/orderSlice';
+} from 'store/slices/orderSlice';
 import translation from './Basket.i18n.json';
-import { Button } from '../../components/UI/Button/Button';
-import { CartInfo } from '../../components/Cart/Info/Info';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CartCard } from '../../components/Cart/Card/Card';
-import { CartEmpty } from '../../components/Cart/Empty/Empty';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { InfoBlock } from '../../components/UI/Info/Block/Block';
-import { IProduct } from '../../@types/entities/IProduct';
+import { Button } from 'components/UI/Button/Button';
+import { CartInfo } from 'components/Cart/Info/Info';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { CartCard } from 'components/Cart/Card/Card';
+import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoBlock } from 'components/UI/Info/Block/Block';
+import { IProduct } from 'types/entities/IProduct';
 
 const sx = {
   title: {

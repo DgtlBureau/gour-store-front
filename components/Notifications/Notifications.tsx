@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 
 import { Typography } from 'components/UI/Typography/Typography';
-import { eventBus, EventTypes } from '../../packages/EventBus';
-import { Notification, NotificationType } from '../../@types/entities/Notification';
+import { eventBus, EventTypes } from 'packages/EventBus';
+import { Notification, NotificationType } from 'types/entities/Notification';
 import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {

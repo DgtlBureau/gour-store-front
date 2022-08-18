@@ -2,10 +2,10 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Modal } from '../../UI/Modal/Modal';
-import { HFTextField } from '../../HookForm/HFTextField';
-import { AddCheesecoinsDto } from '../../../@types/dto/cheseecoins/add.dto';
-import { Button } from '../../UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { AddCheesecoinsDto } from 'types/dto/cheseecoins/add.dto';
+import { Button } from 'components/UI/Button/Button';
 import { sx } from './AddModal.styles';
 import { getValidationSchema } from './validations';
 

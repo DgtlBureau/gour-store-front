@@ -1,4 +1,4 @@
-import { ProductCountry } from '../@types/entities/IProduct';
+import { ProductCountry } from '../types/entities/IProduct';
 
 import russiaImg from '../assets/images/countries/russia.png';
 import spainImg from '../assets/images/countries/spain.png';

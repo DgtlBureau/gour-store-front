@@ -54,7 +54,8 @@
           "every": ["id"]
         }
       }
-    ]
+    ],
+    "import/order": "off"
   },
   "settings": {
     "import/resolver": {

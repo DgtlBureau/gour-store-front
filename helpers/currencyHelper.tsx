@@ -1,4 +1,4 @@
-import { Currency } from '../@types/entities/Currency';
+import { Currency } from '../types/entities/Currency';
 
 export function getCurrencySymbol(currencyAbbreviation: Currency) {
   if (currencyAbbreviation) {

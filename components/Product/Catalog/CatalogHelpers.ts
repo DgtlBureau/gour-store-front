@@ -1,4 +1,4 @@
-import { IFiltersCharacteristic, IProductCharacteristics } from '../../../@types/entities/IProduct';
+import { IFiltersCharacteristic, IProductCharacteristics } from 'types/entities/IProduct';
 
 export const checkCharacteristics = (characteristics: IProductCharacteristics, filters: IFiltersCharacteristic) =>
   Object.keys(filters.characteristics).every(it => {

@@ -1,7 +1,7 @@
 import React, { FocusEventHandler } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
+import { TextField } from 'components/UI/TextField/TextField';
 
 export type HFTextFieldProps = {
   name: string;
@@ -18,13 +18,7 @@ export type HFTextFieldProps = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFTextField({
-  name,
-  defaultValue,
-  helperText,
-  onChange,
-  ...props
-}: HFTextFieldProps) {
+export function HFTextField({ name, defaultValue, helperText, onChange, ...props }: HFTextFieldProps) {
   const {
     control,
     formState: { errors },

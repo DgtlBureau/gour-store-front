@@ -6,15 +6,15 @@ import MinusIcon from '@mui/icons-material/Remove';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import translations from './Card.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { CartCardDocket as Docket } from './Docket';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Currency } from '../../../@types/entities/Currency';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Currency } from 'types/entities/Currency';
 
-import defaultImage from '../../../assets/no-image.svg';
+import defaultImage from 'assets/no-image.svg';
 
 import sx from './Card.styles';
 

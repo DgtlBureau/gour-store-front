@@ -3,11 +3,11 @@ import Image from 'next/image';
 import { keyframes } from '@emotion/react';
 import { SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 
-import handUp from '../../../assets/images/game/rabbit/hand-up.svg';
-import handDown from '../../../assets/images/game/rabbit/hand-down.svg';
-import body from '../../../assets/images/game/rabbit/body.svg';
+import handUp from 'assets/images/game/rabbit/hand-up.svg';
+import handDown from 'assets/images/game/rabbit/hand-down.svg';
+import body from 'assets/images/game/rabbit/body.svg';
 
 const fade = keyframes`
   0% {

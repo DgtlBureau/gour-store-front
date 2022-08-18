@@ -5,9 +5,9 @@ import { Stack, SxProps } from '@mui/material';
 import Image from 'next/image';
 
 import translations from './Header.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Typography } from '../../UI/Typography/Typography';
-import { formatSeconds } from '../../../helpers/timeHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Typography } from 'components/UI/Typography/Typography';
+import { formatSeconds } from 'helpers/timeHelper';
 import { headerSx } from './Header.styles';
 
 export type PromotionHeaderProps = {

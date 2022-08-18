@@ -1,8 +1,8 @@
 import { Path } from 'constants/routes';
 import { commonApi } from './commonApi';
-import { SignUpDto } from '../../@types/dto/signup.dto';
-import { Tokens } from '../../@types/dto/tokens.dto';
-import { SignInDto } from '../../@types/dto/signin.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { Tokens } from 'types/dto/tokens.dto';
+import { SignInDto } from 'types/dto/signin.dto';
 
 export const authApi = commonApi.injectEndpoints({
   endpoints(builder) {

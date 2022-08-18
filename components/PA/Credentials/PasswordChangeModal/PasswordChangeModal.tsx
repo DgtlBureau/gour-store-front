@@ -6,11 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Translator } from 'utils/Translator';
 import translations from './PasswordChangeModal.i18n.json';
 import { getSchema } from './validation';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { HFTextField } from '../../../HookForm/HFTextField';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { HFTextField } from 'components/HookForm/HFTextField';
 
 const sx = {
   body: {

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { IProduct } from '../../@types/entities/IProduct';
-import { IOrderProduct } from '../../@types/entities/IOrderProduct';
+import { RootState } from 'store/store';
+import { IProduct } from 'types/entities/IProduct';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
 
 interface OrderFormContacts {
   firstName: string;

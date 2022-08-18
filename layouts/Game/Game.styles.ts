@@ -1,4 +1,4 @@
-import stripes from '../../assets/images/stripes.svg';
+import stripes from 'assets/images/stripes.svg';
 
 const sx = {
   layout: {

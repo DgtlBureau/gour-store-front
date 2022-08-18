@@ -1,11 +1,11 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 
-import { Accordion, AccordionDetails, AccordionSummary } from '../../UI/Accordion/Accordion';
-import { Typography } from '../../UI/Typography/Typography';
-import { Box } from '../../UI/Box/Box';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { Stepper } from '../../UI/Stepper/Stepper';
+import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Stepper } from 'components/UI/Stepper/Stepper';
 
 type Category = {
   title: string;

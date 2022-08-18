@@ -5,11 +5,11 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Typography } from 'components/UI/Typography/Typography';
 import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 import translation from './Card.i18n.json';
-import { Currency } from '../../../@types/entities/Currency';
-import { Language } from '../../../@types/entities/Language';
-import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
+import { Currency } from 'types/entities/Currency';
+import { Language } from 'types/entities/Language';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
 
 type Props = {
   currency: Currency;

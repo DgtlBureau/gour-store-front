@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-import { Button } from '../../UI/Button/Button';
+import { Button } from 'components/UI/Button/Button';
 import { GameFrame as Frame } from '../Frame/Frame';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';

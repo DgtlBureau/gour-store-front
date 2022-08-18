@@ -2,14 +2,14 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { Grid, SxProps } from '@mui/material';
 
 import translations from './Reviews.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
-import { Typography } from '../../UI/Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 import { ReviewsCounter } from './ReviewsCounter';
-import { formatDate } from '../../../helpers/dateHelper';
-import { defaultTheme as theme } from '../../../themes';
+import { formatDate } from 'helpers/dateHelper';
+import { defaultTheme as theme } from 'themes';
 
 type Review = {
   id: number;

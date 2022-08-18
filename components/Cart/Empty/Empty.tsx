@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
 import { Stack } from '@mui/material';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { defaultTheme as t } from '../../../themes';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   container: {

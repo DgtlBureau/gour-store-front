@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const sx = {
   menu: {

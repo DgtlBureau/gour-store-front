@@ -1,7 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from 'components/UI/Box/Box';
 import { GameOleg } from './Oleg';
 
 const playerSx = {

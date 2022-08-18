@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 
 import styles from './ImageSlider.module.scss';
 
-import defaultImage from '../../../assets/no-image.svg';
+import defaultImage from 'assets/no-image.svg';
 
 const sliderSx = {
   container: {

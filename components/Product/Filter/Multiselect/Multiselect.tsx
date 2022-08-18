@@ -15,12 +15,12 @@ import React, { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import translations from './Multiselect.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { Button } from '../../../UI/Button/Button';
-import { Checkbox } from '../../../UI/Checkbox/Checkbox';
-import { defaultTheme as theme } from '../../../../themes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { Checkbox } from 'components/UI/Checkbox/Checkbox';
+import { defaultTheme as theme } from 'themes';
 
 import selectSx from './Multiselect.styles';
 

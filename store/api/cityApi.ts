@@ -1,6 +1,6 @@
 import { commonApi } from './commonApi';
-import { ICity } from '../../@types/entities/ICity';
-import { Path } from '../../constants/routes';
+import { ICity } from 'types/entities/ICity';
+import { Path } from 'constants/routes';
 
 export const cityApi = commonApi.injectEndpoints({
   endpoints(builder) {

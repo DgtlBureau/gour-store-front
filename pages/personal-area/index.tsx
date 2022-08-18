@@ -13,7 +13,7 @@ import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard'
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
-import { Currency } from '../../@types/entities/Currency';
+import { Currency } from 'types/entities/Currency';
 
 export function Main() {
   const { language, goToCredentials, goToAddresses, goToOrders, goToDiscounts } = useAppNavigation();

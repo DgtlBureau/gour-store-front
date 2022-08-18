@@ -25,10 +25,10 @@ import {
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { useAppNavigation } from 'components/Navigation';
 import sx from './Product.styles';
-import { IProduct } from '../../@types/entities/IProduct';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CommentDto } from '../../@types/dto/comment.dto';
+import { IProduct } from 'types/entities/IProduct';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { CommentDto } from 'types/dto/comment.dto';
 import translations from './Product.i18n.json';
 
 export default function Product() {

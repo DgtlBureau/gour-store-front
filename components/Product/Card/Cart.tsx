@@ -5,8 +5,8 @@ import CartIcon from '@mui/icons-material/ShoppingCart';
 import PlusIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
 import TrashIcon from '@mui/icons-material/DeleteForever';
-import { defaultTheme as t } from '../../../themes';
-import { Box } from '../../UI/Box/Box';
+import { defaultTheme as t } from 'themes';
+import { Box } from 'components/UI/Box/Box';
 
 const sx = {
   cart: {

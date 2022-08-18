@@ -4,7 +4,7 @@ import { SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';
-import { defaultTheme } from '../../../themes';
+import { defaultTheme } from 'themes';
 
 const font = defaultTheme.typography.fontFamily;
 

@@ -14,19 +14,19 @@ import {
   selectedProductSum,
   selectProductsInOrder,
   removeProduct,
-} from '../../store/slices/orderSlice';
-import { useCreateOrderMutation } from '../../store/api/orderApi';
-import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from '../../store/api/orderProfileApi';
-import { useGetCityListQuery } from '../../store/api/cityApi';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from '../../components/Order/Form/Form';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { CartEmpty } from '../../components/Cart/Empty/Empty';
-import { CreateOrderDto } from '../../@types/dto/order/create.dto';
-import { CreateOrderProfileDto } from '../../@types/dto/order/createOrderProfile.dto';
-import { OrderProductDto } from '../../@types/dto/order/product.dto';
-import { IProduct } from '../../@types/entities/IProduct';
-import { NotificationType } from '../../@types/entities/Notification';
+} from 'store/slices/orderSlice';
+import { useCreateOrderMutation } from 'store/api/orderApi';
+import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from 'components/Order/Form/Form';
+import { Typography } from 'components/UI/Typography/Typography';
+import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { CreateOrderDto } from 'types/dto/order/create.dto';
+import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
+import { OrderProductDto } from 'types/dto/order/product.dto';
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
 
 const sx = {
   title: {

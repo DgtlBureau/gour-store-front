@@ -2,8 +2,8 @@ import React, { CSSProperties, FocusEventHandler } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { InputModeTypes } from 'react-code-input';
-import { TextField } from '../UI/TextField/TextField';
-import { CodeInput } from '../UI/CodeInput/CodeInput';
+import { TextField } from 'components/UI/TextField/TextField';
+import { CodeInput } from 'components/UI/CodeInput/CodeInput';
 
 type Props = {
   name: string;

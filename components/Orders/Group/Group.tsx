@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { Currency } from '../../../@types/entities/Currency';
+import { Currency } from 'types/entities/Currency';
 import { OrdersCard, OrdersCardProps } from '../Card/Card';
 
 export type OrdersGroupProps = {

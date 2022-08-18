@@ -5,14 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import translations from './Editor.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { TextField } from '../../../UI/TextField/TextField';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { Button } from '../../../UI/Button/Button';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { TextField } from 'components/UI/TextField/TextField';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Button } from 'components/UI/Button/Button';
 import { getValidationSchema } from './validation';
-import { UpdateUserDto } from '../../../../@types/dto/profile/update-user.dto';
 
 type UserData = {
   firstName: string;

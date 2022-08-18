@@ -6,7 +6,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { ProgressLinear } from '../../../components/UI/ProgressLinear/ProgressLinear';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 
 export function Orders() {

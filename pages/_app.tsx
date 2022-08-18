@@ -6,7 +6,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import { NavigationProvider } from 'components/Navigation';
 import { ToastContainer } from 'react-toastify';
 import Notifications from 'components/Notifications/Notifications';
-import { persistor, store } from '../store/store';
+import { persistor, store } from 'store/store';
 import { defaultTheme } from '../themes';
 
 import 'react-toastify/dist/ReactToastify.css';

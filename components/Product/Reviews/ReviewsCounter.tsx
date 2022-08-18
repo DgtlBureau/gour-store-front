@@ -2,12 +2,12 @@ import React from 'react';
 
 import StarIcon from '@mui/icons-material/Star';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { getDeclensionWordByCount } from '../../../utils/wordHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Reviews.i18n.json';
-import { defaultTheme as theme } from '../../../themes';
+import { defaultTheme as theme } from 'themes';
 
 const sx = {
   counter: {

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 
 import { Divider, Stack } from '@mui/material';
-import { Typography } from '../../UI/Typography/Typography';
-import { Currency } from '../../../@types/entities/Currency';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Currency } from 'types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Card.i18n.json';
-import { defaultTheme as theme } from '../../../themes';
+import { defaultTheme as theme } from 'themes';
 
 const sx = {
   card: {

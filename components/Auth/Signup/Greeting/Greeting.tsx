@@ -1,11 +1,11 @@
 import React from 'react';
 
 import translations from './Greeting.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { Button } from '../../../UI/Button/Button';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
 
 const sx = {
   text: {

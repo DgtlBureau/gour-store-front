@@ -1,8 +1,8 @@
 import { Path } from 'constants/routes';
 import { commonApi } from './commonApi';
-import { CreateProductGradeDto } from '../../@types/dto/productGrade/create.dto';
-import { GetProductGradeListDto } from '../../@types/dto/productGrade/get-list.dto';
-import { IProductGrade } from '../../@types/entities/IProductGrade';
+import { CreateProductGradeDto } from 'types/dto/productGrade/create.dto';
+import { GetProductGradeListDto } from 'types/dto/productGrade/get-list.dto';
+import { IProductGrade } from 'types/entities/IProductGrade';
 
 export const productGradeApi = commonApi.injectEndpoints({
   endpoints(builder) {

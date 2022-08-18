@@ -1,10 +1,10 @@
 import React from 'react';
 
 import translations from './AddressCard.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { InfoCard } from '../../../UI/Info/Card/Card';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoCard } from 'components/UI/Info/Card/Card';
 
 const sx = {
   address: {

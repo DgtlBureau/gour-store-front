@@ -11,14 +11,14 @@ import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice
 import { ProductCard } from 'components/Product/Card/Card';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { LinkRef as Link } from '../../components/UI/Link/Link';
-import { IProduct } from '../../@types/entities/IProduct';
-import { IOrderProduct } from '../../@types/entities/IOrderProduct';
-import { Currency } from '../../@types/entities/Currency';
-import { Language } from '../../@types/entities/Language';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { Typography } from 'components/UI/Typography/Typography';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { IProduct } from 'types/entities/IProduct';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { Currency } from 'types/entities/Currency';
+import { Language } from 'types/entities/Language';
 import { isProductFavorite } from './favoritesHelper';
 
 const sx = {

@@ -13,17 +13,17 @@ import { dispatchNotification } from 'packages/EventBus';
 import { useAppNavigation } from 'components/Navigation';
 import translations from './Addresses.i18n.json';
 
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { PALayout } from '../../../layouts/PA/PA';
-import { Box } from '../../../components/UI/Box/Box';
-import { Button } from '../../../components/UI/Button/Button';
-import { Typography } from '../../../components/UI/Typography/Typography';
-import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
-import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
-import { NotificationType } from '../../../@types/entities/Notification';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PALayout } from 'layouts/PA/PA';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
+import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+import { NotificationType } from 'types/entities/Notification';
 
-import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 
 const sx = {
   actions: {

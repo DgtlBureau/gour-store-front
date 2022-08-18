@@ -5,17 +5,17 @@ import { Divider } from '@mui/material';
 
 import SendIcon from '@mui/icons-material/Send';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
 import { getSchema } from './validation';
 import translations from './PhoneChangeModal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Modal } from '../../../UI/Modal/Modal';
-import { Box } from '../../../UI/Box/Box';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { Typography } from '../../../UI/Typography/Typography';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
-import { SendCodeDto } from '../../../../@types/dto/profile/send-code.dto';
-import { ChangePhoneDto } from '../../../../@types/dto/profile/change-phone.dto';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Box } from 'components/UI/Box/Box';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Typography } from 'components/UI/Typography/Typography';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 const sx = {
   body: {

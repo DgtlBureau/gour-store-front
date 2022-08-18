@@ -1,7 +1,7 @@
 import React from 'react';
 import { SxProps } from '@mui/material';
 
-import { Typography } from '../../UI/Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const counterSx: SxProps = {
   position: 'absolute',

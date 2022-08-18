@@ -4,16 +4,16 @@ import { Paper, Grid, Rating, SxProps } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from '../../../@types/entities/Notification';
-import type { CommentDto } from '../../../@types/dto/comment.dto';
-import { IProductGrade } from '../../../@types/entities/IProductGrade';
+import { NotificationType } from 'types/entities/Notification';
+import type { CommentDto } from 'types/dto/comment.dto';
+import { IProductGrade } from 'types/entities/IProductGrade';
 import translations from './CreateBlock.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
-import { Button } from '../../UI/Button/Button';
-import { Typography } from '../../UI/Typography/Typography';
-import { TextField } from '../../UI/TextField/TextField';
-import { defaultTheme as theme } from '../../../themes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { TextField } from 'components/UI/TextField/TextField';
+import { defaultTheme as theme } from 'themes';
 import { blockSx } from './CreateBlock.styles';
 
 const initComment: CommentDto = { value: 0, comment: '' };

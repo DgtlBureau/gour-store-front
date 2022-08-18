@@ -3,12 +3,12 @@ import Image from 'next/image';
 
 import { Stack } from '@mui/material';
 import translations from './CredentialsCard.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { InfoCard } from '../../../UI/Info/Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { InfoCard } from 'components/UI/Info/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import noPhoto from '../../../../assets/no-image.svg';
+import noPhoto from 'assets/no-image.svg';
 
 const sx = {
   content: {

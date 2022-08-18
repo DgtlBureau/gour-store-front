@@ -14,20 +14,20 @@ import { useAppNavigation } from 'components/Navigation';
 import { PrivateLayout } from 'layouts/Private/Private';
 import translations from './Main.i18n.json';
 import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
-import { useGetPageQuery } from '../store/api/pageApi';
-import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+import { useGetPageQuery } from 'store/api/pageApi';
+import { useGetPromotionListQuery } from 'store/api/promotionApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from 'store/api/productApi';
 
-import { ProductCatalog } from '../components/Product/Catalog/Catalog';
-import { Box } from '../components/UI/Box/Box';
-import { Typography } from '../components/UI/Typography/Typography';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 import { ShopLayout } from '../layouts/Shop/Shop';
-import { CardSlider } from '../components/CardSlider/CardSlider';
-import { PromotionCard } from '../components/Promotion/Card/Card';
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { PromotionCard } from 'components/Promotion/Card/Card';
 
-import { Currency } from '../@types/entities/Currency';
-import { IProduct } from '../@types/entities/IProduct';
+import { Currency } from '../types/entities/Currency';
+import { IProduct } from '../types/entities/IProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 

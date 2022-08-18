@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useAppNavigation } from 'components/Navigation';
 import { dispatchNotification } from 'packages/EventBus';
-import { SigninCredentials } from '../../components/Auth/Signin/Credentials/Credentials';
-import { SigninPassRecovery } from '../../components/Auth/Signin/PassRecovery/PassRecovery';
-import { useSignInMutation, useSendCodeMutation, useSignOutMutation } from '../../store/api/authApi';
-import { SignInDto } from '../../@types/dto/signin.dto';
-import { PasswordRecoveryDto } from '../../@types/dto/password-recovery.dto';
-import { NotificationType } from '../../@types/entities/Notification';
+import { SigninCredentials } from 'components/Auth/Signin/Credentials/Credentials';
+import { SigninPassRecovery } from 'components/Auth/Signin/PassRecovery/PassRecovery';
+import { useSignInMutation, useSendCodeMutation, useSignOutMutation } from 'store/api/authApi';
+import { SignInDto } from 'types/dto/signin.dto';
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { NotificationType } from 'types/entities/Notification';
 
 type SignInStage = 'credentials' | 'recovery';
 

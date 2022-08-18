@@ -6,12 +6,12 @@ import { Modal, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import translations from './EmailChangeModal.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Typography } from 'components/UI/Typography/Typography';
 import { getValidationSchema } from './validation';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { Button } from '../../../UI/Button/Button';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
 
 export type PAEmailChangeModalProps = {
   isOpen: boolean;

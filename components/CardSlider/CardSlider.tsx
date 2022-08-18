@@ -6,8 +6,8 @@ import SwiperCore, { Grid } from 'swiper';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Button } from 'components/UI/Button/Button';
-import { Box } from '../UI/Box/Box';
-import { Typography } from '../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 import cardCss from './CardSlider.module.scss';
 
 import 'swiper/css';

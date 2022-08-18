@@ -4,19 +4,18 @@ import { Link } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Translator } from 'utils/Translator';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { SignInDto } from 'types/dto/signin.dto';
 import translations from './Credentials.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { SignInDto } from '../../../../@types/dto/signin.dto';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { HFTextField } from 'components/HookForm/HFTextField';
 
 import sx from './Credentials.styles';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 export type SigninCredentialsProps = {
   defaultValues?: SignInDto;

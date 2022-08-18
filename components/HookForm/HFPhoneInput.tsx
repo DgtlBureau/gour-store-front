@@ -2,7 +2,7 @@ import React, { FocusEventHandler, ReactNode } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PhoneInput } from 'components/UI/PhoneInput/PhoneInput';
-import { TextField } from '../UI/TextField/TextField';
+import { TextField } from 'components/UI/TextField/TextField';
 
 type Props = {
   name: string;

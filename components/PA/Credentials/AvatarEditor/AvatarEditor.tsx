@@ -2,11 +2,11 @@ import React, { ChangeEvent } from 'react';
 import { Avatar, Stack } from '@mui/material';
 
 import translations from './AvatarEditor.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import noImage from '../../../../assets/no-image.svg';
+import noImage from 'assets/no-image.svg';
 
 const sx = {
   image: {

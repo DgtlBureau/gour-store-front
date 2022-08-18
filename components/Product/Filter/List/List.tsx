@@ -6,10 +6,10 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/Multiselect';
-import { CHARACTERISTICS } from '../../../../constants/characteristics';
-import { ICategory } from '../../../../@types/entities/ICategory';
-import { Language } from '../../../../@types/entities/Language';
-import { IFiltersCharacteristic } from '../../../../@types/entities/IProduct';
+import { CHARACTERISTICS } from 'constants/characteristics';
+import { ICategory } from 'types/entities/ICategory';
+import { Language } from 'types/entities/Language';
+import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
 export type CatalogFilterProps = {
   categories: ICategory[];

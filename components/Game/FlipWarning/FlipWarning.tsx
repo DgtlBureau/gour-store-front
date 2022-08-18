@@ -2,10 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import { SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import screenFlip from '../../../assets/images/game/screen-flip.svg';
+import screenFlip from 'assets/images/game/screen-flip.svg';
 
 const warningSx = {
   container: {

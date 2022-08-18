@@ -5,16 +5,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+import { defaultTheme as theme } from 'themes';
 import translations from './Form.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { Button } from '../../../UI/Button/Button';
-import { IconButton } from '../../../UI/IconButton/IconButton';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { HFCheckbox } from '../../../HookForm/HFCheckbox';
-import { HFSelect } from '../../../HookForm/HFSelect';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { HFCheckbox } from 'components/HookForm/HFCheckbox';
+import { HFSelect } from 'components/HookForm/HFSelect';
 import { getValidationSchema } from './validation';
-import { OrderProfileDto } from '../../../../@types/dto/order/profile.dto';
-import { defaultTheme as theme } from '../../../../themes';
 
 const sx = {
   mainCheck: {

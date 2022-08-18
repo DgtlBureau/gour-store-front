@@ -12,18 +12,18 @@ import { useAppNavigation } from 'components/Navigation';
 import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
 import { dispatchNotification } from 'packages/EventBus';
-import { SignUpFormDto } from '../../@types/dto/signup-form.dto';
-import { SignUpDto } from '../../@types/dto/signup.dto';
-import { favoriteCountries, favoriteProducts } from '../../constants/favorites';
-import { ReferralCodeDto } from '../../@types/dto/referral-code.dto';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 
-import credentialsImage from '../../assets/icons/signup/credentials.svg';
-import greetingsImage from '../../assets/icons/signup/greetings.svg';
-import cityImage from '../../assets/icons/signup/city.svg';
-import favoritesImage from '../../assets/icons/signup/favorites.svg';
-import referralImage from '../../assets/icons/signup/referralCodes.svg';
+import credentialsImage from 'assets/icons/signup/credentials.svg';
+import greetingsImage from 'assets/icons/signup/greetings.svg';
+import cityImage from 'assets/icons/signup/city.svg';
+import favoritesImage from 'assets/icons/signup/favorites.svg';
+import referralImage from 'assets/icons/signup/referralCodes.svg';
 
-import { NotificationType } from '../../@types/entities/Notification';
+import { NotificationType } from 'types/entities/Notification';
 
 type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
 

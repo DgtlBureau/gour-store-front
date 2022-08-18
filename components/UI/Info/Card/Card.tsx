@@ -4,7 +4,7 @@ import { Paper } from '@mui/material';
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Box } from '../../Box/Box';
-import { Typography } from '../../Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 
 import sx from './Card.styles';
 

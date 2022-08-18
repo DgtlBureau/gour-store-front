@@ -3,16 +3,16 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Translator } from 'utils/Translator';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
 import translations from './PassRecovery.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
-import { PasswordRecoveryDto } from '../../../../@types/dto/password-recovery.dto';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 import sx from './PassRecovery.styles';
 

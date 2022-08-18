@@ -1,6 +1,6 @@
-import { Currency } from '../../@types/entities/Currency';
-import { IOrder } from '../../@types/entities/IOrder';
-import { IOrderProfile } from '../../@types/entities/IOrderProfile';
+import { Currency } from 'types/entities/Currency';
+import { IOrder } from 'types/entities/IOrder';
+import { IOrderProfile } from 'types/entities/IOrderProfile';
 
 export const getFormattedAddressesList = (addressList: IOrderProfile[], language: 'en' | 'ru') =>
   addressList.map(it => {

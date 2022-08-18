@@ -7,18 +7,18 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { useAppNavigation } from 'components/Navigation';
 import translations from './Menu.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { IconButton } from '../../UI/IconButton/IconButton';
-import { Typography } from '../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Typography } from 'components/UI/Typography/Typography';
 import { MobileMenuContacts } from './MenuContacts';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { Currency } from '../../../@types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Currency } from 'types/entities/Currency';
 
-import locationIcon from '../../../assets/icons/mobile/location.svg';
-import arrowIcon from '../../../assets/icons/mobile/arrow.svg';
-import lightArrowIcon from '../../../assets/icons/mobile/light-arrow.svg';
-import russiaImage from '../../../assets/images/countries/russia.png';
-import britainImage from '../../../assets/images/countries/britain.png';
+import locationIcon from 'assets/icons/mobile/location.svg';
+import arrowIcon from 'assets/icons/mobile/arrow.svg';
+import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
+import russiaImage from 'assets/images/countries/russia.png';
+import britainImage from 'assets/images/countries/britain.png';
 
 import sx from './Menu.styles';
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 import sx from './CardProduct.styles';
-import { Currency } from '../../../@types/entities/Currency';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
+import { Currency } from 'types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 import translations from './Card.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 export type OrderProductType = {
   photo: string;

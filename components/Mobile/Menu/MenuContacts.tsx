@@ -2,12 +2,12 @@ import React from 'react';
 import { ListItem } from '@mui/material';
 import Image from 'next/image';
 
-import { Box } from '../../UI/Box/Box';
-import { LinkRef as Link } from '../../UI/Link/Link';
+import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 
-import fbIcon from '../../../assets/icons/social/fb-white.svg';
-import instIcon from '../../../assets/icons/social/inst-white.svg';
-import vkIcon from '../../../assets/icons/social/vk-white.svg';
+import fbIcon from 'assets/icons/social/fb-white.svg';
+import instIcon from 'assets/icons/social/inst-white.svg';
+import vkIcon from 'assets/icons/social/vk-white.svg';
 
 import sx from './Menu.styles';
 

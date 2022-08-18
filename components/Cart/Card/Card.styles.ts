@@ -1,4 +1,4 @@
-import { defaultTheme as t } from '../../../themes';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   card: {

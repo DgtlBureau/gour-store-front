@@ -4,12 +4,12 @@ import { Divider } from '@mui/material';
 import LocationIcon from '@mui/icons-material/LocationOnOutlined';
 
 import { useAppNavigation } from 'components/Navigation';
+import { IOrderProfile } from 'types/entities/IOrderProfile';
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { PAProfilesForm } from '../Form/Form';
-import { Accordion, AccordionSummary, AccordionDetails } from '../../../UI/Accordion/Accordion';
-import { Box } from '../../../UI/Box/Box';
-import { Typography } from '../../../UI/Typography/Typography';
-import { IOrderProfile } from '../../../../@types/entities/IOrderProfile';
-import { OrderProfileDto } from '../../../../@types/dto/order/profile.dto';
+import { Accordion, AccordionSummary, AccordionDetails } from 'components/UI/Accordion/Accordion';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
 import sx from './Item.styles';
 
