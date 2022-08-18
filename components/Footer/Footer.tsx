@@ -15,6 +15,8 @@ import instIcon from 'assets/icons/social/inst.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
 
 import footerSx from './Footer.styles';
+import { Typography } from 'components/UI/Typography/Typography'
+import { Path } from 'constants/routes'
 
 export type FooterProps = {
   firstPhone: string;
@@ -100,16 +102,28 @@ export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
       </Box>
 
       <Box sx={footerSx.info}>
-        <Typography sx={footerSx.infoLink}>{t('copyright')}</Typography>
+        <Typography sx={footerSx.infoLink}>
+          {t('copyright')}
+        </Typography>
 
-        {info.map(link => (
+        {info.map((link) => (
           <Fragment key={link.path}>
-            <Divider sx={footerSx.divider} orientation='vertical' variant='middle' flexItem />
-            <Link href={link.path} rel='noreferrer' target='_blank' sx={footerSx.infoLink}>
+            <Divider
+              sx={footerSx.divider}
+              orientation="vertical"
+              variant="middle"
+              flexItem
+            />
+            <Link
+              href={link.path}
+              rel="noreferrer"
+              target="_blank"
+              sx={footerSx.infoLink}
+            >
               {link.label}
             </Link>
           </Fragment>
-        ))}
+        ))} 
       </Box>
     </Box>
   );
