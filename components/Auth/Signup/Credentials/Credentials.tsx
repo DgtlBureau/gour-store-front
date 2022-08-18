@@ -3,6 +3,8 @@ import { FormControlLabel, Grid, Radio, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Path } from 'constants/routes';
 import translations from './Credentials.i18n.json';
 import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
 import { getSchema } from './validation';
@@ -28,15 +30,9 @@ export type SignupCredentialsProps = {
   onSubmit(data: SignUpFormDto): void;
 };
 
-export function SignupCredentials({
-  defaultValues,
-  onBack,
-  onSendSMS,
-  onCheckCode,
-  onSubmit,
-}: SignupCredentialsProps) {
+export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCode, onSubmit }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
-  const [isCodeSuccess, setIsCodeSuccess] = useState<boolean>(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
   const [isAgree, setIsAgree] = useState(false);
 
@@ -53,10 +49,8 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid =
-    !values.watch('phone') || !!values.getFieldState('phone').error;
-  const codeIsValid =
-    !values.watch('sms') || !!values.getFieldState('sms').error;
+  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
+  const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
   const formIsInvalid = !values.formState.isValid || !isAgree;
 
   const sendSMS = async () => {
@@ -85,104 +79,75 @@ export function SignupCredentials({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button
-            sx={sx.backBtn}
-            size="small"
-            variant="outlined"
-            onClick={onBack}
-          >
+          <Button sx={sx.backBtn} size='small' variant='outlined' onClick={onBack}>
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFRadioGroup name="role" sx={sx.radioGroup}>
+          <HFRadioGroup name='role' sx={sx.radioGroup}>
+            <FormControlLabel sx={sx.radioBtn} value='CLIENT' control={<Radio />} label={t('physical')} />
+            <FormControlLabel sx={sx.radioBtn} value='COMPANY' control={<Radio />} label={t('company')} />
             <FormControlLabel
               sx={sx.radioBtn}
-              value="CLIENT"
-              control={<Radio />}
-              label={t('physical')}
-            />
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value="COMPANY"
-              control={<Radio />}
-              label={t('company')}
-            />
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value="COLLECTIVE_PURCHASE"
+              value='COLLECTIVE_PURCHASE'
               control={<Radio />}
               label={t('collectivePurchase')}
             />
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput
-              name="phone"
-              disabled={isCodeSended}
-              label={t('phone')}
-            />
-            <Button
-              sx={sx.getCodeBtn}
-              onClick={sendSMS}
-              disabled={phoneIsInvalid || isCodeSended}
-            >
+            <HFPhoneInput name='phone' disabled={isCodeSended} label={t('phone')} />
+            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid || isCodeSended}>
               {t('getCode')}
             </Button>
           </Box>
           {isCodeSended && (
             <Stack sx={sx.field}>
               <HFCodeInput
-                name="sms"
-                onChange={value => {
+                name='sms'
+                onChange={(value) => {
                   if (value.length === 4) {
                     checkCode();
                   }
                 }}
               />
-              {isCodeSuccess && (
-                <Typography variant="body1">Код подтвержден</Typography>
-              )}
+              {isCodeSuccess && <Typography variant='body1'>Код подтвержден</Typography>}
             </Stack>
           )}
 
           {isCodeSuccess && (
             <>
+              <HFTextField sx={sx.field} type='text' name='firstName' label={t('firstName')} />
+              <HFTextField sx={sx.field} type='text' name='lastName' label={t('lastName')} />
               <HFTextField
                 sx={sx.field}
-                type="text"
-                name="firstName"
-                label={t('firstName')}
-              />
-              <HFTextField
-                sx={sx.field}
-                type="text"
-                name="lastName"
-                label={t('lastName')}
-              />
-              <HFTextField
-                sx={sx.field}
-                type="password"
-                name="password"
+                type='password'
+                name='password'
                 label={t('password')}
                 helperText={t('passwordHelper')}
               />
-              <HFTextField
-                sx={sx.field}
-                type="password"
-                name="passwordConfirm"
-                label={t('passwordConfirm')}
-              />
+              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
               <Checkbox
                 sx={sx.field}
                 value={isAgree}
                 onChange={agree}
-                label={t('agreement')}
+                label={
+                  <Typography variant='body2' sx={sx.checkboxLabel}>
+                    Я даю свое согласие на сбор и обработку моих персональных данных в соответствии с{' '}
+                    <Link href={`/${Path.RULES}`} target='_blank'>
+                      Политикой
+                    </Link>{' '}
+                    и принимаю условия{' '}
+                    <Link href={`/${Path.OFERTA}`} target='_blank'>
+                      Пользовательского соглашения
+                    </Link>
+                  </Typography>
+                }
               />
             </>
           )}
-          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
+          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>

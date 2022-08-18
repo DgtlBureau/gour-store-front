@@ -1,8 +1,7 @@
-import React from 'react';
-import { Checkbox as MUICheckbox, SxProps } from '@mui/material';
+import React, { ReactElement } from 'react';
+import { Checkbox as MUICheckbox, InputLabel as MUIInputLabel, SxProps } from '@mui/material';
 
 import { Box } from '../../UI/Box/Box';
-import { Typography } from '../Typography/Typography';
 
 const boxSx = {
   display: 'flex',
@@ -11,6 +10,7 @@ const boxSx = {
 const labelSx = {
   fontSize: '13px',
   marginLeft: '10px',
+  cursor: 'pointer',
 };
 
 const checkSx = {
@@ -19,10 +19,11 @@ const checkSx = {
 };
 
 type Props = {
+  id?: string;
   defaultChecked?: boolean;
   disabled?: boolean;
   value?: boolean;
-  label?: string;
+  label?: string | ReactElement;
   name?: string;
   sx?: SxProps;
   edge?: 'start' | 'end';
@@ -32,11 +33,12 @@ type Props = {
 };
 
 export function Checkbox({
+  id = Date.now().toString(),
   defaultChecked,
   value,
   disabled,
   label,
-  name,
+  name = 'checkbox',
   sx,
   edge,
   tabIndex,
@@ -46,6 +48,7 @@ export function Checkbox({
   return (
     <Box sx={{ ...boxSx, ...sx }}>
       <MUICheckbox
+        id={id}
         sx={checkSx}
         name={name}
         defaultChecked={defaultChecked}
@@ -56,7 +59,7 @@ export function Checkbox({
         disableRipple={disableRipple}
         onChange={onChange}
       />
-      {label && <Typography sx={labelSx}>{label}</Typography>}
+      {label && <MUIInputLabel htmlFor={id} sx={labelSx}>{label}</MUIInputLabel>}
     </Box>
   );
 }

@@ -40,6 +40,9 @@ const sx = {
   field: {
     marginBottom: '14px',
   },
+  checkboxLabel: {
+    whiteSpace: 'normal' as const,
+  },
   backBtn: {
     width: 'fit-content',
     marginBottom: '20px',
