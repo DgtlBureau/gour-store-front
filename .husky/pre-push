@@ -5,8 +5,8 @@ echo '🏗️👷 Building your project before pushing'
 
 npm run build ||
 (
-    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
-            Next build failed: View the errors above to see why. 
+    echo '❌👷🔨❌ Next build failed ❌👷🔨❌
+            View the errors above to see why. 
     '
     false;
 )
