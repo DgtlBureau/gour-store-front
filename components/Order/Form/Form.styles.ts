@@ -42,6 +42,9 @@ export const sx = {
     marginBottom: '20px',
     color: theme.palette.text.muted,
   },
+  agreementLabel: {
+    whiteSpace: 'normal' as const,
+  },
 };
 
 export default sx;
