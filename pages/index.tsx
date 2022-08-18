@@ -32,6 +32,8 @@ import { IProduct } from '../types/entities/IProduct';
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
 
 const NOW = new Date();
 
@@ -46,8 +48,8 @@ const Home: NextPage = () => {
 
   const dispatch = useAppDispatch();
 
-  const { data: categories, isLoading: categoriesIsLoading } = useGetCategoryListQuery();
-  const { data: products, isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
+  const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
+  const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
   const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
   });
@@ -67,18 +69,15 @@ const Home: NextPage = () => {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
+    try {
+      if (isElect) {
         await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранное', { type: NotificationType.DANGER });
     }
   };
 
@@ -87,7 +86,7 @@ const Home: NextPage = () => {
       <ShopLayout currency={currency} language={language}>
         {isLoading && <ProgressLinear />}
 
-        {!!promotions && (
+        {promotions && (
           <CardSlider
             title={t('promotions')}
             cardsList={promotions
@@ -102,39 +101,35 @@ const Home: NextPage = () => {
           />
         )}
 
-        {!!novelties && (
-          <ProductCatalog
-            title={t('novelties')}
-            products={novelties}
-            favoritesList={favoriteProducts}
-            basket={basket.products}
-            language={language}
-            currency={currency}
-            rows={1}
-            sx={sx.productList}
-            onAdd={addToBasket}
-            onRemove={removeFromBasket}
-            onElect={handleElect}
-            onDetail={goToProductPage}
-          />
-        )}
+        <ProductCatalog
+          title={t('novelties')}
+          products={novelties}
+          favoritesList={favoriteProducts}
+          basket={basket.products}
+          language={language}
+          currency={currency}
+          rows={1}
+          sx={sx.productList}
+          onAdd={addToBasket}
+          onRemove={removeFromBasket}
+          onElect={handleElect}
+          onDetail={goToProductPage}
+        />
 
-        {!!products && (
-          <ProductCatalog
-            title={t('catalog')}
-            favoritesList={favoriteProducts}
-            products={products}
-            basket={basket.products}
-            categories={categories}
-            language={language}
-            currency={currency}
-            sx={sx.productList}
-            onAdd={addToBasket}
-            onRemove={removeFromBasket}
-            onElect={handleElect}
-            onDetail={goToProductPage}
-          />
-        )}
+        <ProductCatalog
+          title={t('catalog')}
+          favoritesList={favoriteProducts}
+          products={products}
+          basket={basket.products}
+          categories={categories}
+          language={language}
+          currency={currency}
+          sx={sx.productList}
+          onAdd={addToBasket}
+          onRemove={removeFromBasket}
+          onElect={handleElect}
+          onDetail={goToProductPage}
+        />
 
         {!!page && (
           <>

@@ -1,30 +1,28 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { IProduct } from 'types/entities/IProduct';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+import { useGetPromotionQuery } from 'store/api/promotionApi';
+
+import { PrivateLayout } from 'layouts/Private/Private';
+import { ShopLayout } from 'layouts/Shop/Shop';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { useGetPromotionQuery } from 'store/api/promotionApi';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import { PrivateLayout } from 'layouts/Private/Private';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { useAppNavigation } from 'components/Navigation';
-import { Path } from 'constants/routes';
-import { IProduct } from 'types/entities/IProduct';
+import translations from './Promotion.i18n.json';
 
 import { sx } from './Promotion.styles';
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { ShopLayout } from 'layouts/Shop/Shop';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Promotion.i18n.json';
 
 export default function Promotion() {
   const dispatch = useAppDispatch();
@@ -35,8 +33,10 @@ export default function Promotion() {
     goToHome,
     goToProductPage,
     language,
+    currency,
     query: { id: queryId },
   } = useAppNavigation();
+
   const promotionId = queryId ? +queryId : 0;
 
   const { data: promotion, isLoading, isError } = useGetPromotionQuery(promotionId, { skip: !queryId });
@@ -45,8 +45,6 @@ export default function Promotion() {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const basket = useAppSelector(state => state.order);
-
-  const currency = 'cheeseCoin';
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -96,19 +94,21 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            <ProductCatalog
-              title={t('sliderTitle')}
-              products={promotion?.products || []}
-              basket={basket.products}
-              language={language}
-              currency={currency}
-              discount={promotion?.discount}
-              onAdd={addToBasket}
-              onRemove={removeFromBasket}
-              onElect={elect}
-              onDetail={goToProductPage}
-              favoritesList={favoriteProducts}
-            />
+            {promotion?.products?.length && (
+              <ProductCatalog
+                title={t('sliderTitle')}
+                products={promotion.products}
+                basket={basket.products}
+                language={language}
+                currency={currency}
+                discount={promotion?.discount}
+                onAdd={addToBasket}
+                onRemove={removeFromBasket}
+                onElect={elect}
+                onDetail={goToProductPage}
+                favoritesList={favoriteProducts}
+              />
+            )}
           </>
         )}
       </ShopLayout>

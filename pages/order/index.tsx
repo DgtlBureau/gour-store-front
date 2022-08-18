@@ -50,7 +50,7 @@ const sx = {
 const DELIVERY_PRICE = 500;
 
 export function Order() {
-  const { goToOrders, goToHome, language } = useAppNavigation();
+  const { goToOrders, goToHome, language, currency } = useAppNavigation();
 
   const { t } = useLocalTranslation(translation);
 
@@ -58,8 +58,6 @@ export function Order() {
 
   const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
   const [fetchCreateOrder] = useCreateOrderMutation();
-
-  const currency = 'cheeseCoin';
 
   const [isSubmitError, setIsSubmitError] = useState(false);
 

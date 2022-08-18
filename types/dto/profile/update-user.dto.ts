@@ -3,5 +3,5 @@ export type UpdateUserDto = Partial<{
   lastName: string;
   referralCode: string;
   email: string;
-  avatarId: number | null;
+  avatarId?: number | null;
 }>;

@@ -20,13 +20,14 @@ export enum Path {
   PRODUCTS = 'products',
   NOVELTIES = 'novelties',
   GRADES = 'grades',
+  SIMILAR = 'similar',
 
   FAVORITES = 'favorites',
   CATEGORIES = 'categories',
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
   CHANGE_PASSWORD = 'change-password',
-  SEND_CODE = 'send-sms',
+  SEND_CODE = 'send-code',
   CHANGE_PHONE = 'change-phone',
 
   WALLET = 'wallet',
@@ -37,6 +38,7 @@ export enum Path {
   GAME = 'game',
 
   MAIN = 'main',
+  ORDER = 'order',
   ORDERS = 'orders',
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',

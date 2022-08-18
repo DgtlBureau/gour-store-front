@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { format } from 'date-fns';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Typography, Grid } from '@mui/material';
 
 import translations from './Card.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -9,52 +9,17 @@ import { Box } from 'components/UI/Box/Box';
 import { OrderProductType, OrderCardProduct } from './CardProduct';
 import { OrderCardInfo } from './CardInfo';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { Currency } from 'types/entities/Currency';
 
-const sx = {
-  header: {
-    width: '100%',
-    marginRight: '10px',
-  },
-  status: {
-    width: 'fit-content',
-    marginRight: '10px',
-    padding: '2px 8px',
-    borderRadius: '4px',
-  },
-  details: {
-    marginTop: '20px',
-    padding: 0,
-  },
-  contacts: {
-    display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
-  },
-  total: {
-    textAlign: 'right',
-    fontWeight: 'bold',
-    order: {
-      xs: 2,
-      sm: 4,
-    },
-  },
-  divider: {
-    margin: '20px 0 0 0',
-  },
-  muted: {
-    color: 'text.muted',
-  },
-};
+import sx from './Card.styles';
 
 type Promotion = {
   title: string;
   amount: number;
 };
 
-export type OrdersCardProps = {
+export type FullOrder = {
   title: string;
   status: {
     title: string;
@@ -63,23 +28,19 @@ export type OrdersCardProps = {
   createdAt: Date;
   address: string;
   client: string;
-  currency: Currency;
   products: OrderProductType[];
   promotions: Promotion[];
   deliveryCost: number;
+  currency: Currency;
 };
 
-export function OrdersCard({
-  title,
-  status,
-  address,
-  client,
-  createdAt,
-  products,
-  currency,
-  promotions,
-  deliveryCost,
-}: OrdersCardProps) {
+export type OrdersCardProps = {
+  order: FullOrder;
+};
+
+export function OrdersCard({ order }: OrdersCardProps) {
+  const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost } = order;
+
   const { t } = useLocalTranslation(translations);
 
   const productCount = products.length;
@@ -90,7 +51,13 @@ export function OrdersCard({
     return acc + (currentProduct.cost * currentProduct.weight) / 100;
   }, 0);
 
-  const createdDate = format(createdAt, 'yyyy.MM.d');
+  const productsCountText = getDeclensionWordByCount(productCount, [
+    t('manyProducts'),
+    t('oneProduct'),
+    t('someProducts'),
+  ]);
+
+  const createdDate = format(createdAt, 'dd.MM.yyyy');
   const createdTime = format(createdAt, 'HH:mm');
 
   const summaryDiscount = promotions.reduce((acc, currentDiscount) => acc + currentDiscount.amount, 0);
@@ -102,37 +69,39 @@ export function OrdersCard({
   return (
     <Accordion>
       <AccordionSummary>
-        <Stack
-          sx={sx.header}
-          direction={{ xs: 'column', sm: 'row' }}
-          alignItems={{ xs: 'none', sm: 'center' }}
-          justifyContent={{ xs: 'none', sm: 'space-between' }}
-          spacing={2}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant='h6'>{title}</Typography>
+        <Grid container sx={sx.header}>
+          <Grid item sm={3} xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant='h6'>{`Заказ ${title}`}</Typography>
 
-            <Typography sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }} variant='h6'>
-              {priceWithDiscount} {currencySymbol}
+            <Box sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }}>
+              <Typography variant='h6' sx={sx.totalText}>
+                {priceWithDiscount} {currencySymbol}
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item sm={5} xs={12} sx={{ display: 'flex', alignItems: 'center', margin: { xs: '5px 0' } }}>
+            <Typography sx={{ ...sx.status, backgroundColor: status.color || 'secondary.main' }}>
+              {status.title || 'ожидание'}
             </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ ...sx.status, backgroundColor: status.color }}>{status.title}</Typography>
 
             <Typography variant='body1' sx={sx.muted}>
               {t('from')} {createdDate} {t('at')} {createdTime}
             </Typography>
-          </Box>
+          </Grid>
 
-          <Typography variant='body1' sx={sx.muted}>
-            {productCount} товара
-          </Typography>
+          <Grid item sm={2} xs={12}>
+            <Typography variant='body1' sx={{ ...sx.muted, ...sx.count }}>
+              {productCount} {productsCountText}
+            </Typography>
+          </Grid>
 
-          <Typography sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }} variant='h6'>
-            {priceWithDiscount} {currencySymbol}
-          </Typography>
-        </Stack>
+          <Grid item sm={2} xs={12} sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }}>
+            <Typography variant='h6' sx={sx.totalText}>
+              {priceWithDiscount} {currencySymbol}
+            </Typography>
+          </Grid>
+        </Grid>
       </AccordionSummary>
 
       <Divider variant='fullWidth' sx={{ margin: '20px 0 0 0' }} />

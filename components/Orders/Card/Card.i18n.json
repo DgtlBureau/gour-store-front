@@ -9,7 +9,10 @@
     "from": "от",
     "at": "в",
     "g": "г",
-    "pc": "шт"
+    "pc": "шт",
+    "oneProduct": "товар",
+    "someProducts": "товара",
+    "manyProducts": "товаров"
   },
   "en": {
     "deliveryAddress": "Delivery address",
@@ -18,10 +21,12 @@
     "economy": "Total you save",
     "total": "Total",
     "delivery": "Delivery",
-
     "from": "from",
     "at": "at",
     "g": "g",
-    "pc": "шт"
+    "pc": "шт",
+    "oneProduct": "product",
+    "someProducts": "products",
+    "manyProducts": "products"
   }
 }

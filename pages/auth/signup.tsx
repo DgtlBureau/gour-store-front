@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { useGetRoleListQuery } from 'store/api/roleApi';
+import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { NotificationType } from 'types/entities/Notification';
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
+import { dispatchNotification } from 'packages/EventBus';
+
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
 import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
-import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { useAppNavigation } from 'components/Navigation';
 import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
-import { dispatchNotification } from 'packages/EventBus';
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
-import { SignUpDto } from 'types/dto/signup.dto';
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 
 import credentialsImage from 'assets/icons/signup/credentials.svg';
 import greetingsImage from 'assets/icons/signup/greetings.svg';
 import cityImage from 'assets/icons/signup/city.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
-
-import { NotificationType } from 'types/entities/Notification';
 
 type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
 
@@ -43,7 +43,7 @@ export default function SignUp() {
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
 
-  const [stage, setStage] = useState<AuthStage>('favoriteInfo');
+  const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
@@ -60,12 +60,15 @@ export default function SignUp() {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
       await sendCode(phone).unwrap();
+      dispatchNotification('SMS код отправлен');
       return 'success';
     } catch (error) {
       console.error(error);
+      dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
       return (error as any).data.message;
     }
   };
+
   const checkCode = async (code: string) => {
     // TODO: затипизировать ошибку и выводить строку с ошибкой или success
 
@@ -104,25 +107,27 @@ export default function SignUp() {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
       phone: credentials.phone,
-      code: +credentials.sms,
+      code: credentials.sms,
       password: credentials.password,
       referralCode,
       cityId: +selectedCity,
-      roleId: (role && role.id) || 1,
+      roleId: role?.id || 1,
     };
 
     try {
       await signUp(data).unwrap();
-      goToFavoriteInfo();
+
+      dispatchNotification('Регистрация прошла успешно');
+      goToSignIn();
     } catch (e: unknown) {
-      dispatchNotification('Ошибка авторизации', { type: NotificationType.DANGER });
+      console.log(e);
+      dispatchNotification('Ошибка регистрации', { type: NotificationType.DANGER });
     }
   };
 
   const saveReferralCode = (referralData: ReferralCodeDto) => {
     setReferralCode(referralData.referralCode);
     registerUser();
-    goToSignIn();
   };
 
   const forms = {

@@ -20,6 +20,8 @@ import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 import { isProductFavorite } from './favoritesHelper';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
 
 const sx = {
   title: {
@@ -86,18 +88,15 @@ export function Favorites() {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
+    try {
+      if (isElect) {
         await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
     }
   };
 

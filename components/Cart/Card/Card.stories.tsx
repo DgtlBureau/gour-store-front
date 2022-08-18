@@ -38,6 +38,8 @@ const Template: ComponentStory<typeof CartCard> = function () {
         onDelete={() => ({})}
         onAdd={() => edit('increase')}
         onSubtract={() => edit('increase')}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onDetail={() => {}}
       />
     </div>
   );

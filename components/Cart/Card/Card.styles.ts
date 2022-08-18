@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { defaultTheme as t } from '../../../themes';
 
 const sx = {
   card: {
@@ -19,6 +19,8 @@ const sx = {
   },
 
   image: {
+    cursor: 'pointer',
+
     height: {
       sm: '125px',
       xs: '80px',
@@ -56,6 +58,7 @@ const sx = {
   },
 
   title: {
+    cursor: 'pointer',
     fontSize: {
       xs: '14px',
       sm: '16px',
@@ -64,6 +67,10 @@ const sx = {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: t.palette.text.secondary,
+
+    '&:hover': {
+      opacity: '0.75',
+    },
   },
 
   docket: {

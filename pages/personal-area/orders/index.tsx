@@ -6,18 +6,19 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PALayout } from 'layouts/PA/PA';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppNavigation } from 'components/Navigation';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 
 export function Orders() {
-  const lang = 'ru';
-  const currency = 'cheeseCoin';
+  const { language, currency } = useAppNavigation();
 
   const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
 
-  const formattedOrdersList = ordersList.map(order => formatOrderData(order, lang, currency));
+  const formattedOrdersList = ordersList.map(order => formatOrderData(order, language, currency));
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
+
   const orderKeys = Object.keys(groupedOrders);
 
   if (isLoading) {
@@ -43,14 +44,8 @@ export function Orders() {
           {orderKeys.length !== 0 ? (
             orderKeys.map(key => {
               const orderGroup = groupedOrders[+key];
-              return (
-                <OrdersCardGroup
-                  key={key}
-                  date={orderGroup.date}
-                  ordersList={orderGroup.orderList}
-                  currency={currency}
-                />
-              );
+
+              return <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} />;
             })
           ) : (
             <Typography variant='h5'>Список заказов пуст</Typography>

@@ -11,7 +11,8 @@
       "part1": "Добавьте ещё товаров на",
       "part2": "для бесплатной доставки по Москве и Санкт-Петербургу"
     },
-    "detailed": "Подробнее"
+    "detailed": "Подробнее",
+    "similar": "Подобрали для вас"
   },
   "en": {
     "cart": "Cart",
@@ -25,6 +26,7 @@
       "part1": "Add more items for",
       "part2": "for free delivery in Moscow and St. Petersburg"
     },
-    "detailed": "More detailed"
+    "detailed": "More detailed",
+    "similar": "Picked up for you"
   }
 }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import {
@@ -14,8 +13,17 @@ import {
   selectProductsInOrder,
   subtractBasketProduct,
   removeProduct,
+  selectProductsIdInOrder,
 } from 'store/slices/orderSlice';
-import translation from './Basket.i18n.json';
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
+import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
+import { IProduct } from 'types/entities/IProduct';
+
+import { useAppNavigation } from 'components/Navigation';
 import { Button } from 'components/UI/Button/Button';
 import { CartInfo } from 'components/Cart/Info/Info';
 import { ShopLayout } from 'layouts/Shop/Shop';
@@ -23,7 +31,10 @@ import { CartCard } from 'components/Cart/Card/Card';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { Typography } from 'components/UI/Typography/Typography';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
-import { IProduct } from 'types/entities/IProduct';
+import translation from './Basket.i18n.json';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 
 const sx = {
   title: {
@@ -35,16 +46,28 @@ const sx = {
     fontWeight: 'bold',
     color: 'text.secondary',
   },
+  divider: {
+    borderColor: 'secondary.main',
+  },
+  desktopOrderBtn: {
+    display: { xs: 'none', md: 'flex' },
+    width: '100%',
+    marginBottom: '10px',
+  },
+  mobileOrderBtn: {
+    width: '100%',
+    marginTop: '10px',
+  },
 };
 
 export function Basket() {
-  const { goToHome, goToOrder, language } = useAppNavigation();
+  const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
-  const currency = 'cheeseCoin';
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
   const productsInOrder = useAppSelector(selectProductsInOrder);
   const count = useAppSelector(selectedProductCount);
@@ -52,14 +75,34 @@ export function Basket() {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
+  const productIds = useAppSelector(selectProductsIdInOrder);
+
+  const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });
+
   // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
+  const [removeFavorite] = useDeleteFavoriteProductMutation();
+  const [addFavorite] = useCreateFavoriteProductsMutation();
+
   const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
   const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+
+  const handleElect = async (id: number, isElect: boolean) => {
+    try {
+      if (isElect) {
+        await removeFavorite(id);
+      } else {
+        await addFavorite({ productId: id });
+      }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
+    }
+  };
 
   return (
     <PrivateLayout>
@@ -84,25 +127,30 @@ export function Basket() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map((it, i) => (
-                <CartCard
-                  key={it.product.id}
-                  title={it.product.title[language] || '...'}
-                  price={it.product.price[currency] || 0}
-                  amount={it.amount}
-                  weight={it.amount}
-                  isWeightGood={it.product.isWeightGood}
-                  productImg={it.product.images[0]?.small}
-                  discount={it.product.discount}
-                  currency={currency}
-                  onDelete={() => deleteProduct(it.product)}
-                  onAdd={() => addProduct(it.product)}
-                  onSubtract={() => subtractProduct(it.product)}
-                />
+                <>
+                  <CartCard
+                    key={it.product.id}
+                    title={it.product.title[language] || '...'}
+                    price={(it.product.price as any)[currency] || 0} // FIXME: TODO: избавиться от any
+                    amount={it.amount}
+                    weight={it.weight}
+                    isWeightGood={it.product.isWeightGood}
+                    productImg={it.product.images[0]?.small}
+                    discount={it.product.discount}
+                    currency={currency}
+                    onDetail={() => goToProductPage(it.product.id)}
+                    onDelete={() => deleteProduct(it.product)}
+                    onAdd={() => addProduct(it.product)}
+                    onSubtract={() => subtractProduct(it.product)}
+                  />
+
+                  <Divider sx={sx.divider} />
+                </>
               ))}
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Button onClick={goToOrder} sx={{ width: '100%', marginBottom: '10px' }}>
+              <Button onClick={goToOrder} sx={sx.desktopOrderBtn}>
                 {t('orderButton')}
               </Button>
 
@@ -127,6 +175,28 @@ export function Basket() {
                 text={t('aboutDelivery')}
                 link={{ label: t('detailed'), path: '/' }}
               />
+            </Grid>
+
+            {!!similarProducts?.length && (
+              <Grid item xs={12}>
+                <ProductCatalog
+                  title={t('similar')}
+                  products={similarProducts}
+                  language={language}
+                  currency={currency}
+                  favoritesList={favoriteProducts}
+                  onAdd={addProduct}
+                  onRemove={subtractProduct}
+                  onElect={handleElect}
+                  onDetail={goToProductPage}
+                />
+              </Grid>
+            )}
+
+            <Grid item xs={12} sx={{ display: { md: 'none' } }}>
+              <Button onClick={goToOrder} sx={sx.mobileOrderBtn}>
+                {t('orderButton')}
+              </Button>
             </Grid>
           </Grid>
         )}

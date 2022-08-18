@@ -1,11 +1,24 @@
 import React, { useRef } from 'react';
 import { LinearProgress } from '@mui/material';
 
+import {
+  useCreateFavoriteProductsMutation,
+  useDeleteFavoriteProductMutation,
+  useGetFavoriteProductsQuery,
+} from 'store/api/favoriteApi';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import { dispatchNotification } from 'packages/EventBus';
+import { CHARACTERISTICS } from 'constants/characteristics';
+import { NotificationType } from 'types/entities/Notification';
+import { IProduct } from 'types/entities/IProduct';
+import { CommentDto } from 'types/dto/comment.dto';
+
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { PrivateLayout } from 'layouts/Private/Private';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
@@ -14,28 +27,20 @@ import { ProductReviews } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
-import { CHARACTERISTICS } from 'constants/characteristics';
-
-import { PrivateLayout } from 'layouts/Private/Private';
-import {
-  useCreateFavoriteProductsMutation,
-  useDeleteFavoriteProductMutation,
-  useGetFavoriteProductsQuery,
-} from 'store/api/favoriteApi';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import { useAppNavigation } from 'components/Navigation';
-import sx from './Product.styles';
-import { IProduct } from 'types/entities/IProduct';
 import { LinkRef as Link } from 'components/UI/Link/Link';
-import { ShopLayout } from 'layouts/Shop/Shop';
-import { CommentDto } from 'types/dto/comment.dto';
+
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import translations from './Product.i18n.json';
+
+import sx from './Product.styles';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
     goToProductPage,
     language,
+    currency,
     query: { id: queryId },
   } = useAppNavigation();
 
@@ -48,8 +53,6 @@ export default function Product() {
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
-
-  const currency = 'cheeseCoin';
 
   const productId = queryId ? +queryId : 0;
 
@@ -71,18 +74,15 @@ export default function Product() {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
-        await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
+    try {
+      if (isElect) {
+        await removeFavorite(id); // FIXME: TODO: избавиться от дублирования кода в разных компонентах
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
     }
   };
 
@@ -178,7 +178,7 @@ export default function Product() {
               <Typography variant='body1'>{product.description[language] || ''}</Typography>
             </Box>
 
-            {!!product.similarProducts && (
+            {!!product.similarProducts.length && (
               <ProductCatalog
                 title={t('similar')}
                 products={product.similarProducts}

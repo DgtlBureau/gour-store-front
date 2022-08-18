@@ -17,8 +17,8 @@ import { getValidationSchema } from './validation';
 type UserData = {
   firstName: string;
   lastName: string;
-  email: string;
-  referralCode: string;
+  email?: string;
+  referralCode?: string;
 };
 
 export type PACredentialsEditorProps = {
@@ -50,16 +50,13 @@ export function PACredentialsEditor({
     values.reset(user);
   }, [user]);
 
-  const submitHandler = (formData: Partial<UserData>) => {
-    onSave(formData);
-  };
-  const cancelHandler = () => {
-    values.reset(user);
-  };
+  const submit = (data: Partial<UserData>) => onSave(data);
+
+  const cancel = () => values.reset(user);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form onSubmit={values.handleSubmit(submit)}>
         <Stack spacing={2} sx={{ margin: '0 0 10px 0' }}>
           <HFTextField name='firstName' label={t('firstName')} />
           <HFTextField name='lastName' label={t('lastName')} />
@@ -88,7 +85,7 @@ export function PACredentialsEditor({
         <Button type='submit' disabled={!values.formState.isDirty} sx={{ margin: '0 10px 0 0' }}>
           {t('submit')}
         </Button>
-        <Button disabled={!values.formState.isDirty} onClick={cancelHandler}>
+        <Button disabled={!values.formState.isDirty} onClick={cancel}>
           {t('cancel')}
         </Button>
       </form>

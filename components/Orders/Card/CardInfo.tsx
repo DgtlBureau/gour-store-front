@@ -81,7 +81,7 @@ export function OrderCardInfo({
 
       <Divider variant='fullWidth' sx={{ margin: '10px 0' }} />
 
-      {summaryDiscount && (
+      {!!summaryDiscount && (
         <Stack direction='row' alignItems='center' justifyContent='space-between'>
           <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
             {t('economy')}

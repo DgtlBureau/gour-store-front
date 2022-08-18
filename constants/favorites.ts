@@ -1,25 +1,35 @@
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
+import { getCountryImage } from 'helpers/countryHelper';
 
 export const favoriteCountries = [
   {
-    image: '',
+    image: getCountryImage('Russia'),
     title: 'Россия',
     id: 1,
   },
   {
-    image: '',
-    title: 'Англия',
+    image: getCountryImage('Spain'),
+    title: 'Испания',
     id: 2,
   },
   {
-    image: '',
-    title: 'Испания',
+    image: getCountryImage('Italy'),
+    title: 'Италия',
     id: 3,
   },
   {
-    image: '',
-    title: 'Италия',
+    image: getCountryImage('France'),
+    title: 'Франция',
     id: 4,
+  },
+  {
+    image: getCountryImage('Holland'),
+    title: 'Голландия',
+    id: 5,
+  },
+  {
+    image: getCountryImage('GreatBritain'),
+    title: 'Великобритания',
+    id: 6,
   },
 ];
 

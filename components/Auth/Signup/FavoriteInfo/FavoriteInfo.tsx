@@ -21,7 +21,7 @@ export type FavoriteInfo = {
 
 export type SignupFavoriteInfoProps = {
   countries: {
-    image: string;
+    image?: string;
     title: string;
     id: number;
   }[];
@@ -93,7 +93,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
                 }}
                 onClick={() => handleClickCountry(country.id)}
               >
-                <Typography variant='body2'>{country.title}</Typography>
+                {!country.image && <Typography variant='body2'>{country.title}</Typography>}
               </div>
             </Grid>
           ))}

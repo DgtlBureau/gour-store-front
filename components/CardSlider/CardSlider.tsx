@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { CSSProperties, ReactNode, useState } from 'react';
+
 import { ButtonGroup, Stack, SxProps } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Grid } from 'swiper';
@@ -37,10 +38,18 @@ const sliderSx = {
       md: 'flex',
     },
   },
+  emptyTitle: {
+    marginTop: '15px',
+    fontSize: {
+      sm: '24px',
+      xs: '16px',
+    },
+  },
 };
 
 type Props = {
   title?: string;
+  emptyTitle?: string;
   head?: ReactNode;
   cardsList: ReactNode[];
   rows?: number;
@@ -49,7 +58,16 @@ type Props = {
   sx?: SxProps;
 };
 
-export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4, spaceBetween = 10, sx }: Props) {
+export function CardSlider({
+  title,
+  emptyTitle,
+  head,
+  cardsList,
+  rows = 1,
+  slidesPerView = 4,
+  spaceBetween = 10,
+  sx,
+}: Props) {
   const [slider, setSlider] = useState<SwiperCore | null>(null);
 
   const [edge, setEdge] = useState({
@@ -84,30 +102,36 @@ export function CardSlider({ title, head, cardsList, rows = 1, slidesPerView = 4
 
       {head}
 
-      <Box sx={{ width: '100%', marginTop: { xs: '20px', md: '40px' } }}>
-        <Swiper
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-          spaceBetween={spaceBetween}
-          grid={{
-            fill: 'row',
-            rows,
-          }}
-          onSwiper={setSlider}
-          modules={[Grid]}
-          className='mySwiper'
-          slidesPerView='auto'
-          onSlideChange={slideChangeHandler}
-        >
-          {cardsList.map((card, i) => (
-            <SwiperSlide key={i} className={cardCss.fit}>
-              {card}
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
+      {cardsList.length ? (
+        <Box sx={{ width: '100%', marginTop: { xs: '20px', md: '40px' } }}>
+          <Swiper
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
+            spaceBetween={spaceBetween}
+            grid={{
+              fill: 'row',
+              rows,
+            }}
+            onSwiper={setSlider}
+            modules={[Grid]}
+            className='mySwiper'
+            slidesPerView='auto'
+            onSlideChange={slideChangeHandler}
+          >
+            {cardsList.map((card, i) => (
+              <SwiperSlide key={i} className={cardCss.fit}>
+                {card}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
+      ) : (
+        <Typography variant='h5' color='primary' sx={sliderSx.emptyTitle}>
+          {emptyTitle || 'Список карточек пуст'}
+        </Typography>
+      )}
     </Box>
   );
 }

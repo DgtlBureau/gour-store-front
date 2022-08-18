@@ -48,9 +48,7 @@ export function SignupReferralCode({ defaultValues, onBack, onSubmit }: SignupRe
           />
         </form>
       </FormProvider>
-      <Typography sx={{ margin: '0 0 10px 0' }} variant='h6'>
-        {t('thirdText')}
-      </Typography>
+      <Typography variant='h6'>{t('thirdText')}</Typography>
 
       <Button form='referralCodeForm' type='submit' sx={sx.submitBtn}>
         {t('goNext')}
