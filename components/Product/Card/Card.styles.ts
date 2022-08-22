@@ -5,7 +5,7 @@ const sx = {
     display: 'flex',
     flexDirection: 'column',
 
-    height: '100%',
+    height: 'auto',
 
     width: {
       xs: '170px',
