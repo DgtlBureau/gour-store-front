@@ -20,6 +20,9 @@ const sx = {
       color: 'accent.main',
     },
   },
+  link: {
+    textAlign: 'left',
+  },
   backBtn: {
     width: 'fit-content',
     marginBottom: '20px',

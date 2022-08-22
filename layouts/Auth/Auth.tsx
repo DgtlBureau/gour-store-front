@@ -11,11 +11,9 @@ import stripes from 'assets/images/stripes.svg';
 const sx = {
   layout: {
     padding: {
-      xs: '100px 0 0 0',
+      xs: '20px 0',
     },
-    minHeight: {
-      md: '100vh',
-    },
+    minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

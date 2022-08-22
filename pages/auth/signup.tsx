@@ -25,7 +25,7 @@ import cityImage from 'assets/icons/signup/city.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
 
-type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
+type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
 export default function SignUp() {
   const { goToIntro, goToSignIn, language } = useAppNavigation();
