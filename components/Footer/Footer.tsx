@@ -64,10 +64,6 @@ export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
       path: `/${Path.PRIVACY}`,
     },
     {
-      label: t('cookie'),
-      path: `/${Path.COOKIE}`,
-    },
-    {
       label: t('terms'),
       path: `/${Path.OFERTA}`,
     },
