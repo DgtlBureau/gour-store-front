@@ -12,3 +12,8 @@ export function getPriceWithDiscount(price: number, discount?: number) {
   const pricePercent = 1 - discount / 100;
   return Math.round(price * pricePercent);
 }
+
+const priceFormatter = new Intl.NumberFormat('ru-RU');
+export function getFormattedPrice(price: number) {
+  return priceFormatter.format(price);
+}

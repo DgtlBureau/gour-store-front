@@ -55,6 +55,10 @@ export function PALayout({ children }: PALayoutProps) {
       path: `/${Path.PERSONAL_AREA}`,
     },
     {
+      label: t('payments'),
+      path: `/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`,
+    },
+    {
       label: t('orders'),
       path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },

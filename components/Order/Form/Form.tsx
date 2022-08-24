@@ -23,7 +23,7 @@ import sx from './Form.styles';
 const contactsFields: HFTextFieldProps[] = [
   { name: 'firstName' },
   { name: 'lastName' },
-  { name: 'phone', type: 'number' },
+  { name: 'phone' }, // FIXME: валидация для номера
   { name: 'email', type: 'email' },
 ];
 

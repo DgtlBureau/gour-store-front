@@ -15,6 +15,7 @@ export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   goToGame: () => void;
   goToProductPage: (id: number) => void;
   goToCredentials: () => void;
+  goToPayments: () => void;
   goToAddresses: () => void;
   goToDiscounts: () => void;
   goToOrders: () => void;
