@@ -160,13 +160,12 @@ export function OrderForm({
                 name="deliveryProfileId"
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
-                sx={sx.select}
               />
             )}
 
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} sx={sx.select} />
+                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} />
               </Grid>
 
               {addressFields.map(field => (
@@ -194,10 +193,15 @@ export function OrderForm({
               onChange={agree}
               label={
                 <span style={sx.agreementLabel}>
-                  Даю свое согласие с <Link href={Path.OFERTA} target="_blank">условиями обслуживания</Link>, а также с
-                  &nbsp;<Link href={Path.PRIVACY} target="_blank">
+                  Даю свое согласие с{' '}
+                  <Link href={Path.OFERTA} target="_blank">
+                    условиями обслуживания
+                  </Link>
+                  , а также с &nbsp;
+                  <Link href={Path.PRIVACY} target="_blank">
                     политикой конфиденциальности и правилами хранения моих персональных данных
-                  </Link>.
+                  </Link>
+                  .
                 </span>
               }
             />

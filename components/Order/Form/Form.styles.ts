@@ -27,9 +27,7 @@ export const sx = {
   promoText: {
     color: theme.palette.text.muted,
   },
-  select: {
-    marginBottom: '20px',
-  },
+
   textarea: {
     margin: 0,
   },

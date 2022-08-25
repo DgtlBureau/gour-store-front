@@ -5,18 +5,18 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Box } from '../UI/Box/Box';
 import { Select, SelectOption } from '../UI/Select/Select';
 
-type Props<V> = {
+type Props = {
   name: string;
   placeholder: string;
-  options: SelectOption<V>[];
-  defaultValue?: SelectOption<V>['value'];
-  onChange?: () => void;
+  options: SelectOption[];
+  defaultValue?: SelectOption['value'];
   type?: string;
   label?: string;
   sx?: SxProps;
+  onChange?: (value: SelectOption['value']) => void;
 };
 
-export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Props<V>) {
+export function HFSelect({ name, defaultValue, sx, ...props }: Props) {
   const {
     control,
     formState: { errors },
@@ -26,16 +26,15 @@ export function HFSelect<V>({ name, defaultValue, sx, onChange, ...props }: Prop
     <Box sx={sx}>
       <Controller
         name={name}
-        rules={{
-          onChange,
-        }}
         control={control}
         defaultValue={defaultValue || ''}
         render={({ field: { ref, onChange, ...rest } }) => (
           <Select
             {...rest}
-            isMulti={false}
-            onChange={newValue => onChange(newValue?.value)}
+            onChange={value => {
+              if (props.onChange) props.onChange(value);
+              else onChange(value);
+            }}
             isError={!!errors[name]}
             error={errors[name]?.message ?? ''}
             {...props}
