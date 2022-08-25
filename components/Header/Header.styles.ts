@@ -88,10 +88,7 @@ const sx = {
     margin: '0 10px',
   },
   menuBtn: {
-    display: {
-      xs: 'flex',
-      sm: 'none',
-    },
+    display: 'flex',
     justifyContent: 'center',
     minWidth: '34px',
     height: '34px',

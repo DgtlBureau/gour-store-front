@@ -65,11 +65,11 @@ export function SigninCredentials({
           <HFTextField sx={sx.field} type='password' name='password' label={t('password')} />
 
           <Box sx={sx.links}>
-            <Link component='button' variant='body2' onClick={onPasswordChange}>
+            <Link sx={sx.link} component='button' type='button' variant='body2' onClick={onPasswordChange}>
               {t('forgotPassword')}
             </Link>
 
-            <Link component='button' variant='body2' onClick={onRegister}>
+            <Link sx={sx.link} component='button' type='button' variant='body2' onClick={onRegister}>
               {t('noAccount')}
             </Link>
           </Box>

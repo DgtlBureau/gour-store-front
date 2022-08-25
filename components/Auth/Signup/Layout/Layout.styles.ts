@@ -4,15 +4,16 @@ export const sx = {
     margin: '0 0 20px 0',
   },
   imageContainer: {
-    position: {
-      xs: 'absolute',
-      md: 'relative',
+    position: 'relative',
+    alignSelf: {
+      xs: 'flex-start',
+      md: 'auto',
+    },
+    marginTop: {
+      xs: '-30px',
+      md: '0',
     },
     left: '0',
     bottom: '0',
-    transform: {
-      xs: 'translateY(calc(100% - 25px))',
-      md: 'translateY(0)',
-    },
   },
 };

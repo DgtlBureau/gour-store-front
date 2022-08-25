@@ -77,7 +77,7 @@ const Home: NextPage = () => {
       }
     } catch (error) {
       console.log(error);
-      dispatchNotification('Ошибка удаления из избранное', { type: NotificationType.DANGER });
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
     }
   };
 
