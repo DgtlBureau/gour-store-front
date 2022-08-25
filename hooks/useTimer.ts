@@ -9,7 +9,8 @@ export const useTimer = (expiresTime: Date, onEnd: () => void) => {
   const requestRef = useRef<number>();
 
   const animate = () => {
-    const isEnd = new Date().getTime() > expiresTime.getTime();
+    const nowTime = new Date();
+    const isEnd = nowTime.getTime() > expiresTime.getTime();
     if (isEnd) {
       cancelAnimationFrame(requestRef.current!);
       onEnd();
@@ -17,11 +18,11 @@ export const useTimer = (expiresTime: Date, onEnd: () => void) => {
     }
 
     const { minutes, seconds } = intervalToDuration({
-      start: expiresTime,
-      end: new Date(),
+      start: nowTime,
+      end: expiresTime,
     });
 
-    const formattedTime = `${zeroPad(minutes!)}:${zeroPad(seconds!)}`;
+    const formattedTime = `${zeroPad(minutes!)}:${zeroPad(seconds!)}`; // TODO: добавить возможность передавать массив с форматом времени аргументом
 
     if (formattedTime !== timerTime) {
       setTimerTime(formattedTime);

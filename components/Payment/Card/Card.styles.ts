@@ -41,16 +41,31 @@ export const sx = {
     gridArea: 'status',
   },
   status: {
-    fontSize: '13px',
+    fontSize: '12px',
     lineHeight: '18px',
     marginRight: '12px',
     padding: '2px 8px',
     borderRadius: '4px',
     whiteSpace: 'nowrap',
   },
+
+  statusWaiting: {
+    backgroundColor: '#FFF1BE',
+  },
+  statusCancelled: {
+    backgroundColor: '#FFE5D6',
+  },
+  statusPaid: {
+    backgroundColor: '#DEF4E6',
+  },
+  statusFailed: {
+    color: '#F7A400',
+    border: '1px solid #F7A400',
+  },
+
   statusDate: {
     fontWeight: 500,
-    fontSize: '15px',
+    fontSize: '12px',
     color: '#A18677',
   },
 
@@ -74,7 +89,7 @@ export const sx = {
     justifyContent: 'flex-end',
     gridArea: 'pay-btn',
   },
-  generalPayBtn: {
+  payBtn: {
     fontSize: '15px',
     fontWeight: 500,
     padding: {
@@ -86,8 +101,6 @@ export const sx = {
     textAlign: 'right',
     width: '100%',
   },
-  payBtn: {},
-  repayBtn: {},
 
   price: {
     fontWeight: 700,

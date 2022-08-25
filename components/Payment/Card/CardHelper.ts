@@ -2,38 +2,30 @@ import { InvoiceStatus } from 'types/entities/IInvoice';
 
 type InvoiceStatusLabels = {
   name: string;
-  color: string;
+  className: 'statusWaiting' | 'statusCancelled' | 'statusPaid' | 'statusFailed';
 };
 
 export const paymentColorByStatus: Record<InvoiceStatus, InvoiceStatusLabels> = {
   PAID: {
     name: 'Оплачен',
-    color: '#DEF4E6',
+    className: 'statusPaid',
   },
   WAITING: {
     name: 'Ожидание оплаты',
-    color: '#FFF1BE',
+    className: 'statusWaiting',
   },
   FAILED: {
     name: 'Ошибка оплаты',
-    color: '#F7A400',
+    className: 'statusFailed',
   },
   CANCELLED: {
     name: 'Платеж отменен',
-    color: '#FFE5D6',
+    className: 'statusCancelled',
   },
 };
 
 export type PayBtnKeys = Exclude<InvoiceStatus, 'PAID' | 'CANCELLED'>;
-type PayBtnOptions = { name: string; className: 'payBtn' | 'repayBtn' };
-const payButtonFields: Record<PayBtnKeys, PayBtnOptions> = {
-  WAITING: {
-    name: 'оплатить',
-    className: 'payBtn',
-  },
-  FAILED: {
-    name: 'повторить оплату',
-    className: 'repayBtn',
-  },
+export const payButtonFields: Record<PayBtnKeys, string> = {
+  WAITING: 'оплатить',
+  FAILED: 'повторить оплату',
 };
-export const getPayBtnFields = (key: PayBtnKeys) => payButtonFields[key];
