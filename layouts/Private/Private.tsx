@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactChild } from 'react';
 
 import { useAppSelector } from 'hooks/store';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -6,7 +6,7 @@ import { selectIsAuth } from 'store/selectors/auth';
 import { useAppNavigation } from 'components/Navigation';
 
 type Props = {
-  children: any;
+  children: ReactChild;
 };
 
 export function PrivateLayout({ children }: Props) {
@@ -14,12 +14,12 @@ export function PrivateLayout({ children }: Props) {
   const { goToIntro } = useAppNavigation();
   const isAuth = useAppSelector(selectIsAuth);
 
-  if (isLoading) return null; // TODO: show loader
+  if (isLoading) return <div>loading...</div>; // TODO: show loader
 
   if (isError || !isAuth) {
     goToIntro();
-    return null;
+    return <div>error...</div>;
   }
 
-  return children;
+  return <div>{children}</div>;
 }

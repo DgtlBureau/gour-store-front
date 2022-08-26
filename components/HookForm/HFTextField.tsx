@@ -37,6 +37,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}

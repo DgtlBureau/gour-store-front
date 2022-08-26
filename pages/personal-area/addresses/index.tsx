@@ -74,6 +74,7 @@ export function Addresses() {
   const changeMainAddress = async (newOrderProfileId: number) => {
     if (!currentUser) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, ...userData } = currentUser;
 
     const updatedUser = {

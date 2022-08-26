@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Translator } from 'utils/Translator';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
 import translations from './PassRecovery.i18n.json';

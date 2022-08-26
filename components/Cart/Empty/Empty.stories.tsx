@@ -14,7 +14,7 @@ const DEFAULT_BTN = {
   onClick: () => ({}),
 };
 
-const Template: ComponentStory<typeof CartEmpty> = function (args) {
+const Template: ComponentStory<typeof CartEmpty> = function () {
   return (
     <CartEmpty title={DEFAULT_TITLE} btn={DEFAULT_BTN}>
       Акции, специальные предложения интересных товаров на помогут вам определиться с выбором!

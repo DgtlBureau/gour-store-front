@@ -37,6 +37,9 @@
     "import/extensions": "off",
     "no-param-reassign": 0,
     "react/jsx-props-no-spreading": 0,
+    "no-console": "off", // особенность проекта, удалить при копировании
+    "func-names": "off", // особенность проекта, удалить при копировании
+    "@typescript-eslint/no-non-null-assertion": "off", // особенность проекта, удалить при копировании
     "react/require-default-props": "off",
     "react/prop-types": "off",
     "import/prefer-default-export": "off",
@@ -48,7 +51,7 @@
         "peerDependencies": true
       }
     ],
-    "react/function-component-definition": "warn",
+    "react/function-component-definition": "off",
     "jsx-a11y/label-has-for": [
       2,
       {

@@ -17,6 +17,7 @@ export function HFRadioGroup({ name, defaultValue, sx, children }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || false}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       render={({ field: { ref, ...rest } }) => (
         <RadioGroup {...rest} row name={name} sx={sx}>
           {children}

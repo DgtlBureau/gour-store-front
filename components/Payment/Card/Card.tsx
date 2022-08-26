@@ -17,6 +17,7 @@ export type PaymentsCardProps = {
   refetch: () => void;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function PaymentsCard({ payment, refetch }: PaymentsCardProps) {
   const { timerTime } = useTimer(payment.expiresAt, /* refetch */ () => undefined); // TODO: вызывать refetch для обновления статуса заявки
 
