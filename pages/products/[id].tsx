@@ -6,7 +6,7 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { LocalConfig, useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
@@ -14,8 +14,9 @@ import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from '
 import { dispatchNotification } from 'packages/EventBus';
 import { CHARACTERISTICS } from 'constants/characteristics';
 import { NotificationType } from 'types/entities/Notification';
-import { IProduct } from 'types/entities/IProduct';
+import { IProduct, IProductCharacteristics } from 'types/entities/IProduct';
 import { CommentDto } from 'types/dto/comment.dto';
+import { IProductGrade } from 'types/entities/IProductGrade';
 
 import { ShopLayout } from 'layouts/Shop/Shop';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -35,26 +36,55 @@ import translations from './Product.i18n.json';
 
 import sx from './Product.styles';
 
+// TODO: отрефакторить грязный код
+const getProductCharacteristic = (language: keyof LocalConfig, productCharacteristic: IProductCharacteristics = {}) =>
+  Object.keys(productCharacteristic)
+    .filter(key => productCharacteristic[key])
+    .map(key => {
+      const characteristicValue = CHARACTERISTICS[key]?.values.find(value => value.key === productCharacteristic[key]);
+
+      return {
+        label: CHARACTERISTICS[key]?.label[language] || '',
+        value: characteristicValue?.label[language] || 'нет информации',
+      };
+    });
+
+const formatProductsToComments = (products: IProductGrade[]) =>
+  products.map(({ id, client, value, createdAt, comment }) => ({
+    id,
+    clientName: client?.role?.title || 'Клиент',
+    value,
+    date: new Date(createdAt),
+    comment,
+  }));
+
 export default function Product() {
+  const dispatch = useAppDispatch();
   const { t } = useLocalTranslation(translations);
+
   const {
     goToProductPage,
     language,
     currency,
     query: { id: queryId },
   } = useAppNavigation();
+  const productId = Number(queryId) || 0;
 
-  const dispatch = useAppDispatch();
+  const basket = useAppSelector(state => state.order);
+
+  const [fetchCreateProductGrade] = useCreateProductGradeMutation();
+
+  const { data: comments } = useGetProductGradeListQuery(
+    { productId, withComments: true, isApproved: true },
+    { skip: !productId, selectFromResult: ({ data }) => ({ data: formatProductsToComments(data ?? []) }) },
+  );
 
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
-
-  const productId = queryId ? +queryId : 0;
 
   const {
     data: product,
@@ -69,6 +99,8 @@ export default function Product() {
     },
     { skip: !productId },
   );
+
+  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood ?? false));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -86,43 +118,13 @@ export default function Product() {
     }
   };
 
-  const basket = useAppSelector(state => state.order);
-
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
-
-  const [fetchCreateProductGrade] = useCreateProductGradeMutation();
-
-  const { data: comments = [] } = useGetProductGradeListQuery(
-    { productId, withComments: true, isApproved: true },
-    { skip: !productId },
-  );
-
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
-
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
-  const productComments =
-    comments.map(grade => ({
-      id: grade.id,
-      clientName: grade.client?.role?.title || 'Клиент',
-      value: grade.value,
-      date: new Date(grade.createdAt),
-      comment: grade.comment,
-    })) || [];
+  const productCharacteristics = getProductCharacteristic(language, product?.characteristics);
 
-  const productCharacteristics =
-    Object.keys(product?.characteristics || {})
-      .filter(key => product?.characteristics[key])
-      .map(key => {
-        const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          value => value.key === product?.characteristics[key],
-        );
-
-        return {
-          label: CHARACTERISTICS[key]?.label[language] || '',
-          value: characteristicValue?.label[language] || 'нет информации',
-        };
-      }) || [];
+  const showNotFound = !isLoading && !isError && !product;
+  const showProductContent = !isLoading && !isError && product;
 
   return (
     <PrivateLayout>
@@ -131,9 +133,9 @@ export default function Product() {
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !product && <Typography variant='h5'>Продукт не найден</Typography>}
+        {showNotFound && <Typography variant='h5'>Продукт не найден</Typography>}
 
-        {!isLoading && !isError && product && (
+        {showProductContent && (
           <>
             <Link href='/'>Вернуться на главную</Link>
 
@@ -194,9 +196,7 @@ export default function Product() {
               />
             )}
 
-            {!!productComments.length && (
-              <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
-            )}
+            {!!comments.length && <ProductReviews sx={sx.reviews} reviews={comments} ref={commentBlockRef} />}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>

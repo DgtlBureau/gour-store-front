@@ -1,7 +1,7 @@
 import { Translator } from 'utils/Translator';
 import * as yup from 'yup';
 
-const passRegExp = /^(?=.*?[0-9]).{8,}$/;
+const passRegExp = /^(?=.*?\d).{8,}$/;
 
 export const getSchema = (t: Translator) =>
   yup.object().shape({

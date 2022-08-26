@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
 import { TextField as MUITextField, SxProps } from '@mui/material';
-import { onPhoneInput, onPhoneKeyDown, onPhonePaste } from './phoneValidator';
+import { formatPhoneValue, onPhoneInput, onPhonePaste } from './phoneValidator';
 
 type Props = {
   value?: unknown;
@@ -43,7 +43,7 @@ export function PhoneInput({
       fullWidth
       sx={sx}
       label={label}
-      value={value}
+      value={formatPhoneValue(String(value))}
       error={isError}
       id={id}
       disabled={disabled}
@@ -55,10 +55,12 @@ export function PhoneInput({
       type={type}
       helperText={helperText}
       InputProps={{
-        onInput: onPhoneInput,
-        onKeyDown: onPhoneKeyDown,
-        onPaste: onPhonePaste,
         endAdornment,
+      }}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
+      inputProps={{
+        onInput: onPhoneInput,
+        onPaste: onPhonePaste,
       }}
       {...props}
     />

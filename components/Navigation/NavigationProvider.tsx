@@ -75,7 +75,7 @@ function NavigationProvider({ children }: Props) {
       pathname: router?.pathname,
       query: router?.query,
     }),
-    [router.pathname, router.query, router.isReady],
+    [router?.pathname, router?.query, router?.isReady],
   );
 
   return <AppNavigationCtx.Provider value={navigation}>{children}</AppNavigationCtx.Provider>;
