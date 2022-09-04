@@ -72,7 +72,10 @@ export default function SignUp() {
   const checkCodeHandler = async (code: string) => {
     try {
       const isApprove = await checkCode(code).unwrap();
-      if (!isApprove) return dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+      if (!isApprove) {
+        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+        return false;
+      }
       setIsPhoneCodeValid(true);
       return true;
     } catch (error) {
