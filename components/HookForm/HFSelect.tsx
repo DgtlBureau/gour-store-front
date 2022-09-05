@@ -7,7 +7,7 @@ import { Select, SelectOption } from '../UI/Select/Select';
 
 type Props = {
   name: string;
-  placeholder: string;
+  placeholder?: string;
   options: SelectOption[];
   defaultValue?: SelectOption['value'];
   type?: string;
