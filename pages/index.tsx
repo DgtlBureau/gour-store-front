@@ -134,7 +134,20 @@ const Home: NextPage = () => {
         {!!page && (
           <>
             <Box sx={sx.banner}>
-              <Image src={bannerImg} objectFit='cover' layout='fill' alt='' />
+              {bannerImg && (
+                <Image
+                  loader={() =>
+                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
+                  }
+                  src={
+                    bannerImg ||
+                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
+                  }
+                  objectFit='cover'
+                  layout='fill'
+                  alt=''
+                />
+              )}
             </Box>
 
             <Typography variant='h4' sx={sx.title}>

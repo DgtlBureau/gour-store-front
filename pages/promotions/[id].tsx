@@ -83,7 +83,7 @@ export default function Promotion() {
             <Box sx={sx.promotion}>
               <Link href='/'>{t('goBack')}</Link>
 
-              <PromotionHeader image={promotion.pageImage.full} end={new Date(promotion.end)} sx={sx.header} />
+              <PromotionHeader image={promotion.pageImage?.full} end={new Date(promotion.end)} sx={sx.header} />
 
               <Typography variant='h5' sx={sx.title}>
                 {promotion.title[language]}
