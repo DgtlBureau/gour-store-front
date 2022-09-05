@@ -1,4 +1,4 @@
-import stripes from '../../assets/images/stripes.svg';
+import stripes from 'assets/images/stripes.svg';
 
 const sx = {
   layout: {
@@ -6,7 +6,7 @@ const sx = {
     flexDirection: 'column',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundImage: 'url(' + `${stripes}` + ')',
+    backgroundImage: `url(${stripes})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'top center',

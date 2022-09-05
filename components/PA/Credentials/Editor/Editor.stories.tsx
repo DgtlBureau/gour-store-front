@@ -8,9 +8,9 @@ export default {
   title: 'PA/Credentials/Editor',
 } as Meta;
 
-const Template: ComponentStory<typeof PACredentialsEditor> = (
-  args: PACredentialsEditorProps
-) => <PACredentialsEditor {...args} />;
+const Template: ComponentStory<typeof PACredentialsEditor> = (args: PACredentialsEditorProps) => (
+  <PACredentialsEditor {...args} />
+);
 export const DefaultPACredentialsEditor = Template.bind({});
 const props: Partial<PACredentialsEditorProps> = {
   user: {

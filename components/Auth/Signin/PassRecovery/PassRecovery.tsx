@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import translations from './PassRecovery.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { getSchema } from './validation';
-import { PasswordRecoveryDto } from '../../../../@types/dto/password-recovery.dto';
-import { AuthCard } from '../../Card/Card';
-import { Box } from '../../../UI/Box/Box';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
-import { HFTextField } from '../../../HookForm/HFTextField';
-import { HFPhoneInput } from '../../../HookForm/HFPhoneInput';
 import { Translator } from 'utils/Translator';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import translations from './PassRecovery.i18n.json';
+import { getSchema } from './validation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 import sx from './PassRecovery.styles';
 
@@ -23,12 +23,7 @@ export type SigninPassRecoveryProps = {
   onSubmit(data: PasswordRecoveryDto): void;
 };
 
-export function SigninPassRecovery({
-  defaultValues,
-  onBack,
-  onSendSMS,
-  onSubmit,
-}: SigninPassRecoveryProps) {
+export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit }: SigninPassRecoveryProps) {
   const [SMS, setSMS] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -42,8 +37,7 @@ export function SigninPassRecovery({
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid =
-    !values.watch('phone') || !!values.getFieldState('phone').error;
+  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
   const formIsInvalid = !values.formState.isValid || !isConfirmed;
 
   const sendSMS = () => {
@@ -71,52 +65,31 @@ export function SigninPassRecovery({
     <AuthCard>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(submit)}>
-          <Button
-            sx={sx.backBtn}
-            size="small"
-            variant="outlined"
-            onClick={onBack}
-          >
+          <Button sx={sx.backBtn} size='small' variant='outlined' onClick={onBack}>
             {t('back')}
           </Button>
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput name="phone" label={t('phone')} />
-            <Button
-              sx={sx.getCodeBtn}
-              onClick={sendSMS}
-              disabled={phoneIsInvalid}
-            >
+            <HFPhoneInput name='phone' label={t('phone')} />
+            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid}>
               {t('getCode')}
             </Button>
           </Box>
 
-          {SMS && (
-            <HFTextField
-              sx={sx.field}
-              name="sms"
-              label={t('sms')}
-              onBlur={blurSMSField}
-            />
-          )}
+          {SMS && <HFTextField sx={sx.field} name='sms' label={t('sms')} onBlur={blurSMSField} />}
 
           <HFTextField
             sx={sx.field}
-            type="password"
-            name="password"
+            type='password'
+            name='password'
             label={t('password')}
             helperText={t('passwordHelper')}
           />
-          <HFTextField
-            sx={sx.field}
-            type="password"
-            name="passwordConfirm"
-            label={t('passwordConfirm')}
-          />
+          <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
 
-          <Button type="submit" disabled={formIsInvalid} sx={sx.submitBtn}>
+          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>

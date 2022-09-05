@@ -1,12 +1,10 @@
-import { Currency } from '../@types/entities/Currency';
+import { Currency } from '../types/entities/Currency';
 
 export function getCurrencySymbol(currencyAbbreviation: Currency) {
-  switch (currencyAbbreviation) {
-      case 'cheeseCoin':
-      return <>&#8353;</>;
-    default:
-      return <></>;
+  if (currencyAbbreviation) {
+    return <>&#8353;</>;
   }
+  return null;
 }
 
 export function getPriceWithDiscount(price: number, discount?: number) {

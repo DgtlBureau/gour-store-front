@@ -1,9 +1,8 @@
-import { IOrder } from '../../../@types/entities/IOrder';
-import { Currency } from '../../../@types/entities/Currency';
-
 import { endOfDay, getTime } from 'date-fns';
 import { FullOrder } from 'components/Orders/Card/Card';
 import { getFullName } from 'utils/getFullName';
+import { Currency } from 'types/entities/Currency';
+import { IOrder } from 'types/entities/IOrder';
 
 export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
@@ -38,7 +37,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     client,
     products,
     promotions,
-    deliveryCost: 500, //TODO: данные должны идти с бека©,
+    deliveryCost: 500, // TODO: данные должны идти с бека©,
     currency,
   };
 }

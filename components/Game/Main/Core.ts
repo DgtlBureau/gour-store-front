@@ -1,14 +1,9 @@
-import { GameFieldPosition } from "../Player/Player";
-import { GameProductType } from "../Product/Product";
+import { GameFieldPosition } from '../Player/Player';
+import { GameProductType } from '../Product/Product';
 
 export type GameProductStep = 0 | 1 | 2 | 3;
 
-export const FIELD_POSITIONS: GameFieldPosition[] = [
-  'topLeft',
-  'bottomLeft',
-  'topRight',
-  'bottomRight',
-];
+export const FIELD_POSITIONS: GameFieldPosition[] = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
 
 const PRODUCT_POSITIONS: Record<GameProductType, GameFieldPosition> = {
   cheese: 'topLeft',
@@ -17,7 +12,7 @@ const PRODUCT_POSITIONS: Record<GameProductType, GameFieldPosition> = {
   chicken: 'bottomRight',
 };
 
-type GameProductSteps = Record<GameProductType, GameProductStep>
+type GameProductSteps = Record<GameProductType, GameProductStep>;
 
 export interface GameEvent {
   isPlaying: boolean;
@@ -34,27 +29,36 @@ export interface GameEvent {
 export class GameCore {
   // настройки
   private RABBIT_DISPLAY_TIME = 5000; // время отображения зайца
+
   private RABBIT_DISPLAY_PERIOD = 20000; // интервал отображения зайца
+
   private PRODUCT_PERIOD = 2000; // интервал появления продуктов
 
   private MAX_LIVES_COUNT = 3; // максимальное кол-во жизней
+
   private LAST_STEP = 3; // последний шаг продукта
 
   private RECOVERY_CHECKPOINTS = [200, 500, 1000]; // при достижении N очков восстанавливаются жизни
+
   private BOOST_CHECKPOINT = 20; // каждые N очков игра ускоряется
+
   private BRAKE_CHECKPOINT = 100; // каждые N очков игра замедляется
 
   private BOOST_RATE = 0.1; // коэффициент ускорения игры
+
   private BRAKE_RATE = 0.2; // коэффициент замедления игры
 
   private START_SPEED = 1; // стартовая скорость
 
   // состояние игры
-  private isPlaying= false;
+  private isPlaying = false;
+
   private isRabbitShown = false;
 
   private lives = this.MAX_LIVES_COUNT;
+
   private speed = this.START_SPEED;
+
   private score = 0;
 
   private playerPosition: GameFieldPosition = 'basic';
@@ -65,7 +69,7 @@ export class GameCore {
     jamon: 0,
     chicken: 0,
   };
-  
+
   private eventHandler: (e: GameEvent) => void;
 
   constructor(eventHandler: GameCore['eventHandler']) {
@@ -77,11 +81,11 @@ export class GameCore {
     const event: GameEvent = {
       isPlaying: this.isPlaying,
       isRabbitShown: this.isRabbitShown,
-      
+
       lives: this.lives,
       speed: this.speed,
       score: this.score,
-      
+
       playerPosition: this.playerPosition,
       products: this.products,
     };
@@ -89,7 +93,7 @@ export class GameCore {
     this.eventHandler(event);
   }
 
-  start(){
+  start() {
     // Функция устанавливает isPlaying = true и
     // запускает методы runProductSendingLogic и runRabbitLogic
     this.reset();
@@ -102,7 +106,7 @@ export class GameCore {
     this.runRabbitLogic();
   }
 
-  finish(){
+  finish() {
     // Функция устанавливает isPlaying = false
     this.isPlaying = false;
 
@@ -112,7 +116,7 @@ export class GameCore {
   setPlayerPosition(position: GameFieldPosition) {
     // Устанавливает текущее положение playerPosition
     if (!this.isPlaying) return;
-    
+
     this.playerPosition = position;
 
     this.pushEvent();
@@ -121,13 +125,13 @@ export class GameCore {
   private reset() {
     // Сбрасывает игру
     this.isRabbitShown = false;
-  
+
     this.lives = this.MAX_LIVES_COUNT;
     this.speed = this.START_SPEED;
     this.score = 0;
-  
+
     this.playerPosition = 'topLeft';
-  
+
     this.products = {
       cheese: 0,
       sausage: 0,
@@ -165,11 +169,12 @@ export class GameCore {
   private getRandomProductType() {
     // Функция возвращает случайный тип из пула доступных продуктов
 
-    const availableProducts = Object.keys(this.products)
-    .filter(it => this.products[it as GameProductType] === 0) as GameProductType[];
-    
+    const availableProducts = Object.keys(this.products).filter(
+      it => this.products[it as GameProductType] === 0,
+    ) as GameProductType[];
+
     const productTypeId = Math.floor(Math.random() * availableProducts.length);
-    
+
     return availableProducts[productTypeId];
   }
 
@@ -180,7 +185,7 @@ export class GameCore {
     this.products = {
       ...this.products,
       [productType]: currentStep + 1,
-    }
+    };
 
     this.pushEvent();
   }
@@ -194,7 +199,7 @@ export class GameCore {
 
     this.pushEvent();
   }
- 
+
   private tryToCatchProduct(productType: GameProductType) {
     // Функция должна вызываться при step = LAST_STEP
     // Она должна проверять текущее положение игрока и товара,
@@ -207,10 +212,8 @@ export class GameCore {
     this.removeProduct(productType);
   }
 
-  private getDeviation() {
-    // возвращает коэффициент отклонения
-    return Math.random();
-  }
+  // eslint-disable-next-line class-methods-use-this
+  private getDeviation = () => Math.random();
 
   private runProductSendingLogic() {
     // Запускает движение продуктов
@@ -242,8 +245,7 @@ export class GameCore {
       const timeout = this.PRODUCT_PERIOD / this.speed;
 
       setTimeout(() => this.runProductMovement(productType), timeout);
-    }
-    else this.tryToCatchProduct(productType);
+    } else this.tryToCatchProduct(productType);
   }
 
   private runRabbitLogic() {
@@ -260,7 +262,7 @@ export class GameCore {
 
       setTimeout(() => {
         this.isRabbitShown = false;
-        
+
         this.runRabbitLogic();
       }, displayTime);
     }, displayPeriod);

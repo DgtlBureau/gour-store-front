@@ -10,5 +10,9 @@ type Props = {
 };
 
 export function Box({ children, sx, component, onClick }: Props) {
-  return <MUIBox sx={sx} component={component} onClick={onClick}>{children}</MUIBox>;
+  return (
+    <MUIBox sx={sx} component={component} onClick={onClick}>
+      {children}
+    </MUIBox>
+  );
 }

@@ -8,22 +8,22 @@ import {
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { dispatchNotification } from 'packages/EventBus';
+import { useAppNavigation } from 'components/Navigation';
 import translations from './Addresses.i18n.json';
 
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { PALayout } from '../../../layouts/PA/PA';
-import { Box } from '../../../components/UI/Box/Box';
-import { Button } from '../../../components/UI/Button/Button';
-import { Typography } from '../../../components/UI/Typography/Typography';
-import { PAProfilesItem } from '../../../components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from '../../../components/PA/Profiles/DeleteModal/DeleteModal';
-import { OrderProfileDto } from '../../../@types/dto/order/profile.dto';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../../@types/entities/Notification';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PALayout } from 'layouts/PA/PA';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
+import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+import { NotificationType } from 'types/entities/Notification';
 
-import { UpdateUserDto } from '../../../@types/dto/profile/update-user.dto';
-import { useAppNavigation } from 'components/Navigation'
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 
 const sx = {
   actions: {
@@ -51,6 +51,11 @@ export function Addresses() {
   const [expandedProfileId, setExpandedProfileId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+
+  const closeCreateForm = () => setIsCreating(false);
+
+  const openDeleteModal = () => setIsDeleting(true);
+  const closeDeleteModal = () => setIsDeleting(false);
 
   const citiesList =
     cities?.map(city => ({
@@ -88,16 +93,10 @@ export function Addresses() {
   const createAddress = async (data: OrderProfileDto) => {
     try {
       await createProfile(data).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Адрес доставки создан',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Адрес доставки создан');
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка создания адреса доставки',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Ошибка создания адреса доставки', { type: NotificationType.DANGER });
     }
     closeCreateForm();
   };
@@ -105,19 +104,13 @@ export function Addresses() {
   const editAddress = async (data: OrderProfileDto, id: number) => {
     try {
       await updateProfile({ ...data, id }).unwrap();
-      eventBus.emit(EventTypes.notification, {
-        message: 'Адрес доставки обновлен',
-        type: NotificationType.SUCCESS,
-      });
+      dispatchNotification('Адрес доставки обновлен');
       const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
       if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
     } catch (error) {
       console.error(error);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка обновления адреса доставки',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка обновления адреса доставки', { type: NotificationType.DANGER });
     }
   };
 
@@ -125,16 +118,10 @@ export function Addresses() {
     if (expandedProfileId) {
       try {
         await deleteProfile(expandedProfileId).unwrap();
-        eventBus.emit(EventTypes.notification, {
-          message: 'Адрес доставки удален',
-          type: NotificationType.SUCCESS,
-        });
+        dispatchNotification('Адрес доставки удален');
       } catch (error) {
         console.error(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка удаления адреса доставки',
-          type: NotificationType.DANGER,
-        });
+        dispatchNotification('Ошибка удаления адреса доставки', { type: NotificationType.DANGER });
       }
     }
     rollUpProfile();
@@ -145,16 +132,12 @@ export function Addresses() {
     rollUpProfile();
     setIsCreating(true);
   };
-  const closeCreateForm = () => setIsCreating(false);
-
-  const openDeleteModal = () => setIsDeleting(true);
-  const closeDeleteModal = () => setIsDeleting(false);
 
   return (
     <PrivateLayout>
       <PALayout>
         <Box sx={sx.actions}>
-          <Button size="small" disabled={isCreating} onClick={openCreateForm}>
+          <Button size='small' disabled={isCreating} onClick={openCreateForm}>
             {t('newAddress')}
           </Button>
         </Box>
@@ -175,7 +158,7 @@ export function Addresses() {
             />
           ))
         ) : (
-          <Typography variant="h5">Список адресов пуст</Typography>
+          <Typography variant='h5'>Список адресов пуст</Typography>
         )}
         <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
       </PALayout>

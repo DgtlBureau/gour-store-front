@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { NextRouter } from 'next/router';
 
+import { Currency } from 'types/entities/Currency';
 import { LocalConfig } from 'hooks/useLocalTranslation';
-import { Currency } from '../../@types/entities/Currency';
 
 export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   changeChapter: (path: string) => void;
@@ -33,7 +33,7 @@ const useAppNavigation = () => {
   const appNavigation = useContext(AppNavigationCtx);
 
   if (typeof appNavigation === 'undefined') {
-    throw Error(`Use useAppNavigation() inside <NavigationProvider>`);
+    throw Error('Use useAppNavigation() inside <NavigationProvider>');
   }
 
   return appNavigation;

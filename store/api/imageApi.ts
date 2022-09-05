@@ -1,6 +1,6 @@
 import { commonApi } from './commonApi';
-import { IImage } from '../../@types/entities/IImage';
-import { Path } from '../../constants/routes';
+import { IImage } from 'types/entities/IImage';
+import { Path } from 'constants/routes';
 
 export const imageApi = commonApi.injectEndpoints({
   endpoints(builder) {

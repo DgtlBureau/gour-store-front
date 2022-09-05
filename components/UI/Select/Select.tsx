@@ -36,10 +36,10 @@ export function Select({ value, options, error, isError, label, sx, isDisabled, 
   return (
     <Box sx={{ minWidth: 120, ...sx }}>
       <FormControl fullWidth>
-        <InputLabel id="select-label">{label}</InputLabel>
+        <InputLabel id='select-label'>{label}</InputLabel>
         <MUISelect
-          labelId="select-label"
-          id="select"
+          labelId='select-label'
+          id='select'
           value={isNumberValue ? value.toString() : value}
           label={label}
           error={isError}
@@ -55,7 +55,7 @@ export function Select({ value, options, error, isError, label, sx, isDisabled, 
       </FormControl>
 
       {error && (
-        <Typography variant="body2" color="error">
+        <Typography variant='body2' color='error'>
           {error}
         </Typography>
       )}

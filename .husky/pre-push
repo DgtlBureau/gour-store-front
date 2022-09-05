@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo '🏗️👷 Building your project before pushing'
+
+npm run build ||
+(
+    echo '❌👷🔨❌ Next build failed ❌👷🔨❌
+            View the errors above to see why. 
+    '
+    false;
+)
+
+# If everything passes... Now we can push
+echo '✅✅✅✅ You win this time... I am pushing this now. ✅✅✅✅'

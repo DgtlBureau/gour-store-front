@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Checkbox as MUICheckbox, InputLabel as MUIInputLabel, SxProps } from '@mui/material';
 
-import { Box } from '../../UI/Box/Box';
+import { Box } from '../Box/Box';
 
 const boxSx = {
   display: 'flex',
@@ -59,7 +59,11 @@ export function Checkbox({
         disableRipple={disableRipple}
         onChange={onChange}
       />
-      {label && <MUIInputLabel htmlFor={id} sx={labelSx}>{label}</MUIInputLabel>}
+      {label && (
+        <MUIInputLabel htmlFor={id} sx={labelSx}>
+          {label}
+        </MUIInputLabel>
+      )}
     </Box>
   );
 }

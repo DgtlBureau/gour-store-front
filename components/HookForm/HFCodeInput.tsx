@@ -1,9 +1,9 @@
 import React, { CSSProperties, FocusEventHandler } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '../UI/TextField/TextField';
-import { CodeInput } from '../UI/CodeInput/CodeInput';
 import { InputModeTypes } from 'react-code-input';
+import { TextField } from 'components/UI/TextField/TextField';
+import { CodeInput } from 'components/UI/CodeInput/CodeInput';
 
 type Props = {
   name: string;
@@ -33,7 +33,7 @@ export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
           {...rest}
           onChange={value => {
             HFOnChange(value);
-            onChange && onChange(value);
+            onChange?.(value);
           }}
           {...props}
         />

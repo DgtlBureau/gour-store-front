@@ -14,7 +14,7 @@ import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';
-import { Currency } from '../../../@types/entities/Currency';
+import { Currency } from '../../../types/entities/Currency';
 import { Path } from 'constants/routes';
 
 import sx from './Form.styles';
@@ -136,7 +136,7 @@ export function OrderForm({
       <form onSubmit={values.handleSubmit(submitHandler)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('details')}
             </Typography>
 
@@ -150,14 +150,14 @@ export function OrderForm({
           </Box>
 
           <Box sx={sx.block}>
-            <Typography variant="h6" sx={sx.title}>
+            <Typography variant='h6' sx={sx.title}>
               {t('address')}
             </Typography>
 
             {deliveryProfiles.length !== 0 && (
               <HFSelect
                 onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfileId'))}
-                name="deliveryProfileId"
+                name='deliveryProfileId'
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
               />
@@ -165,7 +165,7 @@ export function OrderForm({
 
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name="cityId" options={citiesList} placeholder={t('city')} />
+                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} />
               </Grid>
 
               {addressFields.map(field => (
@@ -175,7 +175,7 @@ export function OrderForm({
               ))}
 
               <Grid item xs>
-                <HFTextField sx={sx.textarea} multiline rows={3} name="comment" label={t('comment')} />
+                <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
               </Grid>
             </Grid>
 
@@ -194,11 +194,11 @@ export function OrderForm({
               label={
                 <span style={sx.agreementLabel}>
                   Даю свое согласие с{' '}
-                  <Link href={Path.OFERTA} target="_blank">
+                  <Link href={Path.OFERTA} target='_blank'>
                     условиями обслуживания
                   </Link>
                   , а также с &nbsp;
-                  <Link href={Path.PRIVACY} target="_blank">
+                  <Link href={Path.PRIVACY} target='_blank'>
                     политикой конфиденциальности и правилами хранения моих персональных данных
                   </Link>
                   .
@@ -208,7 +208,7 @@ export function OrderForm({
 
             <Button
               sx={sx.btn}
-              type="submit"
+              type='submit'
               disabled={!values.formState.isValid || !isAgree}
               color={!isSubmitError ? 'primary' : 'error'}
             >

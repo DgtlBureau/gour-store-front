@@ -1,18 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useMemo, PropsWithChildren } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import { Path } from 'constants/routes';
-import { AppNavigationCtx } from './NavigationContext';
 import { LocalConfig } from 'hooks/useLocalTranslation';
-import { Currency } from '../../@types/entities/Currency';
+import { Currency } from 'types/entities/Currency';
+import { AppNavigationCtx } from './NavigationContext';
 
-const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
+type Props = { children: ReactNode };
+
+function NavigationProvider({ children }: Props) {
   const router = useRouter();
 
   const changeChapter = useCallback(
     (newPath: string) => newPath !== router?.pathname && router.push(newPath),
-    [router?.pathname]
+    [router?.pathname],
   );
 
   const goBack = useCallback(() => router.back(), []);
@@ -67,10 +68,10 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
       pathname: router.pathname,
       query: router.query,
     }),
-    [router]
+    [router],
   );
 
   return <AppNavigationCtx.Provider value={navigation}>{children}</AppNavigationCtx.Provider>;
-};
+}
 
 export default NavigationProvider;

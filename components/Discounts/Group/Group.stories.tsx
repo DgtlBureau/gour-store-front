@@ -8,9 +8,7 @@ export default {
   title: 'Group',
 } as Meta;
 
-const Template: ComponentStory<typeof DiscountsGroup> = args => (
-  <DiscountsGroup {...args} />
-);
+const Template: ComponentStory<typeof DiscountsGroup> = args => <DiscountsGroup {...args} />;
 export const DefaultGroup = Template.bind({});
 const props = {
   key: 'milk',

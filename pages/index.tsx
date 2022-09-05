@@ -2,41 +2,42 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
-import translations from './Main.i18n.json';
-import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from '../store/slices/orderSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
-import { useGetPageQuery } from '../store/api/pageApi';
-import { useGetPromotionListQuery } from '../store/api/promotionApi';
-import { useGetNoveltiesProductListQuery, useGetProductListQuery } from '../store/api/productApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from '../components/Product/Catalog/Catalog';
-import { Box } from '../components/UI/Box/Box';
-import { Typography } from '../components/UI/Typography/Typography';
-import { ShopLayout } from '../layouts/Shop/Shop';
-import { CardSlider } from '../components/CardSlider/CardSlider';
-import { PromotionCard } from '../components/Promotion/Card/Card';
 import { PrivateLayout } from 'layouts/Private/Private';
-import { eventBus, EventTypes } from 'packages/EventBus';
+import translations from './Main.i18n.json';
+import { useLocalTranslation } from '../hooks/useLocalTranslation';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+import { useGetPageQuery } from 'store/api/pageApi';
+import { useGetPromotionListQuery } from 'store/api/promotionApi';
+import { useGetNoveltiesProductListQuery, useGetProductListQuery } from 'store/api/productApi';
 
-import { NotificationType } from '../@types/entities/Notification';
-import { Currency } from '../@types/entities/Currency';
-import { IProduct } from '../@types/entities/IProduct';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { ShopLayout } from '../layouts/Shop/Shop';
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { PromotionCard } from 'components/Promotion/Card/Card';
+
+import { Currency } from '../types/entities/Currency';
+import { IProduct } from '../types/entities/IProduct';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
 import sx from './Main.styles';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
 
 const NOW = new Date();
 
+// eslint-disable-next-line react/function-component-definition
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
@@ -68,26 +69,15 @@ const Home: NextPage = () => {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
+    try {
+      if (isElect) {
         await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка удаления из избранного',
-          type: NotificationType.DANGER,
-        });
-      }
-    } else {
-      try {
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка добавления в избранное',
-          type: NotificationType.DANGER,
-        });
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранное', { type: NotificationType.DANGER });
     }
   };
 
@@ -144,14 +134,14 @@ const Home: NextPage = () => {
         {!!page && (
           <>
             <Box sx={sx.banner}>
-              <Image src={bannerImg} objectFit="cover" layout="fill" alt="" />
+              <Image src={bannerImg} objectFit='cover' layout='fill' alt='' />
             </Box>
 
-            <Typography variant="h4" sx={sx.title}>
+            <Typography variant='h4' sx={sx.title}>
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography variant="body1" sx={{ marginTop: { xs: '20px', md: '40px' } }}>
+            <Typography variant='body1' sx={{ marginTop: { xs: '20px', md: '40px' } }}>
               {page.info?.description?.[language]}
             </Typography>
           </>

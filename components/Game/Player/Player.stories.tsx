@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 
-import { ComponentStory, Meta } from "@storybook/react";
-import { GamePlayer, GamePlayerProps } from "./Player";
-import { FIELD_POSITIONS } from "../Main/Core";
+import { ComponentStory, Meta } from '@storybook/react';
+import { GamePlayer, GamePlayerProps } from './Player';
+import { FIELD_POSITIONS } from '../Main/Core';
 
 export default {
   component: GamePlayer,
-  title: "Game/Player",
+  title: 'Game/Player',
 } as Meta;
 
 const Template: ComponentStory<typeof GamePlayer> = (args: GamePlayerProps) => <GamePlayer {...args} />;

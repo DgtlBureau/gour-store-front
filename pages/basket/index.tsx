@@ -1,6 +1,9 @@
 import React from 'react';
 import { Divider, Grid } from '@mui/material';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import {
   addBasketProduct,
   selectedProductCount,
@@ -11,29 +14,27 @@ import {
   subtractBasketProduct,
   removeProduct,
   selectProductsIdInOrder,
-} from '../../store/slices/orderSlice';
+} from 'store/slices/orderSlice';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import translation from './Basket.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { Button } from '../../components/UI/Button/Button';
-import { CartInfo } from '../../components/Cart/Info/Info';
-import { ShopLayout } from '../../layouts/Shop/Shop';
-import { CartCard } from '../../components/Cart/Card/Card';
-import { CartEmpty } from '../../components/Cart/Empty/Empty';
-import { Typography } from '../../components/UI/Typography/Typography';
-import { InfoBlock } from '../../components/UI/Info/Block/Block';
-import { IProduct } from '../../@types/entities/IProduct';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
-import { eventBus, EventTypes } from 'packages/EventBus';
-import { NotificationType } from '../../@types/entities/Notification';
+import { IProduct } from 'types/entities/IProduct';
+
+import { useAppNavigation } from 'components/Navigation';
+import { Button } from 'components/UI/Button/Button';
+import { CartInfo } from 'components/Cart/Info/Info';
+import { ShopLayout } from 'layouts/Shop/Shop';
+import { CartCard } from 'components/Cart/Card/Card';
+import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoBlock } from 'components/UI/Info/Block/Block';
+import translation from './Basket.i18n.json';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 
 const sx = {
   title: {
@@ -78,7 +79,7 @@ export function Basket() {
 
   const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });
 
-  //TODO: вынести логику стоимости доставки на бек
+  // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
   const sumToFreeDelivery = 2990 - sum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
@@ -91,33 +92,22 @@ export function Basket() {
   const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
   const handleElect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
+    try {
+      if (isElect) {
         await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка удаления из избранного',
-          type: NotificationType.DANGER,
-        });
-      }
-    } else {
-      try {
+      } else {
         await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
-        eventBus.emit(EventTypes.notification, {
-          message: 'Ошибка добавления в избранное',
-          type: NotificationType.DANGER,
-        });
       }
+    } catch (error) {
+      console.log(error);
+      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
     }
   };
 
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
-        <Typography variant="h3" sx={sx.title}>
+        <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>
 
@@ -129,7 +119,7 @@ export function Basket() {
               onClick: goToHome,
             }}
           >
-            <Typography variant="body1">{t('emptyText')}</Typography>
+            <Typography variant='body1'>{t('emptyText')}</Typography>
           </CartEmpty>
         )}
 
@@ -139,9 +129,9 @@ export function Basket() {
               {productsInOrder.map((it, i) => (
                 <>
                   <CartCard
-                    key={`${it.product.id}-${i}`}
+                    key={it.product.id}
                     title={it.product.title[language] || '...'}
-                    price={it.product.price[currency] || 0}
+                    price={(it.product.price as any)[currency] || 0} // FIXME: TODO: избавиться от any
                     amount={it.amount}
                     weight={it.weight}
                     isWeightGood={it.product.isWeightGood}

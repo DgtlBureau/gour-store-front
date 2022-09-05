@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard } from './Card';
-import { Weight } from '../../../@types/entities/Weight';
+import { Weight } from 'types/entities/Weight';
 
-import russiaIcon from '../../../assets/icons/countries/russia.svg';
+import russiaIcon from 'assets/icons/countries/russia.svg';
 
 export default {
   component: ProductCard,
@@ -36,8 +36,7 @@ const WEIGHTS = [
 
 const PRICE = 350;
 
-const PREVIEW_SRC =
-  'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
+const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
 
 const Template: ComponentStory<typeof ProductCard> = function () {
   const [weightId, setWeightId] = useState(0);
@@ -47,15 +46,14 @@ const Template: ComponentStory<typeof ProductCard> = function () {
   return (
     <ProductCard
       currentCount={1}
-      isWeightGood={true}
-      currency="cheeseCoin"
-      title="Chevrano XO Козий Элитный Сыр"
+      isWeightGood
+      currency='cheeseCoin'
+      title='Chevrano XO Козий Элитный Сыр'
       description={DESCRIPTION}
       rating={4.3}
       price={PRICE}
       previewSrc={PREVIEW_SRC}
       countrySrc={russiaIcon}
-      inCart={inCart}
       isElected={isElected}
       onAdd={() => setInCart(true)}
       onRemove={() => setInCart(false)}

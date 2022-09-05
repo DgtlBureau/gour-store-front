@@ -1,13 +1,12 @@
 import React from 'react';
 
+import { getPriceWithDiscount, getCurrencySymbol } from 'helpers/currencyHelper';
 import translations from '../Actions/Actions.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { Currency } from '../../../@types/entities/Currency';
-import { getPriceWithDiscount } from 'helpers/currencyHelper';
-import { defaultTheme as t } from '../../../themes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Currency } from 'types/entities/Currency';
+import { defaultTheme } from 'themes';
 
 const sx = {
   docket: {
@@ -25,7 +24,7 @@ const sx = {
   },
   weight: {
     display: 'flex',
-    color: t.palette.text.muted,
+    color: defaultTheme.palette.text.muted,
   },
   total: {
     display: 'flex',
@@ -76,7 +75,7 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
       <Box sx={sx.weight}>
         {!!discount && (
           <>
-            <Typography variant="body2" sx={sx.oldPrice}>
+            <Typography variant='body2' sx={sx.oldPrice}>
               {pricePerCount}&nbsp;
               {getCurrencySymbol(currency)}
             </Typography>
@@ -86,14 +85,14 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
           </>
         )}
         {!inCart && (
-          <Typography variant="body2" sx={sx.unit}>
+          <Typography variant='body2' sx={sx.unit}>
             {isWeightGood ? `100${t('g')}` : t('pcs')}
           </Typography>
         )}
       </Box>
 
       <Box sx={sx.total}>
-        <Typography variant="h6" color={discount ? 'error' : 'primary'} sx={sx.price}>
+        <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sx.price}>
           {getPriceWithDiscount(pricePerCount, discount)}&nbsp;
           {getCurrencySymbol(currency)}
         </Typography>

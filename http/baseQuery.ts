@@ -1,5 +1,5 @@
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { HTTP_UNAUTHORIZED } from '../constants/HttpConstants';
+import { HTTP_UNAUTHORIZED } from 'constants/HttpConstants';
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -9,7 +9,7 @@ export const baseQuery = fetchBaseQuery({
 export const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
-  extraOptions
+  extraOptions,
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 

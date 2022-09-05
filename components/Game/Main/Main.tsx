@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-import { Button } from '../../UI/Button/Button';
+import { Button } from 'components/UI/Button/Button';
 import { GameFrame as Frame } from '../Frame/Frame';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';
@@ -72,61 +72,61 @@ export function GameMain() {
       <Product
         sx={sx.firstCheese}
         isActive={gameState.products?.cheese === 1}
-        type="cheese"
+        type='cheese'
         angle={DEFAULT_ANGLES[1]}
       />
       <Product
         sx={sx.secondCheese}
         isActive={gameState.products?.cheese === 2}
-        type="cheese"
+        type='cheese'
         angle={DEFAULT_ANGLES[2]}
       />
       <Product
         sx={sx.thirdCheese}
         isActive={gameState.products?.cheese === 3}
-        type="cheese"
+        type='cheese'
         angle={DEFAULT_ANGLES[3]}
       />
 
       <Product
         sx={sx.firstSausage}
         isActive={gameState.products?.sausage === 1}
-        type="sausage"
+        type='sausage'
         angle={DEFAULT_ANGLES[1]}
       />
       <Product
         sx={sx.secondSausage}
         isActive={gameState.products?.sausage === 2}
-        type="sausage"
+        type='sausage'
         angle={DEFAULT_ANGLES[2]}
       />
       <Product
         sx={sx.thirdSausage}
         isActive={gameState.products?.sausage === 3}
-        type="sausage"
+        type='sausage'
         angle={DEFAULT_ANGLES[3]}
       />
 
-      <Product sx={sx.firstJamon} isActive={gameState.products?.jamon === 1} type="jamon" angle={JAMON_ANGLES[1]} />
-      <Product sx={sx.secondJamon} isActive={gameState.products?.jamon === 2} type="jamon" angle={JAMON_ANGLES[2]} />
-      <Product sx={sx.thirdJamon} isActive={gameState.products?.jamon === 3} type="jamon" angle={JAMON_ANGLES[3]} />
+      <Product sx={sx.firstJamon} isActive={gameState.products?.jamon === 1} type='jamon' angle={JAMON_ANGLES[1]} />
+      <Product sx={sx.secondJamon} isActive={gameState.products?.jamon === 2} type='jamon' angle={JAMON_ANGLES[2]} />
+      <Product sx={sx.thirdJamon} isActive={gameState.products?.jamon === 3} type='jamon' angle={JAMON_ANGLES[3]} />
 
       <Product
         sx={sx.firstChicken}
         isActive={gameState.products?.chicken === 1}
-        type="chicken"
+        type='chicken'
         angle={DEFAULT_ANGLES[1]}
       />
       <Product
         sx={sx.secondChicken}
         isActive={gameState.products?.chicken === 2}
-        type="chicken"
+        type='chicken'
         angle={DEFAULT_ANGLES[2]}
       />
       <Product
         sx={sx.thirdChicken}
         isActive={gameState.products?.chicken === 3}
-        type="chicken"
+        type='chicken'
         angle={DEFAULT_ANGLES[3]}
       />
     </Frame>

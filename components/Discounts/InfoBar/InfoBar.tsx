@@ -9,6 +9,6 @@ const paperSx = {
   padding: '16px',
 };
 
-export const DiscountsInfoBar = ({ children }: Props) => {
+export function DiscountsInfoBar({ children }: Props) {
   return <Paper sx={paperSx}>{children}</Paper>;
-};
+}

@@ -1,15 +1,14 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, Grid } from '@mui/material';
+import { CardMedia, Grid } from '@mui/material';
 
-import translations from './Card.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { Typography } from '../../UI/Typography/Typography';
-import { Box } from '../../UI/Box/Box';
-import { Currency } from '../../../@types/entities/Currency';
-import { getCurrencySymbol } from '../../../helpers/currencyHelper';
-import { useAppNavigation } from 'components/Navigation';
-
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Currency } from 'types/entities/Currency';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import sx from './CardProduct.styles';
+import translations from './Card.i18n.json';
+import { useAppNavigation } from 'components/Navigation';
 
 export type OrderProductType = {
   id: number;
@@ -26,7 +25,7 @@ type OrderCardProductProps = {
   currency: Currency;
 };
 
-export const OrderCardProduct = ({ currency, product }: OrderCardProductProps) => {
+export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
   const { goToProductPage } = useAppNavigation();
 
   const { t } = useLocalTranslation(translations);
@@ -39,7 +38,7 @@ export const OrderCardProduct = ({ currency, product }: OrderCardProductProps) =
     <Box sx={sx.card}>
       <CardMedia
         sx={{ ...sx.image, display: { sm: 'none', xs: 'flex' } }}
-        component="img"
+        component='img'
         image={photo}
         onClick={handleClickDetail}
       />
@@ -48,28 +47,28 @@ export const OrderCardProduct = ({ currency, product }: OrderCardProductProps) =
         <Grid container item xs={12} sm={8} sx={{ display: 'flex', alignItems: 'center' }}>
           <CardMedia
             sx={{ ...sx.image, display: { sm: 'flex', xs: 'none' } }}
-            component="img"
+            component='img'
             image={photo}
             onClick={handleClickDetail}
           />
 
-          <Typography variant="body1" sx={sx.title} onClick={handleClickDetail}>
+          <Typography variant='body1' sx={sx.title} onClick={handleClickDetail}>
             {title}
           </Typography>
         </Grid>
 
         <Grid item sm={2} xs={6} sx={sx.count}>
-          <Typography variant="body1" sx={sx.countText} color="text.muted">
+          <Typography variant='body1' sx={sx.countText} color='text.muted'>
             {!isWeightGood ? `${amount} ${t('pc')}.` : `${weight} ${t('g')}.`}
           </Typography>
         </Grid>
 
         <Grid item sm={2} xs={6} sx={sx.price}>
-          <Typography variant="body1" sx={sx.priceText}>
+          <Typography variant='body1' sx={sx.priceText}>
             {cost} {getCurrencySymbol(currency)}
           </Typography>
         </Grid>
       </Grid>
     </Box>
   );
-};
+}

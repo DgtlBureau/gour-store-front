@@ -1,15 +1,15 @@
 import React from 'react';
 import { Stack, SxProps } from '@mui/material';
 
-import translation from './Card.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Box } from '../../UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { getDeclensionWordByCount } from 'utils/wordHelper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { Currency } from '../../../@types/entities/Currency';
-import { Language } from '../../../@types/entities/Language';
-import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
+import { Box } from 'components/UI/Box/Box';
+import translation from './Card.i18n.json';
+import { Currency } from 'types/entities/Currency';
+import { Language } from 'types/entities/Language';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
 
 type Props = {
   currency: Currency;
@@ -64,7 +64,7 @@ const cardSx = {
   },
 };
 
-export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) => {
+export function OrderCard({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) {
   const { t } = useLocalTranslation(translation);
 
   const currencySymbol = getCurrencySymbol(currency);
@@ -90,30 +90,30 @@ export const OrderCard = ({ totalProductCount, totalCartPrice, productsList, cur
 
   return (
     <Stack sx={{ ...cardSx.card, ...sx }}>
-      <Typography sx={cardSx.count} variant="h6">
+      <Typography sx={cardSx.count} variant='h6'>
         {totalProductCount} {productsCountText} {t('inOrder')}
       </Typography>
 
       {productInfo.map(product => (
         <Box key={product.id} sx={cardSx.field}>
-          <Typography variant="body1" sx={cardSx.product}>
+          <Typography variant='body1' sx={cardSx.product}>
             {product.title}
           </Typography>
 
-          <Typography variant="body1" sx={cardSx.product}>
+          <Typography variant='body1' sx={cardSx.product}>
             {product.totalPrice} {currencySymbol} • {product.totalCount}
           </Typography>
         </Box>
       ))}
 
-      <Stack sx={cardSx.footer} direction="row" justifyContent="space-between">
-        <Typography variant="h6" sx={cardSx.total}>
+      <Stack sx={cardSx.footer} direction='row' justifyContent='space-between'>
+        <Typography variant='h6' sx={cardSx.total}>
           {t('total')}
         </Typography>
-        <Typography variant="h6" sx={cardSx.total}>
+        <Typography variant='h6' sx={cardSx.total}>
           {totalCartPrice} {currencySymbol}
         </Typography>
       </Stack>
     </Stack>
   );
-};
+}

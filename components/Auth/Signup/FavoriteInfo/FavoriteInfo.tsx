@@ -1,17 +1,18 @@
-import React, { ReactNode, useState } from 'react';
-import { Paper, Grid } from '@mui/material';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+// FIXME: fix eslint errors
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 
+import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 import translations from './FavoriteInfo.i18n.json';
-import { useLocalTranslation } from '../../../../hooks/useLocalTranslation';
-import { AuthCard } from '../../Card/Card';
-import { Button } from '../../../UI/Button/Button';
-import { Typography } from '../../../UI/Typography/Typography';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { AuthCard } from 'components/Auth/Card/Card';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
 import sx from './FavoriteInfo.styles';
-import { Box } from '../../../UI/Box/Box';
-import { Stepper } from '../../../UI/Stepper/Stepper';
 
 import s from './FavoriteInfo.module.scss';
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -68,17 +69,17 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
     <AuthCard>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <Button variant="outlined" onClick={onBack}>
+          <Button variant='outlined' onClick={onBack}>
             {t('backButton')}
           </Button>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('title')}</Typography>
+          <Typography variant='subtitle1'>{t('title')}</Typography>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('countriesTitle')}</Typography>
+          <Typography variant='subtitle1'>{t('countriesTitle')}</Typography>
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
@@ -92,14 +93,14 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
                 }}
                 onClick={() => handleClickCountry(country.id)}
               >
-                {!country.image && <Typography variant="body2">{country.title}</Typography>}
+                {!country.image && <Typography variant='body2'>{country.title}</Typography>}
               </div>
             </Grid>
           ))}
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{t('likedTitle')}</Typography>
+          <Typography variant='subtitle1'>{t('likedTitle')}</Typography>
         </Grid>
 
         <Grid item xs={12} container spacing={2}>
@@ -121,7 +122,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         </Grid>
 
         <Grid item xs={12}>
-          <Button sx={{ width: '100%' }} variant="contained" onClick={handleSubmit}>
+          <Button sx={{ width: '100%' }} variant='contained' onClick={handleSubmit}>
             {t('endRegistration')}
           </Button>
         </Grid>

@@ -4,22 +4,24 @@ import { SxProps } from '@mui/material';
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
-import { CardSlider } from '../../CardSlider/CardSlider';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { ToggleButton } from '../../UI/ToggleButton/ToggleButton';
-import { Button } from '../../UI/Button/Button';
+import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
+import { ICategory } from 'types/entities/ICategory';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { Currency } from 'types/entities/Currency';
+import { Language } from 'types/entities/Language';
+import { getCountryImage } from 'helpers/countryHelper';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
+import { Button } from 'components/UI/Button/Button';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-import { IProduct, IFiltersCharacteristic } from '../../../@types/entities/IProduct';
-import { ICategory } from '../../../@types/entities/ICategory';
-import { IOrderProduct } from '../../../@types/entities/IOrderProduct';
-import { Currency } from '../../../@types/entities/Currency';
-import { Language } from '../../../@types/entities/Language';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
 import { checkCategory, checkCharacteristics } from './CatalogHelpers';
-import { getCountryImage } from 'helpers/countryHelper';
 
 import catalogSx from './Catalog.styles';
 
@@ -91,7 +93,7 @@ export function ProductCatalog({
   const productList = categories
     ? productsWidthElect?.filter(
         product =>
-          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters)
+          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters),
       )
     : productsWidthElect;
 
@@ -105,8 +107,8 @@ export function ProductCatalog({
   const getCatalogRows = () => {
     const length = productList?.length || 0;
     if (length > 8) return 3;
-    else if (length > 4) return 2;
-    else return 1;
+    if (length > 4) return 2;
+    return 1;
   };
 
   const openFilterModal = () => setFilterModalIsOpen(true);
@@ -116,7 +118,7 @@ export function ProductCatalog({
     <Box sx={sx}>
       {!!categories && screenWidth <= 900 && (
         <Box sx={catalogSx.header}>
-          <Typography variant="h4" sx={catalogSx.title}>
+          <Typography variant='h4' sx={catalogSx.title}>
             {title}
           </Typography>
 
@@ -126,11 +128,11 @@ export function ProductCatalog({
               sx={{ padding: '4px', marginRight: '6px' }}
               onChange={toggleSequence}
             >
-              <ArrowsIcon fontSize="small" sx={{ transform: 'rotate(90deg)' }} />
+              <ArrowsIcon fontSize='small' sx={{ transform: 'rotate(90deg)' }} />
             </ToggleButton>
 
-            <Button size="small" onClick={openFilterModal} sx={catalogSx.filterBtn}>
-              <FilterIcon fontSize="small" />
+            <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
+              <FilterIcon fontSize='small' />
             </Button>
           </Box>
         </Box>
@@ -167,7 +169,6 @@ export function ProductCatalog({
             currency={currency}
             countrySrc={getCountryImage(product.characteristics.country)}
             currentCount={getProductCount(product.id, product.isWeightGood)}
-            inCart={!!findProductInBasket(product.id)}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
             onAdd={() => onAdd(product)}

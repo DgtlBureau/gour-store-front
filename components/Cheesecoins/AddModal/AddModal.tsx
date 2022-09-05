@@ -1,15 +1,15 @@
-import { Modal } from '../../../components/UI/Modal/Modal';
 import React from 'react';
-import { HFTextField } from '../../HookForm/HFTextField';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AddCheesecoinsDto } from '../../../@types/dto/cheseecoins/add.dto';
-import { Button } from '../../UI/Button/Button';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Modal } from 'components/UI/Modal/Modal';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { AddCheesecoinsDto } from 'types/dto/cheseecoins/add.dto';
+import { Button } from 'components/UI/Button/Button';
 import { sx } from './AddModal.styles';
 import { getValidationSchema } from './validations';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './AddModal.i18n.json';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 type Props = {
   isOpened: boolean;
@@ -18,12 +18,7 @@ type Props = {
   onSubmit: (data: AddCheesecoinsDto) => void;
 };
 
-export const CheesecoinsAddModal = ({
-  isOpened,
-  onClose,
-  title,
-  onSubmit,
-}: Props) => {
+export function CheesecoinsAddModal({ isOpened, onClose, title, onSubmit }: Props) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -36,12 +31,12 @@ export const CheesecoinsAddModal = ({
     <Modal title={title} isOpen={isOpened} onClose={onClose}>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(onSubmit)}>
-          <HFTextField name="count" label="Сырные монетки" type="number" />
-          <Button sx={sx.button} type="submit">
+          <HFTextField name='count' label='Сырные монетки' type='number' />
+          <Button sx={sx.button} type='submit'>
             Пополнить сырный счет
           </Button>
         </form>
       </FormProvider>
     </Modal>
   );
-};
+}

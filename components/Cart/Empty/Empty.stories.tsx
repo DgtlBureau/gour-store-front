@@ -17,8 +17,7 @@ const DEFAULT_BTN = {
 const Template: ComponentStory<typeof CartEmpty> = function (args) {
   return (
     <CartEmpty title={DEFAULT_TITLE} btn={DEFAULT_BTN}>
-      Акции, специальные предложения интересных товаров на помогут вам
-      определиться с выбором!
+      Акции, специальные предложения интересных товаров на помогут вам определиться с выбором!
     </CartEmpty>
   );
 };
