@@ -20,13 +20,14 @@ const sx = {
     },
     width: '100%',
     margin: {
-      xs: '20px 0 40px 0',
+      xs: '20px 0 25px 0',
       sm: '40px 0 60px 0',
     },
   },
   list: {
     display: 'flex',
     alignItems: 'center',
+    paddingBottom: '15px',
     width: {
       xs: '100%',
       md: 'fit-content',

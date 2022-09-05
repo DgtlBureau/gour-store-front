@@ -28,6 +28,7 @@ export enum Path {
   CHANGE_CITY = 'change-city',
   CHANGE_PASSWORD = 'change-password',
   SEND_CODE = 'send-code',
+  CHECK_CODE = 'check-code',
   CHANGE_PHONE = 'change-phone',
 
   WALLET = 'wallet',
@@ -46,7 +47,6 @@ export enum Path {
 
   RULES = 'rules',
   PRIVACY = 'privacy',
-  COOKIE = 'cookie',
   OFERTA = 'oferta',
 
   ERROR_PAGE = '404',

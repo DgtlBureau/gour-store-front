@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
-import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 import { CHARACTERISTICS } from 'constants/characteristics';
 import { NotificationType } from 'types/entities/Notification';
 import { IProduct } from 'types/entities/IProduct';

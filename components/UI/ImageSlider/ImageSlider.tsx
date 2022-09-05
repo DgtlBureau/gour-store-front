@@ -115,7 +115,14 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
               key={image.small + i}
               sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}
             >
-              <Image src={image.small} layout='fill' objectFit='cover' alt='' onClick={() => slideTo(i)} />
+              <Image
+                loader={({ src }) => src}
+                src={image.small}
+                layout='fill'
+                objectFit='cover'
+                alt=''
+                onClick={() => slideTo(i)}
+              />
             </Box>
           ))}
         </Box>

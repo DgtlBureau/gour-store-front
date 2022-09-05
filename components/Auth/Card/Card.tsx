@@ -14,6 +14,7 @@ const cardSx: SxProps = {
   border: '4px solid',
   borderColor: 'accent.main',
   borderRadius: '10px',
+  alignSelf: 'center',
 };
 
 type Props = {

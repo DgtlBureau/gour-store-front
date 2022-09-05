@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import { useCheckCodeMutation, useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
 import { NotificationType } from 'types/entities/Notification';
 import { favoriteCountries, favoriteProducts } from 'constants/favorites';
-import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification } from 'packages/EventBus';
 
 import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
@@ -25,7 +25,7 @@ import cityImage from 'assets/icons/signup/city.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
 
-type AuthStage = 'referralCode' | 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo';
+type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
 export default function SignUp() {
   const { goToIntro, goToSignIn, language } = useAppNavigation();
@@ -42,6 +42,7 @@ export default function SignUp() {
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
+  const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
@@ -57,7 +58,6 @@ export default function SignUp() {
   const goToReferralCode = () => setStage('referralCode');
 
   const sendSMS = async (phone: string) => {
-    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
       await sendCode(phone).unwrap();
       dispatchNotification('SMS код отправлен');
@@ -65,16 +65,17 @@ export default function SignUp() {
     } catch (error) {
       console.error(error);
       dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
-      return (error as any).data.message;
+      return (error as { data: { message: string } })?.data?.message || 'Неизвестная ошибка!';
     }
   };
 
-  const checkCode = async (code: string) => {
-    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
-
+  const checkCodeHandler = async (code: string) => {
     try {
-      // запрос на проверку кода
-      if (code !== '1234') throw new Error('Код не валиден');
+      const isApprove = await checkCode(code).unwrap();
+      if (!isApprove) {
+        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+        return false;
+      }
       setIsPhoneCodeValid(true);
       return true;
     } catch (error) {
@@ -117,19 +118,11 @@ export default function SignUp() {
     try {
       await signUp(data).unwrap();
 
-      // FIXME: переписать вызов eventBus через функцию dispatchNotification
-      eventBus.emit(EventTypes.notification, {
-        message: 'Регистрация прошла успешно',
-        type: NotificationType.SUCCESS,
-      });
-
+      dispatchNotification('Регистрация прошла успешно');
       goToSignIn();
     } catch (e: unknown) {
       console.log(e);
-      eventBus.emit(EventTypes.notification, {
-        message: 'Ошибка регистрации',
-        type: NotificationType.DANGER,
-      });
+      dispatchNotification('Ошибка регистрации', { type: NotificationType.DANGER });
     }
   };
 
@@ -156,7 +149,7 @@ export default function SignUp() {
         <SignupCredentials
           defaultValues={credentials}
           onSendSMS={sendSMS}
-          onCheckCode={checkCode}
+          onCheckCode={checkCodeHandler}
           onSubmit={saveCredentials}
           onBack={goToCitySelect}
         />

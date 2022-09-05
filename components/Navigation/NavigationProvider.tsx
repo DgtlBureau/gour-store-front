@@ -9,7 +9,7 @@ import { AppNavigationCtx } from './NavigationContext';
 type Props = { children: ReactNode };
 
 function NavigationProvider({ children }: Props) {
-  const router = useRouter();
+  const router = useRouter(); // router может быть null в сторибуке
 
   const changeChapter = useCallback(
     (newPath: string) => newPath !== router?.pathname && router.push(newPath),
@@ -39,7 +39,7 @@ function NavigationProvider({ children }: Props) {
 
   const goToPromotionPage = useCallback((id: number) => router.push(`/${Path.PROMOTIONS}/${id}`), []);
 
-  const language: keyof LocalConfig = (router.locale as keyof LocalConfig) || 'ru';
+  const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   const currency: Currency = 'cheeseCoin';
 
@@ -65,8 +65,8 @@ function NavigationProvider({ children }: Props) {
       goToPromotionPage,
       language,
       currency,
-      pathname: router.pathname,
-      query: router.query,
+      pathname: router?.pathname,
+      query: router?.query,
     }),
     [router],
   );

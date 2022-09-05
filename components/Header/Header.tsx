@@ -1,4 +1,4 @@
-import { AppBar, Badge, Container, Collapse, Grid, SxProps } from '@mui/material';
+import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
@@ -87,9 +87,13 @@ export function Header({
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
 
+  const isDesktop = useMediaQuery('(min-width: 600px)');
+
   const currencySymbol = getCurrencySymbol(currency);
 
-  const catalogIsHidden = moneyAmount < 1000;
+  // FIXME: убрать))
+  // const catalogIsHidden = moneyAmount < 1000;
+  const catalogIsHidden = false;
 
   const currentCity = cities.find(it => it?.id === selectedCityId);
 
@@ -161,7 +165,7 @@ export function Header({
                   sx={{
                     ...headerSx.icon,
                     display: {
-                      xs: isGame ? 'flex' : 'none',
+                      xs: 'flex',
                       sm: catalogIsHidden ? 'none' : 'flex',
                     },
                   }}
@@ -209,7 +213,7 @@ export function Header({
                   </IconButton>
                 </>
               )}
-              {!isGame && (
+              {!isGame && !isDesktop && (
                 <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
                   {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
                 </IconButton>
@@ -218,7 +222,7 @@ export function Header({
           </Grid>
         </Container>
 
-        <Collapse in={isMenuDeployed} timeout='auto' unmountOnExit>
+        <Collapse in={isMenuDeployed && !isDesktop} timeout='auto' unmountOnExit>
           <MobileMenu
             selectedCityId={selectedCityId}
             cities={cities}

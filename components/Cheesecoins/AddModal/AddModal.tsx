@@ -31,9 +31,9 @@ export function CheesecoinsAddModal({ isOpened, onClose, title, onSubmit }: Prop
     <Modal title={title} isOpen={isOpened} onClose={onClose}>
       <FormProvider {...values}>
         <form onSubmit={values.handleSubmit(onSubmit)}>
-          <HFTextField name='count' label='Сырные монетки' type='number' />
+          <HFTextField name='count' label='Баланс чизкоинов' type='number' />
           <Button sx={sx.button} type='submit'>
-            Пополнить сырный счет
+            Пополнить счет
           </Button>
         </form>
       </FormProvider>

@@ -18,13 +18,7 @@ import { Currency } from '../../../types/entities/Currency';
 import { Path } from 'constants/routes';
 
 import sx from './Form.styles';
-
-const contactsFields: HFTextFieldProps[] = [
-  { name: 'firstName' },
-  { name: 'lastName' },
-  { name: 'phone', type: 'number' },
-  { name: 'email', type: 'email' },
-];
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -141,11 +135,19 @@ export function OrderForm({
             </Typography>
 
             <Grid container spacing={1}>
-              {contactsFields.map(({ name, ...fieldProps }) => (
-                <Grid key={name} item xs={12} sm={6}>
-                  <HFTextField name={name} label={t(name)} {...fieldProps} />
-                </Grid>
-              ))}
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='firstName' label={t('firstName')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='lastName' label={t('lastName')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {' '}
+                <HFPhoneInput name='phone' label={t('phone')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='email' label={t('email')} type='email' />
+              </Grid>
             </Grid>
           </Box>
 

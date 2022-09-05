@@ -11,11 +11,9 @@ import stripes from 'assets/images/stripes.svg';
 const sx = {
   layout: {
     padding: {
-      xs: '100px 0 0 0',
+      xs: '20px 0',
     },
-    minHeight: {
-      md: '100vh',
-    },
+    minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -38,14 +36,14 @@ export interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { goToHome } = useAppNavigation();
+  const { goToHome, goToGame } = useAppNavigation();
   const { isFetching } = useGetCurrentUserQuery();
   const isAuth = useAppSelector(selectIsAuth);
 
   if (isFetching) return null;
 
   if (isAuth) {
-    goToHome();
+    goToGame();
     return null;
   }
 

@@ -1,10 +1,8 @@
 import { ClipboardEvent, FormEvent, KeyboardEvent } from 'react';
 
-const getInputNumbersValue = function (input: HTMLInputElement) {
-  return input.value.replace(/\D/g, '');
-};
+const getInputNumbersValue = (input: HTMLInputElement) => input.value.replace(/\D/g, '');
 
-export const onPhonePaste = function (e: ClipboardEvent<HTMLInputElement>) {
+export const onPhonePaste = (e: ClipboardEvent<HTMLInputElement>) => {
   const input = e.target as HTMLInputElement;
   const inputNumbersValue = getInputNumbersValue(input);
   const pasted = e.clipboardData;
@@ -17,7 +15,7 @@ export const onPhonePaste = function (e: ClipboardEvent<HTMLInputElement>) {
 };
 
 export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
-  const input = e.currentTarget;
+  const input = e.target as HTMLInputElement;
   let inputNumbersValue = getInputNumbersValue(input);
   const { selectionStart } = input;
   let formattedInputValue = '';
@@ -58,8 +56,9 @@ export const onPhoneInput = (e: FormEvent<HTMLInputElement>) => {
 };
 
 export const onPhoneKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-  const inputValue = e.currentTarget.value.replace(/\D/g, '');
+  const input = e.target as HTMLInputElement;
+  const inputValue = input.value.replace(/\D/g, '');
   if (e.key === '8' && inputValue.length === 1) {
-    (e.target as HTMLInputElement).value = '';
+    input.value = '';
   }
 };

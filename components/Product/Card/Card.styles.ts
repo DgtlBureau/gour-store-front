@@ -5,7 +5,7 @@ const sx = {
     display: 'flex',
     flexDirection: 'column',
 
-    height: '100%',
+    height: 'auto',
 
     width: {
       xs: '170px',
@@ -40,7 +40,7 @@ const sx = {
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
-    objectFit: 'none',
+    objectFit: 'contain',
 
     '&:hover': {
       cursor: 'pointer',
