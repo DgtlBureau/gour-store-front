@@ -13,7 +13,7 @@ import { NotificationType } from 'types/entities/Notification';
 type SignInStage = 'credentials' | 'recovery';
 
 export default function SignIn() {
-  const { goToIntro, goToSignUp, goToHome } = useAppNavigation();
+  const { goToIntro, goToSignUp, goToGame } = useAppNavigation();
 
   const [sendCode] = useSendCodeMutation();
   const [signIn] = useSignInMutation();
@@ -36,7 +36,6 @@ export default function SignIn() {
     try {
       await signIn(data).unwrap();
       dispatchNotification('Добро пожаловать :]');
-      goToHome();
     } catch (e: unknown) {
       dispatchNotification('Ошибка авторизации', { type: NotificationType.DANGER });
       setCredentials(prevState => ({ ...prevState, password: '' }));

@@ -94,7 +94,7 @@ const Home: NextPage = () => {
               .map(promotion => (
                 <PromotionCard
                   key={promotion.id}
-                  image={promotion.cardImage.small}
+                  image={promotion.cardImage?.small}
                   onClickMore={() => goToPromotionPage(promotion.id)}
                 />
               ))}
