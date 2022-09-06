@@ -84,7 +84,6 @@ export function PALayout({ children }: PALayoutProps) {
           selectedCityId={selectedCity?.id || 0}
           cities={convertedCities}
           currency={currency}
-          language={language}
           basketProductCount={count}
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}

@@ -23,9 +23,6 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import RusFlagIcon from 'assets/icons/flags/rus.svg';
-import UKFlagIcon from 'assets/icons/flags/uk.svg';
 import Logo from 'assets/images/common-logo.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import CatalogIcon from 'assets/icons/catalog.svg';
@@ -46,7 +43,6 @@ export type HeaderProps = {
     name: string;
   }[];
   currency: Currency;
-  language: Language;
   basketProductCount: number;
   basketProductSum: number;
   moneyAmount: number;
@@ -71,7 +67,6 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  language,
   currency,
   moneyAmount,
   sx,

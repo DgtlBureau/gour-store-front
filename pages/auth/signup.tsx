@@ -46,9 +46,7 @@ export default function SignUp() {
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
-  const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
-  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -75,7 +73,6 @@ export default function SignUp() {
     try {
       // запрос на проверку кода
       if (code !== '1234') throw new Error('Код не валиден');
-      setIsPhoneCodeValid(true);
       return true;
     } catch (error) {
       console.error(error);
@@ -93,8 +90,9 @@ export default function SignUp() {
     goToFavoriteInfo();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const saveFavoriteInfo = (info: FavoriteInfo) => {
-    setFavoriteInfo(info);
+    // TODO: убрать лишний код
     goToReferralCode();
   };
 

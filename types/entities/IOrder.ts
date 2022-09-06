@@ -1,4 +1,3 @@
-import { string } from 'yup/lib/locale';
 import { IBaseEntity } from './IBaseEntity';
 import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';

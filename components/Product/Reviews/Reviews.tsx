@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { Grid, SxProps } from '@mui/material';
 
 import translations from './Reviews.i18n.json';

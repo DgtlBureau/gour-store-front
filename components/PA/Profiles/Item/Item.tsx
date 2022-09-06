@@ -50,7 +50,9 @@ export function PAProfilesItem({
 
   const convertToOrderProfile = ({
     city: { id: cityId },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     createdAt,
     ...fields
   }: IOrderProfile): OrderProfileDto => ({

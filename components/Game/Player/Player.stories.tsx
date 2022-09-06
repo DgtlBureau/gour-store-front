@@ -2,7 +2,6 @@ import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 import { GamePlayer, GamePlayerProps } from './Player';
-import { FIELD_POSITIONS } from '../Main/Core';
 
 export default {
   component: GamePlayer,

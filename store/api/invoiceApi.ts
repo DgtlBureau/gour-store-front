@@ -42,7 +42,7 @@ const mockData: IInvoice[] = [
   },
 ];
 
-// eslint-disable-next-line no-promise-executor-return
+// eslint-disable-next-line promise/param-names, no-promise-executor-return
 const sleep = (sec: number) => new Promise<void>(res => setTimeout(() => res(), sec * 1000)); // TODO: remove this line
 
 export const invoiceApi = commonApi.injectEndpoints({

@@ -27,9 +27,9 @@ const Template: ComponentStory<typeof OrderForm> = function () {
       productsCount={0}
       cost={100}
       discount={10}
-      citiesList={[]}
+      citiesList={profiles}
       delivery={0}
-      deliveryProfiles={[]}
+      deliveryProfiles={profiles}
       onSubmit={() => ({})}
       onChangeDeliveryProfile={() => ({})}
     />

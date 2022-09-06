@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 import { ProductCard } from './Card';
-import { Weight } from 'types/entities/Weight';
 
 import russiaIcon from 'assets/icons/countries/russia.svg';
 
@@ -19,28 +18,12 @@ const DESCRIPTION = `
   Прекрасен как самостоятельное блюдо в сочетании с белым или розовым вином.
 `;
 
-const WEIGHTS = [
-  {
-    value: 100,
-    unit: 'г',
-  },
-  {
-    value: 200,
-    unit: 'г',
-  },
-  {
-    value: 300,
-    unit: 'г',
-  },
-] as Weight[];
-
 const PRICE = 350;
 
 const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
 
 const Template: ComponentStory<typeof ProductCard> = function () {
-  const [weightId, setWeightId] = useState(0);
-  const [inCart, setInCart] = useState(false);
+  const [, setInCart] = useState(false);
   const [isElected, setIsElected] = useState(false);
 
   return (

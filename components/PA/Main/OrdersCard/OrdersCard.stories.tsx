@@ -13,28 +13,28 @@ const Template: ComponentStory<typeof PAOrdersCard> = function (args: PAOrdersCa
 };
 export const DefaultPAOrdersCard = Template.bind({});
 
+const defaultOrder = {
+  date: new Date(),
+  status: 'Ваш заказ ожидает оплаты',
+  currency: 'cheeseCoin',
+} as const;
+
 const props: Partial<PAOrdersCardProps> = {
   orders: [
     {
       id: 'T212486314',
-      date: new Date(),
-      status: 'Ваш заказ ожидает оплаты',
       sum: 1000,
-      currency: 'cheeseCoin',
+      ...defaultOrder,
     },
     {
       id: 'T123486314',
-      date: new Date(),
-      status: 'Ваш заказ ожидает оплаты',
       sum: 2000,
-      currency: 'cheeseCoin',
+      ...defaultOrder,
     },
     {
       id: 'T5678986314',
-      date: new Date(),
-      status: 'Ваш заказ ожидает оплаты',
       sum: 500,
-      currency: 'cheeseCoin',
+      ...defaultOrder,
     },
   ],
 };

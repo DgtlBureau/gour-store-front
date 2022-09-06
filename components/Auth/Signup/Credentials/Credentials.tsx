@@ -49,7 +49,6 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCod
   });
 
   const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
-  const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
   const formIsInvalid = !values.formState.isValid || !isAgree;
 
   const sendSMS = async () => {

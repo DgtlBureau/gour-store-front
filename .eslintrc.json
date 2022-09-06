@@ -7,8 +7,11 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "airbnb",
-    "prettier",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:optimize-regex/all",
+    "plugin:promise/recommended",
+    "plugin:sonarjs/recommended",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -18,7 +21,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "optimize-regex", "promise", "sonarjs", "prettier"],
 
   "rules": {
     "react/react-in-jsx-scope": "off",
@@ -34,7 +37,9 @@
     "import/extensions": "off",
     "no-param-reassign": 0,
     "react/jsx-props-no-spreading": 0,
-    "no-debugger": "warn",
+    "no-console": "off", // особенность проекта, удалить при копировании
+    "func-names": "off", // особенность проекта, удалить при копировании
+    "@typescript-eslint/no-non-null-assertion": "off", // особенность проекта, удалить при копировании
     "react/require-default-props": "off",
     "react/prop-types": "off",
     "import/prefer-default-export": "off",
@@ -46,7 +51,7 @@
         "peerDependencies": true
       }
     ],
-    "react/function-component-definition": "warn",
+    "react/function-component-definition": "off",
     "jsx-a11y/label-has-for": [
       2,
       {
@@ -55,7 +60,8 @@
         }
       }
     ],
-    "import/order": "off"
+    "import/order": "off",
+    "prefer-promise-reject-errors": "error" // require using Error objects as Promise rejection reasons
   },
   "settings": {
     "import/resolver": {

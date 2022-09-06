@@ -2,10 +2,6 @@ import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Translator } from 'utils/Translator';
-import { Stepper } from 'components/UI/Stepper/Stepper';
-import { Grid } from '@mui/material';
-import Image from 'next/image';
 import translations from './CitySelect.i18n.json';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getSchema } from './validation';
@@ -14,10 +10,7 @@ import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 import { HFSelect } from 'components/HookForm/HFSelect';
 
-import cityImage from 'assets/icons/signup/city.svg';
-
 import sx from './CitySelect.styles';
-import { Box } from 'components/UI/Box/Box';
 
 type SignupCityFields = {
   city: string;

@@ -1,3 +1,5 @@
+import { defaultTheme as theme } from 'themes';
+
 const sx = {
   card: {
     display: 'flex',
@@ -21,7 +23,7 @@ const sx = {
   title: {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: 'text.secondary',
+    color: theme.palette.text.secondary,
   },
 
   price: {},
@@ -31,7 +33,7 @@ const sx = {
     textAlign: 'right',
   },
   countText: {
-    color: 'text.muted',
+    color: theme.palette.text.muted,
     textAlign: { sm: 'center', xs: 'left' },
   },
 
@@ -51,7 +53,7 @@ const sx = {
 
       padding: 0,
 
-      color: 'text.secondary',
+      color: theme.palette.text.secondary,
     },
   },
 
@@ -67,8 +69,8 @@ const sx = {
 
     padding: '4px',
 
-    backgroundColor: 'secondary.main',
-    color: 'text.secondary',
+    backgroundColor: 'text.main',
+    color: theme.palette.text.secondary,
 
     borderRadius: '99px',
 

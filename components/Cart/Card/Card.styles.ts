@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { defaultTheme as t } from '../../../themes';
 
 const sx = {
