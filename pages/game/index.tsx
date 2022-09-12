@@ -9,11 +9,11 @@ export function Game() {
   const { currency, language } = useAppNavigation();
 
   return (
-    <PrivateLayout>
-      <GameLayout currency={currency} language={language}>
-        <GameMain />
-      </GameLayout>
-    </PrivateLayout>
+    // <PrivateLayout>
+    <GameLayout currency={currency} language={language}>
+      <GameMain />
+    </GameLayout>
+    // </PrivateLayout>
   );
 }
 
