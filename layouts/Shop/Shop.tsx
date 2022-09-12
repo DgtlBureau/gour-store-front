@@ -28,62 +28,63 @@ export interface ShopLayoutProps {
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const { goToFavorites, goToBasket, goToPersonalArea, goToGame } = useAppNavigation();
   goToGame();
-  const { data: cities } = useGetCityListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: balance = 0 } = useGetCurrentBalanceQuery();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  return null;
+  // const { data: cities } = useGetCityListQuery();
+  // const { data: currentUser } = useGetCurrentUserQuery();
+  // const { data: balance = 0 } = useGetCurrentBalanceQuery();
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [changeCity] = useChangeCurrentCityMutation();
-  const [signOut] = useSignOutMutation();
+  // const [changeCity] = useChangeCurrentCityMutation();
+  // const [signOut] = useSignOutMutation();
 
-  const handleAddCheesecoins = (data: AddCheesecoinsDto) => console.log(data);
+  // const handleAddCheesecoins = (data: AddCheesecoinsDto) => console.log(data);
 
-  const convertedCities =
-    cities?.map(city => ({
-      id: city.id,
-      name: city.name[language],
-    })) || [];
+  // const convertedCities =
+  //   cities?.map(city => ({
+  //     id: city.id,
+  //     name: city.name[language],
+  //   })) || [];
 
-  const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  // const count = useAppSelector(selectedProductCount);
+  // const sum = useAppSelector(selectedProductSum);
+  // const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
+  // const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
 
-  const openCheesecoinsModal = () => setIsModalOpen(true);
-  const closeCheesecoinsModal = () => setIsModalOpen(false);
+  // const openCheesecoinsModal = () => setIsModalOpen(true);
+  // const closeCheesecoinsModal = () => setIsModalOpen(false);
 
-  return (
-    <Box sx={sx.layout}>
-      <Header
-        {...contacts}
-        selectedCityId={selectedCity?.id || 0}
-        cities={convertedCities}
-        currency={currency}
-        language={language}
-        basketProductCount={count}
-        basketProductSum={sum - sumDiscount}
-        moneyAmount={balance}
-        onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
-        onClickReplenishment={openCheesecoinsModal}
-        onClickSignout={signOut}
-      />
+  // return (
+  //   <Box sx={sx.layout}>
+  //     <Header
+  //       {...contacts}
+  //       selectedCityId={selectedCity?.id || 0}
+  //       cities={convertedCities}
+  //       currency={currency}
+  //       language={language}
+  //       basketProductCount={count}
+  //       basketProductSum={sum - sumDiscount}
+  //       moneyAmount={balance}
+  //       onChangeCity={changeCity}
+  //       onClickFavorite={goToFavorites}
+  //       onClickPersonalArea={goToPersonalArea}
+  //       onClickBasket={goToBasket}
+  //       onClickReplenishment={openCheesecoinsModal}
+  //       onClickSignout={signOut}
+  //     />
 
-      <Box sx={sx.content}>{children}</Box>
+  //     <Box sx={sx.content}>{children}</Box>
 
-      <Footer {...contacts} sx={sx.footer} />
+  //     <Footer {...contacts} sx={sx.footer} />
 
-      <Copyright />
+  //     <Copyright />
 
-      <CheesecoinsAddModal
-        isOpened={isModalOpen}
-        title='Добавление чизкоинов'
-        onClose={closeCheesecoinsModal}
-        onSubmit={handleAddCheesecoins}
-      />
-    </Box>
-  );
+  //     <CheesecoinsAddModal
+  //       isOpened={isModalOpen}
+  //       title='Добавление чизкоинов'
+  //       onClose={closeCheesecoinsModal}
+  //       onSubmit={handleAddCheesecoins}
+  //     />
+  //   </Box>
+  // );
 }
