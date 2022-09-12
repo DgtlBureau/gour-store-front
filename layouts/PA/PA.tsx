@@ -18,12 +18,15 @@ import { Currency } from 'types/entities/Currency';
 import { Path } from 'constants/routes';
 
 import sx from './PA.styles';
+import { useRouter } from 'next/router';
 
 export interface PALayoutProps {
   children?: ReactNode;
 }
 
 export function PALayout({ children }: PALayoutProps) {
+  const { goToGame } = useAppNavigation();
+  goToGame();
   const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } =
     useAppNavigation();
   const currency: Currency = 'cheeseCoin';

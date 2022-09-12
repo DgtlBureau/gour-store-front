@@ -26,7 +26,8 @@ export interface ShopLayoutProps {
 }
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea } = useAppNavigation();
+  const { goToFavorites, goToBasket, goToPersonalArea, goToGame } = useAppNavigation();
+  goToGame();
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
