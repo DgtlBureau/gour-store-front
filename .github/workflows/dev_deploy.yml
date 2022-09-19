@@ -1,8 +1,8 @@
-name: Deploy
+name: Deploy dev
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
 
   workflow_dispatch:
 
@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -23,4 +23,4 @@ jobs:
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
       - name: Restart the application
         run: |
-          ssh deploy@92.53.97.252 "pushd /var/www/gour/gour-store-front && npm install && npm run build && pm2 restart ecosystem.config.js"
+          ssh -p 22 zolkinka@92.53.97.252 "pushd /var/www/gour/gour-store-front && git fetch origin && git reset --hard origin/dev && git pull && npm ci --legacy-peer-deps && npm run build && pm2 restart ecosystem.config.js"
