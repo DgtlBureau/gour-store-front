@@ -9,7 +9,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 export function Game() {
   const { currency, language } = useAppNavigation();
 
-  const [rulesModalIsOpen, setRulesModalIsOpen] = useState(true);
+  const [rulesModalIsOpen, setRulesModalIsOpen] = useState(false);
 
   const openRulesModal = () => setRulesModalIsOpen(true);
   const closeRulesModal = () => setRulesModalIsOpen(false);
