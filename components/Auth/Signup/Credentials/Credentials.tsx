@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControlLabel, Radio, Stack } from '@mui/material';
+import { FormControlLabel, Radio, CircularProgress } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -23,13 +23,21 @@ import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
+  codeCheckIsLoading?: boolean;
   onBack(): void;
   onSendSMS(phone: string): Promise<'success' | 'failed'>;
   onCheckCode: (code: string) => Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
-export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCode, onSubmit }: SignupCredentialsProps) {
+export function SignupCredentials({
+  defaultValues,
+  codeCheckIsLoading,
+  onBack,
+  onSendSMS,
+  onCheckCode,
+  onSubmit,
+}: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
@@ -101,19 +109,18 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCod
               {t('getCode')}
             </Button>
           </Box>
-
-          {isCodeSended && (
-            <Stack sx={sx.field}>
+          {isCodeSended && !isCodeSuccess && (
+            <Box sx={sx.field}>
               <HFCodeInput
                 name='sms'
                 onChange={value => {
-                  if (value.length === 4) {
-                    checkCode();
-                  }
+                  if (value.length === 4) checkCode();
                 }}
+                // disabled={codeCheckIsLoading}
               />
-              {isCodeSuccess && <Typography variant='body1'>Код подтвержден</Typography>}
-            </Stack>
+
+              {codeCheckIsLoading && <CircularProgress size={40} sx={sx.progress} />}
+            </Box>
           )}
 
           {isCodeSuccess && (

@@ -43,7 +43,7 @@ export default function SignUp() {
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
-  const [checkCode] = useCheckCodeMutation();
+  const [checkCode, { isLoading: codeCheckIsLoading }] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
@@ -155,6 +155,7 @@ export default function SignUp() {
       component: (
         <SignupCredentials
           defaultValues={credentials}
+          codeCheckIsLoading={codeCheckIsLoading}
           onSendSMS={sendSMS}
           onCheckCode={checkCodeHandler}
           onSubmit={saveCredentials}
