@@ -11,7 +11,7 @@ import { Typography } from '../Typography/Typography';
 
 export type SelectOption = {
   value: string | number;
-  label: string | undefined;
+  label?: string;
 };
 
 type Props = {
