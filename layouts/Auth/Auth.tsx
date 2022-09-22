@@ -36,14 +36,14 @@ export interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { goToHome, goToGame } = useAppNavigation();
+  const { goToHome } = useAppNavigation();
   const { isFetching } = useGetCurrentUserQuery();
   const isAuth = useAppSelector(selectIsAuth);
 
   if (isFetching) return null;
 
   if (isAuth) {
-    goToGame();
+    goToHome();
     return null;
   }
 
