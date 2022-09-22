@@ -49,7 +49,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   // const sum = useAppSelector(selectedProductSum);
   // const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  // const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
+  // const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
   // const openCheesecoinsModal = () => setIsModalOpen(true);
   // const closeCheesecoinsModal = () => setIsModalOpen(false);
