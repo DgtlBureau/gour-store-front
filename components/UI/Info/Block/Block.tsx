@@ -21,7 +21,8 @@ type Props = {
   text: string;
   link?: {
     label: string;
-    path: string;
+    path?: string;
+    onClick?: () => void;
   };
 };
 
@@ -31,7 +32,11 @@ export function InfoBlock({ text, link, sx }: Props) {
       <Typography sx={infoSx.text} color='text.muted' variant='body1'>
         {text}
       </Typography>
-      {link && <Link href={link.path}>{link.label}</Link>}
+      {link && (
+        <Link href={link.path || '#'} onClick={link.onClick}>
+          {link.label}
+        </Link>
+      )}
     </Paper>
   );
 }

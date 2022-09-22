@@ -21,8 +21,6 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
-import { IProduct } from 'types/entities/IProduct';
-
 import { useAppNavigation } from 'components/Navigation';
 import { Button } from 'components/UI/Button/Button';
 import { CartInfo } from 'components/Cart/Info/Info';
@@ -34,34 +32,17 @@ import { InfoBlock } from 'components/UI/Info/Block/Block';
 import translation from './Basket.i18n.json';
 import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from 'types/entities/Notification';
+import { IProduct } from 'types/entities/IProduct';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { getErrorMessage } from 'utils/errorUtil';
 
-const sx = {
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
-  divider: {
-    borderColor: 'secondary.main',
-  },
-  desktopOrderBtn: {
-    display: { xs: 'none', md: 'flex' },
-    width: '100%',
-    marginBottom: '10px',
-  },
-  mobileOrderBtn: {
-    width: '100%',
-    marginTop: '10px',
-  },
-};
+import sx from './Basket.styles';
+import { useRouter } from 'next/router';
 
 export function Basket() {
   const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
+
+  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
@@ -91,7 +72,7 @@ export function Basket() {
   const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
   const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
-  const handleElect = async (id: number, isElect: boolean) => {
+  const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id);
@@ -99,8 +80,9 @@ export function Basket() {
         await addFavorite({ productId: id });
       }
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -126,12 +108,12 @@ export function Basket() {
         {productsInOrder.length !== 0 && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              {productsInOrder.map((it, i) => (
+              {productsInOrder.map(it => (
                 <>
                   <CartCard
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
-                    price={(it.product.price as any)[currency] || 0} // FIXME: TODO: избавиться от any
+                    price={it.product.price[currency] || 0} // FIXME: TODO: избавиться от any
                     amount={it.amount}
                     weight={it.weight}
                     isWeightGood={it.product.isWeightGood}
@@ -173,7 +155,10 @@ export function Basket() {
               <InfoBlock
                 sx={{ marginTop: '10px' }}
                 text={t('aboutDelivery')}
-                link={{ label: t('detailed'), path: '/' }}
+                link={{
+                  label: t('detailed'),
+                  path: '/#purchase-rules-block',
+                }}
               />
             </Grid>
 
@@ -187,7 +172,7 @@ export function Basket() {
                   favoritesList={favoriteProducts}
                   onAdd={addProduct}
                   onRemove={subtractProduct}
-                  onElect={handleElect}
+                  onElect={electProduct}
                   onDetail={goToProductPage}
                 />
               </Grid>
