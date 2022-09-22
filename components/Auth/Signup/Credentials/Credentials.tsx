@@ -24,7 +24,7 @@ import sx from './Credentials.styles';
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
   onBack(): void;
-  onSendSMS(phone: string): Promise<'success' | string>;
+  onSendSMS(phone: string): Promise<'success' | 'failed'>;
   onCheckCode: (code: string) => Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
@@ -54,19 +54,19 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCod
 
   const sendSMS = async () => {
     if (isCodeSended) return;
+
     const phone = values.watch('phone');
 
     const response = await onSendSMS(phone);
-    if (response === 'success') {
-      setIsCodeSended(true);
-    } else {
-      values.setError('phone', { message: response });
-    }
+
+    if (response === 'success') setIsCodeSended(true);
+    else values.setError('phone', { message: '' });
   };
 
   const checkCode = async () => {
     const code = values.watch('sms');
     const status = await onCheckCode(code);
+
     setIsCodeSuccess(status);
   };
 
@@ -101,6 +101,7 @@ export function SignupCredentials({ defaultValues, onBack, onSendSMS, onCheckCod
               {t('getCode')}
             </Button>
           </Box>
+
           {isCodeSended && (
             <Stack sx={sx.field}>
               <HFCodeInput

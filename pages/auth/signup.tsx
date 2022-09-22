@@ -24,6 +24,7 @@ import greetingsImage from 'assets/icons/signup/greetings.svg';
 import cityImage from 'assets/icons/signup/city.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
+import { getErrorMessage } from 'utils/errorUtil';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
@@ -49,7 +50,6 @@ export default function SignUp() {
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
-  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -60,26 +60,31 @@ export default function SignUp() {
   const sendSMS = async (phone: string) => {
     try {
       await sendCode(phone).unwrap();
+
       dispatchNotification('SMS код отправлен');
+
       return 'success';
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
-      return (error as { data: { message: string } })?.data?.message || 'Неизвестная ошибка!';
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
+      return 'failed';
     }
   };
 
   const checkCodeHandler = async (code: string) => {
     try {
       const isApprove = await checkCode(code).unwrap();
-      if (!isApprove) {
-        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
-        return false;
-      }
-      setIsPhoneCodeValid(true);
-      return true;
+
+      if (!isApprove) dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+
+      return isApprove;
     } catch (error) {
-      console.error(error);
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
       return false;
     }
   };
@@ -119,10 +124,12 @@ export default function SignUp() {
       await signUp(data).unwrap();
 
       dispatchNotification('Регистрация прошла успешно');
+
       goToSignIn();
-    } catch (e: unknown) {
-      console.log(e);
-      dispatchNotification('Ошибка регистрации', { type: NotificationType.DANGER });
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 

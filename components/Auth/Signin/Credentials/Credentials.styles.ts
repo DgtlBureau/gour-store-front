@@ -7,6 +7,27 @@ const sx = {
   field: {
     marginBottom: '14px',
   },
+  phone: {
+    display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  getCodeBtn: {
+    whiteSpace: 'nowrap',
+    height: '100%',
+    minWidth: {
+      xs: '100%',
+      sm: 'auto',
+    },
+    margin: {
+      xs: '12px 0',
+      sm: '0 0 0 12px',
+    },
+  },
   links: {
     display: 'flex',
     flexDirection: {

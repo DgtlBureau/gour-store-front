@@ -6,41 +6,22 @@ import { Box } from 'components/UI/Box/Box';
 import { selectIsAuth } from 'store/selectors/auth';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useAppSelector } from 'hooks/store';
-import stripes from 'assets/images/stripes.svg';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
-const sx = {
-  layout: {
-    padding: {
-      xs: '20px 0',
-    },
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundImage: `url(${stripes})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'top center',
-  },
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxWidth: '1200px',
-    width: 'calc(100% - 20px)',
-  },
-};
+import sx from './Auth.styles';
 
 export interface AuthLayoutProps {
   children?: ReactElement;
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { goToHome, goToGame } = useAppNavigation();
-  const { isFetching } = useGetCurrentUserQuery();
+  const { goToGame } = useAppNavigation();
+
+  const { isLoading } = useGetCurrentUserQuery();
+
   const isAuth = useAppSelector(selectIsAuth);
 
-  if (isFetching) return null;
+  if (isLoading) return <ProgressLinear variant='indeterminate' />;
 
   if (isAuth) {
     goToGame();
