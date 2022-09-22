@@ -44,12 +44,14 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
   const isMobile = useMediaQuery('(max-width: 600px)');
   const isPortrait = useMediaQuery('(orientation: portrait)');
 
   const flipIsNeeded = isMobile && isPortrait;
+
+  const copyrightSx = { display: { xs: isPortrait ? 'flex' : 'none', md: 'flex' } };
 
   return (
     <Box sx={sx.layout}>
@@ -73,7 +75,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
       {flipIsNeeded ? <GameFlipWarning /> : <Box sx={sx.content}>{children}</Box>}
 
-      <Copyright />
+      <Copyright sx={copyrightSx} />
     </Box>
   );
 }
