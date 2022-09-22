@@ -8,7 +8,6 @@ export const sx = {
     width: {
       xs: '100%',
       sm: '450px',
-      md: '350px',
     },
   },
 
