@@ -167,7 +167,7 @@ export function ProductCatalog({
             discount={discount || product.discount}
             previewSrc={product.images[0] ? product.images[0].small : ''}
             currency={currency}
-            countrySrc={getCountryImage(product.characteristics.country)}
+            countrySrc={getCountryImage(product.characteristics?.country)}
             currentCount={getProductCount(product.id, product.isWeightGood)}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
