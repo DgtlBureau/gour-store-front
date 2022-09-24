@@ -1,10 +1,12 @@
 {
   "ru": {
     "minCount": "Введите число больше 0!",
-    "countRequired": "Обязательное поле"
+    "countRequired": "Обязательное поле",
+    "correctDecimal": "Введенное значение должно быть числом"
   },
   "en": {
     "minCount": "Enter number more 0!",
-    "countRequired": "Field required"
+    "countRequired": "Field required",
+    "correctDecimal": "The entered value must be integer"
   }
 }

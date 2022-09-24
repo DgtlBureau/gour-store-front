@@ -2,6 +2,7 @@
   "ru": {
     "personal-area": "Личный кабинет",
     "main": "Главная",
+    "payments": "Платежи",
     "orders": "Заказы",
     "credentials": "Личные данные",
     "addresses": "Адреса доставки",
@@ -10,6 +11,7 @@
   "en": {
     "personal-area": "Personal area",
     "main": "Main",
+    "payments": "Payments",
     "orders": "Orders",
     "credentials": "Credentials",
     "addresses": "Delivery addresses",

@@ -5,7 +5,7 @@ import { Currency } from 'types/entities/Currency';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 
 export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
-  changeChapter: (path: string) => void;
+  changeChapter: (path: string, checkPaths?: boolean) => void;
   goBack: () => void;
   goToHome: () => void;
   goToOrder: () => void;
@@ -15,6 +15,7 @@ export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   goToGame: () => void;
   goToProductPage: (id: number) => void;
   goToCredentials: () => void;
+  goToPayments: () => void;
   goToAddresses: () => void;
   goToDiscounts: () => void;
   goToOrders: () => void;

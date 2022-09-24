@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { Divider, Grid } from '@mui/material';
 
@@ -129,9 +130,9 @@ export function Basket() {
               {productsInOrder.map((it, i) => (
                 <>
                   <CartCard
-                    key={it.product.id}
+                    key={it.product.id + i}
                     title={it.product.title[language] || '...'}
-                    price={(it.product.price as any)[currency] || 0} // FIXME: TODO: избавиться от any
+                    price={it.product.price[currency] || 0}
                     amount={it.amount}
                     weight={it.weight}
                     isWeightGood={it.product.isWeightGood}
