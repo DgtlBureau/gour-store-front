@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import { useCheckCodeMutation, useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
@@ -42,13 +42,14 @@ export default function SignUp() {
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
+  const [checkCode, { isLoading: codeCheckIsLoading }] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
-  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
+  // const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -57,7 +58,6 @@ export default function SignUp() {
   const goToReferralCode = () => setStage('referralCode');
 
   const sendSMS = async (phone: string) => {
-    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
     try {
       await sendCode(phone).unwrap();
       dispatchNotification('SMS код отправлен');
@@ -65,20 +65,26 @@ export default function SignUp() {
     } catch (error) {
       console.error(error);
       dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
-      return (error as any).data.message;
+      return (error as { data: { message: string } })?.data?.message || 'Неизвестная ошибка!';
     }
   };
 
-  const checkCode = async (code: string) => {
-    // TODO: затипизировать ошибку и выводить строку с ошибкой или success
-
+  const checkCodeHandler = async (code: string) => {
     try {
-      // запрос на проверку кода
-      if (code !== '1234') throw new Error('Код не валиден');
-      setIsPhoneCodeValid(true);
+      const isApprove = await checkCode(code).unwrap();
+
+      if (!isApprove) {
+        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+
+        return false;
+      }
+
+      dispatchNotification('Код подтверждён');
+
       return true;
     } catch (error) {
       console.error(error);
+
       return false;
     }
   };
@@ -147,8 +153,9 @@ export default function SignUp() {
       component: (
         <SignupCredentials
           defaultValues={credentials}
+          codeCheckIsLoading={codeCheckIsLoading}
           onSendSMS={sendSMS}
-          onCheckCode={checkCode}
+          onCheckCode={checkCodeHandler}
           onSubmit={saveCredentials}
           onBack={goToCitySelect}
         />

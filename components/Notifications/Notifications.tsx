@@ -11,7 +11,7 @@ import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {
   theme: 'light',
-  autoClose: 7000000,
+  autoClose: 7000,
   style: {
     maxWidth: '500px',
     width: '100%',

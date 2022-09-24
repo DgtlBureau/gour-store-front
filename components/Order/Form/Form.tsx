@@ -3,29 +3,22 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { Path } from 'constants/routes';
 import translations from './Form.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
 import { getValidationSchema } from './validation';
-
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Button } from 'components/UI/Button/Button';
-import { Checkbox } from 'components/UI/Checkbox/Checkbox';
-import { HFTextField, HFTextFieldProps } from 'components/HookForm/HFTextField';
-import { HFSelect } from 'components/HookForm/HFSelect';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Box } from '../../UI/Box/Box';
+import { Typography } from '../../UI/Typography/Typography';
+import { Button } from '../../UI/Button/Button';
+import { Checkbox } from '../../UI/Checkbox/Checkbox';
+import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';
-import { Currency } from 'types/entities/Currency';
+import { Currency } from '../../../types/entities/Currency';
+import { Path } from 'constants/routes';
 
 import sx from './Form.styles';
-
-const contactsFields: HFTextFieldProps[] = [
-  { name: 'firstName' },
-  { name: 'lastName' },
-  { name: 'phone' }, // FIXME: валидация для номера
-  { name: 'email', type: 'email' },
-];
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -142,11 +135,19 @@ export function OrderForm({
             </Typography>
 
             <Grid container spacing={1}>
-              {contactsFields.map(({ name, ...fieldProps }) => (
-                <Grid key={name} item xs={12} sm={6}>
-                  <HFTextField name={name} label={t(name)} {...fieldProps} />
-                </Grid>
-              ))}
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='firstName' label={t('firstName')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='lastName' label={t('lastName')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {' '}
+                <HFPhoneInput name='phone' label={t('phone')} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <HFTextField name='email' label={t('email')} type='email' />
+              </Grid>
             </Grid>
           </Box>
 
@@ -161,13 +162,12 @@ export function OrderForm({
                 name='deliveryProfileId'
                 options={deliveryProfiles}
                 placeholder={t('profileSelect')}
-                sx={sx.select}
               />
             )}
 
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} sx={sx.select} />
+                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} />
               </Grid>
 
               {addressFields.map(field => (

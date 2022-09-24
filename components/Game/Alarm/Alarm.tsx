@@ -76,9 +76,11 @@ export function GameAlarm({ isRinging, sx }: GameAlarmProps) {
     <Box sx={{ ...alarmSx.wrapper, ...sx } as SxProps}>
       <Box sx={{ ...alarmSx.rabbit, ...(!isRinging && alarmSx.muted) }}>
         <Image src={body} height={120} width={90} alt='' />
+
         <Box sx={{ ...alarmSx.hand, ...alarmSx.upHand, ...(isRinging && alarmSx.upHandAnimation) }}>
           <Image src={handUp} height={56} width={55} alt='' />
         </Box>
+
         <Box sx={{ ...alarmSx.hand, ...alarmSx.downHand, ...(isRinging && alarmSx.downHandAnimation) }}>
           <Image src={handDown} height={70} width={44} alt='' />
         </Box>

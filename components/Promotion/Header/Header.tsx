@@ -39,9 +39,20 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
     if (seconds < 0) clearInterval(intervalId);
   }, [seconds]);
 
+  const placeholder =
+    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
+
   return (
     <Stack sx={{ ...headerSx.promotion, ...sx } as SxProps<Theme>}>
-      <Image src={image} objectFit='cover' layout='responsive' height={400} width={500} alt='' />
+      <Image
+        loader={() => image || placeholder}
+        src={image || placeholder}
+        objectFit='cover'
+        layout='responsive'
+        height={400}
+        width={500}
+        alt=''
+      />
 
       <Typography variant='body1' sx={headerSx.timer}>
         {seconds > 0 ? `${t('left')} ${timer}` : t('end')}

@@ -24,6 +24,7 @@
     "@mui/lab": "~5.0.0-alpha.73",
     "@mui/material": "~5.5.1",
     "@reduxjs/toolkit": "~1.8.0",
+    "@sentry/nextjs": "^7.12.1",
     "@storybook/preset-create-react-app": "~4.1.0",
     "@svgr/webpack": "~6.2.1",
     "@types/lodash.get": "~4.4.6",

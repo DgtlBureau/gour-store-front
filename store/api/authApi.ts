@@ -34,6 +34,15 @@ export const authApi = commonApi.injectEndpoints({
           };
         },
       }),
+      checkCode: builder.mutation<boolean, string>({
+        query(code) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.CHECK_CODE}`,
+            body: { code },
+          };
+        },
+      }),
       signOut: builder.mutation<void, void>({
         query(body) {
           return {
@@ -47,4 +56,5 @@ export const authApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useSignUpMutation, useSignInMutation, useSendCodeMutation, useSignOutMutation } = authApi;
+export const { useSignUpMutation, useSignInMutation, useSendCodeMutation, useSignOutMutation, useCheckCodeMutation } =
+  authApi;
