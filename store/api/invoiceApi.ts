@@ -1,6 +1,5 @@
 import { commonApi } from './commonApi';
 import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
-import { updateInvoiceDto } from 'types/dto/invoice/updateInvoice.dto';
 
 const mockData: IInvoice[] = [
   {
@@ -56,7 +55,7 @@ export const invoiceApi = commonApi.injectEndpoints({
             ? [...result.map(({ id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
             : [{ type: 'Invoice', id: 'LIST' }],
       }),
-      updateInvoice: builder.mutation<IInvoice, updateInvoiceDto>({
+      updateInvoice: builder.mutation<IInvoice, unknown>({
         query(body) {
           return {
             method: 'POST',
