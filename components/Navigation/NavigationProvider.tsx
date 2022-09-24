@@ -12,7 +12,12 @@ function NavigationProvider({ children }: Props) {
   const router = useRouter(); // router может быть null в сторибуке
 
   const changeChapter = useCallback(
-    (newPath: string) => newPath !== router?.pathname && router.push(newPath),
+    (newPath: string, checkPaths = true) => {
+      const needUpdate = !checkPaths || newPath !== router?.pathname;
+      if (needUpdate) {
+        router.replace(newPath);
+      }
+    },
     [router?.pathname],
   );
 
@@ -70,7 +75,7 @@ function NavigationProvider({ children }: Props) {
       pathname: router?.pathname,
       query: router?.query,
     }),
-    [router],
+    [router.pathname, router.query, router.isReady],
   );
 
   return <AppNavigationCtx.Provider value={navigation}>{children}</AppNavigationCtx.Provider>;

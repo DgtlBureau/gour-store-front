@@ -1,5 +1,7 @@
 import { commonApi } from './commonApi';
 import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
+import { getInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
+import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
 const mockData: IInvoice[] = [
   {
@@ -40,6 +42,9 @@ const mockData: IInvoice[] = [
   },
 ];
 
+// eslint-disable-next-line no-promise-executor-return
+const sleep = (sec: number) => new Promise<void>(res => setTimeout(() => res(), sec * 1000)); // TODO: remove this line
+
 export const invoiceApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
@@ -55,18 +60,27 @@ export const invoiceApi = commonApi.injectEndpoints({
             ? [...result.map(({ id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
             : [{ type: 'Invoice', id: 'LIST' }],
       }),
-      updateInvoice: builder.mutation<IInvoice, unknown>({
-        query(body) {
-          return {
-            method: 'POST',
-            url: 'Path.INVOICES',
-            body,
-          };
+      getInvoicePrice: builder.query<number, getInvoicePriceDto>({
+        // query: (body) => ({
+        //   url: '',
+        // }),
+        async queryFn({ count }) {
+          await sleep(1.5);
+          return { data: count };
         },
-        invalidatesTags: [{ type: 'Invoice', id: 'LIST' }],
+      }),
+      payInvoice: builder.mutation<void, payInvoiceDto>({
+        // query: (body) => ({
+        //   method: 'POST',
+        //   url: '',
+        //   body,
+        // }),
+        queryFn: () => ({
+          data: undefined,
+        }),
       }),
     };
   },
 });
 
-export const { useGetInvoiceListQuery, useUpdateInvoiceMutation } = invoiceApi;
+export const { useGetInvoiceListQuery, useGetInvoicePriceQuery, usePayInvoiceMutation } = invoiceApi;

@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 
+import { useAppNavigation } from 'components/Navigation';
 import { Typography } from 'components/UI/Typography/Typography';
-import { eventBus, EventTypes } from 'packages/EventBus';
+import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
 import { Notification, NotificationType } from 'types/entities/Notification';
+import { paymentNotification, PaymentStatus } from './NotificationHelper';
+
 import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {
@@ -23,6 +26,17 @@ const notificationTitleByType: Readonly<Record<NotificationType, string>> = {
 };
 
 export function Notifications() {
+  const { query, changeChapter, pathname } = useAppNavigation();
+
+  useEffect(() => {
+    const paymentMsg = paymentNotification[query.status as PaymentStatus];
+
+    if (paymentMsg) {
+      dispatchNotification(paymentMsg.message, { type: paymentMsg.type });
+      changeChapter(pathname, false);
+    }
+  }, [query]);
+
   useEffect(() => {
     function toastNotify(res: Notification) {
       const message = (
