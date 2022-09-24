@@ -44,7 +44,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   const {
     data: invoicePrice,
     isFetching,
-    isError, // TODO: error handling
+    isError,
   } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'rub' }, { skip: !isValidCoinsCount });
 
   const currencySymbol = getCurrencySymbol('rub');

@@ -1,4 +1,4 @@
-export type getInvoicePriceDto = {
+export type getInvoicePriceDto = Readonly<{
   currency: 'rub' | 'usd';
   count: number;
-};
+}>;
