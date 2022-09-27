@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useGetCityListQuery } from 'store/api/cityApi';
@@ -60,7 +60,7 @@ export default function SignUp() {
   const sendSMS = async (phone: string) => {
     try {
       await sendCode(phone).unwrap();
-      dispatchNotification('SMS код отправлен');
+      dispatchNotification('Email код отправлен');
       return 'success';
     } catch (error) {
       console.error(error);
@@ -112,7 +112,7 @@ export default function SignUp() {
     const data: SignUpDto = {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
-      phone: credentials.phone,
+      email: credentials.email,
       code: credentials.sms,
       password: credentials.password,
       referralCode,

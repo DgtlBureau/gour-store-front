@@ -63,10 +63,7 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
       {existImages.length > 1 && (
         <Box sx={sliderSx.scroll}>
           {existImages.map((image, i) => (
-            <Box
-              key={image?.small + i}
-              sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}
-            >
+            <Box key={i} sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}>
               <Image
                 loader={({ src }) => src}
                 src={image?.small}

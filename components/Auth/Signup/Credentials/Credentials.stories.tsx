@@ -30,7 +30,7 @@ export const DefaultSignupCredentials = Template.bind({});
 const props: Partial<SignupCredentialsProps> = {
   defaultValues: {
     role: 'CLIENT',
-    phone: '',
+    email: '',
     firstName: '',
     lastName: '',
     sms: '',
