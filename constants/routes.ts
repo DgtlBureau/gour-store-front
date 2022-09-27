@@ -40,6 +40,7 @@ export enum Path {
   GAME = 'game',
 
   MAIN = 'main',
+  PAYMENTS = 'payments',
   ORDER = 'order',
   ORDERS = 'orders',
   CREDENTIALS = 'credentials',

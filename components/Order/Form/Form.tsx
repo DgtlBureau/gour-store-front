@@ -12,13 +12,13 @@ import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';
 import { Currency } from '../../../types/entities/Currency';
 import { Path } from 'constants/routes';
 
 import sx from './Form.styles';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 

@@ -14,11 +14,19 @@ export type HFTextFieldProps = {
   disabled?: boolean;
   InputProps?: InputProps;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  regexp?: RegExp;
+  inputProps?: Record<string, number>;
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-export function HFTextField({ name, defaultValue, helperText, onChange, ...props }: HFTextFieldProps) {
+const checkValidity = (event: React.ChangeEvent<HTMLInputElement>, regex?: RegExp): boolean => {
+  if (!regex) return true;
+
+  return new RegExp(regex).test(event.currentTarget.value);
+};
+
+export function HFTextField({ name, defaultValue, helperText, onChange, regexp, ...props }: HFTextFieldProps) {
   const {
     control,
     formState: { errors },
@@ -33,6 +41,11 @@ export function HFTextField({ name, defaultValue, helperText, onChange, ...props
         <TextField
           {...rest}
           onChange={event => {
+            const isInvalid = !checkValidity(event, regexp);
+            if (isInvalid) {
+              event.preventDefault();
+              return;
+            }
             HFOnChange(event);
             onChange?.(event);
           }}
