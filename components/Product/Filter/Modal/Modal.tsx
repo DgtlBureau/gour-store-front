@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ICategory } from 'types/entities/ICategory';
+import { ICategory, ICategoryNew } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 import { CHARACTERISTICS } from 'constants/characteristics';
@@ -23,10 +23,10 @@ const sx = {
 
 export type ProductFilterModalProps = {
   isOpen: boolean;
-  categories: ICategory[];
+  categories: ICategoryNew[];
   filters: IFiltersCharacteristic;
   language: Language;
-  onCategoryChange: (key: string) => void;
+  onCategoryChange: (key: number) => void;
   onCharacteristicChange: (key: string, selected: string[]) => void;
   onClose(): void;
 };
@@ -53,9 +53,9 @@ export function ProductFilterModal({
           {categories?.map(category => (
             <ToggleButton
               key={category.id}
-              selected={filters.category === category.key}
+              selected={filters.category === category.id} // FIXME:
               sx={{ marginRight: '10px' }}
-              onChange={() => onCategoryChange(category.key)}
+              onChange={() => onCategoryChange(category.id)} // FIXME: .key раньше были
             >
               {category.title[language]}
             </ToggleButton>

@@ -5,7 +5,7 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
 import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory } from 'types/entities/ICategory';
+import { ICategory, ICategoryNew } from 'types/entities/ICategory';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
@@ -30,7 +30,7 @@ export type ProductCatalogProps = {
   emptyTitle?: string;
   products: IProduct[];
   favoritesList: IProduct[];
-  categories?: ICategory[];
+  categories?: ICategoryNew[];
   basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
@@ -75,7 +75,7 @@ export function ProductCatalog({
   const screenWidth = window.screen.width;
 
   const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
-  const selectCategory = (value: string) =>
+  const selectCategory = (value: number) =>
     setFilters({
       ...filters,
       category: filters.category !== value ? value : 'all',
@@ -92,8 +92,8 @@ export function ProductCatalog({
 
   const productList = categories
     ? productsWidthElect?.filter(
-        product =>
-          checkCategory(filters, product.category?.key) && checkCharacteristics(product.characteristics, filters),
+        product => checkCategory(filters, 'product.categories'), // FIXME: вместо строки значение
+        //  && checkCharacteristics(product.characteristics, filters),
       )
     : productsWidthElect;
 
@@ -178,7 +178,6 @@ export function ProductCatalog({
           />
         ))}
       />
-
       {!!categories && (
         <ProductFilterModal
           categories={categories}

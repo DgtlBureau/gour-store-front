@@ -112,7 +112,7 @@ export function Basket() {
               {productsInOrder.map(it => (
                 <>
                   <CartCard
-                    key={it.product.id + i}
+                    key={it.product.id}
                     title={it.product.title[language] || '...'}
                     price={it.product.price[currency] || 0} // FIXME: TODO: избавиться от any
                     amount={it.amount}

@@ -31,6 +31,7 @@ import { getErrorMessage } from 'utils/errorUtil';
 import { Currency } from '../types/entities/Currency';
 import { IProduct } from '../types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
+import { ICategoryNew } from 'types/entities/ICategory';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
@@ -51,7 +52,10 @@ const Home: NextPage = () => {
   const dispatch = useAppDispatch();
 
   const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
-  const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({ withDiscount: true });
+  const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({
+    withDiscount: true,
+    withCategories: true,
+  });
   const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
   });
@@ -88,7 +92,6 @@ const Home: NextPage = () => {
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
         {isLoading && <ProgressLinear />}
-
         {!!promotions?.length && (
           <CardSlider
             title={t('promotions')}
@@ -103,7 +106,6 @@ const Home: NextPage = () => {
               ))}
           />
         )}
-
         {novelties?.length && (
           <ProductCatalog
             title={t('novelties')}
@@ -120,14 +122,13 @@ const Home: NextPage = () => {
             onDetail={goToProductPage}
           />
         )}
-
         {!!products.length && (
           <ProductCatalog
             title={t('catalog')}
             favoritesList={favoriteProducts}
             products={products}
             basket={basket.products}
-            categories={categories}
+            categories={categories as unknown as ICategoryNew[]} // FIXME:
             language={language}
             currency={currency}
             sx={sx.productList}

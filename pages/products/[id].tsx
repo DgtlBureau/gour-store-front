@@ -34,6 +34,7 @@ import { getErrorMessage } from 'utils/errorUtil';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 
 import sx from './Product.styles';
+import { ICategoryNew } from 'types/entities/ICategory';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -66,6 +67,7 @@ export default function Product() {
       withSimilarProducts: true,
       withMetrics: true,
       withDiscount: true,
+      withCategories: true,
     },
     { skip: !productId },
   );
@@ -129,18 +131,25 @@ export default function Product() {
     })) || [];
 
   const productCharacteristics =
-    Object.keys(product?.characteristics || {})
-      .filter(key => product?.characteristics[key])
-      .map(key => {
-        const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          value => value.key === product?.characteristics[key],
-        );
+    ((product as any)?.categories as unknown as ICategoryNew[]).map(lowCategory => ({
+      // FIXME:
+      label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
+      value: lowCategory.title.ru,
+    })) || [];
 
-        return {
-          label: CHARACTERISTICS[key]?.label[language] || '',
-          value: characteristicValue?.label[language] || 'нет информации',
-        };
-      }) || [];
+  // const productCharacteristics =
+  //   Object.keys(product?.characteristics || {})
+  //     .filter(key => product?.characteristics?.[key])
+  //     .map(key => {
+  //       const characteristicValue = CHARACTERISTICS[key]?.values.find(
+  //         value => value.key === product?.characteristics?.[key],
+  //       );
+
+  //       return {
+  //         label: CHARACTERISTICS[key]?.label[language] || '',
+  //         value: characteristicValue?.label[language] || 'нет информации',
+  //       };
+  //     }) || [];
 
   return (
     <PrivateLayout>
