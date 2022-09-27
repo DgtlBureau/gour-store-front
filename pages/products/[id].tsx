@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 
 import {
@@ -16,24 +16,25 @@ import { CHARACTERISTICS } from 'constants/characteristics';
 import { NotificationType } from 'types/entities/Notification';
 import { IProduct } from 'types/entities/IProduct';
 import { CommentDto } from 'types/dto/comment.dto';
-
 import { ShopLayout } from 'layouts/Shop/Shop';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductActions } from 'components/Product/Actions/Actions';
 import { ProductInformation } from 'components/Product/Information/Information';
-import { ProductReviews } from 'components/Product/Reviews/Reviews';
+import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { Typography } from 'components/UI/Typography/Typography';
 import { useAppNavigation } from 'components/Navigation';
 import { LinkRef as Link } from 'components/UI/Link/Link';
-
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 import translations from './Product.i18n.json';
+import { getErrorMessage } from 'utils/errorUtil';
+import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 
 import sx from './Product.styles';
+import { ICategoryNew } from 'types/entities/ICategory';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -66,14 +67,24 @@ export default function Product() {
       withSimilarProducts: true,
       withMetrics: true,
       withDiscount: true,
+      withCategories: true,
     },
     { skip: !productId },
   );
 
+  const [reviewForModal, setReviewForModal] = useState<Review>({
+    id: -1,
+    clientName: '',
+    value: 0,
+    comment: '',
+    date: new Date(),
+  });
+  const [reviewModalIsOpen, setReviewModalIsOpen] = useState(false);
+
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const handleElect = async (id: number, isElect: boolean) => {
+  const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id); // FIXME: TODO: избавиться от дублирования кода в разных компонентах
@@ -81,8 +92,9 @@ export default function Product() {
         await addFavorite({ productId: id });
       }
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -101,6 +113,14 @@ export default function Product() {
 
   const onClickComments = () => commentBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
+  const openReviewModal = (review: Review) => {
+    setReviewForModal(review);
+    setReviewModalIsOpen(true);
+  };
+  const closeReviewModal = () => {
+    setReviewModalIsOpen(false);
+  };
+
   const productComments =
     comments.map(grade => ({
       id: grade.id,
@@ -111,18 +131,25 @@ export default function Product() {
     })) || [];
 
   const productCharacteristics =
-    Object.keys(product?.characteristics || {})
-      .filter(key => product?.characteristics[key])
-      .map(key => {
-        const characteristicValue = CHARACTERISTICS[key]?.values.find(
-          value => value.key === product?.characteristics[key],
-        );
+    ((product as any)?.categories as unknown as ICategoryNew[]).map(lowCategory => ({
+      // FIXME:
+      label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
+      value: lowCategory.title.ru,
+    })) || [];
 
-        return {
-          label: CHARACTERISTICS[key]?.label[language] || '',
-          value: characteristicValue?.label[language] || 'нет информации',
-        };
-      }) || [];
+  // const productCharacteristics =
+  //   Object.keys(product?.characteristics || {})
+  //     .filter(key => product?.characteristics?.[key])
+  //     .map(key => {
+  //       const characteristicValue = CHARACTERISTICS[key]?.values.find(
+  //         value => value.key === product?.characteristics?.[key],
+  //       );
+
+  //       return {
+  //         label: CHARACTERISTICS[key]?.label[language] || '',
+  //         value: characteristicValue?.label[language] || 'нет информации',
+  //       };
+  //     }) || [];
 
   return (
     <PrivateLayout>
@@ -162,9 +189,7 @@ export default function Product() {
                   sx={sx.actions}
                   onAdd={() => addToBasket(product)}
                   onRemove={() => removeFromBasket(product)}
-                  onElect={() => {
-                    handleElect(product.id, isProductFavorite(product.id, favoriteProducts));
-                  }}
+                  onElect={() => electProduct(product.id, isProductFavorite(product.id, favoriteProducts))}
                   isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
               </Box>
@@ -188,19 +213,26 @@ export default function Product() {
                 sx={sx.similar}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
-                onElect={handleElect}
+                onElect={electProduct}
                 onDetail={goToProductPage}
                 favoritesList={favoriteProducts}
               />
             )}
 
             {!!productComments.length && (
-              <ProductReviews sx={sx.reviews} reviews={productComments} ref={commentBlockRef} />
+              <ProductReviews
+                sx={sx.reviews}
+                reviews={productComments}
+                ref={commentBlockRef}
+                onReviewClick={openReviewModal}
+              />
             )}
 
             <CommentCreateBlock onCreate={onCreateComment} />
           </>
         )}
+
+        <ReviewModal isOpen={reviewModalIsOpen} review={reviewForModal} onClose={closeReviewModal} />
       </ShopLayout>
     </PrivateLayout>
   );

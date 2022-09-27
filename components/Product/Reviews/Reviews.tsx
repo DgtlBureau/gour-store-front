@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { Grid, SxProps } from '@mui/material';
 
 import translations from './Reviews.i18n.json';
@@ -11,7 +11,7 @@ import { ReviewsCounter } from './ReviewsCounter';
 import { formatDate } from 'helpers/dateHelper';
 import { defaultTheme as theme } from 'themes';
 
-type Review = {
+export type Review = {
   id: number;
   clientName: string;
   value: number;
@@ -22,6 +22,7 @@ type Review = {
 export type ProductReviewsProps = {
   reviews: Review[];
   sx: SxProps;
+  onReviewClick: (review: Review) => void;
 };
 
 const sxReviews = {
@@ -48,7 +49,7 @@ const sxReviews = {
   },
 };
 
-export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({ reviews, sx }, ref) => {
+export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({ reviews, sx, onReviewClick }, ref) => {
   const { t } = useLocalTranslation(translations);
 
   const ratingStats = [];
@@ -94,6 +95,7 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
                 grade={review.value}
                 date={formatDate(review.date)}
                 text={review.comment}
+                onClick={() => onReviewClick(review)}
               />
             ))}
           />

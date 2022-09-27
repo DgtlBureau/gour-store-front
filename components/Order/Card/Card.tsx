@@ -11,6 +11,8 @@ import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 
+import cardSx from './Card.styles';
+
 type Props = {
   currency: Currency;
   language: Language;
@@ -18,50 +20,6 @@ type Props = {
   totalCartPrice: number;
   productsList: IOrderProduct[];
   sx?: SxProps;
-};
-
-const cardSx = {
-  card: {
-    width: '100%',
-    padding: '30px',
-    backgroundColor: 'background.paper',
-    borderRadius: '6px',
-  },
-  footer: {
-    width: '100%',
-    borderTop: '1px dashed',
-    borderColor: 'text.muted',
-    margin: '20px 0 0 0',
-    padding: '20px 0 0 0',
-  },
-  field: {
-    display: 'flex',
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-      md: 'column',
-    },
-    gap: {
-      xs: 0,
-      sm: '20px',
-      md: 0,
-    },
-    marginBottom: '10px',
-  },
-  count: {
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    margin: '0 0 20px 0',
-  },
-  product: {
-    width: 'fit-content',
-    color: 'text.muted',
-  },
-  total: {
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
 };
 
 export function OrderCard({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) {
@@ -73,10 +31,13 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
     const productTotalPrice = product.product.isWeightGood
       ? product.weight * (product.product.price[currency] / 100)
       : product.amount * product.product.price[currency];
+
     const productTotalCount = product.product.isWeightGood ? product.weight / 1000 : product.amount;
+
     return {
       id: product.product.id,
       title: product.product.title[language],
+      price: product.product.price[currency],
       totalPrice: productTotalPrice,
       totalCount: `${productTotalCount} ${product.product.isWeightGood ? t('kg') : t('piece')}`,
     };
@@ -101,7 +62,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
           </Typography>
 
           <Typography variant='body1' sx={cardSx.product}>
-            {product.totalPrice} {currencySymbol} • {product.totalCount}
+            {product.price} {currencySymbol} • {product.totalCount}
           </Typography>
         </Box>
       ))}

@@ -7,17 +7,17 @@ import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/Multiselect';
 import { CHARACTERISTICS } from 'constants/characteristics';
-import { ICategory } from 'types/entities/ICategory';
+import { ICategoryNew } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
 export type CatalogFilterProps = {
-  categories: ICategory[];
+  categories: ICategoryNew[];
   filters: IFiltersCharacteristic;
   language: Language;
   sx?: SxProps;
   onReverse: () => void;
-  onCategoryChange: (key: string) => void;
+  onCategoryChange: (key: number) => void;
   onCharacteristicChange: (key: string, selected: string[]) => void;
 };
 
@@ -31,7 +31,7 @@ export function ProductFilterList({
   onCharacteristicChange,
 }: CatalogFilterProps) {
   const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all',
+    it => CHARACTERISTICS[it].categoryKey === filters.category?.toString() || CHARACTERISTICS[it].categoryKey === 'all',
   );
 
   return (
@@ -48,16 +48,16 @@ export function ProductFilterList({
         {categories?.map(category => (
           <ToggleButton
             key={category.id}
-            selected={filters.category === category.key}
+            selected={filters.category === category.id}
             sx={{ marginRight: '10px' }}
-            onChange={() => onCategoryChange(category.key)}
+            onChange={() => onCategoryChange(category.id)}
           >
             {category.title[language]}
           </ToggleButton>
         ))}
       </Box>
 
-      <Box sx={{ display: 'flex', marginTop: '10px' }}>
+      {/* <Box sx={{ display: 'flex', marginTop: '10px' }}>
         {features.map(feature => (
           <ProductFilterMultiselect
             key={feature}
@@ -68,7 +68,7 @@ export function ProductFilterList({
             onChange={selected => onCharacteristicChange(feature, selected)}
           />
         ))}
-      </Box>
+      </Box> */}
     </Box>
   );
 }

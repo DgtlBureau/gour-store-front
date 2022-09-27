@@ -6,12 +6,13 @@ type Props = {
   children: ReactNode;
   component?: ElementType;
   sx?: SxProps;
+  id?: string;
   onClick?: () => void;
 };
 
-export function Box({ children, sx, component, onClick }: Props) {
+export function Box({ children, sx, component, id, onClick }: Props) {
   return (
-    <MUIBox sx={sx} component={component} onClick={onClick}>
+    <MUIBox id={id} sx={sx} component={component} onClick={onClick}>
       {children}
     </MUIBox>
   );

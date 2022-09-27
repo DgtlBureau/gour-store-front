@@ -7,3 +7,10 @@ export interface ICategory extends IBaseEntity {
   title: ITranslatableString;
   description: ITranslatableText;
 }
+
+export interface ICategoryNew {
+  id: number;
+  title: ITranslatableString;
+  parentCategories: ICategoryNew[];
+  subCategories: ICategoryNew[];
+}

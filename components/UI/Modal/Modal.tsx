@@ -21,7 +21,7 @@ export type ModalProps = {
   formId?: string;
   acceptIsDisabled?: boolean;
   onAccept?: () => void;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export function Modal({
@@ -45,9 +45,11 @@ export function Modal({
             {title}
           </Typography>
 
-          <IconButton onClick={onClose}>
-            <CrossIcon color='primary' />
-          </IconButton>
+          {!!onClose && (
+            <IconButton onClick={onClose}>
+              <CrossIcon color='primary' />
+            </IconButton>
+          )}
         </Box>
 
         {!!description && <Typography variant='body1'>{description}</Typography>}

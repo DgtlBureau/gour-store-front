@@ -8,6 +8,7 @@ import { defaultTheme as t } from 'themes';
 
 const sx = {
   comment: {
+    cursor: 'pointer',
     width: {
       xs: '250px',
       sm: '280px',
@@ -36,11 +37,12 @@ export type CommentCardProps = {
   grade: number;
   date: string;
   text: string;
+  onClick: () => void;
 };
 
-export function CommentCard({ title, grade, date, text }: CommentCardProps) {
+export function CommentCard({ title, grade, date, text, onClick }: CommentCardProps) {
   return (
-    <Paper sx={sx.comment} elevation={0}>
+    <Paper sx={sx.comment} elevation={0} onClick={onClick}>
       <Typography variant='body1' color='primary'>
         {title}
       </Typography>

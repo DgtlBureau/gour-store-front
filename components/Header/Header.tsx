@@ -91,9 +91,7 @@ export function Header({
 
   const currencySymbol = getCurrencySymbol(currency);
 
-  // FIXME: убрать))
-  // const catalogIsHidden = moneyAmount < 1000;
-  const catalogIsHidden = false;
+  const catalogIsHidden = moneyAmount < 1000;
 
   const currentCity = cities.find(it => it?.id === selectedCityId);
 

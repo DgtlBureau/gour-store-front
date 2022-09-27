@@ -14,6 +14,7 @@ const sx = {
     backgroundPosition: 'top center',
   },
   content: {
+    margin: 'auto',
     padding: {
       xs: '10px 0',
       sm: '10px 0',

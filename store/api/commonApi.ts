@@ -18,6 +18,7 @@ export const commonApi = createApi({
     'Role',
     'Category',
     'Favorite',
+    'Invoice',
   ],
   endpoints: () => ({}),
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useGetCityListQuery } from 'store/api/cityApi';
@@ -42,14 +42,14 @@ export default function SignUp() {
 
   const [sendCode] = useSendCodeMutation();
   const [signUp] = useSignUpMutation();
-  const [checkCode] = useCheckCodeMutation();
+  const [checkCode, { isLoading: codeCheckIsLoading }] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
-  const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
+  // const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -72,14 +72,19 @@ export default function SignUp() {
   const checkCodeHandler = async (code: string) => {
     try {
       const isApprove = await checkCode(code).unwrap();
+
       if (!isApprove) {
         dispatchNotification('Неверный код', { type: NotificationType.DANGER });
+
         return false;
       }
-      setIsPhoneCodeValid(true);
+
+      dispatchNotification('Код подтверждён');
+
       return true;
     } catch (error) {
       console.error(error);
+
       return false;
     }
   };
@@ -148,6 +153,7 @@ export default function SignUp() {
       component: (
         <SignupCredentials
           defaultValues={credentials}
+          codeCheckIsLoading={codeCheckIsLoading}
           onSendSMS={sendSMS}
           onCheckCode={checkCodeHandler}
           onSubmit={saveCredentials}
