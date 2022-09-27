@@ -96,7 +96,7 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
               {t('save')}
             </Button>
             <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
-              {t('cancel')}
+              {t('clear')}
             </Button>
             <IconButton>
               <DeleteIcon htmlColor={theme.palette.text.muted} onClick={onDelete} />

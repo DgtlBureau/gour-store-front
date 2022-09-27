@@ -27,6 +27,7 @@ export enum Path {
   CITIES = 'cities',
   CHANGE_CITY = 'change-city',
   CHANGE_PASSWORD = 'change-password',
+  CHANGE_MAIN_ADDRESS = 'change-main-address',
   SEND_CODE = 'send-code',
   CHECK_CODE = 'check-code',
   CHANGE_PHONE = 'change-phone',

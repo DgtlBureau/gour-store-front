@@ -21,6 +21,8 @@ import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeM
 import { NotificationType } from 'types/entities/Notification';
 import { PALayout } from 'layouts/PA/PA';
 import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+import { getErrorMessage } from 'utils/errorUtil';
+import { useSignOutMutation } from 'store/api/authApi';
 
 export function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -33,15 +35,20 @@ export function Profile() {
   const [uploadImage] = useCreateImageMutation();
   const [sendPhoneCode] = useSendChangePhoneCodeMutation();
   const [updatePhone] = useUpdateCurrentUserPhoneMutation();
+  const [signOut] = useSignOutMutation();
 
   const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
     try {
       await sendPhoneCode(sendCode).unwrap();
+
       dispatchNotification('Код отправлен');
+
       return true;
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка отправки кода', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
       return false;
     }
   };
@@ -52,25 +59,32 @@ export function Profile() {
         phone: changePhoneData.phone,
         code: +changePhoneData.code,
       }).unwrap();
+
       dispatchNotification('Телефон изменен');
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Произошла ошибка', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
   const changePassword = async (changePasswordData: ChangePasswordDto) => {
     try {
       await updatePassword(changePasswordData).unwrap();
+
+      await signOut().unwrap();
+
       dispatchNotification('Пароль изменен');
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Пароль не изменен', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
   const changeAvatar = async (file: File) => {
     const formData = new FormData();
+
     formData.append('image', file);
 
     try {
@@ -79,29 +93,35 @@ export function Profile() {
       if (!image) return;
 
       await updateCurrentUser({ avatarId: image.id });
+
       dispatchNotification('Фото профиля изменено');
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка изменения фото', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
   const removeAvatar = async () => {
     try {
       await updateCurrentUser({ avatarId: null }).unwrap();
+
       dispatchNotification('Фото профиля удалено');
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка удаления фото', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
   const saveBaseInfo = async (data: UpdateUserDto) => {
     try {
       await updateCurrentUser(data).unwrap();
+
       dispatchNotification('Данные профиля изменены');
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка изменения данных', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
