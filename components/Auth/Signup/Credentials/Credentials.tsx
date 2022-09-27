@@ -17,7 +17,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 import sx from './Credentials.styles';
 
@@ -56,19 +55,19 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
+  const emailIsInvalid = !values.watch('email') || !!values.getFieldState('email').error;
   const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
   const formIsInvalid = !values.formState.isValid || !isAgree;
 
   const sendSMS = async () => {
     if (isCodeSended) return;
-    const phone = values.watch('phone');
+    const target = values.watch('email');
 
-    const response = await onSendSMS(phone);
+    const response = await onSendSMS(target);
     if (response === 'success') {
       setIsCodeSended(true);
     } else {
-      values.setError('phone', { message: response });
+      values.setError('email', { message: response });
     }
   };
 
@@ -104,8 +103,8 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput name='phone' disabled={isCodeSended} label={t('phone')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid || isCodeSended}>
+            <HFTextField type='email' name='email' disabled={isCodeSended} label={t('email')} />
+            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={emailIsInvalid || isCodeSended}>
               {t('getCode')}
             </Button>
           </Box>

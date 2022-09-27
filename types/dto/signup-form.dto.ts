@@ -2,7 +2,7 @@ import { Role } from '../entities/Role';
 
 export type SignUpFormDto = Readonly<{
   role: Role;
-  phone: string;
+  email: string;
   sms: string;
   firstName: string;
   lastName: string;
