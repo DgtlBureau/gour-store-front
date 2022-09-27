@@ -57,9 +57,9 @@ export default function SignUp() {
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
 
-  const sendSMS = async (phone: string) => {
+  const sendSMS = async (email: string) => {
     try {
-      await sendCode(phone).unwrap();
+      await sendCode(email).unwrap();
       dispatchNotification('Email код отправлен');
       return 'success';
     } catch (error) {

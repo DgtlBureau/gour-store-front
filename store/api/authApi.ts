@@ -26,11 +26,11 @@ export const authApi = commonApi.injectEndpoints({
         },
       }),
       sendCode: builder.mutation<void, string>({
-        query(phone) {
+        query(email) {
           return {
             method: 'POST',
             url: `${Path.CLIENT_AUTH}/${Path.SEND_CODE}`,
-            body: { phone },
+            body: { email },
           };
         },
       }),
