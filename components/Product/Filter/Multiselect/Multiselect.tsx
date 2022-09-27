@@ -42,10 +42,13 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
   const [isDeployed, setIsDeployed] = useState(false);
 
-  const resetOptions = () => setSelectedOptions([]);
   const applyOptions = () => {
     onChange(selectedOptions);
     setIsDeployed(false);
+  };
+  const resetOptions = () => {
+    setSelectedOptions([]);
+    applyOptions();
   };
 
   function changeOption(selectedOption: string) {
