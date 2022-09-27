@@ -7,23 +7,21 @@ import {
   useDeleteOrderProfileMutation,
 } from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentUserQuery, useUpdateCurrentUserMutation } from 'store/api/currentUserApi';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { dispatchNotification } from 'packages/EventBus';
-import { useAppNavigation } from 'components/Navigation';
+import { useChangeMainAddressMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import translations from './Addresses.i18n.json';
-
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { PrivateLayout } from 'layouts/Private/Private';
 import { PALayout } from 'layouts/PA/PA';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
 import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
+import { useAppNavigation } from 'components/Navigation';
+import { dispatchNotification } from 'packages/EventBus';
 import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { NotificationType } from 'types/entities/Notification';
-
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { getErrorMessage } from 'utils/errorUtil';
 
 const sx = {
   actions: {
@@ -45,13 +43,18 @@ export function Addresses() {
   const [createProfile] = useCreateOrderProfileMutation();
   const [updateProfile] = useUpdateOrderProfileMutation();
   const [deleteProfile] = useDeleteOrderProfileMutation();
-
-  const [updateUser] = useUpdateCurrentUserMutation();
+  const [changeMainAddressProfile] = useChangeMainAddressMutation();
 
   const [expandedProfileId, setExpandedProfileId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
+  const rollUpProfile = () => setExpandedProfileId(null);
+
+  const openCreateForm = () => {
+    rollUpProfile();
+    setIsCreating(true);
+  };
   const closeCreateForm = () => setIsCreating(false);
 
   const openDeleteModal = () => setIsDeleting(true);
@@ -63,54 +66,52 @@ export function Addresses() {
       label: city.name[language],
     })) || [];
 
-  const rollUpProfile = () => setExpandedProfileId(null);
-
   const expandProfile = (id: number) => {
     if (isCreating) closeCreateForm();
     if (expandedProfileId !== id) setExpandedProfileId(id);
     else rollUpProfile();
   };
 
-  const changeMainAddress = async (newOrderProfileId: number) => {
-    if (!currentUser) return;
-
-    const { avatar, ...userData } = currentUser;
-
-    const updatedUser = {
-      ...userData,
-      mainOrderProfileId: newOrderProfileId,
-      avatarId: currentUser.avatar.id,
-      referralCode: currentUser.referralCode?.code,
-    } as UpdateUserDto;
-
+  const changeMainAddress = async (addressId: number | null) => {
     try {
-      await updateUser(updatedUser).unwrap();
+      await changeMainAddressProfile(addressId).unwrap();
     } catch (error) {
-      console.log(error);
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
   const createAddress = async (data: OrderProfileDto) => {
     try {
       await createProfile(data).unwrap();
+
       dispatchNotification('Адрес доставки создан');
+
+      closeCreateForm();
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка создания адреса доставки', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
-    closeCreateForm();
   };
 
   const editAddress = async (data: OrderProfileDto, id: number) => {
     try {
       await updateProfile({ ...data, id }).unwrap();
-      dispatchNotification('Адрес доставки обновлен');
-      const isMain = currentUser?.mainOrderProfileId === expandedProfileId;
 
-      if (data.isMain && !isMain && !!expandedProfileId) changeMainAddress(expandedProfileId);
+      const currentOrderProfileId = currentUser?.mainOrderProfileId;
+
+      if (currentOrderProfileId !== id && data.isMain) await changeMainAddress(id);
+      if (currentOrderProfileId === id && !data.isMain) await changeMainAddress(null);
+
+      dispatchNotification('Адрес доставки обновлен');
+
+      rollUpProfile();
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка обновления адреса доставки', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -118,19 +119,17 @@ export function Addresses() {
     if (expandedProfileId) {
       try {
         await deleteProfile(expandedProfileId).unwrap();
+
         dispatchNotification('Адрес доставки удален');
+
+        rollUpProfile();
+        closeDeleteModal();
       } catch (error) {
-        console.error(error);
-        dispatchNotification('Ошибка удаления адреса доставки', { type: NotificationType.DANGER });
+        const message = getErrorMessage(error);
+
+        dispatchNotification(message, { type: NotificationType.DANGER });
       }
     }
-    rollUpProfile();
-    closeDeleteModal();
-  };
-
-  const openCreateForm = () => {
-    rollUpProfile();
-    setIsCreating(true);
   };
 
   return (
@@ -141,9 +140,11 @@ export function Addresses() {
             {t('newAddress')}
           </Button>
         </Box>
+
         {isCreating && (
           <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
         )}
+
         {!!profiles && profiles.length !== 0 ? (
           profiles.map(profile => (
             <PAProfilesItem
@@ -160,6 +161,7 @@ export function Addresses() {
         ) : (
           <Typography variant='h5'>Список адресов пуст</Typography>
         )}
+
         <PAProfilesDeleteModal isOpen={isDeleting} onAccept={deleteAddress} onClose={closeDeleteModal} />
       </PALayout>
     </PrivateLayout>

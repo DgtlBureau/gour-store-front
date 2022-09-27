@@ -38,6 +38,8 @@ const sx = {
     },
   },
   field: {
+    display: 'flex',
+    alignItems: 'center',
     marginBottom: '14px',
   },
   checkboxLabel: {
@@ -59,6 +61,9 @@ const sx = {
       xs: 'none',
       md: 'flex',
     },
+  },
+  progress: {
+    marginLeft: '12px',
   },
 };
 

@@ -10,6 +10,8 @@ import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCore, GameEvent } from './Core';
 
 import sx from './Main.styles';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const DEFAULT_ANGLES = {
   1: 0,
@@ -23,7 +25,11 @@ const JAMON_ANGLES = {
   3: -100,
 };
 
-export function GameMain() {
+export type GameMainProps = {
+  onHelpClick(): void;
+};
+
+export function GameMain({ onHelpClick }: GameMainProps) {
   const [gameState, setGameState] = useState({} as GameEvent);
 
   const changeGameState = (e: GameEvent) => setGameState(e);
@@ -59,9 +65,23 @@ export function GameMain() {
       <Button onClick={moveToTopRight} sx={{ ...sx.controlBtn, ...sx.topRightBtn }} />
       <Button onClick={moveToBottomRight} sx={{ ...sx.controlBtn, ...sx.bottomRightBtn }} />
 
-      <Button onClick={start} sx={sx.startBtn} />
+      <Box sx={sx.helpBtn}>
+        <Button onClick={onHelpClick} sx={sx.smallBtn} />
 
-      <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown} />
+        <Typography variant='body2' sx={sx.btnText}>
+          ПОМОЩЬ
+        </Typography>
+      </Box>
+
+      <Box sx={sx.startBtn}>
+        <Button onClick={start} sx={sx.smallBtn} />
+
+        <Typography variant='body2' sx={sx.btnText}>
+          СТАРТ
+        </Typography>
+      </Box>
+
+      <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown && !!gameState.lives} />
 
       <Lives sx={sx.lives} value={gameState.lives} />
 

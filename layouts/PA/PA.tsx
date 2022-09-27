@@ -47,16 +47,12 @@ export function PALayout({ children }: PALayoutProps) {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.city.id) || cities?.[0];
+  const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
   const menuList = [
     {
       label: t('main'),
       path: `/${Path.PERSONAL_AREA}`,
-    },
-    {
-      label: t('orders'),
-      path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },
     {
       label: t('credentials'),
@@ -65,6 +61,10 @@ export function PALayout({ children }: PALayoutProps) {
     {
       label: t('addresses'),
       path: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
+    },
+    {
+      label: t('orders'),
+      path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },
     {
       label: t('discounts'),

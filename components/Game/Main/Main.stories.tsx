@@ -9,6 +9,6 @@ export default {
 } as Meta;
 
 const Template: ComponentStory<typeof GameMain> = function () {
-  return <GameMain />;
+  return <GameMain onHelpClick={() => console.log('help click')} />;
 };
 export const DefaultGameMain = Template.bind({});

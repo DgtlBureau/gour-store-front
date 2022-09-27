@@ -12,57 +12,9 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
 import styles from './ImageSlider.module.scss';
+import sliderSx from './ImageSlider.styles';
 
 import defaultImage from 'assets/no-image.svg';
-
-const sliderSx = {
-  container: {
-    width: {
-      md: '580px',
-      xs: '100%',
-    },
-    maxWidth: {
-      sm: '660px',
-    },
-    marginLeft: 0,
-    marginRight: 0,
-  },
-  scroll: {
-    display: {
-      md: 'flex',
-      xs: 'none',
-    },
-    overflow: 'scroll',
-    padding: '10px 0',
-  },
-  slide: {
-    borderRadius: '10px',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  full: {
-    height: {
-      md: '500px',
-      sm: '540px',
-      xs: '300px',
-    },
-    width: '100%',
-  },
-  small: {
-    cursor: 'pointer',
-    height: '80px',
-    width: '90px',
-    marginRight: '14px',
-
-    '&:last-child': {
-      marginRight: 0,
-    },
-  },
-  active: {
-    border: '2px solid',
-    borderColor: 'accent.main',
-  },
-};
 
 export type ImageSliderProps = {
   images: {

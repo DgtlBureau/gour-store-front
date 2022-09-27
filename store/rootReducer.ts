@@ -16,6 +16,7 @@ import { pageApi } from './api/pageApi';
 import { favoriteApi } from './api/favoriteApi';
 import { imageApi } from './api/imageApi';
 import { categoryApi } from './api/categoryApi';
+import { invoiceApi } from './api/invoiceApi';
 
 export const rootReducer = combineReducers({
   auth: authSlice,
@@ -34,4 +35,5 @@ export const rootReducer = combineReducers({
   [favoriteApi.reducerPath]: favoriteApi.reducer,
   [imageApi.reducerPath]: imageApi.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
+  [invoiceApi.reducerPath]: invoiceApi.reducer,
 });

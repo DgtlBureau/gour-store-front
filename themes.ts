@@ -12,6 +12,10 @@ declare module '@mui/material/styles' {
   interface TypeText {
     muted?: string;
   }
+
+  interface BreakpointOverrides {
+    m: true;
+  }
 }
 
 export const defaultTheme = createTheme({
@@ -49,5 +53,15 @@ export const defaultTheme = createTheme({
   },
   typography: {
     fontFamily: ['Nunito', 'Roboto slab', 'Roboto', 'Coming Soon', '-apple-system', 'sans-serif'].join(','),
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      m: 745,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
   },
 });

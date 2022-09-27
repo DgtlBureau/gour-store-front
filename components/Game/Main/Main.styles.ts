@@ -26,11 +26,8 @@ export const sx = {
     },
   },
 
-  startBtn: {
+  smallBtn: {
     background: `url("${buttonSmallImage}")`,
-    position: 'absolute',
-    top: '165px',
-    right: '50px',
     minWidth: '54px',
     height: '30px',
     boxShadow: 'none',
@@ -45,6 +42,29 @@ export const sx = {
       transform: 'translateY(3px)',
       boxShadow: '0 3px #666',
     },
+  },
+
+  helpBtn: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    top: '135px',
+    left: '50px',
+  },
+
+  startBtn: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    top: '135px',
+    right: '50px',
+  },
+
+  btnText: {
+    width: 'fit-content',
+    marginTop: '8px',
   },
 
   alarm: {

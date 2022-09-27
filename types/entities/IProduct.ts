@@ -1,7 +1,7 @@
 import { ITranslatableString } from './ITranslatableString';
 import { ITranslatableText } from './ITranslatableText';
 import { IImage } from './IImage';
-import { ICategory } from './ICategory';
+import { ICategory, ICategoryNew } from './ICategory';
 import { IProductGrade } from './IProductGrade';
 import { IProductModification } from './IProductModification';
 import { IPrice } from './IPrice';
@@ -16,6 +16,7 @@ export interface IProduct extends IBaseEntity {
   moyskladCode: number;
   images: IImage[];
   category: ICategory;
+  categories?: ICategoryNew[];
   productGrades: IProductGrade[];
   gradesCount: number;
   commentsCount: number;
@@ -24,7 +25,7 @@ export interface IProduct extends IBaseEntity {
   pieces: IProductModification[];
   price: IPrice;
   roleDiscounts: IRoleDiscount[];
-  characteristics: IProductCharacteristics;
+  characteristics?: IProductCharacteristics;
   meta: IPageMeta;
   weight: number;
   discount: number;
@@ -55,6 +56,6 @@ export type ICharacteristicsList = {
 
 export interface IFiltersCharacteristic {
   isReversed: boolean;
-  category: string;
+  category: number | 'all';
   characteristics: ICharacteristicsList;
 }

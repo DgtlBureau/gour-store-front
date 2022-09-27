@@ -16,6 +16,7 @@ const persistConfig = {
     'promotionApi',
     'cityApi',
     'orderApi',
+    'invoiceApi',
     'favoriteApi',
     'orderProfileApi',
     'imageApi',

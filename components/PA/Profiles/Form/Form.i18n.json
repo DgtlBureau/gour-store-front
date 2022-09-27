@@ -14,7 +14,7 @@
     "streetRequired": "Street  is required",
     "houseRequired": "House number is required",
     "save": "Save",
-    "cancel": "Cancel",
+    "clear": "Clear",
     "isMain": "Set as main shipping address"
   },
   "ru": {
@@ -33,6 +33,6 @@
     "houseRequired": "Укажите номер дома",
     "isMain": "Сделать главным адресом доставки",
     "save": "Сохранить",
-    "cancel": "Отменить"
+    "clear": "Очистить"
   }
 }

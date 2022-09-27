@@ -12,7 +12,12 @@ function NavigationProvider({ children }: Props) {
   const router = useRouter(); // router может быть null в сторибуке
 
   const changeChapter = useCallback(
-    (newPath: string) => newPath !== router?.pathname && router.push(newPath),
+    (newPath: string, checkPaths = true) => {
+      const needUpdate = !checkPaths || newPath !== router?.pathname;
+      if (needUpdate) {
+        router.replace(newPath);
+      }
+    },
     [router?.pathname],
   );
 
@@ -28,6 +33,7 @@ function NavigationProvider({ children }: Props) {
   const goToProductPage = useCallback((id: number) => router.push(`/${Path.PRODUCTS}/${id}`), []);
 
   const goToCredentials = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`), []);
+  const goToPayments = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`), []);
   const goToAddresses = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`), []);
   const goToDiscounts = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`), []);
   const goToOrders = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`), []);
@@ -55,6 +61,7 @@ function NavigationProvider({ children }: Props) {
       goToGame,
       goToProductPage,
       goToCredentials,
+      goToPayments,
       goToAddresses,
       goToDiscounts,
       goToOrders,
@@ -68,7 +75,7 @@ function NavigationProvider({ children }: Props) {
       pathname: router?.pathname,
       query: router?.query,
     }),
-    [router],
+    [router.pathname, router.query, router.isReady],
   );
 
   return <AppNavigationCtx.Provider value={navigation}>{children}</AppNavigationCtx.Provider>;

@@ -28,6 +28,7 @@ export const sx = {
     },
     bgcolor: 'background.default',
     overflowY: 'auto',
+    borderRadius: '10px',
   },
   head: {
     display: 'flex',

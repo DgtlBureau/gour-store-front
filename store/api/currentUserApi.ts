@@ -68,6 +68,16 @@ export const currentUserApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
+      changeMainAddress: builder.mutation<void, number | null>({
+        query(addressId) {
+          return {
+            method: 'PUT',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_MAIN_ADDRESS}`,
+            body: { addressId },
+          };
+        },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+      }),
     };
   },
 });
@@ -76,6 +86,7 @@ export const {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
   useChangeCurrentCityMutation,
+  useChangeMainAddressMutation,
   useUpdateCurrentUserPasswordMutation,
   useSendChangePhoneCodeMutation,
   useUpdateCurrentUserPhoneMutation,
