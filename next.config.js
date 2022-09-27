@@ -9,7 +9,7 @@ const nextConfig = withImages({
   },
   images: {
     disableStaticImages: true,
-    domains: ['gour-store.devshift.ru', 'gour-static.devshift.ru', 'resizer.mail.ru', 'localhost'],
+    domains: ['gour-store.devshift.ru', 'gour-static.devshift.ru', 'static.tastyoleg.com','admin.tastyoleg.com', 'tastyoleg.com', 'resizer.mail.ru', 'localhost'],
   },
   pageExtensions: ['tsx'],
   reactStrictMode: true,
@@ -17,7 +17,7 @@ const nextConfig = withImages({
     return [
       {
         source: '/api/:path*',
-        destination: 'https://gour-store.devshift.ru/api/:path*', // Proxy to Backend
+        destination: 'https://tastyoleg.com/api/:path*', // Proxy to Backend
       },
     ];
   },
