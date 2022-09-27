@@ -28,7 +28,6 @@ export interface ShopLayoutProps {
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const { goToFavorites, goToBasket, goToPersonalArea } = useAppNavigation();
-
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
@@ -36,6 +35,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
+
   const [payInvoice] = usePayInvoiceMutation();
 
   const convertedCities =

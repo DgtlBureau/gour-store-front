@@ -12,8 +12,7 @@ type Props = {
 export function PrivateLayout({ children }: Props) {
   const { isLoading, isError } = useGetCurrentUserQuery();
   const { goToIntro, goToGame } = useAppNavigation();
-  // goToGame();
-  // return null;
+
   const isAuth = useAppSelector(selectIsAuth);
   if (isLoading) return null; // TODO: show loader
 
