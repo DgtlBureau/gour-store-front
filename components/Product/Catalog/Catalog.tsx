@@ -139,7 +139,7 @@ export function ProductCatalog({
         title={screenWidth > 900 || !categories ? title : undefined}
         emptyTitle={emptyTitle || 'Продукты не найдены'}
         key={`catalog/${filters.productType}`}
-        spaceBetween={0}
+        spaceBetween={10}
         rows={rows || getCatalogRows()}
         head={
           !!categories && (
