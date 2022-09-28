@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ICategory, ICategoryNew } from 'types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
-import { CHARACTERISTICS } from 'constants/characteristics';
 import translations from './Modal.i18n.json';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
@@ -23,7 +22,7 @@ const sx = {
 
 export type ProductFilterModalProps = {
   isOpen: boolean;
-  categories: ICategoryNew[];
+  categories: ICategory[];
   filters: IFiltersCharacteristic;
   language: Language;
   onCategoryChange: (key: number) => void;
@@ -42,9 +41,10 @@ export function ProductFilterModal({
 }: ProductFilterModalProps) {
   const { t } = useLocalTranslation(translations);
 
-  const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category || CHARACTERISTICS[it].categoryKey === 'all',
-  );
+  // const features = Object.keys(CHARACTERISTICS).filter(
+  //   it => CHARACTERISTICS[it].categoryKey === filters.productType || CHARACTERISTICS[it].categoryKey === 'all',
+  // );
+  // TODO: реализация фильтров
 
   return (
     <Modal isOpen={isOpen} title={t('title')} onClose={onClose}>
@@ -53,9 +53,9 @@ export function ProductFilterModal({
           {categories?.map(category => (
             <ToggleButton
               key={category.id}
-              selected={filters.category === category.id} // FIXME:
+              selected={filters.productType === category.id}
               sx={{ marginRight: '10px' }}
-              onChange={() => onCategoryChange(category.id)} // FIXME: .key раньше были
+              onChange={() => onCategoryChange(category.id)}
             >
               {category.title[language]}
             </ToggleButton>
@@ -67,11 +67,11 @@ export function ProductFilterModal({
             {t('filters')}
           </Typography>
 
-          {features.map(feature => (
+          {/* {features.map(feature => (
             <ProductFilterMultiselect
               key={feature}
               title={CHARACTERISTICS[feature].label[language]}
-              selected={filters.characteristics[feature] || []}
+              selected={filters.categories[feature] || []}
               options={CHARACTERISTICS[feature].values.map(it => ({
                 value: it.key,
                 label: it.label[language],
@@ -80,7 +80,7 @@ export function ProductFilterModal({
               isMobile
               onChange={selected => onCharacteristicChange(feature, selected)}
             />
-          ))}
+          ))} */}
         </Box>
       </Box>
     </Modal>

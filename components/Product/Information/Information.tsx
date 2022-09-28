@@ -16,7 +16,7 @@ export type ProductInformationProps = {
   rating: number;
   gradesCount: number;
   commentsCount: number;
-  characteristics: {
+  categories: {
     label: string;
     value: string | number;
   }[];
@@ -27,7 +27,7 @@ export function ProductInformation({
   rating,
   gradesCount,
   commentsCount,
-  characteristics,
+  categories,
   onClickComments,
 }: ProductInformationProps) {
   const { t } = useLocalTranslation(translations);
@@ -65,14 +65,14 @@ export function ProductInformation({
           </Typography>
         </div>
       </Box>
-      {characteristics.map(characteristic => (
-        <Box key={characteristic.label} sx={sx.characteristic}>
-          <Typography variant='body2'>{characteristic.label}</Typography>
+      {categories.map(category => (
+        <Box key={category.label} sx={sx.category}>
+          <Typography variant='body2'>{category.label}</Typography>
 
           <div style={sx.divider} />
 
           <Typography variant='body2' sx={sx.value}>
-            {characteristic.value}
+            {category.value}
           </Typography>
         </Box>
       ))}

@@ -1,33 +1,33 @@
-import { getCountryImage } from 'helpers/countryHelper';
+import { imageByCountry } from 'helpers/countryHelper';
 
 export const favoriteCountries = [
   {
-    image: getCountryImage('Russia'),
+    image: imageByCountry.Russia,
     title: 'Россия',
     id: 1,
   },
   {
-    image: getCountryImage('Spain'),
+    image: imageByCountry.Spain,
     title: 'Испания',
     id: 2,
   },
   {
-    image: getCountryImage('Italy'),
+    image: imageByCountry.Italy,
     title: 'Италия',
     id: 3,
   },
   {
-    image: getCountryImage('France'),
+    image: imageByCountry.France,
     title: 'Франция',
     id: 4,
   },
   {
-    image: getCountryImage('Holland'),
+    image: imageByCountry.Holland,
     title: 'Голландия',
     id: 5,
   },
   {
-    image: getCountryImage('GreatBritain'),
+    image: imageByCountry.GreatBritain,
     title: 'Великобритания',
     id: 6,
   },

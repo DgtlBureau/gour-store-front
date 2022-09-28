@@ -18,7 +18,7 @@ const props: Partial<ProductInformationProps> = {
   rating: 3.7,
   gradesCount: 345,
   commentsCount: 34,
-  characteristics: [
+  categories: [
     {
       label: 'Жирность на 100г',
       value: '37г',
