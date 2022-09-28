@@ -30,7 +30,7 @@ const sx = {
   comments: {
     cursor: 'pointer',
   },
-  characteristic: {
+  category: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

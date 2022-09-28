@@ -94,7 +94,7 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            {promotion?.products?.length && (
+            {!!promotion?.products?.length && (
               <ProductCatalog
                 title={t('sliderTitle')}
                 products={promotion.products}

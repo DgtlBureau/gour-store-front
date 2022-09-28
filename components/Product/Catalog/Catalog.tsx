@@ -5,7 +5,7 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
 import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory, ICategoryNew } from 'types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
@@ -21,7 +21,7 @@ import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
 
-import { checkCategory, checkCharacteristics } from './CatalogHelpers';
+import { checkCategory } from './CatalogHelpers';
 
 import catalogSx from './Catalog.styles';
 
@@ -30,7 +30,7 @@ export type ProductCatalogProps = {
   emptyTitle?: string;
   products: IProduct[];
   favoritesList: IProduct[];
-  categories?: ICategoryNew[];
+  categories?: ICategory[];
   basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
@@ -63,8 +63,8 @@ export function ProductCatalog({
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState<IFiltersCharacteristic>({
     isReversed: false,
-    category: 'all',
-    characteristics: {},
+    productType: 'all',
+    categories: {},
   });
 
   const productsWidthElect = products.map(product => ({
@@ -78,22 +78,19 @@ export function ProductCatalog({
   const selectCategory = (value: number) =>
     setFilters({
       ...filters,
-      category: filters.category !== value ? value : 'all',
-      characteristics: {},
+      productType: filters.productType !== value ? value : 'all',
+      categories: {},
     });
-  const selectCharacteristics = (key: string, selected: string[]) =>
-    setFilters({
-      ...filters,
-      characteristics: {
-        ...filters.characteristics,
-        [key]: selected,
-      },
-    });
+
+  const selectCharacteristics = () => {
+    // TODO: реализация фильтров списка товаров
+  };
 
   const productList = categories
     ? productsWidthElect?.filter(
-        product => checkCategory(filters, 'product.categories'), // FIXME: вместо строки значение
-        //  && checkCharacteristics(product.characteristics, filters),
+        product => checkCategory(product.categories, filters.productType),
+        // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
+        // TODO: обсудить, мб вообще все фильтры выводить
       )
     : productsWidthElect;
 
@@ -141,7 +138,7 @@ export function ProductCatalog({
       <CardSlider
         title={screenWidth > 900 || !categories ? title : undefined}
         emptyTitle={emptyTitle || 'Продукты не найдены'}
-        key={`catalog/${filters.category}`}
+        key={`catalog/${filters.productType}`}
         spaceBetween={0}
         rows={rows || getCatalogRows()}
         head={
@@ -167,7 +164,7 @@ export function ProductCatalog({
             discount={discount || product.discount}
             previewSrc={product.images[0] ? product.images[0].small : ''}
             currency={currency}
-            countrySrc={getCountryImage(product.characteristics?.country)}
+            countrySrc={getCountryImage(product.categories)}
             currentCount={getProductCount(product.id, product.isWeightGood)}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
