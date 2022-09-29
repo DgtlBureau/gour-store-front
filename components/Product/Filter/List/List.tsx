@@ -5,8 +5,7 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/Multiselect';
-import { ICategory } from 'types/entities/ICategory';
+import { ICategoryNew } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
