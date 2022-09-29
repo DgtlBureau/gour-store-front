@@ -5,7 +5,7 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
 import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory } from 'types/entities/ICategory';
+import { ICategory, ICategoryNew } from 'types/entities/ICategory';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
@@ -30,7 +30,7 @@ export type ProductCatalogProps = {
   emptyTitle?: string;
   products: IProduct[];
   favoritesList: IProduct[];
-  categories?: ICategory[];
+  categories?: ICategoryNew[];
   basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
