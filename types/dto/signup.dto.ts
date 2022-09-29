@@ -1,7 +1,7 @@
 export type SignUpDto = {
   firstName: string;
   lastName: string;
-  phone: string;
+  email: string;
   code: string;
   password: string;
   referralCode?: string;

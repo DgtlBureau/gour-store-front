@@ -6,8 +6,7 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { ProductFilterMultiselect } from 'components/Product/Filter/Multiselect/Multiselect';
-import { CHARACTERISTICS } from 'constants/characteristics';
-import { ICategoryNew } from 'types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
@@ -30,9 +29,11 @@ export function ProductFilterList({
   onCategoryChange,
   onCharacteristicChange,
 }: CatalogFilterProps) {
-  const features = Object.keys(CHARACTERISTICS).filter(
-    it => CHARACTERISTICS[it].categoryKey === filters.category?.toString() || CHARACTERISTICS[it].categoryKey === 'all',
-  );
+  // const features = Object.keys(CHARACTERISTICS).filter(
+  //   it =>
+  //     CHARACTERISTICS[it].categoryKey === filters.productType?.toString() || CHARACTERISTICS[it].categoryKey === 'all',
+  // );
+  // TODO: реализация фильтров
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }}>
@@ -48,7 +49,7 @@ export function ProductFilterList({
         {categories?.map(category => (
           <ToggleButton
             key={category.id}
-            selected={filters.category === category.id}
+            selected={filters.productType === category.id}
             sx={{ marginRight: '10px' }}
             onChange={() => onCategoryChange(category.id)}
           >

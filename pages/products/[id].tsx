@@ -12,7 +12,6 @@ import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
 import { dispatchNotification } from 'packages/EventBus';
-import { CHARACTERISTICS } from 'constants/characteristics';
 import { NotificationType } from 'types/entities/Notification';
 import { IProduct } from 'types/entities/IProduct';
 import { CommentDto } from 'types/dto/comment.dto';
@@ -130,26 +129,11 @@ export default function Product() {
       comment: grade.comment,
     })) || [];
 
-  const productCharacteristics =
-    ((product as any)?.categories as unknown as ICategoryNew[]).map(lowCategory => ({
-      // FIXME:
+  const productCategories =
+    product?.categories?.map(lowCategory => ({
       label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
       value: lowCategory.title.ru,
     })) || [];
-
-  // const productCharacteristics =
-  //   Object.keys(product?.characteristics || {})
-  //     .filter(key => product?.characteristics?.[key])
-  //     .map(key => {
-  //       const characteristicValue = CHARACTERISTICS[key]?.values.find(
-  //         value => value.key === product?.characteristics?.[key],
-  //       );
-
-  //       return {
-  //         label: CHARACTERISTICS[key]?.label[language] || '',
-  //         value: characteristicValue?.label[language] || 'нет информации',
-  //       };
-  //     }) || [];
 
   return (
     <PrivateLayout>
@@ -176,7 +160,7 @@ export default function Product() {
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
                   commentsCount={product.commentsCount || 0}
-                  characteristics={productCharacteristics}
+                  categories={productCategories}
                   onClickComments={onClickComments}
                 />
 

@@ -57,10 +57,10 @@ export default function SignUp() {
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
 
-  const sendSMS = async (phone: string) => {
+  const sendSMS = async (email: string) => {
     try {
-      await sendCode(phone).unwrap();
-      dispatchNotification('SMS код отправлен');
+      await sendCode(email).unwrap();
+      dispatchNotification('Email код отправлен');
       return 'success';
     } catch (error) {
       console.error(error);
@@ -112,7 +112,7 @@ export default function SignUp() {
     const data: SignUpDto = {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
-      phone: credentials.phone,
+      email: credentials.email,
       code: credentials.sms,
       password: credentials.password,
       referralCode,

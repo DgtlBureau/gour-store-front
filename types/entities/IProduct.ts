@@ -15,8 +15,7 @@ export interface IProduct extends IBaseEntity {
   description: ITranslatableText;
   moyskladCode: number;
   images: IImage[];
-  category: ICategory;
-  categories?: ICategoryNew[];
+  categories: ICategory[];
   productGrades: IProductGrade[];
   gradesCount: number;
   commentsCount: number;
@@ -25,7 +24,6 @@ export interface IProduct extends IBaseEntity {
   pieces: IProductModification[];
   price: IPrice;
   roleDiscounts: IRoleDiscount[];
-  characteristics?: IProductCharacteristics;
   meta: IPageMeta;
   weight: number;
   discount: number;
@@ -33,29 +31,8 @@ export interface IProduct extends IBaseEntity {
   promotions?: IPromotion[];
 }
 
-export interface IProductCharacteristics {
-  // TODO: add valid union types for other properties
-  country?: ProductCountry;
-  meatType?: string;
-
-  productType?: string;
-  processingType?: string;
-
-  cheeseCategory?: string;
-  crustType?: string;
-  milk?: string;
-  rennet?: string;
-  timeOfOrigin?: string;
-}
-
-export type ProductCountry = 'Russia' | 'Spain' | 'Italy' | 'France' | 'Holland' | 'GreatBritain';
-
-export type ICharacteristicsList = {
-  [K in keyof Required<IProductCharacteristics>]?: NonNullable<IProductCharacteristics[K]>[];
-};
-
 export interface IFiltersCharacteristic {
   isReversed: boolean;
-  category: number | 'all';
-  characteristics: ICharacteristicsList;
+  productType: number | 'all';
+  categories: Record<string, number>;
 }

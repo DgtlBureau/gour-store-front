@@ -8,9 +8,9 @@ const sx = {
     height: 'auto',
 
     width: {
-      xs: '170px',
-      sm: '220px',
-      md: '290px',
+      xs: '165px',
+      sm: '215px',
+      md: '282px',
     },
 
     padding: {

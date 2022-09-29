@@ -1,12 +1,10 @@
-import { IFiltersCharacteristic, IProductCharacteristics } from 'types/entities/IProduct';
+import { ICategory } from 'types/entities/ICategory';
+import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
-export const checkCharacteristics = (characteristics: IProductCharacteristics, filters: IFiltersCharacteristic) =>
-  Object.keys(filters.characteristics).every(it => {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    const filterCharacteristic = filters.characteristics[it]!;
-    return filterCharacteristic?.length === 0 || filterCharacteristic.includes(characteristics[it]!);
-  });
+export const checkCharacteristics = (productCategories: ICategory[], filters: Record<string, number>) =>
+  // TODO: реализация фильтров
+  true;
 
-export const checkCategory = (filters: IFiltersCharacteristic, key: string) =>
-  filters.category === 'all' || key === filters.category?.toString(); // FIXME:
+export const checkCategory = (categories: ICategory[], categoryKey: IFiltersCharacteristic['productType']) =>
+  categoryKey === 'all' || categories.find(category => category.id === categoryKey);
+

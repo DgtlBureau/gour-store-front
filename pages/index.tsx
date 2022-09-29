@@ -31,7 +31,6 @@ import { getErrorMessage } from 'utils/errorUtil';
 import { Currency } from '../types/entities/Currency';
 import { IProduct } from '../types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
-import { ICategoryNew } from 'types/entities/ICategory';
 
 import bannerImg from '../assets/images/banner.jpeg';
 
@@ -58,6 +57,7 @@ const Home: NextPage = () => {
   });
   const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
+    withCategories: true,
   });
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
               ))}
           />
         )}
-        {novelties?.length && (
+        {!!novelties?.length && (
           <ProductCatalog
             title={t('novelties')}
             products={novelties}
@@ -128,7 +128,7 @@ const Home: NextPage = () => {
             favoritesList={favoriteProducts}
             products={products}
             basket={basket.products}
-            categories={categories as unknown as ICategoryNew[]} // FIXME:
+            categories={categories}
             language={language}
             currency={currency}
             sx={sx.productList}

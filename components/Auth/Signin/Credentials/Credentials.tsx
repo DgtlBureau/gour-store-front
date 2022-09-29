@@ -60,7 +60,7 @@ export function SigninCredentials({
 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
-          <HFPhoneInput sx={sx.field} name='phone' label={t('phone')} />
+          <HFTextField sx={sx.field} name='email' type='email' label={t('email')} />
 
           <HFTextField sx={sx.field} type='password' name='password' label={t('password')} />
 

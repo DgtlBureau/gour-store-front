@@ -21,7 +21,7 @@ import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
 
-import { checkCategory, checkCharacteristics } from './CatalogHelpers';
+import { checkCategory } from './CatalogHelpers';
 
 import catalogSx from './Catalog.styles';
 
@@ -63,8 +63,8 @@ export function ProductCatalog({
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState<IFiltersCharacteristic>({
     isReversed: false,
-    category: 'all',
-    characteristics: {},
+    productType: 'all',
+    categories: {},
   });
 
   const productsWidthElect = products.map(product => ({
@@ -78,22 +78,19 @@ export function ProductCatalog({
   const selectCategory = (value: number) =>
     setFilters({
       ...filters,
-      category: filters.category !== value ? value : 'all',
-      characteristics: {},
+      productType: filters.productType !== value ? value : 'all',
+      categories: {},
     });
-  const selectCharacteristics = (key: string, selected: string[]) =>
-    setFilters({
-      ...filters,
-      characteristics: {
-        ...filters.characteristics,
-        [key]: selected,
-      },
-    });
+
+  const selectCharacteristics = () => {
+    // TODO: реализация фильтров списка товаров
+  };
 
   const productList = categories
     ? productsWidthElect?.filter(
-        product => checkCategory(filters, 'product.categories'), // FIXME: вместо строки значение
-        //  && checkCharacteristics(product.characteristics, filters),
+        product => checkCategory(product.categories, filters.productType),
+        // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
+        // TODO: обсудить, мб вообще все фильтры выводить
       )
     : productsWidthElect;
 
@@ -141,8 +138,8 @@ export function ProductCatalog({
       <CardSlider
         title={screenWidth > 900 || !categories ? title : undefined}
         emptyTitle={emptyTitle || 'Продукты не найдены'}
-        key={`catalog/${filters.category}`}
-        spaceBetween={0}
+        key={`catalog/${filters.productType}`}
+        spaceBetween={10}
         rows={rows || getCatalogRows()}
         head={
           !!categories && (
@@ -167,7 +164,7 @@ export function ProductCatalog({
             discount={discount || product.discount}
             previewSrc={product.images[0] ? product.images[0].small : ''}
             currency={currency}
-            countrySrc={getCountryImage(product.characteristics?.country)}
+            countrySrc={getCountryImage(product.categories)}
             currentCount={getProductCount(product.id, product.isWeightGood)}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}

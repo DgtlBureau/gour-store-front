@@ -35,6 +35,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
+
   const [payInvoice] = usePayInvoiceMutation();
 
   const convertedCities =
