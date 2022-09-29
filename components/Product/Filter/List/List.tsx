@@ -11,7 +11,7 @@ import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
 export type CatalogFilterProps = {
-  categories: ICategory[];
+  categories: ICategoryNew[];
   filters: IFiltersCharacteristic;
   language: Language;
   sx?: SxProps;

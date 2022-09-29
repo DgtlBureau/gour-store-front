@@ -6,3 +6,10 @@ export interface ICategory extends IBaseEntity {
   parentCategories: ICategory[];
   subCategories: ICategory[];
 }
+
+export interface ICategoryNew {
+  id: number;
+  title: ITranslatableString;
+  parentCategories: ICategoryNew[];
+  subCategories: ICategoryNew[];
+}
