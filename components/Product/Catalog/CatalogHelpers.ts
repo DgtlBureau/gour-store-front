@@ -7,4 +7,3 @@ export const checkCharacteristics = (productCategories: ICategory[], filters: Re
 
 export const checkCategory = (categories: ICategory[], categoryKey: IFiltersCharacteristic['productType']) =>
   categoryKey === 'all' || categories.find(category => category.id === categoryKey);
-
