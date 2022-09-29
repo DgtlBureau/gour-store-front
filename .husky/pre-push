@@ -1,15 +1,14 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo '🏗️👷 Building your project before pushing'
+echo '🏗️👷 Билд проекта перед пушем...'
 
 npm run build ||
 (
-    echo '❌👷🔨❌ Next build failed ❌👷🔨❌
-            View the errors above to see why. 
+    echo '❌👷🔨❌ Next build не прошел ❌👷🔨❌
+            Посмотри ошибки ниже, почему это произошло. 
     '
     false;
 )
 
-# If everything passes... Now we can push
-echo '✅✅✅✅ You win this time... I am pushing this now. ✅✅✅✅'
+echo '✅✅✅✅ Ладно, ты победил... Просто запушу коммиты. ✅✅✅✅'

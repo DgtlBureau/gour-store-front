@@ -1,7 +1,7 @@
 import { ITranslatableString } from './ITranslatableString';
 import { ITranslatableText } from './ITranslatableText';
 import { IImage } from './IImage';
-import { ICategory, ICategoryNew } from './ICategory';
+import { ICategory } from './ICategory';
 import { IProductGrade } from './IProductGrade';
 import { IProductModification } from './IProductModification';
 import { IPrice } from './IPrice';
