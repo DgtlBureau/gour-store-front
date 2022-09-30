@@ -53,7 +53,7 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>
               <Box sx={{ ...sliderSx.slide, ...sliderSx.full }}>
-                <Image src={image.full} layout='fill' objectFit='cover' alt='' />
+                <Image src={image.full} layout='fill' objectFit='contain' alt='' />
               </Box>
             </SwiperSlide>
           ))}
