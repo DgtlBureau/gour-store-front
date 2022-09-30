@@ -38,6 +38,9 @@ import sx from './Main.styles';
 
 const NOW = new Date();
 
+const fakePromoImage =
+  'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
+
 // eslint-disable-next-line react/function-component-definition
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
@@ -87,6 +90,8 @@ const Home: NextPage = () => {
       dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
+
+  const bannerPromoImage = promotions?.[0]?.cardImage.small;
 
   return (
     <PrivateLayout>
@@ -142,15 +147,17 @@ const Home: NextPage = () => {
         {!!page && (
           <Box>
             <Box sx={sx.banner}>
-              {bannerImg && (
+              {bannerPromoImage ? (
                 <Image
-                  loader={() =>
-                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
-                  }
-                  src={
-                    bannerImg ||
-                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
-                  }
+                  src={bannerPromoImage || fakePromoImage} // FIXME:
+                  objectFit='cover'
+                  layout='fill'
+                  alt=''
+                />
+              ) : (
+                <Image
+                  loader={() => fakePromoImage}
+                  src={bannerImg || fakePromoImage}
                   objectFit='cover'
                   layout='fill'
                   alt=''
