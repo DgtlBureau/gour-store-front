@@ -1,6 +1,6 @@
 export type PasswordRecoveryDto = Readonly<{
-  phone: string;
-  sms: string;
+  email: string;
+  code: string;
   password: string;
   passwordConfirm: string;
 }>;
