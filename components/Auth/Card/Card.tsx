@@ -6,6 +6,11 @@ import { Box } from 'components/UI/Box/Box';
 const cardSx: SxProps = {
   display: 'flex',
   flexDirection: 'column',
+  width: '100%',
+  maxWidth: {
+    xs: '100%',
+    md: '550px',
+  },
   padding: {
     xs: '40px',
     sm: '60px',

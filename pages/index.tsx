@@ -92,6 +92,7 @@ const Home: NextPage = () => {
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
         {isLoading && <ProgressLinear />}
+
         {!!promotions?.length && (
           <CardSlider
             title={t('promotions')}
@@ -122,6 +123,7 @@ const Home: NextPage = () => {
             onDetail={goToProductPage}
           />
         )}
+
         {!!products.length && (
           <ProductCatalog
             title={t('catalog')}
@@ -142,7 +144,7 @@ const Home: NextPage = () => {
         {!!page && (
           <Box>
             <Box sx={sx.banner}>
-              {bannerImg && (
+              {!!bannerImg && (
                 <Image
                   loader={() =>
                     'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
