@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { FormControlLabel, Radio, CircularProgress } from '@mui/material';
+import { FormControlLabel, Radio, CircularProgress, Divider } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { HFCodeInput } from 'components/HookForm/HFCodeInput';
+import SendIcon from '@mui/icons-material/Send';
+
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -17,26 +18,28 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
+import { IconButton } from 'components/UI/IconButton/IconButton';
 
 import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
-  codeCheckIsLoading?: boolean;
+  codeIsSending?: boolean;
   onBack(): void;
-  onSendSMS(phone: string): Promise<'success' | string>;
-  onCheckCode: (code: string) => Promise<boolean>;
+  onEmailSend(email: string): Promise<boolean>;
+  onCodeCheck: (code: string) => Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
 export function SignupCredentials({
   defaultValues,
-  codeCheckIsLoading,
+  codeIsSending,
   onBack,
-  onSendSMS,
-  onCheckCode,
+  onEmailSend,
+  onCodeCheck,
   onSubmit,
 }: SignupCredentialsProps) {
+  const [seconds, setSeconds] = useState(0);
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
@@ -55,31 +58,52 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
-  const emailIsInvalid = !values.watch('email') || !!values.getFieldState('email').error;
-  const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
-  const formIsInvalid = !values.formState.isValid || !isAgree;
+  const timerIsOn = seconds > 0;
+  const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
+  const formIsValid = values.formState.isValid && isCodeSuccess && isAgree;
+  const sendingIsDisabled = timerIsOn || !emailIsValid || isCodeSuccess;
 
-  const sendSMS = async () => {
-    if (isCodeSended) return;
-    const target = values.watch('email');
+  useEffect(() => {
+    if (seconds === 0) return;
 
-    const response = await onSendSMS(target);
-    if (response === 'success') {
-      setIsCodeSended(true);
-    } else {
-      values.setError('email', { message: response });
-    }
+    const intervalId = setInterval(() => {
+      setSeconds(sec => sec - 1);
+    }, 1000);
+
+    // eslint-disable-next-line consistent-return
+    return () => clearInterval(intervalId);
+  }, [seconds]);
+
+  const sendEmail = async () => {
+    const email = values.watch('email');
+
+    const isSended = await onEmailSend(email);
+
+    setIsCodeSended(isSended);
+
+    if (isSended) setSeconds(30);
+    else values.setError('email', { message: '' });
   };
 
   const checkCode = async () => {
-    const code = values.watch('sms');
-    const status = await onCheckCode(code);
+    const code = values.watch('code');
+    const status = await onCodeCheck(code);
+
     setIsCodeSuccess(status);
+  };
+
+  const changeCode = (value: string) => {
+    if (value.length === 4) checkCode();
   };
 
   const agree = () => setIsAgree(!isAgree);
 
-  const submit = (data: SignUpFormDto) => onSubmit(data);
+  const submit = (data: SignUpFormDto) => {
+    onSubmit(data);
+    setSeconds(0);
+    setIsCodeSended(false);
+    setIsCodeSuccess(false);
+  };
 
   return (
     <AuthCard>
@@ -103,23 +127,45 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField type='email' name='email' disabled={isCodeSended} label={t('email')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={emailIsInvalid || isCodeSended}>
-              {t('getCode')}
-            </Button>
+            <HFTextField
+              type='email'
+              name='email'
+              disabled={isCodeSuccess}
+              label={t('email')}
+              endAdornment={
+                <>
+                  <Divider sx={sx.divider} orientation='vertical' />
+
+                  {codeIsSending ? (
+                    <CircularProgress />
+                  ) : (
+                    <IconButton disabled={sendingIsDisabled} onClick={sendEmail}>
+                      <SendIcon />
+                    </IconButton>
+                  )}
+                </>
+              }
+            />
           </Box>
+
           {isCodeSended && !isCodeSuccess && (
-            <Box sx={sx.field}>
-              <HFCodeInput
-                name='sms'
-                onChange={value => {
-                  if (value.length === 4) checkCode();
-                }}
-                // disabled={codeCheckIsLoading}
+            <>
+              <HFTextField
+                sx={{ ...sx.field, ...sx.codeField }}
+                label={t('code')}
+                name='code'
+                onChange={event => changeCode(event.target.value)}
               />
 
-              {codeCheckIsLoading && <CircularProgress size={40} sx={sx.progress} />}
-            </Box>
+              {timerIsOn && (
+                <Box sx={sx.timer}>
+                  <Typography variant='body2'>{t('codeHelper')}</Typography>
+                  <Typography variant='body2'>
+                    {seconds} {t('sec')}
+                  </Typography>
+                </Box>
+              )}
+            </>
           )}
 
           {isCodeSuccess && (
@@ -153,7 +199,7 @@ export function SignupCredentials({
               />
             </>
           )}
-          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
+          <Button type='submit' disabled={!formIsValid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>

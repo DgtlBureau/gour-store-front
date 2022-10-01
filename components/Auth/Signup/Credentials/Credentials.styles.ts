@@ -25,17 +25,9 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  getCodeBtn: {
-    whiteSpace: 'nowrap',
-    height: '100%',
-    minWidth: {
-      xs: '100%',
-      sm: 'auto',
-    },
-    margin: {
-      xs: '12px 0',
-      sm: '0 0 0 12px',
-    },
+  divider: {
+    height: 28,
+    marginRight: '14px',
   },
   field: {
     display: 'flex',
@@ -64,6 +56,15 @@ const sx = {
   },
   progress: {
     marginLeft: '12px',
+  },
+  timer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '8px',
+    color: 'text.muted',
+  },
+  codeField: {
+    width: '50%',
   },
 };
 

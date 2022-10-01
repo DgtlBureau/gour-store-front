@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthLayout } from 'layouts/Auth/Auth';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useCheckCodeMutation, useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
@@ -24,6 +24,7 @@ import greetingsImage from 'assets/icons/signup/greetings.svg';
 import cityImage from 'assets/icons/signup/city.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
+import { getErrorMessage } from 'utils/errorUtil';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
@@ -40,16 +41,15 @@ export default function SignUp() {
       }))
     : [];
 
-  const [sendCode] = useSendCodeMutation();
+  const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
   const [signUp] = useSignUpMutation();
-  const [checkCode, { isLoading: codeCheckIsLoading }] = useCheckCodeMutation();
+  const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
   const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
   const [referralCode, setReferralCode] = useState('');
-  // const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -57,21 +57,25 @@ export default function SignUp() {
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
 
-  const sendSMS = async (email: string) => {
+  const sendEmail = async (email: string) => {
     try {
-      await sendCode(email).unwrap();
+      await sendCode({ email }).unwrap();
+
       dispatchNotification('Email код отправлен');
-      return 'success';
+
+      return true;
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
-      return (error as { data: { message: string } })?.data?.message || 'Неизвестная ошибка!';
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
+      return false;
     }
   };
 
-  const checkCodeHandler = async (code: string) => {
+  const checkEmailCode = async (code: string) => {
     try {
-      const isApprove = await checkCode(code).unwrap();
+      const isApprove = await checkCode({ code }).unwrap();
 
       if (!isApprove) {
         dispatchNotification('Неверный код', { type: NotificationType.DANGER });
@@ -83,7 +87,9 @@ export default function SignUp() {
 
       return true;
     } catch (error) {
-      console.error(error);
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
 
       return false;
     }
@@ -113,7 +119,7 @@ export default function SignUp() {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
       email: credentials.email,
-      code: credentials.sms,
+      code: credentials.code,
       password: credentials.password,
       referralCode,
       cityId: +selectedCity,
@@ -124,10 +130,12 @@ export default function SignUp() {
       await signUp(data).unwrap();
 
       dispatchNotification('Регистрация прошла успешно');
+
       goToSignIn();
-    } catch (e: unknown) {
-      console.log(e);
-      dispatchNotification('Ошибка регистрации', { type: NotificationType.DANGER });
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -153,9 +161,9 @@ export default function SignUp() {
       component: (
         <SignupCredentials
           defaultValues={credentials}
-          codeCheckIsLoading={codeCheckIsLoading}
-          onSendSMS={sendSMS}
-          onCheckCode={checkCodeHandler}
+          codeIsSending={codeIsSending}
+          onEmailSend={sendEmail}
+          onCodeCheck={checkEmailCode}
           onSubmit={saveCredentials}
           onBack={goToCitySelect}
         />
