@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Divider } from '@mui/material';
-
-import SendIcon from '@mui/icons-material/Send';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+
 import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
 import { getSchema } from './validation';
 import translations from './PhoneChangeModal.i18n.json';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
-import { HFTextField } from 'components/HookForm/HFTextField';
 import { Typography } from 'components/UI/Typography/Typography';
-import { IconButton } from 'components/UI/IconButton/IconButton';
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 const sx = {
@@ -44,21 +39,10 @@ export type PAPhoneChangeModalProps = {
   defaultValues?: ChangePhoneDto;
   error?: string;
   onClose(): void;
-  onSendSMS(phone: SendCodeDto): Promise<boolean>;
   onSubmit(changePhoneData: ChangePhoneDto): void;
 };
 
-export function PAPhoneChangeModal({
-  isOpen,
-  defaultValues,
-  error,
-  onClose,
-  onSendSMS,
-  onSubmit,
-}: PAPhoneChangeModalProps) {
-  const [isCodeSended, setIsCodeSended] = useState(false);
-  const [seconds, setSeconds] = useState(0);
-
+export function PAPhoneChangeModal({ isOpen, defaultValues, error, onClose, onSubmit }: PAPhoneChangeModalProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getSchema(t);
@@ -70,27 +54,6 @@ export function PAPhoneChangeModal({
   });
 
   const formIsInvalid = !values.formState.isValid;
-  const sendingIsDisabled = !!seconds || !values.watch('phone') || !!values.getFieldState('phone').error;
-
-  const startTimer = () => {
-    setSeconds(30);
-
-    const intervalId = setInterval(() => {
-      setSeconds(sec => sec - 1);
-    }, 1000);
-
-    setTimeout(() => clearInterval(intervalId), 30000);
-  };
-
-  const sendSMS = async () => {
-    if (seconds !== 0) return;
-    const phone = values.watch('phone');
-    const code = await onSendSMS({ phone });
-    if (code) {
-      setIsCodeSended(code);
-      startTimer();
-    }
-  };
 
   const submit = (data: ChangePhoneDto) => onSubmit(data);
 
@@ -106,27 +69,8 @@ export function PAPhoneChangeModal({
       <Box sx={sx.body}>
         <FormProvider {...values}>
           <form id='phoneChangeForm' onSubmit={values.handleSubmit(submit)}>
-            <HFPhoneInput
-              label={t('phone')}
-              name='phone'
-              endAdornment={
-                <>
-                  <Divider sx={sx.divider} orientation='vertical' />
-                  <IconButton onClick={sendSMS} color='primary' disabled={sendingIsDisabled}>
-                    <SendIcon />
-                  </IconButton>
-                </>
-              }
-            />
-            {isCodeSended && <HFTextField label={t('sms')} name='sms' sx={sx.smsField} />}
-            {seconds !== 0 && (
-              <Box sx={sx.timer}>
-                <Typography variant='body2'>{t('smsHelper')}</Typography>
-                <Typography variant='body2'>
-                  {seconds} {t('seconds')}
-                </Typography>
-              </Box>
-            )}
+            <HFPhoneInput label={t('phone')} name='phone' />
+
             {!!error && (
               <Typography sx={sx.error} variant='body2' color='error'>
                 {error}
