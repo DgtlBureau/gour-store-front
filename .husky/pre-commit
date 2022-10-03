@@ -1,31 +1,27 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo '🏗️👷 Styling, testing and checking types in your project before committing'
+echo '🏗️👷 Форматирование, линтинг и проверка типов в проекте перед коммитом.'
 
-# Check Prettier standards
 npm run check-format ||
 (
-    echo '🤢🤮🤢🤮 Prettier Check Failed. 🤢🤮🤢🤮
-            Run `npm run format`, add changes and try commit again.';
+    echo '🤢🤮🤢🤮 Проверка преттиера не пройдена. 🤢🤮🤢🤮
+            Запусти `npm run format`, добавь изменения и попробуй закоммитить снова.';
     false;
 )
 
-# Check ESLint Standards
 npm run check-lint ||
 (
-        echo '😤🏀👋😤 ESLint Check Failed. 😤🏀👋😤 
-                Run `npm run lint`, add changes and try to commit again.'
+        echo '😤🏀👋😤 Проверка ESLint не пройдена. 😤🏀👋😤 
+                Запусти `npm run lint`, добавь изменения и попробуй закоммитить снова.'
         false; 
 )
 
-# Check tsconfig standards
 npm run check-types ||
 (
-    echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡
-            Run `npm run check-types`, fix all problems and try to commit again.'
+    echo '🤡😂❌🤡 Проверка типов не пройдена. 🤡😂❌🤡
+            Запусти `npm run check-types`, исправь все проблемы и попробуй закоммитить заново.'
     false;
 )
 
-# If everything passes... Now we can commit
-echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'
+echo '✅✅✅✅ Ладно, ты победил... Просто закоммичу. ✅✅✅✅'

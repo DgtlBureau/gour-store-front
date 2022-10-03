@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ICategory, ICategoryNew } from 'types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 import translations from './Modal.i18n.json';
@@ -22,7 +22,7 @@ const sx = {
 
 export type ProductFilterModalProps = {
   isOpen: boolean;
-  categories: ICategoryNew[];
+  categories: ICategory[];
   filters: IFiltersCharacteristic;
   language: Language;
   onCategoryChange: (key: number) => void;

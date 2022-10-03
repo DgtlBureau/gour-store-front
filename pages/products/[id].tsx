@@ -33,7 +33,6 @@ import { getErrorMessage } from 'utils/errorUtil';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 
 import sx from './Product.styles';
-import { ICategoryNew } from 'types/entities/ICategory';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
