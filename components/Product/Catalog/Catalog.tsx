@@ -166,7 +166,7 @@ export function ProductCatalog({
             price={product.price[currency]}
             discount={discount || product.discount}
             currency={currency}
-            previewImg={product.images[0] ? product.images[0].small : ''}
+            previewImg={product.images[0]?.small || ''}
             countryImg={getCountryImage(product.categories)}
             backgroundImg={categories && getProductBackground(categories, product.categories)}
             currentCount={getProductCount(product.id, product.isWeightGood)}

@@ -21,7 +21,7 @@ export const getProductCategory = (categories: ICategory[], productSubCategories
   return productCategory;
 };
 
-export const getCategoryBackground = (category: ICategory) =>
+const getCategoryBackground = (category: ICategory) =>
   backgroundByCategory[category.title.ru] || backgroundByCategory[category.title.en];
 
 export const getProductBackground = (categories: ICategory[], productCategories: ICategory[]) => {
