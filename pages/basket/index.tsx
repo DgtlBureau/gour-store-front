@@ -21,6 +21,7 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
 import { useAppNavigation } from 'components/Navigation';
 import { Button } from 'components/UI/Button/Button';
@@ -38,18 +39,17 @@ import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import sx from './Basket.styles';
-import { useRouter } from 'next/router';
+import { getProductBackground } from 'helpers/categoryHelper';
 
 export function Basket() {
   const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
-
-  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+  const { data: categories = [] } = useGetCategoryListQuery();
 
   const productsInOrder = useAppSelector(selectProductsInOrder);
   const count = useAppSelector(selectedProductCount);
@@ -119,6 +119,7 @@ export function Basket() {
                     weight={it.weight}
                     isWeightGood={it.product.isWeightGood}
                     productImg={it.product.images[0]?.small}
+                    backgroundImg={getProductBackground(categories, it.product.categories)}
                     discount={it.product.discount}
                     currency={currency}
                     onDetail={() => goToProductPage(it.product.id)}

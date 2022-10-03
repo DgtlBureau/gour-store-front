@@ -40,11 +40,12 @@ const sx = {
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
-    objectFit: 'contain',
 
-    '&:hover': {
-      cursor: 'pointer',
-    },
+    cursor: 'pointer',
+  },
+  productImg: {
+    height: '100%',
+    objectFit: 'contain',
   },
   heart: {
     position: 'absolute',

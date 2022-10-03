@@ -18,22 +18,27 @@ const sx = {
     borderRadius: 0,
   },
 
-  image: {
+  previewImg: {
     cursor: 'pointer',
+
+    width: '100%',
 
     height: {
       sm: '125px',
       xs: '80px',
     },
-    width: {
+    maxWidth: {
       sm: '125px',
       xs: '80px',
     },
 
     border: '2px solid #FDCE85',
     borderRadius: '10px',
+  },
 
-    objectFit: 'cover',
+  productImg: {
+    height: '100%',
+    objectFit: 'contain',
   },
 
   info: {

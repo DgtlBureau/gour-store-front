@@ -11,7 +11,7 @@ import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 import { getCountryImage } from 'helpers/countryHelper';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-
+import { getProductBackground } from 'helpers/categoryHelper';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -20,7 +20,6 @@ import { Button } from 'components/UI/Button/Button';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import { ProductCard } from '../Card/Card';
-
 import { checkCategory } from './CatalogHelpers';
 
 import catalogSx from './Catalog.styles';
@@ -36,6 +35,7 @@ export type ProductCatalogProps = {
   currency?: Currency;
   discount?: number;
   rows?: number;
+  withFilters?: boolean;
   sx?: SxProps;
   onAdd: (product: IProduct) => void;
   onRemove: (product: IProduct) => void;
@@ -54,6 +54,7 @@ export function ProductCatalog({
   currency = 'cheeseCoin',
   discount,
   rows,
+  withFilters,
   sx,
   onAdd,
   onRemove,
@@ -66,6 +67,8 @@ export function ProductCatalog({
     productType: 'all',
     categories: {},
   });
+
+  const withFilterList = !!withFilters && !!categories?.length;
 
   const productsWidthElect = products.map(product => ({
     ...product,
@@ -142,7 +145,7 @@ export function ProductCatalog({
         spaceBetween={10}
         rows={rows || getCatalogRows()}
         head={
-          !!categories && (
+          withFilterList && (
             <ProductFilterList
               sx={catalogSx.filters}
               categories={categories}
@@ -162,9 +165,10 @@ export function ProductCatalog({
             rating={product.grade}
             price={product.price[currency]}
             discount={discount || product.discount}
-            previewSrc={product.images[0] ? product.images[0].small : ''}
             currency={currency}
-            countrySrc={getCountryImage(product.categories)}
+            previewImg={product.images[0]?.small || ''}
+            countryImg={getCountryImage(product.categories)}
+            backgroundImg={categories && getProductBackground(categories, product.categories)}
             currentCount={getProductCount(product.id, product.isWeightGood)}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}

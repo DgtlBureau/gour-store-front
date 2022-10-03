@@ -1,6 +1,6 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
-export interface IReferralCode extends IBaseEntity {
+export interface IReferralCode extends IBase {
   code: string;
   discount: number;
 }

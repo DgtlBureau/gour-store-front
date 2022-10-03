@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid, Stack } from '@mui/material';
 
 import {
   useCreateFavoriteProductsMutation,
@@ -8,76 +7,26 @@ import {
 } from 'store/api/favoriteApi';
 import { useAppNavigation } from 'components/Navigation';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
-import { ProductCard } from 'components/Product/Card/Card';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { PrivateLayout } from 'layouts/Private/Private';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { ShopLayout } from 'layouts/Shop/Shop';
-import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { IProduct } from 'types/entities/IProduct';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { isProductFavorite } from './favoritesHelper';
 import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from 'types/entities/Notification';
-
-const sx = {
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
-};
-
-function FavoriteProductCard({
-  product,
-  basket,
-  language,
-  currency,
-  isElect,
-  addToBasket,
-  removeFromBasket,
-  handleElect,
-  goToProductPage,
-}: FavoriteProductType) {
-  const productInBasket = basket.find(it => it.product.id === product.id);
-  const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-
-  const elect = () => handleElect(product.id, isElect);
-
-  return (
-    <ProductCard
-      title={product.title[language]}
-      description={product.description[language]}
-      rating={product.grade}
-      discount={product.discount}
-      currentCount={count}
-      isWeightGood={product.isWeightGood}
-      price={product.price[currency]}
-      previewSrc={product.images[0]?.small || ''}
-      currency={currency}
-      isElected={isElect}
-      onElect={elect}
-      onAdd={() => addToBasket(product)}
-      onRemove={() => removeFromBasket(product)}
-      onDetail={() => goToProductPage(product.id)}
-    />
-  );
-}
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { getErrorMessage } from 'utils/errorUtil';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { useGetProductListQuery } from 'store/api/productApi';
 
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const { language, goToProductPage } = useAppNavigation();
+  const { language, currency, goToProductPage } = useAppNavigation();
 
-  const currentCurrency: Currency = 'cheeseCoin';
-
+  const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
+  const { data: categories = [] } = useGetCategoryListQuery();
 
   const basket = useAppSelector(state => state.order);
 
@@ -87,7 +36,7 @@ export function Favorites() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const handleElect = async (id: number, isElect: boolean) => {
+  const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id);
@@ -95,10 +44,13 @@ export function Favorites() {
         await addFavorite({ productId: id });
       }
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
+
+  const filteredProducts = products.filter(product => !!favoriteProducts.find(favorite => favorite.id === product.id));
 
   return (
     <PrivateLayout>
@@ -107,47 +59,27 @@ export function Favorites() {
           Вернуться на главную
         </Link>
 
-        <Stack spacing={3}>
-          <Typography sx={sx.title}>Избранные продукты</Typography>
+        {isFetching && <ProgressLinear />}
 
-          {isFetching && <ProgressLinear />}
-
-          {favoriteProducts.length === 0 ? (
-            <Typography variant='h5'>Нет избранных продуктов</Typography>
-          ) : (
-            <Grid container>
-              {favoriteProducts.map(product => (
-                <FavoriteProductCard
-                  key={product.id}
-                  product={product}
-                  basket={basket.products}
-                  currency={currentCurrency}
-                  language={language}
-                  isElect={isProductFavorite(product.id, favoriteProducts)}
-                  addToBasket={addToBasket}
-                  removeFromBasket={removeFromBasket}
-                  handleElect={handleElect}
-                  goToProductPage={goToProductPage}
-                />
-              ))}
-            </Grid>
-          )}
-        </Stack>
+        {!!filteredProducts.length && (
+          <ProductCatalog
+            title='Избранные продукты'
+            emptyTitle='Нет избранных продуктов'
+            products={filteredProducts}
+            favoritesList={favoriteProducts}
+            categories={categories}
+            basket={basket.products}
+            language={language}
+            currency={currency}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={electProduct}
+            onDetail={goToProductPage}
+          />
+        )}
       </ShopLayout>
     </PrivateLayout>
   );
 }
 
 export default Favorites;
-
-type FavoriteProductType = {
-  product: IProduct;
-  basket: IOrderProduct[];
-  currency: Currency;
-  language: Language;
-  isElect: boolean;
-  addToBasket: (product: IProduct) => void;
-  removeFromBasket: (product: IProduct) => void;
-  handleElect: (id: number, isElect: boolean) => void;
-  goToProductPage: (id: number) => void;
-};

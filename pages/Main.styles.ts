@@ -38,6 +38,12 @@ export const sx = {
     flexDirection: 'row',
     alignItems: 'justify-content',
   },
+  pageInfoDescription: {
+    marginTop: {
+      xs: '20px',
+      md: '40px',
+    },
+  },
 };
 
 export default sx;

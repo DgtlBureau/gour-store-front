@@ -14,7 +14,7 @@ import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Currency } from 'types/entities/Currency';
 
-import defaultImage from 'assets/no-image.svg';
+import defaultImg from 'assets/no-image.svg';
 
 import sx from './Card.styles';
 
@@ -24,6 +24,7 @@ type Props = {
   weight: number;
   amount: number;
   productImg: string;
+  backgroundImg?: string;
   isWeightGood: boolean;
   discount?: number;
   currency?: Currency;
@@ -38,6 +39,7 @@ export function CartCard({
   price,
   amount,
   productImg,
+  backgroundImg,
   discount,
   weight,
   isWeightGood,
@@ -51,9 +53,13 @@ export function CartCard({
 
   const screenWidth = window.screen.width;
 
+  const backgroundImage = `url('${backgroundImg}')`;
+
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component='img' image={productImg || defaultImage} onClick={onDetail} />
+      <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
+        <CardMedia sx={sx.productImg} component='img' image={productImg || defaultImg} alt='' />
+      </Box>
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>

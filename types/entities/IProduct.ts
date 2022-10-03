@@ -6,11 +6,11 @@ import { IProductGrade } from './IProductGrade';
 import { IProductModification } from './IProductModification';
 import { IPrice } from './IPrice';
 import { IRoleDiscount } from './IRoleDiscount';
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { IPageMeta } from './IPageMeta';
 import { IPromotion } from './IPromotion';
 
-export interface IProduct extends IBaseEntity {
+export interface IProduct extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   moyskladCode: number;
