@@ -1,6 +1,6 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
-export interface IClientRole extends IBaseEntity {
+export interface IClientRole extends IBase {
   title: string;
   key: string;
 }

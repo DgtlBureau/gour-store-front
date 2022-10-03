@@ -2,9 +2,9 @@ import { ITranslatableString } from './ITranslatableString';
 import { ITranslatableText } from './ITranslatableText';
 import { IImage } from './IImage';
 import { IProduct } from './IProduct';
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
-export interface IPromotion extends IBaseEntity {
+export interface IPromotion extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   cardImage: IImage;

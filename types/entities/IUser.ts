@@ -1,10 +1,10 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 import { IClientRole } from './IClientRole';
 import { ICity } from './ICity';
 
-export interface IUser extends IBaseEntity {
+export interface IUser extends IBase {
   role: IClientRole;
   isApproved: boolean;
   firstName: string;

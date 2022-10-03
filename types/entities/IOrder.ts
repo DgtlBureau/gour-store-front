@@ -1,8 +1,8 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';
 
-export interface IOrder extends IBaseEntity {
+export interface IOrder extends IBase {
   firstName: string;
   lastName?: string;
   phone: string;

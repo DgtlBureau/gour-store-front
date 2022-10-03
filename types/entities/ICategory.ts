@@ -1,15 +1,8 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { ITranslatableString } from './ITranslatableString';
 
-export interface ICategory extends IBaseEntity {
+export interface ICategory extends IBase {
   title: ITranslatableString;
   parentCategories: ICategory[];
   subCategories: ICategory[];
-}
-
-export interface ICategoryNew {
-  id: number;
-  title: ITranslatableString;
-  parentCategories: ICategoryNew[];
-  subCategories: ICategoryNew[];
 }

@@ -1,4 +1,4 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
 export enum InvoiceStatus {
   WAITING = 'WAITING',
@@ -7,7 +7,7 @@ export enum InvoiceStatus {
   CANCELLED = 'CANCELLED',
 }
 
-export interface IInvoice extends IBaseEntity {
+export interface IInvoice extends IBase {
   amount: number; // count of cheesecoints
   value: number; // total price
   status: InvoiceStatus;
