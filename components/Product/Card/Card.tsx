@@ -3,13 +3,14 @@ import { CardMedia } from '@mui/material';
 import Image from 'next/image';
 
 import HeartIcon from '@mui/icons-material/Favorite';
+
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { ProductCardRate as Rate } from './Rate';
 import { ProductCardDocket as Docket } from './Docket';
 import { ProductCardCart as Cart } from './Cart';
 import { Currency } from 'types/entities/Currency';
-import defaultImage from 'assets/no-image.svg';
+import defaultImg from 'assets/no-image.svg';
 
 import sx from './Card.styles';
 
@@ -21,8 +22,9 @@ export type ProductCardProps = {
   isWeightGood: boolean;
   price: number;
   discount?: number;
-  previewSrc: string;
-  countrySrc?: string;
+  previewImg: string;
+  backgroundImg?: string;
+  countryImg?: string;
   currency: Currency;
   isElected: boolean;
   onAdd: () => void;
@@ -39,8 +41,9 @@ export function ProductCard({
   isWeightGood,
   discount = 0,
   price,
-  previewSrc,
-  countrySrc,
+  previewImg,
+  backgroundImg,
+  countryImg,
   isElected,
   currency,
   onAdd,
@@ -48,16 +51,20 @@ export function ProductCard({
   onElect,
   onDetail,
 }: ProductCardProps) {
+  const backgroundImage = `url('${backgroundImg}')`;
+
   return (
     <Box sx={sx.card}>
       <Box sx={sx.preview}>
         <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) }} onClick={onElect} />
 
-        <CardMedia sx={sx.previewImg} component='img' image={previewSrc || defaultImage} alt='' onClick={onDetail} />
+        <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
+          <CardMedia sx={sx.productImg} component='img' image={previewImg || defaultImg} alt='' />
+        </Box>
 
-        {countrySrc && (
+        {countryImg && (
           <Box sx={sx.country}>
-            <Image src={countrySrc} objectFit='cover' height={26} width={26} alt='' />
+            <Image src={countryImg} objectFit='cover' height={26} width={26} alt='' />
           </Box>
         )}
       </Box>
