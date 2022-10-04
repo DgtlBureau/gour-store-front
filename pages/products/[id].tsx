@@ -88,9 +88,9 @@ export default function Product() {
   const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
-        await removeFavorite(id); // FIXME: TODO: избавиться от дублирования кода в разных компонентах
+        await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);

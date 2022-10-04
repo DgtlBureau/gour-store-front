@@ -41,7 +41,7 @@ export function Favorites() {
       if (isElect) {
         await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);
