@@ -70,6 +70,10 @@ export function PALayout({ children }: PALayoutProps) {
       label: t('discounts'),
       path: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
     },
+    {
+      label: t('payments'),
+      path: `/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`,
+    },
   ];
 
   return (

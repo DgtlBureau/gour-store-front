@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import NextLink from 'next/link';
@@ -114,7 +115,9 @@ export function Header({
             <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
                 <NextLink href='/' passHref>
-                  <Image src={Logo} height={49} width={58} alt='' />
+                  <a>
+                    <Image src={Logo} height='49px' width='58px' alt='' />
+                  </a>
                 </NextLink>
               </Box>
 
