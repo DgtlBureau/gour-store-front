@@ -1,4 +1,4 @@
-import React, { FocusEventHandler } from 'react';
+import React, { FocusEventHandler, ReactElement } from 'react';
 import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from 'components/UI/TextField/TextField';
@@ -13,6 +13,7 @@ export type HFTextFieldProps = {
   sx?: SxProps;
   disabled?: boolean;
   InputProps?: InputProps;
+  endAdornment?: ReactElement;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   regexp?: RegExp;
   inputProps?: Record<string, number>;

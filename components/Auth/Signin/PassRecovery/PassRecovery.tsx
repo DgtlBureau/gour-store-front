@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CircularProgress, Divider } from '@mui/material';
 
-import { Translator } from 'utils/Translator';
+import SendIcon from '@mui/icons-material/Send';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
 import translations from './PassRecovery.i18n.json';
@@ -12,20 +14,30 @@ import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 import { HFTextField } from 'components/HookForm/HFTextField';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { IconButton } from 'components/UI/IconButton/IconButton';
 
 import sx from './PassRecovery.styles';
 
 export type SigninPassRecoveryProps = {
-  defaultValues: PasswordRecoveryDto;
+  defaultValues?: PasswordRecoveryDto;
+  codeIsSending?: boolean;
   onBack(): void;
-  onSendSMS(phone: string): string;
+  onEmailSend(email: string): Promise<void>;
+  onCodeCheck(code: string): Promise<void>;
   onSubmit(data: PasswordRecoveryDto): void;
 };
 
-export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit }: SigninPassRecoveryProps) {
-  const [SMS, setSMS] = useState('');
-  const [isConfirmed, setIsConfirmed] = useState(false);
+export function SigninPassRecovery({
+  defaultValues,
+  codeIsSending,
+  onBack,
+  onEmailSend,
+  onCodeCheck,
+  onSubmit,
+}: SigninPassRecoveryProps) {
+  const [seconds, setSeconds] = useState<number | null>(null);
+  const [isCodeSended, setIsCodeSended] = useState(false);
+  const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
   const { t } = useLocalTranslation(translations);
 
@@ -37,29 +49,63 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
     resolver: yupResolver(schema),
   });
 
-  const phoneIsInvalid = !values.watch('phone') || !!values.getFieldState('phone').error;
-  const formIsInvalid = !values.formState.isValid || !isConfirmed;
+  const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
+  const formIsValid = values.formState.isValid && isCodeSuccess;
+  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess;
 
-  const sendSMS = () => {
-    const phone = values.watch('phone');
-    const code = onSendSMS(phone);
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
-    setSMS(code);
+  const clearTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
-  const blurSMSField = () => {
-    const code = values.watch('sms');
+  useEffect(() => clearTimer, []);
 
-    if (!code.trim()) values.setError('sms', { message: t('smsEmpty') });
-    else if (code !== SMS) values.setError('sms', { message: t('smsError') });
-    else values.clearErrors('sms');
+  useEffect(() => {
+    if (seconds && !intervalRef.current) {
+      intervalRef.current = setInterval(() => {
+        setSeconds(sec => sec && sec - 1);
+      }, 1000);
+    }
+    if (seconds === 0) {
+      setSeconds(null);
+      clearTimer();
+    }
+  }, [seconds]);
 
-    const codeIsValid = !values.getFieldState('sms').error;
+  const sendEmail = async () => {
+    const email = values.getValues('email');
 
-    setIsConfirmed(codeIsValid);
+    try {
+      await onEmailSend(email);
+
+      setIsCodeSended(true);
+      setSeconds(30);
+    } catch (e) {
+      setIsCodeSended(false);
+      values.setError('email', { message: String(e) });
+    }
   };
 
-  const submit = (data: PasswordRecoveryDto) => onSubmit(data);
+  const checkCode = async (value: string) => {
+    if (value.length !== 4) return;
+
+    try {
+      await onCodeCheck(value);
+
+      setIsCodeSuccess(true);
+    } catch (e) {
+      setIsCodeSuccess(false);
+      values.setError('code', { message: String(e) });
+    }
+  };
+
+  const submit = (data: PasswordRecoveryDto) => {
+    onSubmit(data);
+    setSeconds(0);
+    setIsCodeSended(false);
+    setIsCodeSuccess(false);
+  };
 
   return (
     <AuthCard>
@@ -72,24 +118,62 @@ export function SigninPassRecovery({ defaultValues, onBack, onSendSMS, onSubmit 
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFPhoneInput name='phone' label={t('phone')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={phoneIsInvalid}>
-              {t('getCode')}
-            </Button>
+            <HFTextField
+              type='email'
+              name='email'
+              label={t('email')}
+              disabled={isCodeSuccess}
+              endAdornment={
+                <>
+                  <Divider sx={sx.divider} orientation='vertical' />
+
+                  {codeIsSending ? (
+                    <CircularProgress />
+                  ) : (
+                    <IconButton disabled={sendingIsDisabled} onClick={sendEmail}>
+                      <SendIcon />
+                    </IconButton>
+                  )}
+                </>
+              }
+            />
           </Box>
 
-          {SMS && <HFTextField sx={sx.field} name='sms' label={t('sms')} onBlur={blurSMSField} />}
+          {isCodeSended && !isCodeSuccess && (
+            <>
+              <HFTextField
+                sx={{ ...sx.field, ...sx.codeField }}
+                name='code'
+                label={t('code')}
+                onChange={e => checkCode(e.target.value)}
+              />
 
-          <HFTextField
-            sx={sx.field}
-            type='password'
-            name='password'
-            label={t('password')}
-            helperText={t('passwordHelper')}
-          />
-          <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              {!!seconds && (
+                <Box sx={sx.timer}>
+                  <Typography variant='body2'>{t('codeHelper')}</Typography>
+                  <Typography variant='body2'>
+                    {seconds} {t('sec')}
+                  </Typography>
+                </Box>
+              )}
+            </>
+          )}
 
-          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
+          {isCodeSended && isCodeSuccess && (
+            <>
+              <HFTextField
+                sx={sx.field}
+                type='password'
+                name='password'
+                label={t('password')}
+                helperText={t('passwordHelper')}
+              />
+
+              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+            </>
+          )}
+
+          <Button type='submit' disabled={!formIsValid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>

@@ -4,8 +4,7 @@ import { Path } from 'constants/routes';
 import { ICurrentUser } from 'types/entities/ICurrentUser';
 import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
-import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
 
 export const currentUserApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -39,21 +38,12 @@ export const currentUserApi = commonApi.injectEndpoints({
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
       }),
-      sendChangePhoneCode: builder.mutation<number, SendCodeDto>({
-        query(phone) {
+      updateCurrentUserEmail: builder.mutation<string, ChangeEmailDto>({
+        query(body) {
           return {
             method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.SEND_CODE}`,
-            body: phone,
-          };
-        },
-      }),
-      updateCurrentUserPhone: builder.mutation<number, ChangePhoneDto>({
-        query(dto) {
-          return {
-            method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_PHONE}`,
-            body: dto,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_EMAIL}`,
+            body,
           };
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
@@ -64,6 +54,16 @@ export const currentUserApi = commonApi.injectEndpoints({
             method: 'PUT',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_CITY}`,
             body: { cityId },
+          };
+        },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+      }),
+      updateCurrentAvatar: builder.mutation<void, number | null>({
+        query(avatarId) {
+          return {
+            method: 'PUT',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_AVATAR}`,
+            body: { avatarId },
           };
         },
         invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
@@ -88,6 +88,6 @@ export const {
   useChangeCurrentCityMutation,
   useChangeMainAddressMutation,
   useUpdateCurrentUserPasswordMutation,
-  useSendChangePhoneCodeMutation,
-  useUpdateCurrentUserPhoneMutation,
+  useUpdateCurrentAvatarMutation,
+  useUpdateCurrentUserEmailMutation,
 } = currentUserApi;

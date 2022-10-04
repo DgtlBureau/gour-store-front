@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Translator } from 'utils/Translator';
 import translations from './PasswordChangeModal.i18n.json';
 import { getSchema } from './validation';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -53,7 +52,6 @@ export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPa
       isOpen={isOpen}
       onClose={onClose}
       title={t('title')}
-      description={t('subTitle')}
       formId='passwordChangeForm'
       acceptIsDisabled={formIsInvalid}
     >

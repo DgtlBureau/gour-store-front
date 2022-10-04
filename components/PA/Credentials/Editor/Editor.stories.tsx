@@ -13,13 +13,13 @@ const Template: ComponentStory<typeof PACredentialsEditor> = (args: PACredential
 );
 export const DefaultPACredentialsEditor = Template.bind({});
 const props: Partial<PACredentialsEditorProps> = {
-  user: {
+  defaultValues: {
     firstName: 'Михаил',
     lastName: 'Барулин',
     email: 'test@test.com',
     referralCode: '123456789',
+    phone: '89218650538',
   },
-  phone: '89218650538',
 };
 
 DefaultPACredentialsEditor.args = props;

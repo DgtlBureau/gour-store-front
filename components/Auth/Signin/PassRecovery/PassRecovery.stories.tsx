@@ -14,7 +14,6 @@ const Template: ComponentStory<typeof SigninPassRecovery> = function (args: Sign
 export const DefaultSigninPassRecovery = Template.bind({});
 
 const props: Partial<SigninPassRecoveryProps> = {
-  onSendSMS: phone => '1234',
   onSubmit: data => console.log(data),
 };
 

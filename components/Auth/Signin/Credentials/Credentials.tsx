@@ -15,7 +15,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { HFTextField } from 'components/HookForm/HFTextField';
 
 import sx from './Credentials.styles';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 
 export type SigninCredentialsProps = {
   defaultValues?: SignInDto;
