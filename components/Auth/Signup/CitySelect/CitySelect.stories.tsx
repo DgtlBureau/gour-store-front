@@ -17,13 +17,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCitySelect> = function (args: SignupCitySelectProps) {
-  return (
-    <Box sx={boxSx}>
-      <SignupCitySelect {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SignupCitySelect> = args => (
+  <Box sx={boxSx}>
+    <SignupCitySelect {...args} />
+  </Box>
+);
 export const DefaultSignupCitySelect = Template.bind({});
 
 const props: Partial<SignupCitySelectProps> = {
@@ -37,7 +35,6 @@ const props: Partial<SignupCitySelectProps> = {
       value: 'petersburg',
     },
   ],
-  onSubmit: city => console.log(city),
 };
 
 DefaultSignupCitySelect.args = props;

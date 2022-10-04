@@ -10,9 +10,7 @@ export default {
   component: CardSlider,
 } as ComponentMeta<typeof CardSlider>;
 
-const Template: ComponentStory<typeof CardSlider> = function (args) {
-  return <CardSlider {...args} />;
-};
+const Template: ComponentStory<typeof CardSlider> = args => <CardSlider {...args} />;
 
 export const DefaultState = Template.bind({});
 

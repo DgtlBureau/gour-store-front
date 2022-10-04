@@ -27,6 +27,7 @@ import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
+import { getErrorMessage } from 'utils/errorUtil';
 
 const sx = {
   title: {
@@ -151,8 +152,10 @@ export function Order() {
 
       goToOrders();
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка оформления заказа', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
       setIsSubmitError(true);
     }
   };

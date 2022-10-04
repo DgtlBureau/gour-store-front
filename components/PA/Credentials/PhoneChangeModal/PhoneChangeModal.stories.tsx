@@ -8,9 +8,7 @@ export default {
   title: 'PA/Credentials/PhoneChangeModal',
 } as Meta;
 
-const Template: ComponentStory<typeof PAPhoneChangeModal> = function (args: PAPhoneChangeModalProps) {
-  return <PAPhoneChangeModal {...args} />;
-};
+const Template: ComponentStory<typeof PAPhoneChangeModal> = args => <PAPhoneChangeModal {...args} />;
 export const DefaultPAPhoneChangeModal = Template.bind({});
 
 const props: Partial<PAPhoneChangeModalProps> = {

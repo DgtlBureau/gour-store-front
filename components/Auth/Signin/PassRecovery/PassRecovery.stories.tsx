@@ -8,13 +8,9 @@ export default {
   title: 'Signin/PassRecovery',
 } as Meta;
 
-const Template: ComponentStory<typeof SigninPassRecovery> = function (args: SigninPassRecoveryProps) {
-  return <SigninPassRecovery {...args} />;
-};
+const Template: ComponentStory<typeof SigninPassRecovery> = args => <SigninPassRecovery {...args} />;
 export const DefaultSigninPassRecovery = Template.bind({});
 
-const props: Partial<SigninPassRecoveryProps> = {
-  onSubmit: data => console.log(data),
-};
+const props: Partial<SigninPassRecoveryProps> = {};
 
 DefaultSigninPassRecovery.args = props;

@@ -8,9 +8,7 @@ export default {
   title: 'Item',
 } as Meta;
 
-const Template: ComponentStory<typeof Stepper> = function (args) {
-  return <Stepper {...args} />;
-};
+const Template: ComponentStory<typeof Stepper> = args => <Stepper {...args} />;
 
 export const DefaultItem = Template.bind({});
 const props = {

@@ -8,7 +8,7 @@ export default {
   title: 'Product/Actions',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductActions> = function (args: ProductActionsProps) {
+const Template: ComponentStory<typeof ProductActions> = args => {
   const [count, setCount] = useState(0);
 
   const handleAddToCart = () => {

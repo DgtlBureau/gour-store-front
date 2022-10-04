@@ -21,6 +21,9 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { useAppNavigation } from 'components/Navigation';
 import translations from './Promotion.i18n.json';
+import { getErrorMessage } from 'utils/errorUtil';
+import { dispatchNotification } from 'packages/EventBus';
+import { NotificationType } from 'types/entities/Notification';
 
 import { sx } from './Promotion.styles';
 
@@ -50,19 +53,17 @@ export default function Promotion() {
 
   if (!promotionId) return goToHome();
 
-  const elect = async (id: number, isElect: boolean) => {
-    if (isElect) {
-      try {
+  const electProduct = async (id: number, isElect: boolean) => {
+    try {
+      if (isElect) {
         await removeFavorite(id);
-      } catch (error) {
-        console.log(error);
+      } else {
+        await addFavorite(id);
       }
-    } else {
-      try {
-        await addFavorite({ productId: id });
-      } catch (error) {
-        console.log(error);
-      }
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -104,7 +105,7 @@ export default function Promotion() {
                 discount={promotion?.discount}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
-                onElect={elect}
+                onElect={electProduct}
                 onDetail={goToProductPage}
                 favoritesList={favoriteProducts}
               />

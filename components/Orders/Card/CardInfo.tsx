@@ -67,7 +67,7 @@ export function OrderCardInfo({
         </Typography>
       </Stack>
 
-      {promotions.map((promotion, i) => (
+      {promotions.map(promotion => (
         <Stack key={promotion.title} direction='row' alignItems='center' justifyContent='space-between'>
           <Typography variant='body2' sx={sx.price}>
             {promotion.title}

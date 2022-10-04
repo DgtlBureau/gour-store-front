@@ -60,7 +60,6 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
-        language={language}
         basketProductCount={count}
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}

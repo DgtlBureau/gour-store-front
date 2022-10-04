@@ -8,9 +8,7 @@ export default {
   title: 'Signin/Credentials',
 } as Meta;
 
-const Template: ComponentStory<typeof SigninCredentials> = function (args: SigninCredentialsProps) {
-  return <SigninCredentials {...args} />;
-};
+const Template: ComponentStory<typeof SigninCredentials> = args => <SigninCredentials {...args} />;
 export const DefaultSigninCredentials = Template.bind({});
 
 const props: Partial<SigninCredentialsProps> = {};

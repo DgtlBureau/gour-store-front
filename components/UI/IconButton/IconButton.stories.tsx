@@ -10,9 +10,7 @@ export default {
   component: IconButton,
 } as ComponentMeta<typeof IconButton>;
 
-const Template: ComponentStory<typeof IconButton> = function (args) {
-  return <IconButton {...args} />;
-};
+const Template: ComponentStory<typeof IconButton> = args => <IconButton {...args} />;
 
 export const DefaultState = Template.bind({});
 

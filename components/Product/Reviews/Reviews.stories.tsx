@@ -9,9 +9,7 @@ export default {
   title: 'Product/Reviews',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductReviews> = function (args: ProductReviewsProps) {
-  return <ProductReviews {...args} />;
-};
+const Template: ComponentStory<typeof ProductReviews> = args => <ProductReviews {...args} />;
 export const DefaultProductInformation = Template.bind({});
 
 const props: Partial<ProductReviewsProps> = {

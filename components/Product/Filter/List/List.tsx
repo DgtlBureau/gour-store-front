@@ -26,6 +26,7 @@ export function ProductFilterList({
   sx,
   onReverse,
   onCategoryChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onCharacteristicChange,
 }: CatalogFilterProps) {
   // const features = Object.keys(CHARACTERISTICS).filter(

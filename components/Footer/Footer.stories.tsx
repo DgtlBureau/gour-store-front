@@ -8,9 +8,7 @@ export default {
   title: 'Footer',
 } as Meta;
 
-const Template: ComponentStory<typeof Footer> = function (args: FooterProps) {
-  return <Footer {...args} />;
-};
+const Template: ComponentStory<typeof Footer> = args => <Footer {...args} />;
 export const DefaultFooter = Template.bind({});
 
 const props: Partial<FooterProps> = {

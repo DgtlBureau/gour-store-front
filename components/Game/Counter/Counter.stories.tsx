@@ -8,9 +8,7 @@ export default {
   title: 'Game/Counter',
 } as Meta;
 
-const Template: ComponentStory<typeof GameCounter> = function (args: GameCounterProps) {
-  return <GameCounter {...args} />;
-};
+const Template: ComponentStory<typeof GameCounter> = args => <GameCounter {...args} />;
 export const DefaultGameCounter = Template.bind({});
 
 const props: Partial<GameCounterProps> = {

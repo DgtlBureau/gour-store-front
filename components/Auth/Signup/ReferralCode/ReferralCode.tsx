@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import translations from './ReferralCode.i18n.json';
-import { getSchema, Translator } from './validation';
+import { getSchema } from './validation';
 import { AuthCard } from 'components/Auth/Card/Card';
 import { Button } from 'components/UI/Button/Button';
 import sx from './ReferralCode.styles';
@@ -20,7 +20,7 @@ export type SignupReferralCodeProps = {
 export function SignupReferralCode({ defaultValues, onBack, onSubmit }: SignupReferralCodeProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema();
 
   const values = useForm<ReferralCodeDto>({
     defaultValues,

@@ -11,7 +11,7 @@ import { Box } from '../../UI/Box/Box';
 import { Typography } from '../../UI/Typography/Typography';
 import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
-import { HFTextField, HFTextFieldProps } from '../../HookForm/HFTextField';
+import { HFTextField } from '../../HookForm/HFTextField';
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { HFSelect } from '../../HookForm/HFSelect';
 import { OrderFormDocket } from './FormDocket';

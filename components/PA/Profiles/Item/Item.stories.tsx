@@ -8,9 +8,7 @@ export default {
   title: 'PA/Profiles/Item',
 } as Meta;
 
-const Template: ComponentStory<typeof PAProfilesItem> = function (args: PAProfilesItemProps) {
-  return <PAProfilesItem {...args} />;
-};
+const Template: ComponentStory<typeof PAProfilesItem> = args => <PAProfilesItem {...args} />;
 export const DefaultItem = Template.bind({});
 
 const props: Partial<PAProfilesItemProps> = {};

@@ -3,7 +3,6 @@ import { Paper, Grid, Rating, SxProps } from '@mui/material';
 
 import StarIcon from '@mui/icons-material/Star';
 
-import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from 'types/entities/Notification';
 import type { CommentDto } from 'types/dto/comment.dto';
 import { IProductGrade } from 'types/entities/IProductGrade';
@@ -15,6 +14,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { TextField } from 'components/UI/TextField/TextField';
 import { defaultTheme as theme } from 'themes';
 import { blockSx } from './CreateBlock.styles';
+import { getErrorMessage } from 'utils/errorUtil';
+import { dispatchNotification } from 'packages/EventBus';
 
 const initComment: CommentDto = { value: 0, comment: '' };
 
@@ -30,19 +31,19 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
 
   const [formData, setFormData] = useState<CommentDto>(initComment);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       await onCreate(formData);
+
       setFormData(initComment);
+
       dispatchNotification('Отзыв отправлен на модерацию.\nСкоро мы его опубликуем.', { title: 'Спасибо!' });
     } catch (error) {
-      console.error('[Create Comment]:', error);
-      dispatchNotification('Пожалуйста, повторите позже.', {
-        title: 'Ошибка создания комментария.',
-        type: NotificationType.DANGER,
-      });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -52,7 +53,7 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
 
   return (
     <Paper sx={{ ...blockSx.container, ...sx }}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={submit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <Typography variant='h5' sx={blockSx.title}>

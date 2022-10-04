@@ -14,7 +14,5 @@ const DEFAULT_LINK = {
   path: 'https://sib.fm/storage/article/March2021/IDsV2DD5Qhwj5kWTpfYG.jpeg',
 };
 
-const Template: ComponentStory<typeof InfoBlock> = function () {
-  return <InfoBlock text={DEFAULT_TEXT} link={DEFAULT_LINK} />;
-};
+const Template: ComponentStory<typeof InfoBlock> = () => <InfoBlock text={DEFAULT_TEXT} link={DEFAULT_LINK} />;
 export const DefaultInfoBlock = Template.bind({});

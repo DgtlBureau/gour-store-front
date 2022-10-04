@@ -15,13 +15,13 @@ export function Game() {
   const closeRulesModal = () => setRulesModalIsOpen(false);
 
   return (
-    // <PrivateLayout>
-    <GameLayout currency={currency} language={language}>
-      <GameMain onHelpClick={openRulesModal} />
+    <PrivateLayout>
+      <GameLayout currency={currency} language={language}>
+        <GameMain onHelpClick={openRulesModal} />
 
-      <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
-    </GameLayout>
-    // </PrivateLayout>
+        <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
+      </GameLayout>
+    </PrivateLayout>
   );
 }
 

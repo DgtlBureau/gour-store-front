@@ -5,7 +5,6 @@ import { SxProps } from '@mui/material';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import translations from './Copyright.i18n.json';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 
 const copyrightSx = {
   wrapper: {

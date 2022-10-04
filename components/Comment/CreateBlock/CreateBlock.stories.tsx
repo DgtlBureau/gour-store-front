@@ -8,9 +8,7 @@ export default {
   title: 'Comment/CreateBlock',
 } as Meta;
 
-const Template: ComponentStory<typeof CommentCreateBlock> = function (args: CommentCreateBlockProps) {
-  return <CommentCreateBlock {...args} />;
-};
+const Template: ComponentStory<typeof CommentCreateBlock> = args => <CommentCreateBlock {...args} />;
 
 export const PositiveCommentCreateBlock = Template.bind({});
 PositiveCommentCreateBlock.args = {} as Partial<CommentCreateBlockProps>;

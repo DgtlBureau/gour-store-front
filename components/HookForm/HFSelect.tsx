@@ -28,6 +28,7 @@ export function HFSelect({ name, defaultValue, sx, ...props }: Props) {
         name={name}
         control={control}
         defaultValue={defaultValue || ''}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         render={({ field: { ref, onChange, ...rest } }) => (
           <Select
             {...rest}

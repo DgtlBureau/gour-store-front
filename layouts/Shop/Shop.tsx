@@ -60,7 +60,6 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
-        language={language}
         basketProductCount={count}
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}

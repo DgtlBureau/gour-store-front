@@ -9,17 +9,15 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'helpers/currencyHelper';
 import regexp from 'constants/regex';
 
+import Loader from 'components/UI/Loader/Loader';
 import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { HFTextField } from 'components/HookForm/HFTextField';
-import { Button } from 'components/UI/Button/Button';
-
 import { getValidationSchema } from './validations';
 import translations from './AddModal.i18n.json';
 
 import { sx } from './AddModal.styles';
-import Loader from 'components/UI/Loader/Loader';
 
 type Props = {
   isOpened: boolean;
@@ -51,10 +49,20 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
 
   const showPrice = !isFetching && !isError && !!debouncedValue;
 
+  const formId = 'add-coins-modal';
+
   return (
-    <Modal title='Покупка чизкоинов' isOpen={isOpened} onClose={onClose}>
+    <Modal
+      title='Покупка чизкоинов'
+      isOpen={isOpened}
+      acceptText='Пополнить'
+      acceptIsDisabled={isFetching}
+      closeIsDisabled={isFetching}
+      formId={formId}
+      onClose={onClose}
+    >
       <FormProvider {...values}>
-        <form onSubmit={values.handleSubmit(onSubmit)}>
+        <form id={formId} onSubmit={values.handleSubmit(onSubmit)}>
           <HFTextField
             name='count'
             label='Баланс чизкоинов'
@@ -83,16 +91,6 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
               </Typography>
             </Typography>
           )}
-
-          <Box sx={sx.buttonGroup}>
-            <Button sx={sx.button} type='submit' disabled={isFetching}>
-              Пополнить
-            </Button>
-
-            <Button sx={sx.button} variant='outlined' size='small' onClick={onClose} disabled={isFetching}>
-              Отменить
-            </Button>
-          </Box>
         </form>
       </FormProvider>
     </Modal>

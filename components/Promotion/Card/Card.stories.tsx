@@ -9,9 +9,7 @@ export default {
   component: PromotionCard,
 } as ComponentMeta<typeof PromotionCard>;
 
-const Template: ComponentStory<typeof PromotionCard> = function (args) {
-  return <PromotionCard {...args} />;
-};
+const Template: ComponentStory<typeof PromotionCard> = args => <PromotionCard {...args} />;
 
 export const DefaultState = Template.bind({});
 DefaultState.args = {

@@ -9,9 +9,7 @@ export default {
   component: CartInfo,
 } as ComponentMeta<typeof CartInfo>;
 
-const Template: ComponentStory<typeof CartInfo> = function (args) {
-  return <CartInfo {...args} />;
-};
+const Template: ComponentStory<typeof CartInfo> = args => <CartInfo {...args} />;
 
 export const DefaultState = Template.bind({});
 

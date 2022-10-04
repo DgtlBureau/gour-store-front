@@ -9,7 +9,7 @@ import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
+// import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
 
 const sx = {
   title: {
@@ -36,6 +36,7 @@ export function ProductFilterModal({
   filters,
   language,
   onCategoryChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onCharacteristicChange,
   onClose,
 }: ProductFilterModalProps) {

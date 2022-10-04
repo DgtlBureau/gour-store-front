@@ -17,13 +17,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupReferralCode> = function (args: SignupReferralCodeProps) {
-  return (
-    <Box sx={boxSx}>
-      <SignupReferralCode {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SignupReferralCode> = args => (
+  <Box sx={boxSx}>
+    <SignupReferralCode {...args} />
+  </Box>
+);
 export const DefaultSignupGreeting = Template.bind({});
 
 const props: Partial<SignupReferralCodeProps> = {};

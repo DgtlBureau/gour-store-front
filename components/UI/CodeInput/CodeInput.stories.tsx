@@ -8,9 +8,7 @@ export default {
   title: 'CodeInput',
 } as Meta;
 
-const Template: ComponentStory<typeof CodeInput> = function (args) {
-  return <CodeInput {...args} />;
-};
+const Template: ComponentStory<typeof CodeInput> = args => <CodeInput {...args} />;
 export const DefaultCodeInput = Template.bind({});
 
 const props = {};

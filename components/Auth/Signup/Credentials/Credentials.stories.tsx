@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { Box } from 'components/UI/Box/Box';
 import { SignupCredentials, SignupCredentialsProps } from './Credentials';
 
@@ -18,13 +17,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCredentials> = function (args: SignupCredentialsProps) {
-  return (
-    <Box sx={boxSx}>
-      <SignupCredentials {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SignupCredentials> = args => (
+  <Box sx={boxSx}>
+    <SignupCredentials {...args} />
+  </Box>
+);
 export const DefaultSignupCredentials = Template.bind({});
 
 const props: Partial<SignupCredentialsProps> = {
@@ -37,7 +34,6 @@ const props: Partial<SignupCredentialsProps> = {
     password: '',
     passwordConfirm: '',
   },
-  onSubmit: (data: SignUpFormDto) => console.log(data),
 };
 
 DefaultSignupCredentials.args = props;

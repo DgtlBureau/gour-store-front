@@ -8,9 +8,7 @@ export default {
   title: 'UI/Modal',
 } as Meta;
 
-const Template: ComponentStory<typeof Modal> = function (args: ModalProps) {
-  return <Modal {...args} />;
-};
+const Template: ComponentStory<typeof Modal> = args => <Modal {...args} />;
 export const DefaultModal = Template.bind({});
 
 const props: Partial<ModalProps> = {

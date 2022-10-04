@@ -8,9 +8,7 @@ export default {
   title: 'PA/Main/AddressCard',
 } as Meta;
 
-const Template: ComponentStory<typeof PAAddressCard> = function (args: PAAddressCardProps) {
-  return <PAAddressCard {...args} />;
-};
+const Template: ComponentStory<typeof PAAddressCard> = args => <PAAddressCard {...args} />;
 export const DefaultPAAddressCard = Template.bind({});
 
 const props: Partial<PAAddressCardProps> = {
