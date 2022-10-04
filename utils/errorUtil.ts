@@ -1,31 +1,27 @@
 import { ErrorWithMessage, ErrorWithDataMessage, ErrorData } from '../types/entities/ErrorWithMessage';
 
-export function checkErrorMessage(error: unknown): error is ErrorWithMessage {
+function checkErrorMessage(error: unknown): error is ErrorWithMessage {
   const isObject = typeof error === 'object';
   const isNull = error === null;
 
   const withMessage = isObject && !isNull && 'message' in error;
-  const isStringMessage = typeof (error as ErrorData).message === 'string';
-
-  const withStringMessage = withMessage && isStringMessage;
+  const withStringMessage = withMessage && typeof (error as ErrorData).message === 'string';
 
   return withStringMessage;
 }
 
-export function checkErrorDataMessage(error: unknown): error is ErrorWithDataMessage {
+function checkErrorDataMessage(error: unknown): error is ErrorWithDataMessage {
   const isObject = typeof error === 'object';
   const isNull = error === null;
 
   const withData = isObject && !isNull && 'data' in error;
   const withDataMessage = withData && 'message' in (error as { data: ErrorData }).data;
-  const isStringDataMessage = typeof (error as { data: ErrorData }).data.message === 'string';
-
-  const withStringDataMessage = withDataMessage && isStringDataMessage;
+  const withStringDataMessage = withDataMessage && typeof (error as { data: ErrorData }).data.message === 'string';
 
   return withStringDataMessage;
 }
 
-export function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
+function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
   const isErrorWithMessage = checkErrorMessage(maybeError);
 
   if (isErrorWithMessage) return maybeError;
