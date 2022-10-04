@@ -1,8 +1,7 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { IWalletTransaction } from './IWalletTransaction';
 
-export interface IWallet extends Omit<IBaseEntity, 'id'> {
-  uuid: string;
+export interface IWallet extends Omit<IBase, 'id'> {
   value: string;
   changes: IWalletTransaction[];
 }

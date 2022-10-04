@@ -1,9 +1,9 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { ICity } from './ICity';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 
-export interface ICurrentUser extends IBaseEntity {
+export interface ICurrentUser extends IBase {
   firstName: string;
   lastName: string;
   phone: string;

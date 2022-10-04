@@ -5,12 +5,12 @@ import ArrowsIcon from '@mui/icons-material/CompareArrows';
 
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { ICategoryNew } from 'types/entities/ICategory';
+import { ICategory } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
 export type CatalogFilterProps = {
-  categories: ICategoryNew[];
+  categories: ICategory[];
   filters: IFiltersCharacteristic;
   language: Language;
   sx?: SxProps;

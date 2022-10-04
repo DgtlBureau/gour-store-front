@@ -21,12 +21,13 @@ export type ImageSliderProps = {
     small: string;
     full: string;
   }[];
+  backgroundSrc?: string;
   sx?: SxProps;
 };
 
 const defaultImages = [{ full: defaultImage, small: defaultImage }];
 
-export function ImageSlider({ images, sx }: ImageSliderProps) {
+export function ImageSlider({ images, backgroundSrc, sx }: ImageSliderProps) {
   const [activeId, setActiveId] = useState(0);
 
   const [slider, setSlider] = useState<SwiperCore | null>(null);
@@ -34,6 +35,8 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
   const existImages = !images.length ? defaultImages : images;
 
   const screenWidth = window.screen.width;
+
+  const backgroundImage = `url('${backgroundSrc}')`;
 
   const slideTo = (i: number) => {
     setActiveId(i);
@@ -52,7 +55,7 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
         >
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>
-              <Box sx={{ ...sliderSx.slide, ...sliderSx.full }}>
+              <Box sx={{ ...sliderSx.slide, ...sliderSx.full, backgroundImage }}>
                 <Image src={image.full} layout='fill' objectFit='contain' alt='' />
               </Box>
             </SwiperSlide>
@@ -63,7 +66,10 @@ export function ImageSlider({ images, sx }: ImageSliderProps) {
       {existImages.length > 1 && (
         <Box sx={sliderSx.scroll}>
           {existImages.map((image, i) => (
-            <Box key={i} sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active) }}>
+            <Box
+              key={i}
+              sx={{ ...sliderSx.slide, ...sliderSx.small, ...(activeId === i && sliderSx.active), backgroundImage }}
+            >
               <Image
                 loader={({ src }) => src}
                 src={image?.small}

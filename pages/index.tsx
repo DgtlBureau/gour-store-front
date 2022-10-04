@@ -88,23 +88,22 @@ const Home: NextPage = () => {
     }
   };
 
+  const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
+
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
         {isLoading && <ProgressLinear />}
-
-        {!!promotions?.length && (
+        {!!filteredPromotions?.length && (
           <CardSlider
             title={t('promotions')}
-            cardsList={promotions
-              .filter(it => new Date(it.end) > NOW)
-              .map(promotion => (
-                <PromotionCard
-                  key={promotion.id}
-                  image={promotion.cardImage.small}
-                  onClickMore={() => goToPromotionPage(promotion.id)}
-                />
-              ))}
+            cardsList={filteredPromotions.map(promotion => (
+              <PromotionCard
+                key={promotion.id}
+                image={promotion.cardImage.small}
+                onClickMore={() => goToPromotionPage(promotion.id)}
+              />
+            ))}
           />
         )}
         {!!novelties?.length && (
@@ -113,6 +112,7 @@ const Home: NextPage = () => {
             products={novelties}
             favoritesList={favoriteProducts}
             basket={basket.products}
+            categories={categories}
             language={language}
             currency={currency}
             rows={1}
@@ -126,6 +126,7 @@ const Home: NextPage = () => {
 
         {!!products.length && (
           <ProductCatalog
+            withFilters
             title={t('catalog')}
             favoritesList={favoriteProducts}
             products={products}
@@ -164,7 +165,7 @@ const Home: NextPage = () => {
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography variant='body1' sx={{ marginTop: { xs: '20px', md: '40px' } }}>
+            <Typography variant='body1' sx={sx.pageInfoDescription}>
               {page.info?.description?.[language]}
             </Typography>
           </Box>

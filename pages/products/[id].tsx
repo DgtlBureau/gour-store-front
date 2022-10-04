@@ -6,6 +6,8 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { getProductBackground } from 'helpers/categoryHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
@@ -33,7 +35,6 @@ import { getErrorMessage } from 'utils/errorUtil';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 
 import sx from './Product.styles';
-import { ICategoryNew } from 'types/entities/ICategory';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -49,6 +50,7 @@ export default function Product() {
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+  const { data: categories = [] } = useGetCategoryListQuery();
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
 
@@ -149,7 +151,11 @@ export default function Product() {
             <Link href='/'>Вернуться на главную</Link>
 
             <Box sx={sx.top}>
-              <ImageSlider images={product.images} sx={sx.imageSlider} />
+              <ImageSlider
+                images={product.images}
+                backgroundSrc={categories && getProductBackground(categories, product.categories)}
+                sx={sx.imageSlider}
+              />
 
               <Box sx={sx.info}>
                 <Typography variant='h3' sx={sx.title}>

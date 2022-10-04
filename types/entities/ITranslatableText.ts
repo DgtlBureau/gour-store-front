@@ -1,6 +1,6 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
-export interface ITranslatableText extends IBaseEntity {
+export interface ITranslatableText extends IBase {
   ru: string;
   en: string;
 }
