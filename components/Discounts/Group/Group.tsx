@@ -47,7 +47,7 @@ export function DiscountsGroup({ title, subCategories, language }: Props) {
             </Typography>
           </Grid>
 
-          <Grid display='flex' sx={{ marginLeft: 'auto' }} justifyContent='space-between' item xs={6} md={9}>
+          <Grid display='flex' sx={sx.percentBlock} justifyContent='space-between' item xs={6} md={9}>
             {percents.map(percent => (
               <Box
                 key={percent}

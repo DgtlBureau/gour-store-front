@@ -6,6 +6,9 @@ export const sx = {
     color: 'text.secondary',
     wordBreak: 'break-word',
   },
+  percentBlock: {
+    marginLeft: 'auto',
+  },
   category: {
     width: '100%',
     marginBottom: {
