@@ -29,7 +29,7 @@ export function Profile() {
   const { data: currentUser } = useGetCurrentUserQuery();
 
   const [uploadImage] = useCreateImageMutation();
-  const [sendEmailCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
+  const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
   const [checkCode] = useCheckCodeMutation();
   const [updateCurrentUser] = useUpdateCurrentUserMutation();
   const [updateEmail] = useUpdateCurrentUserEmailMutation();
@@ -41,7 +41,7 @@ export function Profile() {
     lastName: currentUser?.lastName || '',
     email: currentUser?.email || '',
     phone: currentUser?.phone || '',
-    password: '1234567890',
+    password: '********',
     referralCode: currentUser?.referralCode?.code || '',
   };
 
@@ -53,17 +53,32 @@ export function Profile() {
 
   const sendEmail = async (email: string) => {
     try {
-      await sendEmailCode({ email }).unwrap();
+      await sendCode({ email }).unwrap();
 
-      dispatchNotification('Код отправлен');
+      dispatchNotification('Email код отправлен');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
+      return Promise.reject(message);
+    }
+  };
 
-      return false;
+  const checkEmailCode = async (code: string) => {
+    try {
+      const isApprove = await checkCode({ code: code.toString() }).unwrap();
+
+      // eslint-disable-next-line prefer-promise-reject-errors
+      if (!isApprove) return Promise.reject('Неверный код');
+
+      dispatchNotification('Код подтверждён');
+
+      return Promise.resolve();
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
     }
   };
 
@@ -78,28 +93,6 @@ export function Profile() {
       const message = getErrorMessage(error);
 
       dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  };
-
-  const checkEmailCode = async (code: string) => {
-    try {
-      const isApprove = await checkCode({ code }).unwrap();
-
-      if (!isApprove) {
-        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
-
-        return false;
-      }
-
-      dispatchNotification('Код подтверждён');
-
-      return true;
-    } catch (error) {
-      const message = getErrorMessage(error);
-
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
     }
   };
 

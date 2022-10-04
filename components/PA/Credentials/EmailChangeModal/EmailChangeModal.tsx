@@ -22,8 +22,8 @@ export type PAEmailChangeModalProps = {
   defaultValues?: ChangeEmailDto;
   codeIsSending?: boolean;
   onClose(): void;
-  onEmailSend(email: string): Promise<boolean>;
-  onCodeCheck: (code: string) => Promise<boolean>;
+  onEmailSend(email: string): Promise<void>;
+  onCodeCheck(code: string): Promise<void>;
   onSubmit(changeEmailData: ChangeEmailDto): void;
 };
 
@@ -36,7 +36,7 @@ export function PAEmailChangeModal({
   onCodeCheck,
   onSubmit,
 }: PAEmailChangeModalProps) {
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState<number | null>(null);
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
@@ -53,41 +53,55 @@ export function PAEmailChangeModal({
   const formId = 'emailChangeForm';
 
   const emailIsDirty = values.formState.dirtyFields.email;
-  const timerIsOn = seconds > 0;
   const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
   const formIsValid = values.formState.isValid && isCodeSuccess;
-  const sendingIsDisabled = timerIsOn || !emailIsValid || isCodeSuccess || !emailIsDirty;
+  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess || !emailIsDirty;
+
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const clearTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
+  useEffect(() => clearTimer, []);
 
   useEffect(() => {
-    if (seconds === 0) return;
-
-    const intervalId = setInterval(() => {
-      setSeconds(sec => sec - 1);
-    }, 1000);
-
-    // eslint-disable-next-line consistent-return
-    return () => clearInterval(intervalId);
+    if (seconds && !intervalRef.current) {
+      intervalRef.current = setInterval(() => {
+        setSeconds(sec => sec && sec - 1);
+      }, 1000);
+    }
+    if (seconds === 0) {
+      setSeconds(null);
+      clearTimer();
+    }
   }, [seconds]);
 
   const sendEmail = async () => {
-    const email = values.watch('email');
-    const isSended = await onEmailSend(email);
+    const email = values.getValues('email');
 
-    setIsCodeSended(isSended);
+    try {
+      await onEmailSend(email);
 
-    if (isSended) setSeconds(30);
-    else values.setError('email', { message: '' });
+      setIsCodeSended(true);
+      setSeconds(30);
+    } catch (e) {
+      setIsCodeSended(false);
+      values.setError('email', { message: String(e) });
+    }
   };
 
-  const checkCode = async () => {
-    const code = values.watch('code');
-    const isSuccess = await onCodeCheck(code);
+  const checkCode = async (value: string) => {
+    if (value.length !== 4) return;
 
-    setIsCodeSuccess(isSuccess);
-  };
+    try {
+      await onCodeCheck(value);
 
-  const changeCode = (value: string) => {
-    if (value.length === 4) checkCode();
+      setIsCodeSuccess(true);
+    } catch (e) {
+      setIsCodeSuccess(false);
+      values.setError('code', { message: String(e) });
+    }
   };
 
   const submit = (dto: ChangeEmailDto) => {
@@ -135,10 +149,10 @@ export function PAEmailChangeModal({
                   label={t('code')}
                   name='code'
                   sx={sx.codeField}
-                  onChange={event => changeCode(event.target.value)}
+                  onChange={e => checkCode(e.target.value)}
                 />
 
-                {timerIsOn && (
+                {!!seconds && (
                   <Box sx={sx.timer}>
                     <Typography variant='body2'>{t('codeHelper')}</Typography>
                     <Typography variant='body2'>

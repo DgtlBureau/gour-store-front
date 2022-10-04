@@ -63,35 +63,28 @@ export default function SignUp() {
 
       dispatchNotification('Email код отправлен');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
+      return Promise.reject(message);
     }
   };
 
   const checkEmailCode = async (code: string) => {
     try {
-      const isApprove = await checkCode({ code }).unwrap();
+      const isApprove = await checkCode({ code: code.toString() }).unwrap();
 
-      if (!isApprove) {
-        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
-
-        return false;
-      }
+      // eslint-disable-next-line prefer-promise-reject-errors
+      if (!isApprove) return Promise.reject('Неверный код');
 
       dispatchNotification('Код подтверждён');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
+      return Promise.reject(message);
     }
   };
 

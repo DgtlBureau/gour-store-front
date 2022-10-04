@@ -39,13 +39,11 @@ export default function SignIn() {
 
       dispatchNotification('Email код отправлен');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
+      return Promise.reject(message);
     }
   };
 
@@ -53,21 +51,16 @@ export default function SignIn() {
     try {
       const isApprove = await checkCode({ code: code.toString() }).unwrap();
 
-      if (!isApprove) {
-        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
-
-        return false;
-      }
+      // eslint-disable-next-line prefer-promise-reject-errors
+      if (!isApprove) return Promise.reject('Неверный код');
 
       dispatchNotification('Код подтверждён');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
       const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
+      return Promise.reject(message);
     }
   };
 
