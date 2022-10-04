@@ -67,10 +67,7 @@ export function Profile() {
 
   const checkEmailCode = async (code: string) => {
     try {
-      const isApprove = await checkCode({ code: code.toString() }).unwrap();
-
-      // eslint-disable-next-line prefer-promise-reject-errors
-      if (!isApprove) return Promise.reject('Неверный код');
+      await checkCode({ code }).unwrap();
 
       dispatchNotification('Код подтверждён');
 

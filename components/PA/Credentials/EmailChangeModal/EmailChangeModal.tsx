@@ -104,12 +104,21 @@ export function PAEmailChangeModal({
     }
   };
 
-  const submit = (dto: ChangeEmailDto) => {
-    onSubmit(dto);
-    setSeconds(0);
+  const resetStates = () => {
+    setSeconds(null);
     setIsCodeSended(false);
     setIsCodeSuccess(false);
-    values.resetField('email', { defaultValue: dto.email });
+    values.reset(defaultValues);
+  };
+
+  const closeModal = () => {
+    resetStates();
+    onClose();
+  };
+
+  const submit = (dto: ChangeEmailDto) => {
+    onSubmit(dto);
+    resetStates();
   };
 
   return (
@@ -119,7 +128,7 @@ export function PAEmailChangeModal({
       description={t('description')}
       formId={formId}
       acceptIsDisabled={!formIsValid}
-      onClose={onClose}
+      onClose={closeModal}
     >
       <Box sx={sx.body}>
         <FormProvider {...values}>
