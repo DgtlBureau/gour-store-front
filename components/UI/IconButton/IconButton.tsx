@@ -1,6 +1,7 @@
 import React, { ElementType, ReactNode } from 'react';
-import MUIIconButton from '@mui/material/IconButton';
+
 import { SxProps } from '@mui/material';
+import MUIIconButton from '@mui/material/IconButton';
 
 type Props = {
   size?: 'small' | 'medium' | 'large' | undefined;

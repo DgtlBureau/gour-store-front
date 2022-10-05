@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CircularProgress, Divider } from '@mui/material';
 
-import SendIcon from '@mui/icons-material/Send';
-
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
-import translations from './PassRecovery.i18n.json';
-import { getSchema } from './validation';
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField';
+import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { Typography } from 'components/UI/Typography/Typography';
-import { HFTextField } from 'components/HookForm/HFTextField';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { HFPassField } from 'components/HookForm/HFPassField';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import SendIcon from '@mui/icons-material/Send';
+
+import translations from './PassRecovery.i18n.json';
 import sx from './PassRecovery.styles';
+import { getSchema } from './validation';
 
 export type SigninPassRecoveryProps = {
   defaultValues?: PasswordRecoveryDto;

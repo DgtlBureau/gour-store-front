@@ -1,45 +1,50 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
+
 import { Divider, Grid } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import {
-  addBasketProduct,
-  selectedProductCount,
-  selectedProductSum,
-  selectedProductWeight,
-  selectedProductDiscount,
-  selectProductsInOrder,
-  subtractBasketProduct,
-  removeProduct,
-  selectProductsIdInOrder,
-} from 'store/slices/orderSlice';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
-import { useAppNavigation } from 'components/Navigation';
-import { Button } from 'components/UI/Button/Button';
-import { CartInfo } from 'components/Cart/Info/Info';
+import {
+  addBasketProduct,
+  removeProduct,
+  selectProductsIdInOrder,
+  selectProductsInOrder,
+  selectedProductCount,
+  selectedProductDiscount,
+  selectedProductSum,
+  selectedProductWeight,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
+
 import { CartCard } from 'components/Cart/Card/Card';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
-import { Typography } from 'components/UI/Typography/Typography';
-import { InfoBlock } from 'components/UI/Info/Block/Block';
-import translation from './Basket.i18n.json';
-import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from 'types/entities/Notification';
-import { IProduct } from 'types/entities/IProduct';
+import { CartInfo } from 'components/Cart/Info/Info';
+import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { Button } from 'components/UI/Button/Button';
+import { InfoBlock } from 'components/UI/Info/Block/Block';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
+
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import translation from './Basket.i18n.json';
 import sx from './Basket.styles';
-import { getProductBackground } from 'helpers/categoryHelper';
 
 export function Basket() {
   const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
@@ -78,7 +83,7 @@ export function Basket() {
       if (isElect) {
         await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);

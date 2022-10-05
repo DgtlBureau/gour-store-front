@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { CommentCreateBlock, CommentCreateBlockProps } from './CreateBlock';
@@ -8,9 +9,7 @@ export default {
   title: 'Comment/CreateBlock',
 } as Meta;
 
-const Template: ComponentStory<typeof CommentCreateBlock> = function (args: CommentCreateBlockProps) {
-  return <CommentCreateBlock {...args} />;
-};
+const Template: ComponentStory<typeof CommentCreateBlock> = args => <CommentCreateBlock {...args} />;
 
 export const PositiveCommentCreateBlock = Template.bind({});
 PositiveCommentCreateBlock.args = {} as Partial<CommentCreateBlockProps>;

@@ -1,18 +1,16 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { CardSlider } from './CardSlider';
 import { PromotionCard } from '../Promotion/Card/Card';
+import { CardSlider } from './CardSlider';
 
 export default {
   title: 'CardSlider',
   component: CardSlider,
 } as ComponentMeta<typeof CardSlider>;
 
-const Template: ComponentStory<typeof CardSlider> = function (args) {
-  return <CardSlider {...args} />;
-};
+const Template: ComponentStory<typeof CardSlider> = args => <CardSlider {...args} />;
 
 export const DefaultState = Template.bind({});
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { ProductActions, ProductActionsProps } from './Actions';
 
 export default {
@@ -8,7 +9,7 @@ export default {
   title: 'Product/Actions',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductActions> = function (args: ProductActionsProps) {
+const Template: ComponentStory<typeof ProductActions> = args => {
   const [count, setCount] = useState(0);
 
   const handleAddToCart = () => {

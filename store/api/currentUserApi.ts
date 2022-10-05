@@ -1,10 +1,11 @@
-import { commonApi } from './commonApi';
+import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { ICurrentUser } from 'types/entities/ICurrentUser';
+
 import { Path } from 'constants/routes';
 
-import { ICurrentUser } from 'types/entities/ICurrentUser';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
-import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
-import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
+import { commonApi } from './commonApi';
 
 export const currentUserApi = commonApi.injectEndpoints({
   endpoints(builder) {

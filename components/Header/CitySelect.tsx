@@ -1,9 +1,12 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, Grid, Typography } from '@mui/material';
+
+import { Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { defaultTheme as theme } from 'themes';
 
 import translations from './CitySelect.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { defaultTheme as theme } from 'themes';
 
 const paperSx = {
   backgroundColor: theme.palette.background.default,

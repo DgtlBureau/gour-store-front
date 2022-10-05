@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { GameAlarm as Alarm } from '../Alarm/Alarm';
+import { GameCounter as Counter } from '../Counter/Counter';
 import { GameFrame as Frame } from '../Frame/Frame';
+import { GameLives as Lives } from '../Lives/Lives';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';
-import { GameCounter as Counter } from '../Counter/Counter';
-import { GameLives as Lives } from '../Lives/Lives';
-import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCore, GameEvent } from './Core';
-
 import sx from './Main.styles';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 
 const DEFAULT_ANGLES = {
   1: 0,

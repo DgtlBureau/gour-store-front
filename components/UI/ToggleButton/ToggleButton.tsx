@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+
 import { ToggleButton as MUIToggleButton, SxProps } from '@mui/material';
 
 const toggleSx = {
@@ -7,7 +8,6 @@ const toggleSx = {
   backgroundColor: 'secondary.main',
   color: 'text.muted',
   border: 'none',
-  'text-transform': 'none',
   '&:hover': {
     backgroundColor: 'secondary.main',
   },
@@ -30,7 +30,12 @@ export type ToggleButtonProps = {
 
 export function ToggleButton({ selected, children, sx, onChange }: ToggleButtonProps) {
   return (
-    <MUIToggleButton value='check' selected={selected} sx={{ ...toggleSx, ...sx }} onClick={onChange}>
+    <MUIToggleButton
+      value='check'
+      selected={selected}
+      sx={{ ...toggleSx, textTransform: 'none', ...sx }}
+      onClick={onChange}
+    >
       {children}
     </MUIToggleButton>
   );

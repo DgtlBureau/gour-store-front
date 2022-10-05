@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { GameAlarm, GameAlarmProps } from './Alarm';
 
 export default {

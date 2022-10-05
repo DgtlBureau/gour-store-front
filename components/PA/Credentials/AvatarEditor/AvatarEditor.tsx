@@ -1,14 +1,17 @@
-import React, { ChangeEvent } from 'react';
-import { Stack } from '@mui/material';
 import Image from 'next/image';
+import React, { ChangeEvent } from 'react';
 
-import translations from './AvatarEditor.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Stack } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { Box } from 'components/UI/Box/Box';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import noImage from 'assets/no-image.svg';
+
+import translations from './AvatarEditor.i18n.json';
 
 const sx = {
   image: {

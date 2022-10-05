@@ -1,5 +1,6 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
+
 import { SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';

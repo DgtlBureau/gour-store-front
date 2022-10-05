@@ -1,15 +1,18 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { NavigationProvider } from 'components/Navigation';
 import { ToastContainer } from 'react-toastify';
-import Notifications from 'components/Notifications/Notifications';
-import { persistor, store } from 'store/store';
-import { defaultTheme } from '../themes';
-
 import 'react-toastify/dist/ReactToastify.css';
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
+
+import { persistor, store } from 'store/store';
+
+import { NavigationProvider } from 'components/Navigation';
+import Notifications from 'components/Notifications/Notifications';
+
+import { PersistGate } from 'redux-persist/integration/react';
+import { defaultTheme } from 'themes';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

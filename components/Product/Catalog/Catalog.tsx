@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
+
 import { SxProps } from '@mui/material';
+
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { Currency } from 'types/entities/Currency';
+import { ICategory } from 'types/entities/ICategory';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { IFiltersCharacteristic, IProduct } from 'types/entities/IProduct';
+import { Language } from 'types/entities/Language';
+
+import { getProductBackground } from 'utils/categoryUtil';
+import { getCountryImage } from 'utils/countryUtil';
 
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
-
-import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory } from 'types/entities/ICategory';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { getCountryImage } from 'helpers/countryHelper';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-import { getProductBackground } from 'helpers/categoryHelper';
-import { CardSlider } from 'components/CardSlider/CardSlider';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { Button } from 'components/UI/Button/Button';
+
+import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
-import { ProductCard } from '../Card/Card';
-import { checkCategory } from './CatalogHelpers';
-
 import catalogSx from './Catalog.styles';
+import { checkCategory } from './CatalogHelpers';
 
 export type ProductCatalogProps = {
   title?: string;

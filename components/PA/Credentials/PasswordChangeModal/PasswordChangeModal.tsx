@@ -1,15 +1,18 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Stack } from '@mui/material';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Stack } from '@mui/material';
+
+import { HFPassField } from 'components/HookForm/HFPassField';
+import { Box } from 'components/UI/Box/Box';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './PasswordChangeModal.i18n.json';
 import { getSchema } from './validation';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Modal } from 'components/UI/Modal/Modal';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { HFPassField } from 'components/HookForm/HFPassField';
 
 const sx = {
   body: {

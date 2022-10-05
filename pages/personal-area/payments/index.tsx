@@ -1,14 +1,17 @@
 import React from 'react';
+
 import { Stack } from '@mui/material';
 
 import { useGetInvoiceListQuery } from 'store/api/invoiceApi';
-import { IInvoice } from 'types/entities/IInvoice';
+
 import { PALayout } from 'layouts/PA/PA';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 import { PaymentsCardGroup } from 'components/Payment/Group/Group';
-import { Typography } from 'components/UI/Typography/Typography';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { IInvoice } from 'types/entities/IInvoice';
 
 import { formatPaymentsByDate, sortPaymentsByDate } from './paymentsHelpers';
 

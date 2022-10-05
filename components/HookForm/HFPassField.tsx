@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+
 import { Divider } from '@mui/material';
 
-import OpenedEye from '@mui/icons-material/VisibilityOutlined';
-import ClosedEye from '@mui/icons-material/VisibilityOffOutlined';
-
 import { IconButton } from 'components/UI/IconButton/IconButton';
+
+import ClosedEye from '@mui/icons-material/VisibilityOffOutlined';
+import OpenedEye from '@mui/icons-material/VisibilityOutlined';
+
 import { HFTextField, HFTextFieldProps } from './HFTextField';
 
 const sx = {

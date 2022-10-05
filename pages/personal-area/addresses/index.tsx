@@ -1,27 +1,32 @@
 import React, { useState } from 'react';
 
-import {
-  useGetOrderProfilesListQuery,
-  useCreateOrderProfileMutation,
-  useUpdateOrderProfileMutation,
-  useDeleteOrderProfileMutation,
-} from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeMainAddressMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import translations from './Addresses.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { PrivateLayout } from 'layouts/Private/Private';
+import {
+  useCreateOrderProfileMutation,
+  useDeleteOrderProfileMutation,
+  useGetOrderProfilesListQuery,
+  useUpdateOrderProfileMutation,
+} from 'store/api/orderProfileApi';
+
 import { PALayout } from 'layouts/PA/PA';
+import { PrivateLayout } from 'layouts/Private/Private';
+
+import { useAppNavigation } from 'components/Navigation';
+import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
+import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
-import { useAppNavigation } from 'components/Navigation';
-import { dispatchNotification } from 'packages/EventBus';
+
 import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { NotificationType } from 'types/entities/Notification';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './Addresses.i18n.json';
 
 const sx = {
   actions: {

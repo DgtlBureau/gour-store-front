@@ -60,7 +60,7 @@ const sx = {
       sm: '0 0 0 20px',
     },
 
-    '&:first-child': {
+    '&:first-of-type': {
       marginLeft: '0px',
     },
   },

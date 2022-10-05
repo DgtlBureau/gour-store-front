@@ -1,24 +1,27 @@
 import { ReactNode, useState } from 'react';
 
-import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
-import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
 import { useSignOutMutation } from 'store/api/authApi';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { usePayInvoiceMutation } from 'store/api/invoiceApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+
+import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
+import { Copyright } from 'components/Copyright/Copyright';
+import { Footer } from 'components/Footer/Footer';
+import { Header } from 'components/Header/Header';
+import { useAppNavigation } from 'components/Navigation';
+import { Box } from 'components/UI/Box/Box';
+
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
+
 import { useAppSelector } from 'hooks/store';
+
 import { contacts } from 'constants/contacts';
 
-import { useAppNavigation } from 'components/Navigation';
-import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-import { Box } from 'components/UI/Box/Box';
-import { Header } from 'components/Header/Header';
-import { Footer } from 'components/Footer/Footer';
-import { Copyright } from 'components/Copyright/Copyright';
-
 import sx from './Shop.styles';
-import { usePayInvoiceMutation } from 'store/api/invoiceApi';
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -60,7 +63,6 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
-        language={language}
         basketProductCount={count}
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}

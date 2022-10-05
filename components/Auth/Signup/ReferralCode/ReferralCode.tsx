@@ -1,15 +1,20 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
-import translations from './ReferralCode.i18n.json';
-import { getSchema, Translator } from './validation';
+
 import { AuthCard } from 'components/Auth/Card/Card';
-import { Button } from 'components/UI/Button/Button';
-import sx from './ReferralCode.styles';
 import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './ReferralCode.i18n.json';
+import sx from './ReferralCode.styles';
+import { getSchema } from './validation';
 
 export type SignupReferralCodeProps = {
   defaultValues?: ReferralCodeDto;
@@ -20,7 +25,7 @@ export type SignupReferralCodeProps = {
 export function SignupReferralCode({ defaultValues, onBack, onSubmit }: SignupReferralCodeProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getSchema(t as Translator);
+  const schema = getSchema();
 
   const values = useForm<ReferralCodeDto>({
     defaultValues,

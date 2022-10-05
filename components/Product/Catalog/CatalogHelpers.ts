@@ -1,6 +1,7 @@
 import { ICategory } from 'types/entities/ICategory';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const checkCharacteristics = (productCategories: ICategory[], filters: Record<string, number>) =>
   // TODO: реализация фильтров
   true;

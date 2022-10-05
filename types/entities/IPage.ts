@@ -1,6 +1,6 @@
 import { IBase } from './IBase';
-import { ITranslatableString } from './ITranslatableString';
 import { IPageMeta } from './IPageMeta';
+import { ITranslatableString } from './ITranslatableString';
 
 export interface IPage extends IBase {
   key: string;

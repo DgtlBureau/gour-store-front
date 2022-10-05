@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PALayout } from 'layouts/PA/PA';
+
 import { DiscountsGroup } from 'components/Discounts/Group/Group';
 import { DiscountsInfoBar } from 'components/Discounts/InfoBar/InfoBar';
 import { Typography } from 'components/UI/Typography/Typography';

@@ -1,4 +1,4 @@
-import { Currency, MonetaryCurrency } from '../types/entities/Currency';
+import { Currency, MonetaryCurrency } from 'types/entities/Currency';
 
 type GeneralCurrency = Currency | MonetaryCurrency;
 const symbolByCurrency: Record<GeneralCurrency, JSX.Element> = {

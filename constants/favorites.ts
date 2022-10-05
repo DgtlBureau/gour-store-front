@@ -1,4 +1,4 @@
-import { imageByCountry } from 'helpers/countryHelper';
+import { imageByCountry } from 'utils/countryUtil';
 
 export const favoriteCountries = [
   {

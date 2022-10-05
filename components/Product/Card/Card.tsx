@@ -1,18 +1,20 @@
-import React from 'react';
-import { CardMedia } from '@mui/material';
 import Image from 'next/image';
+import React from 'react';
 
-import HeartIcon from '@mui/icons-material/Favorite';
+import { CardMedia } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { ProductCardRate as Rate } from './Rate';
-import { ProductCardDocket as Docket } from './Docket';
-import { ProductCardCart as Cart } from './Cart';
+
 import { Currency } from 'types/entities/Currency';
+
+import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/no-image.svg';
 
 import sx from './Card.styles';
+import { ProductCardCart as Cart } from './Cart';
+import { ProductCardDocket as Docket } from './Docket';
+import { ProductCardRate as Rate } from './Rate';
 
 export type ProductCardProps = {
   title: string;

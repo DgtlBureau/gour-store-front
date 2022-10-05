@@ -1,6 +1,8 @@
 import React, { FocusEventHandler, ReactElement } from 'react';
-import { InputProps, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { InputProps, SxProps } from '@mui/material';
+
 import { TextField } from 'components/UI/TextField/TextField';
 
 export type HFTextFieldProps = {
@@ -39,7 +41,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}
           onChange={event => {

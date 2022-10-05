@@ -1,20 +1,19 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { CommentCard, CommentCardProps } from './Card';
+
+import { CommentCard } from './Card';
 
 export default {
   component: CommentCard,
   title: 'Comment/Card',
 } as Meta;
 
-const Template: ComponentStory<typeof CommentCard> = function (args: CommentCardProps) {
-  return (
-    <div style={{ background: '#F4E7CE', padding: '20px' }}>
-      <CommentCard {...args} />
-    </div>
-  );
-};
+const Template: ComponentStory<typeof CommentCard> = args => (
+  <div style={{ background: '#F4E7CE', padding: '20px' }}>
+    <CommentCard {...args} />
+  </div>
+);
 export const DefaultCommentCard = Template.bind({});
 DefaultCommentCard.args = {
   title: 'Толя Володин',

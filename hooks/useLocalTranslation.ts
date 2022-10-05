@@ -1,6 +1,6 @@
-import get from 'lodash.get';
-
 import { useAppNavigation } from 'components/Navigation';
+
+import get from 'lodash.get';
 
 export type LocalConfig = {
   en: Record<string, string | object>;

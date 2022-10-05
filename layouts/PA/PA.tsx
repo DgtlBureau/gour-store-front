@@ -1,22 +1,27 @@
 import React, { ReactNode } from 'react';
 
 import { useSignOutMutation } from 'store/api/authApi';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
-import { useAppNavigation } from 'components/Navigation';
-import { useAppSelector } from 'hooks/store';
-import { PrivateLayout } from 'layouts/Private/Private';
-import translations from './PA.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { Box } from 'components/UI/Box/Box';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
+
 import { Header } from 'components/Header/Header';
+import { useAppNavigation } from 'components/Navigation';
 import { PAMenu } from 'components/PA/Menu/Menu';
-import { contacts } from 'constants/contacts';
+import { Box } from 'components/UI/Box/Box';
+
 import { Currency } from 'types/entities/Currency';
+
+import { useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { contacts } from 'constants/contacts';
 import { Path } from 'constants/routes';
 
+import translations from './PA.i18n.json';
 import sx from './PA.styles';
 
 export interface PALayoutProps {
@@ -80,7 +85,6 @@ export function PALayout({ children }: PALayoutProps) {
           selectedCityId={selectedCity?.id || 0}
           cities={convertedCities}
           currency={currency}
-          language={language}
           basketProductCount={count}
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}

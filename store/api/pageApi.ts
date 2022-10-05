@@ -1,6 +1,8 @@
-import { Path } from 'constants/routes';
-import { commonApi } from './commonApi';
 import { IPage } from 'types/entities/IPage';
+
+import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 type PageKeys = 'MAIN' | 'PURCHASE' | 'PRIVACY' | 'COOKIE' | 'AGREEMENT';
 

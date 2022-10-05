@@ -1,16 +1,18 @@
 import React from 'react';
+
 import { Divider } from '@mui/material';
 
-import LocationIcon from '@mui/icons-material/LocationOnOutlined';
-
 import { useAppNavigation } from 'components/Navigation';
-import { IOrderProfile } from 'types/entities/IOrderProfile';
-import { OrderProfileDto } from 'types/dto/order/profile.dto';
-import { PAProfilesForm } from '../Form/Form';
-import { Accordion, AccordionSummary, AccordionDetails } from 'components/UI/Accordion/Accordion';
+import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+import { IOrderProfile } from 'types/entities/IOrderProfile';
+
+import LocationIcon from '@mui/icons-material/LocationOnOutlined';
+
+import { PAProfilesForm } from '../Form/Form';
 import sx from './Item.styles';
 
 export type PAProfilesItemProps = {
@@ -50,8 +52,8 @@ export function PAProfilesItem({
 
   const convertToOrderProfile = ({
     city: { id: cityId },
-    id,
-    createdAt,
+    id: _id,
+    createdAt: _createdAt,
     ...fields
   }: IOrderProfile): OrderProfileDto => ({
     ...fields,

@@ -1,26 +1,31 @@
-import { Grid } from '@mui/material';
 import { useState } from 'react';
 
-import { dispatchNotification } from 'packages/EventBus';
+import { Grid } from '@mui/material';
+
+import { useCheckCodeMutation, useSendEmailCodeMutation } from 'store/api/authApi';
 import {
   useGetCurrentUserQuery,
+  useUpdateCurrentAvatarMutation,
+  useUpdateCurrentUserEmailMutation,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
-  useUpdateCurrentUserEmailMutation,
-  useUpdateCurrentAvatarMutation,
 } from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
-import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+
+import { PALayout } from 'layouts/PA/PA';
+
 import { PACredentialsAvatarEditor } from 'components/PA/Credentials/AvatarEditor/AvatarEditor';
 import { CredentialsFormType, PACredentialsEditor } from 'components/PA/Credentials/Editor/Editor';
-import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
-import { NotificationType } from 'types/entities/Notification';
-import { PALayout } from 'layouts/PA/PA';
-import { getErrorMessage } from 'utils/errorUtil';
-import { useCheckCodeMutation, useSendEmailCodeMutation } from 'store/api/authApi';
-import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
 import { PAEmailChangeModal } from 'components/PA/Credentials/EmailChangeModal/EmailChangeModal';
+import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
+
+import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 export function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);

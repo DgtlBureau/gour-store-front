@@ -1,10 +1,11 @@
-import russiaImg from '../assets/images/countries/russia.png';
-import spainImg from '../assets/images/countries/spain.png';
-import italyImg from '../assets/images/countries/italy.png';
-import franceImg from '../assets/images/countries/france.png';
-import hollandImg from '../assets/images/countries/holland.png';
-import britainImg from '../assets/images/countries/britain.png';
 import { ICategory } from 'types/entities/ICategory';
+
+import britainImg from 'assets/images/countries/britain.png';
+import franceImg from 'assets/images/countries/france.png';
+import hollandImg from 'assets/images/countries/holland.png';
+import italyImg from 'assets/images/countries/italy.png';
+import russiaImg from 'assets/images/countries/russia.png';
+import spainImg from 'assets/images/countries/spain.png';
 
 export const imageByCountry: Record<string, string> = {
   Russia: russiaImg,

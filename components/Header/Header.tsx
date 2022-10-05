@@ -1,35 +1,34 @@
-import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
-import React, { useState } from 'react';
-import NextLink from 'next/link';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
 import { useAppNavigation } from 'components/Navigation';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { CitySelect } from './CitySelect';
-import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Button } from 'components/UI/Button/Button';
-import { LinkRef as Link } from 'components/UI/Link/Link';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import RusFlagIcon from 'assets/icons/flags/rus.svg';
-import UKFlagIcon from 'assets/icons/flags/uk.svg';
-import Logo from 'assets/images/common-logo.svg';
-import GamepadIcon from 'assets/icons/gamepad.svg';
-import CatalogIcon from 'assets/icons/catalog.svg';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { Currency } from 'types/entities/Currency';
+
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import CatalogIcon from 'assets/icons/catalog.svg';
+import GamepadIcon from 'assets/icons/gamepad.svg';
+import Logo from 'assets/images/common-logo.svg';
+
+import { MobileMenu } from '../Mobile/Menu/Menu';
+import { CitySelect } from './CitySelect';
 import headerSx from './Header.styles';
 
 export type HeaderProps = {
@@ -46,7 +45,6 @@ export type HeaderProps = {
     name: string;
   }[];
   currency: Currency;
-  language: Language;
   basketProductCount: number;
   basketProductSum: number;
   moneyAmount: number;
@@ -71,7 +69,6 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  language,
   currency,
   moneyAmount,
   sx,
@@ -113,9 +110,9 @@ export function Header({
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
             <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
-                <NextLink href='/' passHref>
+                <Link href='/'>
                   <Image src={Logo} height={49} width={58} alt='' />
-                </NextLink>
+                </Link>
               </Box>
 
               {!isGame && (
@@ -185,18 +182,6 @@ export function Header({
                   <IconButton onClick={onClickPersonalArea} color='inherit' sx={headerSx.icon}>
                     <PersonIcon />
                   </IconButton>
-
-                  {/* <Box sx={headerSx.flag}>
-                    <NextLink href={router?.asPath || ''} locale={language === 'ru' ? 'en' : 'ru'} passHref>
-                      <Image
-                        src={language === 'ru' ? RusFlagIcon : UKFlagIcon}
-                        objectFit="cover"
-                        height={24}
-                        width={34}
-                        alt=""
-                      />
-                    </NextLink>
-                  </Box> */}
 
                   <Button sx={headerSx.cart} onClick={onClickBasket}>
                     <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>

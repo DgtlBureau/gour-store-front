@@ -1,6 +1,7 @@
-import React, { ReactNode, ElementType } from 'react';
-import MUIBox from '@mui/material/Box';
+import React, { ElementType, ReactNode } from 'react';
+
 import { SxProps } from '@mui/material';
+import MUIBox from '@mui/material/Box';
 
 type Props = {
   children: ReactNode;

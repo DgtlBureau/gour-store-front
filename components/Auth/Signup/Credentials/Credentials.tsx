@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { FormControlLabel, Radio, CircularProgress, Divider } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CircularProgress, Divider, FormControlLabel, Radio } from '@mui/material';
 
-import SendIcon from '@mui/icons-material/Send';
-
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { Path } from 'constants/routes';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
-import translations from './Credentials.i18n.json';
-import { getSchema } from './validation';
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField';
+import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
+import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
-import { HFTextField } from 'components/HookForm/HFTextField';
-import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { HFPassField } from 'components/HookForm/HFPassField';
+import { LinkRef } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import SendIcon from '@mui/icons-material/Send';
+import { Path } from 'constants/routes';
+
+import translations from './Credentials.i18n.json';
 import sx from './Credentials.styles';
+import { getSchema } from './validation';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
@@ -195,13 +198,13 @@ export function SignupCredentials({
                 label={
                   <Typography variant='body2' sx={sx.checkboxLabel}>
                     Я даю свое согласие на сбор и обработку моих персональных данных в соответствии с{' '}
-                    <Link href={`/${Path.RULES}`} target='_blank'>
+                    <LinkRef href={`/${Path.RULES}`} target='_blank'>
                       Политикой
-                    </Link>{' '}
+                    </LinkRef>{' '}
                     и принимаю условия{' '}
-                    <Link href={`/${Path.OFERTA}`} target='_blank'>
+                    <LinkRef href={`/${Path.OFERTA}`} target='_blank'>
                       Пользовательского соглашения
-                    </Link>
+                    </LinkRef>
                   </Typography>
                 }
               />

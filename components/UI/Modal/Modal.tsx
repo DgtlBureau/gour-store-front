@@ -1,15 +1,16 @@
 import React, { ReactNode } from 'react';
+
 import { Modal as MUIModal } from '@mui/material';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import CrossIcon from '@mui/icons-material/Clear';
 
-import translations from './Modal.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
-
+import translations from './Modal.i18n.json';
 import sx from './Modal.styles';
 
 export type ModalProps = {
@@ -20,6 +21,7 @@ export type ModalProps = {
   acceptText?: string;
   formId?: string;
   acceptIsDisabled?: boolean;
+  closeIsDisabled?: boolean;
   onAccept?: () => void;
   onClose?: () => void;
 };
@@ -32,6 +34,7 @@ export function Modal({
   acceptText,
   formId,
   acceptIsDisabled,
+  closeIsDisabled,
   onAccept,
   onClose,
 }: ModalProps) {
@@ -46,7 +49,7 @@ export function Modal({
           </Typography>
 
           {!!onClose && (
-            <IconButton onClick={onClose}>
+            <IconButton onClick={onClose} disabled={closeIsDisabled}>
               <CrossIcon color='primary' />
             </IconButton>
           )}

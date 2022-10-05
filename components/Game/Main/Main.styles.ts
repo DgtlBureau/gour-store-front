@@ -1,5 +1,5 @@
-import buttonImage from 'assets/images/game/button.svg';
 import buttonSmallImage from 'assets/images/game/button-small.svg';
+import buttonImage from 'assets/images/game/button.svg';
 
 export const sx = {
   player: {

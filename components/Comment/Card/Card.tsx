@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Paper, Rating } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import StarIcon from '@mui/icons-material/Star';
 import { defaultTheme as t } from 'themes';
 
 const sx = {

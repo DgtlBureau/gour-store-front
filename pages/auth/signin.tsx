@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 
 import {
-  useSignInMutation,
-  useSendEmailCodeMutation,
-  useRecoverPasswordMutation,
   useCheckCodeMutation,
+  useRecoverPasswordMutation,
+  useSendEmailCodeMutation,
+  useSignInMutation,
 } from 'store/api/authApi';
+
 import { AuthLayout } from 'layouts/Auth/Auth';
-import { useAppNavigation } from 'components/Navigation';
-import { dispatchNotification } from 'packages/EventBus';
+
 import { SigninCredentials } from 'components/Auth/Signin/Credentials/Credentials';
 import { SigninPassRecovery } from 'components/Auth/Signin/PassRecovery/PassRecovery';
-import { SignInDto } from 'types/dto/signin.dto';
+import { useAppNavigation } from 'components/Navigation';
+
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { SignInDto } from 'types/dto/signin.dto';
 import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 type SignInStage = 'credentials' | 'recovery';

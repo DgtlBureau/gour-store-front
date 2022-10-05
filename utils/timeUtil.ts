@@ -1,4 +1,4 @@
-import { intervalToDuration, differenceInHours } from 'date-fns';
+import { differenceInHours, intervalToDuration } from 'date-fns';
 
 export const formatSeconds = (seconds: number) => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });

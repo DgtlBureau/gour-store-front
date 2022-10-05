@@ -2,17 +2,18 @@
 import React, { CSSProperties, ReactNode, useState } from 'react';
 
 import { ButtonGroup, Stack, SxProps } from '@mui/material';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Grid } from 'swiper';
+
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Button } from 'components/UI/Button/Button';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import cardCss from './CardSlider.module.scss';
-
+import SwiperCore, { Grid } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/grid';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import cardCss from './CardSlider.module.scss';
 
 const sliderSx = {
   container: {

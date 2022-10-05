@@ -1,11 +1,13 @@
 import React, { ReactElement } from 'react';
 
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { selectIsAuth } from 'store/selectors/auth';
+
 import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
-import { selectIsAuth } from 'store/selectors/auth';
-import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useAppSelector } from 'hooks/store';
+
 import stripes from 'assets/images/stripes.svg';
 
 const sx = {

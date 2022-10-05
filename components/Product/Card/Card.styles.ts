@@ -90,12 +90,12 @@ const sx = {
 
     height: '100%',
     overflow: 'hidden',
-    '-webkit-line-clamp': {
+    WebkitLineClamp: {
       xs: '2',
       sm: '1',
       md: '2',
     },
-    '-webkit-box-orient': 'vertical',
+    WebkitBoxOrient: 'vertical',
 
     maxHeight: {
       xs: '45px',
@@ -121,8 +121,8 @@ const sx = {
       xs: '5px 0',
       md: '10px 0',
     },
-    '-webkit-line-clamp': '2',
-    '-webkit-box-orient': 'vertical',
+    WebkitLineClamp: '2',
+    WebkitBoxOrient: 'vertical',
 
     textOverflow: 'ellipsis',
     overflow: 'hidden',

@@ -1,6 +1,6 @@
-import { IProduct } from './IProduct';
-import { IClientRole } from './IClientRole';
 import { IBase } from './IBase';
+import { IClientRole } from './IClientRole';
+import { IProduct } from './IProduct';
 
 export interface IRoleDiscount extends IBase {
   product: IProduct;
