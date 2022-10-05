@@ -24,7 +24,6 @@ import { Box } from 'components/UI/Box/Box';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
@@ -44,7 +43,7 @@ const NOW = new Date();
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
+  const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
 
   const basket = useAppSelector(state => state.order);
 
@@ -67,8 +66,6 @@ const Home: NextPage = () => {
 
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
-
-  const currency: Currency = 'cheeseCoin';
 
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
