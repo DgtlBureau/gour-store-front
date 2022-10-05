@@ -15,6 +15,7 @@ import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { HFPassField } from 'components/HookForm/HFPassField';
 
 import sx from './PassRecovery.styles';
 
@@ -161,15 +162,8 @@ export function SigninPassRecovery({
 
           {isCodeSended && isCodeSuccess && (
             <>
-              <HFTextField
-                sx={sx.field}
-                type='password'
-                name='password'
-                label={t('password')}
-                helperText={t('passwordHelper')}
-              />
-
-              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
+              <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
             </>
           )}
 

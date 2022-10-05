@@ -19,6 +19,7 @@ import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { HFPassField } from 'components/HookForm/HFPassField';
 
 import sx from './Credentials.styles';
 
@@ -185,14 +186,8 @@ export function SignupCredentials({
             <>
               <HFTextField sx={sx.field} type='text' name='firstName' label={t('firstName')} />
               <HFTextField sx={sx.field} type='text' name='lastName' label={t('lastName')} />
-              <HFTextField
-                sx={sx.field}
-                type='password'
-                name='password'
-                label={t('password')}
-                helperText={t('passwordHelper')}
-              />
-              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
+              <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
               <Checkbox
                 sx={sx.field}
                 value={isAgree}
