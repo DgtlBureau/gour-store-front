@@ -31,6 +31,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
   const {
     control,
     formState: { errors },
+    clearErrors,
   } = useFormContext();
 
   return (
@@ -42,11 +43,15 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
         <TextField
           {...rest}
           onChange={event => {
-            const isInvalid = !checkValidity(event, regexp);
-            if (isInvalid) {
+            const isValid = checkValidity(event, regexp);
+
+            if (!isValid) {
               event.preventDefault();
               return;
             }
+
+            clearErrors(name);
+
             HFOnChange(event);
             onChange?.(event);
           }}
