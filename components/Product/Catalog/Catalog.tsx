@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { SxProps } from '@mui/material';
 
@@ -73,10 +73,24 @@ export function ProductCatalog({
 
   const withFilterList = !!withFilters && !!categories?.length;
 
-  const productsWidthElect = products.map(product => ({
-    ...product,
-    isElected: isProductFavorite(product.id, favoritesList),
-  }));
+  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
+
+  const getProductCount = (productId: number, isWeightGood: boolean) => {
+    const productInBasket = findProductInBasket(productId);
+    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
+  };
+
+  const extendedProducts = useMemo(
+    () =>
+      products.map(product => ({
+        ...product,
+        isElected: isProductFavorite(product.id, favoritesList),
+        backgroundImg: categories && getProductBackground(categories, product.categories),
+        countryImg: getCountryImage(product.categories),
+        currentCount: getProductCount(product.id, product.isWeightGood),
+      })),
+    [products, categories],
+  );
 
   const screenWidth = window.screen.width;
 
@@ -92,20 +106,17 @@ export function ProductCatalog({
     // TODO: реализация фильтров списка товаров
   };
 
-  const productList = categories
-    ? productsWidthElect?.filter(
-        product => checkCategory(product.categories, filters.productType),
-        // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
-        // TODO: обсудить, мб вообще все фильтры выводить
-      )
-    : productsWidthElect;
-
-  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
-
-  const getProductCount = (productId: number, isWeightGood: boolean) => {
-    const productInBasket = findProductInBasket(productId);
-    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-  };
+  const productList = useMemo(
+    () =>
+      categories
+        ? extendedProducts.filter(
+            product => checkCategory(product.categories, filters.productType),
+            // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
+            // TODO: обсудить, мб вообще все фильтры выводить
+          )
+        : extendedProducts,
+    [categories, extendedProducts],
+  );
 
   const getCatalogRows = () => {
     const length = productList?.length || 0;
@@ -170,9 +181,9 @@ export function ProductCatalog({
             discount={discount || product.discount}
             currency={currency}
             previewImg={product.images[0]?.small || ''}
-            countryImg={getCountryImage(product.categories)}
-            backgroundImg={categories && getProductBackground(categories, product.categories)}
-            currentCount={getProductCount(product.id, product.isWeightGood)}
+            countryImg={product.countryImg}
+            backgroundImg={product.backgroundImg}
+            currentCount={product.currentCount}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
             onAdd={() => onAdd(product)}
