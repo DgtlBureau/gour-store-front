@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { OrderForm, PersonalFields, DeliveryFields } from './Form';
+import { DeliveryFields, OrderForm, PersonalFields } from './Form';
 
 export default {
   component: OrderForm,

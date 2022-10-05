@@ -1,15 +1,17 @@
 import React from 'react';
+
 import { Rating } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
-
-import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
+import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
-import { Review } from '../Reviews/Reviews';
-import { formatDate } from 'helpers/dateHelper';
-import { defaultTheme as t } from '../../../themes';
 
+import { formatDate } from 'helpers/dateHelper';
+
+import StarIcon from '@mui/icons-material/Star';
+import { defaultTheme as t } from 'themes';
+
+import { Review } from '../Reviews/Reviews';
 import sx from './ReviewModal.styles';
 
 export type ReviewModalProps = {

@@ -1,8 +1,8 @@
-import { ITranslatableString } from './ITranslatableString';
-import { ITranslatableText } from './ITranslatableText';
+import { IBase } from './IBase';
 import { IImage } from './IImage';
 import { IProduct } from './IProduct';
-import { IBase } from './IBase';
+import { ITranslatableString } from './ITranslatableString';
+import { ITranslatableText } from './ITranslatableText';
 
 export interface IPromotion extends IBase {
   title: ITranslatableString;

@@ -1,6 +1,8 @@
-import { commonApi } from './commonApi';
 import { IProduct } from 'types/entities/IProduct';
+
 import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const favoriteApi = commonApi.injectEndpoints({
   endpoints(builder) {

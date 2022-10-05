@@ -1,39 +1,45 @@
 import React, { useRef, useState } from 'react';
+
 import { LinearProgress } from '@mui/material';
 
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useGetCategoryListQuery } from 'store/api/categoryApi';
-import { getProductBackground } from 'helpers/categoryHelper';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
 import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
-import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from 'types/entities/Notification';
-import { IProduct } from 'types/entities/IProduct';
-import { CommentDto } from 'types/dto/comment.dto';
-import { ShopLayout } from 'layouts/Shop/Shop';
+
 import { PrivateLayout } from 'layouts/Private/Private';
+import { ShopLayout } from 'layouts/Shop/Shop';
+
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { useAppNavigation } from 'components/Navigation';
 import { ProductActions } from 'components/Product/Actions/Actions';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductInformation } from 'components/Product/Information/Information';
+import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
-import { Typography } from 'components/UI/Typography/Typography';
-import { useAppNavigation } from 'components/Navigation';
 import { LinkRef as Link } from 'components/UI/Link/Link';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-import translations from './Product.i18n.json';
-import { getErrorMessage } from 'utils/errorUtil';
-import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { CommentDto } from 'types/dto/comment.dto';
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
+
+import { getProductBackground } from 'helpers/categoryHelper';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
+import translations from './Product.i18n.json';
 import sx from './Product.styles';
 
 export default function Product() {

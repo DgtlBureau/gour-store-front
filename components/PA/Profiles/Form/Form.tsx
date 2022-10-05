@@ -1,19 +1,23 @@
 import React from 'react';
-import { Grid } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
 
-import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
-
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { OrderProfileDto } from 'types/dto/order/profile.dto';
-import { defaultTheme as theme } from 'themes';
-import translations from './Form.i18n.json';
-import { Button } from 'components/UI/Button/Button';
-import { IconButton } from 'components/UI/IconButton/IconButton';
-import { HFTextField } from 'components/HookForm/HFTextField';
 import { HFCheckbox } from 'components/HookForm/HFCheckbox';
 import { HFSelect } from 'components/HookForm/HFSelect';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { defaultTheme as theme } from 'themes';
+
+import translations from './Form.i18n.json';
 import { getValidationSchema } from './validation';
 
 const sx = {

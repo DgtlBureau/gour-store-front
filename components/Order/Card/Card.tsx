@@ -1,16 +1,19 @@
 import React from 'react';
+
 import { Stack, SxProps } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Box } from 'components/UI/Box/Box';
-import translation from './Card.i18n.json';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { Currency } from 'types/entities/Currency';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { Language } from 'types/entities/Language';
+
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+
+import translation from './Card.i18n.json';
 import cardSx from './Card.styles';
 
 type Props = {

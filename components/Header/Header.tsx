@@ -1,32 +1,34 @@
-import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
-import React, { useState } from 'react';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
 import { useAppNavigation } from 'components/Navigation';
-import { CitySelect } from './CitySelect';
-import { MobileMenu } from '../Mobile/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Button } from 'components/UI/Button/Button';
-import { LinkRef as Link } from 'components/UI/Link/Link';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
 
-import Logo from 'assets/images/common-logo.svg';
-import GamepadIcon from 'assets/icons/gamepad.svg';
-import CatalogIcon from 'assets/icons/catalog.svg';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import CatalogIcon from 'assets/icons/catalog.svg';
+import GamepadIcon from 'assets/icons/gamepad.svg';
+import Logo from 'assets/images/common-logo.svg';
+
+import { MobileMenu } from '../Mobile/Menu/Menu';
+import { CitySelect } from './CitySelect';
 import headerSx from './Header.styles';
 
 export type HeaderProps = {

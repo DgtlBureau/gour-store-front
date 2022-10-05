@@ -1,15 +1,18 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+
 import { Rating } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Information.i18n.json';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import StarIcon from '@mui/icons-material/Star';
+
+import translations from './Information.i18n.json';
 import sx from './Information.styles';
 
 export type ProductInformationProps = {

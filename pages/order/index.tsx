@@ -1,33 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { Grid, Stack } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppNavigation } from 'components/Navigation';
-import { OrderCard } from 'components/Order/Card/Card';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { dispatchNotification } from 'packages/EventBus';
+import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import translation from './Order.i18n.json';
-import {
-  selectedProductCount,
-  selectedProductSum,
-  selectProductsInOrder,
-  removeProduct,
-} from 'store/slices/orderSlice';
 import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
-import { useGetCityListQuery } from 'store/api/cityApi';
+import {
+  removeProduct,
+  selectProductsInOrder,
+  selectedProductCount,
+  selectedProductSum,
+} from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
+
+import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { useAppNavigation } from 'components/Navigation';
+import { OrderCard } from 'components/Order/Card/Card';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from 'components/Order/Form/Form';
 import { Typography } from 'components/UI/Typography/Typography';
-import { CartEmpty } from 'components/Cart/Empty/Empty';
+
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
+
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+
+import translation from './Order.i18n.json';
 
 const sx = {
   title: {

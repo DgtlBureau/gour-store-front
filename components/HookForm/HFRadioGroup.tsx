@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import { RadioGroup, SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { RadioGroup, SxProps } from '@mui/material';
 
 type Props = {
   name: string;
@@ -17,8 +18,7 @@ export function HFRadioGroup({ name, defaultValue, sx, children }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || false}
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <RadioGroup {...rest} row name={name} sx={sx}>
           {children}
         </RadioGroup>

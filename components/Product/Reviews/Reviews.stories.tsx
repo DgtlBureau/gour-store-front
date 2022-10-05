@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { ProductReviewsProps, ProductReviews } from './Reviews';
+import { ProductReviews, ProductReviewsProps } from './Reviews';
 
 export default {
   component: ProductReviews,

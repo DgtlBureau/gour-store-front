@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { SignupCitySelect, SignupCitySelectProps } from './CitySelect';
 import { Box } from 'components/UI/Box/Box';
+
+import { SignupCitySelect, SignupCitySelectProps } from './CitySelect';
 
 export default {
   component: SignupCitySelect,

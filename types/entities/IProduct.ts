@@ -1,14 +1,14 @@
-import { ITranslatableString } from './ITranslatableString';
-import { ITranslatableText } from './ITranslatableText';
-import { IImage } from './IImage';
+import { IBase } from './IBase';
 import { ICategory } from './ICategory';
+import { IImage } from './IImage';
+import { IPageMeta } from './IPageMeta';
+import { IPrice } from './IPrice';
 import { IProductGrade } from './IProductGrade';
 import { IProductModification } from './IProductModification';
-import { IPrice } from './IPrice';
-import { IRoleDiscount } from './IRoleDiscount';
-import { IBase } from './IBase';
-import { IPageMeta } from './IPageMeta';
 import { IPromotion } from './IPromotion';
+import { IRoleDiscount } from './IRoleDiscount';
+import { ITranslatableString } from './ITranslatableString';
+import { ITranslatableText } from './ITranslatableText';
 
 export interface IProduct extends IBase {
   title: ITranslatableString;

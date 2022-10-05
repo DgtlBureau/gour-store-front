@@ -1,11 +1,13 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
 
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from 'components/UI/Box/Box';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Stepper } from 'components/UI/Stepper/Stepper';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 
 type Category = {
   title: string;

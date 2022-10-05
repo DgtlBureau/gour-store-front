@@ -1,15 +1,19 @@
 import React, { forwardRef } from 'react';
+
 import { Grid, SxProps } from '@mui/material';
 
-import translations from './Reviews.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { formatDate } from 'helpers/dateHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { defaultTheme as theme } from 'themes';
+
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
-import { Typography } from 'components/UI/Typography/Typography';
+import translations from './Reviews.i18n.json';
 import { ReviewsCounter } from './ReviewsCounter';
-import { formatDate } from 'helpers/dateHelper';
-import { defaultTheme as theme } from 'themes';
 
 export type Review = {
   id: number;

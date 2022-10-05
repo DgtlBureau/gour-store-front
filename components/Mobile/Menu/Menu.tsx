@@ -1,26 +1,28 @@
-import React, { useState, Fragment } from 'react';
-import { Box, List, ListItemButton, Collapse, Divider } from '@mui/material';
-// import NextLink from 'next/link';
 import Image from 'next/image';
+// import NextLink from 'next/link';
+import React, { Fragment, useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material';
 
 // import { useAppNavigation } from 'components/Navigation';
-import translations from './Menu.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
-import { MobileMenuContacts } from './MenuContacts';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import { Currency } from 'types/entities/Currency';
 
-import locationIcon from 'assets/icons/mobile/location.svg';
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';
 import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
-// import russiaImage from 'assets/images/countries/russia.png';
-// import britainImage from 'assets/images/countries/britain.png';
+import locationIcon from 'assets/icons/mobile/location.svg';
 
+// import britainImage from 'assets/images/countries/britain.png';
+// import russiaImage from 'assets/images/countries/russia.png';
+import translations from './Menu.i18n.json';
 import sx from './Menu.styles';
+import { MobileMenuContacts } from './MenuContacts';
 
 // const languages = [
 //   {

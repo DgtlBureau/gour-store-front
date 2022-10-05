@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
-import translations from './Form.i18n.json';
-import { useLocalTranslation } from '../../../hooks/useLocalTranslation';
-import { getValidationSchema } from './validation';
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { Box } from '../../UI/Box/Box';
-import { Typography } from '../../UI/Typography/Typography';
-import { Button } from '../../UI/Button/Button';
-import { Checkbox } from '../../UI/Checkbox/Checkbox';
-import { HFTextField } from '../../HookForm/HFTextField';
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
-import { HFSelect } from '../../HookForm/HFSelect';
-import { OrderFormDocket } from './FormDocket';
-import { Currency } from '../../../types/entities/Currency';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+
+import { Currency } from 'types/entities/Currency';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
 import { Path } from 'constants/routes';
 
+import { HFSelect } from '../../HookForm/HFSelect';
+import { HFTextField } from '../../HookForm/HFTextField';
+import { Box } from '../../UI/Box/Box';
+import { Button } from '../../UI/Button/Button';
+import { Checkbox } from '../../UI/Checkbox/Checkbox';
+import { Typography } from '../../UI/Typography/Typography';
+import translations from './Form.i18n.json';
 import sx from './Form.styles';
+import { OrderFormDocket } from './FormDocket';
+import { getValidationSchema } from './validation';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 

@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CircularProgress, Divider } from '@mui/material';
 
-import SendIcon from '@mui/icons-material/Send';
-
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getSchema } from './validation';
-import translations from './EmailChangeModal.i18n.json';
-import { Modal } from 'components/UI/Modal/Modal';
-import { Box } from 'components/UI/Box/Box';
 import { HFTextField } from 'components/HookForm/HFTextField';
-import { Typography } from 'components/UI/Typography/Typography';
+import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import SendIcon from '@mui/icons-material/Send';
+
+import translations from './EmailChangeModal.i18n.json';
 import sx from './EmailChangeModal.styles';
+import { getSchema } from './validation';
 
 export type PAEmailChangeModalProps = {
   isOpen: boolean;

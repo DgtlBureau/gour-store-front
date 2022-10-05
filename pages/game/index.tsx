@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import { GameLayout } from 'layouts/Game/Game';
-import { useAppNavigation } from 'components/Navigation';
+import { PrivateLayout } from 'layouts/Private/Private';
+
 import { GameMain } from 'components/Game/Main/Main';
 import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
-import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppNavigation } from 'components/Navigation';
 
 export function Game() {
   const { currency, language } = useAppNavigation();

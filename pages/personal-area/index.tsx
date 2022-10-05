@@ -1,19 +1,24 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
 
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
+import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+
 import { PALayout } from 'layouts/PA/PA';
-import { useAppNavigation } from 'components/Navigation';
-import { PACredentialsCard } from 'components/PA/Main/CredentialsCard/CredentialsCard';
-import { PAAddressCard } from 'components/PA/Main/AddressCard/AddressCard';
-import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
-import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
 import { PrivateLayout } from 'layouts/Private/Private';
+
+import { useAppNavigation } from 'components/Navigation';
+import { PAAddressCard } from 'components/PA/Main/AddressCard/AddressCard';
+import { PACredentialsCard } from 'components/PA/Main/CredentialsCard/CredentialsCard';
+import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard';
+import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
+
 import { Currency } from 'types/entities/Currency';
+
+import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
 
 export function Main() {
   const { language, goToCredentials, goToAddresses, goToOrders, goToDiscounts } = useAppNavigation();

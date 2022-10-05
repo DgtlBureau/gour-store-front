@@ -1,9 +1,11 @@
 import React from 'react';
 
-import translations from './Intro.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { AuthCard } from 'components/Auth/Card/Card';
 import { Button } from 'components/UI/Button/Button';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Intro.i18n.json';
 
 export type SigninIntroProps = {
   onClickAuth(): void;

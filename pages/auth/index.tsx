@@ -1,14 +1,17 @@
+import Image from 'next/image';
 import React from 'react';
 
-import { useAppNavigation } from 'components/Navigation';
-import { SigninIntro } from 'components/Auth/Signin/Intro/Intro';
-import Image from 'next/image';
 import { Stack } from '@mui/material';
-import { AuthCard } from 'components/Auth/Card/Card';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Box } from 'components/UI/Box/Box';
-import gameImage from 'assets/images/game/game-mockup.png';
+
 import { AuthLayout } from 'layouts/Auth/Auth';
+
+import { AuthCard } from 'components/Auth/Card/Card';
+import { SigninIntro } from 'components/Auth/Signin/Intro/Intro';
+import { useAppNavigation } from 'components/Navigation';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import gameImage from 'assets/images/game/game-mockup.png';
 
 export default function Auth() {
   const { goToSignIn, goToSignUp } = useAppNavigation();

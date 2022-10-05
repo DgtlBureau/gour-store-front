@@ -1,13 +1,15 @@
-'use strict';
-
-import React from 'react';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import * as NextImage from 'next/image';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
+import * as NextImage from 'next/image';
+import React from 'react';
+
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { NavigationProvider } from 'components/Navigation';
-import { defaultTheme } from '../themes';
+
+import { defaultTheme } from 'themes';
+
+('use strict');
 
 const MUITheme = (Story, context) => {
   return (

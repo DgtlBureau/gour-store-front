@@ -1,6 +1,7 @@
 import React from 'react';
-import MUILinearProgress from '@mui/material/LinearProgress';
+
 import { SxProps } from '@mui/material';
+import MUILinearProgress from '@mui/material/LinearProgress';
 
 type Props = {
   color?: 'inherit' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined;

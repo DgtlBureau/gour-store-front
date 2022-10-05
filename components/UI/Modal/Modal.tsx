@@ -1,15 +1,16 @@
 import React, { ReactNode } from 'react';
+
 import { Modal as MUIModal } from '@mui/material';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import CrossIcon from '@mui/icons-material/Clear';
 
-import translations from './Modal.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
-
+import translations from './Modal.i18n.json';
 import sx from './Modal.styles';
 
 export type ModalProps = {

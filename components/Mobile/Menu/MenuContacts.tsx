@@ -1,6 +1,7 @@
-import React from 'react';
-import { ListItem } from '@mui/material';
 import Image from 'next/image';
+import React from 'react';
+
+import { ListItem } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';

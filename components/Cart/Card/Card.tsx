@@ -1,22 +1,24 @@
 import React from 'react';
-import { Card, CardContent, CardActions, CardMedia } from '@mui/material';
 
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 
-import translations from './Card.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { CartCardDocket as Docket } from './Docket';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import PlusIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Cancel';
+import MinusIcon from '@mui/icons-material/Remove';
 import defaultImg from 'assets/no-image.svg';
 
+import translations from './Card.i18n.json';
 import sx from './Card.styles';
+import { CartCardDocket as Docket } from './Docket';
 
 type Props = {
   title: string;

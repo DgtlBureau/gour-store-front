@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { InputModeTypes } from 'react-code-input';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { CodeInput } from 'components/UI/CodeInput/CodeInput';
 
@@ -24,8 +24,7 @@ export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange: HFOnChange, ...rest } }) => (
         <CodeInput
           {...rest}
           onChange={value => {

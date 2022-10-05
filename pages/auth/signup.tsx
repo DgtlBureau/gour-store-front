@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 
-import { AuthLayout } from 'layouts/Auth/Auth';
+import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
-import { SignUpDto } from 'types/dto/signup.dto';
-import { NotificationType } from 'types/entities/Notification';
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
-import { dispatchNotification } from 'packages/EventBus';
 
-import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
+import { AuthLayout } from 'layouts/Auth/Auth';
+
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
-import { useAppNavigation } from 'components/Navigation';
-import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { FavoriteInfo, SignupFavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
+import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
+import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { useAppNavigation } from 'components/Navigation';
 
-import credentialsImage from 'assets/icons/signup/credentials.svg';
-import greetingsImage from 'assets/icons/signup/greetings.svg';
-import cityImage from 'assets/icons/signup/city.svg';
-import favoritesImage from 'assets/icons/signup/favorites.svg';
-import referralImage from 'assets/icons/signup/referralCodes.svg';
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+
+import cityImage from 'assets/icons/signup/city.svg';
+import credentialsImage from 'assets/icons/signup/credentials.svg';
+import favoritesImage from 'assets/icons/signup/favorites.svg';
+import greetingsImage from 'assets/icons/signup/greetings.svg';
+import referralImage from 'assets/icons/signup/referralCodes.svg';
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
@@ -48,7 +51,7 @@ export default function SignUp() {
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
-  const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
+  const [_favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo); // TODO сохранение выбора
   const [referralCode, setReferralCode] = useState('');
 
   const goToGreeting = () => setStage('greeting');

@@ -1,4 +1,4 @@
-import { ErrorWithMessage, ErrorWithDataMessage, ErrorData } from '../types/entities/ErrorWithMessage';
+import { ErrorData, ErrorWithDataMessage, ErrorWithMessage } from 'types/entities/ErrorWithMessage';
 
 function checkErrorMessage(error: unknown): error is ErrorWithMessage {
   const isObject = typeof error === 'object';

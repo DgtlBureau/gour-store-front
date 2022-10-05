@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { ProductCard } from './Card';
 
 import russiaIcon from 'assets/icons/countries/russia.svg';
+
+import { ProductCard } from './Card';
 
 export default {
   component: ProductCard,

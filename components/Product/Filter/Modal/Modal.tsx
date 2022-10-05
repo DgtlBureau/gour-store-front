@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ICategory } from 'types/entities/ICategory';
-import { Language } from 'types/entities/Language';
-import { IFiltersCharacteristic } from 'types/entities/IProduct';
-import translations from './Modal.i18n.json';
-import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
+import { Modal } from 'components/UI/Modal/Modal';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-// import { ProductFilterMultiselect } from '../Multiselect/Multiselect';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ICategory } from 'types/entities/ICategory';
+import { IFiltersCharacteristic } from 'types/entities/IProduct';
+import { Language } from 'types/entities/Language';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Modal.i18n.json';
 
 const sx = {
   title: {

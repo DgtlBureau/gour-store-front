@@ -2,12 +2,16 @@ import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { defaultTheme as theme } from 'themes';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Form.i18n.json';
+
 import { Currency } from 'types/entities/Currency';
+
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+
+import { defaultTheme as theme } from 'themes';
+
+import translations from './Form.i18n.json';
 
 const sx = {
   docket: {

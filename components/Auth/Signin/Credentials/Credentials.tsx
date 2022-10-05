@@ -1,20 +1,24 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */ // FIXME: убрать ошибки eslint'a
+/* eslint-disable jsx-a11y/anchor-is-valid */
+// FIXME: убрать ошибки eslint'a
 import React, { useEffect } from 'react';
-import { Link } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { SignInDto } from 'types/dto/signin.dto';
-import translations from './Credentials.i18n.json';
-import { getSchema } from './validation';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Link } from '@mui/material';
+
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { HFTextField } from 'components/HookForm/HFTextField';
 
+import { SignInDto } from 'types/dto/signin.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Credentials.i18n.json';
 import sx from './Credentials.styles';
+import { getSchema } from './validation';
 
 export type SigninCredentialsProps = {
   defaultValues?: SignInDto;

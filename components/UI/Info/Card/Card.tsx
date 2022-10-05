@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
+
 import { Paper } from '@mui/material';
+
+import { Typography } from 'components/UI/Typography/Typography';
 
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Box } from '../../Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-
 import sx from './Card.styles';
 
 export type InfoCardProps = {

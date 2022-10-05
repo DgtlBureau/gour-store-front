@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useGetInvoicePriceQuery } from 'store/api/invoiceApi';
+
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Box } from 'components/UI/Box/Box';
+import Loader from 'components/UI/Loader/Loader';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+
+import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import regexp from 'constants/regex';
 
-import Loader from 'components/UI/Loader/Loader';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Box } from 'components/UI/Box/Box';
-import { Modal } from 'components/UI/Modal/Modal';
-import { HFTextField } from 'components/HookForm/HFTextField';
-import { getValidationSchema } from './validations';
 import translations from './AddModal.i18n.json';
-
 import { sx } from './AddModal.styles';
+import { getValidationSchema } from './validations';
 
 type Props = {
   isOpened: boolean;

@@ -5,26 +5,29 @@ import {
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { IProduct } from 'types/entities/IProduct';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
-import { PromotionHeader } from 'components/Promotion/Header/Header';
+
+import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { useAppNavigation } from 'components/Navigation';
-import translations from './Promotion.i18n.json';
-import { getErrorMessage } from 'utils/errorUtil';
-import { dispatchNotification } from 'packages/EventBus';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './Promotion.i18n.json';
 import { sx } from './Promotion.styles';
 
 export default function Promotion() {

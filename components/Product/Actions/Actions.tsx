@@ -1,20 +1,23 @@
 import React from 'react';
+
 import { Grid, SxProps } from '@mui/material';
 
-import CartIcon from '@mui/icons-material/ShoppingCart';
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
-import TrashIcon from '@mui/icons-material/DeleteForever';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-
-import translations from './Actions.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
 
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import PlusIcon from '@mui/icons-material/Add';
+import TrashIcon from '@mui/icons-material/DeleteForever';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import MinusIcon from '@mui/icons-material/Remove';
+import CartIcon from '@mui/icons-material/ShoppingCart';
+
+import translations from './Actions.i18n.json';
 import sxActions from './Actions.styles';
 
 export type ProductActionsProps = {

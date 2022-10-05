@@ -1,6 +1,8 @@
 import React, { FocusEventHandler, ReactNode } from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { SxProps } from '@mui/material';
+
 import { PhoneInput } from 'components/UI/PhoneInput/PhoneInput';
 
 type Props = {
@@ -28,8 +30,7 @@ export function HFPhoneInput({ name, defaultValue, helperText, ...props }: Props
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      render={({ field: { ref, ...rest } }) => (
+      render={({ field: { ref: _ref, ...rest } }) => (
         <PhoneInput {...rest} isError={!!errors[name]} helperText={helperText || errors[name]?.message} {...props} />
       )}
     />

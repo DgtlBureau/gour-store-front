@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { authApi } from 'store/api/authApi';
 import { currentUserApi } from 'store/api/currentUserApi';
+
 import { IUser } from 'types/entities/IUser';
 
 export interface AuthState {

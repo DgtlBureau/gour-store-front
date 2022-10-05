@@ -1,13 +1,17 @@
 import React from 'react';
+
+import { Box } from 'components/UI/Box/Box';
+import { InfoCard } from 'components/UI/Info/Card/Card';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { Currency } from 'types/entities/Currency';
+
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
 import { format } from 'date-fns';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { Currency } from 'types/entities/Currency';
 import translations from './OrdersCard.i18n.json';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { InfoCard } from 'components/UI/Info/Card/Card';
 
 const sx = {
   order: {

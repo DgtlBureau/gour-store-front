@@ -1,13 +1,15 @@
 /* eslint-disable import/no-duplicates */
 import React from 'react';
-import { ru } from 'date-fns/locale';
 
-import { formatDate } from 'helpers/dateHelper';
-import { FullInvoice } from 'pages/personal-area/payments';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { PaymentsCard } from '../Card/Card';
 
+import { formatDate } from 'helpers/dateHelper';
+
+import { ru } from 'date-fns/locale';
+import { FullInvoice } from 'pages/personal-area/payments';
+
+import { PaymentsCard } from '../Card/Card';
 import sx from './Group.styles';
 
 export type OrdersGroupProps = {

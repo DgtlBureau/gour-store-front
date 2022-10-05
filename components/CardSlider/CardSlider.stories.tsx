@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { CardSlider } from './CardSlider';
 import { PromotionCard } from '../Promotion/Card/Card';
+import { CardSlider } from './CardSlider';
 
 export default {
   title: 'CardSlider',

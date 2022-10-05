@@ -6,7 +6,7 @@ require('dotenv').config({ path: './.env.local' });
 module.exports = {
   apps: [
     {
-      name: 'gour-store-front',
+      name: pack.name,
       script: 'yarn',
       args: 'start',
       instances: 1,

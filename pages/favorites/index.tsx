@@ -1,24 +1,28 @@
 import React from 'react';
 
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useAppNavigation } from 'components/Navigation';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
-import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import { ShopLayout } from 'layouts/Shop/Shop';
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { IProduct } from 'types/entities/IProduct';
-import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from 'types/entities/Notification';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { getErrorMessage } from 'utils/errorUtil';
-import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetProductListQuery } from 'store/api/productApi';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
+import { ShopLayout } from 'layouts/Shop/Shop';
+
+import { useAppNavigation } from 'components/Navigation';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
+
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 export function Favorites() {
   const dispatch = useAppDispatch();

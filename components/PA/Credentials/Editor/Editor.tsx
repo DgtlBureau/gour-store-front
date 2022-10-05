@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
-import { Divider, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Divider, Stack } from '@mui/material';
+
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import translations from './Editor.i18n.json';
-import { HFTextField } from 'components/HookForm/HFTextField';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
-import { IconButton } from 'components/UI/IconButton/IconButton';
-import { Button } from 'components/UI/Button/Button';
 import { getValidationSchema } from './validation';
 
 const sx = {

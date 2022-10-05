@@ -1,6 +1,7 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { SxProps } from '@mui/material';
 
 import { Box } from '../UI/Box/Box';
 import { Select, SelectOption } from '../UI/Select/Select';
@@ -28,8 +29,7 @@ export function HFSelect({ name, defaultValue, sx, ...props }: Props) {
         name={name}
         control={control}
         defaultValue={defaultValue || ''}
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        render={({ field: { ref, onChange, ...rest } }) => (
+        render={({ field: { ref: _ref, onChange, ...rest } }) => (
           <Select
             {...rest}
             onChange={value => {

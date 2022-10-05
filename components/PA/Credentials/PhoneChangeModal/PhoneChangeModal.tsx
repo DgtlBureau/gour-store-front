@@ -1,16 +1,19 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { Box } from 'components/UI/Box/Box';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
-import { getSchema } from './validation';
 import translations from './PhoneChangeModal.i18n.json';
-import { Modal } from 'components/UI/Modal/Modal';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { getSchema } from './validation';
 
 const sx = {
   body: {

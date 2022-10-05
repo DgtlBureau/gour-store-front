@@ -1,15 +1,19 @@
 import React from 'react';
+
 import { SxProps } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
-
-import translations from '../Actions/Actions.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { defaultTheme } from 'themes';
+
 import { Currency } from 'types/entities/Currency';
+
 import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import StarIcon from '@mui/icons-material/Star';
+import { defaultTheme } from 'themes';
+
+import translations from '../Actions/Actions.i18n.json';
 
 const rateSx = {
   box: {

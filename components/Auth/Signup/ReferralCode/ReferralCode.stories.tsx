@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { Box } from 'components/UI/Box/Box';
+
 import { SignupReferralCode, SignupReferralCodeProps } from './ReferralCode';
 
 export default {

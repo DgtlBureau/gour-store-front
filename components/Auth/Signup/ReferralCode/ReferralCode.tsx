@@ -1,15 +1,20 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
-import translations from './ReferralCode.i18n.json';
-import { getSchema } from './validation';
+
 import { AuthCard } from 'components/Auth/Card/Card';
-import { Button } from 'components/UI/Button/Button';
-import sx from './ReferralCode.styles';
 import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './ReferralCode.i18n.json';
+import sx from './ReferralCode.styles';
+import { getSchema } from './validation';
 
 export type SignupReferralCodeProps = {
   defaultValues?: ReferralCodeDto;

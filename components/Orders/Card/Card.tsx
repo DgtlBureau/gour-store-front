@@ -1,18 +1,22 @@
 import React, { useMemo } from 'react';
-import { format } from 'date-fns';
-import { Divider, Typography, Grid } from '@mui/material';
 
-import translations from './Card.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Divider, Grid, Typography } from '@mui/material';
+
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
-import { OrderProductType, OrderCardProduct } from './CardProduct';
-import { OrderCardInfo } from './CardInfo';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+
 import { Currency } from 'types/entities/Currency';
 
+import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getDeclensionWordByCount } from 'utils/wordHelper';
+
+import { format } from 'date-fns';
+
+import translations from './Card.i18n.json';
 import sx from './Card.styles';
+import { OrderCardInfo } from './CardInfo';
+import { OrderCardProduct, OrderProductType } from './CardProduct';
 
 type Promotion = {
   title: string;

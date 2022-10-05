@@ -1,14 +1,18 @@
 import React from 'react';
+
 import { CardMedia, Grid } from '@mui/material';
 
+import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
+
 import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import sx from './CardProduct.styles';
+
 import translations from './Card.i18n.json';
-import { useAppNavigation } from 'components/Navigation';
+import sx from './CardProduct.styles';
 
 export type OrderProductType = {
   id: number;

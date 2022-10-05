@@ -1,7 +1,7 @@
 import { ICategory } from 'types/entities/ICategory';
 
-import meatBackground from 'assets/images/categories/meat-background.svg';
 import cheeseBackground from 'assets/images/categories/cheese-background.svg';
+import meatBackground from 'assets/images/categories/meat-background.svg';
 
 export const backgroundByCategory: Record<string, string> = {
   Meat: meatBackground,

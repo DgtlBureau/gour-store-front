@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Paper, SxProps } from '@mui/material';
 
-import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const infoSx = {
   block: {

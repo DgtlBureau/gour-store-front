@@ -1,11 +1,13 @@
-import { Path } from 'constants/routes';
-import { commonApi } from './commonApi';
-import { SignUpDto } from 'types/dto/signup.dto';
-import { Tokens } from 'types/dto/tokens.dto';
-import { SignInDto } from 'types/dto/signin.dto';
-import { SendEmailCodeDto } from 'types/dto/profile/send-code.dto';
 import { CheckCodeDto } from 'types/dto/check-code.dto';
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { SendEmailCodeDto } from 'types/dto/profile/send-code.dto';
+import { SignInDto } from 'types/dto/signin.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { Tokens } from 'types/dto/tokens.dto';
+
+import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const authApi = commonApi.injectEndpoints({
   endpoints(builder) {

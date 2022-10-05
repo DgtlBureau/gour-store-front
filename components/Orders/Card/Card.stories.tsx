@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { OrdersCard, OrdersCardProps } from './Card';
 
 export default {
