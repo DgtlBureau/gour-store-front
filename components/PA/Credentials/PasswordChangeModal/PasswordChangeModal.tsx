@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack } from '@mui/material';
 
-import { HFTextField } from 'components/HookForm/HFTextField';
+import { HFPassField } from 'components/HookForm/HFPassField';
 import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -62,9 +62,9 @@ export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPa
         <FormProvider {...values}>
           <form id='passwordChangeForm' onSubmit={values.handleSubmit(submit)}>
             <Stack spacing={2}>
-              <HFTextField type='password' name='prevPassword' label={t('currentPassword')} />
-              <HFTextField type='password' name='newPassword' label={t('newPassword')} />
-              <HFTextField type='password' name='repeatNewPassword' label={t('passwordConfirm')} />
+              <HFPassField name='prevPassword' label={t('currentPassword')} />
+              <HFPassField name='newPassword' label={t('newPassword')} />
+              <HFPassField name='repeatNewPassword' label={t('passwordConfirm')} />
             </Stack>
           </form>
         </FormProvider>

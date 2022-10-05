@@ -5,13 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CircularProgress, Divider, FormControlLabel, Radio } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { LinkRef as Link } from 'components/UI/Link/Link';
+import { LinkRef } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
@@ -188,14 +189,8 @@ export function SignupCredentials({
             <>
               <HFTextField sx={sx.field} type='text' name='firstName' label={t('firstName')} />
               <HFTextField sx={sx.field} type='text' name='lastName' label={t('lastName')} />
-              <HFTextField
-                sx={sx.field}
-                type='password'
-                name='password'
-                label={t('password')}
-                helperText={t('passwordHelper')}
-              />
-              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
+              <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
               <Checkbox
                 sx={sx.field}
                 value={isAgree}
@@ -203,13 +198,13 @@ export function SignupCredentials({
                 label={
                   <Typography variant='body2' sx={sx.checkboxLabel}>
                     Я даю свое согласие на сбор и обработку моих персональных данных в соответствии с{' '}
-                    <Link href={`/${Path.RULES}`} target='_blank'>
+                    <LinkRef href={`/${Path.RULES}`} target='_blank'>
                       Политикой
-                    </Link>{' '}
+                    </LinkRef>{' '}
                     и принимаю условия{' '}
-                    <Link href={`/${Path.OFERTA}`} target='_blank'>
+                    <LinkRef href={`/${Path.OFERTA}`} target='_blank'>
                       Пользовательского соглашения
-                    </Link>
+                    </LinkRef>
                   </Typography>
                 }
               />

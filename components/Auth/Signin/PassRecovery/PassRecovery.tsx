@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CircularProgress, Divider } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
@@ -164,15 +165,8 @@ export function SigninPassRecovery({
 
           {isCodeSended && isCodeSuccess && (
             <>
-              <HFTextField
-                sx={sx.field}
-                type='password'
-                name='password'
-                label={t('password')}
-                helperText={t('passwordHelper')}
-              />
-
-              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
+              <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
             </>
           )}
 
