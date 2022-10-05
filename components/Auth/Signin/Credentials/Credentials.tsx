@@ -37,15 +37,13 @@ export function SigninCredentials({
 
   const values = useForm<SignInDto>({
     defaultValues,
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     values.reset(defaultValues);
   }, [defaultValues]);
-
-  const formIsInvalid = !values.formState.isValid;
 
   const submit = (data: SignInDto) => onSubmit(data);
 
@@ -73,7 +71,7 @@ export function SigninCredentials({
             </Link>
           </Box>
 
-          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
+          <Button type='submit' sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>
