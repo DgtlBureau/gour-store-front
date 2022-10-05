@@ -7,7 +7,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Stepper } from 'components/UI/Stepper/Stepper';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 type Category = {
   title: string;

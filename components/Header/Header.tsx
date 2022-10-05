@@ -12,7 +12,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';

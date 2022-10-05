@@ -5,8 +5,8 @@ import { Grid, SxProps } from '@mui/material';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { formatDate } from 'helpers/dateHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { formatDate } from 'utils/dateUtil';
 
 import { defaultTheme as theme } from 'themes';
 

@@ -13,9 +13,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import regexp from 'constants/regex';
 

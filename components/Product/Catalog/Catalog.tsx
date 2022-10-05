@@ -14,8 +14,8 @@ import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { IFiltersCharacteristic, IProduct } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
-import { getProductBackground } from 'helpers/categoryHelper';
-import { getCountryImage } from 'helpers/countryHelper';
+import { getProductBackground } from 'utils/categoryUtil';
+import { getCountryImage } from 'utils/countryUtil';
 
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';

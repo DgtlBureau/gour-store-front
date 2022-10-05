@@ -3,7 +3,7 @@ import { FullOrder } from 'components/Orders/Card/Card';
 import { Currency } from 'types/entities/Currency';
 import { IOrder } from 'types/entities/IOrder';
 
-import { getFullName } from 'utils/getFullName';
+import { getFullName } from 'utils/nameUtil';
 
 import { endOfDay, getTime } from 'date-fns';
 

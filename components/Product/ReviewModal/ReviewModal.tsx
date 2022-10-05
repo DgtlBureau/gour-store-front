@@ -6,7 +6,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { formatDate } from 'helpers/dateHelper';
+import { formatDate } from 'utils/dateUtil';
 
 import StarIcon from '@mui/icons-material/Star';
 import { defaultTheme as t } from 'themes';

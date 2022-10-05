@@ -7,8 +7,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import StarIcon from '@mui/icons-material/Star';
 import { defaultTheme } from 'themes';

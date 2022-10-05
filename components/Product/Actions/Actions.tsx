@@ -8,8 +8,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import PlusIcon from '@mui/icons-material/Add';
 import TrashIcon from '@mui/icons-material/DeleteForever';

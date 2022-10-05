@@ -9,9 +9,9 @@ import { Currency } from 'types/entities/Currency';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Language } from 'types/entities/Language';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import translation from './Card.i18n.json';
 import cardSx from './Card.styles';

@@ -6,8 +6,8 @@ import { Theme } from '@mui/material/styles/createTheme';
 
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { formatSeconds } from 'helpers/timeHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { formatSeconds } from 'utils/timeUtil';
 
 import { differenceInSeconds } from 'date-fns';
 

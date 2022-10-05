@@ -7,9 +7,9 @@ import { Button } from 'components/UI/Button/Button';
 
 import { InvoiceStatus } from 'types/entities/IInvoice';
 
-import { getCurrencySymbol, getFormattedPrice } from 'helpers/currencyHelper';
-import { formatDate } from 'helpers/dateHelper';
 import { useTimer } from 'hooks/useTimer';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
+import { formatDate } from 'utils/dateUtil';
 
 import { FullInvoice } from 'pages/personal-area/payments';
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { formatDate } from 'helpers/dateHelper';
+import { formatDate } from 'utils/dateUtil';
 
 import { ru } from 'date-fns/locale';
 import { FullInvoice } from 'pages/personal-area/payments';

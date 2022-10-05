@@ -7,9 +7,9 @@ import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
 
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import { format } from 'date-fns';
 

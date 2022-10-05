@@ -31,10 +31,10 @@ import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { getProductBackground } from 'helpers/categoryHelper';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';

@@ -4,7 +4,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import StarIcon from '@mui/icons-material/Star';
 import { defaultTheme as theme } from 'themes';
