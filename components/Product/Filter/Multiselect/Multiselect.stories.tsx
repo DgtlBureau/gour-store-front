@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { ProductFilterMultiselect, FilterMultiselectProps } from './Multiselect';
+
+import { FilterMultiselectProps, ProductFilterMultiselect } from './Multiselect';
 
 export default {
   component: ProductFilterMultiselect,

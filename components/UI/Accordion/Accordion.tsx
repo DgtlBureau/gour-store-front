@@ -1,15 +1,15 @@
 import React from 'react';
+
 import {
-  Accordion as MUIAccordion,
-  AccordionSummary as MUIAccordionSummary,
-  AccordionDetails as MUIAccordionDetails,
+  AccordionDetailsProps,
   AccordionProps,
   AccordionSummaryProps,
-  AccordionDetailsProps,
+  Accordion as MUIAccordion,
+  AccordionDetails as MUIAccordionDetails,
+  AccordionSummary as MUIAccordionSummary,
 } from '@mui/material';
 
 import ExpandIcon from '@mui/icons-material/ExpandMore';
-
 import { defaultTheme as theme } from 'themes';
 
 const accordionSx = {

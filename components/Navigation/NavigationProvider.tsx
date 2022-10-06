@@ -1,9 +1,12 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
+import React, { ReactNode, useCallback, useMemo } from 'react';
+
+import { Currency } from 'types/entities/Currency';
+
+import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { Path } from 'constants/routes';
-import { LocalConfig } from 'hooks/useLocalTranslation';
-import { Currency } from 'types/entities/Currency';
+
 import { AppNavigationCtx } from './NavigationContext';
 
 type Props = { children: ReactNode };

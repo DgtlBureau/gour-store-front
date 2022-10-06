@@ -1,10 +1,14 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
-import translations from './DiscountsCard.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Typography } from 'components/UI/Typography/Typography';
+
 import { InfoCard } from 'components/UI/Info/Card/Card';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
 import { DiscountItem } from './DiscountItem';
+import translations from './DiscountsCard.i18n.json';
 
 const sx = {
   discounts: {

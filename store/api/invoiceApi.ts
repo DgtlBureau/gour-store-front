@@ -1,7 +1,8 @@
-import { commonApi } from './commonApi';
-import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
 import { getInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
 import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
+
+import { commonApi } from './commonApi';
 
 const mockData: IInvoice[] = [
   {

@@ -1,12 +1,17 @@
 import React, { useMemo } from 'react';
 
 import { Divider, Stack } from '@mui/material';
+
 import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Card.i18n.json';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
 import { defaultTheme as theme } from 'themes';
+
+import translations from './Card.i18n.json';
 
 const sx = {
   card: {
@@ -67,7 +72,7 @@ export function OrderCardInfo({
         </Typography>
       </Stack>
 
-      {promotions.map((promotion, i) => (
+      {promotions.map(promotion => (
         <Stack key={promotion.title} direction='row' alignItems='center' justifyContent='space-between'>
           <Typography variant='body2' sx={sx.price}>
             {promotion.title}

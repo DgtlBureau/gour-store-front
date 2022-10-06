@@ -1,8 +1,8 @@
 import { IBase } from './IBase';
+import { ICity } from './ICity';
+import { IClientRole } from './IClientRole';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
-import { IClientRole } from './IClientRole';
-import { ICity } from './ICity';
 
 export interface IUser extends IBase {
   role: IClientRole;

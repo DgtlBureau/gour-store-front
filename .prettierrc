@@ -6,5 +6,20 @@
   "trailingComma": "all",
   "jsxSingleQuote": true,
   "bracketSpacing": true,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "importOrder": [
+    "^(react|next)",
+    "^@(?!mui/icons-material)",
+    "^(store|http)",
+    "^layouts",
+    "^components/(.*)$",
+    "^types",
+    "^(hooks|helpers|packages|utils)",
+    "^[^./]",
+    "^(assets|@mui/icons-material/)",
+    "^themes",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

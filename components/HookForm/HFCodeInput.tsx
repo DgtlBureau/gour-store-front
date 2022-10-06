@@ -1,8 +1,7 @@
-import React, { CSSProperties, FocusEventHandler } from 'react';
-import { InputProps, SxProps } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import React, { CSSProperties } from 'react';
 import { InputModeTypes } from 'react-code-input';
-import { TextField } from 'components/UI/TextField/TextField';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { CodeInput } from 'components/UI/CodeInput/CodeInput';
 
 type Props = {
@@ -18,17 +17,14 @@ type Props = {
 };
 
 export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange: HFOnChange, ...rest } }) => (
         <CodeInput
           {...rest}
           onChange={value => {

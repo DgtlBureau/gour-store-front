@@ -1,7 +1,9 @@
-import { Translator } from 'utils/Translator';
+import { Translator } from 'types/entities/Translator';
+
 import * as yup from 'yup';
 
-export const getValidationSchema = (t: Translator) =>
+export const getSchema = (t: Translator) =>
   yup.object().shape({
-    email: yup.string().required(t('emailRequired')).email(t('incorrectEmail')),
+    email: yup.string().required(t('emailRequired')),
+    code: yup.string().required(t('codeRequired')),
   });

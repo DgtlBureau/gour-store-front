@@ -1,8 +1,13 @@
-import { Path } from 'constants/routes';
-import { commonApi } from './commonApi';
+import { CheckCodeDto } from 'types/dto/check-code.dto';
+import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { SendEmailCodeDto } from 'types/dto/profile/send-code.dto';
+import { SignInDto } from 'types/dto/signin.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
 import { Tokens } from 'types/dto/tokens.dto';
-import { SignInDto } from 'types/dto/signin.dto';
+
+import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const authApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -25,21 +30,30 @@ export const authApi = commonApi.injectEndpoints({
           };
         },
       }),
-      sendCode: builder.mutation<void, string>({
-        query(email) {
+      recoverPassword: builder.mutation<void, PasswordRecoveryDto>({
+        query(body) {
           return {
             method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.SEND_CODE}`,
-            body: { email },
+            url: `${Path.CLIENT_AUTH}/${Path.RECOVER_PASSWORD}`,
+            body,
           };
         },
       }),
-      checkCode: builder.mutation<boolean, string>({
-        query(code) {
+      sendEmailCode: builder.mutation<number, SendEmailCodeDto>({
+        query(body) {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.SEND_EMAIL_CODE}`,
+            body,
+          };
+        },
+      }),
+      checkCode: builder.mutation<boolean, CheckCodeDto>({
+        query(body) {
           return {
             method: 'POST',
             url: `${Path.CLIENT_AUTH}/${Path.CHECK_CODE}`,
-            body: { code },
+            body,
           };
         },
       }),
@@ -56,5 +70,11 @@ export const authApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useSignUpMutation, useSignInMutation, useSendCodeMutation, useSignOutMutation, useCheckCodeMutation } =
-  authApi;
+export const {
+  useSignUpMutation,
+  useSignInMutation,
+  useSendEmailCodeMutation,
+  useSignOutMutation,
+  useCheckCodeMutation,
+  useRecoverPasswordMutation,
+} = authApi;

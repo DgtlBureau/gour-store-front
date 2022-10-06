@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
+
+import { defaultTheme as t } from 'themes';
 
 type Props = {
   isOpen: boolean;

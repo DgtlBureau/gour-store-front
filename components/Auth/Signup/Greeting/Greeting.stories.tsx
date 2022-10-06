@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { Box } from 'components/UI/Box/Box';
+
 import { SignupGreeting, SignupGreetingProps } from './Greeting';
 
 export default {
@@ -17,13 +19,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupGreeting> = function (args: SignupGreetingProps) {
-  return (
-    <Box sx={boxSx}>
-      <SignupGreeting {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SignupGreeting> = args => (
+  <Box sx={boxSx}>
+    <SignupGreeting {...args} />
+  </Box>
+);
 export const DefaultSignupGreeting = Template.bind({});
 
 const props: Partial<SignupGreetingProps> = {};

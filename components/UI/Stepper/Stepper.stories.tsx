@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { Stepper } from './Stepper';
 
 export default {
@@ -8,9 +9,7 @@ export default {
   title: 'Item',
 } as Meta;
 
-const Template: ComponentStory<typeof Stepper> = function (args) {
-  return <Stepper {...args} />;
-};
+const Template: ComponentStory<typeof Stepper> = args => <Stepper {...args} />;
 
 export const DefaultItem = Template.bind({});
 const props = {

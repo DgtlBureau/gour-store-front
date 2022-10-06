@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import { GameLayout } from 'layouts/Game/Game';
-import { useAppNavigation } from 'components/Navigation';
+import { PrivateLayout } from 'layouts/Private/Private';
+
 import { GameMain } from 'components/Game/Main/Main';
 import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
-import { PrivateLayout } from 'layouts/Private/Private';
+import { useAppNavigation } from 'components/Navigation';
 
 export function Game() {
   const { currency, language } = useAppNavigation();
@@ -15,13 +16,13 @@ export function Game() {
   const closeRulesModal = () => setRulesModalIsOpen(false);
 
   return (
-    // <PrivateLayout>
-    <GameLayout currency={currency} language={language}>
-      <GameMain onHelpClick={openRulesModal} />
+    <PrivateLayout>
+      <GameLayout currency={currency} language={language}>
+        <GameMain onHelpClick={openRulesModal} />
 
-      <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
-    </GameLayout>
-    // </PrivateLayout>
+        <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
+      </GameLayout>
+    </PrivateLayout>
   );
 }
 

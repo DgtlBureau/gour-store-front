@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { ProductInformation, ProductInformationProps } from './Information';
 
 export default {
@@ -8,9 +9,7 @@ export default {
   title: 'Product/Information',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductInformation> = function (args: ProductInformationProps) {
-  return <ProductInformation {...args} />;
-};
+const Template: ComponentStory<typeof ProductInformation> = args => <ProductInformation {...args} />;
 
 export const DefaultProductInformation = Template.bind({});
 

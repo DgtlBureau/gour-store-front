@@ -1,6 +1,8 @@
-import { Path } from 'constants/routes';
-import { commonApi } from './commonApi';
 import { IPromotion } from 'types/entities/IPromotion';
+
+import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const promotionApi = commonApi.injectEndpoints({
   endpoints(builder) {

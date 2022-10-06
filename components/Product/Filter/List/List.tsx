@@ -1,13 +1,15 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 
-import ArrowsIcon from '@mui/icons-material/CompareArrows';
+import { SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
+
 import { ICategory } from 'types/entities/ICategory';
-import { Language } from 'types/entities/Language';
 import { IFiltersCharacteristic } from 'types/entities/IProduct';
+import { Language } from 'types/entities/Language';
+
+import ArrowsIcon from '@mui/icons-material/CompareArrows';
 
 export type CatalogFilterProps = {
   categories: ICategory[];
@@ -26,6 +28,7 @@ export function ProductFilterList({
   sx,
   onReverse,
   onCategoryChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onCharacteristicChange,
 }: CatalogFilterProps) {
   // const features = Object.keys(CHARACTERISTICS).filter(

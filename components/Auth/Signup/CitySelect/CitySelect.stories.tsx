@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { SignupCitySelect, SignupCitySelectProps } from './CitySelect';
 import { Box } from 'components/UI/Box/Box';
+
+import { SignupCitySelect, SignupCitySelectProps } from './CitySelect';
 
 export default {
   component: SignupCitySelect,
@@ -17,13 +19,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SignupCitySelect> = function (args: SignupCitySelectProps) {
-  return (
-    <Box sx={boxSx}>
-      <SignupCitySelect {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SignupCitySelect> = args => (
+  <Box sx={boxSx}>
+    <SignupCitySelect {...args} />
+  </Box>
+);
 export const DefaultSignupCitySelect = Template.bind({});
 
 const props: Partial<SignupCitySelectProps> = {
@@ -37,7 +37,6 @@ const props: Partial<SignupCitySelectProps> = {
       value: 'petersburg',
     },
   ],
-  onSubmit: city => console.log(city),
 };
 
 DefaultSignupCitySelect.args = props;

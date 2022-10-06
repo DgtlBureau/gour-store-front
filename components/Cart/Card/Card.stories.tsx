@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { CartCard } from './Card';
 
@@ -13,7 +13,7 @@ const ONE_GRAMM_OF_CHEESE = 4.1;
 const DISCOUNT = 0.25;
 const WEIGHING_VALUE = 100;
 
-const Template: ComponentStory<typeof CartCard> = function () {
+const Template: ComponentStory<typeof CartCard> = () => {
   const [amount, setAmount] = useState(100);
   const price = Math.round(amount * ONE_GRAMM_OF_CHEESE);
 

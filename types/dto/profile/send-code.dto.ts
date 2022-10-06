@@ -1,3 +1,3 @@
-export type SendCodeDto = Readonly<{
-  phone: string;
+export type SendEmailCodeDto = Readonly<{
+  email: string;
 }>;

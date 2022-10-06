@@ -1,14 +1,17 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 
 import { Stack } from '@mui/material';
-import translations from './CredentialsCard.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { InfoCard } from 'components/UI/Info/Card/Card';
+
 import { Box } from 'components/UI/Box/Box';
+import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
 import noPhoto from 'assets/no-image.svg';
+
+import translations from './CredentialsCard.i18n.json';
 
 const sx = {
   content: {

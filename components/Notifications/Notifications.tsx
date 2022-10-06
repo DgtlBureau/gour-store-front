@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { toast, ToastOptions } from 'react-toastify';
+import { ToastOptions, toast } from 'react-toastify';
 
 import { useAppNavigation } from 'components/Navigation';
 import { Typography } from 'components/UI/Typography/Typography';
-import { dispatchNotification, eventBus, EventTypes } from 'packages/EventBus';
-import { Notification, NotificationType } from 'types/entities/Notification';
-import { paymentNotification, PaymentStatus } from './NotificationHelper';
 
+import { Notification, NotificationType } from 'types/entities/Notification';
+
+import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
+
+import { PaymentStatus, paymentNotification } from './NotificationHelper';
 import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {

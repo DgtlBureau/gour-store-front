@@ -1,12 +1,13 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
+
 import { SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 
-import heart from 'assets/images/game/heart.svg';
-import heartHalf from 'assets/images/game/heart-half.svg';
 import heartEmpty from 'assets/images/game/heart-empty.svg';
+import heartHalf from 'assets/images/game/heart-half.svg';
+import heart from 'assets/images/game/heart.svg';
 
 const heartSx = {
   marginRight: '25px',

@@ -1,6 +1,7 @@
 import React, { ChangeEvent, ReactNode } from 'react';
-import MUIRadio from '@mui/material/Radio';
+
 import { SxProps } from '@mui/material';
+import MUIRadio from '@mui/material/Radio';
 
 type Props = {
   checked?: boolean;

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useEffect, useRef, useState } from 'react';
+
 import { intervalToDuration } from 'date-fns';
 
 const zeroPad = (num: number) => String(num).padStart(2, '0');

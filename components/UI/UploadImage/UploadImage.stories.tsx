@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { UploadImage } from './UploadImage';
 
@@ -9,9 +9,7 @@ export default {
   component: UploadImage,
 } as ComponentMeta<typeof UploadImage>;
 
-const Template: ComponentStory<typeof UploadImage> = function (args) {
-  return <UploadImage {...args} />;
-};
+const Template: ComponentStory<typeof UploadImage> = args => <UploadImage {...args} />;
 
 export const DefaultState = Template.bind({});
 

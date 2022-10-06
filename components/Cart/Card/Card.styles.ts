@@ -1,4 +1,4 @@
-import { defaultTheme as t } from '../../../themes';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   card: {
@@ -144,7 +144,7 @@ const sx = {
   },
 
   leftActions: {
-    'button:first-child': {
+    'button:first-of-type': {
       marginRight: '20px',
     },
   },

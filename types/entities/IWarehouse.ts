@@ -1,5 +1,5 @@
-import { ICity } from './ICity';
 import { IBase } from './IBase';
+import { ICity } from './ICity';
 
 export interface IWarehouse extends IBase {
   title: string;

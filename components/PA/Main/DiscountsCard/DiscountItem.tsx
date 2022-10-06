@@ -1,8 +1,11 @@
-import { Grid, Stack } from '@mui/material';
 import React from 'react';
+
+import { Grid } from '@mui/material';
+
 import { Box } from 'components/UI/Box/Box';
-import { defaultTheme as theme } from 'themes';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { defaultTheme as theme } from 'themes';
 
 type Props = {
   discount: {

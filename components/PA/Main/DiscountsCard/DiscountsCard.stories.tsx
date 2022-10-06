@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { PADiscountsCard, PADiscountsCardProps } from './DiscountsCard';
@@ -8,9 +9,7 @@ export default {
   title: 'PA/Main/DiscountsCard',
 } as Meta;
 
-const Template: ComponentStory<typeof PADiscountsCard> = function (args: PADiscountsCardProps) {
-  return <PADiscountsCard {...args} />;
-};
+const Template: ComponentStory<typeof PADiscountsCard> = args => <PADiscountsCard {...args} />;
 export const DefaultPAOrdersCard = Template.bind({});
 
 const props: Partial<PADiscountsCardProps> = {

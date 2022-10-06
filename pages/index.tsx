@@ -1,39 +1,40 @@
-import React from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import React from 'react';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import translations from './Main.i18n.json';
-import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { useGetPageQuery } from 'store/api/pageApi';
-import { useGetPromotionListQuery } from 'store/api/promotionApi';
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from 'store/api/productApi';
+import { useGetPromotionListQuery } from 'store/api/promotionApi';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
-import { ShopLayout } from '../layouts/Shop/Shop';
-import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { ShopLayout } from 'layouts/Shop/Shop';
+
+import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { CardSlider } from 'components/CardSlider/CardSlider';
 import { PromotionCard } from 'components/Promotion/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
+
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import { Currency } from '../types/entities/Currency';
-import { IProduct } from '../types/entities/IProduct';
-import { NotificationType } from 'types/entities/Notification';
+import bannerImg from 'assets/images/banner.jpeg';
 
-import bannerImg from '../assets/images/banner.jpeg';
-
+import translations from './Main.i18n.json';
 import sx from './Main.styles';
 
 const NOW = new Date();
@@ -42,7 +43,7 @@ const NOW = new Date();
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
+  const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
 
   const basket = useAppSelector(state => state.order);
 
@@ -66,8 +67,6 @@ const Home: NextPage = () => {
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
-  const currency: Currency = 'cheeseCoin';
-
   const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
   const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
 
@@ -79,7 +78,7 @@ const Home: NextPage = () => {
       if (isElect) {
         await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);
@@ -123,6 +122,7 @@ const Home: NextPage = () => {
             onDetail={goToProductPage}
           />
         )}
+
         {!!products.length && (
           <ProductCatalog
             withFilters
@@ -144,7 +144,7 @@ const Home: NextPage = () => {
         {!!page && (
           <Box>
             <Box sx={sx.banner}>
-              {bannerImg && (
+              {!!bannerImg && (
                 <Image
                   loader={() =>
                     'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'

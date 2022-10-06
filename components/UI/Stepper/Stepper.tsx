@@ -1,5 +1,7 @@
 import React from 'react';
+
 import DoneIcon from '@mui/icons-material/Done';
+
 import { Box } from '../Box/Box';
 import s from './Stepper.module.scss';
 

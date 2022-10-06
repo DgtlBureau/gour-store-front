@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { AuthLayout } from 'layouts/Auth/Auth';
+import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
-import { useCheckCodeMutation, useSendCodeMutation, useSignUpMutation } from 'store/api/authApi';
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
-import { SignUpDto } from 'types/dto/signup.dto';
-import { NotificationType } from 'types/entities/Notification';
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
-import { dispatchNotification } from 'packages/EventBus';
 
-import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
+import { AuthLayout } from 'layouts/Auth/Auth';
+
 import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import { SignupFavoriteInfo, FavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
-import { useAppNavigation } from 'components/Navigation';
-import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { FavoriteInfo, SignupFavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
+import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
+import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
+import { useAppNavigation } from 'components/Navigation';
 
-import credentialsImage from 'assets/icons/signup/credentials.svg';
-import greetingsImage from 'assets/icons/signup/greetings.svg';
+import { ReferralCodeDto } from 'types/dto/referral-code.dto';
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { SignUpDto } from 'types/dto/signup.dto';
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
 import cityImage from 'assets/icons/signup/city.svg';
+import credentialsImage from 'assets/icons/signup/credentials.svg';
 import favoritesImage from 'assets/icons/signup/favorites.svg';
+import greetingsImage from 'assets/icons/signup/greetings.svg';
 import referralImage from 'assets/icons/signup/referralCodes.svg';
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
@@ -40,16 +44,15 @@ export default function SignUp() {
       }))
     : [];
 
-  const [sendCode] = useSendCodeMutation();
+  const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
   const [signUp] = useSignUpMutation();
-  const [checkCode, { isLoading: codeCheckIsLoading }] = useCheckCodeMutation();
+  const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState('');
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
-  const [favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo);
+  const [_favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo); // TODO сохранение выбора
   const [referralCode, setReferralCode] = useState('');
-  // const [isPhoneCodeValid, setIsPhoneCodeValid] = useState(false);
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -57,35 +60,31 @@ export default function SignUp() {
   const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
 
-  const sendSMS = async (email: string) => {
+  const sendEmail = async (email: string) => {
     try {
-      await sendCode(email).unwrap();
+      await sendCode({ email }).unwrap();
+
       dispatchNotification('Email код отправлен');
-      return 'success';
+
+      return Promise.resolve();
     } catch (error) {
-      console.error(error);
-      dispatchNotification('Ошибка при отправке кода', { type: NotificationType.DANGER });
-      return (error as { data: { message: string } })?.data?.message || 'Неизвестная ошибка!';
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
     }
   };
 
-  const checkCodeHandler = async (code: string) => {
+  const checkEmailCode = async (code: string) => {
     try {
-      const isApprove = await checkCode(code).unwrap();
-
-      if (!isApprove) {
-        dispatchNotification('Неверный код', { type: NotificationType.DANGER });
-
-        return false;
-      }
+      await checkCode({ code }).unwrap();
 
       dispatchNotification('Код подтверждён');
 
-      return true;
+      return Promise.resolve();
     } catch (error) {
-      console.error(error);
+      const message = getErrorMessage(error);
 
-      return false;
+      return Promise.reject(message);
     }
   };
 
@@ -113,7 +112,7 @@ export default function SignUp() {
       firstName: credentials.firstName,
       lastName: credentials.lastName,
       email: credentials.email,
-      code: credentials.sms,
+      code: credentials.code,
       password: credentials.password,
       referralCode,
       cityId: +selectedCity,
@@ -124,10 +123,12 @@ export default function SignUp() {
       await signUp(data).unwrap();
 
       dispatchNotification('Регистрация прошла успешно');
+
       goToSignIn();
-    } catch (e: unknown) {
-      console.log(e);
-      dispatchNotification('Ошибка регистрации', { type: NotificationType.DANGER });
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -153,9 +154,9 @@ export default function SignUp() {
       component: (
         <SignupCredentials
           defaultValues={credentials}
-          codeCheckIsLoading={codeCheckIsLoading}
-          onSendSMS={sendSMS}
-          onCheckCode={checkCodeHandler}
+          codeIsSending={codeIsSending}
+          onEmailSend={sendEmail}
+          onCodeCheck={checkEmailCode}
           onSubmit={saveCredentials}
           onBack={goToCitySelect}
         />

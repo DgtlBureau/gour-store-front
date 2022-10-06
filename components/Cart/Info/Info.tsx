@@ -1,14 +1,19 @@
 import React from 'react';
+
 import { Paper } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { defaultTheme } from 'themes';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Info.i18n.json';
+
 import { Currency } from 'types/entities/Currency';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import { defaultTheme } from 'themes';
+
+import translations from './Info.i18n.json';
 
 const sx = {
   paper: {

@@ -1,13 +1,15 @@
 import React from 'react';
 
-import StarIcon from '@mui/icons-material/Star';
-
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Reviews.i18n.json';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import StarIcon from '@mui/icons-material/Star';
 import { defaultTheme as theme } from 'themes';
+
+import translations from './Reviews.i18n.json';
 
 const sx = {
   counter: {

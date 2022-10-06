@@ -1,6 +1,8 @@
-import React, { FocusEventHandler } from 'react';
-import { InputProps, SxProps } from '@mui/material';
+import React, { FocusEventHandler, ReactElement } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { InputProps, SxProps } from '@mui/material';
+
 import { TextField } from 'components/UI/TextField/TextField';
 
 export type HFTextFieldProps = {
@@ -13,6 +15,7 @@ export type HFTextFieldProps = {
   sx?: SxProps;
   disabled?: boolean;
   InputProps?: InputProps;
+  endAdornment?: ReactElement;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   regexp?: RegExp;
   inputProps?: Record<string, number>;
@@ -30,6 +33,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
   const {
     control,
     formState: { errors },
+    clearErrors,
   } = useFormContext();
 
   return (
@@ -37,15 +41,19 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
       name={name}
       control={control}
       defaultValue={defaultValue || ''}
-      render={({ field: { ref, onChange: HFOnChange, ...rest } }) => (
+      render={({ field: { ref: _ref, onChange: HFOnChange, ...rest } }) => (
         <TextField
           {...rest}
           onChange={event => {
-            const isInvalid = !checkValidity(event, regexp);
-            if (isInvalid) {
+            const isValid = checkValidity(event, regexp);
+
+            if (!isValid) {
               event.preventDefault();
               return;
             }
+
+            clearErrors(name);
+
             HFOnChange(event);
             onChange?.(event);
           }}

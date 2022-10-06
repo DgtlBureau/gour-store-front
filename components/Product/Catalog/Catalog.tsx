@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+
 import { SxProps } from '@mui/material';
+
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { Currency } from 'types/entities/Currency';
+import { ICategory } from 'types/entities/ICategory';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { IFiltersCharacteristic, IProduct } from 'types/entities/IProduct';
+import { Language } from 'types/entities/Language';
+
+import { getProductBackground } from 'utils/categoryUtil';
+import { getCountryImage } from 'utils/countryUtil';
 
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
-
-import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory } from 'types/entities/ICategory';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { getCountryImage } from 'helpers/countryHelper';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-import { getProductBackground } from 'helpers/categoryHelper';
-import { CardSlider } from 'components/CardSlider/CardSlider';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { Button } from 'components/UI/Button/Button';
+
+import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
-import { ProductCard } from '../Card/Card';
-import { checkCategory } from './CatalogHelpers';
-
 import catalogSx from './Catalog.styles';
+import { checkCategory } from './CatalogHelpers';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -70,10 +73,24 @@ export function ProductCatalog({
 
   const withFilterList = !!withFilters && !!categories?.length;
 
-  const productsWidthElect = products.map(product => ({
-    ...product,
-    isElected: isProductFavorite(product.id, favoritesList),
-  }));
+  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
+
+  const getProductCount = (productId: number, isWeightGood: boolean) => {
+    const productInBasket = findProductInBasket(productId);
+    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
+  };
+
+  const extendedProducts = useMemo(
+    () =>
+      products.map(product => ({
+        ...product,
+        isElected: isProductFavorite(product.id, favoritesList),
+        backgroundImg: categories && getProductBackground(categories, product.categories),
+        countryImg: getCountryImage(product.categories),
+        currentCount: getProductCount(product.id, product.isWeightGood),
+      })),
+    [products, categories],
+  );
 
   const screenWidth = window.screen.width;
 
@@ -89,20 +106,17 @@ export function ProductCatalog({
     // TODO: реализация фильтров списка товаров
   };
 
-  const productList = categories
-    ? productsWidthElect?.filter(
-        product => checkCategory(product.categories, filters.productType),
-        // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
-        // TODO: обсудить, мб вообще все фильтры выводить
-      )
-    : productsWidthElect;
-
-  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
-
-  const getProductCount = (productId: number, isWeightGood: boolean) => {
-    const productInBasket = findProductInBasket(productId);
-    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-  };
+  const productList = useMemo(
+    () =>
+      categories
+        ? extendedProducts.filter(
+            product => checkCategory(product.categories, filters.productType),
+            // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
+            // TODO: обсудить, мб вообще все фильтры выводить
+          )
+        : extendedProducts,
+    [categories, extendedProducts],
+  );
 
   const getCatalogRows = () => {
     const length = productList?.length || 0;
@@ -167,9 +181,9 @@ export function ProductCatalog({
             discount={discount || product.discount}
             currency={currency}
             previewImg={product.images[0]?.small || ''}
-            countryImg={getCountryImage(product.categories)}
-            backgroundImg={categories && getProductBackground(categories, product.categories)}
-            currentCount={getProductCount(product.id, product.isWeightGood)}
+            countryImg={product.countryImg}
+            backgroundImg={product.backgroundImg}
+            currentCount={product.currentCount}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
             onAdd={() => onAdd(product)}

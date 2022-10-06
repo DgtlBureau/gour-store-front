@@ -1,6 +1,7 @@
 import React, { ElementType, ReactNode } from 'react';
+
+import { SxProps } from '@mui/material';
 import MUIButton from '@mui/material/Button';
-import { SxProps, Color } from '@mui/material';
 
 import { ProgressCircular } from '../ProgressCircular/ProgressCircular';
 

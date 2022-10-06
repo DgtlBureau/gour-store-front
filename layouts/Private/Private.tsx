@@ -1,8 +1,10 @@
-import { useAppSelector } from 'hooks/store';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { selectIsAuth } from 'store/selectors/auth';
+
 import { useAppNavigation } from 'components/Navigation';
 import Loader from 'components/UI/Loader/Loader';
+
+import { useAppSelector } from 'hooks/store';
 
 type Props = {
   children: JSX.Element;

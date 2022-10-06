@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { SxProps } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import MUISelect, { SelectChangeEvent } from '@mui/material/Select';
-import { SxProps } from '@mui/material';
 
 import { Box } from '../Box/Box';
 import { Typography } from '../Typography/Typography';

@@ -1,16 +1,18 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import translations from './CitySelect.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getSchema } from './validation';
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFSelect } from 'components/HookForm/HFSelect';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { HFSelect } from 'components/HookForm/HFSelect';
 
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './CitySelect.i18n.json';
 import sx from './CitySelect.styles';
+import { getSchema } from './validation';
 
 type SignupCityFields = {
   city: string;

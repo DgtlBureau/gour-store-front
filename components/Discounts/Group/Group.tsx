@@ -1,11 +1,11 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
 
 import { ICategoryWithDiscount } from 'types/entities/ICategory';
 import { Language } from 'types/entities/Language';
 
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from 'components/UI/Box/Box';
 import { Stepper } from 'components/UI/Stepper/Stepper';
 import { getCurrencySymbol } from 'helpers/currencyHelper';

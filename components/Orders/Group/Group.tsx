@@ -1,9 +1,11 @@
-import { format } from 'date-fns';
 import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { OrdersCard, FullOrder } from '../Card/Card';
+
+import { format } from 'date-fns';
+
+import { FullOrder, OrdersCard } from '../Card/Card';
 
 export type OrdersGroupProps = {
   date: Date;

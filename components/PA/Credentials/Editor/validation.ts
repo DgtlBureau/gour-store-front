@@ -1,4 +1,5 @@
-import { Translator } from 'utils/Translator';
+import { Translator } from 'types/entities/Translator';
+
 import * as yup from 'yup';
 
 export const getValidationSchema = (t: Translator) =>

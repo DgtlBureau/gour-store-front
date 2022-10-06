@@ -1,12 +1,14 @@
 import React from 'react';
+
 import { Grid, IconButton } from '@mui/material';
 
-import CartIcon from '@mui/icons-material/ShoppingCart';
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
-import TrashIcon from '@mui/icons-material/DeleteForever';
-import { defaultTheme as t } from 'themes';
 import { Box } from 'components/UI/Box/Box';
+
+import PlusIcon from '@mui/icons-material/Add';
+import TrashIcon from '@mui/icons-material/DeleteForever';
+import MinusIcon from '@mui/icons-material/Remove';
+import CartIcon from '@mui/icons-material/ShoppingCart';
+import { defaultTheme as t } from 'themes';
 
 const sx = {
   cart: {
