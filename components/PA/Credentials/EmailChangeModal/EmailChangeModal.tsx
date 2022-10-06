@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CircularProgress, Divider } from '@mui/material';
 
+import { HFSendField } from 'components/HookForm/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
-import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
-import SendIcon from '@mui/icons-material/Send';
 
 import translations from './EmailChangeModal.i18n.json';
 import sx from './EmailChangeModal.styles';
@@ -58,7 +55,7 @@ export function PAEmailChangeModal({
   const emailIsDirty = values.formState.dirtyFields.email;
   const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
   const formIsValid = values.formState.isValid && isCodeSuccess;
-  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess || !emailIsDirty;
+  const sendingIsDisabled = !!seconds || !emailIsValid || !emailIsDirty;
 
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -107,21 +104,28 @@ export function PAEmailChangeModal({
     }
   };
 
-  const resetStates = () => {
+  const resetEmailStates = () => {
     setSeconds(null);
     setIsCodeSended(false);
     setIsCodeSuccess(false);
-    values.reset(defaultValues);
+    values.resetField('code');
+  };
+
+  const changeEmail = () => {
+    if (isCodeSended) resetEmailStates();
   };
 
   const closeModal = () => {
-    resetStates();
+    resetEmailStates();
     onClose();
   };
 
   const submit = (dto: ChangeEmailDto) => {
     onSubmit(dto);
-    resetStates();
+
+    values.resetField('email', { defaultValue: dto.email });
+
+    resetEmailStates();
   };
 
   return (
@@ -136,23 +140,13 @@ export function PAEmailChangeModal({
       <Box sx={sx.body}>
         <FormProvider {...values}>
           <form id={formId} onSubmit={values.handleSubmit(submit)}>
-            <HFTextField
+            <HFSendField
               label={t('email')}
               name='email'
-              disabled={isCodeSuccess}
-              endAdornment={
-                <>
-                  <Divider sx={sx.divider} orientation='vertical' />
-
-                  {codeIsSending ? (
-                    <CircularProgress />
-                  ) : (
-                    <IconButton disabled={sendingIsDisabled} onClick={sendEmail}>
-                      <SendIcon />
-                    </IconButton>
-                  )}
-                </>
-              }
+              onChange={changeEmail}
+              isSending={!!codeIsSending}
+              sendingIsDisabled={sendingIsDisabled}
+              onSend={sendEmail}
             />
 
             {isCodeSended && !isCodeSuccess && (
