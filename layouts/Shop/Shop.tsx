@@ -8,7 +8,7 @@ import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-import { Copyright } from 'components/Copyright/Copyright';
+// import { Copyright } from 'components/Copyright/Copyright';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
@@ -78,7 +78,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <Footer {...contacts} sx={sx.footer} />
 
-      <Copyright />
+      {/* <Copyright /> */}
 
       <CheesecoinsAddModal isOpened={isModalOpen} onClose={closeCheesecoinsModal} onSubmit={payInvoice} />
     </Box>
