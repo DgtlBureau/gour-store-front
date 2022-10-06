@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { useGetCategoryListWithDiscountQuery } from 'store/api/categoryApi';
+
 import { PALayout } from 'layouts/PA/PA';
-import { useAppNavigation } from 'components/Navigation';
+
 import { DiscountsGroup } from 'components/Discounts/Group/Group';
 import { DiscountsInfoBar } from 'components/Discounts/InfoBar/InfoBar';
-import { Typography } from 'components/UI/Typography/Typography';
+import { useAppNavigation } from 'components/Navigation';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import { Typography } from 'components/UI/Typography/Typography';
 
 export function Discounts() {
   const { language } = useAppNavigation();

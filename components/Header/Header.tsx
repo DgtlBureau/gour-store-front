@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import NextLink from 'next/link';
 import Image from 'next/image';
+import NextLink from 'next/link';
+import React, { useState } from 'react';
 
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
