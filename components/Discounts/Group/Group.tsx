@@ -2,16 +2,17 @@ import React from 'react';
 
 import { Grid } from '@mui/material';
 
-import { ICategoryWithDiscount } from 'types/entities/ICategory';
-import { Language } from 'types/entities/Language';
-
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
 import { Stepper } from 'components/UI/Stepper/Stepper';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ICategoryWithDiscount } from 'types/entities/ICategory';
+import { Language } from 'types/entities/Language';
+
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import { sx } from './Group.styles';
-import { Typography } from 'components/UI/Typography/Typography';
-import { getCurrencySymbol } from 'utils/currencyUtil';
 
 type Props = {
   title: string;
