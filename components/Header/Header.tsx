@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
+import React, { useState } from 'react';
+import NextLink from 'next/link';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -110,9 +114,11 @@ export function Header({
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
             <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
-                <Link href='/'>
-                  <Image src={Logo} height={49} width={58} alt='' />
-                </Link>
+                <NextLink href='/' passHref>
+                  <a>
+                    <Image src={Logo} height='49px' width='58px' alt='' />
+                  </a>
+                </NextLink>
               </Box>
 
               {!isGame && (

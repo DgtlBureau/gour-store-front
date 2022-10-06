@@ -3,6 +3,7 @@ import { ICategory } from 'types/entities/ICategory';
 import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
+import { ICategory, ICategoryWithDiscount } from 'types/entities/ICategory';
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -23,8 +24,14 @@ export const categoryApi = commonApi.injectEndpoints({
           };
         },
       }),
+      getCategoryListWithDiscount: builder.query<ICategoryWithDiscount[], void>({
+        query: () => ({
+          method: 'GET',
+          url: `${Path.CATEGORIES}/${Path.DISCOUNTS}`,
+        }),
+      }),
     };
   },
 });
 
-export const { useGetCategoryQuery, useGetCategoryListQuery } = categoryApi;
+export const { useGetCategoryQuery, useGetCategoryListQuery, useGetCategoryListWithDiscountQuery } = categoryApi;

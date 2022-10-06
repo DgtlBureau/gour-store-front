@@ -36,7 +36,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
       color: order.crmInfo?.status.color,
     },
     createdAt,
-    address: `${city}, ${street}, ${house}, кв. ${apartment},`,
+    address: `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`,
     client,
     products,
     promotions,

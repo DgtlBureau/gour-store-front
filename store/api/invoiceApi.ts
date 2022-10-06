@@ -37,14 +37,14 @@ const mockData: IInvoice[] = [
     amount: 855354,
     status: InvoiceStatus.FAILED,
     value: 855354,
-    createdAt: '2022-08-24T13:23:16Z',
-    updatedAt: '2022-08-24T13:23:16Z',
-    expiresAt: '2022-08-28T13:53:16Z',
+    createdAt: '2022-11-24T13:23:16Z',
+    updatedAt: '2022-11-24T13:23:16Z',
+    expiresAt: '2022-11-24T13:53:16Z',
   },
 ];
 
 // eslint-disable-next-line no-promise-executor-return
-const sleep = (sec: number) => new Promise<void>(res => setTimeout(() => res(), sec * 1000)); // TODO: remove this line
+const sleep = (sec: number) => new Promise<void>(res => setTimeout(res, sec * 1000)); // TODO: remove this line
 
 export const invoiceApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -53,9 +53,10 @@ export const invoiceApi = commonApi.injectEndpoints({
         // query: async () => ({
         //   url: 'Path.INVOICES',
         // }),
-        queryFn: () => ({
-          data: mockData,
-        }),
+        async queryFn() {
+          await sleep(1);
+          return { data: mockData };
+        },
         providesTags: result =>
           result
             ? [...result.map(({ id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
@@ -66,7 +67,7 @@ export const invoiceApi = commonApi.injectEndpoints({
         //   url: '',
         // }),
         async queryFn({ count }) {
-          await sleep(1.5);
+          await sleep(1);
           return { data: count };
         },
       }),

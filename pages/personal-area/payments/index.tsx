@@ -29,7 +29,7 @@ export function Payments() {
   if (isLoading) {
     return (
       <PALayout>
-        <ProgressLinear variant='buffer' />
+        <ProgressLinear />
       </PALayout>
     );
   }
