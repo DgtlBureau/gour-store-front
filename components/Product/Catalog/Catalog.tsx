@@ -80,16 +80,22 @@ export function ProductCatalog({
     return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
   };
 
+  // TODO: сейчас проблема в том, что при добавлении товара в корзину ВСЕ категории в useMemo считаются заново и он мало помогает
+  // нужно вынести useMemo на уровень выше, чтобы категории добавлялись 1 раз, а здесь только проверять количество товара в корзине
+  // это позволит выполнять долгие циклы (расчет страны, изображений для фона) 1 раз, а не на каждом добавлении/удалении из корзины товара
+  // TODO: также можно обернуть <ProductCard /> в React.memo и прокидывать в него мемоизированные пропсы,
+  // чтобы при ререндере здесь обновлялись только нужные карточки товаров
+
   const extendedProducts = useMemo(
     () =>
       products.map(product => ({
         ...product,
         isElected: isProductFavorite(product.id, favoritesList),
-        backgroundImg: categories && getProductBackground(categories, product.categories),
+        backgroundImg: categories && getProductBackground(categories, product.categories || []),
         countryImg: getCountryImage(product.categories),
         currentCount: getProductCount(product.id, product.isWeightGood),
       })),
-    [products, categories],
+    [products, categories, favoritesList, basket],
   );
 
   const screenWidth = window.screen.width;
@@ -110,7 +116,7 @@ export function ProductCatalog({
     () =>
       categories
         ? extendedProducts.filter(
-            product => checkCategory(product.categories, filters.productType),
+            product => checkCategory(product.categories || [], filters.productType),
             // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
             // TODO: обсудить, мб вообще все фильтры выводить
           )

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Grid } from '@mui/material';
 
+import { useGetCategoryListWithDiscountQuery } from 'store/api/categoryApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 import { useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
@@ -18,7 +19,11 @@ import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 import { Currency } from 'types/entities/Currency';
 
-import { getFormattedAddressesList, getFormattedOrdersList } from './personalAreaHelper';
+import {
+  formatCategoriesWithMaxDiscount,
+  getFormattedAddressesList,
+  getFormattedOrdersList,
+} from './personalAreaHelper';
 
 export function Main() {
   const { language, goToCredentials, goToAddresses, goToOrders, goToDiscounts } = useAppNavigation();
@@ -26,8 +31,14 @@ export function Main() {
   const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
   const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
   const { data: ordersList = [], isLoading: ordersListIsLoading } = useGetOrdersListQuery();
+  const { data: categoriesWithDiscounts = [], isLoading: categoriesIsLoading } = useGetCategoryListWithDiscountQuery(
+    undefined,
+    {
+      selectFromResult: state => ({ ...state, data: formatCategoriesWithMaxDiscount(state.data) }),
+    },
+  );
 
-  const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading;
+  const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading || categoriesIsLoading;
 
   const currency: Currency = 'cheeseCoin';
 
@@ -37,7 +48,7 @@ export function Main() {
   return (
     <PrivateLayout>
       <PALayout>
-        {isLoading && <ProgressLinear />}
+        {isLoading && <ProgressLinear sx={{ marginBottom: '10px' }} />}
 
         <Grid container spacing={2}>
           {!!currentUser && (
@@ -52,13 +63,17 @@ export function Main() {
             </Grid>
           )}
           <Grid item xs={12} sm={6}>
-            <PAAddressCard addresses={addresses} onClickMore={goToAddresses} />
+            <PAAddressCard isLoading={addressListIsLoading} addresses={addresses} onClickMore={goToAddresses} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PAOrdersCard orders={orders} onClickMore={goToOrders} />
+            <PAOrdersCard isLoading={ordersListIsLoading} orders={orders} onClickMore={goToOrders} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PADiscountsCard discounts={[]} onClickMore={goToDiscounts} />
+            <PADiscountsCard
+              isLoading={categoriesIsLoading}
+              discounts={categoriesWithDiscounts}
+              onClickMore={goToDiscounts}
+            />
           </Grid>
         </Grid>
       </PALayout>
