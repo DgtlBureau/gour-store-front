@@ -1,19 +1,15 @@
 export const sx = {
   stepper: {
-    width: '100%',
-    margin: '0 0 20px 0',
+    maxWidth: {
+      xs: '100%',
+      sm: '550px',
+    },
+    marginBottom: '20px',
   },
-  imageContainer: {
+  image: {
     position: 'relative',
-    alignSelf: {
-      xs: 'flex-start',
-      md: 'auto',
-    },
-    marginTop: {
-      xs: '-30px',
-      md: '0',
-    },
-    left: '0',
-    bottom: '0',
+    display: { xs: 'none', md: 'flex' },
+
+    height: '700px',
   },
 };

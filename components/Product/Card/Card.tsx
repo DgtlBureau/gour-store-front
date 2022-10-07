@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Currency } from 'types/entities/Currency';
 
 import HeartIcon from '@mui/icons-material/Favorite';
-import defaultImg from 'assets/no-image.svg';
+import defaultImg from 'assets/images/default.svg';
 
 import sx from './Card.styles';
 import { ProductCardCart as Cart } from './Cart';

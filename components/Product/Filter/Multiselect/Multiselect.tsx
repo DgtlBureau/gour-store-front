@@ -18,6 +18,8 @@ import { Button } from 'components/UI/Button/Button';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { IOption } from 'types/entities/IOption';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -29,10 +31,7 @@ import selectSx from './Multiselect.styles';
 export type FilterMultiselectProps = {
   title: string;
   selected: string[];
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: IOption[];
   isMobile?: boolean;
   sx?: SxProps;
   onChange(selected: string[]): void;
