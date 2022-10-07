@@ -53,11 +53,11 @@ export default function SignIn() {
 
   const checkEmailCode = async (code: string) => {
     try {
-      await checkCode({ code }).unwrap();
+      const isSuccess = await checkCode({ code }).unwrap();
 
-      dispatchNotification('Код подтверждён');
+      if (isSuccess) dispatchNotification('Код подтверждён');
 
-      return Promise.resolve();
+      return isSuccess;
     } catch (error) {
       const message = getErrorMessage(error);
 
