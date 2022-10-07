@@ -159,7 +159,7 @@ export default function Product() {
             <Box sx={sx.top}>
               <ImageSlider
                 images={product.images}
-                backgroundSrc={categories && getProductBackground(categories, product.categories)}
+                backgroundSrc={categories && getProductBackground(categories, product.categories || [])}
                 sx={sx.imageSlider}
               />
 
