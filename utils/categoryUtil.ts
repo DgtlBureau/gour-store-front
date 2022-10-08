@@ -3,7 +3,7 @@ import { ICategory } from 'types/entities/ICategory';
 import cheeseBackground from 'assets/images/categories/cheese-background.png';
 import meatBackground from 'assets/images/categories/meat-background.png';
 
-export const backgroundByCategory: Record<string, string> = {
+const backgroundByCategory: Record<string, string> = {
   Meat: meatBackground,
   Cheese: cheeseBackground,
 
@@ -11,9 +11,9 @@ export const backgroundByCategory: Record<string, string> = {
   Сыр: cheeseBackground,
 };
 
-export const getProductCategory = (categories: ICategory[], productSubCategories: ICategory[]) => {
+const getProductCategory = (categories: ICategory[], productSubCategories: ICategory[]) => {
   const productCategory = categories.find(category => {
-    const isProductCategory = productSubCategories.find(productSubCategory => productSubCategory.id === category.id);
+    const isProductCategory = productSubCategories?.find(productSubCategory => productSubCategory.id === category.id);
 
     return isProductCategory;
   });

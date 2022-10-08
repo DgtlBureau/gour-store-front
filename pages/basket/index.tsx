@@ -119,12 +119,12 @@ export function Basket() {
                   <CartCard
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
-                    price={it.product.price[currency] || 0} // FIXME: TODO: избавиться от any
+                    price={it.product.price[currency] || 0}
                     amount={it.amount}
                     weight={it.weight}
                     isWeightGood={it.product.isWeightGood}
                     productImg={it.product.images[0]?.small}
-                    backgroundImg={getProductBackground(categories, it.product.categories)}
+                    backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
                     currency={currency}
                     onDetail={() => goToProductPage(it.product.id)}

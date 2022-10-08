@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PALoader from 'components/PA/Main/Loader';
 import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -34,7 +35,7 @@ const sx = {
 };
 
 export type PAOrdersCardProps = {
-  orders?: {
+  orders: {
     id: string;
     date: Date;
     status: string;
@@ -42,38 +43,41 @@ export type PAOrdersCardProps = {
     currency: Currency;
   }[];
   onClickMore(): void;
+  isLoading: boolean;
 };
 
-export function PAOrdersCard({ orders, onClickMore }: PAOrdersCardProps) {
+export function PAOrdersCard({ orders, onClickMore, isLoading }: PAOrdersCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {orders && orders.length !== 0 ? (
-        orders.map(order => (
-          <Box key={order.id} sx={sx.order}>
-            <Box sx={sx.orderHeader}>
-              <Box sx={sx.orderTitle}>
-                <Typography variant='body1' sx={sx.orderId}>
-                  {t('order')} {order.id}
-                </Typography>
-                <Typography variant='body1' color='text.muted'>
-                  {t('from')} {format(order.date, 'dd.MM.yyyy')}
-                </Typography>
-              </Box>
+      {isLoading && <PALoader />}
 
-              <Typography variant='body1'>
-                {order.sum}
-                {getCurrencySymbol(order.currency)}
+      {orders.map(order => (
+        <Box key={order.id} sx={sx.order}>
+          <Box sx={sx.orderHeader}>
+            <Box sx={sx.orderTitle}>
+              <Typography variant='body1' sx={sx.orderId}>
+                {t('order')} {order.id}
+              </Typography>
+              <Typography variant='body1' color='text.muted'>
+                {t('from')} {format(order.date, 'dd.MM.yyyy')}
               </Typography>
             </Box>
 
-            <Typography variant='body2' color='text.muted'>
-              {order.status}
+            <Typography variant='body1'>
+              {order.sum}
+              {getCurrencySymbol(order.currency)}
             </Typography>
           </Box>
-        ))
-      ) : (
+
+          <Typography variant='body2' color='text.muted'>
+            {order.status}
+          </Typography>
+        </Box>
+      )) || 12345}
+
+      {!isLoading && !orders.length && (
         <Typography variant='body1' color='text.muted'>
           {t('emptyOrders')}
         </Typography>

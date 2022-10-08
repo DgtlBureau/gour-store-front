@@ -64,6 +64,7 @@ const sx = {
   },
   country: {
     position: 'absolute',
+    pointerEvents: 'none',
     bottom: 6,
     right: 6,
     height: '26px',

@@ -2,10 +2,13 @@ import React from 'react';
 
 import { Grid } from '@mui/material';
 
+import PALoader from 'components/PA/Main/Loader';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 
 import { DiscountItem } from './DiscountItem';
 import translations from './DiscountsCard.i18n.json';
@@ -31,27 +34,27 @@ const sx = {
 };
 
 export type PADiscountsCardProps = {
-  discounts: {
-    id: string;
-    title: string;
-    category: string;
-    percent: number;
-  }[];
+  discounts: ReturnType<typeof formatCategoriesWithMaxDiscount>;
   onClickMore(): void;
+  isLoading: boolean;
 };
 
-export function PADiscountsCard({ discounts, onClickMore }: PADiscountsCardProps) {
+export function PADiscountsCard({ discounts, onClickMore, isLoading }: PADiscountsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {discounts.length !== 0 ? (
+      {isLoading && <PALoader />}
+
+      {!!discounts.length && (
         <Grid sx={sx.discounts} container spacing={2}>
           {discounts.map(discount => (
             <DiscountItem key={discount.id} discount={discount} />
           ))}
         </Grid>
-      ) : (
+      )}
+
+      {!isLoading && !discounts.length && (
         <Typography variant='body1' color='text.muted'>
           {t('emptyDiscounts')}
         </Typography>
