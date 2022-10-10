@@ -164,9 +164,11 @@ const Home: NextPage = () => {
               {page.info?.title?.[language]}
             </Typography>
 
-            <Typography variant='body1' sx={sx.pageInfoDescription}>
-              {page.info?.description?.[language]}
-            </Typography>
+            <pre>
+              <Typography variant='body1' sx={sx.pageInfoDescription}>
+                {page.info?.description?.[language]}
+              </Typography>
+            </pre>
           </Box>
         )}
       </ShopLayout>
