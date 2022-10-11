@@ -77,7 +77,7 @@ export const ProductCard = memo(function ProductCard({
 }: ProductCardProps) {
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
-  if (!productType) throw new Error('не прокинул categories');
+  // if (!productType) throw new Error('не прокинул categories'); // FIXME:
 
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basket = useAppSelector(state => state.order.products[basketProductsKey]);
