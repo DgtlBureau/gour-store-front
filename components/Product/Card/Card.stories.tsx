@@ -28,7 +28,8 @@ const Template: ComponentStory<typeof ProductCard> = () => {
 
   return (
     <ProductCard
-      currentCount={1}
+      id={1}
+      productType='Мясо'
       isWeightGood
       currency='cheeseCoin'
       title='Chevrano XO Козий Элитный Сыр'

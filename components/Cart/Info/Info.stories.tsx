@@ -15,7 +15,7 @@ export const DefaultState = Template.bind({});
 
 DefaultState.args = {
   count: 3,
-  weight: 0.6,
+  // weight: 0.6,
   price: 2230,
   delivery: 500,
   discount: 570,

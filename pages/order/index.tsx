@@ -6,12 +6,7 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
-import {
-  removeProduct,
-  selectProductsInOrder,
-  selectedProductCount,
-  selectedProductSum,
-} from 'store/slices/orderSlice';
+import { removeProduct, selectBasketProducts, selectedProductCount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
@@ -90,7 +85,7 @@ export function Order() {
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
   const { data: citiesList = [] } = useGetCityListQuery();
 
-  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = productsInOrder.reduce(
@@ -98,7 +93,7 @@ export function Order() {
     0,
   );
 
-  const deleteProductFromOrder = (product: IProduct) => dispatch(removeProduct(product));
+  const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
   const submit = async (orderData: OrderFormType) => {
     const {
@@ -138,7 +133,7 @@ export function Order() {
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
         productId: product.product.id,
         amount: product.amount,
-        weight: product.weight,
+        weight: 1, // FIXME:
       }));
 
       const formattedOrderData: CreateOrderDto = {
@@ -154,7 +149,7 @@ export function Order() {
       await fetchCreateOrder(formattedOrderData).unwrap();
       dispatchNotification('Заказ оформлен');
 
-      productsInOrder.forEach(product => deleteProductFromOrder(product.product));
+      productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
 
       goToOrders();
     } catch (error) {
