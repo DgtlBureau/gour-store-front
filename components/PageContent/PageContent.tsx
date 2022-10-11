@@ -11,14 +11,12 @@ type Props = {
   description?: string;
 };
 
-export const PageContent = ({ title, description }: Props) => {
-  return (
-    <Box>
-      <Typography sx={pageSx.title} variant='h4'>
-        {title || 'Страница находится в разработке 🔧'}
-      </Typography>
+export const PageContent = ({ title, description }: Props) => (
+  <Box>
+    <Typography sx={pageSx.title} variant='h4'>
+      {title || 'Страница находится в разработке 🔧'}
+    </Typography>
 
-      <div dangerouslySetInnerHTML={{ __html: description || '' }} />
-    </Box>
-  );
-};
+    <div dangerouslySetInnerHTML={{ __html: description || '' }} />
+  </Box>
+);
