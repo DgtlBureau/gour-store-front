@@ -30,6 +30,7 @@ const sx = {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
     color: t.palette.text.secondary,
+    margin: '0 0 16px 0',
   },
   description: {
     textAlign: {
@@ -37,7 +38,7 @@ const sx = {
       xs: 'none',
     },
 
-    margin: '16px 0',
+    margin: '0 0 16px 0',
 
     fontSize: '16px',
   },
@@ -51,7 +52,7 @@ const sx = {
 
 type Props = {
   title: string;
-  children: ReactNode;
+  children?: ReactNode;
   btn?: {
     label: string;
     onClick: () => void;
@@ -66,7 +67,7 @@ export function CartEmpty({ title, children, btn }: Props) {
           {title}
         </Typography>
 
-        <Box sx={sx.description}>{children}</Box>
+        {children && <Box sx={sx.description}>{children}</Box>}
 
         {btn && (
           <Button onClick={btn.onClick} sx={sx.btn}>

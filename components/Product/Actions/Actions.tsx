@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Grid, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Select, SelectOption } from 'components/UI/Select/Select';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { ProductTypeLabel } from 'types/entities/IProduct';
 
+import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
@@ -16,28 +20,32 @@ import TrashIcon from '@mui/icons-material/DeleteForever';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MinusIcon from '@mui/icons-material/Remove';
 import CartIcon from '@mui/icons-material/ShoppingCart';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
+import { getDefaultGramByProductType, productGramList } from '../Card/Card';
 import translations from './Actions.i18n.json';
 import sxActions from './Actions.styles';
 
 export type ProductActionsProps = {
+  id: number;
   price: number;
   discount?: number;
+  productType: ProductTypeLabel;
   isWeightGood?: boolean;
   currency: Currency;
-  count: number;
   sx?: SxProps;
   isElect: boolean;
-  onAdd: () => void;
-  onRemove: () => void;
+  onAdd: (gram: number) => void;
+  onRemove: (gram: number) => void;
   onElect: () => void;
 };
 
 export function ProductActions({
+  id,
   price,
-  count,
   discount = 0,
   currency,
+  productType,
   sx,
   isElect,
   onAdd,
@@ -47,7 +55,23 @@ export function ProductActions({
 }: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
 
-  const pricePerCount = isWeightGood ? price / 100 : price;
+  const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
+
+  const basketProductsKey = getProductKeyInBasket(id, productGramValue);
+  const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
+  const [productGramOptions] = useState<SelectOption[]>(
+    () =>
+      (productType &&
+        productGramList[productType].map(gram => ({
+          label: `${gram} гр.`,
+          value: gram,
+        }))) ||
+      [],
+  );
+
+  const onSelectGram = (value: string | number) => selectProductGramValue(+value);
+
+  const pricePerCount = price;
 
   const total = pricePerCount * ((100 - discount) / 100);
 
@@ -56,8 +80,7 @@ export function ProductActions({
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
           <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
-            {total}&nbsp;
-            {getCurrencySymbol(currency)}
+            {total}&nbsp; {getCurrencySymbol(currency)}
           </Typography>
         </Box>
 
@@ -67,30 +90,30 @@ export function ProductActions({
             {getCurrencySymbol(currency)}
           </Typography>
         )}
-
-        <Typography variant='body2'>/ {isWeightGood ? `100${t('g')}` : t('pcs')}</Typography>
       </Box>
+
+      <Select value={productGramValue} onChange={onSelectGram} options={productGramOptions} />
 
       <Box sx={sxActions.actions}>
         <Box sx={sxActions.cart}>
-          {count === 0 ? (
-            <IconButton onClick={onAdd}>
+          {!basketProduct || basketProduct.amount === 0 ? (
+            <IconButton onClick={() => onAdd(productGramValue)}>
               <CartIcon sx={sxActions.icon} />
             </IconButton>
           ) : (
             <Grid container sx={sxActions.btnGroup}>
               <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={onRemove}>
-                  {count === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
+                <IconButton onClick={() => onRemove(productGramValue)}>
+                  {basketProduct?.amount === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
                 </IconButton>
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
-                {count}&nbsp;{isWeightGood ? t('kg') : t('pcs')}
+                {basketProduct.amount * basketProduct.gram}&nbsp;{t('g')}
               </Grid>
 
               <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={onAdd}>
+                <IconButton onClick={() => onAdd(productGramValue)}>
                   <PlusIcon sx={sxActions.icon} />
                 </IconButton>
               </Grid>

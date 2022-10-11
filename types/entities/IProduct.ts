@@ -15,7 +15,7 @@ export interface IProduct extends IBase {
   description: ITranslatableText;
   moyskladCode: number;
   images: IImage[];
-  categories: ICategory[];
+  categories?: ICategory[];
   productGrades: IProductGrade[];
   gradesCount: number;
   commentsCount: number;
@@ -36,3 +36,5 @@ export interface IFiltersCharacteristic {
   productType: number | 'all';
   categories: Record<string, number>;
 }
+
+export type ProductTypeLabel = 'Сыр' | 'Мясо';

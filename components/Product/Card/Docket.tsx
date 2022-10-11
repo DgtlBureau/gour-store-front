@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
+import { SelectOption } from 'components/UI/Select/Select';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
@@ -62,6 +63,10 @@ const sx = {
 };
 
 type Props = {
+  gramValue: number;
+  onSelectGramValue(value: string | number): void;
+  gramOptions: SelectOption[];
+
   inCart: boolean;
   isWeightGood: boolean;
   price: number;
@@ -69,18 +74,27 @@ type Props = {
   currency: Currency;
 };
 
-export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, currency }: Props) {
+export function ProductCardDocket({
+  gramValue,
+  onSelectGramValue,
+  gramOptions,
+  inCart,
+  price,
+  isWeightGood,
+  discount = 0,
+  currency,
+}: Props) {
   const { t } = useLocalTranslation(translations);
-
-  const pricePerCount = isWeightGood ? price / 100 : price;
-
+  // TODO: убрать отовсюду isWeightGood
+  // FIXME: пытался добавить селект, не раскрывались опции
   return (
     <Box sx={{ ...sx.docket, ...(inCart && sx.deployed) }}>
+      {/* <Select options={gramOptions} value={gramValue} onChange={onSelectGramValue} /> */}
       <Box sx={sx.weight}>
         {!!discount && (
           <>
             <Typography variant='body2' sx={sx.oldPrice}>
-              {pricePerCount}&nbsp;
+              {price}&nbsp;
               {getCurrencySymbol(currency)}
             </Typography>
             &nbsp;
@@ -94,10 +108,9 @@ export function ProductCardDocket({ inCart, price, isWeightGood, discount = 0, c
           </Typography>
         )}
       </Box>
-
       <Box sx={sx.total}>
         <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sx.price}>
-          {getPriceWithDiscount(pricePerCount, discount)}&nbsp;
+          {getPriceWithDiscount(price, discount)}&nbsp;
           {getCurrencySymbol(currency)}
         </Typography>
       </Box>
