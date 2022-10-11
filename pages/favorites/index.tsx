@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
@@ -7,16 +7,18 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { useGetProductListQuery } from 'store/api/productApi';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+import { addBasketProduct, selectBasketProducts, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
+import { ICategory } from 'types/entities/ICategory';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
@@ -32,10 +34,15 @@ export function Favorites() {
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
 
-  const basket = useAppSelector(state => state.order);
+  const basket = useAppSelector(selectBasketProducts);
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const formattedProducts = useMemo(
+    () => computeProductsWithCategories(products, categories, favoriteProducts),
+    [products, categories, favoriteProducts],
+  );
+
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -54,7 +61,9 @@ export function Favorites() {
     }
   };
 
-  const filteredProducts = products.filter(product => !!favoriteProducts.find(favorite => favorite.id === product.id));
+  const filteredProducts = formattedProducts.filter(
+    product => !!favoriteProducts.find(favorite => favorite.id === product.id),
+  );
 
   return (
     <PrivateLayout>
@@ -69,10 +78,8 @@ export function Favorites() {
           <ProductCatalog
             title='Избранные продукты'
             emptyTitle='Нет избранных продуктов'
-            products={filteredProducts}
-            favoritesList={favoriteProducts}
+            products={formattedProducts}
             categories={categories}
-            basket={basket.products}
             language={language}
             currency={currency}
             onAdd={addToBasket}

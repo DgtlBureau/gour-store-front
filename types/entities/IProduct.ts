@@ -36,3 +36,5 @@ export interface IFiltersCharacteristic {
   productType: number | 'all';
   categories: Record<string, number>;
 }
+
+export type ProductTypeLabel = 'Сыр' | 'Мясо';

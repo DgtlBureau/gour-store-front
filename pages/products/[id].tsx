@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { LinearProgress } from '@mui/material';
 
@@ -10,7 +10,7 @@ import {
 } from 'store/api/favoriteApi';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
-import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
@@ -19,6 +19,7 @@ import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductActions } from 'components/Product/Actions/Actions';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
@@ -34,7 +35,7 @@ import { NotificationType } from 'types/entities/Notification';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
-import { getProductBackground } from 'utils/categoryUtil';
+import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
@@ -58,11 +59,11 @@ export default function Product() {
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ gram, product }));
 
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
-  const productId = queryId ? +queryId : 0;
+  const productId = Number(queryId) || 0;
 
   const {
     data: product,
@@ -77,6 +78,11 @@ export default function Product() {
       withCategories: true,
     },
     { skip: !productId },
+  );
+
+  const productType = useMemo(
+    () => product?.categories && categories && getProductTypeLabel(categories, product.categories),
+    [product, categories],
   );
 
   const [reviewForModal, setReviewForModal] = useState<Review>({
@@ -105,15 +111,17 @@ export default function Product() {
     }
   };
 
-  const basket = useAppSelector(state => state.order);
-
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
-
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
   const { data: comments = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
     { skip: !productId },
+  );
+
+  const formattedSimilarProducts = useMemo(
+    () =>
+      product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
+    [product?.similarProducts, categories, favoriteProducts],
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
@@ -167,7 +175,6 @@ export default function Product() {
                 <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
-
                 <ProductInformation
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
@@ -177,14 +184,15 @@ export default function Product() {
                 />
 
                 <ProductActions
+                  id={product.id}
                   price={product.price[currency] || 0}
-                  count={count}
                   currency={currency}
                   discount={product.discount}
+                  productType={productType || 'Мясо'} // FIXME:
                   isWeightGood={product.isWeightGood}
                   sx={sx.actions}
-                  onAdd={() => addToBasket(product)}
-                  onRemove={() => removeFromBasket(product)}
+                  onAdd={(gram: number) => addToBasket(product, gram)}
+                  onRemove={(gram: number) => removeFromBasket(product, gram)}
                   onElect={() => electProduct(product.id, isProductFavorite(product.id, favoriteProducts))}
                   isElect={isProductFavorite(product.id, favoriteProducts)}
                 />
@@ -199,11 +207,10 @@ export default function Product() {
               <Typography variant='body1'>{product.description[language] || ''}</Typography>
             </Box>
 
-            {!!product.similarProducts.length && (
+            {!!formattedSimilarProducts?.length && (
               <ProductCatalog
                 title={t('similar')}
-                products={product.similarProducts}
-                basket={basket.products}
+                products={formattedSimilarProducts}
                 language={language}
                 currency={currency}
                 sx={sx.similar}
@@ -211,7 +218,6 @@ export default function Product() {
                 onRemove={removeFromBasket}
                 onElect={electProduct}
                 onDetail={goToProductPage}
-                favoritesList={favoriteProducts}
               />
             )}
 
