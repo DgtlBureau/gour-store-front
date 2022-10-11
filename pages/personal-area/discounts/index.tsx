@@ -4,6 +4,7 @@ import { useGetCategoryListWithDiscountQuery } from 'store/api/categoryApi';
 
 import { PALayout } from 'layouts/PA/PA';
 
+
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { DiscountsGroup } from 'components/Discounts/Group/Group';
 import { DiscountsInfoBar } from 'components/Discounts/InfoBar/InfoBar';
