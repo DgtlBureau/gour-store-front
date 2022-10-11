@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Grid, IconButton } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+import { Typography } from 'components/UI/Typography/Typography';
 
 import PlusIcon from '@mui/icons-material/Add';
 import TrashIcon from '@mui/icons-material/DeleteForever';
@@ -29,6 +31,7 @@ const sx = {
     },
   },
   iconBtn: {
+    width: '100%',
     padding: {
       md: '8px',
       sm: '6px',
@@ -43,6 +46,11 @@ const sx = {
     },
     color: t.palette.common.white,
   },
+  buyLabel: {
+    textTransform: 'uppercase',
+    marginLeft: '10px',
+    color: t.palette.common.white,
+  },
   deployed: {
     width: '100%',
   },
@@ -55,17 +63,21 @@ const sx = {
 
 type Props = {
   currentCount: number;
-  isWeightGood: boolean;
+  // isWeightGood: boolean; // TODO: выпилить это поле
+  productGram: number;
   onAdd: () => void;
   onRemove: () => void;
 };
 
-export function ProductCardCart({ onRemove, currentCount, isWeightGood, onAdd }: Props) {
+export function ProductCardCart({ currentCount, productGram, onAdd, onRemove }: Props) {
   return (
-    <Box sx={{ ...sx.cart, ...(currentCount !== 0 && sx.deployed) }}>
+    <Box sx={{ ...sx.cart, ...(currentCount !== -1 && sx.deployed) }}>
       {currentCount === 0 ? (
         <IconButton sx={sx.iconBtn} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
+          <Typography variant='body2' sx={sx.buyLabel}>
+            купить
+          </Typography>
         </IconButton>
       ) : (
         <Grid container xs>
@@ -76,7 +88,7 @@ export function ProductCardCart({ onRemove, currentCount, isWeightGood, onAdd }:
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            {currentCount} {isWeightGood ? 'кг' : 'шт'}
+            {currentCount * productGram} г
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>

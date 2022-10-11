@@ -23,7 +23,6 @@ export function InfoCard({ title, footerText, onClickMore, children }: InfoCardP
         <Typography variant='h5' sx={sx.title}>
           {title}
         </Typography>
-
         <Box sx={sx.children}>{children}</Box>
       </Box>
 

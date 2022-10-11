@@ -31,7 +31,7 @@ export type SignupCredentialsProps = {
   codeIsSending?: boolean;
   onBack(): void;
   onEmailSend(email: string): Promise<void>;
-  onCodeCheck(code: string): Promise<void>;
+  onCodeCheck(code: string): Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
@@ -104,9 +104,11 @@ export function SignupCredentials({
     if (value.length !== 4) return;
 
     try {
-      await onCodeCheck(value);
+      const isSuccess = await onCodeCheck(value);
 
-      setIsCodeSuccess(true);
+      setIsCodeSuccess(isSuccess);
+
+      if (!isSuccess) values.setError('code', { message: 'Неверный код' });
     } catch (e) {
       setIsCodeSuccess(false);
       values.setError('code', { message: String(e) });
