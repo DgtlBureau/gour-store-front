@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { HFSendField } from 'components/HookForm/HFSendField';
+import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';

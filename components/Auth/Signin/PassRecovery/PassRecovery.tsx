@@ -4,8 +4,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { AuthCard } from 'components/Auth/Card/Card';
-import { HFPassField } from 'components/HookForm/HFPassField';
-import { HFSendField } from 'components/HookForm/HFSendField';
+import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
+import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';

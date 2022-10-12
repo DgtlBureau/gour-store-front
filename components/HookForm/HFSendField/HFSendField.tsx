@@ -7,19 +7,8 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 
 import SendIcon from '@mui/icons-material/Send';
 
-import { HFTextField, HFTextFieldProps } from './HFTextField';
-
-const sx = {
-  divider: {
-    height: 28,
-    marginRight: '14px',
-  },
-  adornment: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-};
+import { HFTextField, HFTextFieldProps } from '../HFTextField';
+import sx from './HFSendField.styles';
 
 export type HFSendFieldProps = Omit<HFTextFieldProps, 'endAdornment'> & {
   isSending: boolean;

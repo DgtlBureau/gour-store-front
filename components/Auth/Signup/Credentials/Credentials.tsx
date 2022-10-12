@@ -5,9 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, Radio } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
-import { HFPassField } from 'components/HookForm/HFPassField';
+import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
-import { HFSendField } from 'components/HookForm/HFSendField';
+import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
