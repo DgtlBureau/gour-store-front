@@ -10,16 +10,11 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 import { ICategory } from 'types/entities/ICategory';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { IFiltersCharacteristic, IProduct } from 'types/entities/IProduct';
+import { IFiltersCharacteristic, IProduct, ProductTypeLabel } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
-
-import { getProductBackground } from 'utils/categoryUtil';
-import { getCountryImage } from 'utils/countryUtil';
 
 import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
@@ -27,21 +22,26 @@ import { ProductFilterModal } from '../Filter/Modal/Modal';
 import catalogSx from './Catalog.styles';
 import { checkCategory } from './CatalogHelpers';
 
+type ExtendedProduct = IProduct & {
+  isElected: boolean;
+  productType: ProductTypeLabel;
+  backgroundImg?: string;
+  countryImg?: string;
+};
+
 export type ProductCatalogProps = {
   title?: string;
   emptyTitle?: string;
-  products: IProduct[];
-  favoritesList: IProduct[];
+  products: ExtendedProduct[];
   categories?: ICategory[];
-  basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
   discount?: number;
   rows?: number;
   withFilters?: boolean;
   sx?: SxProps;
-  onAdd: (product: IProduct) => void;
-  onRemove: (product: IProduct) => void;
+  onAdd: (product: IProduct, gram: number) => void;
+  onRemove: (product: IProduct, gram: number) => void;
   onElect: (productId: number, isElect: boolean) => void;
   onDetail: (productId: number) => void;
 };
@@ -51,13 +51,11 @@ export function ProductCatalog({
   emptyTitle,
   products,
   categories,
-  basket,
-  favoritesList,
   language,
   currency = 'cheeseCoin',
   discount,
   rows,
-  withFilters,
+  withFilters = false,
   sx,
   onAdd,
   onRemove,
@@ -71,28 +69,9 @@ export function ProductCatalog({
     categories: {},
   });
 
-  const withFilterList = !!withFilters && !!categories?.length;
+  const withFilterList = withFilters && !!categories?.length;
 
-  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
-
-  const getProductCount = (productId: number, isWeightGood: boolean) => {
-    const productInBasket = findProductInBasket(productId);
-    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-  };
-
-  const extendedProducts = useMemo(
-    () =>
-      products.map(product => ({
-        ...product,
-        isElected: isProductFavorite(product.id, favoritesList),
-        backgroundImg: categories && getProductBackground(categories, product.categories),
-        countryImg: getCountryImage(product.categories),
-        currentCount: getProductCount(product.id, product.isWeightGood),
-      })),
-    [products, categories],
-  );
-
-  const screenWidth = window.screen.width;
+  const screenWidth = window.screen.width; // TODO: переписать на медиа-выражение, тк при перевороте экрана не меняется
 
   const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
   const selectCategory = (value: number) =>
@@ -109,13 +88,13 @@ export function ProductCatalog({
   const productList = useMemo(
     () =>
       categories
-        ? extendedProducts.filter(
-            product => checkCategory(product.categories, filters.productType),
+        ? products.filter(
+            product => checkCategory(product.categories || [], filters.productType),
             // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
             // TODO: обсудить, мб вообще все фильтры выводить
           )
-        : extendedProducts,
-    [categories, extendedProducts],
+        : products,
+    [categories, products],
   );
 
   const getCatalogRows = () => {
@@ -174,20 +153,21 @@ export function ProductCatalog({
         cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
           <ProductCard
             key={product.id}
+            id={product.id}
             title={product.title[language]}
             description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
-            discount={discount || product.discount}
+            discount={10} // FIXME: TODO: удоли
             currency={currency}
+            productType={product.productType}
             previewImg={product.images[0]?.small || ''}
             countryImg={product.countryImg}
             backgroundImg={product.backgroundImg}
-            currentCount={product.currentCount}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
-            onAdd={() => onAdd(product)}
-            onRemove={() => onRemove(product)}
+            onAdd={(gram: number) => onAdd(product, gram)}
+            onRemove={(gram: number) => onRemove(product, gram)}
             onElect={() => onElect(product.id, product.isElected)}
             onDetail={() => onDetail(product.id)}
           />
