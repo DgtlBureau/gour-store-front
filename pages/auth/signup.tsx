@@ -49,9 +49,9 @@ export default function SignUp() {
   const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
-  const [selectedCity, setSelectedCity] = useState<string | undefined>(undefined);
-  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
-  const [_favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo); // TODO сохранение выбора
+  const [selectedCity, setSelectedCity] = useState<string | undefined>();
+  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
+  const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
   const [referralCode, setReferralCode] = useState('');
 
   const goToGreeting = () => setStage('greeting');

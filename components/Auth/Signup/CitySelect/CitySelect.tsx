@@ -33,7 +33,7 @@ export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCity
   const schema = getSchema(t);
 
   const values = useForm<SignupCityFields>({
-    defaultValues: { city: city || options[0].value },
+    defaultValues: { city: city || options[0]?.value },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
