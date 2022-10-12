@@ -1,12 +1,16 @@
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import * as NextImage from 'next/image';
 import React from 'react';
+import { Provider } from 'react-redux';
 
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
+import { persistor, store } from 'store/store';
+
 import { NavigationProvider } from 'components/Navigation';
 
+import { PersistGate } from 'redux-persist/integration/react';
 import { defaultTheme } from 'themes';
 
 ('use strict');
@@ -16,22 +20,28 @@ const MUITheme = (Story, context) => {
     <EmotionThemeProvider theme={defaultTheme}>
       <ThemeProvider theme={defaultTheme}>
         <NavigationProvider>
-          <link rel='preconnect' href='https://fonts.googleapis.com' />
-          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
-          <link href='https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap' rel='stylesheet' />
+          <Provider store={store}>
+            <PersistGate persistor={persistor}>
+              <link rel='preconnect' href='https://fonts.googleapis.com' />
+              <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
+              <link
+                href='https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap'
+                rel='stylesheet'
+              />
+              <link rel='preconnect' href='https://fonts.googleapis.com' />
+              <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
+              <link
+                href='https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap'
+                rel='stylesheet'
+              />
+              <link rel='preconnect' href='https://fonts.googleapis.com' />
+              <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='true' />
+              <link href='https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap' rel='stylesheet' />
 
-          <link rel='preconnect' href='https://fonts.googleapis.com' />
-          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
-          <link
-            href='https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap'
-            rel='stylesheet'
-          />
-
-          <link rel='preconnect' href='https://fonts.googleapis.com' />
-          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='true' />
-          <link href='https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap' rel='stylesheet' />
-          <CssBaseline />
-          <Story {...context} />
+              <CssBaseline />
+              <Story {...context} />
+            </PersistGate>
+          </Provider>
         </NavigationProvider>
       </ThemeProvider>
     </EmotionThemeProvider>

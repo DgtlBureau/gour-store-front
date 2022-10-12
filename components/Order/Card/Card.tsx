@@ -62,9 +62,14 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
             {product.title}
           </Typography>
 
-          <Typography variant='body1' sx={cardSx.product}>
-            {product.price} {currencySymbol} • {product.totalCount}
-          </Typography>
+          <Box sx={cardSx.fieldPrice}>
+            <Typography variant='body1' sx={cardSx.product}>
+              {product.price} {currencySymbol}
+            </Typography>
+            <Typography variant='body1' sx={cardSx.product}>
+              • {product.totalCount}
+            </Typography>
+          </Box>
         </Box>
       ))}
 

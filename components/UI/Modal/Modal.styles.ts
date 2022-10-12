@@ -28,7 +28,8 @@ export const sx = {
     },
     bgcolor: 'background.default',
     overflowY: 'auto',
-    borderRadius: '10px',
+
+    borderRadius: { xs: 'none', sm: '10px' },
   },
   head: {
     display: 'flex',

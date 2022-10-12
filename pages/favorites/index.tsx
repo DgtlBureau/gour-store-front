@@ -7,23 +7,22 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { useGetProductListQuery } from 'store/api/productApi';
-import { addBasketProduct, selectBasketProducts, subtractBasketProduct } from 'store/slices/orderSlice';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
-import { ICategory } from 'types/entities/ICategory';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 export function Favorites() {
@@ -33,8 +32,6 @@ export function Favorites() {
   const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
-
-  const basket = useAppSelector(selectBasketProducts);
 
   const formattedProducts = useMemo(
     () => computeProductsWithCategories(products, categories, favoriteProducts),

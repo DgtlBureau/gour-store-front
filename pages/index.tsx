@@ -18,12 +18,11 @@ import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
+import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from 'components/UI/Typography/Typography';
 
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
@@ -31,6 +30,7 @@ import { NotificationType } from 'types/entities/Notification';
 import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import bannerImg from 'assets/images/banner.jpeg';
@@ -169,13 +169,10 @@ const Home: NextPage = () => {
               )}
             </Box>
 
-            <Typography variant='h4' sx={sx.title}>
-              {page.info?.title?.[language]}
-            </Typography>
-
-            <Typography variant='body1' sx={sx.pageInfoDescription}>
-              {page.info?.description?.[language]}
-            </Typography>
+            <PageContent
+              title={page?.info?.title?.[language] || ''}
+              description={page?.info?.description?.[language]}
+            />
           </Box>
         )}
       </ShopLayout>

@@ -8,7 +8,7 @@ import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
-import { Copyright } from 'components/Copyright/Copyright';
+// import { Copyright } from 'components/Copyright/Copyright';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
@@ -56,7 +56,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const flipIsNeeded = isMobile && isPortrait;
 
-  const copyrightSx = { display: { xs: isPortrait ? 'flex' : 'none', md: 'flex' } };
+  // const copyrightSx = { display: { xs: isPortrait ? 'flex' : 'none', md: 'flex' } };
 
   return (
     <Box sx={sx.layout}>
@@ -77,9 +77,9 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         {...contacts}
       />
 
-      {flipIsNeeded ? <GameFlipWarning /> : <Box sx={sx.content}>{children}</Box>}
+      <Box sx={sx.content}>{flipIsNeeded ? <GameFlipWarning /> : children}</Box>
 
-      <Copyright sx={copyrightSx} />
+      {/* <Copyright sx={copyrightSx} /> */}
     </Box>
   );
 }

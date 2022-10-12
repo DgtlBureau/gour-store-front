@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { CardMedia } from '@mui/material';
 
@@ -13,7 +13,7 @@ import { ProductTypeLabel } from 'types/entities/IProduct';
 import { useAppSelector } from 'hooks/store';
 
 import HeartIcon from '@mui/icons-material/Favorite';
-import defaultImg from 'assets/no-image.svg';
+import defaultImg from 'assets/images/default.svg';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import sx from './Card.styles';

@@ -2,49 +2,41 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
-import russiaIcon from 'assets/icons/countries/russia.svg';
+import { imageByCountry } from 'constants/countries';
 
-import { ProductCard } from './Card';
+import { ProductCard, ProductCardProps } from './Card';
 
 export default {
   component: ProductCard,
   title: 'Product/Card',
 } as Meta;
 
-const DESCRIPTION = `
-  Обладает белым цветом, чистым, кисломолочным, 
-  чуть сладковатым вкусом и нежной, ломкой структурой. 
-  Благодаря изготовлению из козьего молока усиливает иммунитет,
-  содержит ценные витамины и минералы.
-  Прекрасен как самостоятельное блюдо в сочетании с белым или розовым вином.
-`;
-
-const PRICE = 350;
-
-const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
-
-const Template: ComponentStory<typeof ProductCard> = () => {
+const Template: ComponentStory<typeof ProductCard> = args => {
   const [isElected, setIsElected] = useState(false);
+  const [weight, setWeight] = useState(0);
 
-  return (
-    <ProductCard
-      id={1}
-      productType='Мясо'
-      isWeightGood
-      currency='cheeseCoin'
-      title='Chevrano XO Козий Элитный Сыр'
-      description={DESCRIPTION}
-      rating={4.3}
-      price={PRICE}
-      previewImg={PREVIEW_SRC}
-      countryImg={russiaIcon}
-      isElected={isElected}
-      onAdd={() => ({})}
-      onRemove={() => ({})}
-      onElect={() => setIsElected(!isElected)}
-      onDetail={() => ({})}
-    />
-  );
+  const changeIsElect = () => setIsElected(!isElected);
+
+  const increaseWeight = (gram: number) => setWeight(weight + gram);
+  const decreaseWeight = (gram: number) => setWeight(weight - gram);
+
+  return <ProductCard {...args} onElect={changeIsElect} onAdd={increaseWeight} onRemove={decreaseWeight} />;
 };
 
-export const DefaultProductCard = Template.bind({});
+export const DefaultProductInformation = Template.bind({});
+
+const props: Partial<ProductCardProps> = {
+  title: 'Prima Donna Прима Донна',
+  rating: 4.93,
+  price: 350,
+  discount: 0,
+  currency: 'cheeseCoin',
+  productType: 'Сыр',
+  previewImg: '',
+  countryImg: '',
+  backgroundImg: '',
+  isElected: false,
+  isWeightGood: false,
+};
+
+DefaultProductInformation.args = props;

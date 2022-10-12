@@ -29,7 +29,6 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { CartInfo } from 'components/Cart/Info/Info';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { Button } from 'components/UI/Button/Button';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -40,11 +39,9 @@ import { NotificationType } from 'types/entities/Notification';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
-import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
-import { getCountryImage } from 'utils/countryUtil';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
-
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import translation from './Basket.i18n.json';
 import sx from './Basket.styles';
@@ -169,7 +166,7 @@ export function Basket() {
                 text={t('aboutDelivery')}
                 link={{
                   label: t('detailed'),
-                  path: '/#purchase-rules-block',
+                  path: '/rules',
                 }}
               />
             </Grid>

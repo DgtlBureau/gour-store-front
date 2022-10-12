@@ -14,7 +14,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MinusIcon from '@mui/icons-material/Remove';
-import defaultImg from 'assets/no-image.svg';
+import defaultImg from 'assets/images/default.svg';
 
 import translations from './Card.i18n.json';
 import sx from './Card.styles';
