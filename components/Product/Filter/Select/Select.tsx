@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Accordion, AccordionDetails, AccordionSummary, ClickAwayListener, Collapse, SxProps } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Collapse, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
+import { ClickAwayListener } from 'components/UI/ClickAwayListener/ClickAwayListener';
 import { RadioGroup } from 'components/UI/RadioGroup/RadioGroup';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -71,14 +72,12 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
-          <div>
-            <RadioGroup
-              sx={selectSx.list}
-              selected={selected}
-              options={options}
-              onChange={value => changeOption(value)}
-            />
-          </div>
+          <RadioGroup
+            sx={selectSx.list}
+            selected={selected}
+            options={options}
+            onChange={value => changeOption(value)}
+          />
         </ClickAwayListener>
       </Collapse>
     </Box>

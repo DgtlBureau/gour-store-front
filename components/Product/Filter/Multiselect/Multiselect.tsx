@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Accordion, AccordionDetails, AccordionSummary, ClickAwayListener, Collapse, SxProps } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Collapse, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { CheckboxGroup } from 'components/UI/CheckboxGroup/CheckboxGroup';
+import { ClickAwayListener } from 'components/UI/ClickAwayListener/ClickAwayListener';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { IOption } from 'types/entities/IOption';
@@ -107,20 +108,18 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
-          <div>
-            <Box sx={selectSx.list}>
-              <CheckboxGroup
-                sx={{ display: 'flex', flexDirection: 'column' }}
-                selected={selectedOptions}
-                options={options}
-                onChange={value => changeOption(value)}
-              />
+          <Box sx={selectSx.list}>
+            <CheckboxGroup
+              sx={{ display: 'flex', flexDirection: 'column' }}
+              selected={selectedOptions}
+              options={options}
+              onChange={value => changeOption(value)}
+            />
 
-              <Button size='small' onClick={applyOptions} sx={selectSx.applyBtn}>
-                {t('apply')}
-              </Button>
-            </Box>
-          </div>
+            <Button size='small' onClick={applyOptions} sx={selectSx.applyBtn}>
+              {t('apply')}
+            </Button>
+          </Box>
         </ClickAwayListener>
       </Collapse>
     </Box>
