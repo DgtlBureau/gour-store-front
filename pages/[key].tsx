@@ -12,7 +12,7 @@ import { Button } from 'components/UI/Button/Button';
 import Loader from 'components/UI/Loader/Loader';
 
 import NotFound from './404';
-import sx from './Page.styles';
+import { sx } from './Page.styles';
 
 function InfoPages() {
   const {
