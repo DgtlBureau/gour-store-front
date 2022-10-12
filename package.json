@@ -15,7 +15,7 @@
     "lint": "eslint --fix . --ext ts --ext tsx --ext js",
     "check-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
     "format-all": "npm run lint && npm run format",
-    "prepare": "husky install && chmod +x .git/hooks/* .husky/pre-push"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "~11.8.2",
