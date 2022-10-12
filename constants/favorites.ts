@@ -1,77 +1,70 @@
-import { imageByCountry } from 'utils/countryUtil';
-
 export const favoriteCountries = [
   {
-    image: imageByCountry.Russia,
+    iconKey: 'russia',
     title: 'Россия',
     id: 1,
   },
   {
-    image: imageByCountry.Spain,
-    title: 'Испания',
+    iconKey: 'france',
+    title: 'Франция',
     id: 2,
   },
   {
-    image: imageByCountry.Italy,
+    iconKey: 'italy',
     title: 'Италия',
     id: 3,
   },
   {
-    image: imageByCountry.France,
-    title: 'Франция',
+    iconKey: 'spain',
+    title: 'Испания',
     id: 4,
   },
   {
-    image: imageByCountry.Holland,
-    title: 'Голландия',
-    id: 5,
-  },
-  {
-    image: imageByCountry.GreatBritain,
-    title: 'Великобритания',
+    iconKey: 'usa',
+    title: 'США',
     id: 6,
   },
 ];
 
 export const favoriteProducts = [
   {
-    iconKey: 'meat',
-    title: 'Мясо',
+    iconKey: 'jerky',
+    title: 'Вяленое',
     id: 1,
   },
   {
-    iconKey: 'cheese',
-    title: 'Сыр',
+    iconKey: 'fish',
+    title: 'Рыба',
     id: 2,
   },
   {
-    iconKey: 'sausage',
-    title: 'Паста',
+    iconKey: 'bird',
+    title: 'Мясо птицы',
     id: 3,
   },
   {
-    iconKey: 'fish',
-    title: 'Пицца',
+    iconKey: 'wine',
+    title: 'Вино',
     id: 4,
   },
   {
-    iconKey: 'fish',
-    title: 'Фрукты',
+    iconKey: 'jamon',
+    title: 'Хамон',
     id: 5,
   },
   {
-    iconKey: 'meat',
-    title: 'Сыр',
+    iconKey: 'ham',
+    title: 'Ветчина',
     id: 6,
   },
   {
     iconKey: 'cheese',
-    title: 'Паста',
+    title: 'Сыр',
     id: 7,
   },
   {
     iconKey: 'sausage',
-    title: 'Пицца',
+    title: 'Колбаса',
     id: 8,
   },
 ];

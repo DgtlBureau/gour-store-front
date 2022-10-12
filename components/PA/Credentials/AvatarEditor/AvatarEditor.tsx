@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noImage from 'assets/no-image.svg';
+import noImage from 'assets/images/default.svg';
 
 import translations from './AvatarEditor.i18n.json';
 

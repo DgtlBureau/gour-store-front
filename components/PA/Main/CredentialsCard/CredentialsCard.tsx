@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noPhoto from 'assets/no-image.svg';
+import noPhoto from 'assets/images/default.svg';
 
 import translations from './CredentialsCard.i18n.json';
 

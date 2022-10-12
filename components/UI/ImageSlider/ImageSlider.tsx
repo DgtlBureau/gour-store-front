@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { SxProps } from '@mui/material';
 
-import defaultImage from 'assets/no-image.svg';
+import defaultImage from 'assets/images/default.svg';
 import SwiperCore, { EffectFade, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';

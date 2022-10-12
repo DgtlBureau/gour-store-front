@@ -8,6 +8,8 @@ import { HFSelect } from 'components/HookForm/HFSelect';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { IOption } from 'types/entities/IOption';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './CitySelect.i18n.json';
@@ -20,10 +22,7 @@ type SignupCityFields = {
 
 export type SignupCitySelectProps = {
   city?: string;
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: IOption[];
   onBack(): void;
   onSubmit(cityId: string): void;
 };
@@ -34,7 +33,7 @@ export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCity
   const schema = getSchema(t);
 
   const values = useForm<SignupCityFields>({
-    defaultValues: { city },
+    defaultValues: { city: city || options[0]?.value },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
