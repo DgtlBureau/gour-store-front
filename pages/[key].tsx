@@ -24,7 +24,7 @@ function InfoPages() {
   if (!pageKey) return <NotFound />;
 
   // upper case из-за особенностей api
-  const formattedPageKey = pageKey?.toString().toUpperCase() || '';
+  const formattedPageKey = String(pageKey).toUpperCase() || '';
   const { data: page, isLoading } = useGetPageQuery(formattedPageKey);
 
   if (!isLoading && !page) return <NotFound />;
