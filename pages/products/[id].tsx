@@ -19,7 +19,6 @@ import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductActions } from 'components/Product/Actions/Actions';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
@@ -32,9 +31,10 @@ import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -147,7 +147,7 @@ export default function Product() {
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
-      label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
+      label: lowCategory.parentCategories?.[0]?.title.ru || 'Тип товара',
       value: lowCategory.title.ru,
     })) || [];
 

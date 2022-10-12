@@ -2,11 +2,11 @@ import { defaultTheme as t } from 'themes';
 
 const sx = {
   select: {
-    width: '100%',
     backgroundColor: 'background.paper',
     boxShadow: 'none',
     borderRadius: '6px',
     borderColor: 'none',
+    width: '100%',
     '&:before': {
       content: 'none',
     },
@@ -14,7 +14,18 @@ const sx = {
       margin: '0 0 10px 0',
     },
   },
-
+  optionBox: {
+    padding: '6px 12px',
+    color: t.palette.text.secondary,
+    backgroundColor: t.palette.common.white,
+    borderRadius: '6px',
+    userSelect: 'none',
+    cursor: 'pointer',
+  },
+  selected: {
+    background: t.palette.primary.main,
+    color: t.palette.common.white,
+  },
   title: {
     color: t.palette.text.muted,
   },
@@ -29,8 +40,7 @@ const sx = {
   },
   list: {
     position: 'absolute',
-    minWidth: '180px',
-    maxWidth: '280px',
+    maxWidth: '260px',
     marginTop: '6px',
     padding: '14px',
     backgroundColor: 'white',
@@ -51,9 +61,12 @@ const sx = {
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },
-  applyBtn: {
+  actions: {
     marginTop: '14px',
-    width: '100%',
+    padding: '0 14px',
+  },
+  applyBtn: {
+    marginLeft: '6px',
   },
 };
 

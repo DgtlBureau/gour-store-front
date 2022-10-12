@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { CardMedia } from '@mui/material';
 

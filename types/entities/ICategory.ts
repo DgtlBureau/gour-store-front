@@ -3,8 +3,8 @@ import { ITranslatableString } from './ITranslatableString';
 
 export interface ICategory extends IBase {
   title: ITranslatableString;
-  parentCategories: ICategory[];
-  subCategories: ICategory[];
+  parentCategories?: ICategory[];
+  subCategories?: ICategory[];
 }
 
 export interface ICategoryWithDiscount {
