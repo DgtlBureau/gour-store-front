@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noPhoto from 'assets/no-image.svg';
+import noPhoto from 'assets/images/default.svg';
 
 import translations from './CredentialsCard.i18n.json';
 
@@ -29,9 +29,9 @@ const sx = {
 
 export type PACredentialsCardProps = {
   name: string;
-  phone: string;
+  phone?: string;
   photo?: string;
-  email?: string;
+  email: string;
   onClickMore(): void;
 };
 
@@ -49,21 +49,21 @@ export function PACredentialsCard({ name, phone, photo, email, onClickMore }: PA
             <Typography variant='body1'>{name}</Typography>
           </Box>
 
-          <Box>
-            <Typography variant='body2' color='text.muted'>
-              {t('phone')}
-            </Typography>
-            <Typography variant='body1'>{phone}</Typography>
-          </Box>
-
-          {email && (
+          {phone && (
             <Box>
               <Typography variant='body2' color='text.muted'>
-                E-mail
+                {t('phone')}
               </Typography>
-              <Typography variant='body1'>{email}</Typography>
+              <Typography variant='body1'>{phone}</Typography>
             </Box>
           )}
+
+          <Box>
+            <Typography variant='body2' color='text.muted'>
+              E-mail
+            </Typography>
+            <Typography variant='body1'>{email}</Typography>
+          </Box>
         </Stack>
 
         <Box sx={sx.photo}>

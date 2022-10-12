@@ -10,7 +10,7 @@ const cardSx: SxProps = {
   width: '100%',
   maxWidth: {
     xs: '100%',
-    md: '550px',
+    sm: '550px',
   },
   padding: {
     xs: '40px',

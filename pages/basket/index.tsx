@@ -166,7 +166,7 @@ export function Basket() {
                 text={t('aboutDelivery')}
                 link={{
                   label: t('detailed'),
-                  path: '/#purchase-rules-block',
+                  path: '/rules',
                 }}
               />
             </Grid>

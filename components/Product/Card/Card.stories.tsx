@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
-import russiaIcon from 'assets/icons/countries/russia.svg';
+import { imageByCountry } from 'constants/countries';
 
 import { ProductCard } from './Card';
 
@@ -37,7 +37,7 @@ const Template: ComponentStory<typeof ProductCard> = () => {
       rating={4.3}
       price={PRICE}
       previewImg={PREVIEW_SRC}
-      countryImg={russiaIcon}
+      countryImg={imageByCountry.Russia}
       isElected={isElected}
       onAdd={() => ({})}
       onRemove={() => ({})}

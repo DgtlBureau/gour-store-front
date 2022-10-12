@@ -2,21 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CircularProgress, Divider } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
-import { HFPassField } from 'components/HookForm/HFPassField';
+import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
+import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
-import SendIcon from '@mui/icons-material/Send';
 
 import translations from './PassRecovery.i18n.json';
 import sx from './PassRecovery.styles';
@@ -55,7 +52,7 @@ export function SigninPassRecovery({
 
   const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
   const formIsValid = values.formState.isValid && isCodeSuccess;
-  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess;
+  const sendingIsDisabled = !!seconds || !emailIsValid;
 
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -106,11 +103,20 @@ export function SigninPassRecovery({
     }
   };
 
-  const submit = (data: PasswordRecoveryDto) => {
-    onSubmit(data);
-    setSeconds(0);
+  const resetEmailStates = () => {
+    setSeconds(null);
     setIsCodeSended(false);
     setIsCodeSuccess(false);
+    values.resetField('code');
+  };
+
+  const changeEmail = () => {
+    if (isCodeSended) resetEmailStates();
+  };
+
+  const submit = (data: PasswordRecoveryDto) => {
+    onSubmit(data);
+    resetEmailStates();
   };
 
   return (
@@ -124,24 +130,13 @@ export function SigninPassRecovery({
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField
-              type='email'
-              name='email'
+            <HFSendField
               label={t('email')}
-              disabled={isCodeSuccess}
-              endAdornment={
-                <>
-                  <Divider sx={sx.divider} orientation='vertical' />
-
-                  {codeIsSending ? (
-                    <CircularProgress />
-                  ) : (
-                    <IconButton disabled={sendingIsDisabled} onClick={sendEmail}>
-                      <SendIcon />
-                    </IconButton>
-                  )}
-                </>
-              }
+              name='email'
+              onChange={changeEmail}
+              isSending={!!codeIsSending}
+              sendingIsDisabled={sendingIsDisabled}
+              onSend={sendEmail}
             />
           </Box>
 
