@@ -139,7 +139,7 @@ export default function Product() {
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
-      label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
+      label: lowCategory.parentCategories?.[0]?.title.ru || 'Тип товара',
       value: lowCategory.title.ru,
     })) || [];
 

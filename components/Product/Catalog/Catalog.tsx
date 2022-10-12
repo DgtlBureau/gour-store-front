@@ -5,19 +5,17 @@ import { SxProps } from '@mui/material';
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 import { ICategory } from 'types/entities/ICategory';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { IFiltersCharacteristic, IProduct } from 'types/entities/IProduct';
+import { IFilters, IProduct, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
 import { getProductBackground } from 'utils/categoryUtil';
 import { getCountryImage } from 'utils/countryUtil';
 
-import ArrowsIcon from '@mui/icons-material/CompareArrows';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
@@ -25,7 +23,13 @@ import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import catalogSx from './Catalog.styles';
-import { checkCategory } from './CatalogHelpers';
+
+interface IExtendedProduct extends IProduct {
+  isElected: boolean;
+  backgroundImg?: string;
+  countryImg?: string;
+  currentCount: number;
+}
 
 export type ProductCatalogProps = {
   title?: string;
@@ -65,10 +69,10 @@ export function ProductCatalog({
   onDetail,
 }: ProductCatalogProps) {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filters, setFilters] = useState<IFiltersCharacteristic>({
-    isReversed: false,
-    productType: 'all',
-    categories: {},
+  const [filters, setFilters] = useState<IFilters>({
+    orderType: 'default',
+    productType: null,
+    characteristics: {},
   });
 
   const withFilterList = !!withFilters && !!categories?.length;
@@ -92,31 +96,98 @@ export function ProductCatalog({
     [products, categories],
   );
 
-  const screenWidth = window.screen.width;
+  const checkProductType = (product: IExtendedProduct) => {
+    const isAll = !filters.productType;
+    const productTypeIsMatches = !!product.categories?.find(category => category.id === filters.productType);
 
-  const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
-  const selectCategory = (value: number) =>
-    setFilters({
-      ...filters,
-      productType: filters.productType !== value ? value : 'all',
-      categories: {},
-    });
-
-  const selectCharacteristics = () => {
-    // TODO: реализация фильтров списка товаров
+    return isAll || productTypeIsMatches;
   };
 
-  const productList = useMemo(
-    () =>
-      categories
-        ? extendedProducts.filter(
-            product => checkCategory(product.categories, filters.productType),
-            // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
-            // TODO: обсудить, мб вообще все фильтры выводить
-          )
-        : extendedProducts,
-    [categories, extendedProducts],
+  const checkCharacteristics = (product: IExtendedProduct) => {
+    if (!product.categories?.length) return false;
+
+    const productCharacteristicIds = product.categories
+      .map(category => category.id)
+      .filter(id => !categories?.find(category => category.id === id));
+
+    const filterCharacteristicIds = Object.keys(filters.characteristics).filter(
+      id => filters.characteristics[id].length > 0,
+    );
+
+    // true - если характеристики продукта содержатся во всех фильтрах
+    const isAllMatches = filterCharacteristicIds.every(filterCharacteristicId => {
+      const filterValues = filters.characteristics[filterCharacteristicId];
+
+      // true - если фильтр содержит одну из характеристик продукта
+      const includesMatches = productCharacteristicIds.some(productCharacteristicId => {
+        const includesCharacteristic = filterValues.includes(productCharacteristicId.toString());
+
+        return includesCharacteristic;
+      });
+
+      return includesMatches;
+    });
+
+    return isAllMatches;
+  };
+
+  const sortByPrice = (sortedProducts: IExtendedProduct[]) =>
+    sortedProducts.sort((prev, it) => prev.price[currency] - it.price[currency]);
+
+  const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
+    unsortedProducts.sort((prev, it) =>
+      it.discount === prev.discount ? it.price[currency] - prev.price[currency] : it.discount - prev.discount,
+    );
+
+  const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
+    unsortedProducts.sort((prev, it) =>
+      it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade,
+    );
+
+  const sortByOrderType = (unsortedProducts: IExtendedProduct[]) => {
+    switch (filters.orderType) {
+      case 'price':
+        return sortByPrice(unsortedProducts);
+
+      case 'price-reverse':
+        return sortByPrice(unsortedProducts).reverse();
+
+      case 'discount':
+        return sortByDiscount(unsortedProducts);
+
+      case 'rate':
+        return sortByRate(unsortedProducts);
+
+      default:
+        return unsortedProducts;
+    }
+  };
+
+  const filteredProducts = useMemo(
+    () => extendedProducts.filter(checkProductType).filter(checkCharacteristics),
+    [filters],
   );
+
+  const productList = sortByOrderType(filteredProducts);
+
+  const screenWidth = window.screen.width;
+
+  const changeProductType = (key: string) => {
+    const isSelected = filters.productType === +key;
+
+    if (isSelected) setFilters({ ...filters, productType: null, characteristics: {} });
+    else setFilters({ ...filters, productType: +key, characteristics: {} });
+  };
+
+  const changeCharacteristics = (key: string, values: string[]) => {
+    const characteristics = { ...filters.characteristics, [key]: values };
+
+    setFilters({ ...filters, characteristics });
+  };
+
+  const resetCharacteristics = () => setFilters({ ...filters, characteristics: {} });
+
+  const changeOrderType = (value: OrderType) => setFilters({ ...filters, orderType: value });
 
   const getCatalogRows = () => {
     const length = productList?.length || 0;
@@ -130,32 +201,26 @@ export function ProductCatalog({
 
   return (
     <Box sx={sx}>
-      {!!categories && screenWidth <= 900 && (
+      {screenWidth <= 900 && (
         <Box sx={catalogSx.header}>
           <Typography variant='h4' sx={catalogSx.title}>
             {title}
           </Typography>
 
-          <Box>
-            <ToggleButton
-              selected={filters.isReversed}
-              sx={{ padding: '4px', marginRight: '6px' }}
-              onChange={toggleSequence}
-            >
-              <ArrowsIcon fontSize='small' sx={{ transform: 'rotate(90deg)' }} />
-            </ToggleButton>
-
-            <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
-              <FilterIcon fontSize='small' />
-            </Button>
-          </Box>
+          {withFilterList && (
+            <Box sx={{ gap: '10px' }}>
+              <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
+                <FilterIcon fontSize='small' />
+              </Button>
+            </Box>
+          )}
         </Box>
       )}
 
       <CardSlider
         title={screenWidth > 900 || !categories ? title : undefined}
         emptyTitle={emptyTitle || 'Продукты не найдены'}
-        key={`catalog/${filters.productType}`}
+        key={`catalog/${filters.productType}/${filters.characteristics.toString()}`}
         spaceBetween={10}
         rows={rows || getCatalogRows()}
         head={
@@ -165,13 +230,14 @@ export function ProductCatalog({
               categories={categories}
               filters={filters}
               language={language}
-              onReverse={toggleSequence}
-              onCategoryChange={selectCategory}
-              onCharacteristicChange={selectCharacteristics}
+              onOrderTypeChange={changeOrderType}
+              onProductTypeChange={changeProductType}
+              onCharacteristicChange={changeCharacteristics}
+              onCharacteristicsReset={resetCharacteristics}
             />
           )
         }
-        cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
+        cardsList={productList.map(product => (
           <ProductCard
             key={product.id}
             title={product.title[language]}
@@ -193,14 +259,17 @@ export function ProductCatalog({
           />
         ))}
       />
+
       {!!categories && (
         <ProductFilterModal
+          isOpen={filterModalIsOpen}
           categories={categories}
           filters={filters}
           language={language}
-          onCategoryChange={selectCategory}
-          onCharacteristicChange={selectCharacteristics}
-          isOpen={filterModalIsOpen}
+          onOrderTypeChange={changeOrderType}
+          onProductTypeChange={changeProductType}
+          onCharacteristicChange={changeCharacteristics}
+          onCharacteristicsReset={resetCharacteristics}
           onClose={closeFilterModal}
         />
       )}

@@ -31,8 +31,9 @@ export interface IProduct extends IBase {
   promotions?: IPromotion[];
 }
 
-export interface IFiltersCharacteristic {
-  isReversed: boolean;
-  productType: number | 'all';
-  categories: Record<string, number>;
+export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate' | 'default';
+export interface IFilters {
+  productType: number | null;
+  orderType: OrderType;
+  characteristics: Record<string, string[]>;
 }
