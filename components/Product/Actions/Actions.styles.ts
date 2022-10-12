@@ -11,6 +11,12 @@ export const sx = {
     },
   },
 
+  select: {
+    background: theme.palette.background.paper,
+    color: theme.palette.text.secondary,
+    padding: '0',
+  },
+
   actions: {
     display: 'flex',
     alignItems: 'center',

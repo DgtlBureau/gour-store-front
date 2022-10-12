@@ -23,9 +23,10 @@ type Props = {
   isDisabled?: boolean;
   label?: string;
   sx?: SxProps;
+  selectSx?: SxProps;
 };
 
-export function Select({ value, options, error, isError, label, sx, isDisabled, onChange }: Props) {
+export function Select({ value, options, error, isError, label, sx, selectSx, isDisabled, onChange }: Props) {
   const isNumberValue = typeof value === 'number';
 
   const change = (event: SelectChangeEvent) => {
@@ -40,6 +41,7 @@ export function Select({ value, options, error, isError, label, sx, isDisabled, 
         <MUISelect
           labelId='select-label'
           id='select'
+          sx={selectSx}
           value={isNumberValue ? value.toString() : value}
           label={label}
           error={isError}
@@ -53,7 +55,6 @@ export function Select({ value, options, error, isError, label, sx, isDisabled, 
           ))}
         </MUISelect>
       </FormControl>
-
       {error && (
         <Typography variant='body2' color='error'>
           {error}

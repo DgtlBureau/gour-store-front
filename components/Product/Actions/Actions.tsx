@@ -92,7 +92,12 @@ export function ProductActions({
         )}
       </Box>
 
-      <Select value={productGramValue} onChange={onSelectGram} options={productGramOptions} />
+      <Select
+        selectSx={sxActions.select}
+        value={productGramValue}
+        onChange={onSelectGram}
+        options={productGramOptions}
+      />
 
       <Box sx={sxActions.actions}>
         <Box sx={sxActions.cart}>

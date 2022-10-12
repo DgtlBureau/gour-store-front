@@ -158,7 +158,7 @@ export function ProductCatalog({
             description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
-            discount={10} // FIXME: TODO: удоли
+            discount={product.discount} // FIXME: TODO: удоли
             currency={currency}
             productType={product.productType}
             previewImg={product.images[0]?.small || ''}

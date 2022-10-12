@@ -214,6 +214,7 @@ export default function Product() {
                 language={language}
                 currency={currency}
                 sx={sx.similar}
+                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
