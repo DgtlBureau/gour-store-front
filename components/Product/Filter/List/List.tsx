@@ -40,9 +40,9 @@ export function ProductFilterList({
   onCharacteristicChange,
   onCharacteristicsReset,
 }: CatalogFilterProps) {
-  const characteristics = categories.reduce((prev, it) => {
-    if (it.id === filters.productType && it.subCategories) return [...prev, ...it.subCategories];
-    return prev;
+  const characteristics = categories.reduce((acc, it) => {
+    if (it.id === filters.productType && it.subCategories) acc.push(...it.subCategories);
+    return acc;
   }, [] as ICategory[]);
 
   const isMobile = window.screen.width < 900;
@@ -102,5 +102,3 @@ export function ProductFilterList({
     </Box>
   );
 }
-
-//
