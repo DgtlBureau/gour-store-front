@@ -21,23 +21,26 @@ function InfoPages() {
     currency,
     query: { key: pageKey },
   } = useAppNavigation();
-
   if (!pageKey) return <NotFound />;
 
+  // upper case из-за особенностей api
   const formattedPageKey = pageKey?.toString().toUpperCase() || '';
-  // if (!formattedPageKey) goToHome();
-
-  const { data: page, isLoading, isError } = useGetPageQuery(formattedPageKey);
+  const { data: page, isLoading } = useGetPageQuery(formattedPageKey);
 
   if (!isLoading && !page) return <NotFound />;
 
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
-        <PageContent title={page?.info.title[language]} description={page?.info.description[language]} />
-        <Button sx={sx.button} onClick={goToHome}>
-          вернуться на главную
-        </Button>
+        {isLoading && <Loader />}
+        {!isLoading && page && (
+          <>
+            <PageContent title={page.info.title[language]} description={page.info.description[language]} />
+            <Button sx={sx.button} onClick={goToHome}>
+              вернуться на главную
+            </Button>
+          </>
+        )}
       </ShopLayout>
     </PrivateLayout>
   );
