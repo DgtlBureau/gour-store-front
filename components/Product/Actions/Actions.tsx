@@ -74,7 +74,7 @@ export function ProductActions({
   const pricePerCount = price;
 
   const total = pricePerCount * ((100 - discount) / 100);
-
+  console.log(2);
   return (
     <Box sx={{ ...sxActions.container, ...sx }}>
       <Box sx={sxActions.docket}>
