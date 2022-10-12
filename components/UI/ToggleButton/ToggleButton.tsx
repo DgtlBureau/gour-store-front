@@ -4,7 +4,7 @@ import { ToggleButton as MUIToggleButton, SxProps } from '@mui/material';
 
 const toggleSx = {
   minWidth: '24px',
-  padding: '6px 12px',
+  padding: '8px 16px',
   backgroundColor: 'secondary.main',
   color: 'text.muted',
   border: 'none',
