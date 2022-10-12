@@ -18,6 +18,7 @@ import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
+import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { computeProductsWithCategories } from 'components/Product/Catalog/CatalogHelpers';
 import { PromotionCard } from 'components/Promotion/Card/Card';
@@ -169,13 +170,10 @@ const Home: NextPage = () => {
               )}
             </Box>
 
-            <Typography variant='h4' sx={sx.title}>
-              {page.info?.title?.[language]}
-            </Typography>
-
-            <Typography variant='body1' sx={sx.pageInfoDescription}>
-              {page.info?.description?.[language]}
-            </Typography>
+            <PageContent
+              title={page?.info?.title?.[language] || ''}
+              description={page?.info?.description?.[language]}
+            />
           </Box>
         )}
       </ShopLayout>
