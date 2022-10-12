@@ -9,43 +9,29 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 import { ICategory } from 'types/entities/ICategory';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { IFilters, IProduct, OrderType } from 'types/entities/IProduct';
+import { IExtendedProduct, IFilters, IProduct, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
-import { getProductBackground } from 'utils/categoryUtil';
-import { getCountryImage } from 'utils/countryUtil';
-
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
 import catalogSx from './Catalog.styles';
 
-interface IExtendedProduct extends IProduct {
-  isElected: boolean;
-  backgroundImg?: string;
-  countryImg?: string;
-  currentCount: number;
-}
-
 export type ProductCatalogProps = {
   title?: string;
   emptyTitle?: string;
-  products: IProduct[];
-  favoritesList: IProduct[];
+  products: IExtendedProduct[];
   categories?: ICategory[];
-  basket?: IOrderProduct[];
   language: Language;
   currency?: Currency;
   discount?: number;
   rows?: number;
   withFilters?: boolean;
   sx?: SxProps;
-  onAdd: (product: IProduct) => void;
-  onRemove: (product: IProduct) => void;
+  onAdd: (product: IProduct, gram: number) => void;
+  onRemove: (product: IProduct, gram: number) => void;
   onElect: (productId: number, isElect: boolean) => void;
   onDetail: (productId: number) => void;
 };
@@ -55,13 +41,11 @@ export function ProductCatalog({
   emptyTitle,
   products,
   categories,
-  basket,
-  favoritesList,
   language,
   currency = 'cheeseCoin',
   discount,
   rows,
-  withFilters,
+  withFilters = false,
   sx,
   onAdd,
   onRemove,
@@ -75,26 +59,7 @@ export function ProductCatalog({
     characteristics: {},
   });
 
-  const withFilterList = !!withFilters && !!categories?.length;
-
-  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
-
-  const getProductCount = (productId: number, isWeightGood: boolean) => {
-    const productInBasket = findProductInBasket(productId);
-    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-  };
-
-  const extendedProducts = useMemo(
-    () =>
-      products.map(product => ({
-        ...product,
-        isElected: isProductFavorite(product.id, favoritesList),
-        backgroundImg: categories && getProductBackground(categories, product.categories),
-        countryImg: getCountryImage(product.categories),
-        currentCount: getProductCount(product.id, product.isWeightGood),
-      })),
-    [products, categories],
-  );
+  const withFilterList = withFilters && !!categories?.length;
 
   const checkProductType = (product: IExtendedProduct) => {
     const isAll = !filters.productType;
@@ -163,10 +128,7 @@ export function ProductCatalog({
     }
   };
 
-  const filteredProducts = useMemo(
-    () => extendedProducts.filter(checkProductType).filter(checkCharacteristics),
-    [filters],
-  );
+  const filteredProducts = useMemo(() => products.filter(checkProductType).filter(checkCharacteristics), [filters]);
 
   const productList = sortByOrderType(filteredProducts);
 
@@ -240,20 +202,21 @@ export function ProductCatalog({
         cardsList={productList.map(product => (
           <ProductCard
             key={product.id}
+            id={product.id}
             title={product.title[language]}
             description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
-            discount={discount || product.discount}
+            discount={product.discount || discount}
             currency={currency}
+            productType={product.productType}
             previewImg={product.images[0]?.small || ''}
             countryImg={product.countryImg}
             backgroundImg={product.backgroundImg}
-            currentCount={product.currentCount}
             isElected={product.isElected}
             isWeightGood={product.isWeightGood}
-            onAdd={() => onAdd(product)}
-            onRemove={() => onRemove(product)}
+            onAdd={(gram: number) => onAdd(product, gram)}
+            onRemove={(gram: number) => onRemove(product, gram)}
             onElect={() => onElect(product.id, product.isElected)}
             onDetail={() => onDetail(product.id)}
           />

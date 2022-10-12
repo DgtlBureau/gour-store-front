@@ -31,11 +31,9 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
   const currencySymbol = getCurrencySymbol(currency);
 
   const productInfo = productsList.map(product => {
-    const productTotalPrice = product.product.isWeightGood
-      ? product.weight * (product.product.price[currency] / 100)
-      : product.amount * product.product.price[currency];
+    const productTotalPrice = product.amount * product.product.price[currency];
 
-    const productTotalCount = product.product.isWeightGood ? product.weight / 1000 : product.amount;
+    const productTotalCount = product.amount; // FIXME:
 
     return {
       id: product.product.id,
@@ -64,9 +62,14 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
             {product.title}
           </Typography>
 
-          <Typography variant='body1' sx={cardSx.product}>
-            {product.price} {currencySymbol} • {product.totalCount}
-          </Typography>
+          <Box sx={cardSx.fieldPrice}>
+            <Typography variant='body1' sx={cardSx.product}>
+              {product.price} {currencySymbol}
+            </Typography>
+            <Typography variant='body1' sx={cardSx.product}>
+              • {product.totalCount}
+            </Typography>
+          </Box>
         </Box>
       ))}
 

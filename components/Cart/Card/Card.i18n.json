@@ -2,13 +2,11 @@
   "ru": {
     "elect": "В избранное",
     "delete": "Удалить",
-    "g": "г",
-    "piece": "шт"
+    "g": "г"
   },
   "en": {
     "elect": "To favorites",
     "delete": "Delete",
-    "g": "g",
-    "piece": "pc"
+    "g": "g"
   }
 }

@@ -34,7 +34,7 @@ export function Payments() {
     );
   }
 
-  if (!isLoading && isError) {
+  if (isError) {
     return (
       <PALayout>
         <Typography variant='h5'>Произошла ошибка</Typography>

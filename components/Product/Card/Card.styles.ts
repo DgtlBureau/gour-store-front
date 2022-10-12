@@ -64,6 +64,7 @@ const sx = {
   },
   country: {
     position: 'absolute',
+    pointerEvents: 'none',
     bottom: 6,
     right: 6,
     height: '26px',
@@ -127,6 +128,13 @@ const sx = {
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'normal',
+    color: t.palette.text.secondary,
+  },
+  stock: {
+    textAlign: 'center',
+    padding: '2px 16px',
+    borderRadius: '4px',
+    backgroundColor: t.palette.background.paper,
     color: t.palette.text.secondary,
   },
   actions: {

@@ -15,7 +15,7 @@ export interface IProduct extends IBase {
   description: ITranslatableText;
   moyskladCode: number;
   images: IImage[];
-  categories: ICategory[];
+  categories?: ICategory[];
   productGrades: IProductGrade[];
   gradesCount: number;
   commentsCount: number;
@@ -36,4 +36,14 @@ export interface IFilters {
   productType: number | null;
   orderType: OrderType;
   characteristics: Record<string, string[]>;
+}
+
+export type ProductTypeLabel = 'Сыр' | 'Мясо';
+
+export interface IExtendedProduct extends IProduct {
+  isElected: boolean;
+  backgroundImg?: string;
+  countryImg?: string;
+  // currentCount: number;
+  productType: ProductTypeLabel;
 }

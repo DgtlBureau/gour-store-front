@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PALoader from 'components/PA/Main/Loader';
 import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -18,19 +19,22 @@ const sx = {
 };
 
 export type PAAddressCardProps = {
-  addresses?: {
+  addresses: {
     title: string;
     address: string;
   }[];
   onClickMore(): void;
+  isLoading: boolean;
 };
 
-export function PAAddressCard({ addresses, onClickMore }: PAAddressCardProps) {
+export function PAAddressCard({ addresses, onClickMore, isLoading }: PAAddressCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
     <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {addresses && addresses.length !== 0 ? (
+      {isLoading && <PALoader />}
+
+      {!isLoading &&
         addresses.map(address => (
           <Box key={address.address} sx={sx.address}>
             <Typography variant='body2' color='text.muted'>
@@ -38,8 +42,9 @@ export function PAAddressCard({ addresses, onClickMore }: PAAddressCardProps) {
             </Typography>
             <Typography variant='body1'>{address.address}</Typography>
           </Box>
-        ))
-      ) : (
+        ))}
+
+      {!isLoading && !addresses.length && (
         <Typography variant='body1' color='text.muted'>
           {t('emptyAddresses')}
         </Typography>

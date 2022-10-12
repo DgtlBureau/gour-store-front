@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
@@ -18,18 +18,19 @@ import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
+import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { Typography } from 'components/UI/Typography/Typography';
 
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import bannerImg from 'assets/images/banner.jpeg';
@@ -39,15 +40,15 @@ import sx from './Main.styles';
 
 const NOW = new Date();
 
-// eslint-disable-next-line react/function-component-definition
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
   const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
 
-  const basket = useAppSelector(state => state.order);
-
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
+  // TODO: вынести сюда в useMemo добавление к продуктам favoriteProducts, миллион расчетов для категорий
+  // а в каждом отдельном компоненте <ProductCard /> чекать корзину по ключу "id:id", чтобы избежать ререндера у всех компонентов
 
   const dispatch = useAppDispatch();
 
@@ -64,16 +65,28 @@ const Home: NextPage = () => {
 
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('MAIN');
 
+  const formattedNovelties = useMemo(
+    () =>
+      // TODO: вынести вычисление любимых продуктов в каждый компонент, чтобы избежать ререндера всего приложения после добавления в любимые продукты
+      computeProductsWithCategories(novelties, categories, favoriteProducts),
+    [novelties, categories, favoriteProducts],
+  );
+
+  const formattedProducts = useMemo(
+    () => computeProductsWithCategories(products, categories, favoriteProducts),
+    [products, categories, favoriteProducts],
+  );
+
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const electProduct = async (id: number, isElect: boolean) => {
+  const electProduct = useCallback(async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id);
@@ -85,7 +98,7 @@ const Home: NextPage = () => {
 
       dispatchNotification(message, { type: NotificationType.DANGER });
     }
-  };
+  }, []);
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
@@ -105,12 +118,10 @@ const Home: NextPage = () => {
             ))}
           />
         )}
-        {!!novelties?.length && (
+        {!!novelties.length && (
           <ProductCatalog
             title={t('novelties')}
-            products={novelties}
-            favoritesList={favoriteProducts}
-            basket={basket.products}
+            products={formattedNovelties}
             categories={categories}
             language={language}
             currency={currency}
@@ -127,9 +138,7 @@ const Home: NextPage = () => {
           <ProductCatalog
             withFilters
             title={t('catalog')}
-            favoritesList={favoriteProducts}
-            products={products}
-            basket={basket.products}
+            products={formattedProducts}
             categories={categories}
             language={language}
             currency={currency}
@@ -160,13 +169,10 @@ const Home: NextPage = () => {
               )}
             </Box>
 
-            <Typography variant='h4' sx={sx.title}>
-              {page.info?.title?.[language]}
-            </Typography>
-
-            <Typography variant='body1' sx={sx.pageInfoDescription}>
-              {page.info?.description?.[language]}
-            </Typography>
+            <PageContent
+              title={page?.info?.title?.[language] || ''}
+              description={page?.info?.description?.[language]}
+            />
           </Box>
         )}
       </ShopLayout>

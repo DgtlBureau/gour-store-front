@@ -55,11 +55,17 @@ const sx = {
   },
 
   content: {
+    padding: 0,
+  },
+
+  contentTitle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
 
-    padding: 0,
+  contentGram: {
+    color: t.palette.text.secondary,
   },
 
   title: {
