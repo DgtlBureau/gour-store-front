@@ -7,14 +7,8 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import ClosedEye from '@mui/icons-material/VisibilityOffOutlined';
 import OpenedEye from '@mui/icons-material/VisibilityOutlined';
 
-import { HFTextField, HFTextFieldProps } from './HFTextField';
-
-const sx = {
-  divider: {
-    height: 28,
-    marginRight: '14px',
-  },
-};
+import { HFTextField, HFTextFieldProps } from '../HFTextField';
+import sx from './HFPassField.styles';
 
 export type HFPassFieldProps = Omit<HFTextFieldProps, 'type' | 'multiline' | 'rows'>;
 
