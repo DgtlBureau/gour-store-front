@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
@@ -20,8 +20,9 @@ import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 export function Favorites() {
@@ -32,10 +33,13 @@ export function Favorites() {
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
 
-  const basket = useAppSelector(state => state.order);
+  const formattedProducts = useMemo(
+    () => computeProductsWithCategories(products, categories, favoriteProducts),
+    [products, categories, favoriteProducts],
+  );
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
@@ -54,7 +58,9 @@ export function Favorites() {
     }
   };
 
-  const filteredProducts = products.filter(product => !!favoriteProducts.find(favorite => favorite.id === product.id));
+  const filteredProducts = formattedProducts.filter(
+    product => !!favoriteProducts.find(favorite => favorite.id === product.id),
+  );
 
   return (
     <PrivateLayout>
@@ -69,10 +75,8 @@ export function Favorites() {
           <ProductCatalog
             title='Избранные продукты'
             emptyTitle='Нет избранных продуктов'
-            products={filteredProducts}
-            favoritesList={favoriteProducts}
+            products={formattedProducts}
             categories={categories}
-            basket={basket.products}
             language={language}
             currency={currency}
             onAdd={addToBasket}

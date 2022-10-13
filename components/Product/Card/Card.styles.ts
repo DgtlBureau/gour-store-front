@@ -130,6 +130,13 @@ const sx = {
     whiteSpace: 'normal',
     color: t.palette.text.secondary,
   },
+  stock: {
+    textAlign: 'center',
+    padding: '2px 16px',
+    borderRadius: '4px',
+    backgroundColor: t.palette.background.paper,
+    color: t.palette.text.secondary,
+  },
   actions: {
     display: 'flex',
     alignItems: 'flex-end',

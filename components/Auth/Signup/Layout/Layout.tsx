@@ -16,28 +16,12 @@ type Props = {
 
 export function SignupLayout({ children, image, stepIndex }: Props) {
   return (
-    <Grid
-      container
-      sx={{ position: 'relative' }}
-      flexDirection={{ xs: 'column-reverse', md: 'row' }}
-      alignItems='center'
-      spacing={0}
-    >
-      <Grid sx={sx.imageContainer} item xs={4} md={6}>
-        {!!image && <Image src={image} layout='intrinsic' width={500} height={750} alt='' />}
+    <Grid container alignItems='center' spacing={1}>
+      <Grid sx={sx.image} item xs={4} md={6}>
+        <Image src={image} layout='fill' alt='' />
       </Grid>
-      <Grid
-        item
-        sx={{
-          width: '100%',
-          maxWidth: {
-            xs: 'unset',
-            md: '500px',
-          },
-        }}
-        xs={12}
-        md={6}
-      >
+
+      <Grid item xs={12} md={6}>
         <Box sx={sx.stepper}>
           <Stepper activeStep={stepIndex} stepsCount={5} percent={100} />
         </Box>

@@ -2,6 +2,7 @@ import { defaultTheme as t } from 'themes';
 
 const sx = {
   select: {
+    width: '100%',
     backgroundColor: 'background.paper',
     boxShadow: 'none',
     borderRadius: '6px',
@@ -13,18 +14,7 @@ const sx = {
       margin: '0 0 10px 0',
     },
   },
-  optionBox: {
-    padding: '6px 12px',
-    color: t.palette.text.secondary,
-    backgroundColor: t.palette.common.white,
-    borderRadius: '6px',
-    userSelect: 'none',
-    cursor: 'pointer',
-  },
-  selected: {
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
-  },
+
   title: {
     color: t.palette.text.muted,
   },
@@ -33,15 +23,16 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px 16px',
+    padding: '8px 16px',
     backgroundColor: 'background.paper',
     borderRadius: '6px',
   },
   list: {
     position: 'absolute',
-    maxWidth: '260px',
+    minWidth: '180px',
+    maxWidth: '280px',
     marginTop: '6px',
-    padding: '14px 0',
+    padding: '14px',
     backgroundColor: 'white',
     border: '1px solid',
     borderColor: t.palette.secondary.main,
@@ -60,12 +51,9 @@ const sx = {
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },
-  actions: {
-    marginTop: '14px',
-    padding: '0 14px',
-  },
   applyBtn: {
-    marginLeft: '6px',
+    marginTop: '14px',
+    width: '100%',
   },
 };
 

@@ -22,11 +22,11 @@ import { NotificationType } from 'types/entities/Notification';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import cityImage from 'assets/icons/signup/city.svg';
-import credentialsImage from 'assets/icons/signup/credentials.svg';
-import favoritesImage from 'assets/icons/signup/favorites.svg';
-import greetingsImage from 'assets/icons/signup/greetings.svg';
-import referralImage from 'assets/icons/signup/referralCodes.svg';
+import cityImage from 'assets/images/signup/city.svg';
+import credentialsImage from 'assets/images/signup/credentials.svg';
+import favoritesImage from 'assets/images/signup/favorites.svg';
+import greetingsImage from 'assets/images/signup/greetings.svg';
+import referralImage from 'assets/images/signup/referral-codes.svg';
 import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
@@ -49,9 +49,9 @@ export default function SignUp() {
   const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>(undefined);
-  const [_favoriteInfo, setFavoriteInfo] = useState({} as FavoriteInfo); // TODO сохранение выбора
+  const [selectedCity, setSelectedCity] = useState<string | undefined>();
+  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
+  const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
   const [referralCode, setReferralCode] = useState('');
 
   const goToGreeting = () => setStage('greeting');
@@ -104,7 +104,7 @@ export default function SignUp() {
   };
 
   const registerUser = async () => {
-    if (!credentials) return;
+    if (!credentials || !selectedCity) return;
 
     const role = roles?.find(it => it.key === credentials.role);
 

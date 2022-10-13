@@ -40,14 +40,13 @@ const sx = {
 
 type CartInfoProps = {
   count: number;
-  weight: number;
   price: number;
   delivery: number;
   discount: number;
   currency?: Currency;
 };
 
-export function CartInfo({ count, weight, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
+export function CartInfo({ count, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const productsCountText = getDeclensionWordByCount(count, [t('manyProducts'), t('oneProduct'), t('someProducts')]);
@@ -65,7 +64,7 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
       </Box>
       <Box sx={sx.footnote}>
         <Typography variant='body1'>
-          {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''}
+          {/* {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''} FIXME: */}
         </Typography>
         <Typography variant='body1'>
           {price}&nbsp;

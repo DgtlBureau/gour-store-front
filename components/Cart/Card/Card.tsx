@@ -14,7 +14,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MinusIcon from '@mui/icons-material/Remove';
-import defaultImg from 'assets/no-image.svg';
+import defaultImg from 'assets/images/default.svg';
 
 import translations from './Card.i18n.json';
 import sx from './Card.styles';
@@ -23,11 +23,10 @@ import { CartCardDocket as Docket } from './Docket';
 type Props = {
   title: string;
   price: number;
-  weight: number;
   amount: number;
+  gram: number;
   productImg: string;
   backgroundImg?: string;
-  isWeightGood: boolean;
   discount?: number;
   currency?: Currency;
   onDetail: () => void;
@@ -40,11 +39,10 @@ export function CartCard({
   title,
   price,
   amount,
+  gram,
   productImg,
   backgroundImg,
   discount,
-  weight,
-  isWeightGood,
   currency = 'cheeseCoin',
   onDetail,
   onDelete,
@@ -65,17 +63,22 @@ export function CartCard({
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant='h6' sx={sx.title} onClick={onDetail}>
-            {title}
-          </Typography>
+          <Box sx={sx.contentTitle}>
+            <Typography variant='h6' sx={sx.title} onClick={onDetail}>
+              {title}
+            </Typography>
 
-          {screenWidth > 600 ? (
-            <Docket currency={currency} discount={discount} price={price} amount={amount} />
-          ) : (
-            <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
-              <CancelIcon />
-            </IconButton>
-          )}
+            {screenWidth > 600 ? (
+              <Docket currency={currency} discount={discount} price={price} amount={amount} />
+            ) : (
+              <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
+                <CancelIcon />
+              </IconButton>
+            )}
+          </Box>
+          <Typography variant='body2' sx={sx.contentGram}>
+            {gram} грам
+          </Typography>
         </CardContent>
 
         <CardActions sx={sx.actions}>
@@ -84,12 +87,12 @@ export function CartCard({
           </Button>
 
           <Box sx={sx.edit}>
-            <IconButton onClick={onSubtract}>
+            <IconButton onClick={onSubtract} disabled={amount === 1}>
               <MinusIcon />
             </IconButton>
-
+            {/* FIXME: */}
             <Typography variant='body2' sx={sx.weight}>
-              {isWeightGood ? weight : amount} {isWeightGood ? t('g') : t('piece')}
+              {amount * gram} {t('g')}
             </Typography>
 
             <IconButton onClick={onAdd}>

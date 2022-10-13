@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -22,9 +23,10 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import translations from './Promotion.i18n.json';
@@ -45,16 +47,27 @@ export default function Promotion() {
 
   const promotionId = queryId ? +queryId : 0;
 
-  const { data: promotion, isLoading, isError } = useGetPromotionQuery(promotionId, { skip: !queryId });
+  const {
+    data: promotion,
+    isLoading: isPromotionLoading,
+    isError,
+  } = useGetPromotionQuery(promotionId, { skip: !queryId });
+  const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
+  const { data: favoriteProducts = [], isLoading: favoriteProductsLoading } = useGetFavoriteProductsQuery();
+
+  const isLoading = isPromotionLoading && categoriesIsLoading && favoriteProductsLoading;
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const basket = useAppSelector(state => state.order);
-
-  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+  // const basket = useAppSelector(selectBasketProducts);
 
   if (!promotionId) return goToHome();
+
+  const formattedPromotionProducts = useMemo(
+    () => computeProductsWithCategories(promotion?.products || [], categories, favoriteProducts || []),
+    [promotion?.products, categories, favoriteProducts],
+  );
 
   const electProduct = async (id: number, isElect: boolean) => {
     try {
@@ -70,8 +83,8 @@ export default function Promotion() {
     }
   };
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   return (
     <PrivateLayout>
@@ -98,19 +111,18 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            {!!promotion?.products?.length && (
+            {!!formattedPromotionProducts?.length && (
               <ProductCatalog
                 title={t('sliderTitle')}
-                products={promotion.products}
-                basket={basket.products}
+                products={formattedPromotionProducts}
                 language={language}
                 currency={currency}
                 discount={promotion?.discount}
+                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
                 onDetail={goToProductPage}
-                favoritesList={favoriteProducts}
               />
             )}
           </>

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Divider, Grid } from '@mui/material';
 
@@ -13,12 +13,11 @@ import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
 import {
   addBasketProduct,
   removeProduct,
+  selectBasketProducts,
   selectProductsIdInOrder,
-  selectProductsInOrder,
   selectedProductCount,
   selectedProductDiscount,
   selectedProductSum,
-  selectedProductWeight,
   subtractBasketProduct,
 } from 'store/slices/orderSlice';
 
@@ -40,6 +39,7 @@ import { NotificationType } from 'types/entities/Notification';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -56,15 +56,19 @@ export function Basket() {
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
 
-  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
-  const weight = useAppSelector(selectedProductWeight);
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const productIds = useAppSelector(selectProductsIdInOrder);
 
   const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });
+
+  const formattedSimilarProducts = useMemo(
+    () => computeProductsWithCategories(similarProducts, categories, favoriteProducts),
+    [similarProducts, categories, favoriteProducts],
+  );
 
   // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
@@ -74,9 +78,9 @@ export function Basket() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
-  const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
-  const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const deleteProduct = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram })); // FIXME:
+  const addProduct = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const subtractProduct = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const electProduct = async (id: number, isElect: boolean) => {
     try {
@@ -121,16 +125,15 @@ export function Basket() {
                     title={it.product.title[language] || '...'}
                     price={it.product.price[currency] || 0}
                     amount={it.amount}
-                    weight={it.weight}
-                    isWeightGood={it.product.isWeightGood}
+                    gram={it.gram}
                     productImg={it.product.images[0]?.small}
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
                     currency={currency}
                     onDetail={() => goToProductPage(it.product.id)}
-                    onDelete={() => deleteProduct(it.product)}
-                    onAdd={() => addProduct(it.product)}
-                    onSubtract={() => subtractProduct(it.product)}
+                    onDelete={() => deleteProduct(it.product, it.gram)}
+                    onAdd={() => addProduct(it.product, it.gram)}
+                    onSubtract={() => subtractProduct(it.product, it.gram)}
                   />
 
                   <Divider sx={sx.divider} />
@@ -145,7 +148,6 @@ export function Basket() {
 
               <CartInfo
                 count={count}
-                weight={weight}
                 discount={sumDiscount}
                 delivery={isDeliveryFree ? 0 : delivery}
                 price={sum}
@@ -164,7 +166,7 @@ export function Basket() {
                 text={t('aboutDelivery')}
                 link={{
                   label: t('detailed'),
-                  path: '/#purchase-rules-block',
+                  path: '/rules',
                 }}
               />
             </Grid>
@@ -173,10 +175,9 @@ export function Basket() {
               <Grid item xs={12}>
                 <ProductCatalog
                   title={t('similar')}
-                  products={similarProducts}
+                  products={formattedSimilarProducts}
                   language={language}
                   currency={currency}
-                  favoritesList={favoriteProducts}
                   onAdd={addProduct}
                   onRemove={subtractProduct}
                   onElect={electProduct}

@@ -19,8 +19,8 @@ const Template: ComponentStory<typeof ProductActions> = args => {
     if (count === 0) return;
     setCount(count - 1);
   };
-
-  return <ProductActions {...args} count={count} onAdd={handleAddToCart} onRemove={handleRemoveFromCart} />;
+  // FIXME: исправить логику
+  return <ProductActions {...args} onAdd={handleAddToCart} onRemove={handleRemoveFromCart} />;
 };
 export const DefaultProductPreview = Template.bind({});
 
