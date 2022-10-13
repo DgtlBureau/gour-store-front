@@ -207,7 +207,7 @@ export default function Product() {
                   {t('description')}
                 </Typography>
 
-                <div dangerouslySetInnerHTML={{ __html: productDescription }}></div>
+                <div dangerouslySetInnerHTML={{ __html: productDescription }} />
               </Box>
             )}
 
