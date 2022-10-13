@@ -151,6 +151,8 @@ export default function Product() {
       value: lowCategory.title.ru,
     })) || [];
 
+  const productDescription = product?.description[language] || '';
+
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
@@ -199,13 +201,15 @@ export default function Product() {
               </Box>
             </Box>
 
-            <Box sx={sx.description}>
-              <Typography sx={sx.title} variant='h5'>
-                {t('description')}
-              </Typography>
+            {productDescription && (
+              <Box sx={sx.description}>
+                <Typography sx={sx.title} variant='h5'>
+                  {t('description')}
+                </Typography>
 
-              <Typography variant='body1'>{product.description[language] || ''}</Typography>
-            </Box>
+                <div dangerouslySetInnerHTML={{ __html: productDescription }}></div>
+              </Box>
+            )}
 
             {!!formattedSimilarProducts?.length && (
               <ProductCatalog
