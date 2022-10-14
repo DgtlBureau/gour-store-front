@@ -15,26 +15,14 @@ export default {
 const Template: ComponentStory<typeof ProductCard> = args => {
   const [isElected, setIsElected] = useState(false);
   const [amount, setWeight] = useState(0);
-  const [gram, setGram] = useState(0);
 
   const changeIsElect = () => setIsElected(!isElected);
 
-  const increaseWeight = () => setWeight(amount + 1);
-  const decreaseWeight = () => setWeight(amount - 1);
-
-  const changeGram = (value: number) => setGram(value);
+  const increaseWeight = (_gram: number) => setWeight(amount + 1);
+  const decreaseWeight = (_gram: number) => setWeight(amount - 1);
 
   return (
-    <ProductCard
-      {...args}
-      productType='Сыр'
-      amount={amount}
-      gram={gram}
-      onElect={changeIsElect}
-      onAdd={increaseWeight}
-      onRemove={decreaseWeight}
-      onGramChange={changeGram}
-    />
+    <ProductCard {...args} productType='Сыр' onElect={changeIsElect} onAdd={increaseWeight} onRemove={decreaseWeight} />
   );
 };
 
@@ -50,7 +38,6 @@ const props: Partial<ProductCardProps> = {
   countryImg: imageByCountry.Russia,
   backgroundImg: cheeseBackground,
   isElected: false,
-  remains: 5,
 };
 
 DefaultProductInformation.args = props;

@@ -189,12 +189,12 @@ export default function Product() {
 
                 <ProductActions
                   id={product.id}
-                  moyskladId={product.moyskladCode.toString()}
+                  moyskladId={product.moyskladId}
                   currentUserCity={currentUser?.city.name.ru}
                   price={product.price[currency] || 0}
                   currency={currency}
                   discount={product.discount}
-                  productType={productType || 'Мясо'} // FIXME:
+                  productType={productType!}
                   sx={sx.actions}
                   onAdd={(gram: number) => addToBasket(product, gram)}
                   onRemove={(gram: number) => removeFromBasket(product, gram)}

@@ -17,6 +17,7 @@ import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import PlusIcon from '@mui/icons-material/Add';
 import TrashIcon from '@mui/icons-material/DeleteForever';
@@ -60,7 +61,7 @@ export function ProductActions({
   onElect,
 }: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
-  const isMobileAndSmallTablet = useMediaQuery('(max-width: 745px)');
+  const isMobileAndSmallTablet = useMediaQuery('(max-width: 744px)');
 
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
@@ -68,6 +69,7 @@ export function ProductActions({
     data: stock,
     isFetching: isStockFetching,
     isError: isStockError,
+    error: stockError,
   } = useGetStockQuery(
     {
       city: 'Санкт-Петербург' ?? currentUserCity, // TODO: в будущем отправлять currentUserCity
@@ -76,6 +78,7 @@ export function ProductActions({
     },
     {
       skip: !productGramValue || !moyskladId,
+      selectFromResult: ({ error, ...rest }) => ({ ...rest, error: getErrorMessage(error) }),
     },
   );
 
@@ -94,28 +97,35 @@ export function ProductActions({
 
   const total = pricePerCount * ((100 - discount) / 100);
 
+  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
+
   const handleAddClick = () => {
-    if (!isStockFetching) onAdd(productGramValue);
+    if (!isAddDisabled) onAdd(productGramValue);
   };
 
   const handleRemoveClick = () => {
-    if (!isStockFetching) onRemove(productGramValue);
+    onRemove(productGramValue);
   };
-
-  const isAddDisabled = isStockFetching || isStockError || (basketProduct?.amount || 0) >= Number(stock?.value);
 
   return (
     <Box sx={{ ...sx, ...sxActions.container } as SxProps}>
+      {!isStockFetching && stockError && (
+        <Typography variant='body1' sx={{ width: '100%', order: -2, marginBottom: '10px', color: 'red' }}>
+          {stockError}
+        </Typography>
+      )}
+
       <Typography variant='body2' sx={sxActions.stock}>
         {isStockFetching && 'Загрузка остатков...'}
-        {!isStockFetching && isStockError && 'Произошла ошибка'}
+        {!isStockFetching && !moyskladId && 'Не указан ID у МойСклад'}
         {!isStockFetching && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
       </Typography>
 
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
           <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
-            {total}&nbsp; {getCurrencySymbol(currency)}
+            {total}&nbsp;{getCurrencySymbol(currency)}
           </Typography>
         </Box>
 
@@ -128,21 +138,19 @@ export function ProductActions({
       </Box>
 
       <ProductCardGramSelect
-        // showTitleOnTablets
+        showLabelOnTablets
         sx={sxActions.select}
         gram={productGramValue}
         onChange={onSelectGram}
         options={productGramOptions}
       />
 
-      {isMobileAndSmallTablet ? (
-        <Box sx={sxActions.buyBtnWrapper}>
-          <IconButton disabled={isAddDisabled} onClick={handleAddClick}>
+      <Box sx={sxActions.buyBtnWrapper}>
+        {isMobileAndSmallTablet ? (
+          <IconButton disabled={isAddDisabled} onClick={handleAddClick} sx={{ cursor: 'pointer' }}>
             <CartIcon sx={sxActions.icon} />
           </IconButton>
-        </Box>
-      ) : (
-        <Box sx={sxActions.buyBtnWrapper}>
+        ) : (
           <Grid container sx={sxActions.btnGroup}>
             {basketProduct ? (
               <>
@@ -171,19 +179,16 @@ export function ProductActions({
                 </Grid>
               </>
             ) : (
-              <Box
-                sx={{ display: 'flex', height: '44px', alignItems: 'center', justifyContent: 'center', width: '100%' }}
-                onClick={handleAddClick}
-              >
+              <Box sx={sxActions.buyBtnCircle} onClick={handleAddClick}>
                 <CartIcon sx={sxActions.icon} />
-                <Typography sx={{ marginLeft: '10px', textTransform: 'uppercase', fontWeight: 600 }} variant='body1'>
+                <Typography sx={sxActions.buyBtnLabel} variant='body1'>
                   Купить
                 </Typography>
               </Box>
             )}
           </Grid>
-        </Box>
-      )}
+        )}
+      </Box>
 
       <IconButton sx={{ ...sxActions.favoriteBtn, ...(isElect && sxActions.favoriteBtnElected) }} onClick={onElect}>
         <FavoriteIcon sx={sxActions.icon} />
