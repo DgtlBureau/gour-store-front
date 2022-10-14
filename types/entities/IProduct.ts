@@ -14,6 +14,7 @@ export interface IProduct extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   moyskladCode: number;
+  moyskladId: string | null;
   images: IImage[];
   categories?: ICategory[];
   productGrades: IProductGrade[];

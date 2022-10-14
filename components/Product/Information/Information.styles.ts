@@ -48,10 +48,6 @@ const sx = {
   value: {
     color: t.palette.accent.main,
   },
-  balance: {
-    margin: '8px 0 0 0',
-    color: t.palette.text.secondary,
-  },
 };
 
 export default sx;

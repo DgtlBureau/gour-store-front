@@ -1,8 +1,10 @@
 {
   "ru": {
-    "addToCart": "в корзину"
+    "addToCart": "в корзину",
+    "g": "г"
   },
   "en": {
-    "addToCart": "add to cart"
+    "addToCart": "add to cart",
+    "g": "g"
   }
 }

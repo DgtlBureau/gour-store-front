@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Collapse, List, ListItemButton, ListItemText, SxProps } from '@mui/material';
+import { Collapse, List, ListItemButton, ListItemText, SxProps, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { ClickAwayListener } from 'components/UI/ClickAwayListener/ClickAwayListener';
@@ -16,12 +16,21 @@ import selectSx from './GramSelect.styles';
 export type ProductCardGramSelectProps = {
   gram: number;
   options: IOption[];
+  showTitleOnTablets?: boolean;
   sx?: SxProps;
   onChange(gram: number): void;
 };
 
-export function ProductCardGramSelect({ gram, options, sx, onChange }: ProductCardGramSelectProps) {
+export function ProductCardGramSelect({
+  gram,
+  options,
+  showTitleOnTablets = false,
+  sx,
+  onChange,
+}: ProductCardGramSelectProps) {
   const [isDeployed, setIsDeployed] = useState(false);
+
+  const isMobileAndTablet = useMediaQuery('(max-width: 900px)');
 
   const checkOption = (value: number) => gram === value;
 
@@ -33,12 +42,16 @@ export function ProductCardGramSelect({ gram, options, sx, onChange }: ProductCa
     setIsDeployed(false);
   };
 
+  const showLabel = isMobileAndTablet ? showTitleOnTablets : true;
+
   return (
     <Box sx={sx}>
       <Box sx={selectSx.extender} onClick={() => setIsDeployed(!isDeployed)}>
-        <Typography variant='body1' sx={{ ...selectSx.title, whiteSpace: 'nowrap', userSelect: 'none' }}>
-          {gram}г
-        </Typography>
+        {showLabel && (
+          <Typography variant='body1' sx={{ ...selectSx.title, whiteSpace: 'nowrap', userSelect: 'none' }}>
+            {gram}г
+          </Typography>
+        )}
 
         <ExpandMoreIcon
           htmlColor={theme.palette.text.muted}

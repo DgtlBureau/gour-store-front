@@ -3,6 +3,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -57,7 +58,8 @@ export default function Product() {
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
-  const { data: categories = [] } = useGetCategoryListQuery();
+  const { data: categories = [], isLoading: isCategoriesLoading } = useGetCategoryListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ gram, product }));
 
@@ -67,7 +69,7 @@ export default function Product() {
 
   const {
     data: product,
-    isLoading,
+    isLoading: isProductLoading,
     isError,
   } = useGetProductQuery(
     {
@@ -79,6 +81,8 @@ export default function Product() {
     },
     { skip: !productId },
   );
+
+  const isLoading = isProductLoading || isCategoriesLoading;
 
   const productType = useMemo(
     () => product?.categories && categories && getProductTypeLabel(categories, product.categories),
@@ -185,11 +189,12 @@ export default function Product() {
 
                 <ProductActions
                   id={product.id}
+                  moyskladId={product.moyskladId}
+                  currentUserCity={currentUser?.city.name.ru}
                   price={product.price[currency] || 0}
                   currency={currency}
                   discount={product.discount}
-                  productType={productType || 'Мясо'} // FIXME:
-                  isWeightGood={product.isWeightGood}
+                  productType={productType!}
                   sx={sx.actions}
                   onAdd={(gram: number) => addToBasket(product, gram)}
                   onRemove={(gram: number) => removeFromBasket(product, gram)}
