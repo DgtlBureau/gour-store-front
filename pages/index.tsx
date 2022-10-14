@@ -63,7 +63,7 @@ const Home: NextPage = () => {
   });
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
-  const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('MAIN');
+  const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
 
   const formattedNovelties = useMemo(
     () =>
