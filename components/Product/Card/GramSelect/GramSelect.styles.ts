@@ -32,7 +32,7 @@ export const sx = {
     border: '1px solid',
     borderColor: t.palette.secondary.main,
     borderRadius: '6px',
-    zIndex: 10000,
+    zIndex: 100,
     overflow: 'scroll',
   },
 };

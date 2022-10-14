@@ -29,6 +29,12 @@ export const sx = {
       xs: '16px',
     },
   },
+  slide: {
+    display: 'flex',
+    width: 'fit-content',
+    height: 'auto',
+    transform: 'none',
+  },
 };
 
 export default sx;

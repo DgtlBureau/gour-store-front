@@ -13,7 +13,6 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import cardCss from './CardSlider.module.scss';
 import sliderSx from './CardSlider.styles';
 
 type Props = {
@@ -91,7 +90,7 @@ export function CardSlider({
             onSlideChange={changeSlide}
           >
             {cardsList.map((card, i) => (
-              <SwiperSlide key={i} className={cardCss.fit}>
+              <SwiperSlide key={i} style={sliderSx.slide}>
                 {card}
               </SwiperSlide>
             ))}

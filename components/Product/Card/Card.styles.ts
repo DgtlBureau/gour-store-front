@@ -20,8 +20,6 @@ const sx = {
     backgroundColor: t.palette.background.default,
 
     boxSizing: 'border-box',
-
-    zIndex: 50,
   },
   preview: {
     position: 'relative',
