@@ -11,11 +11,13 @@ export const sx = {
     backgroundColor: 'background.paper',
     borderRadius: '6px',
     gap: '6px',
+    height: '100%',
   },
   title: {
-    display: { xs: 'none', md: 'flex' },
+    display: 'flex',
     color: t.palette.text.muted,
   },
+  titleHidden: {},
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },

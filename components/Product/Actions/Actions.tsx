@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import { Grid, SxProps } from '@mui/material';
+import { Grid, SxProps, useMediaQuery } from '@mui/material';
+
+import { useGetStockQuery } from 'store/api/warehouseApi';
 
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { Select, SelectOption } from 'components/UI/Select/Select';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
+import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
@@ -24,11 +26,14 @@ import CartIcon from '@mui/icons-material/ShoppingCart';
 import { productGramList } from 'constants/gramList';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
+import { ProductCardGramSelect } from '../Card/GramSelect/GramSelect';
 import translations from './Actions.i18n.json';
 import sxActions from './Actions.styles';
 
 export type ProductActionsProps = {
   id: number;
+  moyskladId: string | null;
+  currentUserCity?: string;
   price: number;
   discount?: number;
   productType: ProductTypeLabel;
@@ -42,30 +47,45 @@ export type ProductActionsProps = {
 
 export function ProductActions({
   id,
+  moyskladId,
+  currentUserCity,
   price,
   discount = 0,
   currency,
   productType,
-  sx,
+  sx = {},
   isElect,
   onAdd,
   onRemove,
   onElect,
 }: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
+  const isMobileAndSmallTablet = useMediaQuery('(max-width: 745px)');
 
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
+  const {
+    data: stock,
+    isFetching: isStockFetching,
+    isError: isStockError,
+  } = useGetStockQuery(
+    {
+      city: 'Санкт-Петербург' ?? currentUserCity, // TODO: в будущем отправлять currentUserCity
+      gram: String(productGramValue),
+      warehouseId: String(moyskladId),
+    },
+    {
+      skip: !productGramValue || !moyskladId,
+    },
+  );
+
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
-  const [productGramOptions] = useState<SelectOption[]>(
-    () =>
-      (productType &&
-        productGramList[productType].map(gram => ({
-          label: `${gram} гр.`,
-          value: gram,
-        }))) ||
-      [],
+  const [productGramOptions] = useState<IOption[]>(() =>
+    productGramList[productType].map(gram => ({
+      label: `${gram} г`,
+      value: String(gram),
+    })),
   );
 
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
@@ -74,8 +94,24 @@ export function ProductActions({
 
   const total = pricePerCount * ((100 - discount) / 100);
 
+  const handleAddClick = () => {
+    if (!isStockFetching) onAdd(productGramValue);
+  };
+
+  const handleRemoveClick = () => {
+    if (!isStockFetching) onRemove(productGramValue);
+  };
+
+  const isAddDisabled = isStockFetching || isStockError || (basketProduct?.amount || 0) >= Number(stock?.value);
+
   return (
-    <Box sx={{ ...sxActions.container, ...sx }}>
+    <Box sx={{ ...sx, ...sxActions.container } as SxProps}>
+      <Typography variant='body2' sx={sxActions.stock}>
+        {isStockFetching && 'Загрузка остатков...'}
+        {!isStockFetching && isStockError && 'Произошла ошибка'}
+        {!isStockFetching && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
+      </Typography>
+
       <Box sx={sxActions.docket}>
         <Box sx={sxActions.total}>
           <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
@@ -91,44 +127,67 @@ export function ProductActions({
         )}
       </Box>
 
-      <Select
-        selectSx={sxActions.select}
-        value={productGramValue}
+      <ProductCardGramSelect
+        // showTitleOnTablets
+        sx={sxActions.select}
+        gram={productGramValue}
         onChange={onSelectGram}
         options={productGramOptions}
       />
 
-      <Box sx={sxActions.actions}>
-        <Box sx={sxActions.cart}>
-          {!basketProduct || basketProduct.amount === 0 ? (
-            <IconButton onClick={() => onAdd(productGramValue)}>
-              <CartIcon sx={sxActions.icon} />
-            </IconButton>
-          ) : (
-            <Grid container sx={sxActions.btnGroup}>
-              <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={() => onRemove(productGramValue)}>
-                  {basketProduct?.amount === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
-                </IconButton>
-              </Grid>
-
-              <Grid item xs={4} sx={sxActions.action}>
-                {basketProduct.amount * basketProduct.gram}&nbsp;{t('g')}
-              </Grid>
-
-              <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={() => onAdd(productGramValue)}>
-                  <PlusIcon sx={sxActions.icon} />
-                </IconButton>
-              </Grid>
-            </Grid>
-          )}
+      {isMobileAndSmallTablet ? (
+        <Box sx={sxActions.buyBtnWrapper}>
+          <IconButton disabled={isAddDisabled} onClick={handleAddClick}>
+            <CartIcon sx={sxActions.icon} />
+          </IconButton>
         </Box>
+      ) : (
+        <Box sx={sxActions.buyBtnWrapper}>
+          <Grid container sx={sxActions.btnGroup}>
+            {basketProduct ? (
+              <>
+                <Grid item xs={4} sx={sxActions.action}>
+                  <IconButton onClick={handleRemoveClick}>
+                    {basketProduct?.amount === 1 ? (
+                      <TrashIcon sx={sxActions.icon} />
+                    ) : (
+                      <MinusIcon sx={sxActions.icon} />
+                    )}
+                  </IconButton>
+                </Grid>
 
-        <IconButton sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect} onClick={onElect}>
-          <FavoriteIcon sx={sxActions.icon} />
-        </IconButton>
-      </Box>
+                <Grid item xs={4} sx={sxActions.action}>
+                  {basketProduct.amount * basketProduct.gram}&nbsp;{t('g')}
+                </Grid>
+
+                <Grid item xs={4} sx={sxActions.action}>
+                  <IconButton
+                    sx={{ cursor: isAddDisabled ? 'not-allowed' : 'pointer' }}
+                    disabled={isAddDisabled}
+                    onClick={handleAddClick}
+                  >
+                    <PlusIcon sx={sxActions.icon} />
+                  </IconButton>
+                </Grid>
+              </>
+            ) : (
+              <Box
+                sx={{ display: 'flex', height: '44px', alignItems: 'center', justifyContent: 'center', width: '100%' }}
+                onClick={handleAddClick}
+              >
+                <CartIcon sx={sxActions.icon} />
+                <Typography sx={{ marginLeft: '10px', textTransform: 'uppercase', fontWeight: 600 }} variant='body1'>
+                  Купить
+                </Typography>
+              </Box>
+            )}
+          </Grid>
+        </Box>
+      )}
+
+      <IconButton sx={{ ...sxActions.favoriteBtn, ...(isElect && sxActions.favoriteBtnElected) }} onClick={onElect}>
+        <FavoriteIcon sx={sxActions.icon} />
+      </IconButton>
     </Box>
   );
 }
