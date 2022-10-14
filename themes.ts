@@ -10,7 +10,7 @@ declare module '@mui/material/styles' {
   }
 
   interface TypeText {
-    muted?: string;
+    muted: string;
   }
 
   interface BreakpointOverrides {

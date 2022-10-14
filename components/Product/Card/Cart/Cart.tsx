@@ -14,19 +14,20 @@ import CartIcon from '@mui/icons-material/ShoppingCart';
 import sx from './Cart.styles';
 
 type Props = {
+  isDisabled: boolean;
   amount: number;
   gram: number;
   onAdd: () => void;
   onRemove: () => void;
 };
 
-export function ProductCardCart({ amount, gram, onAdd, onRemove }: Props) {
+export function ProductCardCart({ isDisabled, amount, gram, onAdd, onRemove }: Props) {
   const inCart = amount > 0;
 
   return (
     <Box sx={{ ...sx.cart, ...(inCart && sx.deployed) }}>
       {amount === 0 ? (
-        <IconButton sx={sx.iconBtn} onClick={onAdd}>
+        <IconButton sx={sx.iconBtn} disabled={isDisabled} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
           <Typography variant='body2' sx={sx.buyLabel}>
             купить
@@ -45,7 +46,7 @@ export function ProductCardCart({ amount, gram, onAdd, onRemove }: Props) {
           </Grid>
 
           <Grid item xs={4} sx={sx.action}>
-            <IconButton sx={sx.iconBtn} onClick={onAdd}>
+            <IconButton sx={sx.iconBtn} disabled={isDisabled} onClick={onAdd}>
               <PlusIcon sx={sx.icon} />
             </IconButton>
           </Grid>

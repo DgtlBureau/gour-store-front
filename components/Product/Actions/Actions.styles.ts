@@ -3,7 +3,10 @@ import { defaultTheme as theme } from 'themes';
 export const sx = {
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: {
+      xs: 'nowrap',
+      lg: 'wrap',
+    },
     alignItems: 'center',
     width: {
       xs: '100%',
@@ -13,13 +16,9 @@ export const sx = {
 
   stock: {
     color: theme.palette.text.secondary,
-    maxWidth: {
-      xs: '90px',
-      sm: '135px',
-      lg: '100%',
-    },
+    maxWidth: '100%',
     margin: {
-      sm: '0 12px 0 0',
+      xs: '0 12px 0 0',
       lg: 0,
     },
   },
@@ -44,7 +43,7 @@ export const sx = {
       lg: 'inherit',
     },
     margin: {
-      xs: '0 23px 0 0',
+      xs: '0 3% 0 0',
       sm: '0 70px 0 0',
       lg: '10px 0',
     },
@@ -82,6 +81,18 @@ export const sx = {
   btnGroup: {
     minWidth: '180px',
   },
+  buyBtnCircle: {
+    display: 'flex',
+    height: '44px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buyBtnLabel: {
+    marginLeft: '10px',
+    textTransform: 'uppercase',
+    fontWeight: 600,
+  },
   action: {
     display: 'flex',
     justifyContent: 'center',
@@ -95,7 +106,7 @@ export const sx = {
     borderRadius: '50%',
     display: {
       xs: 'none',
-      sm: 'block',
+      sm: 'flex',
     },
 
     background: theme.palette.accent.main,
