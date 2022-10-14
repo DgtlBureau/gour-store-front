@@ -76,8 +76,8 @@ export function CardSlider({
           <Swiper
             style={{
               width: '100%',
-              // overflowX: 'hidden',
-              // overflowY: 'auto',
+              overflowX: 'clip',
+              overflowY: 'visible',
             }}
             spaceBetween={spaceBetween}
             grid={{
