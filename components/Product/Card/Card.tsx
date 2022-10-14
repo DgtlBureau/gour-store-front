@@ -1,46 +1,27 @@
 import Image from 'next/image';
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
-import { CardMedia } from '@mui/material';
+import { CardMedia, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { SelectOption } from 'components/UI/Select/Select';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
-import { useAppSelector } from 'hooks/store';
-
 import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/images/default.svg';
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
+import { productGramList } from 'constants/gramList';
 
 import sx from './Card.styles';
-import { ProductCardCart as Cart } from './Cart';
-import { ProductCardDocket as Docket } from './Docket';
-import { ProductCardRate as Rate } from './Rate';
-
-export const productGramList: Record<ProductTypeLabel, number[]> = {
-  Мясо: [100, 200, 300, 400, 500],
-  Сыр: [150, 200, 250, 300, 350, 400],
-};
-
-export const getDefaultGramByProductType = (label: ProductTypeLabel): number => {
-  const gramObj = {
-    Мясо: 100,
-    Сыр: 150,
-  };
-
-  return gramObj[label];
-};
+import { ProductCardCart as Cart } from './Cart/Cart';
+import { ProductCardDocket as Docket } from './Docket/Docket';
+import { ProductCardRate as Rate } from './Rate/Rate';
 
 export type ProductCardProps = {
   id: number;
   title: string;
-  description: string;
   rating: number;
-  isWeightGood: boolean;
   price: number;
   productType: ProductTypeLabel;
   discount?: number;
@@ -49,8 +30,12 @@ export type ProductCardProps = {
   countryImg?: string;
   currency: Currency;
   isElected: boolean;
-  onAdd: (gram: number) => void;
-  onRemove: (gram: number) => void;
+  gram: number;
+  amount: number;
+  remains?: number;
+  onAdd: () => void;
+  onRemove: () => void;
+  onGramChange: (value: number) => void;
   onElect: () => void;
   onDetail: () => void;
 };
@@ -59,9 +44,7 @@ export type ProductCardProps = {
 export const ProductCard = memo(function ProductCard({
   id,
   title,
-  description,
   rating,
-  isWeightGood,
   discount = 10,
   price,
   productType,
@@ -70,38 +53,35 @@ export const ProductCard = memo(function ProductCard({
   countryImg,
   isElected,
   currency,
+  gram,
+  amount,
+  remains,
   onAdd,
   onRemove,
+  onGramChange,
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
+  const gramOptions =
+    productGramList[productType]?.map(value => ({ label: `${value}г`, value: value.toString() })) || [];
 
-  // if (!productType) throw new Error('не прокинул categories'); // FIXME:
+  const gramValue = gram || +gramOptions[0].value;
 
-  const basketProductsKey = getProductKeyInBasket(id, productGramValue);
-  const basket = useAppSelector(state => state.order.products[basketProductsKey]);
-  const [productGramOptions] = useState<SelectOption[]>(() =>
-    productGramList[productType]?.map(
-      // FIXME: удолить ?. оператор
-      gram =>
-        ({
-          label: `${gram} гр.`,
-          value: gram,
-        } || []),
-    ),
-  );
+  // const basketProductsKey = getProductKeyInBasket(id, gram);
+  // const orderProduct = useAppSelector(state => state.order.products[basketProductsKey]);
 
-  const productCount = basket?.amount || 0;
+  // const productCount = orderProduct?.amount || 0;
 
-  const onSelectGram = (value: string | number) => selectProductGramValue(+value);
+  const changeGram = (value: string | number) => onGramChange(+value);
 
   const backgroundImage = `url('${backgroundImg}')`;
+
+  const inCart = amount > 0;
 
   return (
     <Box sx={sx.card}>
       <Box sx={sx.preview}>
-        <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) }} onClick={onElect} />
+        <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) } as SxProps} onClick={onElect} />
 
         <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
           <CardMedia sx={sx.productImg} component='img' image={previewImg || defaultImg} alt='' />
@@ -113,37 +93,29 @@ export const ProductCard = memo(function ProductCard({
           </Box>
         )}
       </Box>
-      <Rate currency={currency} rating={rating} price={price} isWeightGood={isWeightGood} sx={sx.rate} />
-      <div role='button' tabIndex={0} onKeyPress={undefined} onClick={onDetail}>
-        <Typography sx={sx.title} variant='h6'>
-          {title}
-        </Typography>
-      </div>
-      <Typography variant='body2' sx={sx.description}>
-        {description}
+
+      <Rate currency={currency} rating={rating} price={price} sx={sx.rate} />
+
+      <Typography sx={sx.title} variant='h6' onClick={onDetail}>
+        {title}
       </Typography>
-      <Typography variant='caption' sx={sx.stock}>
-        осталось ? шт
+
+      <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
+        осталось {remains || '?'} шт
       </Typography>
-      <Box sx={{ ...sx.actions, ...sx.deployed }}>
-        {/*  TODO: переписать стили */}
+
+      <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>
         <Docket
-          gramValue={productGramValue}
-          onSelectGramValue={onSelectGram}
-          gramOptions={productGramOptions}
-          inCart={productCount !== 0}
+          gram={gramValue}
+          gramOptions={gramOptions}
+          onChangeGram={changeGram}
+          inCart={inCart}
           price={price}
           discount={discount}
-          isWeightGood={isWeightGood}
           currency={currency}
         />
-        <Cart
-          // isWeightGood={isWeightGood} // FIXME: выпилить
-          currentCount={productCount}
-          productGram={productGramValue}
-          onAdd={() => onAdd(productGramValue)}
-          onRemove={() => onRemove(productGramValue)}
-        />
+
+        <Cart amount={amount} gram={gramValue} onAdd={onAdd} onRemove={onRemove} />
       </Box>
     </Box>
   );

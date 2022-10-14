@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
+import cheeseBackground from 'assets/images/categories/cheese-background.png';
 import { imageByCountry } from 'constants/countries';
 
 import { ProductCard, ProductCardProps } from './Card';
@@ -13,30 +14,43 @@ export default {
 
 const Template: ComponentStory<typeof ProductCard> = args => {
   const [isElected, setIsElected] = useState(false);
-  const [weight, setWeight] = useState(0);
+  const [amount, setWeight] = useState(0);
+  const [gram, setGram] = useState(0);
 
   const changeIsElect = () => setIsElected(!isElected);
 
-  const increaseWeight = (gram: number) => setWeight(weight + gram);
-  const decreaseWeight = (gram: number) => setWeight(weight - gram);
+  const increaseWeight = () => setWeight(amount + 1);
+  const decreaseWeight = () => setWeight(amount - 1);
 
-  return <ProductCard {...args} onElect={changeIsElect} onAdd={increaseWeight} onRemove={decreaseWeight} />;
+  const changeGram = (value: number) => setGram(value);
+
+  return (
+    <ProductCard
+      {...args}
+      productType='Сыр'
+      amount={amount}
+      gram={gram}
+      onElect={changeIsElect}
+      onAdd={increaseWeight}
+      onRemove={decreaseWeight}
+      onGramChange={changeGram}
+    />
+  );
 };
 
 export const DefaultProductInformation = Template.bind({});
 
 const props: Partial<ProductCardProps> = {
-  title: 'Prima Donna Прима Донна',
+  title: 'Русский сыр',
   rating: 4.93,
   price: 350,
-  discount: 0,
+  discount: 10,
   currency: 'cheeseCoin',
-  productType: 'Сыр',
   previewImg: '',
-  countryImg: '',
-  backgroundImg: '',
+  countryImg: imageByCountry.Russia,
+  backgroundImg: cheeseBackground,
   isElected: false,
-  isWeightGood: false,
+  remains: 5,
 };
 
 DefaultProductInformation.args = props;

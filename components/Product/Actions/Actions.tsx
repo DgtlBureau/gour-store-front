@@ -13,6 +13,7 @@ import { ProductTypeLabel } from 'types/entities/IProduct';
 
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import PlusIcon from '@mui/icons-material/Add';
@@ -20,9 +21,9 @@ import TrashIcon from '@mui/icons-material/DeleteForever';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MinusIcon from '@mui/icons-material/Remove';
 import CartIcon from '@mui/icons-material/ShoppingCart';
+import { productGramList } from 'constants/gramList';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
-import { getDefaultGramByProductType, productGramList } from '../Card/Card';
 import translations from './Actions.i18n.json';
 import sxActions from './Actions.styles';
 
@@ -31,7 +32,6 @@ export type ProductActionsProps = {
   price: number;
   discount?: number;
   productType: ProductTypeLabel;
-  isWeightGood?: boolean;
   currency: Currency;
   sx?: SxProps;
   isElect: boolean;
@@ -51,7 +51,6 @@ export function ProductActions({
   onAdd,
   onRemove,
   onElect,
-  isWeightGood,
 }: ProductActionsProps) {
   const { t } = useLocalTranslation(translations);
 

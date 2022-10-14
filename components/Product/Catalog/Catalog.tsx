@@ -204,7 +204,6 @@ export function ProductCatalog({
             key={product.id}
             id={product.id}
             title={product.title[language]}
-            description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
             discount={product.discount || discount}
@@ -214,9 +213,12 @@ export function ProductCatalog({
             countryImg={product.countryImg}
             backgroundImg={product.backgroundImg}
             isElected={product.isElected}
-            isWeightGood={product.isWeightGood}
-            onAdd={(gram: number) => onAdd(product, gram)}
-            onRemove={(gram: number) => onRemove(product, gram)}
+            // TODO
+            gram={0}
+            amount={0}
+            onGramChange={() => ({})}
+            onAdd={() => onAdd(product, 0)}
+            onRemove={() => onRemove(product, 0)}
             onElect={() => onElect(product.id, product.isElected)}
             onDetail={() => onDetail(product.id)}
           />

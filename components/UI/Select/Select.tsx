@@ -24,9 +24,10 @@ type Props = {
   label?: string;
   sx?: SxProps;
   selectSx?: SxProps;
+  size?: 'small' | 'medium';
 };
 
-export function Select({ value, options, error, isError, label, sx, selectSx, isDisabled, onChange }: Props) {
+export function Select({ value, options, error, isError, label, sx, selectSx, isDisabled, size, onChange }: Props) {
   const isNumberValue = typeof value === 'number';
 
   const change = (event: SelectChangeEvent) => {
@@ -47,6 +48,7 @@ export function Select({ value, options, error, isError, label, sx, selectSx, is
           error={isError}
           disabled={isDisabled}
           onChange={change}
+          size={size}
         >
           {options.map(option => (
             <MenuItem key={option.value} value={option.value}>

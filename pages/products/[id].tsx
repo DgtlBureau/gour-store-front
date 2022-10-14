@@ -189,7 +189,6 @@ export default function Product() {
                   currency={currency}
                   discount={product.discount}
                   productType={productType || 'Мясо'} // FIXME:
-                  isWeightGood={product.isWeightGood}
                   sx={sx.actions}
                   onAdd={(gram: number) => addToBasket(product, gram)}
                   onRemove={(gram: number) => removeFromBasket(product, gram)}

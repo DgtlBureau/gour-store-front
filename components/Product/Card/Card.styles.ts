@@ -5,13 +5,8 @@ const sx = {
     display: 'flex',
     flexDirection: 'column',
 
-    height: 'auto',
-
-    width: {
-      xs: '165px',
-      sm: '215px',
-      md: '282px',
-    },
+    height: { xs: '315px', sm: '405px', md: '510px' },
+    width: 'fit-content',
 
     padding: {
       xs: '10px',
@@ -24,17 +19,24 @@ const sx = {
 
     backgroundColor: t.palette.background.default,
 
-    boxShadow: 'none',
     boxSizing: 'border-box',
+
+    zIndex: 50,
   },
   preview: {
     position: 'relative',
   },
   previewImg: {
     height: {
-      xs: '146px',
-      sm: '190px',
-      md: '255px',
+      xs: '150px',
+      sm: '200px',
+      md: '250px',
+    },
+
+    width: {
+      xs: '150px',
+      sm: '200px',
+      md: '250px',
     },
 
     border: '2px solid',
@@ -52,10 +54,11 @@ const sx = {
     top: '8px',
     right: '8px',
 
-    color: t.palette.text.muted || '',
+    color: t.palette.text.muted,
+
+    cursor: 'pointer',
 
     '&:hover': {
-      cursor: 'pointer',
       opacity: 0.75,
     },
   },
@@ -73,10 +76,7 @@ const sx = {
     borderRadius: '50%',
   },
   rate: {
-    margin: {
-      xs: '10px 0 5px 0',
-      md: '10px 0',
-    },
+    margin: '10px 0 0 0',
   },
   title: {
     fontSize: {
@@ -98,11 +98,10 @@ const sx = {
     },
     WebkitBoxOrient: 'vertical',
 
-    maxHeight: {
-      xs: '45px',
-      sm: '26px',
-      md: '64px',
-    },
+    maxHeight: { xs: '24px', sm: '26px', md: '30px' },
+
+    margin: '5px 0 10px 0',
+
     textOverflow: 'ellipsis',
     whiteSpace: 'normal',
 
@@ -111,27 +110,9 @@ const sx = {
       opacity: '0.75',
     },
   },
-  description: {
-    display: {
-      sm: '-webkit-box',
-      xs: 'none',
-    },
-    height: '100%',
-    maxHeight: '44px',
-    margin: {
-      xs: '5px 0',
-      md: '10px 0',
-    },
-    WebkitLineClamp: '2',
-    WebkitBoxOrient: 'vertical',
-
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'normal',
-    color: t.palette.text.secondary,
-  },
   stock: {
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
     padding: '2px 16px',
     borderRadius: '4px',
     backgroundColor: t.palette.background.paper,
@@ -139,13 +120,21 @@ const sx = {
   },
   actions: {
     display: 'flex',
+    height: '100%',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    height: '100%',
+    flexDirection: {
+      xs: 'row',
+      md: 'column',
+    },
+    margin: { xs: '10px 0 0 0', md: 0 },
   },
-  deployed: {
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
+  deployedActions: {
+    flexDirection: { xs: 'column' },
+    margin: 0,
+  },
+  deployedStock: {
+    display: { xs: 'none', md: 'flex' },
   },
 };
 
