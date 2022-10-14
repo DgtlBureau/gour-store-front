@@ -33,7 +33,7 @@ export const sx = {
     borderColor: t.palette.secondary.main,
     borderRadius: '6px',
     zIndex: 100,
-    overflow: 'scroll',
+    overflowY: 'scroll',
   },
 };
 
