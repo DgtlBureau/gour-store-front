@@ -53,6 +53,13 @@ export function TextField({
       type={type}
       helperText={helperText}
       InputProps={{ endAdornment }}
+      FormHelperTextProps={{
+        sx: {
+          margin: '3px 0 0 0',
+          paddingLeft: '15px',
+          width: '100%',
+        },
+      }}
       {...props}
     />
   );
