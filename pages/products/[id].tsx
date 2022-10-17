@@ -3,6 +3,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -57,7 +58,8 @@ export default function Product() {
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
-  const { data: categories = [] } = useGetCategoryListQuery();
+  const { data: categories = [], isLoading: isCategoriesLoading } = useGetCategoryListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ gram, product }));
 
@@ -67,7 +69,7 @@ export default function Product() {
 
   const {
     data: product,
-    isLoading,
+    isLoading: isProductLoading,
     isError,
   } = useGetProductQuery(
     {
@@ -79,6 +81,8 @@ export default function Product() {
     },
     { skip: !productId },
   );
+
+  const isLoading = isProductLoading || isCategoriesLoading;
 
   const productType = useMemo(
     () => product?.categories && categories && getProductTypeLabel(categories, product.categories),
@@ -151,6 +155,8 @@ export default function Product() {
       value: lowCategory.title.ru,
     })) || [];
 
+  const productDescription = product?.description[language] || '';
+
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
@@ -185,11 +191,12 @@ export default function Product() {
 
                 <ProductActions
                   id={product.id}
+                  moyskladId={product.moyskladId}
+                  currentUserCity={currentUser?.city.name.ru}
                   price={product.price[currency] || 0}
                   currency={currency}
                   discount={product.discount}
-                  productType={productType || 'Мясо'} // FIXME:
-                  isWeightGood={product.isWeightGood}
+                  productType={productType!}
                   sx={sx.actions}
                   onAdd={(gram: number) => addToBasket(product, gram)}
                   onRemove={(gram: number) => removeFromBasket(product, gram)}
@@ -199,13 +206,15 @@ export default function Product() {
               </Box>
             </Box>
 
-            <Box sx={sx.description}>
-              <Typography sx={sx.title} variant='h5'>
-                {t('description')}
-              </Typography>
+            {productDescription && (
+              <Box sx={sx.description}>
+                <Typography sx={sx.title} variant='h5'>
+                  {t('description')}
+                </Typography>
 
-              <Typography variant='body1'>{product.description[language] || ''}</Typography>
-            </Box>
+                <div dangerouslySetInnerHTML={{ __html: productDescription }} />
+              </Box>
+            )}
 
             {!!formattedSimilarProducts?.length && (
               <ProductCatalog
@@ -214,6 +223,7 @@ export default function Product() {
                 language={language}
                 currency={currency}
                 sx={sx.similar}
+                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}

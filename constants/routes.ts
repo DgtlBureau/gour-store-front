@@ -42,6 +42,9 @@ export enum Path {
   PROMOTIONS = 'promotions',
   GAME = 'game',
 
+  WAREHOUSE = 'warehouse',
+  WAREHOUSE_STOCK = 'get-stock-of-product',
+
   MAIN = 'main',
   PAYMENTS = 'payments',
   ORDER = 'order',

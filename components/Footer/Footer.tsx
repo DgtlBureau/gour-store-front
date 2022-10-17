@@ -103,7 +103,7 @@ export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
         {info.map(link => (
           <Fragment key={link.path}>
             <Divider sx={footerSx.divider} orientation='vertical' variant='middle' flexItem />
-            <Link href={link.path} rel='noreferrer' target='_blank' sx={footerSx.infoLink}>
+            <Link href={link.path} rel='noreferrer' sx={footerSx.infoLink}>
               {link.label}
             </Link>
           </Fragment>

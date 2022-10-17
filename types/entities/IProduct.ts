@@ -14,6 +14,7 @@ export interface IProduct extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   moyskladCode: number;
+  moyskladId: string | null;
   images: IImage[];
   categories?: ICategory[];
   productGrades: IProductGrade[];
@@ -32,6 +33,7 @@ export interface IProduct extends IBase {
 }
 
 export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate' | 'default';
+
 export interface IFilters {
   productType: number | null;
   orderType: OrderType;
