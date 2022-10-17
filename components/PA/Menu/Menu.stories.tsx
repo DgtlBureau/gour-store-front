@@ -13,26 +13,26 @@ const Template: ComponentStory<typeof PAMenu> = (args: PAMenuProps) => <PAMenu {
 export const DefaultPAMenu = Template.bind({});
 const props: Partial<PAMenuProps> = {
   active: '/1',
-  menuList: [
+  options: [
     {
       label: 'Главная',
-      path: '/',
+      value: '/',
     },
     {
       label: 'Заказы',
-      path: '/1',
+      value: '/1',
     },
     {
       label: 'Личные данные',
-      path: '/2',
+      value: '/2',
     },
     {
       label: 'Адреса доставки',
-      path: '/3',
+      value: '/3',
     },
     {
       label: 'Система скидок',
-      path: '/4',
+      value: '/4',
     },
   ],
 };

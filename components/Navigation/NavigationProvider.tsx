@@ -41,7 +41,7 @@ function NavigationProvider({ children }: Props) {
   const goToDiscounts = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`), []);
   const goToOrders = useCallback(() => router.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`), []);
 
-  const goToFavorites = useCallback(() => router.push(`/${Path.FAVORITES}`), []);
+  const goToFavorites = useCallback(() => window.open(`/${Path.FAVORITES}`), []);
   const goToBasket = useCallback(() => router.push(`/${Path.BASKET}`), []);
   const goToPersonalArea = useCallback(() => router.push(`/${Path.PERSONAL_AREA}`), []);
   const goToReplenishment = useCallback(() => router.push(`/${Path.REPLENISHMENT}`), []);

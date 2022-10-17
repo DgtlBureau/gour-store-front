@@ -1,12 +1,9 @@
 import Image from 'next/image';
-import NextLink from 'next/link';
 import React, { useState } from 'react';
 
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
-import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
-import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -27,6 +24,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CatalogIcon from 'assets/icons/catalog.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import Logo from 'assets/images/common-logo.svg';
+import { Path } from 'constants/routes';
 
 import { MobileMenu } from '../Mobile/Menu/Menu';
 import { CitySelect } from './CitySelect';
@@ -51,9 +49,9 @@ export type HeaderProps = {
   moneyAmount: number;
   sx?: SxProps;
   onChangeCity(id: number): void;
-  onClickFavorite(): void;
-  onClickPersonalArea(): void;
-  onClickBasket(): void;
+  // onClickFavorite(): void;
+  // onClickPersonalArea(): void;
+  // onClickBasket(): void;
   onClickReplenishment(): void;
   onClickSignout(): void;
 };
@@ -74,14 +72,12 @@ export function Header({
   moneyAmount,
   sx,
   onChangeCity,
-  onClickFavorite,
-  onClickPersonalArea,
-  onClickBasket,
+  // onClickFavorite,
+  // onClickPersonalArea,
+  // onClickBasket,
   onClickReplenishment,
   onClickSignout,
 }: HeaderProps) {
-  const { goToGame, goToHome } = useAppNavigation();
-
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
 
@@ -111,9 +107,9 @@ export function Header({
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
             <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
-                <NextLink href='/' passHref>
+                <Link href='/'>
                   <Image src={Logo} height='49px' width='58px' alt='' />
-                </NextLink>
+                </Link>
               </Box>
 
               {!isGame && (
@@ -133,7 +129,17 @@ export function Header({
               )}
             </Grid>
 
-            <Grid item xs={10} md={8} lg={6} container direction='row' alignItems='center' justifyContent='flex-end'>
+            <Grid
+              item
+              xs={10}
+              md={8}
+              lg={6}
+              container
+              direction='row'
+              alignItems='center'
+              justifyContent='flex-end'
+              sx={{ gap: '20px' }}
+            >
               <Box
                 sx={{
                   ...headerSx.money,
@@ -155,8 +161,8 @@ export function Header({
               </Box>
 
               {isGame ? (
-                <IconButton
-                  onClick={goToHome}
+                <Link
+                  href='/'
                   color='inherit'
                   sx={{
                     ...headerSx.icon,
@@ -167,36 +173,38 @@ export function Header({
                   }}
                 >
                   <Image src={CatalogIcon} height={24} width={24} alt='' />
-                </IconButton>
+                </Link>
               ) : (
-                <IconButton onClick={goToGame} color='inherit' sx={headerSx.icon}>
+                <Link href={Path.GAME} color='inherit' sx={headerSx.icon}>
                   <Image src={GamepadIcon} height={24} width={24} alt='' />
-                </IconButton>
+                </Link>
               )}
 
               {!isGame && (
                 <>
-                  <IconButton onClick={onClickFavorite} color='inherit' sx={headerSx.icon}>
+                  <Link href={Path.FAVORITES} color='inherit' sx={headerSx.icon}>
                     <FavoriteBorderIcon />
-                  </IconButton>
+                  </Link>
 
-                  <IconButton onClick={onClickPersonalArea} color='inherit' sx={headerSx.icon}>
+                  <Link href={Path.PERSONAL_AREA} color='inherit' sx={headerSx.icon}>
                     <PersonIcon />
-                  </IconButton>
+                  </Link>
 
-                  <Button sx={headerSx.cart} onClick={onClickBasket}>
+                  <Link href={Path.BASKET} sx={headerSx.cart}>
                     <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
                       <ShoppingCartOutlinedIcon color='primary' />
                     </Badge>
                     {basketProductSum}
                     &nbsp;
                     {currencySymbol}
-                  </Button>
+                  </Link>
+
                   <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
                     <LogoutIcon />
                   </IconButton>
                 </>
               )}
+
               {!isGame && !isDesktop && (
                 <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
                   {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
@@ -219,11 +227,8 @@ export function Header({
             moneyAmount={moneyAmount}
             currency={currency}
             onChangeCity={onChangeCity}
-            onClickFavorite={onClickFavorite}
-            onClickPersonalArea={onClickPersonalArea}
             onClickSignout={onClickSignout}
             onClickReplenishment={onClickReplenishment}
-            onClickGame={goToGame}
           />
         </Collapse>
       </AppBar>

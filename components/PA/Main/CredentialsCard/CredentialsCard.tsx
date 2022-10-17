@@ -10,6 +10,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import noPhoto from 'assets/images/default.svg';
+import { Path } from 'constants/routes';
 
 import translations from './CredentialsCard.i18n.json';
 
@@ -32,14 +33,13 @@ export type PACredentialsCardProps = {
   phone?: string;
   photo?: string;
   email: string;
-  onClickMore(): void;
 };
 
-export function PACredentialsCard({ name, phone, photo, email, onClickMore }: PACredentialsCardProps) {
+export function PACredentialsCard({ name, phone, photo, email }: PACredentialsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
+    <InfoCard title={t('title')} footerText={t('footerText')} href={`/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`}>
       <Box sx={sx.content}>
         <Stack spacing={1}>
           <Box>
