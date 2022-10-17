@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { CSSProperties, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { ButtonGroup, Stack, SxProps } from '@mui/material';
 
@@ -13,40 +13,7 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import cardCss from './CardSlider.module.scss';
-
-const sliderSx = {
-  container: {
-    maxWidth: '1200px',
-    display: 'flex',
-    flexDirection: 'column',
-  } as CSSProperties,
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: 'text.secondary',
-  },
-  backArrow: {
-    transform: 'rotate(-180deg)',
-  },
-  arrows: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
-  },
-  emptyTitle: {
-    marginTop: '15px',
-    fontSize: {
-      sm: '24px',
-      xs: '16px',
-    },
-  },
-};
+import sliderSx from './CardSlider.styles';
 
 type Props = {
   title?: string;
@@ -80,9 +47,9 @@ export function CardSlider({
 
   const withArrows = cardsList.length > rows * slidesPerView || screenWidth < 1200;
 
-  const slideChangeHandler = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
+  const changeSlide = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
   return (
-    <Box sx={{ ...sliderSx.container, ...sx }}>
+    <Box sx={{ ...sliderSx.container, ...sx } as SxProps}>
       <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
         <Typography variant='h4' sx={sliderSx.title}>
           {title}
@@ -108,7 +75,8 @@ export function CardSlider({
           <Swiper
             style={{
               width: '100%',
-              height: 'auto',
+              overflowX: 'clip',
+              overflowY: 'visible',
             }}
             spaceBetween={spaceBetween}
             grid={{
@@ -119,10 +87,10 @@ export function CardSlider({
             modules={[Grid]}
             className='mySwiper'
             slidesPerView='auto'
-            onSlideChange={slideChangeHandler}
+            onSlideChange={changeSlide}
           >
             {cardsList.map((card, i) => (
-              <SwiperSlide key={i} className={cardCss.fit}>
+              <SwiperSlide key={i} style={sliderSx.slide}>
                 {card}
               </SwiperSlide>
             ))}

@@ -7,46 +7,20 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import StarIcon from '@mui/icons-material/Star';
-import { defaultTheme } from 'themes';
 
-import translations from '../Actions/Actions.i18n.json';
+import rateSx from './Rate.styles';
 
-const rateSx = {
-  box: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    color: defaultTheme.palette.text.muted,
-  },
-  rating: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  star: {
-    marginRight: '6px',
-  },
-  text: {
-    fontSize: {
-      xs: '12px',
-      sm: '13px',
-      md: '14px',
-    },
-  },
-};
-
-type Props = {
+type ProductCardRateProps = {
   rating: number;
   price: number;
-  isWeightGood: boolean;
   currency: Currency;
   sx?: SxProps;
 };
 
-export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: Props) {
-  const { t } = useLocalTranslation(translations);
+export function ProductCardRate({ rating, price, currency, sx }: ProductCardRateProps) {
   return (
     <Box sx={{ ...rateSx.box, ...sx }}>
       <Box sx={rateSx.rating}>
@@ -58,7 +32,7 @@ export function ProductCardRate({ rating, price, isWeightGood, currency, sx }: P
 
       <Typography variant='body2' sx={rateSx.text}>
         {price}
-        {getCurrencySymbol(currency)} / {isWeightGood ? t('kg') : t('pcs')}
+        {getCurrencySymbol(currency)} / кг
       </Typography>
     </Box>
   );

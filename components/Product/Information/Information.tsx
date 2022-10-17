@@ -79,9 +79,6 @@ export function ProductInformation({
           </Typography>
         </Box>
       ))}
-      <Typography variant='body2' sx={sx.balance}>
-        Осталось на складе: ? шт.
-      </Typography>
     </Box>
   );
 }

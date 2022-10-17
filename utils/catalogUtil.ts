@@ -1,6 +1,6 @@
 import { ICategory } from 'types/entities/ICategory';
 import { IOption } from 'types/entities/IOption';
-import { IExtendedProduct, IProduct } from 'types/entities/IProduct';
+import { IExtendedProduct, IProduct, ProductTypeLabel } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
 import { OrderTypeOption } from 'constants/filters';
@@ -27,3 +27,12 @@ export const computeProductsWithCategories = (
     backgroundImg: getProductBackground(categories, product.categories || []),
     countryImg: getCountryImage(product.categories),
   }));
+
+export const getDefaultGramByProductType = (label: ProductTypeLabel): number => {
+  const gramObj = {
+    Мясо: 100,
+    Сыр: 150,
+  };
+
+  return gramObj[label];
+};
