@@ -40,13 +40,13 @@ export function ProductCardGramSelect({
     setIsDeployed(false);
   };
 
+  const containerClasses = { ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) };
+  const titleClasses = { ...selectSx.title, ...(!showLabelOnTablets && selectSx.titleHidden) };
+
   return (
     <Box sx={sx}>
-      <Box
-        sx={{ ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) }}
-        onClick={() => setIsDeployed(!isDeployed)}
-      >
-        <Typography variant='body1' sx={selectSx.title}>
+      <Box sx={containerClasses} onClick={() => setIsDeployed(!isDeployed)}>
+        <Typography variant='body1' sx={titleClasses}>
           {gram}г
         </Typography>
 
