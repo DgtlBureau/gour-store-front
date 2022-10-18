@@ -44,18 +44,22 @@ export const PAProfilesItem = memo(
           .join(', ')
       : '';
 
-    const convertToOrderProfile = ({
-      city: { id: cityId },
-      id: _id,
-      createdAt: _createdAt,
-      ...fields
-    }: IOrderProfile): OrderProfileDto => ({
-      ...fields,
-      cityId,
-      isMain: !!isMain,
-    });
+    const defaultValues = useMemo(() => {
+      if (!profile) return undefined;
 
-    const defaultValues = useMemo(() => profile && convertToOrderProfile(profile), [profile, isMain]);
+      const {
+        city: { id: cityId },
+        id: _id,
+        createdAt: _createdAt,
+        ...fields
+      } = profile;
+
+      return {
+        ...fields,
+        cityId,
+        isMain: !!isMain,
+      };
+    }, [profile, isMain]);
 
     const expandProfileItem = () => onExpand && onExpand(id);
 

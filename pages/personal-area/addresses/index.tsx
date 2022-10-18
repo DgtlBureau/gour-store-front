@@ -42,9 +42,9 @@ export function Addresses() {
   const { language } = useAppNavigation();
 
   const { data: profiles } = useGetOrderProfilesListQuery();
-  const { data: cities } = useGetCityListQuery(undefined, {
+  const { cities } = useGetCityListQuery(undefined, {
     selectFromResult: ({ data, ...params }) => ({
-      data:
+      cities:
         data?.map(city => ({
           value: city.id,
           label: city.name[language],
@@ -80,7 +80,7 @@ export function Addresses() {
       if (expandedProfileId !== id) setExpandedProfileId(id);
       else rollUpProfile();
     },
-    [expandedProfileId],
+    [expandedProfileId, isCreating],
   );
 
   const changeMainAddress = async (addressId: number | null) => {
@@ -110,8 +110,6 @@ export function Addresses() {
   const editAddress = useCallback(
     async (data: OrderProfileDto, id: number) => {
       try {
-        // const promises: Promise[] = [];
-
         await updateProfile({ ...data, id }).unwrap();
 
         const currentOrderProfileId = currentUser?.mainOrderProfileId;
