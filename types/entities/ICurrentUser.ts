@@ -8,6 +8,7 @@ export interface ICurrentUser extends IBase {
   lastName: string;
   phone: string;
   email: string;
+  lives: number;
   favoriteIds: string[];
   countries: string[];
   mainOrderProfileId: number;

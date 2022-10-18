@@ -1,8 +1,15 @@
+import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+
+import heartIcon from 'assets/icons/heart.svg';
 
 import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCounter as Counter } from '../Counter/Counter';
@@ -27,12 +34,21 @@ const JAMON_ANGLES = {
 
 export type GameMainProps = {
   onHelpClick(): void;
+  isLivesLoading: boolean;
+  onEndGame: () => Promise<void>;
+  lives: number;
 };
 
-export function GameMain({ onHelpClick }: GameMainProps) {
+export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: GameMainProps) {
   const [gameState, setGameState] = useState({} as GameEvent);
 
-  const changeGameState = (e: GameEvent) => setGameState(e);
+  const changeGameState = (e: GameEvent) => {
+    setGameState(e);
+
+    if (!e.isPlaying) {
+      onEndGame();
+    }
+  };
 
   const game = useMemo(() => new GameCore(changeGameState), []);
 
@@ -48,7 +64,18 @@ export function GameMain({ onHelpClick }: GameMainProps) {
     if (e.code === 'KeyD') moveToBottomRight();
   };
 
-  const start = () => game.start();
+  const start = () => {
+    if (isLivesLoading || lives < 1) {
+      dispatchNotification('Пополните жизни в магазине', { type: NotificationType.DANGER });
+      return;
+    }
+
+    if (game.isNowPlaying) {
+      dispatchNotification('Игра уже запущена', { type: NotificationType.DANGER });
+    } else {
+      game.start();
+    }
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', changeOlegPosition);
@@ -79,11 +106,16 @@ export function GameMain({ onHelpClick }: GameMainProps) {
         <Typography variant='body2' sx={sx.btnText}>
           СТАРТ
         </Typography>
+
+        <Box sx={sx.userLives}>
+          <Typography variant='body1'>{lives}</Typography>&nbsp;
+          <Image src={heartIcon} width={20} height={20} />
+        </Box>
       </Box>
 
       <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown && !!gameState.lives} />
 
-      <Lives sx={sx.lives} value={gameState.lives} />
+      <Lives sx={sx.gameLives} value={gameState.lives} />
 
       <Counter sx={sx.counter} value={gameState.score} />
 

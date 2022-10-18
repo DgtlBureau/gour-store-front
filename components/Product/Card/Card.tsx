@@ -135,7 +135,7 @@ export const ProductCard = memo(function ProductCard({
         {isStockFetching && 'загружаем остатки...'}
         {!isStockFetching && isStockError && 'произошла ошибка'}
         {!isStockFetching && !moyskladId && 'не указан ID у МойСклад'}
-        {!isStockFetching && !isStockError && moyskladId && <>осталось {String(stock?.value)} шт</>}
+        {!isStockFetching && moyskladId && !isStockError && <>осталось {String(stock?.value)} шт</>}
       </Typography>
 
       <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>

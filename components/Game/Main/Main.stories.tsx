@@ -9,5 +9,7 @@ export default {
   title: 'Game/Main',
 } as Meta;
 
-const Template: ComponentStory<typeof GameMain> = () => <GameMain onHelpClick={() => ({})} />;
+const Template: ComponentStory<typeof GameMain> = () => (
+  <GameMain lives={1} isLivesLoading={false} onEndGame={async () => undefined} onHelpClick={() => ({})} />
+);
 export const DefaultGameMain = Template.bind({});
