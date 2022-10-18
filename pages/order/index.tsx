@@ -133,7 +133,7 @@ export function Order() {
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
         productId: product.product.id,
         amount: product.amount,
-        weight: 1, // FIXME:
+        gram: product.gram,
       }));
 
       const formattedOrderData: CreateOrderDto = {
