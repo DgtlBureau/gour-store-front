@@ -49,9 +49,6 @@ export type HeaderProps = {
   moneyAmount: number;
   sx?: SxProps;
   onChangeCity(id: number): void;
-  // onClickFavorite(): void;
-  // onClickPersonalArea(): void;
-  // onClickBasket(): void;
   onClickReplenishment(): void;
   onClickSignout(): void;
 };
@@ -72,9 +69,6 @@ export function Header({
   moneyAmount,
   sx,
   onChangeCity,
-  // onClickFavorite,
-  // onClickPersonalArea,
-  // onClickBasket,
   onClickReplenishment,
   onClickSignout,
 }: HeaderProps) {

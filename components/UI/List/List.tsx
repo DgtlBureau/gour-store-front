@@ -1,10 +1,13 @@
 import NextLink from 'next/link';
+import { ReactNode } from 'react';
 
-import { ListItemButton, ListItemButtonProps } from '@mui/material';
+import { ListItemButton, SxProps } from '@mui/material';
 
 export type ListItemLinkProps = {
   href: string;
-} & Pick<ListItemButtonProps, 'children' | 'sx'>;
+  children: ReactNode;
+  sx?: SxProps;
+};
 
 export function ListItemLink({ href, children, sx }: ListItemLinkProps) {
   return (
