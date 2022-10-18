@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { Divider } from '@mui/material';
 
@@ -16,6 +16,7 @@ import { PAProfilesForm } from '../Form/Form';
 import sx from './Item.styles';
 
 export type PAProfilesItemProps = {
+  id: number;
   isExpanded?: boolean;
   isMain?: boolean;
   cities: {
@@ -23,75 +24,70 @@ export type PAProfilesItemProps = {
     label: string;
   }[];
   profile?: IOrderProfile;
-  onExpand?: () => void;
-  onSave: (data: OrderProfileDto) => void;
+  onExpand?: (id: number) => void;
+  onSave: (data: OrderProfileDto, id: number) => void;
   onDelete: () => void;
 };
 
-export function PAProfilesItem({
-  isExpanded,
-  isMain,
-  cities,
-  profile,
-  onExpand,
-  onSave,
-  onDelete,
-}: PAProfilesItemProps) {
-  const { language } = useAppNavigation();
+export const PAProfilesItem = memo(
+  ({ id, isExpanded, isMain, cities, profile, onExpand, onSave, onDelete }: PAProfilesItemProps) => {
+    const { language } = useAppNavigation();
 
-  const address = profile
-    ? [
-        profile.city.name[language],
-        profile.street,
-        profile.house,
-        profile.apartment && `${language === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
-      ]
-        .filter(it => !!it)
-        .join(', ')
-    : '';
+    const address = profile
+      ? [
+          profile.city.name[language],
+          profile.street,
+          profile.house,
+          profile.apartment && `${language === 'ru' ? 'кв.' : 'apt.'} ${profile.apartment}`,
+        ]
+          .filter(it => !!it)
+          .join(', ')
+      : '';
 
-  const convertToOrderProfile = ({
-    city: { id: cityId },
-    id: _id,
-    createdAt: _createdAt,
-    ...fields
-  }: IOrderProfile): OrderProfileDto => ({
-    ...fields,
-    cityId,
-    isMain: !!isMain,
-  });
+    const convertToOrderProfile = ({
+      city: { id: cityId },
+      id: _id,
+      createdAt: _createdAt,
+      ...fields
+    }: IOrderProfile): OrderProfileDto => ({
+      ...fields,
+      cityId,
+      isMain: !!isMain,
+    });
 
-  return profile ? (
-    <Accordion expanded={isExpanded} onChange={onExpand}>
-      <AccordionSummary>
-        <Box sx={sx.header}>
-          <Box sx={{ ...sx.locationIcon, ...(isMain && sx.mainAddress) }}>
-            <LocationIcon />
+    const defaultValues = useMemo(() => profile && convertToOrderProfile(profile), [profile, isMain]);
+
+    const expandProfileItem = () => onExpand && onExpand(id);
+
+    const saveProfile = (dto: OrderProfileDto) => onSave(dto, id);
+
+    return profile ? (
+      <Accordion expanded={isExpanded} onChange={expandProfileItem}>
+        <AccordionSummary>
+          <Box sx={sx.header}>
+            <Box sx={{ ...sx.locationIcon, ...(isMain && sx.mainAddress) }}>
+              <LocationIcon />
+            </Box>
+
+            <Typography variant='h5' sx={sx.title}>
+              {profile?.title}
+            </Typography>
+
+            <Typography variant='body1' color='text.muted'>
+              {address}
+            </Typography>
           </Box>
+        </AccordionSummary>
 
-          <Typography variant='h5' sx={sx.title}>
-            {profile?.title}
-          </Typography>
-
-          <Typography variant='body1' color='text.muted'>
-            {address}
-          </Typography>
-        </Box>
-      </AccordionSummary>
-
-      <AccordionDetails>
-        <Divider sx={sx.divider} />
-        <PAProfilesForm
-          defaultValues={profile && convertToOrderProfile(profile)}
-          cities={cities}
-          onSave={onSave}
-          onDelete={onDelete}
-        />
-      </AccordionDetails>
-    </Accordion>
-  ) : (
-    <Box sx={sx.form}>
-      <PAProfilesForm cities={cities} onSave={onSave} onDelete={onDelete} />
-    </Box>
-  );
-}
+        <AccordionDetails>
+          <Divider sx={sx.divider} />
+          <PAProfilesForm defaultValues={defaultValues} cities={cities} onSave={saveProfile} onDelete={onDelete} />
+        </AccordionDetails>
+      </Accordion>
+    ) : (
+      <Box sx={sx.form}>
+        <PAProfilesForm cities={cities} onSave={saveProfile} onDelete={onDelete} />
+      </Box>
+    );
+  },
+);

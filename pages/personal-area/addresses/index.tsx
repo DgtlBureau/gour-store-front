@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeMainAddressMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -42,7 +42,16 @@ export function Addresses() {
   const { language } = useAppNavigation();
 
   const { data: profiles } = useGetOrderProfilesListQuery();
-  const { data: cities } = useGetCityListQuery();
+  const { data: cities } = useGetCityListQuery(undefined, {
+    selectFromResult: ({ data, ...params }) => ({
+      data:
+        data?.map(city => ({
+          value: city.id,
+          label: city.name[language],
+        })) || [],
+      ...params,
+    }),
+  });
   const { data: currentUser } = useGetCurrentUserQuery();
 
   const [createProfile] = useCreateOrderProfileMutation();
@@ -62,20 +71,17 @@ export function Addresses() {
   };
   const closeCreateForm = () => setIsCreating(false);
 
-  const openDeleteModal = () => setIsDeleting(true);
+  const openDeleteModal = useCallback(() => setIsDeleting(true), []);
   const closeDeleteModal = () => setIsDeleting(false);
 
-  const citiesList =
-    cities?.map(city => ({
-      value: city.id,
-      label: city.name[language],
-    })) || [];
-
-  const expandProfile = (id: number) => {
-    if (isCreating) closeCreateForm();
-    if (expandedProfileId !== id) setExpandedProfileId(id);
-    else rollUpProfile();
-  };
+  const expandProfile = useCallback(
+    (id: number) => {
+      if (isCreating) closeCreateForm();
+      if (expandedProfileId !== id) setExpandedProfileId(id);
+      else rollUpProfile();
+    },
+    [expandedProfileId],
+  );
 
   const changeMainAddress = async (addressId: number | null) => {
     try {
@@ -101,24 +107,29 @@ export function Addresses() {
     }
   };
 
-  const editAddress = async (data: OrderProfileDto, id: number) => {
-    try {
-      await updateProfile({ ...data, id }).unwrap();
+  const editAddress = useCallback(
+    async (data: OrderProfileDto, id: number) => {
+      try {
+        // const promises: Promise[] = [];
 
-      const currentOrderProfileId = currentUser?.mainOrderProfileId;
+        await updateProfile({ ...data, id }).unwrap();
 
-      if (currentOrderProfileId !== id && data.isMain) await changeMainAddress(id);
-      if (currentOrderProfileId === id && !data.isMain) await changeMainAddress(null);
+        const currentOrderProfileId = currentUser?.mainOrderProfileId;
 
-      dispatchNotification('Адрес доставки обновлен');
+        if (currentOrderProfileId !== id && data.isMain) await changeMainAddress(id);
+        if (currentOrderProfileId === id && !data.isMain) await changeMainAddress(null);
 
-      rollUpProfile();
-    } catch (error) {
-      const message = getErrorMessage(error);
+        dispatchNotification('Адрес доставки обновлен');
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  };
+        rollUpProfile();
+      } catch (error) {
+        const message = getErrorMessage(error);
+
+        dispatchNotification(message, { type: NotificationType.DANGER });
+      }
+    },
+    [currentUser],
+  );
 
   const deleteAddress = async () => {
     if (expandedProfileId) {
@@ -147,19 +158,20 @@ export function Addresses() {
         </Box>
 
         {isCreating && (
-          <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+          <PAProfilesItem key={-1} id={-1} cities={cities} onSave={createAddress} onDelete={closeCreateForm} />
         )}
 
-        {!!profiles && profiles.length !== 0 ? (
+        {profiles?.length ? (
           profiles.map(profile => (
             <PAProfilesItem
               key={profile.id}
+              id={profile.id}
               isExpanded={expandedProfileId === profile.id}
               isMain={currentUser?.mainOrderProfileId === profile.id}
-              cities={citiesList}
+              cities={cities}
               profile={profile}
-              onExpand={() => expandProfile(profile.id)}
-              onSave={data => editAddress(data, profile.id)}
+              onExpand={expandProfile}
+              onSave={editAddress}
               onDelete={openDeleteModal}
             />
           ))
