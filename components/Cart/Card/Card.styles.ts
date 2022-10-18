@@ -19,25 +19,18 @@ const sx = {
   },
 
   previewImg: {
-    cursor: 'pointer',
-
-    width: '100%',
-
     height: {
       sm: '125px',
       xs: '80px',
     },
-    maxWidth: {
+    width: {
       sm: '125px',
       xs: '80px',
     },
 
     border: '2px solid #FDCE85',
     borderRadius: '10px',
-  },
 
-  productImg: {
-    height: '100%',
     objectFit: 'contain',
   },
 
@@ -69,7 +62,6 @@ const sx = {
   },
 
   title: {
-    cursor: 'pointer',
     fontSize: {
       xs: '14px',
       sm: '16px',

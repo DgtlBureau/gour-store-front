@@ -6,6 +6,7 @@ import { CardMedia, SxProps } from '@mui/material';
 import { useGetStockQuery } from 'store/api/warehouseApi';
 
 import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
@@ -19,6 +20,7 @@ import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/images/default.svg';
 import { productGramList } from 'constants/gramList';
+import { Path } from 'constants/routes';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import sx from './Card.styles';
@@ -114,9 +116,14 @@ export const ProductCard = memo(function ProductCard({
       <Box sx={sx.preview}>
         <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) } as SxProps} onClick={onElect} />
 
-        <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
-          <CardMedia sx={sx.productImg} component='img' image={previewImg || defaultImg} alt='' />
-        </Box>
+        <Link href={`/${Path.PRODUCTS}/${id}`}>
+          <CardMedia
+            sx={{ ...sx.previewImg, backgroundImage }}
+            component='img'
+            image={previewImg || defaultImg}
+            alt=''
+          />
+        </Link>
 
         {countryImg && (
           <Box sx={sx.country}>
@@ -127,9 +134,11 @@ export const ProductCard = memo(function ProductCard({
 
       <Rate currency={currency} rating={rating} price={price} sx={sx.rate} />
 
-      <Typography sx={sx.title} variant='h6' onClick={onDetail}>
-        {title}
-      </Typography>
+      <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none' }}>
+        <Typography sx={sx.title} variant='h6'>
+          {title}
+        </Typography>
+      </Link>
 
       <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
         {isStockFetching && 'загружаем остатки...'}
