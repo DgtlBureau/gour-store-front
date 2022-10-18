@@ -174,6 +174,10 @@ export function Header({
                 </IconButton>
               )}
 
+              <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                <LogoutIcon />
+              </IconButton>
+
               {!isGame && (
                 <>
                   <IconButton onClick={onClickFavorite} color='inherit' sx={headerSx.icon}>
@@ -192,9 +196,6 @@ export function Header({
                     &nbsp;
                     {currencySymbol}
                   </Button>
-                  <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                    <LogoutIcon />
-                  </IconButton>
                 </>
               )}
               {!isGame && !isDesktop && (
