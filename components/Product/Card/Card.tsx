@@ -1,46 +1,36 @@
 import Image from 'next/image';
 import React, { memo, useState } from 'react';
 
-import { CardMedia } from '@mui/material';
+import { CardMedia, SxProps } from '@mui/material';
+
+import { useGetStockQuery } from 'store/api/warehouseApi';
 
 import { Box } from 'components/UI/Box/Box';
-import { SelectOption } from 'components/UI/Select/Select';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
+import { IOption } from 'types/entities/IOption';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
 import { useAppSelector } from 'hooks/store';
+import { getDefaultGramByProductType } from 'utils/catalogUtil';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/images/default.svg';
+import { productGramList } from 'constants/gramList';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import sx from './Card.styles';
-import { ProductCardCart as Cart } from './Cart';
-import { ProductCardDocket as Docket } from './Docket';
-import { ProductCardRate as Rate } from './Rate';
-
-export const productGramList: Record<ProductTypeLabel, number[]> = {
-  Мясо: [100, 200, 300, 400, 500],
-  Сыр: [150, 200, 250, 300, 350, 400],
-};
-
-export const getDefaultGramByProductType = (label: ProductTypeLabel): number => {
-  const gramObj = {
-    Мясо: 100,
-    Сыр: 150,
-  };
-
-  return gramObj[label];
-};
+import { ProductCardCart as Cart } from './Cart/Cart';
+import { ProductCardDocket as Docket } from './Docket/Docket';
+import { ProductCardRate as Rate } from './Rate/Rate';
 
 export type ProductCardProps = {
   id: number;
+  moyskladId: string | null;
   title: string;
-  description: string;
   rating: number;
-  isWeightGood: boolean;
   price: number;
   productType: ProductTypeLabel;
   discount?: number;
@@ -58,10 +48,9 @@ export type ProductCardProps = {
 // eslint-disable-next-line prefer-arrow-callback
 export const ProductCard = memo(function ProductCard({
   id,
+  moyskladId,
   title,
-  description,
   rating,
-  isWeightGood,
   discount = 10,
   price,
   productType,
@@ -70,38 +59,60 @@ export const ProductCard = memo(function ProductCard({
   countryImg,
   isElected,
   currency,
+  // gram,
+  // amount,
   onAdd,
   onRemove,
+  // onGramChange,
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
+  const [gramValue, setGramValue] = useState(() => getDefaultGramByProductType(productType));
 
-  // if (!productType) throw new Error('не прокинул categories'); // FIXME:
-
-  const basketProductsKey = getProductKeyInBasket(id, productGramValue);
-  const basket = useAppSelector(state => state.order.products[basketProductsKey]);
-  const [productGramOptions] = useState<SelectOption[]>(() =>
-    productGramList[productType]?.map(
-      // FIXME: удолить ?. оператор
-      gram =>
-        ({
-          label: `${gram} гр.`,
-          value: gram,
-        } || []),
-    ),
+  const {
+    data: stock,
+    isFetching: isStockFetching,
+    isError: isStockError,
+  } = useGetStockQuery(
+    {
+      city: 'Санкт-Петербург',
+      gram: String(gramValue),
+      warehouseId: String(moyskladId),
+    },
+    {
+      skip: !gramValue || !moyskladId,
+    },
   );
 
-  const productCount = basket?.amount || 0;
+  const basketProductsKey = getProductKeyInBasket(id, gramValue);
+  const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
+  const [gramOptions] = useState<IOption[]>(() =>
+    productGramList[productType].map(gram => ({
+      label: `${gram} г`,
+      value: String(gram),
+    })),
+  );
 
-  const onSelectGram = (value: string | number) => selectProductGramValue(+value);
+  const changeGram = (value: string | number) => setGramValue(+value);
 
+  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
+
+  const handleAddClick = () => {
+    if (!isAddDisabled) onAdd(gramValue);
+  };
+
+  const handleRemoveClick = () => {
+    onRemove(gramValue);
+  };
+
+  const inCart = !!(basketProduct && basketProduct.amount > 0);
   const backgroundImage = `url('${backgroundImg}')`;
 
   return (
     <Box sx={sx.card}>
       <Box sx={sx.preview}>
-        <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) }} onClick={onElect} />
+        <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) } as SxProps} onClick={onElect} />
 
         <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
           <CardMedia sx={sx.productImg} component='img' image={previewImg || defaultImg} alt='' />
@@ -113,36 +124,37 @@ export const ProductCard = memo(function ProductCard({
           </Box>
         )}
       </Box>
-      <Rate currency={currency} rating={rating} price={price} isWeightGood={isWeightGood} sx={sx.rate} />
-      <div role='button' tabIndex={0} onKeyPress={undefined} onClick={onDetail}>
-        <Typography sx={sx.title} variant='h6'>
-          {title}
-        </Typography>
-      </div>
-      <Typography variant='body2' sx={sx.description}>
-        {description}
+
+      <Rate currency={currency} rating={rating} price={price} sx={sx.rate} />
+
+      <Typography sx={sx.title} variant='h6' onClick={onDetail}>
+        {title}
       </Typography>
-      <Typography variant='caption' sx={sx.stock}>
-        осталось ? шт
+
+      <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
+        {isStockFetching && 'загружаем остатки...'}
+        {!isStockFetching && isStockError && 'произошла ошибка'}
+        {!isStockFetching && !moyskladId && 'не указан ID у МойСклад'}
+        {!isStockFetching && !isStockError && moyskladId && <>осталось {String(stock?.value)} шт</>}
       </Typography>
-      <Box sx={{ ...sx.actions, ...sx.deployed }}>
-        {/*  TODO: переписать стили */}
+
+      <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>
         <Docket
-          gramValue={productGramValue}
-          onSelectGramValue={onSelectGram}
-          gramOptions={productGramOptions}
-          inCart={productCount !== 0}
+          gram={gramValue}
+          gramOptions={gramOptions}
+          onChangeGram={changeGram}
+          inCart={inCart}
           price={price}
           discount={discount}
-          isWeightGood={isWeightGood}
           currency={currency}
         />
+
         <Cart
-          // isWeightGood={isWeightGood} // FIXME: выпилить
-          currentCount={productCount}
-          productGram={productGramValue}
-          onAdd={() => onAdd(productGramValue)}
-          onRemove={() => onRemove(productGramValue)}
+          amount={basketProduct?.amount || 0}
+          gram={gramValue}
+          isDisabled={isAddDisabled}
+          onAdd={handleAddClick}
+          onRemove={handleRemoveClick}
         />
       </Box>
     </Box>

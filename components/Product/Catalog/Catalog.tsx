@@ -203,8 +203,8 @@ export function ProductCatalog({
           <ProductCard
             key={product.id}
             id={product.id}
+            moyskladId={product.moyskladId}
             title={product.title[language]}
-            description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
             discount={product.discount || discount}
@@ -214,7 +214,6 @@ export function ProductCatalog({
             countryImg={product.countryImg}
             backgroundImg={product.backgroundImg}
             isElected={product.isElected}
-            isWeightGood={product.isWeightGood}
             onAdd={(gram: number) => onAdd(product, gram)}
             onRemove={(gram: number) => onRemove(product, gram)}
             onElect={() => onElect(product.id, product.isElected)}
