@@ -86,7 +86,7 @@ export function ProductActions({
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
   const [productGramOptions] = useState<IOption[]>(() =>
     productGramList[productType].map(gram => ({
-      label: `${gram} г`,
+      label: `${gram}\u00A0г`,
       value: String(gram),
     })),
   );
@@ -119,7 +119,7 @@ export function ProductActions({
       <Typography variant='body2' sx={sxActions.stock}>
         {isStockFetching && 'Загрузка остатков...'}
         {!isStockFetching && !moyskladId && 'Не указан ID у МойСклад'}
-        {!isStockFetching && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
+        {!isStockFetching && moyskladId && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
       </Typography>
 
       <Box sx={sxActions.docket}>
