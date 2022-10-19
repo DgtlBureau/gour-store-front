@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { Paper } from '@mui/material';
 
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
@@ -12,11 +13,11 @@ import sx from './Card.styles';
 export type InfoCardProps = {
   title: string;
   footerText: string;
+  href: string;
   children: ReactNode;
-  onClickMore(): void;
 };
 
-export function InfoCard({ title, footerText, onClickMore, children }: InfoCardProps) {
+export function InfoCard({ title, footerText, href, children }: InfoCardProps) {
   return (
     <Paper sx={sx.card}>
       <Box sx={sx.content}>
@@ -26,10 +27,10 @@ export function InfoCard({ title, footerText, onClickMore, children }: InfoCardP
         <Box sx={sx.children}>{children}</Box>
       </Box>
 
-      <Box sx={sx.link} onClick={onClickMore}>
+      <Link href={href} sx={sx.link}>
         <Typography variant='body1'>{footerText}</Typography>
         <ArrowIcon fontSize='small' />
-      </Box>
+      </Link>
     </Paper>
   );
 }

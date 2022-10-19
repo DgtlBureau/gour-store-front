@@ -69,9 +69,6 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
         onClickSignout={signOut}
         {...contacts}
