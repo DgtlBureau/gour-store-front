@@ -41,9 +41,13 @@ export const sx = {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
   },
-  acceptBtn: {
-    width: '100%',
+  controlBtnGroup: {
+    display: 'flex',
+    gap: '10px',
     marginTop: '14px',
+  },
+  controlBtn: {
+    width: '100%',
   },
 };
 

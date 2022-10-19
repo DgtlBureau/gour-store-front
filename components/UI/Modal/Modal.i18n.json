@@ -1,8 +1,10 @@
 {
   "ru": {
-    "acceptText": "Подтвердить"
+    "acceptText": "Подтвердить",
+    "refuseText": "Отменить"
   },
   "en": {
-    "acceptText": "Confirm"
+    "acceptText": "Confirm",
+    "refuseText": "Cancel"
   }
 }
