@@ -68,6 +68,10 @@ const sx = {
     position: 'relative',
     backgroundColor: t.palette.common.white,
     color: t.palette.text.secondary,
+    padding: '6px 12px',
+    textDecoration: 'none',
+    borderRadius: '6px',
+    userSelect: 'none',
 
     '&:hover': {
       backgroundColor: t.palette.secondary.main,
@@ -85,7 +89,6 @@ const sx = {
       xs: 'none',
       sm: 'flex',
     },
-    margin: '0 10px',
   },
   menuBtn: {
     display: 'flex',
@@ -93,7 +96,6 @@ const sx = {
     minWidth: '34px',
     height: '34px',
     width: '34px',
-    marginLeft: '20px',
     padding: 0,
     borderRadius: '6px',
     backgroundColor: t.palette.common.white,

@@ -7,6 +7,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
+import { Path } from 'constants/routes';
+
 import translations from './AddressCard.i18n.json';
 
 const sx = {
@@ -23,15 +25,14 @@ export type PAAddressCardProps = {
     title: string;
     address: string;
   }[];
-  onClickMore(): void;
   isLoading: boolean;
 };
 
-export function PAAddressCard({ addresses, onClickMore, isLoading }: PAAddressCardProps) {
+export function PAAddressCard({ addresses, isLoading }: PAAddressCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
+    <InfoCard title={t('title')} footerText={t('footerText')} href={`/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`}>
       {isLoading && <PALoader />}
 
       {!isLoading &&

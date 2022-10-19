@@ -29,8 +29,7 @@ export interface PALayoutProps {
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } =
-    useAppNavigation();
+  const { goToReplenishment, language, pathname } = useAppNavigation();
   const currency: Currency = 'cheeseCoin';
 
   const { data: cities } = useGetCityListQuery();
@@ -57,27 +56,27 @@ export function PALayout({ children }: PALayoutProps) {
   const menuList = [
     {
       label: t('main'),
-      path: `/${Path.PERSONAL_AREA}`,
+      value: `/${Path.PERSONAL_AREA}`,
     },
     {
       label: t('credentials'),
-      path: `/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`,
     },
     {
       label: t('addresses'),
-      path: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
     },
     {
       label: t('orders'),
-      path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },
     {
       label: t('discounts'),
-      path: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
     },
     {
       label: t('payments'),
-      path: `/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`,
     },
   ];
 
@@ -93,15 +92,12 @@ export function PALayout({ children }: PALayoutProps) {
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickFavorite={goToFavorites}
-          onClickPersonalArea={goToPersonalArea}
-          onClickBasket={goToBasket}
           onClickReplenishment={goToReplenishment}
           onClickSignout={signOut}
         />
 
         <Box sx={sx.content}>
-          <PAMenu active={pathname} menuList={menuList} onChange={changeChapter} />
+          <PAMenu active={pathname} options={menuList} />
           {children}
         </Box>
       </Box>

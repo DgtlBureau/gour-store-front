@@ -34,6 +34,7 @@ export const sx = {
     marginTop: '10px',
   },
   description: {
+    whiteSpace: 'pre-wrap',
     margin: {
       lg: '100px 0 100px 0',
       sm: '70px 0 70px 0',

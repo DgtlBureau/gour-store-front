@@ -47,7 +47,7 @@ export function ProductCardGramSelect({
         onClick={() => setIsDeployed(!isDeployed)}
       >
         <Typography variant='body1' sx={selectSx.title}>
-          {gram}г
+          {gram}&nbsp;г
         </Typography>
 
         <ExpandMoreIcon

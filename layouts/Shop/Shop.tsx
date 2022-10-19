@@ -72,9 +72,6 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickFavorite={goToFavorites}
-          onClickPersonalArea={goToPersonalArea}
-          onClickBasket={goToBasket}
           onClickReplenishment={openCheesecoinsModal}
           onClickSignout={signOut}
         />
