@@ -16,11 +16,11 @@ const Template: ComponentStory<typeof OrderForm> = () => (
     productsCount={0}
     cost={100}
     discount={10}
-    citiesList={[]}
+    cities={[]}
     delivery={0}
     deliveryProfiles={[]}
     onSubmit={() => ({})}
-    onChangeDeliveryProfile={() => ({})}
+    onSelectDeliveryProfile={() => ({})}
   />
 );
 export const DefaultOrderForm = Template.bind({});
