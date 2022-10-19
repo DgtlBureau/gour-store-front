@@ -17,7 +17,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
           };
         },
-        providesTags: [{ type: 'CurrentUser', id: 1 }],
+        providesTags: ['CurrentUser'],
       }),
       updateCurrentUser: builder.mutation<number, UpdateUserDto>({
         query(body) {
@@ -27,7 +27,13 @@ export const currentUserApi = commonApi.injectEndpoints({
             body,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
+      }),
+      decreaseGameLive: builder.mutation<void, void>({
+        queryFn: () => ({
+          data: undefined, // TODO: реализовать запрос на удаление игровой жизни
+        }),
+        invalidatesTags: ['CurrentUser'],
       }),
       updateCurrentUserPassword: builder.mutation<number, ChangePasswordDto>({
         query(password) {
@@ -37,7 +43,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: password,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       updateCurrentUserEmail: builder.mutation<string, ChangeEmailDto>({
         query(body) {
@@ -47,7 +53,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       changeCurrentCity: builder.mutation<void, number>({
         query(cityId) {
@@ -57,7 +63,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: { cityId },
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       updateCurrentAvatar: builder.mutation<void, number | null>({
         query(avatarId) {
@@ -67,7 +73,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: { avatarId },
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       changeMainAddress: builder.mutation<void, number | null>({
         query(addressId) {
@@ -77,7 +83,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: { addressId },
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
     };
   },
@@ -86,6 +92,7 @@ export const currentUserApi = commonApi.injectEndpoints({
 export const {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
+  useDecreaseGameLiveMutation,
   useChangeCurrentCityMutation,
   useChangeMainAddressMutation,
   useUpdateCurrentUserPasswordMutation,

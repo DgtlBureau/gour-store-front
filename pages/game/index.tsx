@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useDecreaseGameLiveMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 
 import { GameLayout } from 'layouts/Game/Game';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -9,8 +9,14 @@ import { GameMain } from 'components/Game/Main/Main';
 import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
 import { useAppNavigation } from 'components/Navigation';
 
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+
 export function Game() {
-  const { data: currentUser, refetch: refetchCurrentUser, isFetching: isUserFetching } = useGetCurrentUserQuery();
+  const { data: currentUser, isFetching: isUserFetching } = useGetCurrentUserQuery();
+  const [decreaseGameLive, { isLoading: isDecreaseGameLiveLoading }] = useDecreaseGameLiveMutation();
+
   const { currency, language } = useAppNavigation();
 
   const [rulesModalIsOpen, setRulesModalIsOpen] = useState(false);
@@ -19,8 +25,11 @@ export function Game() {
   const closeRulesModal = () => setRulesModalIsOpen(false);
 
   const onEndGame = async () => {
-    // TODO: отправить запрос на уменьшение жизней
-    refetchCurrentUser();
+    try {
+      await decreaseGameLive().unwrap();
+    } catch {
+      dispatchNotification('Произошла ошибка', { type: NotificationType.DANGER });
+    }
   };
 
   return (
@@ -28,7 +37,7 @@ export function Game() {
       <GameLayout currency={currency} language={language}>
         <GameMain
           onHelpClick={openRulesModal}
-          isLivesLoading={isUserFetching}
+          isLivesLoading={isUserFetching || isDecreaseGameLiveLoading}
           onEndGame={onEndGame}
           lives={currentUser?.lives ?? 0}
         />

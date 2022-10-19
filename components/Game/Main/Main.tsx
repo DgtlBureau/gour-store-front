@@ -65,8 +65,12 @@ export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: Game
   };
 
   const start = () => {
-    if (isLivesLoading || lives < 1) {
-      dispatchNotification('Пополните жизни в магазине', { type: NotificationType.DANGER });
+    if (isLivesLoading) {
+      dispatchNotification('Получение доступных жизней', { type: NotificationType.INFO });
+      return;
+    }
+    if (lives < 1) {
+      dispatchNotification('Пополните жизни в магазине', { type: NotificationType.INFO });
       return;
     }
 
