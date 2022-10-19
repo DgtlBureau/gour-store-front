@@ -5,10 +5,10 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { usePayInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectIsAuth } from 'store/selectors/auth';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-// import { Copyright } from 'components/Copyright/Copyright';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
@@ -31,15 +31,19 @@ export interface ShopLayoutProps {
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const { goToFavorites, goToBasket, goToPersonalArea } = useAppNavigation();
+
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
 
   const [payInvoice] = usePayInvoiceMutation();
+
+  const isAuth = useAppSelector(selectIsAuth);
 
   const convertedCities =
     cities?.map(city => ({
@@ -58,27 +62,27 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   return (
     <Box sx={sx.layout}>
-      <Header
-        {...contacts}
-        selectedCityId={selectedCity?.id || 0}
-        cities={convertedCities}
-        currency={currency}
-        basketProductCount={count}
-        basketProductSum={sum - sumDiscount}
-        moneyAmount={balance}
-        onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
-        onClickReplenishment={openCheesecoinsModal}
-        onClickSignout={signOut}
-      />
+      {isAuth && (
+        <Header
+          {...contacts}
+          selectedCityId={selectedCity?.id || 0}
+          cities={convertedCities}
+          currency={currency}
+          basketProductCount={count}
+          basketProductSum={sum - sumDiscount}
+          moneyAmount={balance}
+          onChangeCity={changeCity}
+          onClickFavorite={goToFavorites}
+          onClickPersonalArea={goToPersonalArea}
+          onClickBasket={goToBasket}
+          onClickReplenishment={openCheesecoinsModal}
+          onClickSignout={signOut}
+        />
+      )}
 
       <Box sx={sx.content}>{children}</Box>
 
       <Footer {...contacts} sx={sx.footer} />
-
-      {/* <Copyright /> */}
 
       <CheesecoinsAddModal isOpened={isModalOpen} onClose={closeCheesecoinsModal} onSubmit={payInvoice} />
     </Box>
