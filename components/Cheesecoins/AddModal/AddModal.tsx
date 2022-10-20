@@ -11,8 +11,6 @@ import Loader from 'components/UI/Loader/Loader';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
-
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
@@ -23,10 +21,14 @@ import translations from './AddModal.i18n.json';
 import { sx } from './AddModal.styles';
 import { getValidationSchema } from './validations';
 
+type FormState = {
+  count: number;
+};
+
 type Props = {
   isOpened: boolean;
   onClose: () => void;
-  onSubmit: (data: payInvoiceDto) => void;
+  onSubmit: (price: number) => void;
 };
 
 export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
@@ -37,7 +39,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
-  const values = useForm<payInvoiceDto>({
+  const values = useForm<FormState>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
   });
@@ -48,6 +50,8 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     isFetching,
     isError,
   } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'rub' }, { skip: !isValidCoinsCount });
+
+  const handleSubmit = ({ count }: FormState) => onSubmit(count);
 
   const currencySymbol = getCurrencySymbol('rub');
 
@@ -66,7 +70,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
       onClose={onClose}
     >
       <FormProvider {...values}>
-        <form id={formId} onSubmit={values.handleSubmit(onSubmit)}>
+        <form id={formId} onSubmit={values.handleSubmit(handleSubmit)}>
           <HFTextField
             name='count'
             label='Баланс чизкоинов'

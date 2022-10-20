@@ -1,5 +1,5 @@
-import { getInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
-import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { GetInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
 
 import { commonApi } from './commonApi';
@@ -62,7 +62,7 @@ export const invoiceApi = commonApi.injectEndpoints({
             ? [...result.map(({ id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
             : [{ type: 'Invoice', id: 'LIST' }],
       }),
-      getInvoicePrice: builder.query<number, getInvoicePriceDto>({
+      getInvoicePrice: builder.query<number, GetInvoicePriceDto>({
         // query: (body) => ({
         //   url: '',
         // }),
@@ -71,18 +71,19 @@ export const invoiceApi = commonApi.injectEndpoints({
           return { data: count };
         },
       }),
-      payInvoice: builder.mutation<void, payInvoiceDto>({
+      buyCheeseCoins: builder.mutation<number, PayInvoiceDto>({
         // query: (body) => ({
-        //   method: 'POST',
         //   url: '',
-        //   body,
         // }),
-        queryFn: () => ({
-          data: undefined,
-        }),
+        async queryFn(body) {
+          await sleep(1);
+          // eslint-disable-next-line no-console
+          console.log('request', body);
+          return { data: 1 };
+        },
       }),
     };
   },
 });
 
-export const { useGetInvoiceListQuery, useGetInvoicePriceQuery, usePayInvoiceMutation } = invoiceApi;
+export const { useGetInvoiceListQuery, useGetInvoicePriceQuery, useBuyCheeseCoinsMutation } = invoiceApi;

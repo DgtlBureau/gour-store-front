@@ -15,7 +15,7 @@ type Props = {
   endAdornment?: ReactElement;
   multiline?: boolean;
   rows?: number;
-  inputProps?: Record<string, number>;
+  inputProps?: Record<string, string | number>;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;

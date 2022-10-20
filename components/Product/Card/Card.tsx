@@ -87,10 +87,13 @@ export const ProductCard = memo(function ProductCard({
   const basketProductsKey = getProductKeyInBasket(id, gramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
   const [gramOptions] = useState<IOption[]>(() =>
-    productGramList[productType].map(gram => ({
-      label: `${gram}\u00A0г`,
-      value: String(gram),
-    })),
+    productGramList[productType]?.map(
+      gram =>
+        ({
+          label: `${gram}\u00A0г`,
+          value: String(gram),
+        } || []),
+    ),
   );
 
   const changeGram = (value: string | number) => setGramValue(+value);

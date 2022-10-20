@@ -18,16 +18,13 @@ export type HFTextFieldProps = {
   endAdornment?: ReactElement;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   regexp?: RegExp;
-  inputProps?: Record<string, number>;
+  inputProps?: Record<string, number | string>; // TODO:
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-const checkValidity = (event: React.ChangeEvent<HTMLInputElement>, regex?: RegExp): boolean => {
-  if (!regex) return true;
-
-  return new RegExp(regex).test(event.currentTarget.value);
-};
+const checkValidity = (event: React.ChangeEvent<HTMLInputElement>, regex: RegExp): boolean =>
+  new RegExp(regex).test(event.currentTarget.value);
 
 export function HFTextField({ name, defaultValue, helperText, onChange, regexp, ...props }: HFTextFieldProps) {
   const {
@@ -45,8 +42,7 @@ export function HFTextField({ name, defaultValue, helperText, onChange, regexp, 
         <TextField
           {...rest}
           onChange={event => {
-            const isValid = checkValidity(event, regexp);
-
+            const isValid = !regexp || checkValidity(event, regexp);
             if (!isValid) {
               event.preventDefault();
               return;
