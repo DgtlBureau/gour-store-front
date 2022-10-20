@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { orderTypeOptions } from 'constants/filters';
+
 import { SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -12,8 +14,6 @@ import { IFilters, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
 import { convertOrderTypesToOptions, convertSubCategoriesToOptions } from 'utils/catalogUtil';
-
-import { orderTypeOptions } from 'constants/filters';
 
 import { FilterMultiselectProps, ProductFilterMultiselect } from '../Multiselect/Multiselect';
 import { ProductFilterSelect } from '../Select/Select';

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React, { Fragment } from 'react';
 
+import { Path } from 'constants/routes';
+
 import { Divider, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -13,7 +15,6 @@ import fbIcon from 'assets/icons/social/fb.svg';
 import instIcon from 'assets/icons/social/inst.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
 import logo from 'assets/images/logo.svg';
-import { Path } from 'constants/routes';
 
 import translations from './Footer.i18n.json';
 import footerSx from './Footer.styles';

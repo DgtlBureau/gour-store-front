@@ -1,6 +1,6 @@
-import { Translator } from 'types/entities/Translator';
-
 import * as yup from 'yup';
+
+import { Translator } from 'types/entities/Translator';
 
 const passRegExp = /^(?=.*?[0-9]).{8,}$/;
 

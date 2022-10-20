@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
+import { differenceInSeconds } from 'date-fns';
+
 import { Stack, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
 
@@ -8,8 +10,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { formatSeconds } from 'utils/timeUtil';
-
-import { differenceInSeconds } from 'date-fns';
 
 import translations from './Header.i18n.json';
 import { headerSx } from './Header.styles';

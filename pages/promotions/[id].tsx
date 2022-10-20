@@ -62,12 +62,12 @@ export default function Promotion() {
 
   // const basket = useAppSelector(selectBasketProducts);
 
-  if (!promotionId) return goToHome();
-
   const formattedPromotionProducts = useMemo(
     () => computeProductsWithCategories(promotion?.products || [], categories, favoriteProducts || []),
     [promotion?.products, categories, favoriteProducts],
   );
+
+  if (!promotionId) return goToHome();
 
   const electProduct = async (id: number, isElect: boolean) => {
     try {

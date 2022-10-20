@@ -20,13 +20,11 @@ function InfoPages() {
     currency,
     query: { key: pageKey },
   } = useAppNavigation();
-  if (!pageKey) return <NotFound />;
-
   // upper case из-за особенностей api
   const formattedPageKey = String(pageKey) || '';
   const { data: page, isLoading } = useGetPageQuery(formattedPageKey);
 
-  if (!isLoading && !page) return <NotFound />;
+  if ((!isLoading && !page) || !formattedPageKey) return <NotFound />;
 
   return (
     <PrivateLayout>

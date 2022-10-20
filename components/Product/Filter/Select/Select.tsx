@@ -10,6 +10,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IOption } from 'types/entities/IOption';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { defaultTheme as theme } from 'themes';
 
 import { ProductFilterSelectItem } from '../Multiselect/SelectItem';

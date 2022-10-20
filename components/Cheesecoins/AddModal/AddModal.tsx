@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import regexp from 'constants/regex';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useGetInvoicePriceQuery } from 'store/api/invoiceApi';
@@ -16,8 +18,6 @@ import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
-
-import regexp from 'constants/regex';
 
 import translations from './AddModal.i18n.json';
 import { sx } from './AddModal.styles';

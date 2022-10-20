@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { FullInvoice } from 'pages/personal-area/payments';
+
 import { Grid, Typography } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -10,8 +12,6 @@ import { InvoiceStatus } from 'types/entities/IInvoice';
 import { useTimer } from 'hooks/useTimer';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
-
-import { FullInvoice } from 'pages/personal-area/payments';
 
 import sx from './Card.styles';
 import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';

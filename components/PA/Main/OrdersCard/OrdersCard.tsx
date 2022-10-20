@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { Path } from 'constants/routes';
+import { format } from 'date-fns';
+
 import PALoader from 'components/PA/Main/Loader';
 import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
@@ -9,9 +12,6 @@ import { Currency } from 'types/entities/Currency';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
-
-import { Path } from 'constants/routes';
-import { format } from 'date-fns';
 
 import translations from './OrdersCard.i18n.json';
 

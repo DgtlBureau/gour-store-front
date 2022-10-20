@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { productGramList } from 'constants/gramList';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
+
 import { Grid, SxProps, useMediaQuery } from '@mui/material';
 
 import { useGetStockQuery } from 'store/api/warehouseApi';
@@ -24,8 +27,6 @@ import TrashIcon from '@mui/icons-material/DeleteForever';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MinusIcon from '@mui/icons-material/Remove';
 import CartIcon from '@mui/icons-material/ShoppingCart';
-import { productGramList } from 'constants/gramList';
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { ProductCardGramSelect } from '../Card/GramSelect/GramSelect';
 import translations from './Actions.i18n.json';

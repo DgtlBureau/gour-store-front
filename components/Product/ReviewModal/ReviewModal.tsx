@@ -9,6 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { formatDate } from 'utils/dateUtil';
 
 import StarIcon from '@mui/icons-material/Star';
+
 import { defaultTheme as t } from 'themes';
 
 import { Review } from '../Reviews/Reviews';

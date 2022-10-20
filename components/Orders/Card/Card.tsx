@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { format } from 'date-fns';
+
 import { Divider, Grid, Typography } from '@mui/material';
 
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
@@ -10,8 +12,6 @@ import { Currency } from 'types/entities/Currency';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
-
-import { format } from 'date-fns';
 
 import translations from './Card.i18n.json';
 import sx from './Card.styles';

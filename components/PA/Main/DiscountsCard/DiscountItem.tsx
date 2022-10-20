@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
+
 import { Grid } from '@mui/material';
 
 import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 import { defaultTheme as theme } from 'themes';
 
 type Props = {

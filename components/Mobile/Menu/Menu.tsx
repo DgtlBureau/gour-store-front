@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React, { Fragment, useState } from 'react';
 
+import { Path } from 'constants/routes';
+
 import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material';
 
 import { IconButton } from 'components/UI/IconButton/IconButton';
@@ -16,7 +18,6 @@ import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';
 import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
 import locationIcon from 'assets/icons/mobile/location.svg';
-import { Path } from 'constants/routes';
 
 import translations from './Menu.i18n.json';
 import sx from './Menu.styles';

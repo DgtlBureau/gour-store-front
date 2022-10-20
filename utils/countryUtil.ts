@@ -1,6 +1,6 @@
-import { ICategory } from 'types/entities/ICategory';
-
 import { imageByCountry } from 'constants/countries';
+
+import { ICategory } from 'types/entities/ICategory';
 
 export const getCountryImage = (categories?: ICategory[]) =>
   categories?.reduce<string | undefined>(

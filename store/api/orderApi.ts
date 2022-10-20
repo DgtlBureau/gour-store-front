@@ -1,7 +1,7 @@
+import { Path } from 'constants/routes';
+
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { IOrder } from 'types/entities/IOrder';
-
-import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

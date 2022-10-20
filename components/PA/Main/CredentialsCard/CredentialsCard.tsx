@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { Path } from 'constants/routes';
+
 import { Stack } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -10,7 +12,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import noPhoto from 'assets/images/default.svg';
-import { Path } from 'constants/routes';
 
 import translations from './CredentialsCard.i18n.json';
 

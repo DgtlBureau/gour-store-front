@@ -1,6 +1,6 @@
-import { Translator } from 'types/entities/Translator';
-
 import * as yup from 'yup';
+
+import { Translator } from 'types/entities/Translator';
 
 export const getValidationSchema = (t: Translator) =>
   yup.object().shape({

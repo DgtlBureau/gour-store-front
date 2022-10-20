@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-
 import { PhotoCamera } from '@mui/icons-material';
+
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { IconButton } from './IconButton';
 

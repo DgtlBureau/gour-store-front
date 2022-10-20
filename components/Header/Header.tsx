@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
+import { Path } from 'constants/routes';
+
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -24,7 +26,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CatalogIcon from 'assets/icons/catalog.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import Logo from 'assets/images/common-logo.svg';
-import { Path } from 'constants/routes';
 
 import { MobileMenu } from '../Mobile/Menu/Menu';
 import { CitySelect } from './CitySelect';

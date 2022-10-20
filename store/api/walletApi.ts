@@ -1,6 +1,6 @@
-import { IWallet } from 'types/entities/IWallet';
-
 import { Path } from 'constants/routes';
+
+import { IWallet } from 'types/entities/IWallet';
 
 import { commonApi } from './commonApi';
 

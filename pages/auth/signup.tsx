@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
+
 import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
@@ -27,7 +29,6 @@ import credentialsImage from 'assets/images/signup/credentials.svg';
 import favoritesImage from 'assets/images/signup/favorites.svg';
 import greetingsImage from 'assets/images/signup/greetings.svg';
 import referralImage from 'assets/images/signup/referral-codes.svg';
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 

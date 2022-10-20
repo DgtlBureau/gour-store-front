@@ -1,6 +1,6 @@
-import { IImage } from 'types/entities/IImage';
-
 import { Path } from 'constants/routes';
+
+import { IImage } from 'types/entities/IImage';
 
 import { commonApi } from './commonApi';
 

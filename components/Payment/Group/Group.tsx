@@ -1,13 +1,13 @@
 /* eslint-disable import/no-duplicates */
 import React from 'react';
 
+import { ru } from 'date-fns/locale';
+import { FullInvoice } from 'pages/personal-area/payments';
+
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { formatDate } from 'utils/dateUtil';
-
-import { ru } from 'date-fns/locale';
-import { FullInvoice } from 'pages/personal-area/payments';
 
 import { PaymentsCard } from '../Card/Card';
 import sx from './Group.styles';

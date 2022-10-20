@@ -1,5 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
 import { LinearProgress } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
@@ -38,8 +40,6 @@ import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
-
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import translations from './Product.i18n.json';
 import sx from './Product.styles';

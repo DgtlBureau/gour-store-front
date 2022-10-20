@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { PersistGate } from 'redux-persist/integration/react';
+
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { persistor, store } from 'store/store';
@@ -11,7 +13,6 @@ import { persistor, store } from 'store/store';
 import { NavigationProvider } from 'components/Navigation';
 import Notifications from 'components/Notifications/Notifications';
 
-import { PersistGate } from 'redux-persist/integration/react';
 import { defaultTheme } from 'themes';
 
 function MyApp({ Component, pageProps }: AppProps) {

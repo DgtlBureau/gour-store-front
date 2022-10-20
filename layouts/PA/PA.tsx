@@ -1,5 +1,8 @@
 import React, { ReactNode } from 'react';
 
+import { contacts } from 'constants/contacts';
+import { Path } from 'constants/routes';
+
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -17,9 +20,6 @@ import { Currency } from 'types/entities/Currency';
 
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
-import { contacts } from 'constants/contacts';
-import { Path } from 'constants/routes';
 
 import translations from './PA.i18n.json';
 import sx from './PA.styles';

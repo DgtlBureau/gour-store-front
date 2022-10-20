@@ -16,6 +16,7 @@ import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import StarIcon from '@mui/icons-material/Star';
+
 import { defaultTheme as theme } from 'themes';
 
 import translations from './CreateBlock.i18n.json';

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import { contacts } from 'constants/contacts';
+
 import { useMediaQuery } from '@mui/material';
 
 import { useSignOutMutation } from 'store/api/authApi';
@@ -18,8 +20,6 @@ import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 
 import { useAppSelector } from 'hooks/store';
-
-import { contacts } from 'constants/contacts';
 
 import sx from './Game.styles';
 

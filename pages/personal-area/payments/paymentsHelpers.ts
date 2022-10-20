@@ -1,6 +1,6 @@
-import { IInvoice } from 'types/entities/IInvoice';
-
 import { format } from 'date-fns';
+
+import { IInvoice } from 'types/entities/IInvoice';
 
 import { FullInvoice } from '.';
 

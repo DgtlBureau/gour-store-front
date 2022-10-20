@@ -7,6 +7,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import StarIcon from '@mui/icons-material/Star';
+
 import { defaultTheme as theme } from 'themes';
 
 import translations from './Reviews.i18n.json';

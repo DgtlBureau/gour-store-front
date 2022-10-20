@@ -1,6 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 import React, { ReactNode, useState } from 'react';
 
+import SwiperCore, { Grid } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/grid';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { ButtonGroup, Stack, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -8,10 +13,6 @@ import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SwiperCore, { Grid } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/grid';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 import sliderSx from './CardSlider.styles';
 

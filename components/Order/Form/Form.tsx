@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { Path } from 'constants/routes';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
@@ -10,8 +12,6 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Currency } from 'types/entities/Currency';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
-import { Path } from 'constants/routes';
 
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFTextField } from '../../HookForm/HFTextField';

@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 
 import ExpandIcon from '@mui/icons-material/ExpandMore';
+
 import { defaultTheme as theme } from 'themes';
 
 const accordionSx = {

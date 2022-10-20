@@ -1,11 +1,11 @@
+import { endOfDay, getTime } from 'date-fns';
+
 import { FullOrder } from 'components/Orders/Card/Card';
 
 import { Currency } from 'types/entities/Currency';
 import { IOrder } from 'types/entities/IOrder';
 
 import { getFullName } from 'utils/nameUtil';
-
-import { endOfDay, getTime } from 'date-fns';
 
 export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
