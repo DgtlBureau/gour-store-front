@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +12,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useStopwatch } from 'hooks/useStopwatch';
 
 import translations from './EmailChangeModal.i18n.json';
 import sx from './EmailChangeModal.styles';
@@ -36,11 +37,12 @@ export function PAEmailChangeModal({
   onCodeCheck,
   onSubmit,
 }: PAEmailChangeModalProps) {
-  const [seconds, setSeconds] = useState<number | null>(null);
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
   const { t } = useLocalTranslation(translations);
+
+  const { seconds, startCount, stopCount } = useStopwatch(30);
 
   const schema = getSchema(t);
 
@@ -55,27 +57,7 @@ export function PAEmailChangeModal({
   const emailIsDirty = values.formState.dirtyFields.email;
   const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
   const formIsValid = values.formState.isValid && isCodeSuccess;
-  const sendingIsDisabled = !!seconds || !emailIsValid || !emailIsDirty;
-
-  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  const clearTimer = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
-
-  useEffect(() => clearTimer, []);
-
-  useEffect(() => {
-    if (seconds && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setSeconds(sec => sec && sec - 1);
-      }, 1000);
-    }
-    if (seconds === 0) {
-      setSeconds(null);
-      clearTimer();
-    }
-  }, [seconds]);
+  const sendingIsDisabled = !!seconds || !emailIsValid || !emailIsDirty || isCodeSuccess;
 
   const sendEmail = async () => {
     const email = values.getValues('email');
@@ -84,7 +66,8 @@ export function PAEmailChangeModal({
       await onEmailSend(email);
 
       setIsCodeSended(true);
-      setSeconds(30);
+
+      startCount();
     } catch (e) {
       setIsCodeSended(false);
       values.setError('email', { message: String(e) });
@@ -107,7 +90,7 @@ export function PAEmailChangeModal({
   };
 
   const resetEmailStates = () => {
-    setSeconds(null);
+    stopCount();
     setIsCodeSended(false);
     setIsCodeSuccess(false);
     values.resetField('code');
@@ -145,9 +128,10 @@ export function PAEmailChangeModal({
             <HFSendField
               label={t('email')}
               name='email'
-              onChange={changeEmail}
               isSending={!!codeIsSending}
+              disabled={isCodeSuccess}
               sendingIsDisabled={sendingIsDisabled}
+              onChange={changeEmail}
               onSend={sendEmail}
             />
 

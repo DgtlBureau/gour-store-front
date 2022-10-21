@@ -8,10 +8,8 @@ import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-// import { Copyright } from 'components/Copyright/Copyright';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
-import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
@@ -30,7 +28,6 @@ export interface ShopLayoutProps {
 }
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea } = useAppNavigation();
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
