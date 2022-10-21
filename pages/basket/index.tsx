@@ -121,6 +121,7 @@ export function Basket() {
               {productsInOrder.map(it => (
                 <>
                   <CartCard
+                    id={it.product.id}
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
                     price={it.product.price[currency] || 0}
@@ -130,7 +131,6 @@ export function Basket() {
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
                     currency={currency}
-                    onDetail={() => goToProductPage(it.product.id)}
                     onDelete={() => deleteProduct(it.product, it.gram)}
                     onAdd={() => addProduct(it.product, it.gram)}
                     onSubtract={() => subtractProduct(it.product, it.gram)}
