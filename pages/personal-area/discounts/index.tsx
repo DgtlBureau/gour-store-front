@@ -35,14 +35,7 @@ export function Discounts() {
           </DiscountsInfoBar>
 
           {!categories.length && (
-            <CartEmpty
-              title='Вы ещё ничего не купили'
-              css
-              btn={{
-                label: 'Вернуться к покупкам',
-                onClick: goToHome,
-              }}
-            />
+            <CartEmpty title='Вы ещё ничего не купили' actionText="'Вернуться к покупкам'" onClick={goToHome} />
           )}
 
           {categories.map(category => (

@@ -28,6 +28,8 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import { noExistingId } from 'constants/default';
+
 import translation from './Order.i18n.json';
 import sx from './Order.styles';
 
@@ -40,12 +42,12 @@ const defaultPersonalFields = {
 
 const defaultProfileOption = {
   label: 'Новый профиль доставки',
-  value: -1,
+  value: noExistingId,
 };
 
-const defaultDeliveryFields = {
-  deliveryProfileId: -1,
-  cityId: 0,
+const defaultDeliveryFields: DeliveryFields = {
+  deliveryProfileId: noExistingId,
+  cityId: noExistingId,
   street: '',
   house: '',
   apartment: '',
@@ -114,7 +116,7 @@ export function Order() {
     try {
       let currentDeliveryProfileId = deliveryProfileId;
 
-      if (currentDeliveryProfileId === -1) {
+      if (currentDeliveryProfileId === noExistingId) {
         const deliveryProfileData: CreateOrderProfileDto = {
           title: `${street}, ${house}`,
           cityId,
@@ -165,7 +167,7 @@ export function Order() {
   const selectDeliveryProfile = (deliveryProfileId: number) => {
     let deliveryFieldsData: DeliveryFields = defaultDeliveryFields;
 
-    if (deliveryProfileId !== -1) {
+    if (deliveryProfileId !== noExistingId) {
       const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
       if (currentProfile)
@@ -196,7 +198,7 @@ export function Order() {
       email,
     });
 
-    if (mainOrderProfileId && mainOrderProfileId !== -1)
+    if (mainOrderProfileId && mainOrderProfileId !== noExistingId)
       setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
@@ -224,13 +226,7 @@ export function Order() {
 
         {productsInOrder.length === 0 ? (
           <Stack alignItems='center'>
-            <CartEmpty
-              title={t('emptyBasket')}
-              btn={{
-                label: t('toHome'),
-                onClick: () => goToHome,
-              }}
-            >
+            <CartEmpty title={t('emptyBasket')} actionText={t('toHome')} onClick={goToHome}>
               <Typography variant='body1'>{t('emptyBasketText')}</Typography>
             </CartEmpty>
           </Stack>

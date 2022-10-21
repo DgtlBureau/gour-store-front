@@ -26,6 +26,8 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import { noExistingId } from 'constants/default';
+
 import translations from './Addresses.i18n.json';
 
 const sx = {
@@ -147,7 +149,7 @@ export function Addresses() {
         </Box>
 
         {isCreating && (
-          <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+          <PAProfilesItem key={noExistingId} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
         )}
 
         {!!profiles && profiles.length !== 0 ? (
