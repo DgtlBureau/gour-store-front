@@ -6,7 +6,12 @@ const sx = {
     flexDirection: 'column',
 
     height: { xs: '315px', sm: '405px', md: '510px' },
-    width: 'fit-content',
+
+    width: {
+      xs: '170px',
+      sm: '220px',
+      md: '270px',
+    },
 
     padding: {
       xs: '10px',
@@ -31,17 +36,9 @@ const sx = {
       md: '250px',
     },
 
-    width: {
-      xs: '150px',
-      sm: '200px',
-      md: '250px',
-    },
-
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
-
-    cursor: 'pointer',
   },
   productImg: {
     height: '100%',
@@ -101,20 +98,30 @@ const sx = {
     margin: '5px 0 10px 0',
 
     textOverflow: 'ellipsis',
-    whiteSpace: 'normal',
+    whiteSpace: 'nowrap',
 
     '&:hover': {
-      cursor: 'pointer',
       opacity: '0.75',
     },
   },
   stock: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: 'block',
     padding: '2px 16px',
     borderRadius: '4px',
     backgroundColor: t.palette.background.paper,
     color: t.palette.text.secondary,
+
+    width: '100%',
+    height: '100%',
+
+    maxHeight: '26px',
+
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: 'vertical',
+
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
   actions: {
     display: 'flex',
