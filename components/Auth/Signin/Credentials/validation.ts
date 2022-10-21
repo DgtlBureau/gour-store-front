@@ -7,8 +7,8 @@ export const getSchema = (t: Translator) =>
   yup.object().shape({
     email: yup
       .string()
-      .email(t('emailError'))
       .required(t('emailEmpty'))
+      .email(t('emailError'))
       .test('cyrillic letters', t('emailError'), value => !!value && !regexp.cyrillic.test(value)),
     password: yup.string().required(t('passwordError')),
   });

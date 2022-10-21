@@ -11,8 +11,8 @@ export const getSchema = (t: Translator) =>
     code: yup.string().required(t('codeEmpty')),
     email: yup
       .string()
-      .email(t('emailError'))
       .required(t('emailEmpty'))
+      .email(t('emailError'))
       .test('cyrillic letters', t('emailError'), value => !!value && !regexp.cyrillic.test(value)),
     firstName: yup.string().required(t('firstNameRequired')),
     lastName: yup.string().required(t('lastNameRequired')),

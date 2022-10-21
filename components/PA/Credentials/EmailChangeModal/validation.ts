@@ -8,6 +8,7 @@ export const getSchema = (t: Translator) =>
     email: yup
       .string()
       .required(t('emailRequired'))
+      .email(t('incorrectEmail'))
       .test('cyrillic letters', t('incorrectEmail'), value => !!value && !regexp.cyrillic.test(value)),
     code: yup.string().required(t('codeRequired')),
   });
