@@ -9,13 +9,10 @@ import { selectedProductCount, selectedProductDiscount, selectedProductSum } fro
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
-// import { Copyright } from 'components/Copyright/Copyright';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
-import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
-import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 
@@ -24,6 +21,8 @@ import { useAppSelector } from 'hooks/store';
 import { contacts } from 'constants/contacts';
 
 import sx from './Shop.styles';
+
+type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
 
 export interface ShopLayoutProps {
   currency: Currency;
@@ -36,9 +35,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
   const [isCheeseCoinModalOpen, toggleCheeseCoinModalOpen] = useState(false);
-  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState({
-    isOpenModal: true,
-    price: null as null | number,
+  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
+    isOpenModal: false,
+    price: null,
   });
 
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
@@ -101,7 +100,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       <BuyCheeseCoinsModal
         isOpened={buyCheeseCoinState.isOpenModal}
         userEmail={currentUser?.email}
-        price={buyCheeseCoinState.price ?? 52_000}
+        price={buyCheeseCoinState.price}
         isLoading={isPaymentLoading}
         onClose={onCloseBuyModal}
         onSubmit={buyCheeseCoins}

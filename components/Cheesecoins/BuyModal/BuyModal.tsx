@@ -3,7 +3,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
 
 import { HFCheckbox } from 'components/HookForm/HFCheckbox';
 import { HFMaskInput } from 'components/HookForm/HFMaskInput';
@@ -41,6 +41,7 @@ type Props = {
 
 export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail, isLoading, onSubmit }: Props) {
   const { t } = useLocalTranslation(translations);
+  const isDesktop = useMediaQuery('(min-width: 600px)');
 
   const schema = getValidationSchema(t);
   const values = useForm<FormState>({
@@ -75,6 +76,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
   );
 
   const showEmailInput = values.watch('isSendInvoice');
+  const coinIconSize = isDesktop ? 74 : 62;
 
   return (
     <Modal
@@ -82,7 +84,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
       title={
         <Box sx={sx.titleContainer}>
           <Box sx={sx.imageBlock}>
-            <Image src={coinImage} width={74} height={74} layout='fixed' />
+            <Image src={coinImage} width={coinIconSize} height={coinIconSize} layout='fixed' />
           </Box>
 
           <Box>
@@ -103,7 +105,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
     >
       <FormProvider {...values}>
         <form id={formId} onSubmit={values.handleSubmit(handleSubmit)} autoComplete='off' noValidate>
-          <Grid container spacing={2}>
+          <Grid container spacing={3} marginBottom='24px'>
             <Grid item xs={12}>
               <HFMaskInput
                 name='cardNumber'

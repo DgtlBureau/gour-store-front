@@ -10,14 +10,30 @@ export const sx = {
   titleLabel: {
     marginBottom: '8px',
     fontWeight: 700,
-    fontSize: '18px',
-    fontFamily: 'Roboto slab',
-    lineHeight: '22px',
+    fontSize: {
+      xs: '14px',
+      sm: '18px',
+    },
+    fontFamily: {
+      sm: 'Roboto slab',
+    },
+    lineHeight: {
+      xs: '18px',
+      md: '22px',
+    },
   },
   titlePrice: {
-    fontFamily: 'Roboto Slab',
+    fontFamily: {
+      sm: 'Roboto slab',
+    },
     fontWeight: 700,
-    fontSize: '18px',
-    lineHeight: '22px',
+    fontSize: {
+      xs: '14px',
+      sm: '18px',
+    },
+    lineHeight: {
+      xs: '18px',
+      md: '22px',
+    },
   },
 };

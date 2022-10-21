@@ -47,6 +47,7 @@ export const sx = {
   acceptBtn: {
     width: '100%',
     marginTop: '14px',
+    display: 'flex',
   },
 };
 
