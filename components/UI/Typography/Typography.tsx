@@ -1,4 +1,4 @@
-import React, { ElementType, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { SxProps } from '@mui/material';
 import MUITypography from '@mui/material/Typography';
@@ -21,15 +21,14 @@ type Props = {
     | 'overline'
     | 'inherit'
     | undefined;
-  component?: ElementType;
   children: ReactNode;
   sx?: SxProps;
   onClick?(): void;
 };
 
-export function Typography({ variant = 'h4', component, children, color, sx, onClick }: Props) {
+export function Typography({ variant = 'h4', children, color, sx, onClick }: Props) {
   return (
-    <MUITypography sx={sx} variant={variant} component={component || 'span'} color={color} onClick={onClick}>
+    <MUITypography sx={sx} variant={variant} color={color} onClick={onClick}>
       {children}
     </MUITypography>
   );
