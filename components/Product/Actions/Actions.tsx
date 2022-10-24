@@ -95,7 +95,7 @@ export function ProductActions({
 
   const pricePerCount = price;
 
-  const total = pricePerCount * ((100 - discount) / 100);
+  const total = Math.round(pricePerCount * ((100 - discount) / 100));
 
   const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
   const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
