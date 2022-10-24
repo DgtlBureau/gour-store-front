@@ -1,9 +1,14 @@
+import regexp from 'constants/regex';
 import * as yup from 'yup';
 
 import { Translator } from 'types/entities/Translator';
 
 export const getSchema = (t: Translator) =>
   yup.object().shape({
-    email: yup.string().email(t('phoneError')).required(t('phoneEmpty')),
+    email: yup
+      .string()
+      .required(t('emailEmpty'))
+      .email(t('emailError'))
+      .test('cyrillic letters', t('emailError'), value => !!value && !regexp.cyrillic.test(value)),
     password: yup.string().required(t('passwordError')),
   });

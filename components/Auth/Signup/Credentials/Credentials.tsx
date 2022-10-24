@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Path } from 'constants/routes';
@@ -20,6 +20,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useStopwatch } from 'hooks/useStopwatch';
 
 import translations from './Credentials.i18n.json';
 import sx from './Credentials.styles';
@@ -42,7 +43,6 @@ export function SignupCredentials({
   onCodeCheck,
   onSubmit,
 }: SignupCredentialsProps) {
-  const [seconds, setSeconds] = useState<number | null>(null);
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
 
@@ -61,29 +61,11 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
+  const { seconds, startCount, stopCount } = useStopwatch(30);
+
   const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
   const formIsValid = values.formState.isValid && isAgree && isCodeSuccess;
-  const sendingIsDisabled = !!seconds || !emailIsValid;
-
-  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  const clearTimer = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
-
-  useEffect(() => clearTimer, []);
-
-  useEffect(() => {
-    if (seconds && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setSeconds(sec => sec && sec - 1);
-      }, 1000);
-    }
-    if (seconds === 0) {
-      setSeconds(null);
-      clearTimer();
-    }
-  }, [seconds]);
+  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess;
 
   const sendEmail = async () => {
     const email = values.getValues('email');
@@ -92,7 +74,8 @@ export function SignupCredentials({
       await onEmailSend(email);
 
       setIsCodeSended(true);
-      setSeconds(30);
+
+      startCount();
     } catch (e) {
       setIsCodeSended(false);
       values.setError('email', { message: String(e) });
@@ -117,7 +100,7 @@ export function SignupCredentials({
   const agree = () => setIsAgree(!isAgree);
 
   const resetEmailStates = () => {
-    setSeconds(null);
+    stopCount();
     setIsCodeSended(false);
     setIsCodeSuccess(false);
     values.resetField('code');
@@ -157,9 +140,10 @@ export function SignupCredentials({
             <HFSendField
               label={t('email')}
               name='email'
-              onChange={changeEmail}
               isSending={!!codeIsSending}
               sendingIsDisabled={sendingIsDisabled}
+              disabled={isCodeSuccess}
+              onChange={changeEmail}
               onSend={sendEmail}
             />
           </Box>
