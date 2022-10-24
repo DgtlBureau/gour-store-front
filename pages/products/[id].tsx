@@ -40,6 +40,7 @@ import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import HeartIcon from '@mui/icons-material/Favorite';
+import { noExistingId } from 'constants/default';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import translations from './Product.i18n.json';
@@ -91,7 +92,7 @@ export default function Product() {
   );
 
   const [reviewForModal, setReviewForModal] = useState<Review>({
-    id: -1,
+    id: noExistingId,
     clientName: '',
     value: 0,
     comment: '',
