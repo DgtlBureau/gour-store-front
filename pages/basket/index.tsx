@@ -43,6 +43,8 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import { Path } from 'constants/routes';
+
 import translation from './Basket.i18n.json';
 import sx from './Basket.styles';
 
@@ -96,6 +98,8 @@ export function Basket() {
     }
   };
 
+  const freeDeliveryBlockTitle = `${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')}`;
+
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
@@ -104,13 +108,7 @@ export function Basket() {
         </Typography>
 
         {productsInOrder.length === 0 && (
-          <CartEmpty
-            title={t('emptyTitle')}
-            btn={{
-              label: t('emptyButton'),
-              onClick: goToHome,
-            }}
-          >
+          <CartEmpty title={t('emptyTitle')} actionText={t('emptyButton')} onClick={goToHome}>
             <Typography variant='body1'>{t('emptyText')}</Typography>
           </CartEmpty>
         )}
@@ -121,6 +119,7 @@ export function Basket() {
               {productsInOrder.map(it => (
                 <>
                   <CartCard
+                    id={it.product.id}
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
                     price={it.product.price[currency] || 0}
@@ -130,7 +129,6 @@ export function Basket() {
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
                     currency={currency}
-                    onDetail={() => goToProductPage(it.product.id)}
                     onDelete={() => deleteProduct(it.product, it.gram)}
                     onAdd={() => addProduct(it.product, it.gram)}
                     onSubtract={() => subtractProduct(it.product, it.gram)}
@@ -141,34 +139,32 @@ export function Basket() {
               ))}
             </Grid>
 
-            <Grid item xs={12} md={4}>
-              <Button onClick={goToOrder} sx={sx.desktopOrderBtn}>
-                {t('orderButton')}
-              </Button>
+            <Grid container item xs={12} md={4} spacing={1}>
+              <Grid item xs={12} sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <Button fullWidth onClick={goToOrder}>
+                  {t('orderButton')}
+                </Button>
+              </Grid>
 
-              <CartInfo
-                count={count}
-                discount={sumDiscount}
-                delivery={isDeliveryFree ? 0 : delivery}
-                price={sum}
-                currency={currency}
-              />
+              <Grid item xs={12}>
+                <CartInfo
+                  count={count}
+                  discount={sumDiscount}
+                  delivery={isDeliveryFree ? 0 : delivery}
+                  price={sum}
+                  currency={currency}
+                />
+              </Grid>
 
               {!isDeliveryFree && (
-                <InfoBlock
-                  sx={{ marginTop: '10px' }}
-                  text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
-                  link={{ label: t('continueShopping'), path: '/' }}
-                />
+                <Grid item xs={12}>
+                  <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
+                </Grid>
               )}
-              <InfoBlock
-                sx={{ marginTop: '10px' }}
-                text={t('aboutDelivery')}
-                link={{
-                  label: t('detailed'),
-                  path: '/rules',
-                }}
-              />
+
+              <Grid item xs={12}>
+                <InfoBlock title={t('aboutDelivery')} actionText={t('detailed')} href={`${Path.RULES}`} />
+              </Grid>
             </Grid>
 
             {!!similarProducts?.length && (
@@ -187,7 +183,7 @@ export function Basket() {
             )}
 
             <Grid item xs={12} sx={{ display: { md: 'none' } }}>
-              <Button onClick={goToOrder} sx={sx.mobileOrderBtn}>
+              <Button fullWidth onClick={goToOrder}>
                 {t('orderButton')}
               </Button>
             </Grid>

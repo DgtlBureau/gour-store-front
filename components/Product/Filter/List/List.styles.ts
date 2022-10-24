@@ -6,8 +6,8 @@ export const sx = {
   },
   summary: {
     display: 'flex',
-    alignItems: { xs: 'flex-start', sm: 'center' },
-    flexDirection: { xs: 'column', sm: 'row' },
+    alignItems: { xs: 'flex-start', md: 'center' },
+    flexDirection: { xs: 'column', md: 'row' },
     justifyContent: 'flex-start',
     gap: '10px',
   },

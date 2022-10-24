@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -51,7 +51,7 @@ type PAProfilesFormProps = {
   onDelete(): void;
 };
 
-export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) {
+export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) => {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -65,6 +65,8 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
   const submit = (data: OrderProfileDto) => onSave(data);
 
   const reset = () => values.reset(defaultValues);
+
+  useEffect(() => reset(), [defaultValues]);
 
   return (
     <FormProvider {...values}>
@@ -110,4 +112,4 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
       </form>
     </FormProvider>
   );
-}
+});

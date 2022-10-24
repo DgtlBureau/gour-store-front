@@ -28,6 +28,7 @@ const Template: ComponentStory<typeof CartCard> = () => {
   return (
     <div>
       <CartCard
+        id={1}
         title='Chevrano XO Козий Элитный Сыр'
         amount={amount}
         price={price}
@@ -38,8 +39,6 @@ const Template: ComponentStory<typeof CartCard> = () => {
         onDelete={() => ({})}
         onAdd={() => edit('increase')}
         onSubtract={() => edit('increase')}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onDetail={() => {}}
       />
     </div>
   );

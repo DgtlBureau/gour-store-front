@@ -2,7 +2,7 @@ const onlyDigits = /^\d*$/g;
 
 const onlyDigitsWithSign = /^\d(-?\d)*$/g; // TODO: удалить регулярку, если не используется
 
-const cyrillic = /[а-яА-ЯёЁ]/g;
+const cyrillic = /[а-яё]/gi;
 
 const regexp = {
   onlyDigits,

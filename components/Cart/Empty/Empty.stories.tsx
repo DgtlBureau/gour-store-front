@@ -10,13 +10,9 @@ export default {
 } as ComponentMeta<typeof CartEmpty>;
 
 const DEFAULT_TITLE = 'В корзине нет товаров';
-const DEFAULT_BTN = {
-  label: 'Вернуться к покупкам',
-  onClick: () => ({}),
-};
 
 const Template: ComponentStory<typeof CartEmpty> = () => (
-  <CartEmpty title={DEFAULT_TITLE} btn={DEFAULT_BTN}>
+  <CartEmpty title={DEFAULT_TITLE} actionText='Вернуться к покупкам' onClick={() => ({})}>
     Акции, специальные предложения интересных товаров на помогут вам определиться с выбором!
   </CartEmpty>
 );
