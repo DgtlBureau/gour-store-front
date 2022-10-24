@@ -53,7 +53,7 @@ export const ProductCard = memo(function ProductCard({
   moyskladId,
   title,
   rating,
-  discount = 10,
+  discount = 0,
   price,
   productType,
   previewImg,
