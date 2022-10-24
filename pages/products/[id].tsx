@@ -161,6 +161,8 @@ export default function Product() {
 
   const isCurrentProductElected = isProductFavorite(productId, favoriteProducts);
 
+  const price = product ? Math.round(product.price[currency] * 0.1) : 0;
+
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
@@ -205,7 +207,7 @@ export default function Product() {
                   id={product.id}
                   moyskladId={product.moyskladId}
                   currentUserCity={currentUser?.city.name.ru}
-                  price={product.price[currency] || 0}
+                  price={price}
                   currency={currency}
                   discount={product.discount}
                   productType={productType!}
