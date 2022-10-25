@@ -18,7 +18,7 @@ export type ModalProps = {
   title: string | JSX.Element;
   description?: string;
   children?: ReactNode;
-  acceptText?: string;
+  acceptText?: string | JSX.Element;
   formId?: string;
   acceptIsDisabled?: boolean;
   closeIsDisabled?: boolean;
