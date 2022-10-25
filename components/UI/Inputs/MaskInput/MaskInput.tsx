@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, FocusEventHandler, HTMLAttributes, ReactElement } from 'react';
 import MaskedInput, { MaskedInputProps } from 'react-text-mask';
 
-import { TextField as MUITextField, SxProps } from '@mui/material';
+import { InputBaseProps, TextField as MUITextField, SxProps } from '@mui/material';
 
 export type MaskInputProps = {
   mask: MaskedInputProps['mask'];
@@ -16,7 +16,7 @@ export type MaskInputProps = {
   type?: string;
   helperText?: string;
   endAdornment?: ReactElement;
-  inputProps?: Record<string, string | number>;
+  inputProps?: InputBaseProps['inputProps'];
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;

@@ -1,7 +1,7 @@
-import React, { FocusEventHandler, ReactElement } from 'react';
+import React, { ChangeEvent, FocusEventHandler, ReactElement } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { InputProps, SxProps } from '@mui/material';
+import { InputBaseProps, InputProps, SxProps } from '@mui/material';
 
 import { TextField } from 'components/UI/TextField/TextField';
 
@@ -16,14 +16,14 @@ export type HFTextFieldProps = {
   disabled?: boolean;
   InputProps?: InputProps;
   endAdornment?: ReactElement;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   regexp?: RegExp;
-  inputProps?: Record<string, number | string>; // TODO:
+  inputProps?: InputBaseProps['inputProps'];
   rows?: number;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-const checkValidity = (event: React.ChangeEvent<HTMLInputElement>, regex: RegExp): boolean =>
+const checkValidity = (event: ChangeEvent<HTMLInputElement>, regex: RegExp): boolean =>
   new RegExp(regex).test(event.currentTarget.value);
 
 export function HFTextField({ name, defaultValue, helperText, onChange, regexp, ...props }: HFTextFieldProps) {
