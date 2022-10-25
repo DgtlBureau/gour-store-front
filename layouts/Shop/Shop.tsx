@@ -1,7 +1,5 @@
 import { ReactNode, useState } from 'react';
 
-import { contacts } from 'constants/contacts';
-
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -18,6 +16,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Currency } from 'types/entities/Currency';
 import { Language } from 'types/entities/Language';
 
+import { contacts } from 'constants/contacts';
 import { useAppSelector } from 'hooks/store';
 
 import sx from './Shop.styles';

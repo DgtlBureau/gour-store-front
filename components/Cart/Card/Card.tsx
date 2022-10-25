@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -12,6 +10,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import PlusIcon from '@mui/icons-material/Add';

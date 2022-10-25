@@ -1,8 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useMemo } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Divider, Grid } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
@@ -38,6 +36,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';

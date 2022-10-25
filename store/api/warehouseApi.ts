@@ -1,7 +1,7 @@
-import { Path } from 'constants/routes';
-
 import { GetWarehouseStockDto } from 'types/dto/warehouse/get-stock.dto';
 import { IWarehouseStock } from 'types/entities/IWarehouseStock';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

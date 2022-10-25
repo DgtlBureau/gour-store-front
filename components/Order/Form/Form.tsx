@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Path } from 'constants/routes';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 
@@ -12,6 +10,7 @@ import { SelectOption } from 'components/UI/Select/Select';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import { HFSelect } from '../../HookForm/HFSelect';

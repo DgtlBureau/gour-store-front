@@ -1,10 +1,9 @@
 import { NextRouter, useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useMemo } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { AppNavigationCtx } from './NavigationContext';

@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import React, { memo, useState } from 'react';
 
-import { productGramList } from 'constants/gramList';
-import { Path } from 'constants/routes';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { CardMedia, SxProps } from '@mui/material';
@@ -18,6 +16,8 @@ import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
+import { productGramList } from 'constants/gramList';
+import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 

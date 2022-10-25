@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { productGramList } from 'constants/gramList';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { Grid, SxProps, useMediaQuery } from '@mui/material';
@@ -16,6 +15,7 @@ import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
+import { productGramList } from 'constants/gramList';
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';

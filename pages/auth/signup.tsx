@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
-
 import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
@@ -21,6 +19,7 @@ import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
 import { NotificationType } from 'types/entities/Notification';
 
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 

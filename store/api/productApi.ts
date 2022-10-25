@@ -1,9 +1,9 @@
-import { Path } from 'constants/routes';
-
 import { ProductGetManyDto } from 'types/dto/product/get-many.dto';
 import { ProductGetOneDto } from 'types/dto/product/get-one.dto';
 import { ProductGetSimilarDto } from 'types/dto/product/get-similar.dto';
 import { IProduct } from 'types/entities/IProduct';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

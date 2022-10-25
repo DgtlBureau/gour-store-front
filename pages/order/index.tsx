@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { noExistingId } from 'constants/default';
-
 import { Grid, Stack } from '@mui/material';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
@@ -25,6 +23,7 @@ import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { noExistingId } from 'constants/default';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';

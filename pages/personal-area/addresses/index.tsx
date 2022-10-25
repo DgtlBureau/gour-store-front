@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react';
 
-import { noExistingId } from 'constants/default';
-
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeMainAddressMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import {
@@ -24,6 +22,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { NotificationType } from 'types/entities/Notification';
 
+import { noExistingId } from 'constants/default';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';

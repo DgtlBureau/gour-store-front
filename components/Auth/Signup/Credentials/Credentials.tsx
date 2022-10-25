@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Path } from 'constants/routes';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, Radio } from '@mui/material';
 
@@ -19,6 +17,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useStopwatch } from 'hooks/useStopwatch';
 

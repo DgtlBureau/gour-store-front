@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Path } from 'constants/routes';
 import { format } from 'date-fns';
 
 import PALoader from 'components/PA/Main/Loader';
@@ -10,6 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 

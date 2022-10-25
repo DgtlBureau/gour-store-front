@@ -1,6 +1,6 @@
-import { Path } from 'constants/routes';
-
 import { IPage } from 'types/entities/IPage';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

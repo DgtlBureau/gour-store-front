@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { imageByCountry } from 'constants/countries';
-
 import { ComponentStory, Meta } from '@storybook/react';
+
+import { imageByCountry } from 'constants/countries';
 
 import cheeseBackground from 'assets/images/categories/cheese-background.png';
 

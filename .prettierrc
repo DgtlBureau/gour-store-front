@@ -15,7 +15,7 @@
     "^layouts",
     "^components/(.*)$",
     "^types",
-    "^(hooks|helpers|packages|utils)",
+    "^(hooks|helpers|packages|utils|constants)",
     "^(assets|@mui/icons-material/)",
     "^themes",
     "^[./]"

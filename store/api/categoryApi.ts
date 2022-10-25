@@ -1,6 +1,6 @@
-import { Path } from 'constants/routes';
-
 import { ICategory, ICategoryWithDiscount } from 'types/entities/ICategory';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

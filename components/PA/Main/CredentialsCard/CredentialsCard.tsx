@@ -1,14 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Stack } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import noPhoto from 'assets/images/default.svg';

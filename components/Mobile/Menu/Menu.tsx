@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import React, { Fragment, useState } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material';
 
 import { IconButton } from 'components/UI/IconButton/IconButton';
@@ -11,6 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 

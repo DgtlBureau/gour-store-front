@@ -1,8 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { contacts } from 'constants/contacts';
-import { Path } from 'constants/routes';
-
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -18,6 +15,8 @@ import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
 
+import { contacts } from 'constants/contacts';
+import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 

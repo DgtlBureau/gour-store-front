@@ -1,14 +1,13 @@
 import Image from 'next/image';
 import React, { Fragment } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { Divider, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import fbIcon from 'assets/icons/social/fb.svg';

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Path } from 'constants/routes';
 import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 
 import { Grid } from '@mui/material';
@@ -9,6 +8,7 @@ import PALoader from 'components/PA/Main/Loader';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import { DiscountItem } from './DiscountItem';

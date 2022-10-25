@@ -1,6 +1,6 @@
-import { Path } from 'constants/routes';
-
 import { ICity } from 'types/entities/ICity';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

@@ -1,6 +1,6 @@
-import { Path } from 'constants/routes';
-
 import { IProduct } from 'types/entities/IProduct';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 

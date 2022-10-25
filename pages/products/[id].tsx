@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
 
-import { noExistingId } from 'constants/default';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { LinearProgress, SxProps } from '@mui/material';
@@ -35,6 +34,7 @@ import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { noExistingId } from 'constants/default';
 import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';

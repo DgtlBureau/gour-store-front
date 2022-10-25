@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import { Path } from 'constants/routes';
-
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
@@ -12,6 +10,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import AddIcon from '@mui/icons-material/Add';

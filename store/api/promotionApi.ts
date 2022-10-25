@@ -1,6 +1,6 @@
-import { Path } from 'constants/routes';
-
 import { IPromotion } from 'types/entities/IPromotion';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 
