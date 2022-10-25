@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import { InputModeTypes } from 'react-code-input';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { CodeInput } from 'components/UI/CodeInput/CodeInput';
+import { CodeInput } from 'components/UI/Inputs/CodeInput/CodeInput';
 
 type Props = {
   name: string;

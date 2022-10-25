@@ -47,6 +47,18 @@ export type ProductCardProps = {
   onDetail: () => void;
 };
 
+const getStockLabel = (
+  isStockFetching: boolean,
+  isStockError: boolean,
+  moyskladId: string | null,
+  stockValue?: string,
+) => {
+  if (isStockFetching) return 'загружаем остатки...';
+  if (!moyskladId) return 'не указан ID у МойСклад';
+  if (stockValue) return `осталось ${stockValue} шт`;
+  return 'произошла ошибка';
+};
+
 // eslint-disable-next-line prefer-arrow-callback
 export const ProductCard = memo(function ProductCard({
   id,
@@ -69,7 +81,7 @@ export const ProductCard = memo(function ProductCard({
   onElect,
   onDetail,
 }: ProductCardProps) {
-  const [gramValue, setGramValue] = useState(() => getDefaultGramByProductType(productType));
+  const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
   const {
     data: stock,
@@ -88,11 +100,15 @@ export const ProductCard = memo(function ProductCard({
 
   const basketProductsKey = getProductKeyInBasket(id, gramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
-  const [gramOptions] = useState<IOption[]>(() =>
-    productGramList[productType].map(gram => ({
-      label: `${gram}\u00A0г`,
-      value: String(gram),
-    })),
+  const [gramOptions] = useState<IOption[]>(
+    () =>
+      productGramList[productType]?.map(
+        gram =>
+          ({
+            label: `${gram}\u00A0г`,
+            value: String(gram),
+          } || []),
+      ) || [],
   );
 
   const changeGram = (value: string | number) => setGramValue(+value);
@@ -110,6 +126,8 @@ export const ProductCard = memo(function ProductCard({
 
   const inCart = !!(basketProduct && basketProduct.amount > 0);
   const backgroundImage = `url('${backgroundImg}')`;
+
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
 
   return (
     <Box sx={sx.card}>
@@ -141,10 +159,7 @@ export const ProductCard = memo(function ProductCard({
       </Link>
 
       <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
-        {isStockFetching && 'загружаем остатки...'}
-        {!isStockFetching && isStockError && 'произошла ошибка'}
-        {!isStockFetching && !moyskladId && 'не указан ID у МойСклад'}
-        {!isStockFetching && !isStockError && moyskladId && <>осталось {String(stock?.value)} шт</>}
+        {stockLabel}
       </Typography>
 
       <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>

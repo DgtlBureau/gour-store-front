@@ -35,15 +35,19 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '14px',
   },
   title: {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
+    marginBottom: '14px',
+  },
+  closeBtn: {
+    alignSelf: 'flex-start',
   },
   acceptBtn: {
     width: '100%',
     marginTop: '14px',
+    display: 'flex',
   },
 };
 

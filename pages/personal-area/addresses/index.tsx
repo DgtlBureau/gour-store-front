@@ -158,7 +158,13 @@ export function Addresses() {
         </Box>
 
         {isCreating && (
-          <PAProfilesItem key={noExistingId} cities={cities} onSave={createAddress} onDelete={closeCreateForm} />
+          <PAProfilesItem
+            key={noExistingId}
+            id={noExistingId}
+            cities={cities}
+            onSave={createAddress}
+            onDelete={closeCreateForm}
+          />
         )}
 
         {profiles?.length ? (
