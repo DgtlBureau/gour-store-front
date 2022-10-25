@@ -29,12 +29,6 @@ export const currentUserApi = commonApi.injectEndpoints({
         },
         invalidatesTags: ['CurrentUser'],
       }),
-      decreaseGameLive: builder.mutation<void, void>({
-        queryFn: () => ({
-          data: undefined, // TODO: реализовать запрос на удаление игровой жизни
-        }),
-        invalidatesTags: ['CurrentUser'],
-      }),
       updateCurrentUserPassword: builder.mutation<number, ChangePasswordDto>({
         query(password) {
           return {
@@ -85,6 +79,15 @@ export const currentUserApi = commonApi.injectEndpoints({
         },
         invalidatesTags: ['CurrentUser'],
       }),
+      reduceGameLive: builder.mutation<void, void>({
+        query() {
+          return {
+            method: 'PUT',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.REDUCE_GAME_LIVE}`,
+          };
+        },
+        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+      }),
     };
   },
 });
@@ -92,7 +95,7 @@ export const currentUserApi = commonApi.injectEndpoints({
 export const {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
-  useDecreaseGameLiveMutation,
+  useReduceGameLiveMutation,
   useChangeCurrentCityMutation,
   useChangeMainAddressMutation,
   useUpdateCurrentUserPasswordMutation,

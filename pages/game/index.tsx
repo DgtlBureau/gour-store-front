@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useDecreaseGameLiveMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useGetCurrentUserQuery, useReduceGameLiveMutation } from 'store/api/currentUserApi';
 
 import { GameLayout } from 'layouts/Game/Game';
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -15,7 +15,7 @@ import { dispatchNotification } from 'packages/EventBus';
 
 export function Game() {
   const { data: currentUser, isFetching: isUserFetching } = useGetCurrentUserQuery();
-  const [decreaseGameLive, { isLoading: isDecreaseGameLiveLoading }] = useDecreaseGameLiveMutation();
+  const [reduceGameLive, { isLoading: isReduceGameLiveLoading }] = useReduceGameLiveMutation();
 
   const { currency, language } = useAppNavigation();
 
@@ -26,7 +26,7 @@ export function Game() {
 
   const onEndGame = async () => {
     try {
-      await decreaseGameLive().unwrap();
+      await reduceGameLive().unwrap();
     } catch {
       dispatchNotification('Произошла ошибка', { type: NotificationType.DANGER });
     }
@@ -37,7 +37,7 @@ export function Game() {
       <GameLayout currency={currency} language={language}>
         <GameMain
           onHelpClick={openRulesModal}
-          isLivesLoading={isUserFetching || isDecreaseGameLiveLoading}
+          isLivesLoading={isUserFetching || isReduceGameLiveLoading}
           onEndGame={onEndGame}
           lives={currentUser?.lives ?? 0}
         />
