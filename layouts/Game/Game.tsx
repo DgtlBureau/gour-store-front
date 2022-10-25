@@ -78,6 +78,9 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
       price: null,
     });
 
+  const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
+  const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
+
   return (
     <Box sx={sx.layout}>
       <Header
@@ -89,7 +92,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
-        onClickAddCoins={() => toggleCheeseCoinModalOpen(true)}
+        onClickAddCoins={onOpenCoinsAddModal}
         onClickSignout={signOut}
         {...contacts}
       />
@@ -98,7 +101,7 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
       <CheesecoinsAddModal
         isOpened={isCheeseCoinModalOpen}
-        onClose={() => toggleCheeseCoinModalOpen(false)}
+        onClose={onCloseCoinsAddModal}
         onSubmit={onAddCheeseCoinClick}
       />
 

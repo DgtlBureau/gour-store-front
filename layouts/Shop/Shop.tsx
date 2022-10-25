@@ -74,6 +74,9 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       price: null,
     });
 
+  const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
+  const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
+
   return (
     <Box sx={sx.layout}>
       {isAuth && (
@@ -86,7 +89,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickAddCoins={() => toggleCheeseCoinModalOpen(true)}
+          onClickAddCoins={onOpenCoinsAddModal}
           onClickSignout={signOut}
         />
       )}
@@ -97,7 +100,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
       <CheesecoinsAddModal
         isOpened={isCheeseCoinModalOpen}
-        onClose={() => toggleCheeseCoinModalOpen(false)}
+        onClose={onCloseCoinsAddModal}
         onSubmit={onAddCheeseCoinClick}
       />
 

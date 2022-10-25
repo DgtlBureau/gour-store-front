@@ -106,6 +106,9 @@ export function PALayout({ children }: PALayoutProps) {
       price: null,
     });
 
+  const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
+  const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
+
   return (
     <PrivateLayout>
       <Box sx={sx.layout}>
@@ -118,7 +121,7 @@ export function PALayout({ children }: PALayoutProps) {
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickAddCoins={() => toggleCheeseCoinModalOpen(true)}
+          onClickAddCoins={onOpenCoinsAddModal}
           onClickSignout={signOut}
         />
 
@@ -129,7 +132,7 @@ export function PALayout({ children }: PALayoutProps) {
 
         <CheesecoinsAddModal
           isOpened={isCheeseCoinModalOpen}
-          onClose={() => toggleCheeseCoinModalOpen(false)}
+          onClose={onCloseCoinsAddModal}
           onSubmit={onAddCheeseCoinClick}
         />
 
