@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -44,6 +44,10 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     mode: 'onBlur',
   });
 
+  useEffect(() => {
+    values.reset({ count: 0 });
+  }, [isOpened]);
+
   const isValidCoinsCount = values.formState.isValid || !!debouncedValue;
   const {
     data: invoicePrice,
@@ -73,7 +77,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
         <form id={formId} onSubmit={values.handleSubmit(handleSubmit)}>
           <HFTextField
             name='count'
-            label='Баланс чизкоинов'
+            label='Количество чизкоинов'
             regexp={regexp.onlyDigits}
             onChange={e => setLastCoinCount(+e.currentTarget.value)}
             inputProps={{ maxLength: 12 }}

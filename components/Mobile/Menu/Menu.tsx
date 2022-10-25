@@ -38,7 +38,7 @@ export type MobileMenuProps = {
   currency: Currency;
   onChangeCity(id: number): void;
   onClickSignout(): void;
-  onClickReplenishment(): void;
+  onClickAddCoins(): void;
 };
 
 export function MobileMenu({
@@ -54,7 +54,7 @@ export function MobileMenu({
   currency,
   onChangeCity,
   onClickSignout,
-  onClickReplenishment,
+  onClickAddCoins,
 }: MobileMenuProps) {
   const [citiesIsOpened, setCitiesIsOpened] = useState(false);
 
@@ -78,7 +78,7 @@ export function MobileMenu({
           {currencySymbol}
         </Typography>
 
-        <IconButton onClick={onClickReplenishment} color='inherit' sx={sx.replenishment}>
+        <IconButton onClick={onClickAddCoins} color='inherit' sx={sx.replenishment}>
           <AddIcon color='primary' />
         </IconButton>
       </Box>
