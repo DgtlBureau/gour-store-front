@@ -28,7 +28,6 @@ export interface IProduct extends IBase {
   meta: IPageMeta;
   weight: number;
   discount: number;
-  isWeightGood: boolean;
   promotions?: IPromotion[];
 }
 

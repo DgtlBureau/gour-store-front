@@ -18,10 +18,8 @@ export type OrderProductType = {
   id: number;
   photo: string;
   title: string;
-  weight: number;
   amount: number;
   cost: number;
-  isWeightGood: boolean;
 };
 
 type OrderCardProductProps = {
@@ -34,7 +32,7 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
 
   const { t } = useLocalTranslation(translations);
 
-  const { photo, title, weight, amount, cost, isWeightGood } = product;
+  const { photo, title, amount, cost } = product;
 
   const handleClickDetail = () => goToProductPage(product.id);
 
@@ -63,7 +61,7 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
 
         <Grid item sm={2} xs={6} sx={sx.count}>
           <Typography variant='body1' sx={sx.countText} color='text.muted'>
-            {!isWeightGood ? `${amount} ${t('pc')}.` : `${weight} ${t('g')}.`}
+            {amount} {t('pc')}.
           </Typography>
         </Grid>
 
