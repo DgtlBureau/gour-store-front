@@ -1,0 +1,22 @@
+{
+  "ru": {
+    "minCardNumber": "Введите корректный номер карты",
+    "emailError": "Некорректный Email",
+    "cvvError": "Некорректный CVV",
+    "dateError": "Некорректная дата",
+
+    "minCount": "Введите число больше 0!",
+    "required": "Обязательное поле",
+    "correctDecimal": "Введенное значение должно быть числом"
+  },
+  "en": {
+    "minCardNumber": "Invalid card number",
+    "emailError": "Invalid email",
+    "cvvError": "Invalid CVV",
+    "dateError": "Invalid date",
+
+    "minCount": "Enter number more 0!",
+    "required": "Field required",
+    "correctDecimal": "The entered value must be integer"
+  }
+}

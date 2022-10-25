@@ -6,60 +6,18 @@ import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { defaultTheme as t } from 'themes';
-
-const sx = {
-  container: {
-    width: '100%',
-  },
-  notice: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: {
-      sm: 'center',
-      xs: 'flex-start',
-    },
-
-    maxWidth: '490px',
-  },
-  title: {
-    textAlign: {
-      sm: 'center',
-      xs: 'none',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: t.palette.text.secondary,
-    margin: '0 0 16px 0',
-  },
-  description: {
-    textAlign: {
-      sm: 'center',
-      xs: 'none',
-    },
-
-    margin: '0 0 16px 0',
-
-    fontSize: '16px',
-  },
-  btn: {
-    width: {
-      xs: '100%',
-      sm: 'fit-content',
-    },
-  },
-};
+import sx from './Empty.styles';
 
 type Props = {
   title: string;
   children?: ReactNode;
-  btn?: {
-    label: string;
-    onClick: () => void;
-  };
+  actionText?: string;
+  onClick?: () => void;
 };
 
-export function CartEmpty({ title, children, btn }: Props) {
+export function CartEmpty({ title, children, actionText, onClick }: Props) {
+  const withAction = !!actionText && onClick;
+
   return (
     <Stack sx={sx.container} alignItems='center'>
       <Stack sx={sx.notice}>
@@ -69,9 +27,9 @@ export function CartEmpty({ title, children, btn }: Props) {
 
         {children && <Box sx={sx.description}>{children}</Box>}
 
-        {btn && (
-          <Button onClick={btn.onClick} sx={sx.btn}>
-            {btn.label}
+        {withAction && (
+          <Button onClick={onClick} sx={sx.btn}>
+            {actionText}
           </Button>
         )}
       </Stack>

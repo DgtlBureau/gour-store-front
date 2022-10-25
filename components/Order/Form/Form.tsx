@@ -6,6 +6,7 @@ import { Grid } from '@mui/material';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { LinkRef as Link } from 'components/UI/Link/Link';
+import { SelectOption } from 'components/UI/Select/Select';
 
 import { Currency } from 'types/entities/Currency';
 
@@ -65,19 +66,13 @@ export type OrderFormProps = {
   productsCount: number;
   cost: number;
   discount?: number;
-  citiesList: {
-    value: number;
-    label: string;
-  }[];
+  cities: SelectOption[];
   isSubmitError?: boolean;
   delivery: number;
-  deliveryProfiles: {
-    value: number;
-    label: string;
-  }[];
+  deliveryProfiles: SelectOption[];
   currency?: Currency;
   onSubmit: (data: OrderFormType) => void;
-  onChangeDeliveryProfile: (profileId: number) => void;
+  onSelectDeliveryProfile: (id: number) => void;
 };
 
 export function OrderForm({
@@ -89,9 +84,9 @@ export function OrderForm({
   delivery,
   deliveryProfiles,
   isSubmitError,
-  onChangeDeliveryProfile,
-  citiesList,
+  cities,
   currency,
+  onSelectDeliveryProfile,
   onSubmit,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
@@ -123,22 +118,22 @@ export function OrderForm({
     });
   }, [defaultPersonalFields]);
 
-  const submitHandler = (data: OrderFormType) => onSubmit(data);
+  const submit = (data: OrderFormType) => onSubmit(data);
 
-  const changeDeliveryHandler = () => values.setValue('deliveryProfileId', 0);
+  const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
   const agree = () => setIsAgree(!isAgree);
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submitHandler)}>
+      <form onSubmit={values.handleSubmit(submit)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant='h6' sx={sx.title}>
               {t('details')}
             </Typography>
 
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <HFTextField name='firstName' label={t('firstName')} />
               </Grid>
@@ -160,23 +155,25 @@ export function OrderForm({
               {t('address')}
             </Typography>
 
-            {deliveryProfiles.length !== 0 && (
-              <HFSelect
-                onChange={() => onChangeDeliveryProfile(values.getValues('deliveryProfileId'))}
-                name='deliveryProfileId'
-                options={deliveryProfiles}
-                placeholder={t('profileSelect')}
-              />
-            )}
+            <Grid container spacing={2}>
+              {deliveryProfiles.length !== 0 && (
+                <Grid item xs={12}>
+                  <HFSelect
+                    onChange={value => onSelectDeliveryProfile(+value)}
+                    name='deliveryProfileId'
+                    options={deliveryProfiles}
+                    label={t('profileSelect')}
+                  />
+                </Grid>
+              )}
 
-            <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
-                <HFSelect name='cityId' options={citiesList} placeholder={t('city')} />
+                <HFSelect name='cityId' options={cities} label={t('city')} />
               </Grid>
 
               {addressFields.map(field => (
                 <Grid key={field} item xs={12} sm={6}>
-                  <HFTextField name={field} label={t(field)} onChange={changeDeliveryHandler} />
+                  <HFTextField name={field} label={t(field)} onChange={changeDeliveryProfile} />
                 </Grid>
               ))}
 

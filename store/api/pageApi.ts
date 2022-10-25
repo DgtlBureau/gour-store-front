@@ -4,8 +4,6 @@ import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 
-type PageKeys = 'MAIN' | 'PURCHASE' | 'PRIVACY' | 'COOKIE' | 'AGREEMENT';
-
 export const pageApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {

@@ -5,6 +5,7 @@ import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
@@ -15,12 +16,14 @@ import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MinusIcon from '@mui/icons-material/Remove';
 import defaultImg from 'assets/images/default.svg';
+import { Path } from 'constants/routes';
 
 import translations from './Card.i18n.json';
 import sx from './Card.styles';
 import { CartCardDocket as Docket } from './Docket';
 
 type Props = {
+  id: number;
   title: string;
   price: number;
   amount: number;
@@ -29,13 +32,13 @@ type Props = {
   backgroundImg?: string;
   discount?: number;
   currency?: Currency;
-  onDetail: () => void;
   onAdd: () => void;
   onSubtract: () => void;
   onDelete: () => void;
 };
 
 export function CartCard({
+  id,
   title,
   price,
   amount,
@@ -44,7 +47,6 @@ export function CartCard({
   backgroundImg,
   discount,
   currency = 'cheeseCoin',
-  onDetail,
   onDelete,
   onAdd,
   onSubtract,
@@ -57,16 +59,18 @@ export function CartCard({
 
   return (
     <Card sx={sx.card}>
-      <Box sx={{ ...sx.previewImg, backgroundImage }} onClick={onDetail}>
-        <CardMedia sx={sx.productImg} component='img' image={productImg || defaultImg} alt='' />
-      </Box>
+      <Link href={`/${Path.PRODUCTS}/${id}`}>
+        <CardMedia sx={{ ...sx.previewImg, backgroundImage }} component='img' image={productImg || defaultImg} alt='' />
+      </Link>
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
           <Box sx={sx.contentTitle}>
-            <Typography variant='h6' sx={sx.title} onClick={onDetail}>
-              {title}
-            </Typography>
+            <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
+              <Typography variant='h6' sx={sx.title}>
+                {title}
+              </Typography>
+            </Link>
 
             {screenWidth > 600 ? (
               <Docket currency={currency} discount={discount} price={price} amount={amount} />

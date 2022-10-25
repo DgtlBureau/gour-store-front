@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { SxProps } from '@mui/material';
 
-import { PhoneInput } from 'components/UI/PhoneInput/PhoneInput';
+import { PhoneInput } from 'components/UI/Inputs/PhoneInput/PhoneInput';
 
 type Props = {
   name: string;

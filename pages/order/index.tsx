@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -28,25 +28,32 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import translation from './Order.i18n.json';
+import { noExistingId } from 'constants/default';
 
-const sx = {
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-    marginBottom: '16px',
-  },
-  order: {
-    flexDirection: {
-      xs: 'column-reverse',
-      md: 'row',
-    },
-  },
+import translation from './Order.i18n.json';
+import sx from './Order.styles';
+
+const defaultPersonalFields = {
+  firstName: '',
+  lastName: '',
+  phone: '',
+  email: '',
+};
+
+const defaultProfileOption = {
+  label: 'Новый профиль доставки',
+  value: noExistingId,
+};
+
+const defaultDeliveryFields: DeliveryFields = {
+  deliveryProfileId: noExistingId,
+  cityId: noExistingId,
+  street: '',
+  house: '',
+  apartment: '',
+  entrance: '',
+  floor: '',
+  comment: '',
 };
 
 const DELIVERY_PRICE = 500;
@@ -63,27 +70,22 @@ export function Order() {
 
   const [isSubmitError, setIsSubmitError] = useState(false);
 
-  const [personalFields, setPersonalFields] = useState<PersonalFields>({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-  });
+  const [personalFields, setPersonalFields] = useState<PersonalFields>(defaultPersonalFields);
 
-  const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>({
-    deliveryProfileId: 0,
-    cityId: 0,
-    street: '',
-    house: '',
-    apartment: '',
-    entrance: '',
-    floor: '',
-    comment: '',
-  });
+  const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>(defaultDeliveryFields);
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
-  const { data: citiesList = [] } = useGetCityListQuery();
+  const { cities } = useGetCityListQuery(undefined, {
+    selectFromResult: ({ data, ...params }) => ({
+      cities:
+        data?.map(city => ({
+          value: city.id,
+          label: city.name[language],
+        })) || [],
+      ...params,
+    }),
+  });
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
@@ -95,7 +97,7 @@ export function Order() {
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
-  const submit = async (orderData: OrderFormType) => {
+  const createOrder = async (orderData: OrderFormType) => {
     const {
       firstName,
       lastName,
@@ -114,7 +116,7 @@ export function Order() {
     try {
       let currentDeliveryProfileId = deliveryProfileId;
 
-      if (currentDeliveryProfileId === 0) {
+      if (currentDeliveryProfileId === noExistingId) {
         const deliveryProfileData: CreateOrderProfileDto = {
           title: `${street}, ${house}`,
           cityId,
@@ -125,15 +127,15 @@ export function Order() {
           floor,
         };
 
-        const currentDeliveryProfile = await fetchCreateOrderProfile(deliveryProfileData).unwrap();
+        const newDeliveryProfile = await fetchCreateOrderProfile(deliveryProfileData).unwrap();
 
-        currentDeliveryProfileId = currentDeliveryProfile.id;
+        currentDeliveryProfileId = newDeliveryProfile.id;
       }
 
       const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
         productId: product.product.id,
         amount: product.amount,
-        weight: 1, // FIXME:
+        gram: product.gram,
       }));
 
       const formattedOrderData: CreateOrderDto = {
@@ -147,6 +149,7 @@ export function Order() {
       };
 
       await fetchCreateOrder(formattedOrderData).unwrap();
+
       dispatchNotification('Заказ оформлен');
 
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
@@ -161,20 +164,25 @@ export function Order() {
     }
   };
 
-  const onChangeDeliveryProfile = (deliveryProfileId: number) => {
-    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
+  const selectDeliveryProfile = (deliveryProfileId: number) => {
+    let deliveryFieldsData: DeliveryFields = defaultDeliveryFields;
 
-    if (!currentProfile) return;
+    if (deliveryProfileId !== noExistingId) {
+      const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
-    setDeliveryFields({
-      deliveryProfileId,
-      cityId: currentProfile.city.id,
-      street: currentProfile.street,
-      house: currentProfile.house,
-      apartment: currentProfile.apartment,
-      entrance: currentProfile.entrance,
-      floor: currentProfile.floor,
-    });
+      if (currentProfile)
+        deliveryFieldsData = {
+          deliveryProfileId,
+          cityId: currentProfile.city.id,
+          street: currentProfile.street,
+          house: currentProfile.house,
+          apartment: currentProfile.apartment,
+          entrance: currentProfile.entrance,
+          floor: currentProfile.floor,
+        };
+    }
+
+    setDeliveryFields(deliveryFieldsData);
   };
 
   useEffect(() => {
@@ -190,20 +198,21 @@ export function Order() {
       email,
     });
 
-    if (mainOrderProfileId && mainOrderProfileId !== 0)
+    if (mainOrderProfileId && mainOrderProfileId !== noExistingId)
       setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
-  const formattedDeliveryProfiles = deliveryProfiles.map(profile => ({
-    label: profile.title,
-    value: profile.id,
-  }));
-
-  const formattedCitiesList = citiesList.map(city => ({
-    value: city.id,
-    label: city.name[language],
-  }));
+  const formattedDeliveryProfiles = useMemo(
+    () => [
+      defaultProfileOption,
+      ...deliveryProfiles.map(profile => ({
+        value: profile.id,
+        label: profile.title,
+      })),
+    ],
+    [deliveryProfiles],
+  );
 
   // TODO: вынести на бек
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
@@ -217,13 +226,7 @@ export function Order() {
 
         {productsInOrder.length === 0 ? (
           <Stack alignItems='center'>
-            <CartEmpty
-              title={t('emptyBasket')}
-              btn={{
-                label: t('toHome'),
-                onClick: () => goToHome,
-              }}
-            >
+            <CartEmpty title={t('emptyBasket')} actionText={t('toHome')} onClick={goToHome}>
               <Typography variant='body1'>{t('emptyBasketText')}</Typography>
             </CartEmpty>
           </Stack>
@@ -233,15 +236,15 @@ export function Order() {
               <OrderForm
                 defaultPersonalFields={personalFields}
                 defaultDeliveryFields={deliveryFields}
-                citiesList={formattedCitiesList}
+                cities={cities}
                 isSubmitError={isSubmitError}
                 discount={sumDiscount}
                 productsCount={count}
                 cost={sum}
                 delivery={delivery}
                 deliveryProfiles={formattedDeliveryProfiles}
-                onChangeDeliveryProfile={onChangeDeliveryProfile}
-                onSubmit={submit}
+                onSelectDeliveryProfile={selectDeliveryProfile}
+                onSubmit={createOrder}
               />
             </Grid>
 

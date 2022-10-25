@@ -3,15 +3,15 @@ import { ReactNode, useState } from 'react';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { usePayInvoiceMutation } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectIsAuth } from 'store/selectors/auth';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
-// import { Copyright } from 'components/Copyright/Copyright';
+import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
-import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
@@ -23,6 +23,8 @@ import { contacts } from 'constants/contacts';
 
 import sx from './Shop.styles';
 
+type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
+
 export interface ShopLayoutProps {
   currency: Currency;
   language: Language;
@@ -30,16 +32,21 @@ export interface ShopLayoutProps {
 }
 
 export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea } = useAppNavigation();
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isCheeseCoinModalOpen, toggleCheeseCoinModalOpen] = useState(false);
+  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
+    isOpenModal: false,
+    price: null,
+  });
+
+  const isAuth = useAppSelector(selectIsAuth);
+
+  const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
-
-  const [payInvoice] = usePayInvoiceMutation();
 
   const convertedCities =
     cities?.map(city => ({
@@ -53,34 +60,55 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
-  const openCheesecoinsModal = () => setIsModalOpen(true);
-  const closeCheesecoinsModal = () => setIsModalOpen(false);
+  const onAddCheeseCoinClick = (price: number) => {
+    toggleCheeseCoinModalOpen(false);
+    setBuyCheeseCoinState({
+      isOpenModal: true,
+      price,
+    });
+  };
+
+  const onCloseBuyModal = () =>
+    setBuyCheeseCoinState({
+      isOpenModal: false,
+      price: null,
+    });
 
   return (
     <Box sx={sx.layout}>
-      <Header
-        {...contacts}
-        selectedCityId={selectedCity?.id || 0}
-        cities={convertedCities}
-        currency={currency}
-        basketProductCount={count}
-        basketProductSum={sum - sumDiscount}
-        moneyAmount={balance}
-        onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
-        onClickReplenishment={openCheesecoinsModal}
-        onClickSignout={signOut}
-      />
+      {isAuth && (
+        <Header
+          {...contacts}
+          selectedCityId={selectedCity?.id || 0}
+          cities={convertedCities}
+          currency={currency}
+          basketProductCount={count}
+          basketProductSum={sum - sumDiscount}
+          moneyAmount={balance}
+          onChangeCity={changeCity}
+          onClickReplenishment={() => toggleCheeseCoinModalOpen(true)}
+          onClickSignout={signOut}
+        />
+      )}
 
       <Box sx={sx.content}>{children}</Box>
 
       <Footer {...contacts} sx={sx.footer} />
 
-      {/* <Copyright /> */}
+      <CheesecoinsAddModal
+        isOpened={isCheeseCoinModalOpen}
+        onClose={() => toggleCheeseCoinModalOpen(false)}
+        onSubmit={onAddCheeseCoinClick}
+      />
 
-      <CheesecoinsAddModal isOpened={isModalOpen} onClose={closeCheesecoinsModal} onSubmit={payInvoice} />
+      <BuyCheeseCoinsModal
+        isOpened={buyCheeseCoinState.isOpenModal}
+        userEmail={currentUser?.email}
+        price={buyCheeseCoinState.price}
+        isLoading={isPaymentLoading}
+        onClose={onCloseBuyModal}
+        onSubmit={buyCheeseCoins}
+      />
     </Box>
   );
 }

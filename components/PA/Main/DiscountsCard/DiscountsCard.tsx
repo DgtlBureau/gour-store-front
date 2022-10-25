@@ -8,6 +8,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
+import { Path } from 'constants/routes';
 import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 
 import { DiscountItem } from './DiscountItem';
@@ -35,15 +36,14 @@ const sx = {
 
 export type PADiscountsCardProps = {
   discounts: ReturnType<typeof formatCategoriesWithMaxDiscount>;
-  onClickMore(): void;
   isLoading: boolean;
 };
 
-export function PADiscountsCard({ discounts, onClickMore, isLoading }: PADiscountsCardProps) {
+export function PADiscountsCard({ discounts, isLoading }: PADiscountsCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
+    <InfoCard title={t('title')} footerText={t('footerText')} href={`/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`}>
       {isLoading && <PALoader />}
 
       {!!discounts.length && (

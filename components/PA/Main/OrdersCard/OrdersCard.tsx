@@ -10,6 +10,7 @@ import { Currency } from 'types/entities/Currency';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
+import { Path } from 'constants/routes';
 import { format } from 'date-fns';
 
 import translations from './OrdersCard.i18n.json';
@@ -42,15 +43,14 @@ export type PAOrdersCardProps = {
     sum: number;
     currency: Currency;
   }[];
-  onClickMore(): void;
   isLoading: boolean;
 };
 
-export function PAOrdersCard({ orders, onClickMore, isLoading }: PAOrdersCardProps) {
+export function PAOrdersCard({ orders, isLoading }: PAOrdersCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
+    <InfoCard title={t('title')} footerText={t('footerText')} href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
       {isLoading && <PALoader />}
 
       {orders.map(order => (

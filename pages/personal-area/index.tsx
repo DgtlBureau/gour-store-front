@@ -17,8 +17,6 @@ import { PADiscountsCard } from 'components/PA/Main/DiscountsCard/DiscountsCard'
 import { PAOrdersCard } from 'components/PA/Main/OrdersCard/OrdersCard';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
-import { Currency } from 'types/entities/Currency';
-
 import {
   formatCategoriesWithMaxDiscount,
   getFormattedAddressesList,
@@ -26,7 +24,7 @@ import {
 } from './personalAreaHelper';
 
 export function Main() {
-  const { language, goToCredentials, goToAddresses, goToOrders, goToDiscounts } = useAppNavigation();
+  const { currency, language } = useAppNavigation();
 
   const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
   const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
@@ -39,8 +37,6 @@ export function Main() {
   );
 
   const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading || categoriesIsLoading;
-
-  const currency: Currency = 'cheeseCoin';
 
   const orders = getFormattedOrdersList(ordersList, currency);
   const addresses = getFormattedAddressesList(addressList, language);
@@ -58,22 +54,17 @@ export function Main() {
                 phone={currentUser.phone}
                 email={currentUser.email}
                 photo={currentUser.avatar?.small}
-                onClickMore={goToCredentials}
               />
             </Grid>
           )}
           <Grid item xs={12} sm={6}>
-            <PAAddressCard isLoading={addressListIsLoading} addresses={addresses} onClickMore={goToAddresses} />
+            <PAAddressCard isLoading={addressListIsLoading} addresses={addresses} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PAOrdersCard isLoading={ordersListIsLoading} orders={orders} onClickMore={goToOrders} />
+            <PAOrdersCard isLoading={ordersListIsLoading} orders={orders} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PADiscountsCard
-              isLoading={categoriesIsLoading}
-              discounts={categoriesWithDiscounts}
-              onClickMore={goToDiscounts}
-            />
+            <PADiscountsCard isLoading={categoriesIsLoading} discounts={categoriesWithDiscounts} />
           </Grid>
         </Grid>
       </PALayout>
