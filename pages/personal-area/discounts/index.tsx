@@ -17,7 +17,7 @@ export function Discounts() {
 
   return (
     <PALayout>
-      {isLoading && <ProgressLinear variant='buffer' />}
+      {isLoading && <ProgressLinear />}
 
       {isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 

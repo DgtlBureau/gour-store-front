@@ -61,7 +61,11 @@ export function ProductCardGramSelect({
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
           <List sx={selectSx.list}>
             {options.map(option => (
-              <ListItemButton selected={+option.value === gram} onClick={() => changeOption(+option.value)}>
+              <ListItemButton
+                selected={+option.value === gram}
+                onClick={() => changeOption(+option.value)}
+                key={option.value}
+              >
                 <ListItemText primary={option.label} />
               </ListItemButton>
             ))}

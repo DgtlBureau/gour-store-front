@@ -40,7 +40,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
       title: product.product.title[language],
       price: product.product.price[currency],
       totalPrice: productTotalPrice,
-      totalCount: `${productTotalCount} ${product.product.isWeightGood ? t('kg') : t('piece')}`,
+      totalCount: `${productTotalCount} ${t('kg')}`,
     };
   });
 

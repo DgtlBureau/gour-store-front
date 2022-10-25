@@ -18,7 +18,7 @@ export type ModalProps = {
   title: string | JSX.Element;
   description?: string;
   children?: ReactNode;
-  acceptText?: string | JSX.Element;
+  acceptText?: string;
   formId?: string;
   acceptIsDisabled?: boolean;
   closeIsDisabled?: boolean;
@@ -44,39 +44,41 @@ export function Modal({
 
   return (
     <MUIModal open={isOpen} onClose={onClose}>
-      <Box sx={sx.modal}>
-        <Box sx={sx.head}>
-          {titleIsString ? (
-            <Typography sx={sx.title} variant='h6' color='primary'>
-              {title}
-            </Typography>
-          ) : (
-            title
-          )}
+      <div>
+        <Box sx={sx.modal}>
+          <Box sx={sx.head}>
+            {titleIsString ? (
+              <Typography sx={sx.title} variant='h6' color='primary'>
+                {title}
+              </Typography>
+            ) : (
+              title
+            )}
 
-          {!!onClose && (
-            <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
-              <CrossIcon color='primary' />
-            </IconButton>
-          )}
-        </Box>
+            {!!onClose && (
+              <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
+                <CrossIcon color='primary' />
+              </IconButton>
+            )}
+          </Box>
 
-        {!!description && <Typography variant='body1'>{description}</Typography>}
+          {!!description && <Typography variant='body1'>{description}</Typography>}
 
-        {children}
+          {children}
 
-        {onAccept ? (
-          <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
-            {acceptText || t('acceptText')}
-          </Button>
-        ) : (
-          !!formId && (
-            <Button sx={sx.acceptBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
+          {onAccept ? (
+            <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
               {acceptText || t('acceptText')}
             </Button>
-          )
-        )}
-      </Box>
+          ) : (
+            !!formId && (
+              <Button sx={sx.acceptBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
+                {acceptText || t('acceptText')}
+              </Button>
+            )
+          )}
+        </Box>
+      </div>
     </MUIModal>
   );
 }

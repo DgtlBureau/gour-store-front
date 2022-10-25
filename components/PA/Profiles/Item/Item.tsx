@@ -58,6 +58,7 @@ export const PAProfilesItem = memo(
         ...fields,
         cityId,
         isMain: !!isMain,
+        comment: profile.comment || '',
       };
     }, [profile, isMain]);
 
