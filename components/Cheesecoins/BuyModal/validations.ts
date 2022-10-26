@@ -22,7 +22,7 @@ export const getValidationSchema = (t: Translator) =>
     cvv: yup
       .number()
       .required(t('required'))
-      .test('len', t('cvvError'), val => String(val).length === 3 || String(val).length === 4)
+      .test('len', t('cvvError'), val => String(val).length === 3)
       .integer(t('cvvError'))
       .typeError(t('required')),
 

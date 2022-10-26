@@ -130,7 +130,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
                   name='cvv'
                   label='CVV'
                   regexp={regexp.onlyDigits}
-                  inputProps={{ maxLength: 4, inputMode: 'numeric' }}
+                  inputProps={{ maxLength: 3, inputMode: 'numeric' }}
                 />
               </Grid>
             </Grid>
