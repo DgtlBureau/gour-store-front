@@ -123,6 +123,7 @@ const Home: NextPage = () => {
             ))}
           />
         )}
+
         {!!novelties.length && (
           <ProductCatalog
             title={t('novelties')}

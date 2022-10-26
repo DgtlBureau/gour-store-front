@@ -85,17 +85,20 @@ export function ProductActions({
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
   const [productGramOptions] = useState<IOption[]>(() =>
-    productGramList[productType].map(gram => ({
-      label: `${gram} г`,
-      value: String(gram),
-    })),
+    productGramList[productType]?.map(
+      gram =>
+        ({
+          label: `${gram}\u00A0г`,
+          value: String(gram),
+        } || []),
+    ),
   );
 
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
 
   const pricePerCount = price;
 
-  const total = pricePerCount * ((100 - discount) / 100);
+  const total = Math.round(pricePerCount * ((100 - discount) / 100));
 
   const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
   const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
@@ -119,7 +122,7 @@ export function ProductActions({
       <Typography variant='body2' sx={sxActions.stock}>
         {isStockFetching && 'Загрузка остатков...'}
         {!isStockFetching && !moyskladId && 'Не указан ID у МойСклад'}
-        {!isStockFetching && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
+        {!isStockFetching && moyskladId && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
       </Typography>
 
       <Box sx={sxActions.docket}>

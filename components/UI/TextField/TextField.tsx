@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, FocusEventHandler, ReactElement } from 'react';
 
-import { TextField as MUITextField, SxProps } from '@mui/material';
+import { InputBaseProps, TextField as MUITextField, SxProps } from '@mui/material';
 
 type Props = {
   value?: unknown;
@@ -15,7 +15,7 @@ type Props = {
   endAdornment?: ReactElement;
   multiline?: boolean;
   rows?: number;
-  inputProps?: Record<string, number>;
+  inputProps?: InputBaseProps['inputProps'];
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -53,7 +53,14 @@ export function TextField({
       type={type}
       helperText={helperText}
       InputProps={{ endAdornment }}
-      {...props}
+      FormHelperTextProps={{
+        sx: {
+          margin: '3px 0 0 0',
+          paddingLeft: '15px',
+          width: '100%',
+        },
+      }}
+      // {...props}
     />
   );
 }

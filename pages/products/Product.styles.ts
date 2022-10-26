@@ -1,3 +1,5 @@
+import { defaultTheme as t } from 'themes';
+
 export const sx = {
   top: {
     display: 'flex',
@@ -6,6 +8,9 @@ export const sx = {
       lg: 'row',
     },
     marginTop: '20px',
+  },
+  preview: {
+    position: 'relative',
   },
   imageSlider: {
     margin: {
@@ -16,7 +21,7 @@ export const sx = {
   },
   title: {
     margin: {
-      xs: '0 0 10px 0',
+      xs: '0 0 15px 0',
       lg: '0 0 20px 0',
     },
     fontSize: {
@@ -34,6 +39,7 @@ export const sx = {
     marginTop: '10px',
   },
   description: {
+    whiteSpace: 'pre-wrap',
     margin: {
       lg: '100px 0 100px 0',
       sm: '70px 0 70px 0',
@@ -55,6 +61,26 @@ export const sx = {
   },
   comment: {
     marginBottom: '40px',
+  },
+  heart: {
+    position: 'absolute',
+
+    display: { xs: 'flex', sm: 'none' },
+
+    top: '15px',
+    right: '15px',
+
+    color: t.palette.text.muted,
+
+    cursor: 'pointer',
+    zIndex: 100,
+
+    '&:hover': {
+      opacity: 0.75,
+    },
+  },
+  elected: {
+    color: t.palette.accent.main,
   },
 };
 

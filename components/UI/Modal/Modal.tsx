@@ -15,10 +15,10 @@ import sx from './Modal.styles';
 
 export type ModalProps = {
   isOpen: boolean;
-  title: string;
+  title: string | JSX.Element;
   description?: string;
   children?: ReactNode;
-  acceptText?: string;
+  acceptText?: string | JSX.Element;
   refuseText?: string;
   formId?: string;
   acceptIsDisabled?: boolean;
@@ -42,16 +42,22 @@ export function Modal({
 }: ModalProps) {
   const { t } = useLocalTranslation(translations);
 
+  const titleIsString = typeof title === 'string';
+
   return (
     <MUIModal open={isOpen} onClose={onClose}>
       <Box sx={sx.modal}>
         <Box sx={sx.head}>
-          <Typography sx={sx.title} variant='h6' color='primary'>
-            {title}
-          </Typography>
+          {titleIsString ? (
+            <Typography sx={sx.title} variant='h6' color='primary'>
+              {title}
+            </Typography>
+          ) : (
+            title
+          )}
 
           {!!onClose && (
-            <IconButton onClick={onClose} disabled={closeIsDisabled}>
+            <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
               <CrossIcon color='primary' />
             </IconButton>
           )}

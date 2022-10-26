@@ -4,6 +4,7 @@ const sx = {
   layout: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: '100vh',
     backgroundImage: `url(${stripes})`,

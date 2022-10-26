@@ -43,11 +43,14 @@ export function ProductCardGramSelect({
   const containerClasses = { ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) };
   const titleClasses = { ...selectSx.title, ...(!showLabelOnTablets && selectSx.titleHidden) };
 
+  const collapseOptions = () => setIsDeployed(false);
+  const toggleDeployOptions = () => setIsDeployed(prev => !prev);
+
   return (
     <Box sx={sx}>
-      <Box sx={containerClasses} onClick={() => setIsDeployed(!isDeployed)}>
+      <Box sx={containerClasses} onClick={toggleDeployOptions}>
         <Typography variant='body1' sx={titleClasses}>
-          {gram}г
+          {gram}&nbsp;г
         </Typography>
 
         <ExpandMoreIcon
@@ -58,7 +61,7 @@ export function ProductCardGramSelect({
       </Box>
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
-        <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
+        <ClickAwayListener onClickAway={collapseOptions}>
           <List sx={selectSx.list}>
             {options.map(option => (
               <ListItemButton selected={+option.value === gram} onClick={() => changeOption(+option.value)}>

@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 
-import { LinearProgress } from '@mui/material';
+import { LinearProgress, SxProps } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -39,6 +39,8 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import HeartIcon from '@mui/icons-material/Favorite';
+import { noExistingId } from 'constants/default';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import translations from './Product.i18n.json';
@@ -90,7 +92,7 @@ export default function Product() {
   );
 
   const [reviewForModal, setReviewForModal] = useState<Review>({
-    id: -1,
+    id: noExistingId,
     clientName: '',
     value: 0,
     comment: '',
@@ -157,6 +159,10 @@ export default function Product() {
 
   const productDescription = product?.description[language] || '';
 
+  const isCurrentProductElected = isProductFavorite(productId, favoriteProducts);
+
+  const price = product ? Math.round(product.price[currency] * 0.1) : 0;
+
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
@@ -171,16 +177,24 @@ export default function Product() {
             <Link href='/'>Вернуться на главную</Link>
 
             <Box sx={sx.top}>
-              <ImageSlider
-                images={product.images}
-                backgroundSrc={categories && getProductBackground(categories, product.categories || [])}
-                sx={sx.imageSlider}
-              />
+              <Box sx={sx.preview}>
+                <ImageSlider
+                  images={product.images}
+                  backgroundSrc={categories && getProductBackground(categories, product.categories || [])}
+                  sx={sx.imageSlider}
+                />
+
+                <HeartIcon
+                  sx={{ ...sx.heart, ...(isCurrentProductElected && sx.elected) } as SxProps}
+                  onClick={() => electProduct(product.id, isCurrentProductElected)}
+                />
+              </Box>
 
               <Box sx={sx.info}>
                 <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
+
                 <ProductInformation
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
@@ -193,15 +207,15 @@ export default function Product() {
                   id={product.id}
                   moyskladId={product.moyskladId}
                   currentUserCity={currentUser?.city.name.ru}
-                  price={product.price[currency] || 0}
+                  price={price}
                   currency={currency}
                   discount={product.discount}
                   productType={productType!}
                   sx={sx.actions}
                   onAdd={(gram: number) => addToBasket(product, gram)}
                   onRemove={(gram: number) => removeFromBasket(product, gram)}
-                  onElect={() => electProduct(product.id, isProductFavorite(product.id, favoriteProducts))}
-                  isElect={isProductFavorite(product.id, favoriteProducts)}
+                  onElect={() => electProduct(product.id, isCurrentProductElected)}
+                  isElect={isCurrentProductElected}
                 />
               </Box>
             </Box>

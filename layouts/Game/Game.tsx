@@ -8,7 +8,6 @@ import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
-// import { Copyright } from 'components/Copyright/Copyright';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
@@ -30,7 +29,7 @@ export interface GameLayoutProps {
 }
 
 export function GameLayout({ currency, language, children }: GameLayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment } = useAppNavigation();
+  const { goToReplenishment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -69,17 +68,12 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
         onClickReplenishment={goToReplenishment}
         onClickSignout={signOut}
         {...contacts}
       />
 
       <Box sx={sx.content}>{flipIsNeeded ? <GameFlipWarning /> : children}</Box>
-
-      {/* <Copyright sx={copyrightSx} /> */}
     </Box>
   );
 }
