@@ -82,7 +82,7 @@ export const currentUserApi = commonApi.injectEndpoints({
       reduceGameLive: builder.mutation<void, void>({
         query() {
           return {
-            method: 'PUT',
+            method: 'POST',
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.REDUCE_GAME_LIVE}`,
           };
         },
