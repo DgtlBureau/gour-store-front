@@ -76,6 +76,10 @@ export class GameCore {
     this.eventHandler = eventHandler;
   }
 
+  get isNowPlaying() {
+    return this.isPlaying;
+  }
+
   private pushEvent() {
     // Метод получает текущее состояние игры, группирует его в объект и вызывает функцию eventHandler
     const event: GameEvent = {
@@ -104,13 +108,6 @@ export class GameCore {
 
     this.runProductSendingLogic();
     this.runRabbitLogic();
-  }
-
-  finish() {
-    // Функция устанавливает isPlaying = false
-    this.isPlaying = false;
-
-    this.pushEvent();
   }
 
   setPlayerPosition(position: GameFieldPosition) {
@@ -161,9 +158,9 @@ export class GameCore {
     // игра заканчивается при lives = 0 (вызывается finish())
     this.lives -= this.isRabbitShown ? 0.5 : 1;
 
-    if (this.lives <= 0) this.finish();
-
-    this.pushEvent();
+    if (this.lives <= 0) {
+      this.isPlaying = false;
+    }
   }
 
   private getRandomProductType() {

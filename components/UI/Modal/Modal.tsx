@@ -19,6 +19,7 @@ export type ModalProps = {
   description?: string;
   children?: ReactNode;
   acceptText?: string | JSX.Element;
+  refuseText?: string;
   formId?: string;
   acceptIsDisabled?: boolean;
   closeIsDisabled?: boolean;
@@ -32,6 +33,7 @@ export function Modal({
   description,
   children,
   acceptText,
+  refuseText,
   formId,
   acceptIsDisabled,
   closeIsDisabled,
@@ -66,12 +68,20 @@ export function Modal({
         {children}
 
         {onAccept ? (
-          <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
-            {acceptText || t('acceptText')}
-          </Button>
+          <Box sx={sx.controlBtnGroup}>
+            <Button sx={sx.controlBtn} onClick={onAccept} disabled={acceptIsDisabled}>
+              {acceptText || t('acceptText')}
+            </Button>
+
+            {!!onClose && (
+              <Button sx={sx.controlBtn} variant='outlined' onClick={onClose} disabled={acceptIsDisabled}>
+                {refuseText || t('refuseText')}
+              </Button>
+            )}
+          </Box>
         ) : (
           !!formId && (
-            <Button sx={sx.acceptBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
+            <Button sx={sx.controlBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
               {acceptText || t('acceptText')}
             </Button>
           )

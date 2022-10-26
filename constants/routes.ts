@@ -28,6 +28,7 @@ export enum Path {
   CHANGE_AVATAR = 'change-avatar',
   CHANGE_PASSWORD = 'change-password',
   CHANGE_MAIN_ADDRESS = 'change-main-address',
+  REDUCE_GAME_LIVE = 'reduce-game-live',
   SEND_EMAIL_CODE = 'send-email-code',
   CHECK_CODE = 'check-code',
   CHANGE_EMAIL = 'change-email',

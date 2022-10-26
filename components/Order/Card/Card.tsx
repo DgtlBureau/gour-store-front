@@ -33,14 +33,12 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
   const productInfo = productsList.map(product => {
     const productTotalPrice = product.amount * product.product.price[currency];
 
-    const productTotalCount = product.amount; // FIXME:
-
     return {
       id: product.product.id,
       title: product.product.title[language],
       price: product.product.price[currency],
       totalPrice: productTotalPrice,
-      totalCount: `${productTotalCount} ${product.product.isWeightGood ? t('kg') : t('piece')}`,
+      totalCount: `${product.amount} ${t('piece')}`,
     };
   });
 

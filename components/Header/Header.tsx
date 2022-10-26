@@ -174,6 +174,10 @@ export function Header({
                 </Link>
               )}
 
+              <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                <LogoutIcon />
+              </IconButton>
+
               {!isGame && (
                 <>
                   <Link href={Path.FAVORITES} color='inherit' sx={headerSx.icon}>
