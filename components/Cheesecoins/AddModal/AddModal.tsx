@@ -43,7 +43,12 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     mode: 'onBlur',
   });
 
+  useEffect(() => {
+    values.reset({ count: 0 });
+  }, [isOpened]);
+
   const isValidCoinsCount = debouncedValue >= MINIMUM_AMOUNT;
+
   const {
     data: invoicePrice,
     isFetching,
@@ -78,7 +83,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
         <form id={formId} onSubmit={values.handleSubmit(handleSubmit)}>
           <HFTextField
             name='count'
-            label='Баланс чизкоинов'
+            label='Количество чизкоинов'
             regexp={regexp.onlyDigits}
             onChange={e => setLastCoinCount(+e.currentTarget.value)}
             inputProps={{ inputMode: 'numeric', maxLength: 10 }}

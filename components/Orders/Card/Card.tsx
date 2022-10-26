@@ -48,12 +48,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
   const { t } = useLocalTranslation(translations);
 
   const productCount = products.length;
-  const fullOrderPrice = products.reduce((acc, currentProduct) => {
-    if (!currentProduct.isWeightGood) {
-      return acc + currentProduct.cost * currentProduct.amount;
-    }
-    return acc + (currentProduct.cost * currentProduct.weight) / 100;
-  }, 0);
+  const fullOrderPrice = products.reduce((acc, currentProduct) => acc + currentProduct.cost * currentProduct.amount, 0);
 
   const productsCountText = getDeclensionWordByCount(productCount, [
     t('manyProducts'),

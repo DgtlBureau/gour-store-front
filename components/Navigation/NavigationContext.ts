@@ -23,7 +23,6 @@ export type Navigation = Pick<NextRouter, 'pathname' | 'query'> & {
   goToFavorites: () => void;
   goToBasket: () => void;
   goToPersonalArea: () => void;
-  goToReplenishment: () => void;
   goToPromotionPage: (id: number) => void;
   language: keyof LocalConfig;
   currency: Currency;

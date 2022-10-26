@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { useAppNavigation } from 'components/Navigation';
 import { InfoModal } from 'components/UI/InfoModal/InfoModal';
