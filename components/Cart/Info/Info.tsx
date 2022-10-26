@@ -64,7 +64,7 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
       </Box>
       <Box sx={sx.footnote}>
         <Typography variant='body1'>
-          {/* {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''} FIXME: */}
+          {t('all')}: {count} {productsCountText}
         </Typography>
         <Typography variant='body1'>
           {price}&nbsp;

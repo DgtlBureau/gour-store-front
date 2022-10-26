@@ -80,7 +80,7 @@ export function Basket() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const deleteProduct = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram })); // FIXME:
+  const deleteProduct = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
   const addProduct = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
   const subtractProduct = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
