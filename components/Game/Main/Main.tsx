@@ -1,9 +1,16 @@
+import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+
+import heartIcon from 'assets/icons/heart.svg';
 
 import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCounter as Counter } from '../Counter/Counter';
@@ -28,13 +35,22 @@ const JAMON_ANGLES = {
 
 export type GameMainProps = {
   onHelpClick(): void;
+  isLivesLoading: boolean;
+  onEndGame: () => Promise<void>;
+  lives: number;
 };
 
-export function GameMain({ onHelpClick }: GameMainProps) {
+export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: GameMainProps) {
   const [gameState, setGameState] = useState({} as GameEvent);
   const [isOpenStartGameModal, toggleStartGameModal] = useState(false);
 
-  const changeGameState = (e: GameEvent) => setGameState(e);
+  const changeGameState = (e: GameEvent) => {
+    setGameState(e);
+
+    if (!e.isPlaying) {
+      onEndGame();
+    }
+  };
 
   const game = useMemo(() => new GameCore(changeGameState), []);
 
@@ -58,7 +74,20 @@ export function GameMain({ onHelpClick }: GameMainProps) {
     };
   });
 
-  const onStartGameClick = () => toggleStartGameModal(true);
+  const onStartGameClick = () => {
+    const isLivesLeft = lives < 1;
+    if (isLivesLoading || isLivesLeft) {
+      const label = isLivesLoading ? 'Получение доступных жизней, подождите...' : 'Пополните жизни в магазине';
+      dispatchNotification(label, { type: NotificationType.INFO });
+      return;
+    }
+
+    if (game.isNowPlaying) {
+      dispatchNotification('Игра уже запущена', { type: NotificationType.DANGER });
+    } else {
+      toggleStartGameModal(true);
+    }
+  };
 
   const onSubmitStartGame = () => {
     toggleStartGameModal(false);
@@ -86,11 +115,16 @@ export function GameMain({ onHelpClick }: GameMainProps) {
         <Typography variant='body2' sx={sx.btnText}>
           СТАРТ
         </Typography>
+
+        <Box sx={sx.userLives}>
+          <Typography variant='body1'>{lives}</Typography>&nbsp;
+          <Image src={heartIcon} width={20} height={20} />
+        </Box>
       </Box>
 
       <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown && !!gameState.lives} />
 
-      <Lives sx={sx.lives} value={gameState.lives} />
+      <Lives sx={sx.gameLives} value={gameState.lives} />
 
       <Counter sx={sx.counter} value={gameState.score} />
 

@@ -40,6 +40,9 @@ import sx from './Main.styles';
 
 const NOW = new Date();
 
+const fakePromoImage =
+  'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
+
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
@@ -102,6 +105,8 @@ const Home: NextPage = () => {
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
+  const bannerPromoImage = promotions?.[0]?.cardImage.small;
+
   return (
     <PrivateLayout>
       <ShopLayout currency={currency} language={language}>
@@ -156,13 +161,8 @@ const Home: NextPage = () => {
             <Box sx={sx.banner}>
               {!!bannerImg && (
                 <Image
-                  loader={() =>
-                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
-                  }
-                  src={
-                    bannerImg ||
-                    'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg'
-                  }
+                  loader={() => bannerImg || fakePromoImage}
+                  src={bannerImg || fakePromoImage}
                   objectFit='cover'
                   layout='fill'
                   alt=''
