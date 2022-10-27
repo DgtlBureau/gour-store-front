@@ -7,7 +7,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { Path } from 'constants/routes';
 
-import { AppNavigationCtx } from './NavigationContext';
+import { AppNavigationCtx, Navigation } from './NavigationContext';
 
 type Props = { children: ReactNode };
 
@@ -51,7 +51,7 @@ function NavigationProvider({ children }: Props) {
 
   const currency: Currency = 'cheeseCoin';
 
-  const navigation = useMemo(
+  const navigation = useMemo<Navigation>(
     () => ({
       changeChapter,
       goBack,
@@ -75,6 +75,7 @@ function NavigationProvider({ children }: Props) {
       currency,
       pathname: router?.pathname || '',
       query: router?.query || {},
+      isReady: !!router?.isReady,
     }),
     [router?.pathname, router?.query, router?.isReady],
   );
