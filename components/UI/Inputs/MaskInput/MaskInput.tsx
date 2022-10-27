@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FocusEventHandler, HTMLAttributes, ReactElement } from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, ReactElement } from 'react';
 import MaskedInput, { MaskedInputProps } from 'react-text-mask';
 
 import { InputBaseProps, TextField as MUITextField, SxProps } from '@mui/material';

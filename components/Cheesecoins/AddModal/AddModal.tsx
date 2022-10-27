@@ -13,13 +13,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
 import regexp from 'constants/regex';
 
 import translations from './AddModal.i18n.json';
 import { sx } from './AddModal.styles';
-import { getValidationSchema } from './validations';
+import { MINIMUM_AMOUNT, getValidationSchema } from './validations';
 
 type FormState = {
   count: number;
@@ -33,12 +33,11 @@ type Props = {
 
 export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   const [lastCoinCount, setLastCoinCount] = useState(0);
-
   const debouncedValue = useDebounce(lastCoinCount, 500);
 
   const { t } = useLocalTranslation(translations);
-
   const schema = getValidationSchema(t);
+
   const values = useForm<FormState>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -48,18 +47,25 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     values.reset({ count: 0 });
   }, [isOpened]);
 
-  const isValidCoinsCount = values.formState.isValid || !!debouncedValue;
+  const isValidCoinsCount = debouncedValue >= MINIMUM_AMOUNT;
+
   const {
     data: invoicePrice,
     isFetching,
     isError,
   } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'rub' }, { skip: !isValidCoinsCount });
 
+  useEffect(() => {
+    setLastCoinCount(0);
+    values.resetField('count');
+  }, [isOpened]);
+
   const handleSubmit = ({ count }: FormState) => onSubmit(count);
 
   const currencySymbol = getCurrencySymbol('rub');
 
-  const showPrice = !isFetching && !isError && !!debouncedValue;
+  const showPrice = !isFetching && isValidCoinsCount && invoicePrice;
+  const isDisabledPayBtn = !showPrice;
 
   const formId = 'add-coins-modal';
 
@@ -68,7 +74,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
       title='Покупка чизкоинов'
       isOpen={isOpened}
       acceptText='Пополнить'
-      acceptIsDisabled={isFetching}
+      acceptIsDisabled={isDisabledPayBtn}
       closeIsDisabled={isFetching}
       formId={formId}
       onClose={onClose}
@@ -80,7 +86,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
             label='Количество чизкоинов'
             regexp={regexp.onlyDigits}
             onChange={e => setLastCoinCount(+e.currentTarget.value)}
-            inputProps={{ maxLength: 12 }}
+            inputProps={{ inputMode: 'numeric', maxLength: 10 }}
           />
 
           {isError && (
@@ -97,9 +103,9 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
 
           {showPrice && (
             <Typography variant='body1' sx={sx.price}>
-              Стоимость пополнения:&ensp;
+              К оплате:&ensp;
               <Typography variant='caption' sx={sx.priceValue}>
-                {invoicePrice}&nbsp;{currencySymbol}
+                {getFormattedPrice(invoicePrice)}&nbsp;{currencySymbol}
               </Typography>
             </Typography>
           )}
