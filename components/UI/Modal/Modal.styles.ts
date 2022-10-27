@@ -44,10 +44,13 @@ export const sx = {
   closeBtn: {
     alignSelf: 'flex-start',
   },
-  acceptBtn: {
-    width: '100%',
-    marginTop: '14px',
+  controlBtnGroup: {
     display: 'flex',
+    gap: '10px',
+    marginTop: '14px',
+  },
+  controlBtn: {
+    width: '100%',
   },
 };
 

@@ -16,19 +16,19 @@ export const sx = {
   extenderHiddenTitle: {
     width: { xs: 'fit-content', md: '84px' },
     padding: { xs: '2px', md: '6px 12px' },
-
-    '&.title': {
-      display: 'none',
-    },
   },
   title: {
     display: 'flex',
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     color: color.muted,
     whiteSpace: 'nowrap',
     userSelect: 'none',
   },
-  titleHidden: {},
+  titleHidden: {
+    display: {
+      xs: 'none',
+      md: 'block',
+    },
+  },
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },
