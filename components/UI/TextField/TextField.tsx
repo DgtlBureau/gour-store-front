@@ -1,6 +1,8 @@
-import React, { ChangeEventHandler, FocusEventHandler, ReactElement } from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, ReactElement } from 'react';
 
 import { InputBaseProps, TextField as MUITextField, SxProps } from '@mui/material';
+
+const helperTextSx = { margin: '3px 0 0 0', paddingLeft: '15px', width: '100%' };
 
 type Props = {
   value?: unknown;
@@ -8,7 +10,8 @@ type Props = {
   label?: string;
   sx?: SxProps;
   name?: string;
-  variant?: 'standard' | 'outlined' | 'filled' | undefined;
+  variant?: 'standard' | 'outlined' | 'filled';
+  disabled?: boolean;
   isError?: boolean;
   type?: string;
   helperText?: string;
@@ -16,9 +19,11 @@ type Props = {
   multiline?: boolean;
   rows?: number;
   inputProps?: InputBaseProps['inputProps'];
+  maxLength?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 };
 
 export function TextField({
@@ -28,14 +33,19 @@ export function TextField({
   label,
   variant,
   type = 'text',
+  disabled,
   isError,
   helperText,
   endAdornment,
   name,
+  multiline,
+  rows,
+  inputProps,
+  maxLength,
   onChange,
   onFocus,
   onBlur,
-  ...props
+  onKeyDown,
 }: Props) {
   return (
     <MUITextField
@@ -43,24 +53,23 @@ export function TextField({
       sx={sx}
       label={label}
       value={value}
+      disabled={disabled}
       error={isError}
       id={id}
       variant={variant}
-      onChange={onChange}
       name={name}
-      onFocus={onFocus}
-      onBlur={onBlur}
       type={type}
       helperText={helperText}
-      InputProps={{ endAdornment }}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyDown={onKeyDown}
+      multiline={multiline}
+      rows={rows}
+      inputProps={{ ...inputProps, maxLength, endAdornment }}
       FormHelperTextProps={{
-        sx: {
-          margin: '3px 0 0 0',
-          paddingLeft: '15px',
-          width: '100%',
-        },
+        sx: helperTextSx,
       }}
-      // {...props}
     />
   );
 }

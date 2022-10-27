@@ -1,19 +1,19 @@
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   optionBox: {
     padding: '6px 12px',
-    color: t.palette.text.secondary,
-    backgroundColor: t.palette.common.white,
+    color: color.primary,
+    backgroundColor: color.white,
     borderRadius: '6px',
     userSelect: 'none',
     cursor: 'pointer',
   },
   selected: {
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
+    background: color.primary,
+    color: color.white,
   },
 };
 

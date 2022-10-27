@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   card: {
@@ -22,7 +22,7 @@ const sx = {
     borderColor: '#FEC983',
     borderRadius: '10px',
 
-    backgroundColor: t.palette.background.default,
+    backgroundColor: color.white,
 
     boxSizing: 'border-box',
   },
@@ -49,7 +49,7 @@ const sx = {
     top: '8px',
     right: '8px',
 
-    color: t.palette.text.muted,
+    color: color.muted,
 
     cursor: 'pointer',
 
@@ -58,7 +58,7 @@ const sx = {
     },
   },
   elected: {
-    color: t.palette.accent.main,
+    color: color.accent,
   },
   country: {
     position: 'absolute',
@@ -81,7 +81,7 @@ const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: color.primary,
     display: '-webkit-box',
 
     height: '100%',
@@ -108,8 +108,8 @@ const sx = {
     display: 'block',
     padding: '2px 16px',
     borderRadius: '4px',
-    backgroundColor: t.palette.background.paper,
-    color: t.palette.text.secondary,
+    backgroundColor: color.secondary,
+    color: color.primary,
 
     width: '100%',
     height: '100%',

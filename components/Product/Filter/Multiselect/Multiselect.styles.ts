@@ -1,9 +1,9 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   select: {
     width: '100%',
-    backgroundColor: 'background.paper',
+    backgroundColor: color.secondary,
     boxShadow: 'none',
     borderRadius: '6px',
     borderColor: 'none',
@@ -16,7 +16,7 @@ const sx = {
   },
 
   title: {
-    color: t.palette.text.muted,
+    color: color.muted,
   },
   extender: {
     cursor: 'pointer',
@@ -24,7 +24,7 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '8px 16px',
-    backgroundColor: 'background.paper',
+    backgroundColor: color.secondary,
     borderRadius: '6px',
   },
   list: {
@@ -33,9 +33,9 @@ const sx = {
     maxWidth: '280px',
     marginTop: '6px',
     padding: '14px',
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     border: '1px solid',
-    borderColor: t.palette.secondary.main,
+    borderColor: color.secondary,
     borderRadius: '6px',
     zIndex: 100,
   },

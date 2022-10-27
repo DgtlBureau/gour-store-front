@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   extender: {
@@ -8,7 +8,7 @@ export const sx = {
     justifyContent: 'space-between',
     width: '84px',
     padding: '6px 12px',
-    backgroundColor: 'background.paper',
+    backgroundColor: color.secondary,
     borderRadius: '6px',
     gap: '6px',
     height: '100%',
@@ -24,7 +24,7 @@ export const sx = {
   title: {
     display: 'flex',
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    color: t.palette.text.muted,
+    color: color.muted,
     whiteSpace: 'nowrap',
     userSelect: 'none',
   },
@@ -41,7 +41,7 @@ export const sx = {
     paddingBottom: 0,
     backgroundColor: 'white',
     border: '1px solid',
-    borderColor: t.palette.secondary.main,
+    borderColor: color.secondary,
     borderRadius: '6px',
     zIndex: 100,
     overflowY: 'scroll',

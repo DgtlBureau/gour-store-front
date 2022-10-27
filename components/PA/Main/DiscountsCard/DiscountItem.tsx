@@ -7,7 +7,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 type Props = {
   discount: ReturnType<typeof formatCategoriesWithMaxDiscount>[number];
@@ -23,14 +23,14 @@ const sx = {
       xs: '14px',
       xl: '14px',
     },
-    color: theme.palette.text.primary,
+    color: color.black,
   },
   percentBlock: {
     marginTop: 'auto',
   },
   percent: {
     textAlign: 'center',
-    color: theme.palette.accent.main,
+    color: color.accent,
   },
   progress: {
     width: '100%',
@@ -38,12 +38,12 @@ const sx = {
     backgroundColor: 'rgb(244, 231, 206)',
   },
   progressFill: {
-    backgroundColor: theme.palette.accent.main,
+    backgroundColor: color.accent,
     height: '100%',
   },
   category: {
     margin: '4px 0 0 0',
-    color: theme.palette.text.muted,
+    color: color.muted,
   },
 };
 

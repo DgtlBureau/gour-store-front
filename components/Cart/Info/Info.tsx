@@ -11,7 +11,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
-import { defaultTheme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Info.i18n.json';
 
@@ -28,13 +28,13 @@ const sx = {
 
   total: {
     fontWeight: 700,
-    color: defaultTheme.palette.text.secondary,
+    color: color.primary,
   },
 
   footnote: {
     marginTop: '10px',
 
-    color: defaultTheme.palette.text.muted,
+    color: color.muted,
   },
 };
 

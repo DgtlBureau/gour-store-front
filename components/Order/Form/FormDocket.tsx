@@ -9,7 +9,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Form.i18n.json';
 
@@ -21,7 +21,7 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    color: theme.palette.text.muted,
+    color: color.muted,
     '&:last-child': {
       marginBottom: '10px',
     },
@@ -34,10 +34,10 @@ const sx = {
     fontFamily: 'Roboto slab',
   },
   discountValue: {
-    color: theme.palette.error.main,
+    color: color.error,
   },
   total: {
-    color: theme.palette.text.secondary,
+    color: color.primary,
   },
   divider: {
     width: '100%',

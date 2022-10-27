@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   container: {
@@ -44,10 +44,10 @@ const sx = {
   },
   replenishment: {
     padding: '4px 16px',
-    backgroundColor: 'common.white',
+    backgroundColor: color.white,
     borderRadius: '50px',
     '&:hover': {
-      backgroundColor: 'secondary.main',
+      backgroundColor: color.secondary,
     },
   },
   flag: {
@@ -66,15 +66,15 @@ const sx = {
   },
   cart: {
     position: 'relative',
-    backgroundColor: t.palette.common.white,
-    color: t.palette.text.secondary,
+    backgroundColor: color.white,
+    color: color.primary,
     padding: '6px 12px',
     textDecoration: 'none',
     borderRadius: '6px',
     userSelect: 'none',
 
     '&:hover': {
-      backgroundColor: t.palette.secondary.main,
+      backgroundColor: color.secondary,
     },
   },
   cartBadge: {
@@ -98,14 +98,14 @@ const sx = {
     width: '34px',
     padding: 0,
     borderRadius: '6px',
-    backgroundColor: t.palette.common.white,
+    backgroundColor: color.white,
     '&:hover': {
-      backgroundColor: t.palette.common.white,
+      backgroundColor: color.white,
     },
   },
   menuIcon: {
     width: '18px',
-    color: t.palette.common.black,
+    color: color.black,
   },
 };
 

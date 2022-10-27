@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   cart: {
@@ -13,11 +13,11 @@ export const sx = {
 
     fontFamily: 'Roboto slab',
 
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
+    background: color.primary,
+    color: color.white,
 
     '&: hover': {
-      background: { md: t.palette.common.black },
+      background: { md: color.black },
     },
   },
   iconBtn: {
@@ -32,7 +32,7 @@ export const sx = {
       sm: '20px',
       xs: '18px',
     },
-    color: t.palette.common.white,
+    color: color.white,
   },
   buyLabel: {
     display: {
@@ -41,7 +41,7 @@ export const sx = {
     },
     textTransform: 'uppercase',
     marginLeft: '10px',
-    color: t.palette.common.white,
+    color: color.white,
   },
   deployed: {
     width: '100%',

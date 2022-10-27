@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   card: {
@@ -58,7 +58,7 @@ const sx = {
   },
 
   contentGram: {
-    color: t.palette.text.secondary,
+    color: color.primary,
   },
 
   title: {
@@ -69,7 +69,7 @@ const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: color.primary,
 
     '&:hover': {
       opacity: '0.75',
@@ -100,12 +100,12 @@ const sx = {
 
     width: 'fit-content',
 
-    color: t.palette.text.muted || '',
+    color: color.muted,
 
     '&:before': {
       content: '""',
       borderBottom: '1px solid',
-      borderColor: t.palette.error.main,
+      borderColor: color.error,
       position: 'absolute',
       width: '100%',
       height: '50%',
@@ -124,7 +124,7 @@ const sx = {
 
       padding: 0,
 
-      color: t.palette.text.secondary,
+      color: color.primary,
     },
   },
 
@@ -138,7 +138,7 @@ const sx = {
   cancelBtn: {
     height: 'fit-content',
     padding: 0,
-    color: t.palette.secondary.main,
+    color: color.secondary,
   },
 
   leftActions: {
@@ -153,8 +153,8 @@ const sx = {
 
     padding: '4px',
 
-    backgroundColor: t.palette.secondary.main,
-    color: t.palette.text.secondary,
+    backgroundColor: color.secondary,
+    color: color.primary,
 
     borderRadius: '99px',
 
