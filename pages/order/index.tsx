@@ -246,7 +246,7 @@ export function Order() {
         content: (
           <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
             Вы можете отслеживать статус заказа в&nbsp;разделе{' '}
-            <Link href={`/${Path.ORDERS}`}>
+            <Link href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
               <Typography color='accent.main' variant='caption' sx={sx.infoModalLink}>
                 Заказы
               </Typography>
