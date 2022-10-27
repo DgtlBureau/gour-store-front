@@ -86,6 +86,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
 
   return (
     <Modal
+      showRefuseButton
       isOpen={isOpened}
       title={
         <Box sx={sx.titleContainer}>
