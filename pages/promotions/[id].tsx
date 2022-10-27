@@ -38,7 +38,6 @@ export default function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const {
-    goToHome,
     goToProductPage,
     language,
     currency,
@@ -61,8 +60,6 @@ export default function Promotion() {
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
   // const basket = useAppSelector(selectBasketProducts);
-
-  if (!promotionId) return goToHome();
 
   const formattedPromotionProducts = useMemo(
     () => computeProductsWithCategories(promotion?.products || [], categories, favoriteProducts || []),
@@ -93,7 +90,7 @@ export default function Promotion() {
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !promotion && <Typography variant='h5'>Продукт не найден</Typography>}
+        {!isLoading && !isError && !promotion && <Typography variant='h5'>Промоакция не найден</Typography>}
 
         {!isLoading && !isError && promotion && (
           <>
