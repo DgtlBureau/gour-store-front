@@ -76,8 +76,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
       showRefuseButton
       acceptText='Пополнить'
       refuseText='Отменить'
-      acceptIsDisabled={isFetching}
-      closeIsDisabled={isFetching}
+      acceptIsDisabled={isDisabledPayBtn}
       formId={formId}
       onClose={onClose}
     >

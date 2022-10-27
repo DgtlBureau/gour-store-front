@@ -78,6 +78,7 @@ export function Modal({
                 sx={sx.controlBtn}
                 onClick={onAccept}
                 type={formId ? 'submit' : 'button'}
+                form={formId}
                 disabled={acceptIsDisabled}
               >
                 {acceptText || t('acceptText')}
