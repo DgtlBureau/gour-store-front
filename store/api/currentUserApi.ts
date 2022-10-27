@@ -86,7 +86,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.REDUCE_GAME_LIVE}`,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
     };
   },

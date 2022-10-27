@@ -81,9 +81,11 @@ export function Modal({
           </Box>
         ) : (
           !!formId && (
-            <Button sx={sx.controlBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
-              {acceptText || t('acceptText')}
-            </Button>
+            <Box sx={sx.controlBtnGroup}>
+              <Button sx={sx.controlBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
+                {acceptText || t('acceptText')}
+              </Button>
+            </Box>
           )
         )}
       </Box>
