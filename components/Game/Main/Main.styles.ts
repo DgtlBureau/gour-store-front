@@ -1,7 +1,7 @@
 import buttonSmallImage from 'assets/images/game/button-small.svg';
 import buttonImage from 'assets/images/game/button.svg';
 
-export const sx = {
+const sx = {
   player: {
     bottom: '85px',
     paddingRight: '15px',
@@ -62,6 +62,12 @@ export const sx = {
     right: '50px',
   },
 
+  userLives: {
+    display: 'flex',
+    marginTop: '10px',
+    alignItems: 'center',
+  },
+
   btnText: {
     width: 'fit-content',
     marginTop: '8px',
@@ -72,7 +78,7 @@ export const sx = {
     left: '270px',
   },
 
-  lives: {
+  gameLives: {
     top: '150px',
   },
 

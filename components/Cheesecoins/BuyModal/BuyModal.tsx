@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,7 +39,7 @@ type Props = {
   isLoading: boolean;
 };
 
-export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail, isLoading, onSubmit }: Props) {
+export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoading, onSubmit }: Props) {
   const { t } = useLocalTranslation(translations);
   const isDesktop = useMediaQuery('(min-width: 600px)');
 
@@ -51,6 +51,12 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
       invoiceEmail: userEmail,
     },
   });
+
+  useEffect(() => {
+    values.reset({
+      invoiceEmail: userEmail,
+    });
+  }, [isOpened]);
 
   const handleSubmit = (formData: FormState) => {
     const [expDateMonth, expDateYear] = getExpDate(formData.expDate) as readonly [number, number];
@@ -80,6 +86,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
 
   return (
     <Modal
+      showRefuseButton
       isOpen={isOpened}
       title={
         <Box sx={sx.titleContainer}>
@@ -130,7 +137,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price = 5000, userEmail
                   name='cvv'
                   label='CVV'
                   regexp={regexp.onlyDigits}
-                  inputProps={{ maxLength: 4, inputMode: 'numeric' }}
+                  inputProps={{ maxLength: 3, inputMode: 'numeric' }}
                 />
               </Grid>
             </Grid>

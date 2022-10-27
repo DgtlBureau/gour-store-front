@@ -49,7 +49,7 @@ export type HeaderProps = {
   moneyAmount: number;
   sx?: SxProps;
   onChangeCity(id: number): void;
-  onClickReplenishment(): void;
+  onClickAddCoins(): void;
   onClickSignout(): void;
 };
 
@@ -69,7 +69,7 @@ export function Header({
   moneyAmount,
   sx,
   onChangeCity,
-  onClickReplenishment,
+  onClickAddCoins,
   onClickSignout,
 }: HeaderProps) {
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
@@ -149,7 +149,7 @@ export function Header({
                   {currencySymbol}
                 </Typography>
 
-                <IconButton onClick={onClickReplenishment} color='inherit' sx={headerSx.replenishment}>
+                <IconButton onClick={onClickAddCoins} color='inherit' sx={headerSx.replenishment}>
                   <AddIcon color='primary' />
                 </IconButton>
               </Box>
@@ -173,6 +173,10 @@ export function Header({
                   <Image src={GamepadIcon} height={24} width={24} alt='' />
                 </Link>
               )}
+
+              <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                <LogoutIcon />
+              </IconButton>
 
               {!isGame && (
                 <>
@@ -222,7 +226,7 @@ export function Header({
             currency={currency}
             onChangeCity={onChangeCity}
             onClickSignout={onClickSignout}
-            onClickReplenishment={onClickReplenishment}
+            onClickAddCoins={onClickAddCoins}
           />
         </Collapse>
       </AppBar>

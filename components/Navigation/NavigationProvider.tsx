@@ -7,7 +7,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { Path } from 'constants/routes';
 
-import { AppNavigationCtx } from './NavigationContext';
+import { AppNavigationCtx, Navigation } from './NavigationContext';
 
 type Props = { children: ReactNode };
 
@@ -44,7 +44,6 @@ function NavigationProvider({ children }: Props) {
   const goToFavorites = useCallback(() => router?.push(`/${Path.FAVORITES}`), []);
   const goToBasket = useCallback(() => router?.push(`/${Path.BASKET}`), []);
   const goToPersonalArea = useCallback(() => router?.push(`/${Path.PERSONAL_AREA}`), []);
-  const goToReplenishment = useCallback(() => router?.push(`/${Path.REPLENISHMENT}`), []);
 
   const goToPromotionPage = useCallback((id: number) => router?.push(`/${Path.PROMOTIONS}/${id}`), []);
 
@@ -52,7 +51,7 @@ function NavigationProvider({ children }: Props) {
 
   const currency: Currency = 'cheeseCoin';
 
-  const navigation = useMemo(
+  const navigation = useMemo<Navigation>(
     () => ({
       changeChapter,
       goBack,
@@ -71,12 +70,12 @@ function NavigationProvider({ children }: Props) {
       goToFavorites,
       goToBasket,
       goToPersonalArea,
-      goToReplenishment,
       goToPromotionPage,
       language,
       currency,
       pathname: router?.pathname || '',
       query: router?.query || {},
+      isReady: !!router?.isReady,
     }),
     [router?.pathname, router?.query, router?.isReady],
   );

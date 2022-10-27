@@ -123,6 +123,7 @@ export function ProductActions({
         {isStockFetching && 'Загрузка остатков...'}
         {!isStockFetching && !moyskladId && 'Не указан ID у МойСклад'}
         {!isStockFetching && moyskladId && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
+        {!isStockFetching && moyskladId && isStockError && <>произошла ошибка</>}
       </Typography>
 
       <Box sx={sxActions.docket}>

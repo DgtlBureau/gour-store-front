@@ -14,10 +14,8 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     id: product.product?.id || -1,
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
-    weight: 1, // FIXME: выпилить
     amount: product?.amount,
     cost: product.product?.price[currency],
-    isWeightGood: product?.product?.isWeightGood,
   }));
 
   const promotions = order.promotions.map(promotion => ({

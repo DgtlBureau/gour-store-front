@@ -19,6 +19,8 @@ export type ModalProps = {
   description?: string;
   children?: ReactNode;
   acceptText?: string | JSX.Element;
+  refuseText?: string;
+  showRefuseButton?: true;
   formId?: string;
   acceptIsDisabled?: boolean;
   closeIsDisabled?: boolean;
@@ -32,6 +34,8 @@ export function Modal({
   description,
   children,
   acceptText,
+  refuseText,
+  showRefuseButton,
   formId,
   acceptIsDisabled,
   closeIsDisabled,
@@ -41,6 +45,8 @@ export function Modal({
   const { t } = useLocalTranslation(translations);
 
   const titleIsString = typeof title === 'string';
+
+  const showControlBlock = !!onAccept || !!formId;
 
   return (
     <MUIModal open={isOpen} onClose={onClose}>
@@ -66,16 +72,23 @@ export function Modal({
 
           {children}
 
-          {onAccept ? (
-            <Button sx={sx.acceptBtn} onClick={onAccept} disabled={acceptIsDisabled}>
-              {acceptText || t('acceptText')}
-            </Button>
-          ) : (
-            !!formId && (
-              <Button sx={sx.acceptBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
+          {showControlBlock && (
+            <Box sx={sx.controlBtnGroup}>
+              <Button
+                sx={sx.controlBtn}
+                onClick={onAccept}
+                type={formId ? 'submit' : 'button'}
+                disabled={acceptIsDisabled}
+              >
                 {acceptText || t('acceptText')}
               </Button>
-            )
+
+              {showRefuseButton && (
+                <Button sx={sx.controlBtn} variant='outlined' onClick={onClose}>
+                  {refuseText || t('refuseText')}
+                </Button>
+              )}
+            </Box>
           )}
         </Box>
       </div>
