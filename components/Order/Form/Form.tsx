@@ -67,6 +67,7 @@ export type OrderFormProps = {
   discount?: number;
   cities: SelectOption[];
   isSubmitError?: boolean;
+  isFetching: boolean;
   delivery: number;
   deliveryProfiles: SelectOption[];
   currency?: Currency;
@@ -83,6 +84,7 @@ export function OrderForm({
   delivery,
   deliveryProfiles,
   isSubmitError,
+  isFetching,
   cities,
   currency,
   onSelectDeliveryProfile,
@@ -122,6 +124,8 @@ export function OrderForm({
   const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
   const agree = () => setIsAgree(!isAgree);
+
+  const isSubmitBtnDisabled = !values.formState.isValid || !isAgree || isFetching;
 
   return (
     <FormProvider {...values}>
@@ -211,7 +215,7 @@ export function OrderForm({
             <Button
               sx={sx.btn}
               type='submit'
-              disabled={!values.formState.isValid || !isAgree}
+              disabled={isSubmitBtnDisabled}
               color={!isSubmitError ? 'primary' : 'error'}
             >
               {!isSubmitError ? t('toPay') : t('orderError')}

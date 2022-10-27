@@ -35,15 +35,22 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '14px',
   },
   title: {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
+    marginBottom: '14px',
   },
-  acceptBtn: {
-    width: '100%',
+  closeBtn: {
+    alignSelf: 'flex-start',
+  },
+  controlBtnGroup: {
+    display: 'flex',
+    gap: '10px',
     marginTop: '14px',
+  },
+  controlBtn: {
+    width: '100%',
   },
 };
 

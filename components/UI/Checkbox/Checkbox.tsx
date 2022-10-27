@@ -6,6 +6,7 @@ import { Box } from '../Box/Box';
 
 const boxSx = {
   display: 'flex',
+  alignItems: 'center',
 };
 
 const labelSx = {

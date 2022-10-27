@@ -68,6 +68,7 @@ export function PAPhoneChangeModal({ isOpen, defaultValues, error, onClose, onSu
       title={t('title')}
       description={t('description')}
       formId='phoneChangeForm'
+      showRefuseButton
       acceptIsDisabled={formIsInvalid}
       onClose={onClose}
     >

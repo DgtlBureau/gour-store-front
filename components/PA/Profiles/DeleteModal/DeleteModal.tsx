@@ -16,6 +16,13 @@ export function PAProfilesDeleteModal({ isOpen, onAccept, onClose }: PAProfilesD
   const { t } = useLocalTranslation(translations);
 
   return (
-    <Modal isOpen={isOpen} title={t('title')} description={t('description')} onAccept={onAccept} onClose={onClose} />
+    <Modal
+      isOpen={isOpen}
+      title={t('title')}
+      description={t('description')}
+      showRefuseButton
+      onAccept={onAccept}
+      onClose={onClose}
+    />
   );
 }

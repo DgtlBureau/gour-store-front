@@ -18,7 +18,7 @@ const sx = {
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
-    backgroundColor: '#EBEBEB;',
+    backgroundColor: '#EBEBEB',
     borderRadius: '10px',
     overflow: 'hidden',
     backgroundImage: 'image',

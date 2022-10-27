@@ -94,7 +94,7 @@ export function CartCard({
             <IconButton onClick={onSubtract} disabled={amount === 1}>
               <MinusIcon />
             </IconButton>
-            {/* FIXME: */}
+
             <Typography variant='body2' sx={sx.weight}>
               {amount * gram} {t('g')}
             </Typography>

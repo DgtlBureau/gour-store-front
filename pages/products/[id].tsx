@@ -45,6 +45,7 @@ import { getErrorMessage } from 'utils/errorUtil';
 import HeartIcon from '@mui/icons-material/Favorite';
 
 import translations from './Product.i18n.json';
+import styles from './Product.module.css';
 import sx from './Product.styles';
 
 export default function Product() {
@@ -227,7 +228,7 @@ export default function Product() {
                   {t('description')}
                 </Typography>
 
-                <div dangerouslySetInnerHTML={{ __html: productDescription }} />
+                <div dangerouslySetInnerHTML={{ __html: productDescription }} className={styles.productDescription} />
               </Box>
             )}
 

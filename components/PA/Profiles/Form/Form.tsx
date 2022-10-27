@@ -93,11 +93,9 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
               <HFTextField rows={4} multiline name='comment' label={t('comment')} />
             </Grid>
           </Grid>
-
           <Grid item xs={12} md={6} sx={sx.mainCheck}>
             <HFCheckbox name='isMain' label={t('isMain')} sx={sx.checkbox} />
           </Grid>
-
           <Grid item xs={12} md={6} container sx={sx.actions}>
             <Button type='submit' size='small'>
               {t('save')}
@@ -105,8 +103,8 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
             <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
               {t('clear')}
             </Button>
-            <IconButton>
-              <DeleteIcon htmlColor={theme.palette.text.muted} onClick={onDelete} />
+            <IconButton onClick={onDelete}>
+              <DeleteIcon htmlColor={theme.palette.text.muted} />
             </IconButton>
           </Grid>
         </Grid>

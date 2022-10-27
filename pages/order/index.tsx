@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -15,19 +15,19 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useAppNavigation } from 'components/Navigation';
 import { OrderCard } from 'components/Order/Card/Card';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from 'components/Order/Form/Form';
+import { InfoModal } from 'components/UI/InfoModal/InfoModal';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
-import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
+import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { dispatchNotification } from 'packages/EventBus';
-import { getErrorMessage } from 'utils/errorUtil';
 
 import translation from './Order.i18n.json';
 import sx from './Order.styles';
@@ -55,6 +55,16 @@ const defaultDeliveryFields: DeliveryFields = {
   comment: '',
 };
 
+type OrderStatusModal =
+  | {
+      status: 'success';
+      orderId: number;
+    }
+  | {
+      status: 'failure';
+    }
+  | null;
+
 const DELIVERY_PRICE = 500;
 
 export function Order() {
@@ -64,8 +74,8 @@ export function Order() {
 
   const dispatch = useAppDispatch();
 
-  const [fetchCreateOrderProfile] = useCreateOrderProfileMutation();
-  const [fetchCreateOrder] = useCreateOrderMutation();
+  const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
+  const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
 
@@ -84,6 +94,10 @@ export function Order() {
         })) || [],
       ...params,
     }),
+  });
+
+  const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>({
+    status: 'failure',
   });
 
   const productsInOrder = useAppSelector(selectBasketProducts);
@@ -147,20 +161,21 @@ export function Order() {
         orderProducts,
       };
 
-      await fetchCreateOrder(formattedOrderData).unwrap();
+      const { id: orderId } = await fetchCreateOrder(formattedOrderData).unwrap();
 
-      dispatchNotification('Заказ оформлен');
+      toggleOrderStatusModal({ status: 'success', orderId });
 
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
-
-      goToOrders();
-    } catch (error) {
-      const message = getErrorMessage(error);
-
-      dispatchNotification(message, { type: NotificationType.DANGER });
+    } catch {
+      toggleOrderStatusModal({ status: 'failure' });
 
       setIsSubmitError(true);
     }
+  };
+
+  const onCloseOrderStatusModal = () => {
+    if (orderStatusModal?.status === 'success') goToOrders();
+    else toggleOrderStatusModal(null);
   };
 
   const selectDeliveryProfile = (deliveryProfileId: number) => {
@@ -216,6 +231,40 @@ export function Order() {
   // TODO: вынести на бек
   const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
 
+  const infoModalContent = useMemo(() => {
+    if (!orderStatusModal)
+      return {
+        title: '',
+        content: Fragment,
+      };
+
+    if (orderStatusModal.status === 'success') {
+      return {
+        title: `Заказ №${orderStatusModal.orderId} успешно оформлен`,
+        content: (
+          <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
+            Вы можете отслеживать статус заказа в&nbsp;разделе{' '}
+            <Link href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
+              <Typography color='accent.main' variant='caption' sx={sx.infoModalLink}>
+                Заказы
+              </Typography>
+            </Link>{' '}
+            в&nbsp;личном кабинете.
+          </Typography>
+        ),
+      };
+    }
+
+    return {
+      title: 'Не получилось оформить заказ',
+      content: (
+        <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
+          При оформлении заказа возникла ошибка.&#10;&#13;Пожалуйста, попробуйте ещё раз.
+        </Typography>
+      ),
+    };
+  }, [orderStatusModal]);
+
   return (
     <PrivateLayout>
       <ShopLayout language={language} currency={currency}>
@@ -236,6 +285,7 @@ export function Order() {
                 defaultPersonalFields={personalFields}
                 defaultDeliveryFields={deliveryFields}
                 cities={cities}
+                isFetching={isCreatingProfile || isCreatingOrder}
                 isSubmitError={isSubmitError}
                 discount={sumDiscount}
                 productsCount={count}
@@ -258,6 +308,14 @@ export function Order() {
             </Grid>
           </Grid>
         )}
+
+        <InfoModal
+          isOpen={!!orderStatusModal?.status}
+          status={orderStatusModal?.status}
+          title={infoModalContent.title}
+          content={infoModalContent.content}
+          onClose={onCloseOrderStatusModal}
+        />
       </ShopLayout>
     </PrivateLayout>
   );

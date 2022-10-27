@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,46 +11,60 @@ import Loader from 'components/UI/Loader/Loader';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { payInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
-
 import regexp from 'constants/regex';
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
 import translations from './AddModal.i18n.json';
 import { sx } from './AddModal.styles';
-import { getValidationSchema } from './validations';
+import { MINIMUM_AMOUNT, getValidationSchema } from './validations';
+
+type FormState = {
+  count: number;
+};
 
 type Props = {
   isOpened: boolean;
   onClose: () => void;
-  onSubmit: (data: payInvoiceDto) => void;
+  onSubmit: (price: number) => void;
 };
 
 export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   const [lastCoinCount, setLastCoinCount] = useState(0);
-
   const debouncedValue = useDebounce(lastCoinCount, 500);
 
   const { t } = useLocalTranslation(translations);
-
   const schema = getValidationSchema(t);
-  const values = useForm<payInvoiceDto>({
+
+  const values = useForm<FormState>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
   });
 
-  const isValidCoinsCount = values.formState.isValid || !!debouncedValue;
+  useEffect(() => {
+    values.resetField('count');
+  }, [isOpened]);
+
+  const isValidCoinsCount = debouncedValue >= MINIMUM_AMOUNT;
+
   const {
     data: invoicePrice,
     isFetching,
     isError,
   } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'rub' }, { skip: !isValidCoinsCount });
 
+  useEffect(() => {
+    setLastCoinCount(0);
+    values.resetField('count');
+  }, [isOpened]);
+
+  const handleSubmit = ({ count }: FormState) => onSubmit(count);
+
   const currencySymbol = getCurrencySymbol('rub');
 
-  const showPrice = !isFetching && !isError && !!debouncedValue;
+  const showPrice = !isFetching && isValidCoinsCount && invoicePrice;
+  const isDisabledPayBtn = !showPrice;
 
   const formId = 'add-coins-modal';
 
@@ -58,20 +72,22 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     <Modal
       title='Покупка чизкоинов'
       isOpen={isOpened}
+      showRefuseButton
       acceptText='Пополнить'
+      refuseText='Отменить'
       acceptIsDisabled={isFetching}
       closeIsDisabled={isFetching}
       formId={formId}
       onClose={onClose}
     >
       <FormProvider {...values}>
-        <form id={formId} onSubmit={values.handleSubmit(onSubmit)}>
+        <form id={formId} onSubmit={values.handleSubmit(handleSubmit)}>
           <HFTextField
             name='count'
-            label='Баланс чизкоинов'
+            label='Количество чизкоинов'
             regexp={regexp.onlyDigits}
             onChange={e => setLastCoinCount(+e.currentTarget.value)}
-            inputProps={{ maxLength: 12 }}
+            inputProps={{ inputMode: 'numeric', maxLength: 10 }}
           />
 
           {isError && (
@@ -88,9 +104,9 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
 
           {showPrice && (
             <Typography variant='body1' sx={sx.price}>
-              Стоимость пополнения:&ensp;
+              К оплате:&ensp;
               <Typography variant='caption' sx={sx.priceValue}>
-                {invoicePrice}&nbsp;{currencySymbol}
+                {getFormattedPrice(invoicePrice)}&nbsp;{currencySymbol}
               </Typography>
             </Typography>
           )}

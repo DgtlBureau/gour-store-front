@@ -38,7 +38,6 @@ export default function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const {
-    goToHome,
     goToProductPage,
     language,
     currency,
@@ -67,8 +66,6 @@ export default function Promotion() {
     [promotion?.products, categories, favoriteProducts],
   );
 
-  if (!promotionId) return goToHome();
-
   const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
@@ -93,7 +90,7 @@ export default function Promotion() {
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !promotion && <Typography variant='h5'>Продукт не найден</Typography>}
+        {!isLoading && !isError && !promotion && <Typography variant='h5'>Промоакция не найден</Typography>}
 
         {!isLoading && !isError && promotion && (
           <>

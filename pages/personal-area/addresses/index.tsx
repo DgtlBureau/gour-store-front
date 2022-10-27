@@ -158,8 +158,8 @@ export function Addresses() {
 
         {isCreating && (
           <PAProfilesItem
-            id={noExistingId}
             key={noExistingId}
+            id={noExistingId}
             cities={cities}
             onSave={createAddress}
             onDelete={closeCreateForm}

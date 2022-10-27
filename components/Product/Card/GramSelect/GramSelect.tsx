@@ -41,13 +41,16 @@ export function ProductCardGramSelect({
     setIsDeployed(false);
   };
 
+  const containerClasses = { ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) };
+  const titleClasses = { ...selectSx.title, ...(!showLabelOnTablets && selectSx.titleHidden) };
+
+  const collapseOptions = () => setIsDeployed(false);
+  const toggleDeployOptions = () => setIsDeployed(prev => !prev);
+
   return (
     <Box sx={sx}>
-      <Box
-        sx={{ ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) }}
-        onClick={() => setIsDeployed(!isDeployed)}
-      >
-        <Typography variant='body1' sx={selectSx.title}>
+      <Box sx={containerClasses} onClick={toggleDeployOptions}>
+        <Typography variant='body1' sx={titleClasses}>
           {gram}&nbsp;г
         </Typography>
 
@@ -59,10 +62,14 @@ export function ProductCardGramSelect({
       </Box>
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
-        <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
+        <ClickAwayListener onClickAway={collapseOptions}>
           <List sx={selectSx.list}>
             {options.map(option => (
-              <ListItemButton selected={+option.value === gram} onClick={() => changeOption(+option.value)}>
+              <ListItemButton
+                selected={+option.value === gram}
+                onClick={() => changeOption(+option.value)}
+                key={option.value}
+              >
                 <ListItemText primary={option.label} />
               </ListItemButton>
             ))}

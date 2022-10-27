@@ -86,10 +86,13 @@ export function ProductActions({
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
   const [productGramOptions] = useState<IOption[]>(() =>
-    productGramList[productType].map(gram => ({
-      label: `${gram}\u00A0г`,
-      value: String(gram),
-    })),
+    productGramList[productType]?.map(
+      gram =>
+        ({
+          label: `${gram}\u00A0г`,
+          value: String(gram),
+        } || []),
+    ),
   );
 
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
@@ -121,6 +124,7 @@ export function ProductActions({
         {isStockFetching && 'Загрузка остатков...'}
         {!isStockFetching && !moyskladId && 'Не указан ID у МойСклад'}
         {!isStockFetching && moyskladId && !isStockError && <>Осталось на складе: {stock?.value}&nbsp;шт.</>}
+        {!isStockFetching && moyskladId && isStockError && <>произошла ошибка</>}
       </Typography>
 
       <Box sx={sxActions.docket}>
