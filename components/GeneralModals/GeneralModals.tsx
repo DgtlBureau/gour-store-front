@@ -30,15 +30,19 @@ export function GeneralInfoModals() {
 }
 
 function generateModalData(query: ParsedUrlQuery) {
-  const { paymentStatus } = query;
-  if (paymentStatus === 'success' && query.orderId) {
+  const { paymentStatus, amount } = query;
+  if (paymentStatus === 'success' && amount) {
     return {
       status: 'success',
       title: 'Платёж успешно зачислен',
-      content: <Typography>1</Typography>,
+      content: (
+        <Typography color='text.secondary' sx={sx.contentAmount}>
+          {amount} ₽
+        </Typography>
+      ),
     } as const;
   }
-  if (paymentStatus === 'success') {
+  if (paymentStatus === 'failure') {
     return {
       status: 'failure',
       title: 'Во время оплаты возникла ошибка',

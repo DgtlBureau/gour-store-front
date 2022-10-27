@@ -5,4 +5,9 @@ export const sx = {
   contentLink: {
     fontSize: 'inherit',
   },
+  contentAmount: {
+    fontWeight: 700,
+    fontSize: '24px',
+    fontFamily: 'Roboto slab',
+  },
 };
