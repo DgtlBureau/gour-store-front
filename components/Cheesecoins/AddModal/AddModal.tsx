@@ -44,7 +44,7 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   });
 
   useEffect(() => {
-    values.reset({ count: 0 });
+    values.resetField('count');
   }, [isOpened]);
 
   const isValidCoinsCount = debouncedValue >= MINIMUM_AMOUNT;
@@ -73,8 +73,10 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     <Modal
       title='Покупка чизкоинов'
       isOpen={isOpened}
+      showRefuseButton
       acceptText='Пополнить'
-      acceptIsDisabled={isDisabledPayBtn}
+      refuseText='Отменить'
+      acceptIsDisabled={isFetching}
       closeIsDisabled={isFetching}
       formId={formId}
       onClose={onClose}

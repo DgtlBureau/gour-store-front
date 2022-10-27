@@ -56,6 +56,7 @@ export function PAPasswordChangeModal({ isOpen, error, onClose, onChange }: PAPa
       onClose={onClose}
       title={t('title')}
       formId='passwordChangeForm'
+      showRefuseButton
       acceptIsDisabled={formIsInvalid}
     >
       <Box sx={sx.body}>

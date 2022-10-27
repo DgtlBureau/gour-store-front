@@ -119,6 +119,7 @@ export function PAEmailChangeModal({
       title={t('title')}
       description={t('description')}
       formId={formId}
+      showRefuseButton
       acceptIsDisabled={!formIsValid}
       onClose={closeModal}
     >
