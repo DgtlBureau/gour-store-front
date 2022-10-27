@@ -1,13 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  createMigrate,
+  persistReducer,
+  persistStore,
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import { commonApi } from './api/commonApi';
 import { rootReducer } from './rootReducer';
+import { storeMigrations } from './storeMigrations';
 
 const persistConfig = {
+  version: 0,
   key: 'root',
   blacklist: [
     'auth',
@@ -25,6 +37,7 @@ const persistConfig = {
     'currentUserApi',
   ],
   storage,
+  migrate: createMigrate(storeMigrations, { debug: false }),
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
