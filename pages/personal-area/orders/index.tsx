@@ -28,7 +28,7 @@ export function Orders() {
   if (isLoading) {
     return (
       <PALayout>
-        <ProgressLinear variant='buffer' />
+        <ProgressLinear />
       </PALayout>
     );
   }

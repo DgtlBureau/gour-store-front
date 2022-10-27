@@ -50,46 +50,48 @@ export function Modal({
 
   return (
     <MUIModal open={isOpen} onClose={onClose}>
-      <Box sx={sx.modal}>
-        <Box sx={sx.head}>
-          {titleIsString ? (
-            <Typography sx={sx.title} variant='h6' color='primary'>
-              {title}
-            </Typography>
-          ) : (
-            title
-          )}
+      <div>
+        <Box sx={sx.modal}>
+          <Box sx={sx.head}>
+            {titleIsString ? (
+              <Typography sx={sx.title} variant='h6' color='primary'>
+                {title}
+              </Typography>
+            ) : (
+              title
+            )}
 
-          {!!onClose && (
-            <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
-              <CrossIcon color='primary' />
-            </IconButton>
-          )}
-        </Box>
-
-        {!!description && <Typography variant='body1'>{description}</Typography>}
-
-        {children}
-
-        {showControlBlock && (
-          <Box sx={sx.controlBtnGroup}>
-            <Button
-              sx={sx.controlBtn}
-              onClick={onAccept}
-              type={formId ? 'submit' : 'button'}
-              disabled={acceptIsDisabled}
-            >
-              {acceptText || t('acceptText')}
-            </Button>
-
-            {showRefuseButton && (
-              <Button sx={sx.controlBtn} variant='outlined' onClick={onClose}>
-                {refuseText || t('refuseText')}
-              </Button>
+            {!!onClose && (
+              <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
+                <CrossIcon color='primary' />
+              </IconButton>
             )}
           </Box>
-        )}
-      </Box>
+
+          {!!description && <Typography variant='body1'>{description}</Typography>}
+
+          {children}
+
+          {showControlBlock && (
+            <Box sx={sx.controlBtnGroup}>
+              <Button
+                sx={sx.controlBtn}
+                onClick={onAccept}
+                type={formId ? 'submit' : 'button'}
+                disabled={acceptIsDisabled}
+              >
+                {acceptText || t('acceptText')}
+              </Button>
+
+              {showRefuseButton && (
+                <Button sx={sx.controlBtn} variant='outlined' onClick={onClose}>
+                  {refuseText || t('refuseText')}
+                </Button>
+              )}
+            </Box>
+          )}
+        </Box>
+      </div>
     </MUIModal>
   );
 }

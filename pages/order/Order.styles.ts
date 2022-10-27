@@ -15,6 +15,13 @@ export const sx = {
       md: 'row',
     },
   },
+
+  infoModalContent: {
+    textAlign: 'center',
+  },
+  infoModalLink: {
+    fontSize: 'inherit',
+  },
 };
 
 export default sx;
