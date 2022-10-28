@@ -17,6 +17,7 @@ const props: Partial<ModalProps> = {
   title: 'Изменение телефона',
   description: 'Пожалуйста, укажите новый номер мобильного телефона. На него мы отправим код подтверждения.',
   acceptText: 'Подтвердить',
+  showRefuseButton: true,
 };
 
 DefaultModal.args = props;

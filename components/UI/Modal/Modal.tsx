@@ -20,6 +20,7 @@ export type ModalProps = {
   children?: ReactNode;
   acceptText?: string | JSX.Element;
   refuseText?: string;
+  showRefuseButton?: true;
   formId?: string;
   acceptIsDisabled?: boolean;
   closeIsDisabled?: boolean;
@@ -34,6 +35,7 @@ export function Modal({
   children,
   acceptText,
   refuseText,
+  showRefuseButton,
   formId,
   acceptIsDisabled,
   closeIsDisabled,
@@ -44,49 +46,53 @@ export function Modal({
 
   const titleIsString = typeof title === 'string';
 
+  const showControlBlock = !!onAccept || !!formId;
+
   return (
     <MUIModal open={isOpen} onClose={onClose}>
-      <Box sx={sx.modal}>
-        <Box sx={sx.head}>
-          {titleIsString ? (
-            <Typography sx={sx.title} variant='h6' color='primary'>
-              {title}
-            </Typography>
-          ) : (
-            title
-          )}
-
-          {!!onClose && (
-            <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
-              <CrossIcon color='primary' />
-            </IconButton>
-          )}
-        </Box>
-
-        {!!description && <Typography variant='body1'>{description}</Typography>}
-
-        {children}
-
-        {onAccept ? (
-          <Box sx={sx.controlBtnGroup}>
-            <Button sx={sx.controlBtn} onClick={onAccept} disabled={acceptIsDisabled}>
-              {acceptText || t('acceptText')}
-            </Button>
+      <div>
+        <Box sx={sx.modal}>
+          <Box sx={sx.head}>
+            {titleIsString ? (
+              <Typography sx={sx.title} variant='h6' color='primary'>
+                {title}
+              </Typography>
+            ) : (
+              title
+            )}
 
             {!!onClose && (
-              <Button sx={sx.controlBtn} variant='outlined' onClick={onClose} disabled={acceptIsDisabled}>
-                {refuseText || t('refuseText')}
-              </Button>
+              <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
+                <CrossIcon color='primary' />
+              </IconButton>
             )}
           </Box>
-        ) : (
-          !!formId && (
-            <Button sx={sx.controlBtn} type='submit' form={formId} disabled={acceptIsDisabled}>
-              {acceptText || t('acceptText')}
-            </Button>
-          )
-        )}
-      </Box>
+
+          {!!description && <Typography variant='body1'>{description}</Typography>}
+
+          {children}
+
+          {showControlBlock && (
+            <Box sx={sx.controlBtnGroup}>
+              <Button
+                sx={sx.controlBtn}
+                onClick={onAccept}
+                type={formId ? 'submit' : 'button'}
+                form={formId}
+                disabled={acceptIsDisabled}
+              >
+                {acceptText || t('acceptText')}
+              </Button>
+
+              {showRefuseButton && (
+                <Button sx={sx.controlBtn} variant='outlined' onClick={onClose}>
+                  {refuseText || t('refuseText')}
+                </Button>
+              )}
+            </Box>
+          )}
+        </Box>
+      </div>
     </MUIModal>
   );
 }

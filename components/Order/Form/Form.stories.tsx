@@ -19,6 +19,7 @@ const Template: ComponentStory<typeof OrderForm> = () => (
     cities={[]}
     delivery={0}
     deliveryProfiles={[]}
+    isFetching={false}
     onSubmit={() => ({})}
     onSelectDeliveryProfile={() => ({})}
   />

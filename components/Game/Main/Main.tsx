@@ -196,6 +196,7 @@ export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: Game
         isOpen={isOpenStartGameModal}
         acceptText='Начать игру'
         refuseText='Назад'
+        showRefuseButton
         onAccept={onSubmitStartGame}
         onClose={() => toggleStartGameModal(false)}
       />

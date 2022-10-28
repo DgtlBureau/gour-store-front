@@ -29,12 +29,9 @@ export function Main() {
   const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
   const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
   const { data: ordersList = [], isLoading: ordersListIsLoading } = useGetOrdersListQuery();
-  const { data: categoriesWithDiscounts = [], isLoading: categoriesIsLoading } = useGetCategoryListWithDiscountQuery(
-    undefined,
-    {
-      selectFromResult: state => ({ ...state, data: formatCategoriesWithMaxDiscount(state.data) }),
-    },
-  );
+  const { categoriesWithDiscounts, isLoading: categoriesIsLoading } = useGetCategoryListWithDiscountQuery(undefined, {
+    selectFromResult: state => ({ ...state, categoriesWithDiscounts: formatCategoriesWithMaxDiscount(state.data) }),
+  });
 
   const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading || categoriesIsLoading;
 
