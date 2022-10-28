@@ -1,16 +1,11 @@
 export const sx = {
   docket: {
     display: 'flex',
-    alignItems: { xs: 'flex-end', md: 'center' },
-    justifyContent: { md: 'space-between' },
-    width: { xs: 'fit-content', md: '100%' },
-    margin: { md: ' 5px 0 10px 0' },
-  },
-  deployed: {
-    margin: { xs: '0 0 10px 0', md: ' 5px 0 10px 0' },
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width: '100%',
+    marginBottom: '10px',
   },
-
   pricing: {
     display: 'flex',
     flexDirection: 'column',

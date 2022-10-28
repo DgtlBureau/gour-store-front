@@ -53,10 +53,12 @@ const getStockLabel = (
   moyskladId: string | null,
   stockValue?: string,
 ) => {
-  if (isStockFetching) return 'загружаем остатки...';
-  if (!moyskladId) return 'не указан ID у МойСклад';
+  if (isStockFetching) return 'загружаем...';
+
+  if (!moyskladId || isStockError) return 'ошибка';
+
   if (stockValue) return `осталось ${stockValue} шт`;
-  return 'произошла ошибка';
+  return 'нет на складе';
 };
 
 // eslint-disable-next-line prefer-arrow-callback
@@ -150,7 +152,7 @@ export const ProductCard = memo(function ProductCard({
         )}
       </Box>
 
-      <Rate currency={currency} rating={rating} price={price} sx={sx.rate} />
+      <Rate rating={rating} stockLabel={stockLabel} />
 
       <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none' }}>
         <Typography sx={sx.title} variant='h6'>
@@ -158,23 +160,18 @@ export const ProductCard = memo(function ProductCard({
         </Typography>
       </Link>
 
-      <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
-        {stockLabel}
-      </Typography>
-
-      <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>
+      <Box sx={sx.actions}>
         <Docket
           gram={gramValue}
           gramOptions={gramOptions}
           onChangeGram={changeGram}
-          inCart={inCart}
           price={price}
           discount={discount}
           currency={currency}
         />
 
         <Cart
-          amount={basketProduct?.amount || 0}
+          amount={basketProduct?.amount}
           gram={gramValue}
           isDisabled={isAddDisabled}
           onAdd={handleAddClick}

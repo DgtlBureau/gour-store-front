@@ -14,7 +14,6 @@ import sx from './Docket.styles';
 type ProductCardDocketProps = {
   gram: number;
   gramOptions: IOption[];
-  inCart: boolean;
   price: number;
   discount?: number;
   currency: Currency;
@@ -24,26 +23,25 @@ type ProductCardDocketProps = {
 export function ProductCardDocket({
   gram,
   gramOptions,
-  inCart,
   price,
   discount = 0,
   currency,
   onChangeGram,
 }: ProductCardDocketProps) {
-  const priceBy100g = Math.ceil(price / 10); // изначально цена указывается за 1кг
-  const priceWithDiscount = getPriceWithDiscount(priceBy100g, discount);
+  const priceByGrams = Math.ceil((price / 1000) * gram); // изначально цена указывается за 1кг
+  const priceWithDiscount = getPriceWithDiscount(priceByGrams, discount);
   const currencySymbol = getCurrencySymbol(currency);
 
   const changeGram = (value: number) => onChangeGram(value);
 
   return (
-    <Box sx={{ ...sx.docket, ...(inCart && sx.deployed) }}>
+    <Box sx={sx.docket}>
       <Box>
         <Box sx={sx.weight}>
           {!!discount && (
             <>
               <Typography variant='body2' sx={sx.oldPrice}>
-                {priceBy100g}
+                {priceByGrams}
                 {currencySymbol}
               </Typography>
               &nbsp;/&nbsp;
@@ -51,7 +49,7 @@ export function ProductCardDocket({
           )}
 
           <Typography variant='body2' sx={sx.unit}>
-            100г
+            {gram}&nbsp;г
           </Typography>
         </Box>
 

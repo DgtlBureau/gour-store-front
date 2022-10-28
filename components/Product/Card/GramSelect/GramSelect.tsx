@@ -40,16 +40,13 @@ export function ProductCardGramSelect({
     setIsDeployed(false);
   };
 
-  const containerClasses = { ...selectSx.extender, ...(!showLabelOnTablets && selectSx.extenderHiddenTitle) };
-  const titleClasses = { ...selectSx.title, ...(!showLabelOnTablets && selectSx.titleHidden) };
-
   const collapseOptions = () => setIsDeployed(false);
   const toggleDeployOptions = () => setIsDeployed(prev => !prev);
 
   return (
     <Box sx={sx}>
-      <Box sx={containerClasses} onClick={toggleDeployOptions}>
-        <Typography variant='body1' sx={titleClasses}>
+      <Box sx={selectSx.extender} onClick={toggleDeployOptions}>
+        <Typography variant='body1' sx={selectSx.title}>
           {gram}&nbsp;г
         </Typography>
 

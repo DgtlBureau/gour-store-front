@@ -5,9 +5,9 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
 
-    borderRadius: '99px',
+    borderRadius: '6px',
 
-    width: { xs: 'fit-content', md: '100%' },
+    width: '100%',
 
     justifyContent: 'center',
 
@@ -35,16 +35,9 @@ export const sx = {
     color: t.palette.common.white,
   },
   buyLabel: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
     textTransform: 'uppercase',
     marginLeft: '10px',
     color: t.palette.common.white,
-  },
-  deployed: {
-    width: '100%',
   },
   action: {
     display: 'flex',

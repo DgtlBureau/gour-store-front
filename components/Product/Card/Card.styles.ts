@@ -4,13 +4,17 @@ const sx = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-
-    height: { xs: '315px', sm: '405px', md: '510px' },
+    justifyContent: 'space-between',
 
     width: {
-      xs: '170px',
-      sm: '220px',
+      xs: '190px',
+      sm: '200px',
       md: '270px',
+    },
+
+    gap: {
+      xs: '5px',
+      md: '10px',
     },
 
     padding: {
@@ -31,10 +35,12 @@ const sx = {
   },
   previewImg: {
     height: {
-      xs: '150px',
-      sm: '200px',
-      md: '250px',
+      xs: '170px',
+      sm: '180px',
+      md: '230px',
     },
+
+    width: '100%',
 
     border: '2px solid',
     borderColor: '#FEC983',
@@ -70,9 +76,6 @@ const sx = {
     overflow: 'hidden',
     borderRadius: '50%',
   },
-  rate: {
-    margin: '10px 0 0 0',
-  },
   title: {
     fontSize: {
       xs: '14px',
@@ -95,8 +98,6 @@ const sx = {
 
     maxHeight: { xs: '24px', sm: '26px', md: '30px' },
 
-    margin: '5px 0 10px 0',
-
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 
@@ -104,42 +105,10 @@ const sx = {
       opacity: '0.75',
     },
   },
-  stock: {
-    display: 'block',
-    padding: '2px 16px',
-    borderRadius: '4px',
-    backgroundColor: t.palette.background.paper,
-    color: t.palette.text.secondary,
-
-    width: '100%',
-    height: '100%',
-
-    maxHeight: '26px',
-
-    WebkitLineClamp: 1,
-    WebkitBoxOrient: 'vertical',
-
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
   actions: {
     display: 'flex',
-    height: '100%',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    flexDirection: {
-      xs: 'row',
-      md: 'column',
-    },
-    margin: { xs: '10px 0 0 0', md: 0 },
-  },
-  deployedActions: {
-    flexDirection: { xs: 'column' },
-    margin: 0,
-  },
-  deployedStock: {
-    display: { xs: 'none', md: 'flex' },
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
 };
 

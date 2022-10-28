@@ -15,17 +15,15 @@ import sx from './Cart.styles';
 
 type Props = {
   isDisabled: boolean;
-  amount: number;
+  amount?: number;
   gram: number;
   onAdd: () => void;
   onRemove: () => void;
 };
 
-export function ProductCardCart({ isDisabled, amount, gram, onAdd, onRemove }: Props) {
-  const inCart = amount > 0;
-
+export function ProductCardCart({ isDisabled, amount = 0, gram, onAdd, onRemove }: Props) {
   return (
-    <Box sx={{ ...sx.cart, ...(inCart && sx.deployed) }}>
+    <Box sx={sx.cart}>
       {amount === 0 ? (
         <IconButton sx={sx.iconBtn} disabled={isDisabled} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
