@@ -59,7 +59,8 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
   }, [isOpened]);
 
   const handleSubmit = (formData: FormState) => {
-    const [expDateMonth, expDateYear] = getExpDate(formData.expDate) as readonly [number, number];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [expDateMonth, expDateYear] = getExpDate(formData.expDate)!;
     const submitData: PayInvoiceDto = {
       cardNumber: formData.cardNumber,
       expDateMonth,

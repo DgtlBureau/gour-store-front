@@ -5,11 +5,12 @@ import * as yup from 'yup';
 
 export const getExpDate = (value?: string) => {
   const regexpResult = value?.match(/^(\d{2})\D*(\d{2})$/);
-  if (regexpResult) {
-    const [, month, year] = regexpResult;
-    return [+month, +year] as const;
+  if (!regexpResult) {
+    return;
   }
-  return false;
+  const [_, month, year] = regexpResult;
+  // eslint-disable-next-line consistent-return
+  return [month, year] as const;
 };
 
 export const getValidationSchema = (t: Translator) =>
@@ -33,7 +34,7 @@ export const getValidationSchema = (t: Translator) =>
         const date = getExpDate(value);
         if (!date) return false;
         const [month, _year] = date;
-        return month >= 1 && month <= 12;
+        return +month >= 1 && +month <= 12;
       }),
 
     invoiceEmail: yup

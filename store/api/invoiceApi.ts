@@ -1,6 +1,10 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+
 import { GetInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
+
+import { Path } from 'constants/routes';
 
 import { commonApi } from './commonApi';
 
@@ -43,6 +47,8 @@ const mockData: IInvoice[] = [
   },
 ];
 
+const PAYMENT_PUBLIC_ID = process.env.NEXT_PAYMENT_PUBLIC_ID as string;
+
 // eslint-disable-next-line no-promise-executor-return
 const sleep = (sec: number) => new Promise<void>(res => setTimeout(res, sec * 1000)); // TODO: remove this line
 
@@ -72,14 +78,29 @@ export const invoiceApi = commonApi.injectEndpoints({
         },
       }),
       buyCheeseCoins: builder.mutation<number, PayInvoiceDto>({
-        // query: (body) => ({
-        //   url: '',
-        // }),
-        async queryFn(body) {
-          await sleep(1);
-          // eslint-disable-next-line no-console
-          console.log('request', body);
-          return { data: 1 };
+        async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
+          const { cardNumber, expDateMonth, expDateYear, cvv, price, invoiceEmail } = args;
+
+          const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
+          const signature = await checkout.createPaymentCryptogram({
+            cardNumber,
+            expDateMonth,
+            expDateYear,
+            cvv,
+          });
+
+          const result = await fetchWithBQ({
+            url: 'Path.',
+            body: {
+              signature,
+              price,
+              email: invoiceEmail,
+              currency: 'RUB',
+            },
+            method: 'POST',
+          });
+
+          return result.data ? { data: result.data as number } : { error: result.error as FetchBaseQueryError };
         },
       }),
     };
