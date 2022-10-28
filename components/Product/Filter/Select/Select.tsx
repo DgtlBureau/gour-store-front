@@ -10,7 +10,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IOption } from 'types/entities/IOption';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import { ProductFilterSelectItem } from '../Multiselect/SelectItem';
 import selectSx from './Select.styles';
@@ -39,7 +39,7 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
 
   return isMobile ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={color.muted} />}>
         <Typography variant='body1' sx={selectSx.title}>
           {title}
         </Typography>
@@ -64,7 +64,7 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
         </Typography>
 
         <ExpandMoreIcon
-          htmlColor={theme.palette.text.muted}
+          htmlColor={color.muted}
           sx={{ ...(isDeployed && selectSx.rotatedArrow), marginLeft: '8px' }}
           fontSize='small'
         />

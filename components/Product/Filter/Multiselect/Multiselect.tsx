@@ -14,7 +14,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Multiselect.i18n.json';
 import selectSx from './Multiselect.styles';
@@ -62,7 +62,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
   const summaryIcon =
     selected.length > 0 ? (
       <ClearIcon
-        htmlColor={theme.palette.text.muted}
+        htmlColor={color.muted}
         fontSize='small'
         onClick={e => {
           e.stopPropagation();
@@ -70,11 +70,7 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
         }}
       />
     ) : (
-      <ExpandMoreIcon
-        htmlColor={theme.palette.text.muted}
-        fontSize='small'
-        sx={{ ...(isDeployed && selectSx.rotatedArrow) }}
-      />
+      <ExpandMoreIcon htmlColor={color.muted} fontSize='small' sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
     );
 
   return isMobile ? (

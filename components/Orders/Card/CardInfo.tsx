@@ -9,13 +9,13 @@ import { Currency } from 'types/entities/Currency';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Card.i18n.json';
 
 const sx = {
   card: {
-    background: theme.palette.background.paper,
+    background: color.secondary,
     borderRadius: '6px',
     padding: {
       sm: '30px',

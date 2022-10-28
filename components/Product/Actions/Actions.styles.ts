@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   container: {
@@ -15,7 +15,7 @@ export const sx = {
   },
 
   stock: {
-    color: theme.palette.text.secondary,
+    color: color.secondary,
     maxWidth: '100%',
     margin: {
       xs: '0 12px 0 0',
@@ -68,15 +68,15 @@ export const sx = {
       sm: '0 10px',
     },
     fontFamily: 'Roboto slab',
-    background: theme.palette.primary.main,
-    color: theme.palette.common.white,
+    background: color.primary,
+    color: color.white,
 
     '&: hover': {
-      background: theme.palette.common.black,
+      background: color.black,
     },
   },
   icon: {
-    color: theme.palette.common.white,
+    color: color.white,
   },
   btnGroup: {
     minWidth: '180px',
@@ -109,15 +109,15 @@ export const sx = {
       sm: 'flex',
     },
 
-    background: theme.palette.accent.main,
-    color: theme.palette.common.white,
+    background: color.accent,
+    color: color.white,
 
     '&: hover': {
-      background: theme.palette.common.black,
+      background: color.black,
     },
   },
   favoriteBtnElected: {
-    background: theme.palette.primary.main,
+    background: color.primary,
   },
   total: {
     display: 'flex',

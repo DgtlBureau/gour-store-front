@@ -15,7 +15,7 @@ import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Form.i18n.json';
 import { getValidationSchema } from './validation';
@@ -102,8 +102,8 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
             <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
               {t('clear')}
             </Button>
-            <IconButton onClick={onDelete}>
-              <DeleteIcon htmlColor={theme.palette.text.muted} />
+            <IconButton>
+              <DeleteIcon htmlColor={color.muted} onClick={onDelete} />
             </IconButton>
           </Grid>
         </Grid>

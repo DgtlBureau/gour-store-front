@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { formatDate } from 'utils/dateUtil';
 
 import StarIcon from '@mui/icons-material/Star';
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 import { Review } from '../Reviews/Reviews';
 import sx from './ReviewModal.styles';
@@ -28,8 +28,8 @@ export function ReviewModal({ isOpen, review, onClose }: ReviewModalProps) {
           value={review.value}
           precision={0.5}
           readOnly
-          icon={<StarIcon fontSize='small' htmlColor={t.palette.accent.main} />}
-          emptyIcon={<StarIcon fontSize='small' htmlColor={t.palette.text.muted} />}
+          icon={<StarIcon fontSize='small' htmlColor={color.accent} />}
+          emptyIcon={<StarIcon fontSize='small' htmlColor={color.muted} />}
         />
 
         <Typography sx={sx.date} variant='body2' color='text.muted'>
