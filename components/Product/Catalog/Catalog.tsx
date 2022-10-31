@@ -136,7 +136,7 @@ export function ProductCatalog({
       return sortedProducts;
     }
     return products;
-  }, [filters, products]);
+  }, [filters, products, withFilterList]);
 
   const screenWidth = window.screen.width;
 
