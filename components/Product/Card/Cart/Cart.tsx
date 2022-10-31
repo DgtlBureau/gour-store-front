@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -23,7 +24,7 @@ type Props = {
 
 export function ProductCardCart({ isDisabled, amount = 0, gram, onAdd, onRemove }: Props) {
   return (
-    <Box sx={sx.cart}>
+    <Box sx={{ ...sx.cart, ...(isDisabled && sx.disabled) }}>
       {amount === 0 ? (
         <IconButton sx={sx.iconBtn} disabled={isDisabled} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
@@ -32,7 +33,7 @@ export function ProductCardCart({ isDisabled, amount = 0, gram, onAdd, onRemove 
           </Typography>
         </IconButton>
       ) : (
-        <Grid container xs>
+        <Grid container>
           <Grid item xs={4} sx={sx.action}>
             <IconButton sx={sx.iconBtn} onClick={onRemove}>
               {amount === 1 ? <TrashIcon sx={sx.icon} /> : <MinusIcon sx={sx.icon} />}

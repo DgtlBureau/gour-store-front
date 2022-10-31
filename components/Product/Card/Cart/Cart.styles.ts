@@ -7,6 +7,10 @@ export const sx = {
 
     borderRadius: '6px',
 
+    height: {
+      xs: '34px',
+      md: '40px',
+    },
     width: '100%',
 
     justifyContent: 'center',
@@ -22,9 +26,6 @@ export const sx = {
   },
   iconBtn: {
     width: '100%',
-    padding: {
-      xs: '10px',
-    },
   },
   icon: {
     fontSize: {
@@ -43,6 +44,15 @@ export const sx = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    userSelect: 'none',
+  },
+  disabled: {
+    color: 'rgba(0, 0, 0, 0.26)',
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+
+    '&: hover': {
+      background: undefined,
+    },
   },
 };
 
