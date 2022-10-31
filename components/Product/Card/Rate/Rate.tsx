@@ -2,6 +2,7 @@ import React from 'react';
 
 import { SxProps } from '@mui/material';
 
+import { ProductStock } from 'components/Product/Stock/Stock';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -25,9 +26,7 @@ export function ProductCardRate({ rating, stockLabel, sx }: ProductCardRateProps
         </Typography>
       </Box>
 
-      <Typography variant='caption' sx={rateSx.stock}>
-        {stockLabel}
-      </Typography>
+      <ProductStock label={stockLabel} />
     </Box>
   );
 }

@@ -47,7 +47,7 @@ export type ProductCardProps = {
   onDetail: () => void;
 };
 
-const getStockLabel = (
+export const getStockLabel = (
   isStockFetching: boolean,
   isStockError: boolean,
   moyskladId: string | null,
