@@ -25,7 +25,7 @@ export type CatalogFilterProps = {
   language: Language;
   sx?: SxProps;
   onOrderTypeChange: (order: OrderType) => void;
-  onProductTypeChange: (key: string) => void;
+  onProductTypeChange: (id: number) => void;
   onCharacteristicChange: (key: string, values: string[]) => void;
   onCharacteristicsReset: () => void;
 };
@@ -74,7 +74,7 @@ export function ProductFilterList({
             <ToggleButton
               key={category.id}
               selected={filters.productType === category.id}
-              onChange={() => onProductTypeChange(category.id.toString())}
+              onChange={() => onProductTypeChange(category.id)}
             >
               {category.title[language]}
             </ToggleButton>

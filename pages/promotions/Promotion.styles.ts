@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   promotion: {
@@ -26,6 +26,6 @@ export const sx = {
   },
   description: {
     maxWidth: '1200px',
-    color: theme.palette.text.muted,
+    color: color.muted,
   },
 };

@@ -8,7 +8,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { formatDate } from 'utils/dateUtil';
 
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
@@ -31,7 +31,7 @@ export type ProductReviewsProps = {
 
 const sxReviews = {
   container: {
-    background: theme.palette.background.paper,
+    background: color.secondary,
     borderRadius: '6px',
     padding: '20px',
   },
@@ -39,7 +39,7 @@ const sxReviews = {
     marginBottom: '20px',
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: 'text.primary',
+    color: color.black,
   },
   slider: {
     height: '100%',

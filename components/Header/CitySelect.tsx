@@ -4,13 +4,13 @@ import { Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/mater
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './CitySelect.i18n.json';
 
 const paperSx = {
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.secondary,
+  backgroundColor: color.white,
+  color: color.secondary,
 };
 
 type Props = {
@@ -38,7 +38,7 @@ export function CitySelect({ isOpen, cities, selected, onSelect, onClose }: Prop
               <Typography
                 sx={{ cursor: 'pointer' }}
                 variant='body1'
-                color={city.id === selected ? theme.palette.accent.main : 'inherit'}
+                color={city.id === selected ? color.accent : 'inherit'}
               >
                 {city.name}
               </Typography>

@@ -128,17 +128,24 @@ export function ProductCatalog({
     }
   };
 
-  const filteredProducts = useMemo(() => products.filter(checkProductType).filter(checkCharacteristics), [filters]);
+  const productList = useMemo(() => {
+    if (withFilterList) {
+      const filteredProducts = products.filter(checkProductType).filter(checkCharacteristics);
+      const sortedProducts = sortByOrderType(filteredProducts);
 
-  const productList = sortByOrderType(filteredProducts);
+      return sortedProducts;
+    }
+    return products;
+  }, [filters, products, withFilterList]);
 
   const screenWidth = window.screen.width;
 
-  const changeProductType = (key: string) => {
-    const isSelected = filters.productType === +key;
+  const changeProductType = (id: number) => {
+    const isSelected = filters.productType === id;
 
-    if (isSelected) setFilters({ ...filters, productType: null, characteristics: {} });
-    else setFilters({ ...filters, productType: +key, characteristics: {} });
+    const productType = isSelected ? null : id;
+
+    setFilters({ ...filters, productType, characteristics: {} });
   };
 
   const changeCharacteristics = (key: string, values: string[]) => {

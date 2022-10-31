@@ -7,7 +7,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import StarIcon from '@mui/icons-material/Star';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './Reviews.i18n.json';
 
@@ -24,15 +24,15 @@ const sx = {
   progress: {
     width: '100%',
     height: '2px',
-    backgroundColor: 'common.white',
+    backgroundColor: color.white,
   },
   progressFill: {
-    backgroundColor: theme.palette.accent.main,
+    backgroundColor: color.accent,
     height: '100%',
   },
   star: {
     margin: '0 10px',
-    color: theme.palette.accent.main,
+    color: color.accent,
   },
   reviews: {
     display: 'flex',

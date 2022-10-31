@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color, defaultTheme as theme } from 'themes';
 
 const sx = {
   contactsWrapper: {
@@ -44,7 +44,7 @@ const sx = {
       xs: '16px',
     },
     fontWeight: 'bold',
-    color: theme.palette.text.secondary,
+    color: color.primary,
   },
   social: {
     display: 'flex',
@@ -93,7 +93,7 @@ const sx = {
       xs: '0 0 5px 0',
     },
     textDecoration: 'none',
-    color: theme.palette.text.secondary,
+    color: color.primary,
   },
   divider: {
     opacity: {
@@ -103,7 +103,7 @@ const sx = {
     marginTop: 0,
     marginBottom: 0,
     margin: '0 15px',
-    borderColor: theme.palette.secondary.main,
+    borderColor: color.secondary,
   },
   logo: {
     height: {

@@ -1,11 +1,11 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   list: {
     position: 'absolute',
     width: '100%',
-    backgroundColor: t.palette.primary.main,
-    color: t.palette.common.white,
+    backgroundColor: color.primary,
+    color: color.white,
   },
   listItem: {
     display: 'flex',
@@ -37,11 +37,11 @@ const sx = {
     alignItems: 'center',
   },
   divider: {
-    borderColor: t.palette.common.white,
+    borderColor: color.white,
     opacity: 0.1,
   },
   accent: {
-    color: t.palette.accent.main,
+    color: color.accent,
   },
   arrowIcon: {
     position: 'relative',
@@ -82,7 +82,7 @@ const sx = {
   link: {
     fontSize: '16px',
     fontWeight: 700,
-    color: t.palette.common.white,
+    color: color.white,
     '&:firstChild': {
       marginRight: '20px',
     },
@@ -107,10 +107,10 @@ const sx = {
   },
   replenishment: {
     padding: '4px 16px',
-    backgroundColor: 'common.white',
+    backgroundColor: color.white,
     borderRadius: '50px',
     '&:hover': {
-      backgroundColor: 'secondary.main',
+      backgroundColor: color.secondary,
     },
   },
 };

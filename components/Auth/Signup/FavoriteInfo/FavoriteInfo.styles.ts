@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   product: {
@@ -10,7 +10,7 @@ const sx = {
   },
   selected: {
     border: '2px solid',
-    borderColor: theme.palette.accent.main,
+    borderColor: color.accent,
   },
 };
 

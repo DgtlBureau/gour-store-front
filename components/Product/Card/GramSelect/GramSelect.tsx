@@ -9,7 +9,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IOption } from 'types/entities/IOption';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import selectSx from './GramSelect.styles';
 
@@ -50,11 +50,7 @@ export function ProductCardGramSelect({
           {gram}&nbsp;г
         </Typography>
 
-        <ExpandMoreIcon
-          htmlColor={theme.palette.text.muted}
-          sx={{ ...(isDeployed && selectSx.rotatedArrow) }}
-          fontSize='small'
-        />
+        <ExpandMoreIcon htmlColor={color.muted} sx={{ ...(isDeployed && selectSx.rotatedArrow) }} fontSize='small' />
       </Box>
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
