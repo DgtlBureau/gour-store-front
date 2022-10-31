@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { authApi } from 'store/api/authApi';
 import { RootState } from 'store/store';
 
 import { IOrderProduct } from 'types/entities/IOrderProduct';
@@ -74,6 +75,9 @@ export const orderSlice = createSlice({
       const productKey = getProductKeyInBasket(product.id, gram);
       delete state.products[productKey];
     },
+  },
+  extraReducers(builder) {
+    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState);
   },
 });
 

@@ -65,6 +65,11 @@ export const authApi = commonApi.injectEndpoints({
             body,
           };
         },
+        onQueryStarted(arg, api) {
+          api.queryFulfilled.then(() => {
+            api.dispatch(authApi.util.resetApiState());
+          });
+        },
       }),
     };
   },
