@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import { InputModeTypes } from 'react-code-input';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CodeInput } from 'components/UI/Inputs/CodeInput/CodeInput';
@@ -11,8 +10,7 @@ type Props = {
   defaultValue?: string;
   disabled?: boolean;
   fieldsCount?: number;
-  type?: 'number' | 'text' | 'password' | 'tel' | undefined;
-  inputMode?: InputModeTypes;
+  type?: 'number' | 'text';
   onChange?: (value: string) => void;
 };
 
