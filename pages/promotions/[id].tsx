@@ -59,10 +59,8 @@ export default function Promotion() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  // const basket = useAppSelector(selectBasketProducts);
-
   const formattedPromotionProducts = useMemo(
-    () => computeProductsWithCategories(promotion?.products || [], categories, favoriteProducts || []),
+    () => promotion?.products && computeProductsWithCategories(promotion?.products, categories, favoriteProducts),
     [promotion?.products, categories, favoriteProducts],
   );
 
@@ -90,7 +88,7 @@ export default function Promotion() {
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !promotion && <Typography variant='h5'>Промоакция не найден</Typography>}
+        {!isLoading && !isError && !promotion && <Typography variant='h5'>Акция не найдена</Typography>}
 
         {!isLoading && !isError && promotion && (
           <>
