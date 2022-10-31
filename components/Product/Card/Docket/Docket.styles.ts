@@ -3,6 +3,11 @@ export const sx = {
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+    height: {
+      xs: '44px',
+      sm: '52px',
+      md: '60px',
+    },
     width: '100%',
     marginBottom: '10px',
   },
