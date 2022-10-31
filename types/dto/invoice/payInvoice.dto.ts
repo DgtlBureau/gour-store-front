@@ -1,8 +1,8 @@
 export type PayInvoiceDto = Readonly<{
   cardNumber: string;
-  expDateMonth: number;
-  expDateYear: number;
-  cvv: number;
+  expDateMonth: string;
+  expDateYear: string;
+  cvv: string;
 
   invoiceEmail?: string;
   price: number;

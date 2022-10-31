@@ -8,7 +8,7 @@ export enum InvoiceStatus {
 }
 
 export interface IInvoice extends IBase {
-  amount: number; // count of cheesecoints
+  amount: number; // count of cheesecoins
   value: number; // total price
   status: InvoiceStatus;
   expiresAt: string;

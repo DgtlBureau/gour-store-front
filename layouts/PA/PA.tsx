@@ -92,7 +92,7 @@ export function PALayout({ children }: PALayoutProps) {
     },
   ];
 
-  const onAddCheeseCoinClick = (price: number) => {
+  const handleAddCheeseCoinClick = (price: number) => {
     toggleCheeseCoinModalOpen(false);
     setBuyCheeseCoinState({
       isOpenModal: true,
@@ -100,7 +100,7 @@ export function PALayout({ children }: PALayoutProps) {
     });
   };
 
-  const onCloseBuyModal = () =>
+  const handleCloseBuyModal = () =>
     setBuyCheeseCoinState({
       isOpenModal: false,
       price: null,
@@ -133,7 +133,7 @@ export function PALayout({ children }: PALayoutProps) {
         <CheesecoinsAddModal
           isOpened={isCheeseCoinModalOpen}
           onClose={onCloseCoinsAddModal}
-          onSubmit={onAddCheeseCoinClick}
+          onSubmit={handleAddCheeseCoinClick}
         />
 
         <BuyCheeseCoinsModal
@@ -141,7 +141,7 @@ export function PALayout({ children }: PALayoutProps) {
           userEmail={currentUser?.email}
           price={buyCheeseCoinState.price}
           isLoading={isPaymentLoading}
-          onClose={onCloseBuyModal}
+          onClose={handleCloseBuyModal}
           onSubmit={buyCheeseCoins}
         />
       </Box>
