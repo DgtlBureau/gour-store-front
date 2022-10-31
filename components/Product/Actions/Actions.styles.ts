@@ -6,14 +6,27 @@ export const sx = {
       xs: '100%',
       sm: '450px',
     },
+    gap: '5px',
     alignItems: { xs: 'flex-end', md: 'center' },
   },
   icon: {
     color: color.white,
   },
+  gramSelect: {
+    height: {
+      xs: '34px',
+      md: '40px',
+    },
+  },
   favoriteBtn: {
-    width: '44px',
-    height: '44px',
+    height: {
+      xs: '34px',
+      md: '40px',
+    },
+    width: {
+      xs: '34px',
+      md: '40px',
+    },
     borderRadius: '50%',
 
     background: color.accent,

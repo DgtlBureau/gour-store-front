@@ -106,8 +106,8 @@ export function ProductActions({
   };
 
   return (
-    <Grid container spacing={1} sx={{ ...sx, ...sxActions.container } as SxProps}>
-      <Grid item md={12}>
+    <Grid container sx={{ ...sx, ...sxActions.container } as SxProps}>
+      <Grid item xs md={12}>
         <ProductPrice price={priceByGrams} discount={discount} currency={currency} />
       </Grid>
 
@@ -117,11 +117,11 @@ export function ProductActions({
           gram={productGramValue}
           onChange={onSelectGram}
           options={productGramOptions}
-          sx={{ height: '42px' }}
+          sx={sxActions.gramSelect}
         />
       </Grid>
 
-      <Grid item xs>
+      <Grid item xs={5} md>
         <ProductCardCart
           isDisabled={isAddDisabled}
           amount={basketProduct?.amount}
