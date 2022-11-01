@@ -1,4 +1,4 @@
-import { differenceInHours, intervalToDuration } from 'date-fns';
+import { differenceInHours, formatDuration, intervalToDuration } from 'date-fns';
 
 export const formatSeconds = (seconds: number) => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
@@ -7,4 +7,16 @@ export const formatSeconds = (seconds: number) => {
   const formattedSeconds = (duration.seconds || 0) < 10 ? `0${duration.seconds}` : duration.seconds;
 
   return `${hours}:${formattedMinutes}:${formattedSeconds}`;
+};
+
+export const formatTimeLeft = (start: Date, end: Date, locale?: Locale) => {
+  const duration = intervalToDuration({ start, end });
+  let format: string[];
+  if (duration.days) {
+    format = ['days', 'hours'];
+  } else {
+    format = ['hours', 'minutes'];
+  }
+  const time = formatDuration(duration, { locale, zero: true, format });
+  return time;
 };
