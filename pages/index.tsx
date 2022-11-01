@@ -105,11 +105,9 @@ const Home: NextPage = () => {
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
-  const bannerPromoImage = promotions?.[0]?.cardImage.small;
-
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
         {!!filteredPromotions?.length && (
           <CardSlider

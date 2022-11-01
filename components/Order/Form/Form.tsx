@@ -201,11 +201,11 @@ export function OrderForm({
               label={
                 <span style={sx.agreementLabel}>
                   Даю свое согласие с{' '}
-                  <Link href={Path.OFERTA} target='_blank'>
+                  <Link href={`/${Path.OFERTA}`} target='_blank'>
                     условиями обслуживания
                   </Link>
                   , а также с &nbsp;
-                  <Link href={Path.PRIVACY} target='_blank'>
+                  <Link href={`/${Path.PRIVACY}`} target='_blank'>
                     политикой конфиденциальности и правилами хранения моих персональных данных
                   </Link>
                   .

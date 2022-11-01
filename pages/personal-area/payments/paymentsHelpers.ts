@@ -10,7 +10,7 @@ export const formatPaymentsByDate = (payments: IInvoice[]) =>
     acc[dateKey] = acc[dateKey] || [];
 
     acc[dateKey].push({
-      id: invoice.id,
+      uuid: invoice.uuid,
       status: invoice.status,
       cheeseCoinCount: invoice.amount,
       updatedAt: new Date(invoice.updatedAt),

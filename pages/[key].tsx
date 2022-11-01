@@ -35,7 +35,7 @@ function InfoPages() {
   if (!isLoading && !page) return <NotFound />;
 
   return (
-    <ShopLayout currency={currency} language={language}>
+    <ShopLayout>
       {isLoading && <Loader />}
 
       {!isLoading && !!page && (

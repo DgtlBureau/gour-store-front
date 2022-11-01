@@ -1,89 +1,82 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+
+import { CreateInvoiceDto } from 'types/dto/invoice/createInvoice.dto';
 import { GetInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
-import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
-import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
+import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { IInvoice } from 'types/entities/IInvoice';
 
 import { commonApi } from './commonApi';
 
-const mockData: IInvoice[] = [
-  {
-    id: 1,
-    amount: 3100,
-    status: InvoiceStatus.WAITING,
-    value: 3100,
-    createdAt: '2022-04-19T16:04:16Z',
-    updatedAt: '2022-04-19T16:04:16Z',
-    expiresAt: '2022-04-19T16:34:16Z',
-  },
-  {
-    id: 2,
-    amount: 150000,
-    status: InvoiceStatus.PAID,
-    value: 150000,
-    createdAt: '2021-08-02T20:00:16Z',
-    updatedAt: '2021-08-02T20:17:16Z',
-    expiresAt: '2021-08-02T20:47:16Z',
-  },
-  {
-    id: 3,
-    amount: 1,
-    status: InvoiceStatus.CANCELLED,
-    value: 1,
-    createdAt: '2021-08-02T20:00:16Z',
-    updatedAt: '2021-08-02T20:17:16Z',
-    expiresAt: '2021-08-02T20:47:16Z',
-  },
-  {
-    id: 4,
-    amount: 855354,
-    status: InvoiceStatus.FAILED,
-    value: 855354,
-    createdAt: '2022-11-24T13:23:16Z',
-    updatedAt: '2022-11-24T13:23:16Z',
-    expiresAt: '2022-11-24T13:53:16Z',
-  },
-];
-
-// eslint-disable-next-line no-promise-executor-return
-const sleep = (sec: number) => new Promise<void>(res => setTimeout(res, sec * 1000)); // TODO: remove this line
+const PAYMENT_PUBLIC_ID = process.env.NEXT_PUBLIC_PAYMENT_PUBLIC_ID as string;
 
 export const invoiceApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getInvoiceList: builder.query<IInvoice[], void>({
-        // query: async () => ({
-        //   url: 'Path.INVOICES',
-        // }),
-        async queryFn() {
-          await sleep(1);
-          return { data: mockData };
-        },
+      getInvoiceList: builder.query<IInvoice[], { userId: string }>({
+        query: params => ({
+          url: '/payment/invoice',
+          params,
+        }),
         providesTags: result =>
           result
-            ? [...result.map(({ id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
+            ? [...result.map(({ uuid: id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
             : [{ type: 'Invoice', id: 'LIST' }],
       }),
       getInvoicePrice: builder.query<number, GetInvoicePriceDto>({
-        // query: (body) => ({
-        //   url: '',
-        // }),
-        async queryFn({ count }) {
-          await sleep(1);
-          return { data: count };
-        },
+        query: body => ({
+          method: 'POST',
+          url: '/wallet/get-amount-by-currency',
+          body,
+        }),
+      }),
+      createInvoice: builder.mutation<IInvoice, CreateInvoiceDto>({
+        query: body => ({
+          url: '/payment/invoice',
+          method: 'POST',
+          body,
+        }),
       }),
       buyCheeseCoins: builder.mutation<number, PayInvoiceDto>({
-        // query: (body) => ({
-        //   url: '',
-        // }),
-        async queryFn(body) {
-          await sleep(1);
-          // eslint-disable-next-line no-console
-          console.log('request', body);
-          return { data: 1 };
+        async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
+          const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
+          const checkoutValues = {
+            cvv,
+            cardNumber,
+            expDateMonth,
+            expDateYear,
+          };
+
+          try {
+            const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
+            const signature = await checkout.createPaymentCryptogram(checkoutValues);
+
+            const ipAddress = '5.18.144.32';
+
+            const requestBody: PayServerInvoiceDto = {
+              signature,
+              email,
+              ipAddress,
+              payerUuid,
+              currency: 'RUB',
+              invoiceUuid,
+            };
+
+            const result = await fetchWithBQ({
+              url: '/wallet/wallet-replenish-balance', // TODO: вынести в константы пути
+              body: requestBody,
+              method: 'POST',
+            });
+
+            return result.data ? { data: result.data as number } : { error: result.error as FetchBaseQueryError };
+          } catch (e) {
+            console.error('[PAYMENT VALIDATION]:', e); // TODO: дописать обработку ошибок
+            return { error: { status: 400, data: 'Ошибка валидации' } };
+          }
         },
       }),
     };
   },
 });
 
-export const { useGetInvoiceListQuery, useGetInvoicePriceQuery, useBuyCheeseCoinsMutation } = invoiceApi;
+export const { useGetInvoiceListQuery, useGetInvoicePriceQuery, useCreateInvoiceMutation, useBuyCheeseCoinsMutation } =
+  invoiceApi;

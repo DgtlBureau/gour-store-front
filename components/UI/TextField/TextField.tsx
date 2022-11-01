@@ -19,7 +19,6 @@ type Props = {
   multiline?: boolean;
   rows?: number;
   inputProps?: InputBaseProps['inputProps'];
-  maxLength?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -41,7 +40,6 @@ export function TextField({
   multiline,
   rows,
   inputProps,
-  maxLength,
   onChange,
   onFocus,
   onBlur,
@@ -66,7 +64,7 @@ export function TextField({
       onKeyDown={onKeyDown}
       multiline={multiline}
       rows={rows}
-      inputProps={{ ...inputProps, maxLength, endAdornment }}
+      inputProps={{ ...inputProps, endAdornment }}
       FormHelperTextProps={{
         sx: helperTextSx,
       }}

@@ -7,8 +7,9 @@ export enum InvoiceStatus {
   CANCELLED = 'CANCELLED',
 }
 
-export interface IInvoice extends IBase {
-  amount: number; // count of cheesecoints
+export interface IInvoice extends Omit<IBase, 'id'> {
+  uuid: string;
+  amount: number; // count of cheesecoins
   value: number; // total price
   status: InvoiceStatus;
   expiresAt: string;

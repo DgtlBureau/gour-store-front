@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useBuyCheeseCoinsMutation } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectIsAuth } from 'store/selectors/auth';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
@@ -12,6 +12,7 @@ import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
+import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
@@ -26,12 +27,12 @@ import sx from './Shop.styles';
 type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
 
 export interface ShopLayoutProps {
-  currency: Currency;
-  language: Language;
   children?: ReactNode;
 }
 
-export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
+export function ShopLayout({ children }: ShopLayoutProps) {
+  const { currency, language } = useAppNavigation();
+
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
@@ -45,6 +46,7 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
   const isAuth = useAppSelector(selectIsAuth);
 
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
 
@@ -60,11 +62,17 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
-  const onAddCheeseCoinClick = (price: number) => {
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
     toggleCheeseCoinModalOpen(false);
     setBuyCheeseCoinState({
       isOpenModal: true,
-      price,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
     });
   };
 
@@ -101,12 +109,14 @@ export function ShopLayout({ currency, language, children }: ShopLayoutProps) {
       <CheesecoinsAddModal
         isOpened={isCheeseCoinModalOpen}
         onClose={onCloseCoinsAddModal}
-        onSubmit={onAddCheeseCoinClick}
+        onSubmit={handleAddCheeseCoinClick}
       />
 
       <BuyCheeseCoinsModal
         isOpened={buyCheeseCoinState.isOpenModal}
         userEmail={currentUser?.email}
+        userId={currentUser?.id}
+        invoiceUuid={invoiceData?.uuid}
         price={buyCheeseCoinState.price}
         isLoading={isPaymentLoading}
         onClose={onCloseBuyModal}

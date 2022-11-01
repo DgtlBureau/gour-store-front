@@ -1,4 +1,4 @@
 export type GetInvoicePriceDto = Readonly<{
-  currency: 'rub' | 'usd';
+  currency: 'RUB' | 'USD';
   count: number;
 }>;

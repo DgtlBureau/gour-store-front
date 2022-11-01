@@ -5,11 +5,12 @@ import * as yup from 'yup';
 
 export const getExpDate = (value?: string) => {
   const regexpResult = value?.match(/^(\d{2})\D*(\d{2})$/);
-  if (regexpResult) {
-    const [, month, year] = regexpResult;
-    return [+month, +year] as const;
+  if (!regexpResult) {
+    return;
   }
-  return false;
+  const [_, month, year] = regexpResult;
+  // eslint-disable-next-line consistent-return
+  return [month, year] as const;
 };
 
 export const getValidationSchema = (t: Translator) =>
@@ -20,10 +21,10 @@ export const getValidationSchema = (t: Translator) =>
       .test('len', t('minCardNumber'), val => val?.replace(/\D/g, '').length === 16),
 
     cvv: yup
-      .number()
+      .string()
       .required(t('required'))
       .test('len', t('cvvError'), val => String(val).length === 3)
-      .integer(t('cvvError'))
+      .test('int', t('cvvError'), val => Number.isInteger(Number(val)))
       .typeError(t('required')),
 
     expDate: yup
@@ -33,10 +34,10 @@ export const getValidationSchema = (t: Translator) =>
         const date = getExpDate(value);
         if (!date) return false;
         const [month, _year] = date;
-        return month >= 1 && month <= 12;
+        return +month >= 1 && +month <= 12;
       }),
 
-    invoiceEmail: yup
+    email: yup
       .string()
       .email(t('emailError'))
       .test('emailError', t('incorrectEmail'), value => !value || !regexp.cyrillic.test(value))

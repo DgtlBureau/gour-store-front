@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Stack } from '@mui/material';
 
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useGetInvoiceListQuery } from 'store/api/invoiceApi';
 
 import { PALayout } from 'layouts/PA/PA';
@@ -16,7 +17,7 @@ import { IInvoice } from 'types/entities/IInvoice';
 import { formatPaymentsByDate, sortPaymentsByDate } from './paymentsHelpers';
 
 export type FullInvoice = {
-  id: IInvoice['id'];
+  uuid: IInvoice['uuid'];
   cheeseCoinCount: IInvoice['amount'];
   status: IInvoice['status'];
   updatedAt: Date;
@@ -24,7 +25,18 @@ export type FullInvoice = {
 };
 
 export function Payments() {
-  const { data: invoicesList = [], isLoading, isError, refetch } = useGetInvoiceListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
+  const {
+    data: invoicesList = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetInvoiceListQuery(
+    { userId: currentUser?.id ?? '' },
+    {
+      skip: !currentUser?.id,
+    },
+  );
 
   if (isLoading) {
     return (

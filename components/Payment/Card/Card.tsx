@@ -11,6 +11,7 @@ import { useTimer } from 'hooks/useTimer';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
+import { ru as ruLocale } from 'date-fns/locale';
 import { FullInvoice } from 'pages/personal-area/payments';
 
 import sx from './Card.styles';
@@ -21,18 +22,18 @@ export type PaymentsCardProps = {
   refetch: () => void;
 };
 
-export function PaymentsCard({ payment, refetch: _refetch }: PaymentsCardProps) {
-  const { timerTime } = useTimer(payment.expiresAt, /* refetch */ () => undefined); // TODO: вызывать refetch для обновления статуса заявки
+export function PaymentsCard({ payment, refetch }: PaymentsCardProps) {
+  const canRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(payment.status);
+
+  const { timerTime } = useTimer(payment.expiresAt, { onEnd: refetch, needCount: canRepay });
 
   const invoiceStatus = paymentColorByStatus[payment.status];
 
   const cheeseCoinCount = getFormattedPrice(payment.cheeseCoinCount);
   const currencySymbol = getCurrencySymbol('cheeseCoin');
 
-  const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy');
-  const formattedTime = formatDate(payment.updatedAt, 'hh:mm');
-
-  const canRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(payment.status);
+  const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy', { locale: ruLocale });
+  const formattedTime = formatDate(payment.updatedAt, 'H:mm', { locale: ruLocale });
 
   return (
     <Grid container sx={sx.container}>

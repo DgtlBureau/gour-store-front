@@ -14,6 +14,19 @@ declare module '*.jpeg' {
   export default value;
 }
 
+declare namespace cp {
+  class Checkout {
+    constructor(config: { publicId: string });
+
+    createPaymentCryptogram(cardFields: {
+      cvv: string;
+      cardNumber: string;
+      expDateMonth: string;
+      expDateYear: string;
+    }): Promise<string>;
+  }
+}
+
 type ObjectKeys<T> = T extends object
   ? (keyof T)[]
   : T extends number

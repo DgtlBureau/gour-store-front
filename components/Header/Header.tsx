@@ -169,7 +169,7 @@ export function Header({
                   <Image src={CatalogIcon} height={24} width={24} alt='' />
                 </Link>
               ) : (
-                <Link href={Path.GAME} color='inherit' sx={headerSx.icon}>
+                <Link href={`/${Path.GAME}`} color='inherit' sx={headerSx.icon}>
                   <Image src={GamepadIcon} height={24} width={24} alt='' />
                 </Link>
               )}
@@ -180,15 +180,15 @@ export function Header({
 
               {!isGame && (
                 <>
-                  <Link href={Path.FAVORITES} color='inherit' sx={headerSx.icon}>
+                  <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
                     <FavoriteBorderIcon />
                   </Link>
 
-                  <Link href={Path.PERSONAL_AREA} color='inherit' sx={headerSx.icon}>
+                  <Link href={`/${Path.PERSONAL_AREA}`} color='inherit' sx={headerSx.icon}>
                     <PersonIcon />
                   </Link>
 
-                  <Link href={Path.BASKET} sx={headerSx.cart}>
+                  <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
                     <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
                       <ShoppingCartOutlinedIcon color='primary' />
                     </Badge>
