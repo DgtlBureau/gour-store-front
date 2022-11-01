@@ -21,10 +21,10 @@ export const getValidationSchema = (t: Translator) =>
       .test('len', t('minCardNumber'), val => val?.replace(/\D/g, '').length === 16),
 
     cvv: yup
-      .number()
+      .string()
       .required(t('required'))
       .test('len', t('cvvError'), val => String(val).length === 3)
-      .integer(t('cvvError'))
+      .test('int', t('cvvError'), val => Number.isInteger(Number(val)))
       .typeError(t('required')),
 
     expDate: yup
@@ -37,7 +37,7 @@ export const getValidationSchema = (t: Translator) =>
         return +month >= 1 && +month <= 12;
       }),
 
-    invoiceEmail: yup
+    email: yup
       .string()
       .email(t('emailError'))
       .test('emailError', t('incorrectEmail'), value => !value || !regexp.cyrillic.test(value))

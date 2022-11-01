@@ -27,9 +27,11 @@ export function PaymentsCardGroup({ date, paymentsList, refetch }: OrdersGroupPr
         {groupDate}
       </Typography>
 
-      {paymentsList.map(payment => (
-        <PaymentsCard key={payment.id} payment={payment} refetch={refetch} />
-      ))}
+      {paymentsList
+        // .sort(() => -1)
+        .map(payment => (
+          <PaymentsCard key={payment.uuid} payment={payment} refetch={refetch} />
+        ))}
     </Box>
   );
 }

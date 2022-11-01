@@ -64,7 +64,7 @@ export function Favorites() {
 
   return (
     <PrivateLayout>
-      <ShopLayout currency='cheeseCoin' language='ru'>
+      <ShopLayout>
         <Link href='/' sx={{ marginBottom: '20px' }}>
           Вернуться на главную
         </Link>

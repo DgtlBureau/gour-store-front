@@ -5,6 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid, useMediaQuery } from '@mui/material';
 
+import { useCreateInvoiceMutation } from 'store/api/invoiceApi';
+
 import { HFCheckbox } from 'components/HookForm/HFCheckbox';
 import { HFMaskInput } from 'components/HookForm/HFMaskInput';
 import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
@@ -25,7 +27,7 @@ import translations from './BuyModal.i18n.json';
 import { sx } from './BuyModal.styles';
 import { formMasks, getExpDate, getValidationSchema } from './validations';
 
-type FormState = Pick<PayInvoiceDto, 'cardNumber' | 'cvv' | 'invoiceEmail'> & {
+type FormState = Pick<PayInvoiceDto, 'cardNumber' | 'cvv' | 'email'> & {
   expDate: string;
   isSendInvoice: boolean;
 };
@@ -34,12 +36,24 @@ type Props = {
   isOpened: boolean;
   onClose: () => void;
   onSubmit: (data: PayInvoiceDto) => void;
+  invoiceUuid?: string;
+  userId?: string;
   userEmail?: string;
   price: number | null;
   isLoading: boolean;
 };
 
-export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoading, onSubmit }: Props) {
+// FIXME: адекватно прокидывать пропсы с юзером
+export function BuyCheeseCoinsModal({
+  isOpened,
+  onClose,
+  price,
+  userId,
+  userEmail,
+  invoiceUuid,
+  isLoading,
+  onSubmit,
+}: Props) {
   const { t } = useLocalTranslation(translations);
   const isDesktop = useMediaQuery('(min-width: 600px)');
 
@@ -48,13 +62,13 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
-      invoiceEmail: userEmail,
+      email: userEmail,
     },
   });
 
   useEffect(() => {
     values.reset({
-      invoiceEmail: userEmail,
+      email: userEmail,
     });
   }, [isOpened]);
 
@@ -67,20 +81,15 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
       expDateYear,
       cvv: formData.cvv,
       price: price!,
-      ...(formData.isSendInvoice && { invoiceEmail: formData.invoiceEmail }),
+      invoiceUuid: invoiceUuid!,
+      payerUuid: userId!,
+      ...(formData.isSendInvoice && { email: formData.email }),
     };
 
     onSubmit(submitData);
   };
 
-  const currencySymbol = getCurrencySymbol('rub');
   const formId = 'buy-coins-modal';
-
-  const acceptText = (
-    <>
-      ОПЛАТИТЬ {price}&nbsp;{currencySymbol}
-    </>
-  );
 
   const showEmailInput = values.watch('isSendInvoice');
   const coinIconSize = isDesktop ? 74 : 62;
@@ -105,7 +114,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
           </Box>
         </Box>
       }
-      acceptText={isLoading ? 'Происходит оплата' : acceptText}
+      acceptText={isLoading ? 'Происходит оплата' : <>ОПЛАТИТЬ {price}&nbsp;₽</>}
       acceptIsDisabled={isLoading}
       closeIsDisabled={isLoading}
       formId={formId}
@@ -149,7 +158,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
 
             {showEmailInput && (
               <Grid item xs={12}>
-                <HFTextField name='invoiceEmail' label='E-mail' type='email' />
+                <HFTextField name='email' label='E-mail' type='email' />
               </Grid>
             )}
           </Grid>

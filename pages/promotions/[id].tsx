@@ -83,7 +83,7 @@ export default function Promotion() {
 
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}

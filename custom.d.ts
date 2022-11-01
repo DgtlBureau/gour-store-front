@@ -18,12 +18,12 @@ declare namespace cp {
   class Checkout {
     constructor(config: { publicId: string });
 
-    async createPaymentCryptogram(cardFields: {
+    createPaymentCryptogram(cardFields: {
       cvv: string;
       cardNumber: string;
       expDateMonth: string;
       expDateYear: string;
-    }): string;
+    }): Promise<string>;
   }
 }
 

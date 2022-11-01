@@ -166,7 +166,7 @@ export default function Product() {
 
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         {isLoading && <LinearProgress />}
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}

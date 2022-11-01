@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useBuyCheeseCoinsMutation } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
@@ -34,8 +34,7 @@ export interface PALayoutProps {
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { language, pathname } = useAppNavigation();
-  const currency: Currency = 'cheeseCoin';
+  const { language, pathname, currency } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -43,6 +42,7 @@ export function PALayout({ children }: PALayoutProps) {
 
   const [signOut] = useSignOutMutation();
   const [changeCity] = useChangeCurrentCityMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
 
   const { t } = useLocalTranslation(translations);
@@ -92,11 +92,17 @@ export function PALayout({ children }: PALayoutProps) {
     },
   ];
 
-  const handleAddCheeseCoinClick = (price: number) => {
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
     toggleCheeseCoinModalOpen(false);
     setBuyCheeseCoinState({
       isOpenModal: true,
-      price,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
     });
   };
 
@@ -139,6 +145,8 @@ export function PALayout({ children }: PALayoutProps) {
         <BuyCheeseCoinsModal
           isOpened={buyCheeseCoinState.isOpenModal}
           userEmail={currentUser?.email}
+          userId={currentUser?.id}
+          invoiceUuid={invoiceData?.uuid}
           price={buyCheeseCoinState.price}
           isLoading={isPaymentLoading}
           onClose={handleCloseBuyModal}

@@ -102,7 +102,7 @@ export function Basket() {
 
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>
