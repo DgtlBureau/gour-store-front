@@ -13,9 +13,10 @@
     "cityPlaceholder": "Select city",
     "streetRequired": "Street  is required",
     "houseRequired": "House number is required",
+    "isMain": "Set as main shipping address",
     "save": "Save",
     "clear": "Clear",
-    "isMain": "Set as main shipping address"
+    "reset": "Reset"
   },
   "ru": {
     "city": "Город*",
@@ -33,6 +34,7 @@
     "houseRequired": "Укажите номер дома",
     "isMain": "Сделать главным адресом доставки",
     "save": "Сохранить",
-    "clear": "Очистить"
+    "clear": "Очистить",
+    "reset": "Сбросить"
   }
 }
