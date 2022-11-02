@@ -11,6 +11,7 @@ export enum Path {
   SIGN_OUT = 'signout',
   CURRENT_USER = 'current-user',
   CURRENT_BALANCE = 'current-balance',
+  CURRENT_TRANSACTIONS = 'current-transactions',
 
   CLIENT_AUTH = 'client-auth',
   CLIENT_ROLES = 'client-roles',
