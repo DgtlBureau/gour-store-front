@@ -78,6 +78,7 @@ export const invoiceApi = commonApi.injectEndpoints({
             return { error: { status: 400, data: 'Ошибка валидации' } };
           }
         },
+        invalidatesTags: ['Wallet'],
       }),
     };
   },
