@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
@@ -7,7 +7,7 @@ import { Theme } from '@mui/material/styles/createTheme';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { formatSeconds } from 'utils/timeUtil';
+import { formatTimeLeft } from 'utils/timeUtil';
 
 import { differenceInSeconds } from 'date-fns';
 
@@ -26,21 +26,21 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
   const [seconds, setSeconds] = useState(10);
   const [timer, setTimer] = useState('');
 
-  let intervalId = -1;
+  const intervalId = useRef(-1);
 
   useEffect(() => {
-    const nowDate = new Date();
-    setSeconds(differenceInSeconds(end, nowDate));
+    setSeconds(differenceInSeconds(end, new Date()));
 
-    intervalId = +setInterval(() => {
+    intervalId.current = +setInterval(() => {
       setSeconds(sec => sec - 1);
     }, 1000);
   }, []);
 
   useEffect(() => {
-    const time = formatSeconds(seconds);
+    const time = formatTimeLeft(new Date(), end);
+
     setTimer(time);
-    if (seconds < 0) clearInterval(intervalId);
+    if (seconds < 0) clearInterval(intervalId.current);
   }, [seconds]);
 
   const placeholder =
