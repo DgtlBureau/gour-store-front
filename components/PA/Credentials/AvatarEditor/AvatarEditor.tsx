@@ -70,9 +70,11 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
         <input id='profile-photo-input' type='file' onChange={changeAvatar} style={sx.input} />
       </div>
 
-      <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
-        {t('delete')}
-      </Button>
+      {!!image && (
+        <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
+          {t('delete')}
+        </Button>
+      )}
     </Stack>
   );
 }
