@@ -22,7 +22,8 @@ import { contacts } from 'constants/contacts';
 
 import sx from './Game.styles';
 
-type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
+type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
+type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
 
 export interface GameLayoutProps {
   children?: ReactNode;
@@ -50,10 +51,11 @@ export function GameLayout({ children }: GameLayoutProps) {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  const [isCheeseCoinModalOpen, toggleCheeseCoinModalOpen] = useState(false);
-  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
-    isOpenModal: false,
-    price: null,
+  const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
+    isOpen: false,
+  });
+  const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
+    isOpen: false,
   });
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
@@ -64,9 +66,9 @@ export function GameLayout({ children }: GameLayoutProps) {
   const flipIsNeeded = isMobile && isPortrait;
 
   const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
-    toggleCheeseCoinModalOpen(false);
-    setBuyCheeseCoinState({
-      isOpenModal: true,
+    setBalanceCoinsState({ isOpen: false });
+    setPayCoinsState({
+      isOpen: true,
       price: invoicePrice,
     });
     createInvoiceMutation({
@@ -77,14 +79,20 @@ export function GameLayout({ children }: GameLayoutProps) {
     });
   };
 
-  const onCloseBuyModal = () =>
-    setBuyCheeseCoinState({
-      isOpenModal: false,
-      price: null,
-    });
+  const handleCloseBuyModal = () => {
+    if (payCoinsState.isOpen) {
+      const { price } = payCoinsState;
+      setBalanceCoinsState({ isOpen: true, coins: price });
+      setPayCoinsState({ isOpen: false });
+    }
+  };
 
-  const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
-  const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
+  const handleOpenCoinsAddModal = () =>
+    setBalanceCoinsState({
+      isOpen: true,
+      coins: undefined,
+    });
+  const handleCloseCoinsAddModal = () => setBalanceCoinsState({ isOpen: false });
 
   return (
     <Box sx={sx.layout}>
@@ -97,7 +105,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         basketProductSum={sum - sumDiscount}
         moneyAmount={balance}
         onChangeCity={changeCity}
-        onClickAddCoins={onOpenCoinsAddModal}
+        onClickAddCoins={handleOpenCoinsAddModal}
         onClickSignout={signOut}
         {...contacts}
       />
@@ -105,19 +113,20 @@ export function GameLayout({ children }: GameLayoutProps) {
       <Box sx={sx.content}>{flipIsNeeded ? <GameFlipWarning /> : children}</Box>
 
       <CheesecoinsAddModal
-        isOpened={isCheeseCoinModalOpen}
-        onClose={onCloseCoinsAddModal}
+        initCoins={balanceCoinsState.isOpen ? balanceCoinsState.coins : undefined}
+        isOpened={balanceCoinsState.isOpen}
+        onClose={handleCloseCoinsAddModal}
         onSubmit={handleAddCheeseCoinClick}
       />
 
       <BuyCheeseCoinsModal
-        isOpened={buyCheeseCoinState.isOpenModal}
+        isOpened={payCoinsState.isOpen}
         invoiceUuid={invoiceData?.uuid}
         userId={currentUser?.id}
         userEmail={currentUser?.email}
-        price={buyCheeseCoinState.price}
+        price={payCoinsState.isOpen ? payCoinsState.price : undefined}
         isLoading={isPaymentLoading}
-        onClose={onCloseBuyModal}
+        onClose={handleCloseBuyModal}
         onSubmit={buyCheeseCoins}
       />
     </Box>

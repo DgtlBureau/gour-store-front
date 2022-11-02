@@ -26,12 +26,13 @@ type FormState = {
 };
 
 type Props = {
+  initCoins?: number;
   isOpened: boolean;
   onClose: () => void;
   onSubmit: (invoiceData: { invoicePrice: number; coinsCount: number }) => void;
 };
 
-export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
+export function CheesecoinsAddModal({ initCoins, isOpened, onClose, onSubmit }: Props) {
   const [lastCoinCount, setLastCoinCount] = useState(0);
   const debouncedValue = useDebounce(lastCoinCount, 500);
 
@@ -44,8 +45,14 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
   });
 
   useEffect(() => {
-    values.resetField('count');
-  }, [isOpened]);
+    if (initCoins) {
+      setLastCoinCount(initCoins);
+      values.setValue('count', initCoins);
+    } else {
+      setLastCoinCount(0);
+      values.resetField('count');
+    }
+  }, [initCoins]);
 
   const isValidCoinsCount = debouncedValue >= MINIMUM_AMOUNT;
 
@@ -54,11 +61,6 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     isFetching,
     isError,
   } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'RUB' }, { skip: !isValidCoinsCount });
-
-  useEffect(() => {
-    setLastCoinCount(0);
-    values.resetField('count');
-  }, [isOpened]);
 
   const handleSubmit = ({ count }: FormState) => onSubmit({ coinsCount: count, invoicePrice: invoicePrice! });
 
