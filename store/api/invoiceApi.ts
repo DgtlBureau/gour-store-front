@@ -67,6 +67,11 @@ export const invoiceApi = commonApi.injectEndpoints({
               method: 'POST',
             });
 
+            if (result.data) {
+              const redirectUri = (result.data as { redirect: string }).redirect;
+              if (redirectUri) window.open(redirectUri, '_self');
+            }
+
             return result.data ? { data: result.data as number } : { error: result.error as FetchBaseQueryError };
           } catch (e) {
             console.error('[PAYMENT VALIDATION]:', e); // TODO: дописать обработку ошибок
