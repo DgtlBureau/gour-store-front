@@ -33,8 +33,8 @@ export const useTimer = (expiresTime: Date, { onEnd, needCount = true }: TimerOp
       end: expiresTime,
     });
 
-    const formattedTime = [hours, minutes, seconds]
-      .filter(i => !!i)
+    const formattedTime = [hours, minutes || 0, seconds || 0]
+      .filter(i => i !== undefined)
       .map(time => zeroPad(time!))
       .join(':');
 

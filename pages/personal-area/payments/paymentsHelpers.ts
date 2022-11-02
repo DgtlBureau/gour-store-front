@@ -1,13 +1,22 @@
 import { IInvoice } from 'types/entities/IInvoice';
+import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 
 import { format } from 'date-fns';
 
 import { FullInvoice } from '.';
 
-export const formatPaymentsByDate = (payments: IInvoice[]) =>
-  payments.reduce<Record<string, FullInvoice[]>>((acc, invoice) => {
+type PaymentsByDate = Record<string, FullInvoice[]>;
+function sortPaymentDate(a: IInvoice | IWalletTransaction, b: IInvoice | IWalletTransaction) {
+  return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+}
+
+export const formatInvoicesByDate = (payments: IInvoice[]) => {
+  const sortedPayments = [...payments].sort(sortPaymentDate);
+
+  return sortedPayments.reduce<PaymentsByDate>((acc, invoice) => {
     const dateKey = format(new Date(invoice.updatedAt), 'yyyy.MM.dd');
-    acc[dateKey] = acc[dateKey] || [];
+
+    acc[dateKey] ||= [];
 
     acc[dateKey].push({
       uuid: invoice.uuid,
@@ -15,11 +24,33 @@ export const formatPaymentsByDate = (payments: IInvoice[]) =>
       cheeseCoinCount: invoice.amount,
       updatedAt: new Date(invoice.updatedAt),
       expiresAt: new Date(invoice.expiresAt),
+      description: null,
     });
 
     return acc;
   }, {});
+};
 
-type PaymentsByDate = Record<string, FullInvoice[]>;
+export const formatTransactionsByDate = (payments: IWalletTransaction[]) => {
+  const sortedPayments = [...payments].sort(sortPaymentDate);
+
+  return sortedPayments.reduce<PaymentsByDate>((acc, invoice) => {
+    const dateKey = format(new Date(invoice.updatedAt), 'yyyy.MM.dd');
+
+    acc[dateKey] ||= [];
+
+    acc[dateKey].push({
+      uuid: invoice.uuid,
+      status: invoice.type,
+      cheeseCoinCount: invoice.newValue - invoice.prevValue,
+      updatedAt: new Date(invoice.updatedAt),
+      expiresAt: null,
+      description: invoice.description,
+    });
+
+    return acc;
+  }, {});
+};
+
 export const sortPaymentsByDate = (payments: PaymentsByDate) =>
   Object.entries(payments).sort(([a], [b]) => b.localeCompare(a));

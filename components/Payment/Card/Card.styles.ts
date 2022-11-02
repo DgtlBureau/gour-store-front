@@ -1,3 +1,5 @@
+import { color } from 'themes';
+
 export const sx = {
   container: {
     display: 'grid',
@@ -110,6 +112,12 @@ export const sx = {
     minWidth: {
       md: '115px',
     },
+  },
+  expense: {
+    color: color.error,
+  },
+  income: {
+    color: color.green,
   },
 };
 
