@@ -1,7 +1,11 @@
 export const sx = {
   header: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: {
+      xs: 'row',
+      md: 'column',
+    },
+    alignItems: { xs: 'center', md: 'flex-start' },
     justifyContent: 'space-between',
   },
   title: {
@@ -14,10 +18,6 @@ export const sx = {
     color: 'text.secondary',
   },
   filters: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
     marginTop: {
       xs: '20px',
       md: '40px',
