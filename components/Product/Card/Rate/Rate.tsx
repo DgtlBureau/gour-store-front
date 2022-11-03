@@ -21,6 +21,7 @@ export function ProductCardRate({ rating, stockLabel, sx }: ProductCardRateProps
     <Box sx={{ ...rateSx.box, ...sx }}>
       <Box sx={rateSx.rating}>
         <StarIcon fontSize='small' sx={rateSx.star} />
+
         <Typography variant='body2' sx={rateSx.text}>
           {rating}
         </Typography>

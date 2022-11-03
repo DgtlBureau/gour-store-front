@@ -1,8 +1,10 @@
 export const sx = {
   box: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
     color: 'text.muted',
+    marginTop: { xs: '5px', md: '10px' },
   },
   rating: {
     display: 'flex',

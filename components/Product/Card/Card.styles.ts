@@ -7,14 +7,14 @@ const sx = {
     justifyContent: 'space-between',
 
     width: {
-      xs: '190px',
-      sm: '200px',
-      md: '270px',
+      xs: '172px',
+      sm: '212px',
+      md: '282px',
     },
 
     gap: {
-      xs: '5px',
-      md: '10px',
+      xs: '3px',
+      md: '5px',
     },
 
     padding: {
@@ -35,9 +35,9 @@ const sx = {
   },
   previewImg: {
     height: {
-      xs: '170px',
-      sm: '180px',
-      md: '230px',
+      xs: '148px',
+      sm: '188px',
+      md: '238px',
     },
 
     width: '100%',
@@ -88,7 +88,7 @@ const sx = {
     display: '-webkit-box',
 
     height: '100%',
-    overflow: 'hidden',
+
     WebkitLineClamp: {
       xs: '2',
       sm: '1',
@@ -98,6 +98,7 @@ const sx = {
 
     maxHeight: { xs: '24px', sm: '26px', md: '30px' },
 
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 

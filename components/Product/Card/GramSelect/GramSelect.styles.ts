@@ -6,14 +6,13 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '84px',
     padding: {
       xs: '4px 6px',
       md: '6px 12px',
     },
     backgroundColor: color.secondary,
     borderRadius: '6px',
-    gap: '6px',
+    gap: { xs: '4px', md: '6px' },
     height: '100%',
   },
   title: {

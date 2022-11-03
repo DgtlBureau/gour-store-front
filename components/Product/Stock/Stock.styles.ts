@@ -2,17 +2,16 @@ import { color } from 'themes';
 
 const sx = {
   stock: {
-    display: 'block',
-    padding: '2px 16px',
-    borderRadius: '4px',
-    backgroundColor: color.secondary,
-    color: color.primary,
-
-    height: '100%',
     textAlign: 'center',
+    color: color.muted,
+    fontSize: {
+      xs: '12px',
+      sm: '13px',
+      md: '14px',
+    },
   },
   singleLine: {
-    maxHeight: '26px',
+    maxHeight: '20px',
 
     WebkitLineClamp: 1,
     WebkitBoxOrient: 'vertical',

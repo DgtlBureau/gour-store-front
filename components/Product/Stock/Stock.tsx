@@ -18,7 +18,7 @@ export function ProductStock({ label, fullWidth, multiLine, sx }: ProductStockPr
 
   return (
     <Typography
-      variant='caption'
+      variant='body2'
       sx={{ ...stockSx.stock, width, ...(!multiLine && stockSx.singleLine), ...sx } as SxProps}
     >
       {label}
