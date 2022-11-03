@@ -16,8 +16,6 @@ import { useAppNavigation } from 'components/Navigation';
 import { PAMenu } from 'components/PA/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
 
-import { Currency } from 'types/entities/Currency';
-
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 

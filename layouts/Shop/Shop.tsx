@@ -15,9 +15,6 @@ import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-
 import { useAppSelector } from 'hooks/store';
 
 import { contacts } from 'constants/contacts';

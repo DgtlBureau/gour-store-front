@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Modal as MUIModal, SxProps } from '@mui/material';
+import { Modal as MUIModal } from '@mui/material';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
