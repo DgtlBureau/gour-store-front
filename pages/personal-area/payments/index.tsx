@@ -3,22 +3,28 @@ import React, { useState } from 'react';
 import { Stack } from '@mui/material';
 
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useGetInvoiceListQuery } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation, useGetInvoiceListQuery } from 'store/api/invoiceApi';
 import { useGetCurrentTransactionsQuery } from 'store/api/walletApi';
 
 import { PALayout } from 'layouts/PA/PA';
 import { PrivateLayout } from 'layouts/Private/Private';
 
+import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { PaymentsCardGroup } from 'components/Payment/Group/Group';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { TabPanel } from 'components/UI/Tabs/TabPanel';
 import { Tabs } from 'components/UI/Tabs/Tabs';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { IInvoice } from 'types/entities/IInvoice';
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
 import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 
 import { formatInvoicesByDate, formatTransactionsByDate, sortPaymentsByDate } from './paymentsHelpers';
+
+type BuyCheeseCoinState =
+  | { isOpen: false; price: null; invoiceUuid: string | null }
+  | { isOpen: true; price: number; invoiceUuid: string };
 
 export enum PaymentTabs {
   INVOICE = 'invoice',
@@ -32,7 +38,8 @@ const tabOptions = [
 
 export type FullInvoice = {
   uuid: IInvoice['uuid'];
-  cheeseCoinCount: number;
+  coins: number; // кол-во сырных монеток
+  value: number; // стоимость
   status: IInvoice['status'] | IWalletTransaction['type'];
   updatedAt: Date;
   expiresAt: Date | null;
@@ -41,6 +48,11 @@ export type FullInvoice = {
 
 export function Payments() {
   const [currentTab, changeCurrentTab] = useState<PaymentTabs>(PaymentTabs.INVOICE);
+  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
+    isOpen: false,
+    price: null,
+    invoiceUuid: null,
+  });
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const {
@@ -70,6 +82,36 @@ export function Payments() {
     }),
   });
 
+  const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
+
+  const handleRepay = (invoiceUuid: IInvoice['uuid'], price: number) =>
+    setBuyCheeseCoinState({
+      isOpen: true,
+      price,
+      invoiceUuid,
+    });
+
+  const handleCloseBuyModal = () => {
+    setBuyCheeseCoinState({
+      isOpen: false,
+      invoiceUuid: null,
+      price: null,
+    });
+  };
+
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) {
+        window.open(`/?paymentStatus=success&amount=${buyData.price}`, '_self');
+      } else {
+        window.open('/?paymentStatus=failure', '_self');
+      }
+    } catch {
+      window.open('/?paymentStatus=failure', '_self');
+    }
+  };
+
   const showInvoicesList = !isFetchingInvoices && !isErrorInvoices;
   const showTransactionsList = !isFetchingTransactions && !isErrorTransactions;
 
@@ -91,7 +133,9 @@ export function Payments() {
                     type={currentTab}
                     date={new Date(date)}
                     paymentsList={paymentsList}
-                    refetch={() => ({})}
+                    payerUuid={currentUser!.id}
+                    refetch={refetch}
+                    onRepay={handleRepay}
                   />
                 ))
               ) : (
@@ -111,7 +155,9 @@ export function Payments() {
                     type={currentTab}
                     date={new Date(date)}
                     paymentsList={paymentsList}
+                    payerUuid={currentUser!.id}
                     refetch={refetch}
+                    onRepay={handleRepay}
                   />
                 ))
               ) : (
@@ -119,6 +165,17 @@ export function Payments() {
               ))}
           </TabPanel>
         </Stack>
+
+        <BuyCheeseCoinsModal
+          isOpened={buyCheeseCoinState.isOpen}
+          userEmail={currentUser?.email}
+          userId={currentUser?.id}
+          invoiceUuid={buyCheeseCoinState.invoiceUuid || undefined}
+          price={buyCheeseCoinState.price}
+          isLoading={isPaymentLoading}
+          onClose={handleCloseBuyModal}
+          onSubmit={handleBuyCheeseCoins}
+        />
       </PALayout>
     </PrivateLayout>
   );
