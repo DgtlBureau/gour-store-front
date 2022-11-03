@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
@@ -16,7 +15,7 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useAppNavigation } from 'components/Navigation';
 import { OrderCard } from 'components/Order/Card/Card';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from 'components/Order/Form/Form';
-import { InfoModal, InfoModalStatus } from 'components/UI/InfoModal/InfoModal';
+import { InfoModal } from 'components/UI/InfoModal/InfoModal';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 

@@ -13,7 +13,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -81,6 +81,8 @@ export default function Promotion() {
   const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
   const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
+  const hasProducts = !!formattedPromotionProducts?.length;
+
   return (
     <PrivateLayout>
       <ShopLayout>
@@ -106,14 +108,13 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            {!!formattedPromotionProducts?.length && (
-              <ProductCatalog
+            {hasProducts && (
+              <ProductSlider
                 title={t('sliderTitle')}
                 products={formattedPromotionProducts}
+                discount={promotion?.discount}
                 language={language}
                 currency={currency}
-                discount={promotion?.discount}
-                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}

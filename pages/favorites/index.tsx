@@ -74,7 +74,7 @@ export function Favorites() {
         {!!filteredProducts.length && (
           <ProductCatalog
             title='Избранные продукты'
-            emptyTitle='Нет избранных продуктов'
+            emptyText='Нет избранных продуктов'
             products={formattedProducts}
             categories={categories}
             language={language}

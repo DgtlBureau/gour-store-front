@@ -91,8 +91,8 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
         ) : (
           <CardSlider
             sx={sxReviews.slider}
-            slidesPerView={3}
-            cardsList={reviews.map(review => (
+            slidesPerRow={3}
+            cardList={reviews.map(review => (
               <CommentCard
                 key={review.id}
                 title={review.clientName}

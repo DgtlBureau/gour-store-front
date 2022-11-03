@@ -28,7 +28,7 @@ import { CartCard } from 'components/Cart/Card/Card';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { CartInfo } from 'components/Cart/Info/Info';
 import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { Button } from 'components/UI/Button/Button';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -169,7 +169,7 @@ export function Basket() {
 
             {!!similarProducts?.length && (
               <Grid item xs={12}>
-                <ProductCatalog
+                <ProductSlider
                   title={t('similar')}
                   products={formattedSimilarProducts}
                   language={language}
