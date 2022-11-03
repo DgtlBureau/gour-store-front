@@ -22,6 +22,7 @@
 
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "react/jsx-no-duplicate-props": [1, { "ignoreCase": false }],
     "camelcase": "error",
     "spaced-comment": "error",
     "quotes": ["error", "single"],

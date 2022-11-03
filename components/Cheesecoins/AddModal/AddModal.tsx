@@ -28,7 +28,7 @@ type FormState = {
 type Props = {
   isOpened: boolean;
   onClose: () => void;
-  onSubmit: (price: number) => void;
+  onSubmit: (invoiceData: { invoicePrice: number; coinsCount: number }) => void;
 };
 
 export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
@@ -53,14 +53,14 @@ export function CheesecoinsAddModal({ isOpened, onClose, onSubmit }: Props) {
     data: invoicePrice,
     isFetching,
     isError,
-  } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'rub' }, { skip: !isValidCoinsCount });
+  } = useGetInvoicePriceQuery({ count: debouncedValue, currency: 'RUB' }, { skip: !isValidCoinsCount });
 
   useEffect(() => {
     setLastCoinCount(0);
     values.resetField('count');
   }, [isOpened]);
 
-  const handleSubmit = ({ count }: FormState) => onSubmit(count);
+  const handleSubmit = ({ count }: FormState) => onSubmit({ coinsCount: count, invoicePrice: invoicePrice! });
 
   const currencySymbol = getCurrencySymbol('rub');
 

@@ -22,6 +22,7 @@ import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 import { IProduct } from 'types/entities/IProduct';
@@ -34,6 +35,7 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import bannerImg from 'assets/images/banner.jpeg';
+import { Path } from 'constants/routes';
 
 import translations from './Main.i18n.json';
 import sx from './Main.styles';
@@ -105,21 +107,21 @@ const Home: NextPage = () => {
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
-  const bannerPromoImage = promotions?.[0]?.cardImage.small;
-
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
         {!!filteredPromotions?.length && (
           <CardSlider
             title={t('promotions')}
             cardsList={filteredPromotions.map(promotion => (
-              <PromotionCard
-                key={promotion.id}
-                image={promotion.cardImage.small}
-                onClickMore={() => goToPromotionPage(promotion.id)}
-              />
+              <Link href={`/${Path.PROMOTIONS}/${promotion.id}`}>
+                <PromotionCard
+                  key={promotion.id}
+                  image={promotion.cardImage.small}
+                  onClickMore={() => goToPromotionPage(promotion.id)}
+                />
+              </Link>
             ))}
           />
         )}

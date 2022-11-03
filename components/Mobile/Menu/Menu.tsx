@@ -116,7 +116,7 @@ export function MobileMenu({
         </List>
       </Collapse>
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.GAME}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.GAME}`}>
         <Typography sx={sx.title}>{t('game')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -126,7 +126,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.PERSONAL_AREA}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.PERSONAL_AREA}`}>
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -136,7 +136,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.FAVORITES}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.FAVORITES}`}>
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>

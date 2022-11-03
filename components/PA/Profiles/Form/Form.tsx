@@ -100,7 +100,7 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
               {t('save')}
             </Button>
             <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
-              {t('clear')}
+              {t('reset')}
             </Button>
             <IconButton>
               <DeleteIcon htmlColor={color.muted} onClick={onDelete} />

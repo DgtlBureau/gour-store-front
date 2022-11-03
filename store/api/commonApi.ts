@@ -20,6 +20,7 @@ export const commonApi = createApi({
     'Category',
     'Favorite',
     'Invoice',
+    'Wallet',
   ],
   endpoints: () => ({}),
 });

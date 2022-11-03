@@ -98,9 +98,7 @@ export function Order() {
     }),
   });
 
-  const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>({
-    status: 'failure',
-  });
+  const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
@@ -269,7 +267,7 @@ export function Order() {
 
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         <Typography variant='h4' sx={sx.title}>
           {t('title')}
         </Typography>

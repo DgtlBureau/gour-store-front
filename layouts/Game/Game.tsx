@@ -5,7 +5,7 @@ import { useMediaQuery } from '@mui/material';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useBuyCheeseCoinsMutation } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
@@ -13,10 +13,8 @@ import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
 import { Header } from 'components/Header/Header';
+import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
-
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
 
 import { useAppSelector } from 'hooks/store';
 
@@ -27,17 +25,18 @@ import sx from './Game.styles';
 type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
 
 export interface GameLayoutProps {
-  currency: Currency;
-  language: Language;
   children?: ReactNode;
 }
 
-export function GameLayout({ currency, language, children }: GameLayoutProps) {
+export function GameLayout({ children }: GameLayoutProps) {
+  const { currency, language } = useAppNavigation();
+
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
 
@@ -64,11 +63,17 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const flipIsNeeded = isMobile && isPortrait;
 
-  const onAddCheeseCoinClick = (price: number) => {
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
     toggleCheeseCoinModalOpen(false);
     setBuyCheeseCoinState({
       isOpenModal: true,
-      price,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
     });
   };
 
@@ -102,11 +107,13 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
       <CheesecoinsAddModal
         isOpened={isCheeseCoinModalOpen}
         onClose={onCloseCoinsAddModal}
-        onSubmit={onAddCheeseCoinClick}
+        onSubmit={handleAddCheeseCoinClick}
       />
 
       <BuyCheeseCoinsModal
         isOpened={buyCheeseCoinState.isOpenModal}
+        invoiceUuid={invoiceData?.uuid}
+        userId={currentUser?.id}
         userEmail={currentUser?.email}
         price={buyCheeseCoinState.price}
         isLoading={isPaymentLoading}

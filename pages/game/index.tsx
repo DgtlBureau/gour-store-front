@@ -7,7 +7,6 @@ import { PrivateLayout } from 'layouts/Private/Private';
 
 import { GameMain } from 'components/Game/Main/Main';
 import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
-import { useAppNavigation } from 'components/Navigation';
 
 import { NotificationType } from 'types/entities/Notification';
 
@@ -16,8 +15,6 @@ import { dispatchNotification } from 'packages/EventBus';
 export function Game() {
   const { data: currentUser, isFetching: isUserFetching } = useGetCurrentUserQuery();
   const [reduceGameLive, { isLoading: isReduceGameLiveLoading }] = useReduceGameLiveMutation();
-
-  const { currency, language } = useAppNavigation();
 
   const [rulesModalIsOpen, setRulesModalIsOpen] = useState(false);
 
@@ -34,7 +31,7 @@ export function Game() {
 
   return (
     <PrivateLayout>
-      <GameLayout currency={currency} language={language}>
+      <GameLayout>
         <GameMain
           onHelpClick={openRulesModal}
           isLivesLoading={isUserFetching || isReduceGameLiveLoading}

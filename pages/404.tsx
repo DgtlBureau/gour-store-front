@@ -55,7 +55,7 @@ export default function NotFound() {
 
   return (
     <PrivateLayout>
-      <ShopLayout currency='cheeseCoin' language='ru'>
+      <ShopLayout>
         <Box sx={sx.notFound}>
           <Link href='/'>
             <Image src={notFound} height='325' width='814' alt='notFound' />
