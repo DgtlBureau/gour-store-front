@@ -10,7 +10,7 @@ import translations from './CitySelect.i18n.json';
 
 const paperSx = {
   backgroundColor: color.white,
-  color: color.secondary,
+  color: color.primary,
 };
 
 type Props = {
