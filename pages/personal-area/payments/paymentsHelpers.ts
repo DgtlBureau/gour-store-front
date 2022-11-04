@@ -21,7 +21,8 @@ export const formatInvoicesByDate = (payments: IInvoice[]) => {
     acc[dateKey].push({
       uuid: invoice.uuid,
       status: invoice.status,
-      cheeseCoinCount: invoice.amount,
+      coins: invoice.amount,
+      value: invoice.value,
       updatedAt: new Date(invoice.updatedAt),
       expiresAt: new Date(invoice.expiresAt),
       description: null,
@@ -42,7 +43,8 @@ export const formatTransactionsByDate = (payments: IWalletTransaction[]) => {
     acc[dateKey].push({
       uuid: invoice.uuid,
       status: invoice.type,
-      cheeseCoinCount: invoice.newValue - invoice.prevValue,
+      coins: invoice.newValue - invoice.prevValue,
+      value: invoice.newValue - invoice.prevValue,
       updatedAt: new Date(invoice.updatedAt),
       expiresAt: null,
       description: invoice.description,

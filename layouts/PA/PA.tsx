@@ -16,7 +16,9 @@ import { useAppNavigation } from 'components/Navigation';
 import { PAMenu } from 'components/PA/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
 
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { Currency } from 'types/entities/Currency';
+import { InvoiceStatus } from 'types/entities/IInvoice';
 
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -112,6 +114,19 @@ export function PALayout({ children }: PALayoutProps) {
       price: null,
     });
 
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) {
+        window.open(`/?paymentStatus=success&amount=${buyData.price}`, '_self');
+      } else {
+        window.open('/?paymentStatus=failure', '_self');
+      }
+    } catch {
+      window.open('/?paymentStatus=failure', '_self');
+    }
+  };
+
   const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
   const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
 
@@ -150,7 +165,7 @@ export function PALayout({ children }: PALayoutProps) {
           price={buyCheeseCoinState.price}
           isLoading={isPaymentLoading}
           onClose={handleCloseBuyModal}
-          onSubmit={buyCheeseCoins}
+          onSubmit={handleBuyCheeseCoins}
         />
       </Box>
     </PrivateLayout>

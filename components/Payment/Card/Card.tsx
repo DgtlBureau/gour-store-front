@@ -3,13 +3,17 @@ import React from 'react';
 
 import { Grid, Tooltip, Typography } from '@mui/material';
 
+import { useCreateInvoiceMutation } from 'store/api/invoiceApi';
+
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 
-import { InvoiceStatus } from 'types/entities/IInvoice';
+import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
 import { IWalletTransaction } from 'types/entities/IWalletTransaction';
+import { NotificationType } from 'types/entities/Notification';
 
 import { useTimer } from 'hooks/useTimer';
+import { dispatchNotification } from 'packages/EventBus';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
@@ -21,22 +25,49 @@ import styles from './Card.module.css';
 import sx from './Card.styles';
 import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
 
+function matchIsActualInvoiceDate(status: InvoiceStatus, expiresAt: Date | null) {
+  const isActualDateForRepay = expiresAt && expiresAt.getTime() > new Date().getTime();
+  const isActualStatusForRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(status);
+
+  return !!isActualDateForRepay && isActualStatusForRepay;
+}
+
 export type PaymentsCardProps = {
   payment: FullInvoice;
   type: PaymentTabs;
+  payerUuid: string;
   refetch: () => void;
+  onRepay: (invoiceUuid: IInvoice['uuid'], price: number) => void;
 };
 
-export function PaymentsCard({ payment, type, refetch }: PaymentsCardProps) {
-  const canRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(payment.status as InvoiceStatus);
+export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: PaymentsCardProps) {
+  const [createInvoice] = useCreateInvoiceMutation();
 
   const isInvoice = type === PaymentTabs.INVOICE;
+  const canInvoiceRepay = isInvoice && matchIsActualInvoiceDate(payment.status as InvoiceStatus, payment.expiresAt);
 
-  const { timerTime } = useTimer(payment.expiresAt || new Date(), { onEnd: refetch, needCount: canRepay && isInvoice });
+  const { timerTime } = useTimer(payment.expiresAt || new Date(), { onEnd: refetch, needCount: canInvoiceRepay });
+
+  const handleRepayClick = async () => {
+    try {
+      console.log('create');
+      const invoice = await createInvoice({
+        amount: payment.coins,
+        currency: 'RUB',
+        payerUuid,
+        value: payment.coins,
+      }).unwrap();
+
+      console.log('created', invoice);
+      onRepay(invoice.uuid, invoice.amount);
+    } catch {
+      dispatchNotification('Произошла ошибка, повторите снова', { type: NotificationType.DANGER });
+    }
+  };
 
   const invoiceStatus = paymentColorByStatus[payment.status];
 
-  const cheeseCoinCount = getFormattedPrice(payment.cheeseCoinCount);
+  const cheeseCoinCount = getFormattedPrice(payment.coins);
   const currencySymbol = getCurrencySymbol('cheeseCoin');
 
   const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy', { locale: ruLocale });
@@ -66,7 +97,7 @@ export function PaymentsCard({ payment, type, refetch }: PaymentsCardProps) {
         )}
       </Grid>
 
-      {canRepay && timerTime && (
+      {canInvoiceRepay && timerTime && (
         <Grid item sx={sx.timer}>
           <Typography sx={sx.timerLabel}>
             до отмены платежа&ensp;
@@ -77,9 +108,9 @@ export function PaymentsCard({ payment, type, refetch }: PaymentsCardProps) {
         </Grid>
       )}
 
-      {canRepay && (
+      {canInvoiceRepay && (
         <Box sx={sx.payBtnBlock}>
-          <Button variant='outlined' sx={sx.payBtn}>
+          <Button variant='outlined' sx={sx.payBtn} onClick={handleRepayClick}>
             {payButtonFields[payment.status as PayBtnKeys]}
           </Button>
         </Box>

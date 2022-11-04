@@ -5,8 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid, useMediaQuery } from '@mui/material';
 
-import { useCreateInvoiceMutation } from 'store/api/invoiceApi';
-
 import { HFCheckbox } from 'components/HookForm/HFCheckbox';
 import { HFMaskInput } from 'components/HookForm/HFMaskInput';
 import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
@@ -18,7 +16,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import coinImage from 'assets/icons/cheesecoins/coin.svg';
 import regexp from 'constants/regex';
