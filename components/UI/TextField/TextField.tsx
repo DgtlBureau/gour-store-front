@@ -64,7 +64,8 @@ export function TextField({
       onKeyDown={onKeyDown}
       multiline={multiline}
       rows={rows}
-      inputProps={{ ...inputProps, endAdornment }}
+      inputProps={{ ...inputProps }}
+      InputProps={{ endAdornment }}
       FormHelperTextProps={{
         sx: helperTextSx,
       }}

@@ -36,7 +36,7 @@ export const invoiceApi = commonApi.injectEndpoints({
           body,
         }),
       }),
-      buyCheeseCoins: builder.mutation<number, PayInvoiceDto>({
+      buyCheeseCoins: builder.mutation<IInvoice, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
           const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
           const checkoutValues = {
@@ -50,12 +50,10 @@ export const invoiceApi = commonApi.injectEndpoints({
             const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
             const signature = await checkout.createPaymentCryptogram(checkoutValues);
 
-            const ipAddress = '5.18.144.32';
-
             const requestBody: PayServerInvoiceDto = {
               signature,
               email,
-              ipAddress,
+              ipAddress: '5.18.144.32',
               payerUuid,
               currency: 'RUB',
               invoiceUuid,
@@ -67,12 +65,18 @@ export const invoiceApi = commonApi.injectEndpoints({
               method: 'POST',
             });
 
-            return result.data ? { data: result.data as number } : { error: result.error as FetchBaseQueryError };
+            if (result.data) {
+              const redirectUri = (result.data as { redirect: string }).redirect;
+              if (redirectUri) window.open(redirectUri, '_self');
+            }
+
+            return result.data ? { data: result.data as IInvoice } : { error: result.error as FetchBaseQueryError };
           } catch (e) {
             console.error('[PAYMENT VALIDATION]:', e); // TODO: дописать обработку ошибок
             return { error: { status: 400, data: 'Ошибка валидации' } };
           }
         },
+        invalidatesTags: ['Wallet', 'Invoice'],
       }),
     };
   },

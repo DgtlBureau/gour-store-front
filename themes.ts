@@ -21,6 +21,7 @@ declare module '@mui/material/styles' {
 export const color = {
   white: '#FFFEF7',
   black: '#321811',
+  green: '#24B232',
   primary: '#7E5F2F',
   secondary: '#F4E7CE',
   error: '#DB3D15',
