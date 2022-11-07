@@ -18,8 +18,11 @@ import { Box } from 'components/UI/Box/Box';
 
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
+import { NotificationType } from 'types/entities/Notification';
 
 import { useAppSelector } from 'hooks/store';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import { contacts } from 'constants/contacts';
 
@@ -32,7 +35,7 @@ export interface GameLayoutProps {
 }
 
 export function GameLayout({ children }: GameLayoutProps) {
-  const { currency, language } = useAppNavigation();
+  const { currency, language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -83,13 +86,15 @@ export function GameLayout({ children }: GameLayoutProps) {
   const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
     try {
       const result = await buyCheeseCoins(buyData).unwrap();
-      if (result.status === InvoiceStatus.PAID) {
-        window.open(`/?paymentStatus=success&amount=${buyData.price}`, '_self');
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
       } else {
-        window.open('/?paymentStatus=failure', '_self');
+        goToFailurePayment();
       }
-    } catch {
-      window.open('/?paymentStatus=failure', '_self');
     }
   };
 

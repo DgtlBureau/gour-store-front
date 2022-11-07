@@ -50,6 +50,12 @@ function NavigationProvider({ children }: Props) {
 
   const goToPromotionPage = useCallback((id: number) => router?.push(`/${Path.PROMOTIONS}/${id}`), []);
 
+  const goToSuccessPayment = useCallback(
+    (price: number) => router?.replace(`/?paymentStatus=success&amount=${price}`),
+    [],
+  );
+  const goToFailurePayment = useCallback(() => router?.replace('/?paymentStatus=failure'), []);
+
   const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
 
   useEffect(() => {
@@ -78,6 +84,8 @@ function NavigationProvider({ children }: Props) {
       goToBasket,
       goToPersonalArea,
       goToPromotionPage,
+      goToSuccessPayment,
+      goToFailurePayment,
       language,
       currency,
       pathname: router?.pathname || '',
