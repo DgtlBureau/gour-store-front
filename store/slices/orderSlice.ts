@@ -78,12 +78,10 @@ export const orderSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder
-      .addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState)
-      .addMatcher(currentUserApi.endpoints.getCurrentUser.matchRejected, (state, action) => {
-        if (action.error.name === 'ConditionError') return;
-        state.products = {};
-      });
+    builder.addMatcher(currentUserApi.endpoints.getCurrentUser.matchRejected, (state, action) => {
+      if (action.error.name === 'ConditionError') return;
+      state.products = {};
+    });
   },
 });
 
