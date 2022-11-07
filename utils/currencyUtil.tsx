@@ -2,7 +2,8 @@ import { Currency, MonetaryCurrency } from 'types/entities/Currency';
 
 type GeneralCurrency = Currency | MonetaryCurrency;
 const symbolByCurrency: Record<GeneralCurrency, JSX.Element> = {
-  cheeseCoin: <>&#8353;</>,
+  // cheeseCoin: <>&#8353;</>,
+  cheeseCoin: <>₽</>,
   rub: <>₽</>,
 };
 
