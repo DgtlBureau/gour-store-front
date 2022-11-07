@@ -20,6 +20,7 @@ import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
 import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -45,7 +46,7 @@ const NOW = new Date();
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
+  const { goToPromotionPage, language, currency } = useAppNavigation();
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -106,42 +107,45 @@ const Home: NextPage = () => {
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
+  const promotionCardList = useMemo(
+    () =>
+      filteredPromotions?.map(promotion => (
+        <Link href={`/${Path.PROMOTIONS}/${promotion.id}`}>
+          <PromotionCard
+            key={promotion.id}
+            image={promotion.cardImage.small}
+            onClickMore={() => goToPromotionPage(promotion.id)}
+          />
+        </Link>
+      )) || [],
+    [filteredPromotions],
+  );
+
+  const hasPromotions = !!filteredPromotions?.length;
+  const hasNovelties = !!novelties.length;
+  const hasProducts = !!products.length;
+
   return (
     <PrivateLayout>
       <ShopLayout>
         {isLoading && <ProgressLinear />}
-        {!!filteredPromotions?.length && (
-          <CardSlider
-            title={t('promotions')}
-            cardsList={filteredPromotions.map(promotion => (
-              <Link href={`/${Path.PROMOTIONS}/${promotion.id}`}>
-                <PromotionCard
-                  key={promotion.id}
-                  image={promotion.cardImage.small}
-                  onClickMore={() => goToPromotionPage(promotion.id)}
-                />
-              </Link>
-            ))}
-          />
-        )}
 
-        {!!novelties.length && (
-          <ProductCatalog
+        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+
+        {hasNovelties && (
+          <ProductSlider
             title={t('novelties')}
             products={formattedNovelties}
-            categories={categories}
             language={language}
             currency={currency}
-            rows={1}
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
-        {!!products.length && (
+        {hasProducts && (
           <ProductCatalog
             withFilters
             title={t('catalog')}
@@ -153,7 +157,6 @@ const Home: NextPage = () => {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 

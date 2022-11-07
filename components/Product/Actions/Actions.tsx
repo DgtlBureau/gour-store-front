@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Grid, SxProps } from '@mui/material';
 
@@ -10,10 +10,8 @@ import { Currency } from 'types/entities/Currency';
 import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
-import { NotificationType } from 'types/entities/Notification';
 
 import { useAppSelector } from 'hooks/store';
-import { dispatchNotification } from 'packages/EventBus';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
@@ -113,7 +111,6 @@ export function ProductActions({
 
       <Grid item>
         <ProductCardGramSelect
-          showLabelOnTablets
           gram={productGramValue}
           onChange={onSelectGram}
           options={productGramOptions}

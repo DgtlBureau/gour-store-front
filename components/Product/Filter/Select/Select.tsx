@@ -19,12 +19,12 @@ export type FilterSelectProps = {
   title: string;
   selected: string;
   options: IOption[];
-  isMobile?: boolean;
+  isDesktop?: boolean;
   sx?: SxProps;
   onChange(selected: IOption['value']): void;
 };
 
-export function ProductFilterSelect({ title, selected, options, isMobile, sx, onChange }: FilterSelectProps) {
+export function ProductFilterSelect({ title, selected, options, isDesktop, sx, onChange }: FilterSelectProps) {
   const [isDeployed, setIsDeployed] = useState(false);
 
   const checkOption = (value: IOption['value']) => selected === value;
@@ -37,7 +37,7 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
     setIsDeployed(false);
   };
 
-  return isMobile ? (
+  return !isDesktop ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={color.muted} />}>
         <Typography variant='body1' sx={selectSx.title}>

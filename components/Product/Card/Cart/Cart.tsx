@@ -3,7 +3,6 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 

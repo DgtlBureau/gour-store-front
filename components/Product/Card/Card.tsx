@@ -44,7 +44,6 @@ export type ProductCardProps = {
   onAdd: (gram: number) => void;
   onRemove: (gram: number) => void;
   onElect: () => void;
-  onDetail: () => void;
 };
 
 export const getStockLabel = (
@@ -75,13 +74,9 @@ export const ProductCard = memo(function ProductCard({
   countryImg,
   isElected,
   currency,
-  // gram,
-  // amount,
   onAdd,
   onRemove,
-  // onGramChange,
   onElect,
-  onDetail,
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
@@ -126,7 +121,6 @@ export const ProductCard = memo(function ProductCard({
     onRemove(gramValue);
   };
 
-  const inCart = !!(basketProduct && basketProduct.amount > 0);
   const backgroundImage = `url('${backgroundImg}')`;
 
   const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);

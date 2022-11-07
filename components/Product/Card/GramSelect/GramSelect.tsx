@@ -16,18 +16,11 @@ import selectSx from './GramSelect.styles';
 export type ProductCardGramSelectProps = {
   gram: number;
   options: IOption[];
-  showLabelOnTablets?: boolean;
   sx?: SxProps;
   onChange(gram: number): void;
 };
 
-export function ProductCardGramSelect({
-  gram,
-  options,
-  showLabelOnTablets = false,
-  sx,
-  onChange,
-}: ProductCardGramSelectProps) {
+export function ProductCardGramSelect({ gram, options, sx, onChange }: ProductCardGramSelectProps) {
   const [isDeployed, setIsDeployed] = useState(false);
 
   const checkOption = (value: number) => gram === value;

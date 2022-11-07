@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 
 import { Grid, Rating, SxProps } from '@mui/material';
 
@@ -48,6 +48,21 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
     });
   }
 
+  const reviewCardList = useMemo(
+    () =>
+      reviews.map(review => (
+        <CommentCard
+          key={review.id}
+          title={review.clientName}
+          grade={review.value}
+          date={formatDate(review.date)}
+          text={review.comment}
+          onClick={() => onReviewClick(review)}
+        />
+      )),
+    [reviews],
+  );
+
   return (
     <Grid sx={{ ...reviewSx.container, ...sx }} container direction='row' ref={ref}>
       <Grid item xs={12} md={3}>
@@ -89,20 +104,7 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
         {reviews.length === 0 ? (
           <Typography variant='h5'>{t('noReviews')}</Typography>
         ) : (
-          <CardSlider
-            sx={reviewSx.slider}
-            slidesPerView={3}
-            cardsList={reviews.map(review => (
-              <CommentCard
-                key={review.id}
-                title={review.clientName}
-                grade={review.value}
-                date={formatDate(review.date)}
-                text={review.comment}
-                onClick={() => onReviewClick(review)}
-              />
-            ))}
-          />
+          <CardSlider sx={reviewSx.slider} slidesPerRow={3} cardList={reviewCardList} />
         )}
       </Grid>
     </Grid>

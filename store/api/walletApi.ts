@@ -1,4 +1,3 @@
-import { IInvoice } from 'types/entities/IInvoice';
 import { IWallet } from 'types/entities/IWallet';
 import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 

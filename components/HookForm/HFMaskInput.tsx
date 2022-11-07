@@ -1,4 +1,4 @@
-import React, { FocusEventHandler, HTMLAttributes, ReactElement } from 'react';
+import React, { FocusEventHandler, ReactElement } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { SxProps } from '@mui/material';
