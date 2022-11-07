@@ -4,6 +4,8 @@ import React from 'react';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { IInvoice } from 'types/entities/IInvoice';
+
 import { formatDate } from 'utils/dateUtil';
 
 import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
@@ -14,11 +16,13 @@ import sx from './Group.styles';
 export type OrdersGroupProps = {
   date: Date;
   paymentsList: FullInvoice[];
+  payerUuid: string;
   type: PaymentTabs;
   refetch: () => void;
+  onRepay: (invoiceUuid: IInvoice['uuid'], price: number) => void;
 };
 
-export function PaymentsCardGroup({ date, paymentsList, type, refetch }: OrdersGroupProps) {
+export function PaymentsCardGroup({ date, paymentsList, payerUuid, type, refetch, onRepay }: OrdersGroupProps) {
   const groupDate = formatDate(new Date(date), 'd MMMM yyyy');
 
   return (
@@ -28,7 +32,14 @@ export function PaymentsCardGroup({ date, paymentsList, type, refetch }: OrdersG
       </Typography>
 
       {paymentsList.map(payment => (
-        <PaymentsCard key={payment.uuid} type={type} payment={payment} refetch={refetch} />
+        <PaymentsCard
+          key={payment.uuid}
+          type={type}
+          payment={payment}
+          payerUuid={payerUuid}
+          refetch={refetch}
+          onRepay={onRepay}
+        />
       ))}
     </Box>
   );

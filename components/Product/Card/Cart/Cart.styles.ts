@@ -5,9 +5,13 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
 
-    borderRadius: '99px',
+    borderRadius: '6px',
 
-    width: { xs: 'fit-content', md: '100%' },
+    height: {
+      xs: '34px',
+      md: '40px',
+    },
+    width: '100%',
 
     justifyContent: 'center',
 
@@ -22,9 +26,6 @@ export const sx = {
   },
   iconBtn: {
     width: '100%',
-    padding: {
-      xs: '10px',
-    },
   },
   icon: {
     fontSize: {
@@ -35,21 +36,23 @@ export const sx = {
     color: color.white,
   },
   buyLabel: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
     textTransform: 'uppercase',
     marginLeft: '10px',
     color: color.white,
-  },
-  deployed: {
-    width: '100%',
   },
   action: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    userSelect: 'none',
+  },
+  disabled: {
+    color: 'rgba(0, 0, 0, 0.26)',
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+
+    '&: hover': {
+      background: undefined,
+    },
   },
 };
 
