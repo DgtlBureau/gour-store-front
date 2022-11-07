@@ -10,6 +10,7 @@ import { PALayout } from 'layouts/PA/PA';
 import { PrivateLayout } from 'layouts/Private/Private';
 
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
+import { useAppNavigation } from 'components/Navigation';
 import { PaymentsCardGroup } from 'components/Payment/Group/Group';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { TabPanel } from 'components/UI/Tabs/TabPanel';
@@ -19,6 +20,10 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
 import { IWalletTransaction } from 'types/entities/IWalletTransaction';
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import { formatInvoicesByDate, formatTransactionsByDate, sortPaymentsByDate } from './paymentsHelpers';
 
@@ -47,6 +52,8 @@ export type FullInvoice = {
 };
 
 export function Payments() {
+  const { goToSuccessPayment, goToFailurePayment } = useAppNavigation();
+
   const [currentTab, changeCurrentTab] = useState<PaymentTabs>(PaymentTabs.INVOICE);
   const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
     isOpen: false,
@@ -102,13 +109,15 @@ export function Payments() {
   const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
     try {
       const result = await buyCheeseCoins(buyData).unwrap();
-      if (result.status === InvoiceStatus.PAID) {
-        window.open(`/?paymentStatus=success&amount=${buyData.price}`, '_self');
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
       } else {
-        window.open('/?paymentStatus=failure', '_self');
+        goToFailurePayment();
       }
-    } catch {
-      window.open('/?paymentStatus=failure', '_self');
     }
   };
 
