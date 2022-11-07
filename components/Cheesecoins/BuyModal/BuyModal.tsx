@@ -16,6 +16,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import coinImage from 'assets/icons/cheesecoins/coin.svg';
 import regexp from 'constants/regex';
@@ -91,6 +92,8 @@ export function BuyCheeseCoinsModal({
   const showEmailInput = values.watch('isSendInvoice');
   const coinIconSize = isDesktop ? 74 : 62;
 
+  const rubCurrencySymbol = getCurrencySymbol('rub');
+
   return (
     <Modal
       showRefuseButton
@@ -106,7 +109,8 @@ export function BuyCheeseCoinsModal({
               Покупка виртуальной игровой валюты
             </Typography>
             <Typography variant='body1' color='text.muted' sx={sx.titlePrice}>
-              {price}&nbsp;₡ — {price}&nbsp;₽
+              {/* {price}&nbsp;₡ — {price}&nbsp;₽ */}
+              {price}&nbsp;{rubCurrencySymbol}
             </Typography>
           </Box>
         </Box>
