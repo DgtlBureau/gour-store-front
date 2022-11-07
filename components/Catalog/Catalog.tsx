@@ -17,7 +17,7 @@ export type CatalogProps = {
 };
 
 export function Catalog({ title, emptyText = 'Список карточек пуст', head, cardList, sx }: CatalogProps) {
-  const catalogRef = useRef<HTMLDivElement>(null);
+  const catalogRef = useRef<HTMLDivElement | null>(null);
 
   const [page, setPage] = useState(1);
 
@@ -38,7 +38,7 @@ export function Catalog({ title, emptyText = 'Список карточек пу
 
   const isMultiPage = pagesCount > 1;
 
-  const scrollToCatalog = () => catalogRef?.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const scrollToCatalog = () => catalogRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
 
   const changePage = (value: number) => {
     if (value !== page) {
