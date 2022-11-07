@@ -25,8 +25,10 @@ interface OrderFormAddress {
   floor: number;
 }
 
+export type BasketProduct = Pick<IOrderProduct, 'amount' | 'product' | 'gram'>;
+
 export interface BasketState {
-  products: Record<string, IOrderProduct>;
+  products: Record<string, BasketProduct>;
   contacts?: OrderFormContacts;
   address?: OrderFormAddress;
 }

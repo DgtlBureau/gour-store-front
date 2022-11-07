@@ -7,7 +7,7 @@ import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { Path } from 'constants/routes';
 import { setDefaultOptions } from 'date-fns';
-import enGB from 'date-fns/locale/en-GB/index.js';
+import enGB from 'date-fns/locale/en-GB/index';
 import ru from 'date-fns/locale/ru/index';
 
 import { AppNavigationCtx, Navigation } from './NavigationContext';

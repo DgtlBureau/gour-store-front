@@ -18,6 +18,7 @@ const props: Partial<OrdersCardProps> = {
       title: 'test',
       color: 'yellow',
     },
+    totalSum: 1500,
     createdAt: new Date(),
     address: 'Санкт-Петербург, Каменноостровский пр., дом 43, квартира 44',
     client: 'Иван Иванов',
@@ -30,6 +31,9 @@ const props: Partial<OrdersCardProps> = {
         title: 'string',
         amount: 4,
         cost: 6000,
+        gram: 150,
+        totalSum: 1600,
+        totalSumWithoutAmount: 400,
       },
       {
         id: 3,
@@ -38,6 +42,9 @@ const props: Partial<OrdersCardProps> = {
         title: 'string',
         amount: 1,
         cost: 2500,
+        gram: 150,
+        totalSum: 2200,
+        totalSumWithoutAmount: 2200,
       },
     ],
     promotions: [
