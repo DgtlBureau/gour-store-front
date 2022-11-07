@@ -35,7 +35,7 @@ import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import bannerImg from 'assets/images/banner.jpeg';
+import defaultBannerImg from 'assets/images/banner.jpeg';
 import { Path } from 'constants/routes';
 
 import translations from './Main.i18n.json';
@@ -43,13 +43,10 @@ import sx from './Main.styles';
 
 const NOW = new Date();
 
-const fakePromoImage =
-  'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
-
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
+  const { goToPromotionPage, language, currency } = useAppNavigation();
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -70,6 +67,8 @@ const Home: NextPage = () => {
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
+
+  const bannerImg = page?.bannerImg?.full || defaultBannerImg;
 
   const formattedNovelties = useMemo(
     () =>
@@ -143,7 +142,6 @@ const Home: NextPage = () => {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
@@ -159,23 +157,16 @@ const Home: NextPage = () => {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
         {!!page && (
           <Box>
-            <Box sx={sx.banner}>
-              {!!bannerImg && (
-                <Image
-                  loader={() => bannerImg || fakePromoImage}
-                  src={bannerImg || fakePromoImage}
-                  objectFit='cover'
-                  layout='fill'
-                  alt=''
-                />
-              )}
-            </Box>
+            {!!bannerImg && (
+              <Box sx={sx.banner}>
+                <Image loader={() => bannerImg} src={bannerImg} objectFit='cover' layout='fill' alt='' />
+              </Box>
+            )}
 
             <PageContent
               title={page?.info?.title?.[language] || ''}

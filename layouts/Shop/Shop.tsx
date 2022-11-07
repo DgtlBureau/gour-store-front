@@ -15,11 +15,19 @@ import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+
 import { useAppSelector } from 'hooks/store';
 
 import { contacts } from 'constants/contacts';
 
 import sx from './Shop.styles';
+
+const redirectIfLocalPaymentIsSuccess = (price: number) =>
+  window.open(`/?paymentStatus=success&amount=${price}`, '_self');
+
+const redirectIfLocalPaymentIsFailure = () => window.open('/?paymentStatus=failure', '_self');
 
 type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
 
@@ -79,6 +87,20 @@ export function ShopLayout({ children }: ShopLayoutProps) {
       price: null,
     });
 
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      // продолжится выполняться в development сценарии. На прод-стенде произойдет редирект на сайт платежки
+      if (result.status === InvoiceStatus.PAID) {
+        redirectIfLocalPaymentIsSuccess(result.value);
+      } else {
+        redirectIfLocalPaymentIsFailure();
+      }
+    } catch {
+      redirectIfLocalPaymentIsFailure();
+    }
+  };
+
   const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
   const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
 
@@ -117,7 +139,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
         price={buyCheeseCoinState.price}
         isLoading={isPaymentLoading}
         onClose={onCloseBuyModal}
-        onSubmit={buyCheeseCoins}
+        onSubmit={handleBuyCheeseCoins}
       />
     </Box>
   );

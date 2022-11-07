@@ -1,11 +1,14 @@
 import { NextRouter, useRouter } from 'next/router';
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
 
 import { Currency } from 'types/entities/Currency';
 
 import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { Path } from 'constants/routes';
+import { setDefaultOptions } from 'date-fns';
+import enGB from 'date-fns/locale/en-GB/index.js';
+import ru from 'date-fns/locale/ru/index';
 
 import { AppNavigationCtx, Navigation } from './NavigationContext';
 
@@ -48,6 +51,10 @@ function NavigationProvider({ children }: Props) {
   const goToPromotionPage = useCallback((id: number) => router?.push(`/${Path.PROMOTIONS}/${id}`), []);
 
   const language: keyof LocalConfig = (router?.locale as keyof LocalConfig) || 'ru';
+
+  useEffect(() => {
+    setDefaultOptions({ locale: language === 'ru' ? ru : enGB });
+  }, [language]);
 
   const currency: Currency = 'cheeseCoin';
 

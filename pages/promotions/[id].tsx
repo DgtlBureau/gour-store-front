@@ -38,7 +38,6 @@ export default function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const {
-    goToProductPage,
     language,
     currency,
     query: { id: queryId },
@@ -118,7 +117,6 @@ export default function Promotion() {
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
-                onDetail={goToProductPage}
               />
             )}
           </>

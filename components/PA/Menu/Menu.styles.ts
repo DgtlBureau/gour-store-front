@@ -15,8 +15,8 @@ export const sx = {
     },
     width: '100%',
     margin: {
-      xs: '20px 0 25px 0',
-      sm: '40px 0 60px 0',
+      xs: '20px 0 20px 0',
+      sm: '20px 0 35px 0',
     },
   },
   list: {

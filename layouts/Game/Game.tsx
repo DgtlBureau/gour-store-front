@@ -16,6 +16,9 @@ import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+
 import { useAppSelector } from 'hooks/store';
 
 import { contacts } from 'constants/contacts';
@@ -77,6 +80,19 @@ export function GameLayout({ children }: GameLayoutProps) {
     });
   };
 
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) {
+        window.open(`/?paymentStatus=success&amount=${buyData.price}`, '_self');
+      } else {
+        window.open('/?paymentStatus=failure', '_self');
+      }
+    } catch {
+      window.open('/?paymentStatus=failure', '_self');
+    }
+  };
+
   const onCloseBuyModal = () =>
     setBuyCheeseCoinState({
       isOpenModal: false,
@@ -118,7 +134,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         price={buyCheeseCoinState.price}
         isLoading={isPaymentLoading}
         onClose={onCloseBuyModal}
-        onSubmit={buyCheeseCoins}
+        onSubmit={handleBuyCheeseCoins}
       />
     </Box>
   );

@@ -32,7 +32,6 @@ export type ProductCatalogProps = {
   onAdd: (product: IProduct, gram: number) => void;
   onRemove: (product: IProduct, gram: number) => void;
   onElect: (productId: number, isElect: boolean) => void;
-  onDetail: (productId: number) => void;
 };
 
 export const ProductCatalog = memo(
@@ -49,7 +48,6 @@ export const ProductCatalog = memo(
     onAdd,
     onRemove,
     onElect,
-    onDetail,
   }: ProductCatalogProps) => {
     const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
     const [filters, setFilters] = useState<IFilters>({
@@ -180,7 +178,6 @@ export const ProductCatalog = memo(
             onAdd={(gram: number) => onAdd(product, gram)}
             onRemove={(gram: number) => onRemove(product, gram)}
             onElect={() => onElect(product.id, product.isElected)}
-            onDetail={() => onDetail(product.id)}
           />
         )),
       [productList],

@@ -21,7 +21,6 @@ export type ProductSliderProps = {
   onAdd: (product: IProduct, gram: number) => void;
   onRemove: (product: IProduct, gram: number) => void;
   onElect: (productId: number, isElect: boolean) => void;
-  onDetail: (productId: number) => void;
 };
 
 export function ProductSlider({
@@ -35,7 +34,6 @@ export function ProductSlider({
   onAdd,
   onRemove,
   onElect,
-  onDetail,
 }: ProductSliderProps) {
   return (
     <CardSlider
@@ -59,7 +57,6 @@ export function ProductSlider({
           onAdd={(gram: number) => onAdd(product, gram)}
           onRemove={(gram: number) => onRemove(product, gram)}
           onElect={() => onElect(product.id, product.isElected)}
-          onDetail={() => onDetail(product.id)}
         />
       ))}
       sx={sx}

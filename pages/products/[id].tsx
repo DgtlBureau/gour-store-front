@@ -50,7 +50,6 @@ import sx from './Product.styles';
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
-    goToProductPage,
     language,
     currency,
     query: { id: queryId },
@@ -244,7 +243,6 @@ export default function Product() {
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
-                onDetail={goToProductPage}
               />
             )}
 

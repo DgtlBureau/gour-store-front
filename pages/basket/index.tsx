@@ -49,7 +49,7 @@ import translation from './Basket.i18n.json';
 import sx from './Basket.styles';
 
 export function Basket() {
-  const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
+  const { language, currency, goToHome, goToOrder } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
@@ -177,7 +177,6 @@ export function Basket() {
                   onAdd={addProduct}
                   onRemove={subtractProduct}
                   onElect={electProduct}
-                  onDetail={goToProductPage}
                 />
               </Grid>
             )}

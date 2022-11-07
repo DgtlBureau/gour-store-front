@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
+import { selectIsAuth } from 'store/selectors/auth';
+
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -10,6 +12,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { useAppSelector } from 'hooks/store';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -76,6 +79,8 @@ export function Header({
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
 
   const isDesktop = useMediaQuery('(min-width: 600px)');
+
+  const isAuth = useAppSelector(selectIsAuth);
 
   const currencySymbol = getCurrencySymbol(currency);
 
@@ -174,10 +179,6 @@ export function Header({
                 </Link>
               )}
 
-              <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                <LogoutIcon />
-              </IconButton>
-
               {!isGame && (
                 <>
                   <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
@@ -196,11 +197,13 @@ export function Header({
                     &nbsp;
                     {currencySymbol}
                   </Link>
-
-                  <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                    <LogoutIcon />
-                  </IconButton>
                 </>
+              )}
+
+              {isAuth && (
+                <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                  <LogoutIcon />
+                </IconButton>
               )}
 
               {!isGame && !isDesktop && (
