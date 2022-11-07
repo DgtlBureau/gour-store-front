@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Pagination as MUIPagination, PaginationItem, SxProps } from '@mui/material';
+import {
+  Pagination as MUIPagination,
+  PaginationProps as MUIPaginationProps,
+  PaginationItem,
+  SxProps,
+} from '@mui/material';
 
 import { color } from 'themes';
 
@@ -16,8 +21,8 @@ const paginationSx = {
 type PaginationProps = {
   page: number;
   count: number;
-  shape?: 'rounded' | 'circular';
-  size?: 'small' | 'medium' | 'large';
+  shape?: MUIPaginationProps['shape'];
+  size?: MUIPaginationProps['size'];
   sx?: SxProps;
   onChange: (value: number) => void;
 };
