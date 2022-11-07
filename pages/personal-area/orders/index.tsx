@@ -17,9 +17,9 @@ import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 export function Orders() {
   const { language, currency } = useAppNavigation();
 
-  const { data: ordersList = [], isLoading, isError } = useGetOrdersListQuery();
+  const { data: ordersData = [], isLoading, isError } = useGetOrdersListQuery();
 
-  const formattedOrdersList = ordersList.map(order => formatOrderData(order, language, currency));
+  const formattedOrdersList = ordersData.map(order => formatOrderData(order, language, currency));
 
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
 
@@ -46,8 +46,8 @@ export function Orders() {
       <PALayout>
         <Stack sx={{ margin: '15px 0 0 0' }} spacing={2}>
           {orderEntries.length ? (
-            orderEntries.map(([key, orderGroup]) => (
-              <OrdersCardGroup key={key} date={orderGroup.date} ordersList={orderGroup.orderList} />
+            orderEntries.map(([dateKey, ordersList]) => (
+              <OrdersCardGroup key={dateKey} date={dateKey} ordersList={ordersList} />
             ))
           ) : (
             <Typography variant='h5'>Список заказов пуст</Typography>

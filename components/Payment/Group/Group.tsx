@@ -8,7 +8,6 @@ import { IInvoice } from 'types/entities/IInvoice';
 
 import { formatDate } from 'utils/dateUtil';
 
-import { ru } from 'date-fns/locale';
 import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
 
 import { PaymentsCard } from '../Card/Card';
@@ -24,7 +23,7 @@ export type OrdersGroupProps = {
 };
 
 export function PaymentsCardGroup({ date, paymentsList, payerUuid, type, refetch, onRepay }: OrdersGroupProps) {
-  const groupDate = formatDate(new Date(date), 'd MMMM yyyy', { locale: ru });
+  const groupDate = formatDate(new Date(date), 'd MMMM yyyy');
 
   return (
     <Box sx={sx.container}>

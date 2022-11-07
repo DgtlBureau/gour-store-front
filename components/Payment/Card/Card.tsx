@@ -18,7 +18,6 @@ import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
 import tooltipIcon from 'assets/icons/general/tooltip.svg';
-import { ru as ruLocale } from 'date-fns/locale';
 import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
 
 import styles from './Card.module.css';
@@ -70,8 +69,8 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
   const cheeseCoinCount = getFormattedPrice(payment.coins);
   const currencySymbol = getCurrencySymbol('cheeseCoin');
 
-  const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy', { locale: ruLocale });
-  const formattedTime = formatDate(payment.updatedAt, 'H:mm', { locale: ruLocale });
+  const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy');
+  const formattedTime = formatDate(payment.updatedAt, 'H:mm');
 
   return (
     <Grid container sx={sx.container}>

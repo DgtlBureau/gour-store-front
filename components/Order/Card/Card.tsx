@@ -21,7 +21,7 @@ type Props = {
   language: Language;
   totalProductCount: number;
   totalCartPrice: number;
-  productsList: IOrderProduct[];
+  productsList: Pick<IOrderProduct, 'amount' | 'product' | 'gram'>[];
   sx?: SxProps;
 };
 
