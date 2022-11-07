@@ -2,6 +2,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { authApi } from 'store/api/authApi';
+import { currentUserApi } from 'store/api/currentUserApi';
 import { RootState } from 'store/store';
 
 import { IOrderProduct } from 'types/entities/IOrderProduct';
@@ -77,7 +78,12 @@ export const orderSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState);
+    builder
+      .addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState)
+      .addMatcher(currentUserApi.endpoints.getCurrentUser.matchRejected, (state, action) => {
+        if (action.error.name === 'ConditionError') return;
+        state.products = {};
+      });
   },
 });
 
