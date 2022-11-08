@@ -180,7 +180,7 @@ export function Payments() {
           userEmail={currentUser?.email}
           userId={currentUser?.id}
           invoiceUuid={buyCheeseCoinState.invoiceUuid || undefined}
-          price={buyCheeseCoinState.price}
+          price={buyCheeseCoinState.price || undefined}
           isLoading={isPaymentLoading}
           onClose={handleCloseBuyModal}
           onSubmit={handleBuyCheeseCoins}

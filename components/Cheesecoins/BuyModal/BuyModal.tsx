@@ -16,7 +16,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
 import coinImage from 'assets/icons/cheesecoins/coin.svg';
 import regexp from 'constants/regex';
@@ -37,7 +37,7 @@ type Props = {
   invoiceUuid?: string;
   userId?: string;
   userEmail?: string;
-  price: number | null;
+  price?: number;
   isLoading: boolean;
 };
 
@@ -110,12 +110,12 @@ export function BuyCheeseCoinsModal({
             </Typography>
             <Typography variant='body1' color='text.muted' sx={sx.titlePrice}>
               {/* {price}&nbsp;₡ — {price}&nbsp;₽ */}
-              {price}&nbsp;{rubCurrencySymbol}
+              {getFormattedPrice(price!)}&nbsp;{rubCurrencySymbol}
             </Typography>
           </Box>
         </Box>
       }
-      acceptText={isLoading ? 'Происходит оплата' : <>ОПЛАТИТЬ {price}&nbsp;₽</>}
+      acceptText={isLoading ? 'Происходит оплата' : <>ОПЛАТИТЬ {getFormattedPrice(price!)}&nbsp;₽</>}
       acceptIsDisabled={isLoading}
       closeIsDisabled={isLoading}
       formId={formId}
