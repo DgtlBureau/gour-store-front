@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   extender: {
@@ -6,20 +6,18 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '84px',
-    padding: '6px 12px',
-    backgroundColor: 'background.paper',
+    padding: {
+      xs: '4px 6px',
+      md: '6px 12px',
+    },
+    backgroundColor: color.secondary,
     borderRadius: '6px',
-    gap: '6px',
+    gap: { xs: '4px', md: '6px' },
     height: '100%',
-  },
-  extenderHiddenTitle: {
-    width: { xs: 'fit-content', md: '84px' },
-    padding: { xs: '2px', md: '6px 12px' },
   },
   title: {
     display: 'flex',
-    color: t.palette.text.muted,
+    color: color.muted,
     whiteSpace: 'nowrap',
     userSelect: 'none',
   },
@@ -41,7 +39,7 @@ export const sx = {
     paddingBottom: 0,
     backgroundColor: 'white',
     border: '1px solid',
-    borderColor: t.palette.secondary.main,
+    borderColor: color.secondary,
     borderRadius: '6px',
     zIndex: 100,
     overflowY: 'scroll',

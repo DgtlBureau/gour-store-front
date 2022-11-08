@@ -9,9 +9,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noImage from 'assets/images/default.svg';
-
 import translations from './AvatarEditor.i18n.json';
+
+import noImage from 'assets/images/default.svg';
 
 const sx = {
   image: {
@@ -70,9 +70,11 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
         <input id='profile-photo-input' type='file' onChange={changeAvatar} style={sx.input} />
       </div>
 
-      <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
-        {t('delete')}
-      </Button>
+      {!!image && (
+        <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
+          {t('delete')}
+        </Button>
+      )}
     </Stack>
   );
 }

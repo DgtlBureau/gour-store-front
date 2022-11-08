@@ -3,10 +3,9 @@ import * as NextImage from 'next/image';
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { PersistGate } from 'redux-persist/integration/react';
-
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'store/store';
 

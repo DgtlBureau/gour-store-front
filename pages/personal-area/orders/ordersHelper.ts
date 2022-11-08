@@ -1,20 +1,25 @@
 import { endOfDay, getTime } from 'date-fns';
 
 import { FullOrder } from 'components/Orders/Card/Card';
+import { OrderProductType } from 'components/Orders/Card/CardProduct';
 
 import { Currency } from 'types/entities/Currency';
 import { IOrder } from 'types/entities/IOrder';
 
+import { formatDate } from 'utils/dateUtil';
 import { getFullName } from 'utils/nameUtil';
 
 export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
 
-  const products = order.orderProducts.map(product => ({
-    id: product.product?.id || -1,
+  const products: OrderProductType[] = order.orderProducts.map(product => ({
+    id: product.id,
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
-    amount: product?.amount,
+    amount: product.amount,
+    gram: product.gram,
+    totalSum: product.totalSum,
+    totalSumWithoutAmount: product.totalSumWithoutAmount,
     cost: product.product?.price[currency],
   }));
 
@@ -28,7 +33,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
   const { city, street, house, apartment } = order.orderProfile;
 
   return {
-    title: order.crmInfo?.id || '####',
+    title: order.crmInfo?.id || order.id.toString(),
     status: {
       title: order.crmInfo?.status.name,
       color: order.crmInfo?.status.color,
@@ -40,24 +45,17 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     promotions,
     deliveryCost: 500, // TODO: данные должны идти с бека©,
     currency,
+    totalSum: order.totalSum,
   };
 }
 
-type formattedOrder = {
-  date: Date;
-  orderList: FullOrder[];
-};
-
 export const groupOrdersByDate = (ordersList: FullOrder[]) =>
-  ordersList.reduce<Record<number, formattedOrder>>((acc, order) => {
-    const createdDay = endOfDay(order.createdAt);
-    const orderTime = getTime(createdDay);
-    acc[orderTime] ??= {
-      date: order.createdAt,
-      orderList: [],
-    };
+  ordersList.reduce<Record<string, FullOrder[]>>((acc, order) => {
+    const orderKey = formatDate(order.createdAt, 'd MMMM yyyy');
 
-    acc[orderTime].orderList.push(order);
+    acc[orderKey] ??= [];
+
+    acc[orderKey].push(order);
     return acc;
   }, {});
 

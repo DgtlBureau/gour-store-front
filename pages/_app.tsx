@@ -1,13 +1,11 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { PersistGate } from 'redux-persist/integration/react';
-
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'store/store';
 

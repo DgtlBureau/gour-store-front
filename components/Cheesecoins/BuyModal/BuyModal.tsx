@@ -17,15 +17,16 @@ import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
 import regexp from 'constants/regex';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
+
+import translations from './BuyModal.i18n.json';
+import { formMasks, getExpDate, getValidationSchema } from './validations';
+
+import { sx } from './BuyModal.styles';
 
 import coinImage from 'assets/icons/cheesecoins/coin.svg';
 
-import translations from './BuyModal.i18n.json';
-import { sx } from './BuyModal.styles';
-import { formMasks, getExpDate, getValidationSchema } from './validations';
-
-type FormState = Pick<PayInvoiceDto, 'cardNumber' | 'cvv' | 'invoiceEmail'> & {
+type FormState = Pick<PayInvoiceDto, 'cardNumber' | 'cvv' | 'email'> & {
   expDate: string;
   isSendInvoice: boolean;
 };
@@ -34,12 +35,24 @@ type Props = {
   isOpened: boolean;
   onClose: () => void;
   onSubmit: (data: PayInvoiceDto) => void;
+  invoiceUuid?: string;
+  userId?: string;
   userEmail?: string;
-  price: number | null;
+  price?: number;
   isLoading: boolean;
 };
 
-export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoading, onSubmit }: Props) {
+// FIXME: адекватно прокидывать пропсы с юзером
+export function BuyCheeseCoinsModal({
+  isOpened,
+  onClose,
+  price,
+  userId,
+  userEmail,
+  invoiceUuid,
+  isLoading,
+  onSubmit,
+}: Props) {
   const { t } = useLocalTranslation(translations);
   const isDesktop = useMediaQuery('(min-width: 600px)');
 
@@ -48,41 +61,39 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
-      invoiceEmail: userEmail,
+      email: userEmail,
     },
   });
 
   useEffect(() => {
     values.reset({
-      invoiceEmail: userEmail,
+      email: userEmail,
     });
   }, [isOpened]);
 
   const handleSubmit = (formData: FormState) => {
-    const [expDateMonth, expDateYear] = getExpDate(formData.expDate) as readonly [number, number];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [expDateMonth, expDateYear] = getExpDate(formData.expDate)!;
     const submitData: PayInvoiceDto = {
       cardNumber: formData.cardNumber,
       expDateMonth,
       expDateYear,
       cvv: formData.cvv,
       price: price!,
-      ...(formData.isSendInvoice && { invoiceEmail: formData.invoiceEmail }),
+      invoiceUuid: invoiceUuid!,
+      payerUuid: userId!,
+      ...(formData.isSendInvoice && { email: formData.email }),
     };
 
     onSubmit(submitData);
   };
 
-  const currencySymbol = getCurrencySymbol('rub');
   const formId = 'buy-coins-modal';
-
-  const acceptText = (
-    <>
-      ОПЛАТИТЬ {price}&nbsp;{currencySymbol}
-    </>
-  );
 
   const showEmailInput = values.watch('isSendInvoice');
   const coinIconSize = isDesktop ? 74 : 62;
+
+  const rubCurrencySymbol = getCurrencySymbol('rub');
 
   return (
     <Modal
@@ -99,12 +110,13 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
               Покупка виртуальной игровой валюты
             </Typography>
             <Typography variant='body1' color='text.muted' sx={sx.titlePrice}>
-              {price}&nbsp;₡ — {price}&nbsp;₽
+              {/* {price}&nbsp;₡ — {price}&nbsp;₽ */}
+              {getFormattedPrice(price!)}&nbsp;{rubCurrencySymbol}
             </Typography>
           </Box>
         </Box>
       }
-      acceptText={isLoading ? 'Происходит оплата' : acceptText}
+      acceptText={isLoading ? 'Происходит оплата' : <>ОПЛАТИТЬ {getFormattedPrice(price!)}&nbsp;₽</>}
       acceptIsDisabled={isLoading}
       closeIsDisabled={isLoading}
       formId={formId}
@@ -148,7 +160,7 @@ export function BuyCheeseCoinsModal({ isOpened, onClose, price, userEmail, isLoa
 
             {showEmailInput && (
               <Grid item xs={12}>
-                <HFTextField name='invoiceEmail' label='E-mail' type='email' />
+                <HFTextField name='email' label='E-mail' type='email' />
               </Grid>
             )}
           </Grid>

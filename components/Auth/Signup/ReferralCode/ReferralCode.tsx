@@ -13,8 +13,9 @@ import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './ReferralCode.i18n.json';
-import sx from './ReferralCode.styles';
 import { getSchema } from './validation';
+
+import sx from './ReferralCode.styles';
 
 export type SignupReferralCodeProps = {
   defaultValues?: ReferralCodeDto;

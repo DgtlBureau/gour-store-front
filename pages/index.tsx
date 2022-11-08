@@ -20,33 +20,34 @@ import { CardSlider } from 'components/CardSlider/CardSlider';
 import { useAppNavigation } from 'components/Navigation';
 import { PageContent } from 'components/PageContent/PageContent';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { Path } from 'constants/routes';
 import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import bannerImg from 'assets/images/banner.jpeg';
-
 import translations from './Main.i18n.json';
+
 import sx from './Main.styles';
 
-const NOW = new Date();
+import defaultBannerImg from 'assets/images/banner.jpeg';
 
-const fakePromoImage =
-  'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
+const NOW = new Date();
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language, currency } = useAppNavigation();
+  const { goToPromotionPage, language, currency } = useAppNavigation();
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
 
@@ -67,6 +68,8 @@ const Home: NextPage = () => {
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
+
+  const bannerImg = page?.bannerImg?.full || defaultBannerImg;
 
   const formattedNovelties = useMemo(
     () =>
@@ -105,42 +108,45 @@ const Home: NextPage = () => {
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
-  const bannerPromoImage = promotions?.[0]?.cardImage.small;
+  const promotionCardList = useMemo(
+    () =>
+      filteredPromotions?.map(promotion => (
+        <Link href={`/${Path.PROMOTIONS}/${promotion.id}`}>
+          <PromotionCard
+            key={promotion.id}
+            image={promotion.cardImage.small}
+            onClickMore={() => goToPromotionPage(promotion.id)}
+          />
+        </Link>
+      )) || [],
+    [filteredPromotions],
+  );
+
+  const hasPromotions = !!filteredPromotions?.length;
+  const hasNovelties = !!novelties.length;
+  const hasProducts = !!products.length;
 
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
-        {!!filteredPromotions?.length && (
-          <CardSlider
-            title={t('promotions')}
-            cardsList={filteredPromotions.map(promotion => (
-              <PromotionCard
-                key={promotion.id}
-                image={promotion.cardImage.small}
-                onClickMore={() => goToPromotionPage(promotion.id)}
-              />
-            ))}
-          />
-        )}
 
-        {!!novelties.length && (
-          <ProductCatalog
+        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+
+        {hasNovelties && (
+          <ProductSlider
             title={t('novelties')}
             products={formattedNovelties}
-            categories={categories}
             language={language}
             currency={currency}
-            rows={1}
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
-        {!!products.length && (
+        {hasProducts && (
           <ProductCatalog
             withFilters
             title={t('catalog')}
@@ -152,23 +158,16 @@ const Home: NextPage = () => {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
         {!!page && (
           <Box>
-            <Box sx={sx.banner}>
-              {!!bannerImg && (
-                <Image
-                  loader={() => bannerImg || fakePromoImage}
-                  src={bannerImg || fakePromoImage}
-                  objectFit='cover'
-                  layout='fill'
-                  alt=''
-                />
-              )}
-            </Box>
+            {!!bannerImg && (
+              <Box sx={sx.banner}>
+                <Image loader={() => bannerImg} src={bannerImg} objectFit='cover' layout='fill' alt='' />
+              </Box>
+            )}
 
             <PageContent
               title={page?.info?.title?.[language] || ''}

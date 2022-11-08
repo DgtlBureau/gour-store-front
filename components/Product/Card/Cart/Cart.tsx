@@ -6,26 +6,24 @@ import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import sx from './Cart.styles';
+
 import PlusIcon from '@mui/icons-material/Add';
 import TrashIcon from '@mui/icons-material/DeleteForever';
 import MinusIcon from '@mui/icons-material/Remove';
 import CartIcon from '@mui/icons-material/ShoppingCart';
 
-import sx from './Cart.styles';
-
 type Props = {
   isDisabled: boolean;
-  amount: number;
+  amount?: number;
   gram: number;
   onAdd: () => void;
   onRemove: () => void;
 };
 
-export function ProductCardCart({ isDisabled, amount, gram, onAdd, onRemove }: Props) {
-  const inCart = amount > 0;
-
+export function ProductCardCart({ isDisabled, amount = 0, gram, onAdd, onRemove }: Props) {
   return (
-    <Box sx={{ ...sx.cart, ...(inCart && sx.deployed) }}>
+    <Box sx={{ ...sx.cart, ...(isDisabled && sx.disabled) }}>
       {amount === 0 ? (
         <IconButton sx={sx.iconBtn} disabled={isDisabled} onClick={onAdd}>
           <CartIcon sx={sx.icon} />
@@ -34,7 +32,7 @@ export function ProductCardCart({ isDisabled, amount, gram, onAdd, onRemove }: P
           </Typography>
         </IconButton>
       ) : (
-        <Grid container xs>
+        <Grid container>
           <Grid item xs={4} sx={sx.action}>
             <IconButton sx={sx.iconBtn} onClick={onRemove}>
               {amount === 1 ? <TrashIcon sx={sx.icon} /> : <MinusIcon sx={sx.icon} />}

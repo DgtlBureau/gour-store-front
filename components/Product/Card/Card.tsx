@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import React, { memo, useState } from 'react';
 
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
-
 import { CardMedia, SxProps } from '@mui/material';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { useGetStockQuery } from 'store/api/warehouseApi';
 
@@ -21,13 +20,14 @@ import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 
-import HeartIcon from '@mui/icons-material/Favorite';
-import defaultImg from 'assets/images/default.svg';
-
-import sx from './Card.styles';
 import { ProductCardCart as Cart } from './Cart/Cart';
 import { ProductCardDocket as Docket } from './Docket/Docket';
 import { ProductCardRate as Rate } from './Rate/Rate';
+
+import sx from './Card.styles';
+
+import HeartIcon from '@mui/icons-material/Favorite';
+import defaultImg from 'assets/images/default.svg';
 
 export type ProductCardProps = {
   id: number;
@@ -45,19 +45,20 @@ export type ProductCardProps = {
   onAdd: (gram: number) => void;
   onRemove: (gram: number) => void;
   onElect: () => void;
-  onDetail: () => void;
 };
 
-const getStockLabel = (
+export const getStockLabel = (
   isStockFetching: boolean,
   isStockError: boolean,
   moyskladId: string | null,
   stockValue?: string,
 ) => {
-  if (isStockFetching) return 'загружаем остатки...';
-  if (!moyskladId) return 'не указан ID у МойСклад';
+  if (isStockFetching) return 'загружаем...';
+
+  if (!moyskladId || isStockError) return 'ошибка';
+
   if (stockValue) return `осталось ${stockValue} шт`;
-  return 'произошла ошибка';
+  return 'нет на складе';
 };
 
 // eslint-disable-next-line prefer-arrow-callback
@@ -74,13 +75,9 @@ export const ProductCard = memo(function ProductCard({
   countryImg,
   isElected,
   currency,
-  // gram,
-  // amount,
   onAdd,
   onRemove,
-  // onGramChange,
   onElect,
-  onDetail,
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
@@ -125,7 +122,6 @@ export const ProductCard = memo(function ProductCard({
     onRemove(gramValue);
   };
 
-  const inCart = !!(basketProduct && basketProduct.amount > 0);
   const backgroundImage = `url('${backgroundImg}')`;
 
   const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
@@ -151,7 +147,7 @@ export const ProductCard = memo(function ProductCard({
         )}
       </Box>
 
-      <Rate currency={currency} rating={rating} price={price} sx={sx.rate} />
+      <Rate rating={rating} stockLabel={stockLabel} />
 
       <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none' }}>
         <Typography sx={sx.title} variant='h6'>
@@ -159,23 +155,18 @@ export const ProductCard = memo(function ProductCard({
         </Typography>
       </Link>
 
-      <Typography variant='caption' sx={{ ...sx.stock, ...(inCart && sx.deployedStock) }}>
-        {stockLabel}
-      </Typography>
-
-      <Box sx={{ ...sx.actions, ...(inCart && sx.deployedActions) }}>
+      <Box sx={sx.actions}>
         <Docket
           gram={gramValue}
           gramOptions={gramOptions}
           onChangeGram={changeGram}
-          inCart={inCart}
           price={price}
           discount={discount}
           currency={currency}
         />
 
         <Cart
-          amount={basketProduct?.amount || 0}
+          amount={basketProduct?.amount}
           gram={gramValue}
           isDisabled={isAddDisabled}
           onAdd={handleAddClick}

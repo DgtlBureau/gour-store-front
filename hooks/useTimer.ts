@@ -5,26 +5,38 @@ import { intervalToDuration } from 'date-fns';
 
 const zeroPad = (num: number) => String(num).padStart(2, '0');
 
-export const useTimer = (expiresTime: Date, onEnd: () => void) => {
+type TimerOptions = {
+  onEnd: () => void;
+  needCount?: boolean;
+};
+
+export const useTimer = (expiresTime: Date, { onEnd, needCount = true }: TimerOptions) => {
   const [timerTime, setTimerTime] = useState<string | null>(null);
 
   const requestRef = useRef<number>();
 
-  const animate = () => {
+  const isEndTime = () => {
     const nowTime = new Date();
-    const isEnd = nowTime.getTime() > expiresTime.getTime();
+    return nowTime.getTime() > expiresTime.getTime();
+  };
+
+  const animate = () => {
+    const isEnd = isEndTime();
     if (isEnd) {
       cancelAnimationFrame(requestRef.current!);
       onEnd();
       return;
     }
 
-    const { minutes, seconds } = intervalToDuration({
-      start: nowTime,
+    const { minutes, seconds, hours } = intervalToDuration({
+      start: new Date(),
       end: expiresTime,
     });
 
-    const formattedTime = `${zeroPad(minutes!)}:${zeroPad(seconds!)}`; // TODO: добавить возможность передавать массив с форматом времени аргументом
+    const formattedTime = [hours, minutes || 0, seconds || 0]
+      .filter(i => i !== undefined)
+      .map(time => zeroPad(time!))
+      .join(':');
 
     if (formattedTime !== timerTime) {
       setTimerTime(formattedTime);
@@ -34,6 +46,11 @@ export const useTimer = (expiresTime: Date, onEnd: () => void) => {
   };
 
   useEffect(() => {
+    const isTimerStarted = !!requestRef.current;
+    if (!needCount && !isTimerStarted) {
+      return undefined;
+    }
+
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current!);
   }, []);

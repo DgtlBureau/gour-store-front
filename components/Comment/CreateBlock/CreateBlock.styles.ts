@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 export const blockSx = {
   title: {
@@ -23,10 +23,10 @@ export const blockSx = {
     },
   },
   star: {
-    color: theme.palette.accent.main,
+    color: color.accent,
   },
   emptyStar: {
-    color: theme.palette.text.muted,
+    color: color.muted,
   },
   alertTitle: {
     fontWeight: 'Bold',

@@ -9,23 +9,24 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { IOption } from 'types/entities/IOption';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import { ProductFilterSelectItem } from '../Multiselect/SelectItem';
+
 import selectSx from './Select.styles';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export type FilterSelectProps = {
   title: string;
   selected: string;
   options: IOption[];
-  isMobile?: boolean;
+  isDesktop?: boolean;
   sx?: SxProps;
   onChange(selected: IOption['value']): void;
 };
 
-export function ProductFilterSelect({ title, selected, options, isMobile, sx, onChange }: FilterSelectProps) {
+export function ProductFilterSelect({ title, selected, options, isDesktop, sx, onChange }: FilterSelectProps) {
   const [isDeployed, setIsDeployed] = useState(false);
 
   const checkOption = (value: IOption['value']) => selected === value;
@@ -38,9 +39,9 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
     setIsDeployed(false);
   };
 
-  return isMobile ? (
+  return !isDesktop ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={color.muted} />}>
         <Typography variant='body1' sx={selectSx.title}>
           {title}
         </Typography>
@@ -65,7 +66,7 @@ export function ProductFilterSelect({ title, selected, options, isMobile, sx, on
         </Typography>
 
         <ExpandMoreIcon
-          htmlColor={theme.palette.text.muted}
+          htmlColor={color.muted}
           sx={{ ...(isDeployed && selectSx.rotatedArrow), marginLeft: '8px' }}
           fontSize='small'
         />

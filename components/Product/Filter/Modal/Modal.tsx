@@ -17,7 +17,7 @@ export type ProductFilterModalProps = {
   filters: IFilters;
   language: Language;
   onOrderTypeChange: (order: OrderType) => void;
-  onProductTypeChange: (key: string) => void;
+  onProductTypeChange: (id: number) => void;
   onCharacteristicChange: (key: string, values: string[]) => void;
   onCharacteristicsReset: () => void;
   onClose(): void;

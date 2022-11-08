@@ -13,14 +13,15 @@ import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
+import translations from './Menu.i18n.json';
+import { MobileMenuContacts } from './MenuContacts';
+
+import sx from './Menu.styles';
+
 import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';
 import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
 import locationIcon from 'assets/icons/mobile/location.svg';
-
-import translations from './Menu.i18n.json';
-import sx from './Menu.styles';
-import { MobileMenuContacts } from './MenuContacts';
 
 export type MobileMenuProps = {
   selectedCityId: number;
@@ -116,7 +117,7 @@ export function MobileMenu({
         </List>
       </Collapse>
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.GAME}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.GAME}`}>
         <Typography sx={sx.title}>{t('game')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -126,7 +127,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.PERSONAL_AREA}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.PERSONAL_AREA}`}>
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
@@ -136,7 +137,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={Path.FAVORITES}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.FAVORITES}`}>
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>

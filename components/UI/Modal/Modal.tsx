@@ -4,14 +4,15 @@ import { Modal as MUIModal } from '@mui/material';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import CrossIcon from '@mui/icons-material/Clear';
-
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
 import translations from './Modal.i18n.json';
-import sx from './Modal.styles';
+
+import modalSx from './Modal.styles';
+
+import CrossIcon from '@mui/icons-material/Clear';
 
 export type ModalProps = {
   isOpen: boolean;
@@ -51,10 +52,10 @@ export function Modal({
   return (
     <MUIModal open={isOpen} onClose={onClose}>
       <div>
-        <Box sx={sx.modal}>
-          <Box sx={sx.head}>
+        <Box sx={modalSx.modal}>
+          <Box sx={modalSx.head}>
             {titleIsString ? (
-              <Typography sx={sx.title} variant='h6' color='primary'>
+              <Typography sx={modalSx.title} variant='h6' color='primary'>
                 {title}
               </Typography>
             ) : (
@@ -62,29 +63,32 @@ export function Modal({
             )}
 
             {!!onClose && (
-              <IconButton onClick={onClose} disabled={closeIsDisabled} sx={sx.closeBtn}>
+              <IconButton onClick={onClose} disabled={closeIsDisabled} sx={modalSx.closeBtn}>
                 <CrossIcon color='primary' />
               </IconButton>
             )}
           </Box>
 
-          {!!description && <Typography variant='body1'>{description}</Typography>}
+          <Box sx={modalSx.body}>
+            {!!description && <Typography variant='body1'>{description}</Typography>}
 
-          {children}
+            {children}
+          </Box>
 
           {showControlBlock && (
-            <Box sx={sx.controlBtnGroup}>
+            <Box sx={modalSx.controlBtnGroup}>
               <Button
-                sx={sx.controlBtn}
+                sx={modalSx.controlBtn}
                 onClick={onAccept}
                 type={formId ? 'submit' : 'button'}
+                form={formId}
                 disabled={acceptIsDisabled}
               >
                 {acceptText || t('acceptText')}
               </Button>
 
               {showRefuseButton && (
-                <Button sx={sx.controlBtn} variant='outlined' onClick={onClose}>
+                <Button sx={modalSx.controlBtn} variant='outlined' onClick={onClose}>
                   {refuseText || t('refuseText')}
                 </Button>
               )}

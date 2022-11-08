@@ -27,7 +27,7 @@ import { getErrorMessage } from 'utils/errorUtil';
 
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const { language, currency, goToProductPage } = useAppNavigation();
+  const { language, currency } = useAppNavigation();
 
   const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
@@ -64,7 +64,7 @@ export function Favorites() {
 
   return (
     <PrivateLayout>
-      <ShopLayout currency='cheeseCoin' language='ru'>
+      <ShopLayout>
         <Link href='/' sx={{ marginBottom: '20px' }}>
           Вернуться на главную
         </Link>
@@ -74,7 +74,7 @@ export function Favorites() {
         {!!filteredProducts.length && (
           <ProductCatalog
             title='Избранные продукты'
-            emptyTitle='Нет избранных продуктов'
+            emptyText='Нет избранных продуктов'
             products={formattedProducts}
             categories={categories}
             language={language}
@@ -82,7 +82,6 @@ export function Favorites() {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
       </ShopLayout>

@@ -13,6 +13,7 @@ import Loader from 'components/UI/Loader/Loader';
 import { useAppSelector } from 'hooks/store';
 
 import NotFound from './404';
+
 import { sx } from './Page.styles';
 
 function InfoPages() {
@@ -20,7 +21,6 @@ function InfoPages() {
     goToHome,
     goToIntro,
     language,
-    currency,
     query: { key: pageKey },
   } = useAppNavigation();
   // upper case из-за особенностей api
@@ -33,7 +33,7 @@ function InfoPages() {
   if ((!isLoading && !page) || !formattedPageKey) return <NotFound />;
 
   return (
-    <ShopLayout currency={currency} language={language}>
+    <ShopLayout>
       {isLoading && <Loader />}
 
       {!isLoading && !!page && (

@@ -1,8 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-
 import { LinearProgress, SxProps } from '@mui/material';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -21,10 +20,10 @@ import { ShopLayout } from 'layouts/Shop/Shop';
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductActions } from 'components/Product/Actions/Actions';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { ProductInformation } from 'components/Product/Information/Information';
 import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -42,16 +41,16 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import HeartIcon from '@mui/icons-material/Favorite';
-
 import translations from './Product.i18n.json';
+
 import styles from './Product.module.css';
 import sx from './Product.styles';
+
+import HeartIcon from '@mui/icons-material/Favorite';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
-    goToProductPage,
     language,
     currency,
     query: { id: queryId },
@@ -165,9 +164,12 @@ export default function Product() {
 
   const price = product ? Math.round(product.price[currency] * 0.1) : 0;
 
+  const hasSimilar = !!formattedSimilarProducts?.length;
+  const hasComments = !!productComments.length;
+
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         {isLoading && <LinearProgress />}
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
@@ -232,22 +234,20 @@ export default function Product() {
               </Box>
             )}
 
-            {!!formattedSimilarProducts?.length && (
-              <ProductCatalog
+            {hasSimilar && (
+              <ProductSlider
                 title={t('similar')}
                 products={formattedSimilarProducts}
                 language={language}
                 currency={currency}
                 sx={sx.similar}
-                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
-                onDetail={goToProductPage}
               />
             )}
 
-            {!!productComments.length && (
+            {hasComments && (
               <ProductReviews
                 sx={sx.reviews}
                 reviews={productComments}

@@ -20,9 +20,10 @@ import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { Typography } from '../../UI/Typography/Typography';
 import translations from './Form.i18n.json';
-import sx from './Form.styles';
 import { OrderFormDocket } from './FormDocket';
 import { getValidationSchema } from './validation';
+
+import sx from './Form.styles';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -200,11 +201,11 @@ export function OrderForm({
               label={
                 <span style={sx.agreementLabel}>
                   Даю свое согласие с{' '}
-                  <Link href={Path.OFERTA} target='_blank'>
+                  <Link href={`/${Path.OFERTA}`} target='_blank'>
                     условиями обслуживания
                   </Link>
                   , а также с &nbsp;
-                  <Link href={Path.PRIVACY} target='_blank'>
+                  <Link href={`/${Path.PRIVACY}`} target='_blank'>
                     политикой конфиденциальности и правилами хранения моих персональных данных
                   </Link>
                   .

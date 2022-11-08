@@ -10,8 +10,6 @@ import { NotificationType } from 'types/entities/Notification';
 
 import { dispatchNotification } from 'packages/EventBus';
 
-import heartIcon from 'assets/icons/heart.svg';
-
 import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCounter as Counter } from '../Counter/Counter';
 import { GameFrame as Frame } from '../Frame/Frame';
@@ -19,7 +17,10 @@ import { GameLives as Lives } from '../Lives/Lives';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';
 import { GameCore, GameEvent } from './Core';
+
 import sx from './Main.styles';
+
+import heartIcon from 'assets/icons/heart.svg';
 
 const DEFAULT_ANGLES = {
   1: 0,

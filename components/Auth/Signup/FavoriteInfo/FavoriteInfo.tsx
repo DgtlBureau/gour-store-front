@@ -12,12 +12,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { CountrySvgSelector } from 'assets/icons/countries/CountrySvgSelector';
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
-
 import translations from './FavoriteInfo.i18n.json';
 import s from './FavoriteInfo.module.scss';
+
 import sx from './FavoriteInfo.styles';
+
+import { CountrySvgSelector } from 'assets/icons/countries/CountrySvgSelector';
+import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];

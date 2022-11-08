@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
+import { authApi } from 'store/api/authApi';
 import { RootState } from 'store/store';
 
 import { IOrderProduct } from 'types/entities/IOrderProduct';
@@ -24,8 +24,10 @@ interface OrderFormAddress {
   floor: number;
 }
 
+export type BasketProduct = Pick<IOrderProduct, 'amount' | 'product' | 'gram'>;
+
 export interface BasketState {
-  products: Record<string, IOrderProduct>;
+  products: Record<string, BasketProduct>;
   contacts?: OrderFormContacts;
   address?: OrderFormAddress;
 }
@@ -74,6 +76,9 @@ export const orderSlice = createSlice({
       const productKey = getProductKeyInBasket(product.id, gram);
       delete state.products[productKey];
     },
+  },
+  extraReducers(builder) {
+    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState);
   },
 });
 

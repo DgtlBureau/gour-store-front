@@ -10,13 +10,14 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
+import translations from './Footer.i18n.json';
+
+import footerSx from './Footer.styles';
+
 import fbIcon from 'assets/icons/social/fb.svg';
 import instIcon from 'assets/icons/social/inst.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
 import logo from 'assets/images/logo.svg';
-
-import translations from './Footer.i18n.json';
-import footerSx from './Footer.styles';
 
 export type FooterProps = {
   firstPhone: string;

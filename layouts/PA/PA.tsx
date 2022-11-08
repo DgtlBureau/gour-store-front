@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useBuyCheeseCoinsMutation } from 'store/api/invoiceApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
 
@@ -16,25 +16,30 @@ import { useAppNavigation } from 'components/Navigation';
 import { PAMenu } from 'components/PA/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
 
-import { Currency } from 'types/entities/Currency';
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
 import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import translations from './PA.i18n.json';
+
 import sx from './PA.styles';
 
-type BuyCheeseCoinState = { isOpenModal: false; price: null } | { isOpenModal: true; price: number };
+type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
+type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
 
 export interface PALayoutProps {
   children?: ReactNode;
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { language, pathname } = useAppNavigation();
-  const currency: Currency = 'cheeseCoin';
+  const { language, pathname, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -42,6 +47,7 @@ export function PALayout({ children }: PALayoutProps) {
 
   const [signOut] = useSignOutMutation();
   const [changeCity] = useChangeCurrentCityMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
 
   const { t } = useLocalTranslation(translations);
@@ -56,10 +62,11 @@ export function PALayout({ children }: PALayoutProps) {
   const sum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
-  const [isCheeseCoinModalOpen, toggleCheeseCoinModalOpen] = useState(false);
-  const [buyCheeseCoinState, setBuyCheeseCoinState] = useState<BuyCheeseCoinState>({
-    isOpenModal: false,
-    price: null,
+  const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
+    isOpen: false,
+  });
+  const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
+    isOpen: false,
   });
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
@@ -91,22 +98,50 @@ export function PALayout({ children }: PALayoutProps) {
     },
   ];
 
-  const onAddCheeseCoinClick = (price: number) => {
-    toggleCheeseCoinModalOpen(false);
-    setBuyCheeseCoinState({
-      isOpenModal: true,
-      price,
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
+    setBalanceCoinsState({ isOpen: false });
+    setPayCoinsState({
+      isOpen: true,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
     });
   };
 
-  const onCloseBuyModal = () =>
-    setBuyCheeseCoinState({
-      isOpenModal: false,
-      price: null,
+  const handleCloseBuyModal = () => {
+    if (payCoinsState.isOpen) {
+      const { price } = payCoinsState;
+      setBalanceCoinsState({ isOpen: true, coins: price });
+      setPayCoinsState({ isOpen: false });
+    }
+  };
+
+  const handleOpenCoinsAddModal = () =>
+    setBalanceCoinsState({
+      isOpen: true,
+      coins: undefined,
     });
 
-  const onOpenCoinsAddModal = () => toggleCheeseCoinModalOpen(true);
-  const onCloseCoinsAddModal = () => toggleCheeseCoinModalOpen(false);
+  const handleCloseCoinsAddModal = () => setBalanceCoinsState({ isOpen: false });
+
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
+      } else {
+        goToFailurePayment();
+      }
+    }
+  };
 
   return (
     <PrivateLayout>
@@ -120,7 +155,7 @@ export function PALayout({ children }: PALayoutProps) {
           basketProductSum={sum - sumDiscount}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickAddCoins={onOpenCoinsAddModal}
+          onClickAddCoins={handleOpenCoinsAddModal}
           onClickSignout={signOut}
         />
 
@@ -130,18 +165,21 @@ export function PALayout({ children }: PALayoutProps) {
         </Box>
 
         <CheesecoinsAddModal
-          isOpened={isCheeseCoinModalOpen}
-          onClose={onCloseCoinsAddModal}
-          onSubmit={onAddCheeseCoinClick}
+          initCoins={balanceCoinsState.isOpen ? balanceCoinsState.coins : undefined}
+          isOpened={balanceCoinsState.isOpen}
+          onClose={handleCloseCoinsAddModal}
+          onSubmit={handleAddCheeseCoinClick}
         />
 
         <BuyCheeseCoinsModal
-          isOpened={buyCheeseCoinState.isOpenModal}
+          isOpened={payCoinsState.isOpen}
+          invoiceUuid={invoiceData?.uuid}
+          userId={currentUser?.id}
           userEmail={currentUser?.email}
-          price={buyCheeseCoinState.price}
+          price={payCoinsState.isOpen ? payCoinsState.price : undefined}
           isLoading={isPaymentLoading}
-          onClose={onCloseBuyModal}
-          onSubmit={buyCheeseCoins}
+          onClose={handleCloseBuyModal}
+          onSubmit={handleBuyCheeseCoins}
         />
       </Box>
     </PrivateLayout>

@@ -13,7 +13,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { PromotionHeader } from 'components/Promotion/Header/Header';
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -30,6 +30,7 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import translations from './Promotion.i18n.json';
+
 import { sx } from './Promotion.styles';
 
 export default function Promotion() {
@@ -38,7 +39,6 @@ export default function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const {
-    goToProductPage,
     language,
     currency,
     query: { id: queryId },
@@ -59,10 +59,8 @@ export default function Promotion() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  // const basket = useAppSelector(selectBasketProducts);
-
   const formattedPromotionProducts = useMemo(
-    () => computeProductsWithCategories(promotion?.products || [], categories, favoriteProducts || []),
+    () => promotion?.products && computeProductsWithCategories(promotion?.products, categories, favoriteProducts),
     [promotion?.products, categories, favoriteProducts],
   );
 
@@ -83,14 +81,16 @@ export default function Promotion() {
   const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
   const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
+  const hasProducts = !!formattedPromotionProducts?.length;
+
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
-        {!isLoading && !isError && !promotion && <Typography variant='h5'>Промоакция не найден</Typography>}
+        {!isLoading && !isError && !promotion && <Typography variant='h5'>Акция не найдена</Typography>}
 
         {!isLoading && !isError && promotion && (
           <>
@@ -108,18 +108,16 @@ export default function Promotion() {
               </Typography>
             </Box>
 
-            {!!formattedPromotionProducts?.length && (
-              <ProductCatalog
+            {hasProducts && (
+              <ProductSlider
                 title={t('sliderTitle')}
                 products={formattedPromotionProducts}
+                discount={promotion?.discount}
                 language={language}
                 currency={currency}
-                discount={promotion?.discount}
-                categories={categories}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
-                onDetail={goToProductPage}
               />
             )}
           </>

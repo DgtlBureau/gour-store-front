@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   container: {
@@ -21,7 +21,7 @@ const sx = {
     },
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
-    color: t.palette.text.secondary,
+    color: color.primary,
     margin: '0 0 16px 0',
   },
   description: {

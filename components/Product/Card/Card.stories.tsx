@@ -4,9 +4,9 @@ import { ComponentStory, Meta } from '@storybook/react';
 
 import { imageByCountry } from 'constants/countries';
 
-import cheeseBackground from 'assets/images/categories/cheese-background.png';
-
 import { ProductCard, ProductCardProps } from './Card';
+
+import cheeseBackground from 'assets/images/categories/cheese-background.png';
 
 export default {
   component: ProductCard,

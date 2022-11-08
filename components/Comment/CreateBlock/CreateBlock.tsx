@@ -15,12 +15,13 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import StarIcon from '@mui/icons-material/Star';
-
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 import translations from './CreateBlock.i18n.json';
+
 import { blockSx } from './CreateBlock.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 const initComment: CommentDto = { value: 0, comment: '' };
 
@@ -79,7 +80,7 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
                 emptyIcon={<StarIcon sx={blockSx.emptyStar} />}
               />
 
-              <Typography sx={{ margin: '0 0 0 10px' }} variant='caption' color={theme.palette.text.muted}>
+              <Typography sx={{ margin: '0 0 0 10px' }} variant='caption' color={color.muted}>
                 {t('rate')}
               </Typography>
             </Box>

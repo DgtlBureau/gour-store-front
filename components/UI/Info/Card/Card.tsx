@@ -5,10 +5,11 @@ import { Paper } from '@mui/material';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
-
 import { Box } from '../../Box/Box';
+
 import sx from './Card.styles';
+
+import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 export type InfoCardProps = {
   title: string;

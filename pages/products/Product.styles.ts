@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   top: {
@@ -30,7 +30,7 @@ export const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: 'primary.main',
+    color: color.primary,
   },
   info: {
     margin: '0 0 35px 0',
@@ -70,7 +70,7 @@ export const sx = {
     top: '15px',
     right: '15px',
 
-    color: t.palette.text.muted,
+    color: color.muted,
 
     cursor: 'pointer',
     zIndex: 100,
@@ -80,7 +80,7 @@ export const sx = {
     },
   },
   elected: {
-    color: t.palette.accent.main,
+    color: color.accent,
   },
 };
 

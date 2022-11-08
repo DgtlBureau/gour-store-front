@@ -10,9 +10,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noPhoto from 'assets/images/default.svg';
-
 import translations from './CredentialsCard.i18n.json';
+
+import noPhoto from 'assets/images/default.svg';
 
 const sx = {
   content: {

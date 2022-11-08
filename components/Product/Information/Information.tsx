@@ -9,11 +9,12 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
+import translations from './Information.i18n.json';
+
+import sx from './Information.styles';
+
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import StarIcon from '@mui/icons-material/Star';
-
-import translations from './Information.i18n.json';
-import sx from './Information.styles';
 
 export type ProductInformationProps = {
   rating: number;

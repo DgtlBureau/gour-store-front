@@ -13,8 +13,9 @@ import { IOption } from 'types/entities/IOption';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './CitySelect.i18n.json';
-import sx from './CitySelect.styles';
 import { getSchema } from './validation';
+
+import sx from './CitySelect.styles';
 
 type SignupCityFields = {
   city: string;

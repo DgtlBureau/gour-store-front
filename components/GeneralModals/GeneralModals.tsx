@@ -8,6 +8,7 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Path } from 'constants/routes';
+import { getFormattedPrice } from 'utils/currencyUtil';
 
 import { sx } from './GeneralModals.styles';
 
@@ -38,7 +39,7 @@ function generateModalData(query: ParsedUrlQuery) {
       title: 'Платёж успешно зачислен',
       content: (
         <Typography color='text.secondary' sx={sx.contentAmount}>
-          {amount} ₽
+          {getFormattedPrice(Number(amount))}&nbsp;₽
         </Typography>
       ),
     } as const;

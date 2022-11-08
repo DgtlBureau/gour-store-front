@@ -4,6 +4,13 @@ export const sx = {
     display: 'flex',
     flexDirection: 'column',
   },
+  titleWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   title: {
     fontSize: {
       sm: '40px',
@@ -12,6 +19,10 @@ export const sx = {
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: 'text.secondary',
+  },
+  cardList: {
+    width: '100%',
+    marginTop: { xs: '20px', md: '40px' },
   },
   backArrow: {
     transform: 'rotate(-180deg)',
@@ -22,7 +33,7 @@ export const sx = {
       md: 'flex',
     },
   },
-  emptyTitle: {
+  emptyText: {
     marginTop: '15px',
     fontSize: {
       sm: '24px',

@@ -1,8 +1,8 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   select: {
-    backgroundColor: 'background.paper',
+    backgroundColor: color.secondary,
     boxShadow: 'none',
     borderRadius: '6px',
     borderColor: 'none',
@@ -16,18 +16,18 @@ const sx = {
   },
   optionBox: {
     padding: '6px 12px',
-    color: t.palette.text.secondary,
-    backgroundColor: t.palette.common.white,
+    color: color.primary,
+    backgroundColor: color.white,
     borderRadius: '6px',
     userSelect: 'none',
     cursor: 'pointer',
   },
   selected: {
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
+    background: color.primary,
+    color: color.white,
   },
   title: {
-    color: t.palette.text.muted,
+    color: color.muted,
   },
   extender: {
     cursor: 'pointer',
@@ -35,7 +35,7 @@ const sx = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '8px 16px',
-    backgroundColor: 'background.paper',
+    backgroundColor: color.secondary,
     borderRadius: '6px',
   },
   list: {
@@ -45,7 +45,7 @@ const sx = {
     padding: '14px',
     backgroundColor: 'white',
     border: '1px solid',
-    borderColor: t.palette.secondary.main,
+    borderColor: color.secondary,
     borderRadius: '6px',
     zIndex: 100,
   },

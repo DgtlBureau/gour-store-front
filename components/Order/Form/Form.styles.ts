@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   form: {
@@ -17,7 +17,7 @@ export const sx = {
     marginBottom: '20px',
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: theme.palette.text.secondary,
+    color: color.primary,
   },
   promo: {
     display: 'flex',
@@ -25,7 +25,7 @@ export const sx = {
     marginTop: '20px',
   },
   promoText: {
-    color: theme.palette.text.muted,
+    color: color.muted,
   },
 
   textarea: {
@@ -38,7 +38,7 @@ export const sx = {
     display: 'flex',
     alignItems: 'center',
     marginBottom: '20px',
-    color: theme.palette.text.muted,
+    color: color.muted,
   },
   agreementLabel: {
     whiteSpace: 'normal' as const,

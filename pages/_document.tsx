@@ -21,6 +21,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script async src='https://checkout.cloudpayments.ru/checkout.js' />
         </body>
       </Html>
     );

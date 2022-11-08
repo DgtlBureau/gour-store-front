@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 
 import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
+import { selectIsAuth } from 'store/selectors/auth';
+
 import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -11,7 +13,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Currency } from 'types/entities/Currency';
 
 import { Path } from 'constants/routes';
+import { useAppSelector } from 'hooks/store';
 import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import { MobileMenu } from '../Mobile/Menu/Menu';
+import { CitySelect } from './CitySelect';
+
+import headerSx from './Header.styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,10 +33,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CatalogIcon from 'assets/icons/catalog.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import Logo from 'assets/images/common-logo.svg';
-
-import { MobileMenu } from '../Mobile/Menu/Menu';
-import { CitySelect } from './CitySelect';
-import headerSx from './Header.styles';
 
 export type HeaderProps = {
   isGame?: boolean;
@@ -76,6 +80,8 @@ export function Header({
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
 
   const isDesktop = useMediaQuery('(min-width: 600px)');
+
+  const isAuth = useAppSelector(selectIsAuth);
 
   const currencySymbol = getCurrencySymbol(currency);
 
@@ -169,26 +175,22 @@ export function Header({
                   <Image src={CatalogIcon} height={24} width={24} alt='' />
                 </Link>
               ) : (
-                <Link href={Path.GAME} color='inherit' sx={headerSx.icon}>
+                <Link href={`/${Path.GAME}`} color='inherit' sx={headerSx.icon}>
                   <Image src={GamepadIcon} height={24} width={24} alt='' />
                 </Link>
               )}
 
-              <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                <LogoutIcon />
-              </IconButton>
-
               {!isGame && (
                 <>
-                  <Link href={Path.FAVORITES} color='inherit' sx={headerSx.icon}>
+                  <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
                     <FavoriteBorderIcon />
                   </Link>
 
-                  <Link href={Path.PERSONAL_AREA} color='inherit' sx={headerSx.icon}>
+                  <Link href={`/${Path.PERSONAL_AREA}`} color='inherit' sx={headerSx.icon}>
                     <PersonIcon />
                   </Link>
 
-                  <Link href={Path.BASKET} sx={headerSx.cart}>
+                  <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
                     <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
                       <ShoppingCartOutlinedIcon color='primary' />
                     </Badge>
@@ -196,11 +198,13 @@ export function Header({
                     &nbsp;
                     {currencySymbol}
                   </Link>
-
-                  <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                    <LogoutIcon />
-                  </IconButton>
                 </>
+              )}
+
+              {isAuth && (
+                <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                  <LogoutIcon />
+                </IconButton>
               )}
 
               {!isGame && !isDesktop && (

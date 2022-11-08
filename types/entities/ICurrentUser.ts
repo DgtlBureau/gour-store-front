@@ -3,7 +3,8 @@ import { ICity } from './ICity';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 
-export interface ICurrentUser extends IBase {
+export interface ICurrentUser extends Omit<IBase, 'id'> {
+  id: string;
   firstName: string;
   lastName: string;
   phone: string;

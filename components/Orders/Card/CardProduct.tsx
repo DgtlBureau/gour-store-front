@@ -12,6 +12,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import translations from './Card.i18n.json';
+
 import sx from './CardProduct.styles';
 
 export type OrderProductType = {
@@ -19,6 +20,9 @@ export type OrderProductType = {
   photo: string;
   title: string;
   amount: number;
+  gram: number;
+  totalSum: number;
+  totalSumWithoutAmount: number;
   cost: number;
 };
 
@@ -32,7 +36,7 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
 
   const { t } = useLocalTranslation(translations);
 
-  const { photo, title, amount, cost } = product;
+  const { photo, title, amount, gram, cost } = product;
 
   const handleClickDetail = () => goToProductPage(product.id);
 
@@ -46,7 +50,7 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
       />
 
       <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-        <Grid container item xs={12} sm={8} sx={{ display: 'flex', alignItems: 'center' }}>
+        <Grid container item xs={12} sm={7} sx={{ display: 'flex', alignItems: 'center' }}>
           <CardMedia
             sx={{ ...sx.image, display: { sm: 'flex', xs: 'none' } }}
             component='img'
@@ -59,13 +63,19 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
           </Typography>
         </Grid>
 
-        <Grid item sm={2} xs={6} sx={sx.count}>
+        <Grid item sm={1.5} xs={4} sx={sx.count}>
+          <Typography variant='body1' sx={sx.countText} color='text.muted'>
+            {gram} {t('g')}.
+          </Typography>
+        </Grid>
+
+        <Grid item sm={1.5} xs={4} sx={sx.count}>
           <Typography variant='body1' sx={sx.countText} color='text.muted'>
             {amount} {t('pc')}.
           </Typography>
         </Grid>
 
-        <Grid item sm={2} xs={6} sx={sx.price}>
+        <Grid item sm={2} xs={4} sx={sx.price}>
           <Typography variant='body1' sx={sx.priceText}>
             {cost} {getCurrencySymbol(currency)}
           </Typography>

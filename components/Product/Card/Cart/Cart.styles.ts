@@ -1,30 +1,31 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 export const sx = {
   cart: {
     display: 'flex',
     alignItems: 'center',
 
-    borderRadius: '99px',
+    borderRadius: '6px',
 
-    width: { xs: 'fit-content', md: '100%' },
+    height: {
+      xs: '34px',
+      md: '40px',
+    },
+    width: '100%',
 
     justifyContent: 'center',
 
     fontFamily: 'Roboto slab',
 
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
+    background: color.primary,
+    color: color.white,
 
     '&: hover': {
-      background: { md: t.palette.common.black },
+      background: { md: color.black },
     },
   },
   iconBtn: {
     width: '100%',
-    padding: {
-      xs: '10px',
-    },
   },
   icon: {
     fontSize: {
@@ -32,24 +33,26 @@ export const sx = {
       sm: '20px',
       xs: '18px',
     },
-    color: t.palette.common.white,
+    color: color.white,
   },
   buyLabel: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
     textTransform: 'uppercase',
     marginLeft: '10px',
-    color: t.palette.common.white,
-  },
-  deployed: {
-    width: '100%',
+    color: color.white,
   },
   action: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    userSelect: 'none',
+  },
+  disabled: {
+    color: 'rgba(0, 0, 0, 0.26)',
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+
+    '&: hover': {
+      background: undefined,
+    },
   },
 };
 

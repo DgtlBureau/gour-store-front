@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
-
 import { Grid } from '@mui/material';
+import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 
 import PALoader from 'components/PA/Main/Loader';
 import { InfoCard } from 'components/UI/Info/Card/Card';

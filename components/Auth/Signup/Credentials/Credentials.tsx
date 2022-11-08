@@ -22,8 +22,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useStopwatch } from 'hooks/useStopwatch';
 
 import translations from './Credentials.i18n.json';
-import sx from './Credentials.styles';
 import { getSchema } from './validation';
+
+import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
