@@ -5,9 +5,8 @@ import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
 import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './AddressCard.i18n.json';
 

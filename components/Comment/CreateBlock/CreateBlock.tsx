@@ -15,11 +15,13 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import StarIcon from '@mui/icons-material/Star';
 import { color } from 'themes';
 
 import translations from './CreateBlock.i18n.json';
+
 import { blockSx } from './CreateBlock.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 const initComment: CommentDto = { value: 0, comment: '' };
 

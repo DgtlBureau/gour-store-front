@@ -1,8 +1,8 @@
-import { Translator } from 'types/entities/Translator';
-
 import * as yup from 'yup';
 
-export const MINIMUM_AMOUNT = 1;
+import { Translator } from 'types/entities/Translator';
+
+export const MINIMUM_AMOUNT = 1_000;
 
 export const getValidationSchema = (t: Translator) =>
   yup.object().shape({

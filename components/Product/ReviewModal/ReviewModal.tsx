@@ -8,11 +8,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { formatDate } from 'utils/dateUtil';
 
-import StarIcon from '@mui/icons-material/Star';
 import { color } from 'themes';
 
 import { Review } from '../Reviews/Reviews';
+
 import sx from './ReviewModal.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 export type ReviewModalProps = {
   isOpen: boolean;

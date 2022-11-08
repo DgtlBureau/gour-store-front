@@ -9,18 +9,19 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import translations from './Menu.i18n.json';
+import { MobileMenuContacts } from './MenuContacts';
+
+import sx from './Menu.styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';
 import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
 import locationIcon from 'assets/icons/mobile/location.svg';
-import { Path } from 'constants/routes';
-
-import translations from './Menu.i18n.json';
-import sx from './Menu.styles';
-import { MobileMenuContacts } from './MenuContacts';
 
 export type MobileMenuProps = {
   selectedCityId: number;

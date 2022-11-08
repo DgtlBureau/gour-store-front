@@ -1,18 +1,17 @@
-/* eslint-disable react/no-array-index-key */
 import React, { ReactNode, useState } from 'react';
 
 import { SxProps, Theme, useMediaQuery } from '@mui/material';
-
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-
 import SwiperCore, { Grid } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/grid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import sliderSx from './CardSlider.styles';
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { CardSliderArrows } from './CardSliderArrows';
+
+import sliderSx from './CardSlider.styles';
 
 type Props = {
   title?: string;
@@ -87,6 +86,7 @@ export function CardSlider({
             onSlideChange={changeSlide}
           >
             {cardList.map((card, i) => (
+              // eslint-disable-next-line react/no-array-index-key
               <SwiperSlide key={i} style={sliderSx.slide}>
                 {card}
               </SwiperSlide>

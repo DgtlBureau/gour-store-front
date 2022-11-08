@@ -6,6 +6,7 @@ import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import regexp from 'constants/regex';
+
 import { color } from 'themes';
 
 import inputSx from './CodeInput.styles';

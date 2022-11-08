@@ -1,9 +1,8 @@
-import { IInvoice } from 'types/entities/IInvoice';
-import { IWalletTransaction } from 'types/entities/IWalletTransaction';
-
+import { FullInvoice } from '.';
 import { format } from 'date-fns';
 
-import { FullInvoice } from '.';
+import { IInvoice } from 'types/entities/IInvoice';
+import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 
 type PaymentsByDate = Record<string, FullInvoice[]>;
 function sortPaymentDate(a: IInvoice | IWalletTransaction, b: IInvoice | IWalletTransaction) {

@@ -9,8 +9,9 @@ import {
   AccordionSummary as MUIAccordionSummary,
 } from '@mui/material';
 
-import ExpandIcon from '@mui/icons-material/ExpandMore';
 import { color } from 'themes';
+
+import ExpandIcon from '@mui/icons-material/ExpandMore';
 
 const accordionSx = {
   marginBottom: '10px',

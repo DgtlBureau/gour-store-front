@@ -12,8 +12,14 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import { MobileMenu } from '../Mobile/Menu/Menu';
+import { CitySelect } from './CitySelect';
+
+import headerSx from './Header.styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,11 +33,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CatalogIcon from 'assets/icons/catalog.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import Logo from 'assets/images/common-logo.svg';
-import { Path } from 'constants/routes';
-
-import { MobileMenu } from '../Mobile/Menu/Menu';
-import { CitySelect } from './CitySelect';
-import headerSx from './Header.styles';
 
 export type HeaderProps = {
   isGame?: boolean;

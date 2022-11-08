@@ -5,8 +5,9 @@ import { Paper, Rating } from '@mui/material';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import StarIcon from '@mui/icons-material/Star';
 import { color } from 'themes';
+
+import StarIcon from '@mui/icons-material/Star';
 
 const sx = {
   comment: {

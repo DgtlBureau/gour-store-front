@@ -10,17 +10,18 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { Currency } from 'types/entities/Currency';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Card.i18n.json';
+import { CartCardDocket as Docket } from './Docket';
+
+import sx from './Card.styles';
 
 import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MinusIcon from '@mui/icons-material/Remove';
 import defaultImg from 'assets/images/default.svg';
-import { Path } from 'constants/routes';
-
-import translations from './Card.i18n.json';
-import sx from './Card.styles';
-import { CartCardDocket as Docket } from './Docket';
 
 type Props = {
   id: number;

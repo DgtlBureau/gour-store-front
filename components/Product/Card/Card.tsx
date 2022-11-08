@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { memo, useState } from 'react';
 
 import { CardMedia, SxProps } from '@mui/material';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { useGetStockQuery } from 'store/api/warehouseApi';
 
@@ -14,19 +15,19 @@ import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
+import { productGramList } from 'constants/gramList';
+import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 
-import HeartIcon from '@mui/icons-material/Favorite';
-import defaultImg from 'assets/images/default.svg';
-import { productGramList } from 'constants/gramList';
-import { Path } from 'constants/routes';
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
-
-import sx from './Card.styles';
 import { ProductCardCart as Cart } from './Cart/Cart';
 import { ProductCardDocket as Docket } from './Docket/Docket';
 import { ProductCardRate as Rate } from './Rate/Rate';
+
+import sx from './Card.styles';
+
+import HeartIcon from '@mui/icons-material/Favorite';
+import defaultImg from 'assets/images/default.svg';
 
 export type ProductCardProps = {
   id: number;

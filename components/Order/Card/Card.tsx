@@ -14,6 +14,7 @@ import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import translation from './Card.i18n.json';
+
 import cardSx from './Card.styles';
 
 type Props = {

@@ -4,7 +4,6 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import MUIDatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { SxProps, TextField } from '@mui/material';
-
 import ruLocale from 'date-fns/locale/ru';
 
 type Props = {

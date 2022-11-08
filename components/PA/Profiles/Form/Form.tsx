@@ -14,11 +14,12 @@ import { OrderProfileDto } from 'types/dto/order/profile.dto';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { color } from 'themes';
 
 import translations from './Form.i18n.json';
 import { getValidationSchema } from './validation';
+
+import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 const sx = {
   mainCheck: {

@@ -9,11 +9,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { IOption } from 'types/entities/IOption';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { color } from 'themes';
 
 import { ProductFilterSelectItem } from '../Multiselect/SelectItem';
+
 import selectSx from './Select.styles';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export type FilterSelectProps = {
   title: string;

@@ -12,12 +12,13 @@ import { ICategory } from 'types/entities/ICategory';
 import { IExtendedProduct, IFilters, IProduct, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
-import FilterIcon from '@mui/icons-material/FilterAltOutlined';
-
 import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
+
 import catalogSx from './Catalog.styles';
+
+import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 
 export type ProductCatalogProps = {
   title?: string;

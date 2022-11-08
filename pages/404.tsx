@@ -12,9 +12,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import notFound from 'assets/images/404.png';
-
 import translations from './Main.i18n.json';
+
+import notFound from 'assets/images/404.png';
 
 const sx = {
   notFound: {

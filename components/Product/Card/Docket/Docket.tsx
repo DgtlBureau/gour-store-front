@@ -9,6 +9,7 @@ import { IOption } from 'types/entities/IOption';
 import { getPriceByGrams } from 'utils/currencyUtil';
 
 import { ProductCardGramSelect as GramSelect } from '../GramSelect/GramSelect';
+
 import sx from './Docket.styles';
 
 type ProductCardDocketProps = {

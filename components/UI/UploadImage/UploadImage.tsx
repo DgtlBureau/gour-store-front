@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { ChangeEventHandler } from 'react';
 
+import { PhotoCamera } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-import { PhotoCamera } from '@mui/icons-material';
 
 import { IconButton } from '../IconButton/IconButton';
 

@@ -3,8 +3,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { SxProps } from '@mui/material';
-
-import defaultImage from 'assets/images/default.svg';
 import SwiperCore, { EffectFade, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -13,7 +11,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Box } from '../Box/Box';
 import styles from './ImageSlider.module.scss';
+
 import sliderSx from './ImageSlider.styles';
+
+import defaultImage from 'assets/images/default.svg';
 
 export type ImageSliderProps = {
   images: {

@@ -11,15 +11,15 @@ import Loader from 'components/UI/Loader/Loader';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import regexp from 'constants/regex';
 import { useDebounce } from 'hooks/useDebounce';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
-import regexp from 'constants/regex';
-
 import translations from './AddModal.i18n.json';
-import { sx } from './AddModal.styles';
 import { MINIMUM_AMOUNT, getValidationSchema } from './validations';
+
+import { sx } from './AddModal.styles';
 
 type FormState = {
   count: number;

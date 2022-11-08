@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 
 import { LinearProgress, SxProps } from '@mui/material';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -32,6 +33,7 @@ import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { noExistingId } from 'constants/default';
 import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
@@ -39,13 +41,12 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import HeartIcon from '@mui/icons-material/Favorite';
-import { noExistingId } from 'constants/default';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-
 import translations from './Product.i18n.json';
+
 import styles from './Product.module.css';
 import sx from './Product.styles';
+
+import HeartIcon from '@mui/icons-material/Favorite';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);

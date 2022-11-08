@@ -4,14 +4,15 @@ import { Modal as MUIModal } from '@mui/material';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import CrossIcon from '@mui/icons-material/Clear';
-
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
 import translations from './Modal.i18n.json';
+
 import modalSx from './Modal.styles';
+
+import CrossIcon from '@mui/icons-material/Clear';
 
 export type ModalProps = {
   isOpen: boolean;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Grid, SxProps } from '@mui/material';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { useGetStockQuery } from 'store/api/warehouseApi';
 
@@ -11,21 +12,21 @@ import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
 
+import { productGramList } from 'constants/gramList';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
-
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { productGramList } from 'constants/gramList';
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { getStockLabel } from '../Card/Card';
 import { ProductCardCart } from '../Card/Cart/Cart';
 import { ProductCardGramSelect } from '../Card/GramSelect/GramSelect';
 import { ProductPrice } from '../Price/Price';
 import { ProductStock } from '../Stock/Stock';
+
 import sxActions from './Actions.styles';
+
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export type ProductActionsProps = {
   id: number;

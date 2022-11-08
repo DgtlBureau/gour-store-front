@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { Grid, Tooltip, Typography } from '@mui/material';
+import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
 
 import { useCreateInvoiceMutation } from 'store/api/invoiceApi';
 
@@ -17,12 +18,13 @@ import { dispatchNotification } from 'packages/EventBus';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
-import tooltipIcon from 'assets/icons/general/tooltip.svg';
-import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
+import '../../../.storybook/main';
+import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
 
 import styles from './Card.module.css';
 import sx from './Card.styles';
-import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
+
+import tooltipIcon from 'assets/icons/general/tooltip.svg';
 
 function matchIsActualInvoiceDate(status: InvoiceStatus, expiresAt: Date | null) {
   const isActualDateForRepay = expiresAt && expiresAt.getTime() > new Date().getTime();

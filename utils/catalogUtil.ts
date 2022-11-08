@@ -1,10 +1,11 @@
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
 import { ICategory } from 'types/entities/ICategory';
 import { IOption } from 'types/entities/IOption';
 import { IExtendedProduct, IProduct, ProductTypeLabel } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
 import { OrderTypeOption } from 'constants/filters';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { getProductBackground, getProductTypeLabel } from './categoryUtil';
 import { getCountryImage } from './countryUtil';

@@ -19,11 +19,10 @@ import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
 import { NotificationType } from 'types/entities/Notification';
 
+import { contacts } from 'constants/contacts';
 import { useAppSelector } from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
-
-import { contacts } from 'constants/contacts';
 
 import sx from './Shop.styles';
 

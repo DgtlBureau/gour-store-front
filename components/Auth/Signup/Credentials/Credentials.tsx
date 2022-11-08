@@ -17,14 +17,14 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 
+import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useStopwatch } from 'hooks/useStopwatch';
 
-import { Path } from 'constants/routes';
-
 import translations from './Credentials.i18n.json';
-import sx from './Credentials.styles';
 import { getSchema } from './validation';
+
+import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;

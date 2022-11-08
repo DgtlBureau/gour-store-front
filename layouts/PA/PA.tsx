@@ -20,15 +20,15 @@ import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
 import { NotificationType } from 'types/entities/Notification';
 
+import { contacts } from 'constants/contacts';
+import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import { contacts } from 'constants/contacts';
-import { Path } from 'constants/routes';
-
 import translations from './PA.i18n.json';
+
 import sx from './PA.styles';
 
 type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };

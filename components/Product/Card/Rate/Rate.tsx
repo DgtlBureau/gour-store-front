@@ -6,9 +6,9 @@ import { ProductStock } from 'components/Product/Stock/Stock';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import StarIcon from '@mui/icons-material/Star';
-
 import rateSx from './Rate.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 type ProductCardRateProps = {
   rating: number;

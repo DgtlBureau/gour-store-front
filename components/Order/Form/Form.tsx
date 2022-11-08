@@ -10,9 +10,8 @@ import { SelectOption } from 'components/UI/Select/Select';
 
 import { Currency } from 'types/entities/Currency';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
 import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import { HFSelect } from '../../HookForm/HFSelect';
 import { HFTextField } from '../../HookForm/HFTextField';
@@ -21,9 +20,10 @@ import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { Typography } from '../../UI/Typography/Typography';
 import translations from './Form.i18n.json';
-import sx from './Form.styles';
 import { OrderFormDocket } from './FormDocket';
 import { getValidationSchema } from './validation';
+
+import sx from './Form.styles';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 

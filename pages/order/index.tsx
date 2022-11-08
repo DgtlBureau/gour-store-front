@@ -24,13 +24,13 @@ import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
 
+import { noExistingId } from 'constants/default';
+import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { noExistingId } from 'constants/default';
-import { Path } from 'constants/routes';
-
 import translation from './Order.i18n.json';
+
 import sx from './Order.styles';
 
 const defaultPersonalFields = {

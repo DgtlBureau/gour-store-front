@@ -6,12 +6,12 @@ import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import sx from './Cart.styles';
+
 import PlusIcon from '@mui/icons-material/Add';
 import TrashIcon from '@mui/icons-material/DeleteForever';
 import MinusIcon from '@mui/icons-material/Remove';
 import CartIcon from '@mui/icons-material/ShoppingCart';
-
-import sx from './Cart.styles';
 
 type Props = {
   isDisabled: boolean;

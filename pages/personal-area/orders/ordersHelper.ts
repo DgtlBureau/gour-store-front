@@ -1,3 +1,5 @@
+import { endOfDay, getTime } from 'date-fns';
+
 import { FullOrder } from 'components/Orders/Card/Card';
 import { OrderProductType } from 'components/Orders/Card/CardProduct';
 

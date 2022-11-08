@@ -8,14 +8,16 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { formatDate } from 'utils/dateUtil';
 
-import StarIcon from '@mui/icons-material/Star';
 import { color } from 'themes';
 
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
 import translations from './Reviews.i18n.json';
-import reviewSx from './Reviews.styles';
 import { ReviewsCounter } from './ReviewsCounter';
+
+import reviewSx from './Reviews.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 export type Review = {
   id: number;

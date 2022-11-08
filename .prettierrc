@@ -9,16 +9,17 @@
   "arrowParens": "avoid",
   "importOrder": [
     "^(react|next)",
-    "^@(?!mui/icons-material)",
+    "<THIRD_PARTY_MODULES>",
     "^(store|http)",
     "^layouts",
     "^components/(.*)$",
     "^types",
-    "^(hooks|helpers|packages|utils)",
-    "^[^./]",
-    "^(assets|@mui/icons-material/)",
+    "^(hooks|helpers|packages|utils|constants|errors)",
     "^themes",
-    "^[./]"
+
+    "^(.?./)+(?!\\w+((.module.css)|(.styles)))",
+    "^(.?./)+",
+    "^(assets|@mui/icons-material/)"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

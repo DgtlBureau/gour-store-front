@@ -29,17 +29,18 @@ import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { Path } from 'constants/routes';
 import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import defaultBannerImg from 'assets/images/banner.jpeg';
-import { Path } from 'constants/routes';
-
 import translations from './Main.i18n.json';
+
 import sx from './Main.styles';
+
+import defaultBannerImg from 'assets/images/banner.jpeg';
 
 const NOW = new Date();
 

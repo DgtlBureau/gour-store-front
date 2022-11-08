@@ -2,9 +2,9 @@ import { ButtonGroup } from '@mui/material';
 
 import { Button } from 'components/UI/Button/Button';
 
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
 import sliderSx from './CardSlider.styles';
+
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 type CardSliderArrowsProps = {
   isPrevDisabled: boolean;

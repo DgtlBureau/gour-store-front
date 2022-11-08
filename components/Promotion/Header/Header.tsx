@@ -3,15 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles/createTheme';
+import { differenceInSeconds } from 'date-fns';
 
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { formatTimeLeft } from 'utils/timeUtil';
 
-import { differenceInSeconds } from 'date-fns';
-
 import translations from './Header.i18n.json';
+
 import { headerSx } from './Header.styles';
 
 export type PromotionHeaderProps = {

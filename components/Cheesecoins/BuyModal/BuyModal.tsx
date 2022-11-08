@@ -15,15 +15,16 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 
+import regexp from 'constants/regex';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
-import coinImage from 'assets/icons/cheesecoins/coin.svg';
-import regexp from 'constants/regex';
-
 import translations from './BuyModal.i18n.json';
-import { sx } from './BuyModal.styles';
 import { formMasks, getExpDate, getValidationSchema } from './validations';
+
+import { sx } from './BuyModal.styles';
+
+import coinImage from 'assets/icons/cheesecoins/coin.svg';
 
 type FormState = Pick<PayInvoiceDto, 'cardNumber' | 'cvv' | 'email'> & {
   expDate: string;

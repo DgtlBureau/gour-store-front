@@ -1,15 +1,14 @@
 import React from 'react';
 
 import { Grid } from '@mui/material';
+import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
 
 import PALoader from 'components/PA/Main/Loader';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-
 import { Path } from 'constants/routes';
-import { formatCategoriesWithMaxDiscount } from 'pages/personal-area/personalAreaHelper';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import { DiscountItem } from './DiscountItem';
 import translations from './DiscountsCard.i18n.json';

@@ -36,6 +36,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
@@ -43,9 +44,8 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import { Path } from 'constants/routes';
-
 import translation from './Basket.i18n.json';
+
 import sx from './Basket.styles';
 
 export function Basket() {

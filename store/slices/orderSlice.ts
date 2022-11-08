@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { authApi } from 'store/api/authApi';
 import { RootState } from 'store/store';
 
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { IProduct } from 'types/entities/IProduct';
-
-import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 interface OrderFormContacts {
   firstName: string;

@@ -13,6 +13,7 @@ import Loader from 'components/UI/Loader/Loader';
 import { useAppSelector } from 'hooks/store';
 
 import NotFound from './404';
+
 import { sx } from './Page.styles';
 
 function InfoPages() {
@@ -22,8 +23,6 @@ function InfoPages() {
     language,
     query: { key: pageKey },
   } = useAppNavigation();
-  if (!pageKey) return <NotFound />;
-
   // upper case из-за особенностей api
   const formattedPageKey = String(pageKey) || '';
 
@@ -31,7 +30,7 @@ function InfoPages() {
 
   const isAuth = useAppSelector(selectIsAuth);
 
-  if (!isLoading && !page) return <NotFound />;
+  if ((!isLoading && !page) || !formattedPageKey) return <NotFound />;
 
   return (
     <ShopLayout>

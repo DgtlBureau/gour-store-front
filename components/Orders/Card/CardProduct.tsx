@@ -12,6 +12,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import translations from './Card.i18n.json';
+
 import sx from './CardProduct.styles';
 
 export type OrderProductType = {

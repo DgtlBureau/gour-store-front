@@ -5,12 +5,12 @@ import { Provider } from 'react-redux';
 
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'store/store';
 
 import { NavigationProvider } from 'components/Navigation';
 
-import { PersistGate } from 'redux-persist/integration/react';
 import { defaultTheme } from 'themes';
 
 ('use strict');

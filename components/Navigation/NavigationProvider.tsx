@@ -1,14 +1,14 @@
 import { NextRouter, useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
 
-import { Currency } from 'types/entities/Currency';
-
-import { LocalConfig } from 'hooks/useLocalTranslation';
-
-import { Path } from 'constants/routes';
 import { setDefaultOptions } from 'date-fns';
 import enGB from 'date-fns/locale/en-GB/index';
 import ru from 'date-fns/locale/ru/index';
+
+import { Currency } from 'types/entities/Currency';
+
+import { Path } from 'constants/routes';
+import { LocalConfig } from 'hooks/useLocalTranslation';
 
 import { AppNavigationCtx, Navigation } from './NavigationContext';
 

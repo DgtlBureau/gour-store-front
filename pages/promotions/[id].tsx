@@ -30,6 +30,7 @@ import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import translations from './Promotion.i18n.json';
+
 import { sx } from './Promotion.styles';
 
 export default function Promotion() {

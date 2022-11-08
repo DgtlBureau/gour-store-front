@@ -8,7 +8,8 @@
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -21,6 +22,8 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
 
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react/react-in-jsx-scope": "off",
     "react/jsx-no-duplicate-props": [1, { "ignoreCase": false }],
     "camelcase": "error",

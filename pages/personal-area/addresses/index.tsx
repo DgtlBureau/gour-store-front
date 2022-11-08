@@ -22,11 +22,10 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { NotificationType } from 'types/entities/Notification';
 
+import { noExistingId } from 'constants/default';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
-
-import { noExistingId } from 'constants/default';
 
 import translations from './Addresses.i18n.json';
 

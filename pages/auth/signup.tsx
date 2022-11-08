@@ -19,6 +19,7 @@ import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
 import { NotificationType } from 'types/entities/Notification';
 
+import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -27,7 +28,6 @@ import credentialsImage from 'assets/images/signup/credentials.svg';
 import favoritesImage from 'assets/images/signup/favorites.svg';
 import greetingsImage from 'assets/images/signup/greetings.svg';
 import referralImage from 'assets/images/signup/referral-codes.svg';
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 

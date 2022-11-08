@@ -1,7 +1,8 @@
+import * as yup from 'yup';
+
 import { Translator } from 'types/entities/Translator';
 
 import regexp from 'constants/regex';
-import * as yup from 'yup';
 
 export const getExpDate = (value?: string) => {
   const regexpResult = value?.match(/^(\d{2})\D*(\d{2})$/);

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Divider, Grid, Typography } from '@mui/material';
+import { format } from 'date-fns';
 
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
@@ -11,12 +12,11 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
-import { format } from 'date-fns';
-
 import translations from './Card.i18n.json';
-import sx from './Card.styles';
 import { OrderCardInfo } from './CardInfo';
 import { OrderCardProduct, OrderProductType } from './CardProduct';
+
+import sx from './Card.styles';
 
 type Promotion = {
   title: string;

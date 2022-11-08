@@ -9,9 +9,9 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import noImage from 'assets/images/default.svg';
-
 import translations from './AvatarEditor.i18n.json';
+
+import noImage from 'assets/images/default.svg';
 
 const sx = {
   image: {

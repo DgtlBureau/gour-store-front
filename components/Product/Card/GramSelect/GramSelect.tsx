@@ -8,10 +8,11 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { IOption } from 'types/entities/IOption';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { color } from 'themes';
 
 import selectSx from './GramSelect.styles';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export type ProductCardGramSelectProps = {
   gram: number;

@@ -1,6 +1,8 @@
 /* eslint-disable import/no-duplicates */
 import React from 'react';
 
+import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
+
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
@@ -8,9 +10,8 @@ import { IInvoice } from 'types/entities/IInvoice';
 
 import { formatDate } from 'utils/dateUtil';
 
-import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
-
 import { PaymentsCard } from '../Card/Card';
+
 import sx from './Group.styles';
 
 export type OrdersGroupProps = {

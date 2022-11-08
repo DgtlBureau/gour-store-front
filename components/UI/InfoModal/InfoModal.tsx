@@ -5,10 +5,10 @@ import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import sx from './InfoModal.styles';
+
 import failureIcon from 'assets/icons/general/failure.svg';
 import successIcon from 'assets/icons/general/success.svg';
-
-import sx from './InfoModal.styles';
 
 export type InfoModalStatus = 'success' | 'failure';
 

@@ -11,12 +11,12 @@ import { ICategory } from 'types/entities/ICategory';
 import { IFilters, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
-import { convertOrderTypesToOptions, convertSubCategoriesToOptions } from 'utils/catalogUtil';
-
 import { orderTypeOptions } from 'constants/filters';
+import { convertOrderTypesToOptions, convertSubCategoriesToOptions } from 'utils/catalogUtil';
 
 import { FilterMultiselectProps, ProductFilterMultiselect } from '../Multiselect/Multiselect';
 import { ProductFilterSelect } from '../Select/Select';
+
 import listSx from './List.styles';
 
 export type CatalogFilterProps = {
