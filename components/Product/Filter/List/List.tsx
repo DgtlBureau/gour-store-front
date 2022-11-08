@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SxProps } from '@mui/material';
+import { SxProps, Theme, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
@@ -45,7 +45,7 @@ export function ProductFilterList({
     return acc;
   }, [] as ICategory[]);
 
-  const isMobile = window.screen.width < 900;
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const filtersPropList: FilterMultiselectProps[] = characteristics.map(characteristic => ({
     key: characteristic.id,
@@ -66,7 +66,7 @@ export function ProductFilterList({
           selected={filters.orderType}
           options={convertOrderTypesToOptions(orderTypeOptions, language)}
           onChange={onOrderTypeChange}
-          isMobile={isMobile}
+          isDesktop={isDesktop}
         />
 
         <Box sx={listSx.categories}>
@@ -84,14 +84,14 @@ export function ProductFilterList({
 
       {characteristics.length > 0 && (
         <Box sx={listSx.characteristics}>
-          {isMobile && (
+          {!isDesktop && (
             <Typography sx={listSx.title} variant='h6' color='primary'>
               Фильтры
             </Typography>
           )}
 
           {filtersPropList.map(props => (
-            <ProductFilterMultiselect {...props} isMobile={isMobile} />
+            <ProductFilterMultiselect {...props} isDesktop={isDesktop} />
           ))}
 
           <Button sx={listSx.resetBtn} variant='outlined' onClick={onCharacteristicsReset}>

@@ -1,5 +1,5 @@
 import { InvoiceStatus } from 'types/entities/IInvoice';
-import { IWalletTransaction, WalletTransactionStatus } from 'types/entities/IWalletTransaction';
+import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 
 type InvoiceStatusLabels = {
   name: string;

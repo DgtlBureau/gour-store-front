@@ -1,38 +1,37 @@
 /* eslint-disable react/no-array-index-key */
 import React, { ReactNode, useState } from 'react';
 
-import { ButtonGroup, Stack, SxProps } from '@mui/material';
+import { SxProps, Theme, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SwiperCore, { Grid } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/grid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import sliderSx from './CardSlider.styles';
+import { CardSliderArrows } from './CardSliderArrows';
 
 type Props = {
   title?: string;
-  emptyTitle?: string;
+  emptyText?: string;
   head?: ReactNode;
-  cardsList: ReactNode[];
+  cardList: ReactNode[];
   rows?: number;
   spaceBetween?: number;
-  slidesPerView?: number;
+  slidesPerRow?: number;
   sx?: SxProps;
 };
 
 export function CardSlider({
   title,
-  emptyTitle,
+  emptyText = 'Список карточек пуст',
   head,
-  cardsList,
+  cardList,
   rows = 1,
-  slidesPerView = 4,
+  slidesPerRow = 4,
   spaceBetween = 10,
   sx,
 }: Props) {
@@ -43,35 +42,33 @@ export function CardSlider({
     isEnd: false,
   });
 
-  const screenWidth = window.screen.width;
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const withArrows = cardsList.length > rows * slidesPerView || screenWidth < 1200;
+  const withArrows = isDesktop && cardList.length > rows * slidesPerRow;
 
   const changeSlide = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
+
   return (
     <Box sx={{ ...sliderSx.container, ...sx } as SxProps}>
-      <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+      <Box sx={sliderSx.titleWrapper}>
         <Typography variant='h4' sx={sliderSx.title}>
           {title}
         </Typography>
 
         {withArrows && (
-          <ButtonGroup sx={sliderSx.arrows}>
-            <Button variant='outlined' disabled={edge.isBeginning} onClick={() => slider?.slidePrev()}>
-              <ArrowForwardIosIcon fontSize='small' sx={sliderSx.backArrow} />
-            </Button>
-
-            <Button variant='outlined' disabled={edge.isEnd} onClick={() => slider?.slideNext()}>
-              <ArrowForwardIosIcon fontSize='small' />
-            </Button>
-          </ButtonGroup>
+          <CardSliderArrows
+            isPrevDisabled={edge.isBeginning}
+            isNextDisabled={edge.isEnd}
+            onClickPrev={() => slider?.slidePrev()}
+            onClickNext={() => slider?.slideNext()}
+          />
         )}
-      </Stack>
+      </Box>
 
       {head}
 
-      {cardsList.length ? (
-        <Box sx={{ width: '100%', marginTop: { xs: '20px', md: '40px' } }}>
+      {cardList.length ? (
+        <Box sx={sliderSx.cardList}>
           <Swiper
             style={{
               width: '100%',
@@ -89,7 +86,7 @@ export function CardSlider({
             slidesPerView='auto'
             onSlideChange={changeSlide}
           >
-            {cardsList.map((card, i) => (
+            {cardList.map((card, i) => (
               <SwiperSlide key={i} style={sliderSx.slide}>
                 {card}
               </SwiperSlide>
@@ -97,8 +94,8 @@ export function CardSlider({
           </Swiper>
         </Box>
       ) : (
-        <Typography variant='h5' color='primary' sx={sliderSx.emptyTitle}>
-          {emptyTitle || 'Список карточек пуст'}
+        <Typography variant='h5' color='primary' sx={sliderSx.emptyText}>
+          {emptyText}
         </Typography>
       )}
     </Box>

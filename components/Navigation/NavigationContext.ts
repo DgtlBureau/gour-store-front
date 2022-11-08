@@ -24,6 +24,8 @@ export type Navigation = Pick<NextRouter, 'pathname' | 'query' | 'isReady'> & {
   goToBasket: () => void;
   goToPersonalArea: () => void;
   goToPromotionPage: (id: number) => void;
+  goToSuccessPayment: (price: number) => void;
+  goToFailurePayment: () => void;
   language: keyof LocalConfig;
   currency: Currency;
 };

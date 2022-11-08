@@ -5,6 +5,8 @@ import { GetInvoicePriceDto } from 'types/dto/invoice/getInvoicePrice.dto';
 import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { IInvoice } from 'types/entities/IInvoice';
 
+import { CardValidationError } from 'errors/CardValidationError';
+
 import { commonApi } from './commonApi';
 
 const PAYMENT_PUBLIC_ID = process.env.NEXT_PUBLIC_PAYMENT_PUBLIC_ID as string;
@@ -36,7 +38,7 @@ export const invoiceApi = commonApi.injectEndpoints({
           body,
         }),
       }),
-      buyCheeseCoins: builder.mutation<number, PayInvoiceDto>({
+      buyCheeseCoins: builder.mutation<IInvoice, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
           const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
           const checkoutValues = {
@@ -46,33 +48,53 @@ export const invoiceApi = commonApi.injectEndpoints({
             expDateYear,
           };
 
+          let signature: string;
           try {
             const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
-            const signature = await checkout.createPaymentCryptogram(checkoutValues);
-
-            const ipAddress = '5.18.144.32';
-
-            const requestBody: PayServerInvoiceDto = {
-              signature,
-              email,
-              ipAddress,
-              payerUuid,
-              currency: 'RUB',
-              invoiceUuid,
-            };
-
-            const result = await fetchWithBQ({
-              url: '/wallet/wallet-replenish-balance', // TODO: вынести в константы пути
-              body: requestBody,
-              method: 'POST',
-            });
-
-            return result.data ? { data: result.data as number } : { error: result.error as FetchBaseQueryError };
+            signature = await checkout.createPaymentCryptogram(checkoutValues);
           } catch (e) {
-            console.error('[PAYMENT VALIDATION]:', e); // TODO: дописать обработку ошибок
-            return { error: { status: 400, data: 'Ошибка валидации' } };
+            if (typeof e === 'object' && 'cardNumber' in (e as object)) {
+              return {
+                error: {
+                  data: new CardValidationError('Неправильный номер карты'),
+                  originalStatus: 400,
+                } as any,
+              };
+            }
+
+            return {
+              error: {
+                data: new CardValidationError('Ошибка валидации карты'),
+                originalStatus: 400,
+              } as any,
+            };
           }
+
+          const paymentDto: PayServerInvoiceDto = {
+            signature,
+            email,
+            ipAddress: '5.18.144.32',
+            payerUuid,
+            currency: 'RUB',
+            invoiceUuid,
+          };
+
+          const paymentResult = await fetchWithBQ({
+            url: '/wallet/wallet-replenish-balance', // TODO: вынести в константы пути
+            body: paymentDto,
+            method: 'POST',
+          });
+
+          if (paymentResult.data) {
+            const redirectUri = (paymentResult.data as { redirect: string }).redirect;
+            if (redirectUri) window.open(redirectUri, '_self');
+          }
+
+          return paymentResult.data
+            ? { data: paymentResult.data as IInvoice }
+            : { error: paymentResult.error as FetchBaseQueryError };
         },
+        invalidatesTags: ['Wallet', 'Invoice'],
       }),
     };
   },

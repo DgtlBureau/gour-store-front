@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '../Box/Box';
-
 interface Props {
   children?: React.ReactNode;
   index: string;

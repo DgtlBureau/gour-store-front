@@ -24,12 +24,19 @@ export type FilterMultiselectProps = {
   title: string;
   selected: IOption['value'][];
   options: IOption[];
-  isMobile?: boolean;
+  isDesktop?: boolean;
   sx?: SxProps;
   onChange(selected: IOption['value'][]): void;
 };
 
-export function ProductFilterMultiselect({ title, selected, options, isMobile, sx, onChange }: FilterMultiselectProps) {
+export function ProductFilterMultiselect({
+  title,
+  selected,
+  options,
+  isDesktop,
+  sx,
+  onChange,
+}: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
 
   const [selectedOptions, setSelectedOptions] = useState(selected);
@@ -54,26 +61,25 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
 
     setSelectedOptions(newSelectedList);
 
-    if (isMobile) onChange(newSelectedList);
+    if (isDesktop) onChange(newSelectedList);
   };
 
   const checkOption = (value: string) => selectedOptions?.includes(value);
 
-  const summaryIcon =
-    selected.length > 0 ? (
-      <ClearIcon
-        htmlColor={color.muted}
-        fontSize='small'
-        onClick={e => {
-          e.stopPropagation();
-          resetOptions();
-        }}
-      />
-    ) : (
-      <ExpandMoreIcon htmlColor={color.muted} fontSize='small' sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
-    );
+  const summaryIcon = selected.length ? (
+    <ClearIcon
+      htmlColor={color.muted}
+      fontSize='small'
+      onClick={e => {
+        e.stopPropagation();
+        resetOptions();
+      }}
+    />
+  ) : (
+    <ExpandMoreIcon htmlColor={color.muted} fontSize='small' sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
+  );
 
-  return isMobile ? (
+  return !isDesktop ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
       <AccordionSummary expandIcon={summaryIcon}>
         <Typography variant='body1' sx={selectSx.title}>

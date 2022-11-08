@@ -20,7 +20,6 @@ function InfoPages() {
     goToHome,
     goToIntro,
     language,
-    currency,
     query: { key: pageKey },
   } = useAppNavigation();
   if (!pageKey) return <NotFound />;

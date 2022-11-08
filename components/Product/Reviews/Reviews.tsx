@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 
-import { Grid, SxProps } from '@mui/material';
+import { Grid, Rating, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -8,11 +8,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { formatDate } from 'utils/dateUtil';
 
+import StarIcon from '@mui/icons-material/Star';
 import { color } from 'themes';
 
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
 import translations from './Reviews.i18n.json';
+import reviewSx from './Reviews.styles';
 import { ReviewsCounter } from './ReviewsCounter';
 
 export type Review = {
@@ -29,37 +31,16 @@ export type ProductReviewsProps = {
   onReviewClick: (review: Review) => void;
 };
 
-const sxReviews = {
-  container: {
-    background: color.secondary,
-    borderRadius: '6px',
-    padding: '20px',
-  },
-  title: {
-    marginBottom: '20px',
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: color.black,
-  },
-  slider: {
-    height: '100%',
-    justifyContent: 'space-between',
-  },
-  stats: {
-    margin: {
-      xs: 0,
-      md: '0 20px 0 0',
-    },
-  },
-};
-
 export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({ reviews, sx, onReviewClick }, ref) => {
   const { t } = useLocalTranslation(translations);
+
+  const grade = reviews.reduce((acc, it) => acc + it.value, 0) / reviews.length;
 
   const ratingStats = [];
 
   for (let i = 5; i >= 1; i--) {
     const reviewsCount = reviews.filter(review => review.value === i).length;
+
     ratingStats.push({
       grade: i,
       count: reviewsCount,
@@ -67,21 +48,55 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
     });
   }
 
+  const reviewCardList = useMemo(
+    () =>
+      reviews.map(review => (
+        <CommentCard
+          key={review.id}
+          title={review.clientName}
+          grade={review.value}
+          date={formatDate(review.date)}
+          text={review.comment}
+          onClick={() => onReviewClick(review)}
+        />
+      )),
+    [reviews],
+  );
+
   return (
-    <Grid sx={{ ...sxReviews.container, ...sx }} container direction='row' ref={ref}>
+    <Grid sx={{ ...reviewSx.container, ...sx }} container direction='row' ref={ref}>
       <Grid item xs={12} md={3}>
-        <Box sx={sxReviews.stats}>
-          <Typography variant='h5' color='primary' sx={sxReviews.title}>
+        <Box sx={reviewSx.stats}>
+          <Typography variant='h5' color='primary' sx={reviewSx.title}>
             {t('reviews')}
           </Typography>
-          {ratingStats.map(stat => (
-            <ReviewsCounter
-              key={`${stat.grade}/${stat.count}/${stat.percent}`}
-              grade={stat.grade}
-              count={stat.count}
-              percent={stat.percent}
+
+          <Box sx={reviewSx.rating}>
+            <Rating
+              name='grade'
+              value={grade}
+              precision={0.1}
+              size='large'
+              readOnly
+              icon={<StarIcon sx={reviewSx.star} />}
+              emptyIcon={<StarIcon sx={reviewSx.emptyStar} />}
             />
-          ))}
+
+            <Typography variant='body1' color={color.muted}>
+              {grade.toFixed(2)} / 5
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {ratingStats.map(stat => (
+              <ReviewsCounter
+                key={`${stat.grade}/${stat.count}/${stat.percent}`}
+                grade={stat.grade}
+                count={stat.count}
+                percent={stat.percent}
+              />
+            ))}
+          </Box>
         </Box>
       </Grid>
 
@@ -89,20 +104,7 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
         {reviews.length === 0 ? (
           <Typography variant='h5'>{t('noReviews')}</Typography>
         ) : (
-          <CardSlider
-            sx={sxReviews.slider}
-            slidesPerView={3}
-            cardsList={reviews.map(review => (
-              <CommentCard
-                key={review.id}
-                title={review.clientName}
-                grade={review.value}
-                date={formatDate(review.date)}
-                text={review.comment}
-                onClick={() => onReviewClick(review)}
-              />
-            ))}
-          />
+          <CardSlider sx={reviewSx.slider} slidesPerRow={3} cardList={reviewCardList} />
         )}
       </Grid>
     </Grid>

@@ -64,12 +64,12 @@ export function CheesecoinsAddModal({ initCoins, isOpened, onClose, onSubmit }: 
 
   const handleSubmit = ({ count }: FormState) => onSubmit({ coinsCount: count, invoicePrice: invoicePrice! });
 
-  const currencySymbol = getCurrencySymbol('rub');
-
   const showPrice = !isFetching && isValidCoinsCount && invoicePrice;
   const isDisabledPayBtn = !showPrice;
 
   const formId = 'add-coins-modal';
+
+  const rubCurrencySymbol = getCurrencySymbol('rub');
 
   return (
     <Modal
@@ -106,9 +106,9 @@ export function CheesecoinsAddModal({ initCoins, isOpened, onClose, onSubmit }: 
 
           {showPrice && (
             <Typography variant='body1' sx={sx.price}>
-              К оплате:&ensp;
+              К оплате: &nbsp;
               <Typography variant='caption' sx={sx.priceValue}>
-                {getFormattedPrice(invoicePrice)}&nbsp;{currencySymbol}
+                {getFormattedPrice(invoicePrice)}&nbsp;{rubCurrencySymbol}
               </Typography>
             </Typography>
           )}

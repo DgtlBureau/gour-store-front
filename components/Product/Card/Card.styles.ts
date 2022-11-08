@@ -4,13 +4,17 @@ const sx = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-
-    height: { xs: '315px', sm: '405px', md: '510px' },
+    justifyContent: 'space-between',
 
     width: {
-      xs: '170px',
-      sm: '220px',
-      md: '270px',
+      xs: '172px',
+      sm: '212px',
+      md: '282px',
+    },
+
+    gap: {
+      xs: '3px',
+      md: '5px',
     },
 
     padding: {
@@ -31,10 +35,12 @@ const sx = {
   },
   previewImg: {
     height: {
-      xs: '150px',
-      sm: '200px',
-      md: '250px',
+      xs: '148px',
+      sm: '188px',
+      md: '238px',
     },
+
+    width: '100%',
 
     border: '2px solid',
     borderColor: '#FEC983',
@@ -70,9 +76,6 @@ const sx = {
     overflow: 'hidden',
     borderRadius: '50%',
   },
-  rate: {
-    margin: '10px 0 0 0',
-  },
   title: {
     fontSize: {
       xs: '14px',
@@ -85,7 +88,7 @@ const sx = {
     display: '-webkit-box',
 
     height: '100%',
-    overflow: 'hidden',
+
     WebkitLineClamp: {
       xs: '2',
       sm: '1',
@@ -95,8 +98,7 @@ const sx = {
 
     maxHeight: { xs: '24px', sm: '26px', md: '30px' },
 
-    margin: '5px 0 10px 0',
-
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 
@@ -125,21 +127,8 @@ const sx = {
   },
   actions: {
     display: 'flex',
-    height: '100%',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    flexDirection: {
-      xs: 'row',
-      md: 'column',
-    },
-    margin: { xs: '10px 0 0 0', md: 0 },
-  },
-  deployedActions: {
-    flexDirection: { xs: 'column' },
-    margin: 0,
-  },
-  deployedStock: {
-    display: { xs: 'none', md: 'flex' },
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
 };
 

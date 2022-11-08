@@ -15,6 +15,7 @@ export const orderApi = commonApi.injectEndpoints({
             url: Path.ORDERS,
           };
         },
+        providesTags: ['Wallet'],
       }),
       createOrder: builder.mutation<IOrder, CreateOrderDto>({
         query(product) {
@@ -24,6 +25,7 @@ export const orderApi = commonApi.injectEndpoints({
             body: product,
           };
         },
+        invalidatesTags: ['Wallet'],
       }),
     };
   },
