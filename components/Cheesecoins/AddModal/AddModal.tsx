@@ -17,9 +17,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
 import translations from './AddModal.i18n.json';
+import { MINIMUM_AMOUNT, getValidationSchema } from './validations';
 
 import { sx } from './AddModal.styles';
-import { MINIMUM_AMOUNT, getValidationSchema } from './validations';
 
 type FormState = {
   count: number;

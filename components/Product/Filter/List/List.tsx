@@ -16,6 +16,7 @@ import { convertOrderTypesToOptions, convertSubCategoriesToOptions } from 'utils
 
 import { FilterMultiselectProps, ProductFilterMultiselect } from '../Multiselect/Multiselect';
 import { ProductFilterSelect } from '../Select/Select';
+
 import listSx from './List.styles';
 
 export type CatalogFilterProps = {

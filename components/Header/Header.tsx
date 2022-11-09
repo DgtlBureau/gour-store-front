@@ -18,6 +18,7 @@ import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import { MobileMenu } from '../Mobile/Menu/Menu';
 import { CitySelect } from './CitySelect';
+
 import headerSx from './Header.styles';
 
 import AddIcon from '@mui/icons-material/Add';

@@ -23,6 +23,7 @@ import { ProductCardCart } from '../Card/Cart/Cart';
 import { ProductCardGramSelect } from '../Card/GramSelect/GramSelect';
 import { ProductPrice } from '../Price/Price';
 import { ProductStock } from '../Stock/Stock';
+
 import sxActions from './Actions.styles';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';

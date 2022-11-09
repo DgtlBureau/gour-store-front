@@ -14,9 +14,9 @@ import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './Card.i18n.json';
+import { CartCardDocket as Docket } from './Docket';
 
 import sx from './Card.styles';
-import { CartCardDocket as Docket } from './Docket';
 
 import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';

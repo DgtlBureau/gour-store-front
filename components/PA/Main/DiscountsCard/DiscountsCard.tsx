@@ -10,9 +10,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import translations from './DiscountsCard.i18n.json';
-
 import { DiscountItem } from './DiscountItem';
+import translations from './DiscountsCard.i18n.json';
 
 const sx = {
   discounts: {

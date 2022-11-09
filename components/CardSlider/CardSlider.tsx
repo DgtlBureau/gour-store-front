@@ -9,8 +9,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import sliderSx from './CardSlider.styles';
 import { CardSliderArrows } from './CardSliderArrows';
+
+import sliderSx from './CardSlider.styles';
 
 type Props = {
   title?: string;

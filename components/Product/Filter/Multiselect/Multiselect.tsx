@@ -15,9 +15,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { color } from 'themes';
 
 import translations from './Multiselect.i18n.json';
+import { ProductFilterSelectItem } from './SelectItem';
 
 import selectSx from './Multiselect.styles';
-import { ProductFilterSelectItem } from './SelectItem';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

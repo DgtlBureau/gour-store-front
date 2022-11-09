@@ -6,6 +6,7 @@ import { Box } from 'components/UI/Box/Box';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 
 import { HFTextField, HFTextFieldProps } from '../HFTextField';
+
 import sx from './HFSendField.styles';
 
 import SendIcon from '@mui/icons-material/Send';

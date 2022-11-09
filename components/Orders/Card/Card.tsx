@@ -13,10 +13,10 @@ import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import translations from './Card.i18n.json';
-
-import sx from './Card.styles';
 import { OrderCardInfo } from './CardInfo';
 import { OrderCardProduct, OrderProductType } from './CardProduct';
+
+import sx from './Card.styles';
 
 type Promotion = {
   title: string;

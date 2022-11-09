@@ -4,12 +4,12 @@ import { Modal as MUIModal } from '@mui/material';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import translations from './Modal.i18n.json';
-
 import { Box } from '../Box/Box';
 import { Button } from '../Button/Button';
 import { IconButton } from '../IconButton/IconButton';
 import { Typography } from '../Typography/Typography';
+import translations from './Modal.i18n.json';
+
 import modalSx from './Modal.styles';
 
 import CrossIcon from '@mui/icons-material/Clear';

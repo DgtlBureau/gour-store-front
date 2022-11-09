@@ -12,7 +12,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './PasswordChangeModal.i18n.json';
-
 import { getSchema } from './validation';
 
 const sx = {
