@@ -128,7 +128,7 @@ export function Payments() {
     <PrivateLayout>
       <PALayout>
         <Stack spacing={5}>
-          <Tabs options={tabOptions} value={currentTab} onChange={changeCurrentTab} />
+          {/* <Tabs options={tabOptions} value={currentTab} onChange={changeCurrentTab} /> */}
 
           <TabPanel value={currentTab} index={PaymentTabs.INVOICE}>
             {isFetchingInvoices && <ProgressLinear />}

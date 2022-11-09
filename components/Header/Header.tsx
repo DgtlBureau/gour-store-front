@@ -112,21 +112,16 @@ export function Header({
                 </Link>
               </Box>
 
-              {!isGame && (
-                <>
-                  <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
-                    {firstPhone}
-                  </Link>
-
-                  <Box sx={headerSx.city} onClick={openCityModal}>
-                    <PlaceOutlinedIcon />
-                    <Typography sx={headerSx.cityTitle} variant='body1'>
-                      {currentCity?.name}
-                    </Typography>
-                    <KeyboardArrowDownIcon />
-                  </Box>
-                </>
-              )}
+              <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
+                {firstPhone}
+              </Link>
+              <Box sx={headerSx.city} onClick={openCityModal}>
+                <PlaceOutlinedIcon />
+                <Typography sx={headerSx.cityTitle} variant='body1'>
+                  {currentCity?.name}
+                </Typography>
+                <KeyboardArrowDownIcon />
+              </Box>
             </Grid>
 
             <Grid
@@ -143,10 +138,11 @@ export function Header({
               <Box
                 sx={{
                   ...headerSx.money,
-                  display: {
-                    xs: isGame ? 'flex' : 'none',
-                    sm: 'flex',
-                  },
+                  display: 'none',
+                  // display: {
+                  //   xs: isGame ? 'flex' : 'none',
+                  //   sm: 'flex',
+                  // },
                 }}
               >
                 <Typography variant='body2' sx={headerSx.moneyAmount}>
@@ -180,26 +176,22 @@ export function Header({
                 </Link>
               )}
 
-              {!isGame && (
-                <>
-                  <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
-                    <FavoriteBorderIcon />
-                  </Link>
+              <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
+                <FavoriteBorderIcon />
+              </Link>
 
-                  <Link href={`/${Path.PERSONAL_AREA}`} color='inherit' sx={headerSx.icon}>
-                    <PersonIcon />
-                  </Link>
+              <Link href={`/${Path.PERSONAL_AREA}`} color='inherit' sx={headerSx.icon}>
+                <PersonIcon />
+              </Link>
 
-                  <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
-                    <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
-                      <ShoppingCartOutlinedIcon color='primary' />
-                    </Badge>
-                    {basketProductSum}
-                    &nbsp;
-                    {currencySymbol}
-                  </Link>
-                </>
-              )}
+              <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
+                <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
+                  <ShoppingCartOutlinedIcon color='primary' />
+                </Badge>
+                {basketProductSum}
+                &nbsp;
+                {currencySymbol}
+              </Link>
 
               {isAuth && (
                 <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
