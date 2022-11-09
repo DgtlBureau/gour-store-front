@@ -42,6 +42,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getProductBackground } from 'utils/categoryUtil';
+import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import translation from './Basket.i18n.json';
@@ -113,7 +114,7 @@ export function Basket() {
           </CartEmpty>
         )}
 
-        {productsInOrder.length !== 0 && (
+        {productsInOrder.length && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map(it => (
@@ -122,7 +123,7 @@ export function Basket() {
                     id={it.product.id}
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
-                    price={it.product.price[currency] || 0}
+                    price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
                     amount={it.amount}
                     gram={it.gram}
                     productImg={it.product.images[0]?.small}
