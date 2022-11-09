@@ -14,9 +14,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import translations from './Menu.i18n.json';
-import { MobileMenuContacts } from './MenuContacts';
 
 import sx from './Menu.styles';
+import { MobileMenuContacts } from './MenuContacts';
 
 import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';

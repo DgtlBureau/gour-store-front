@@ -5,7 +5,6 @@ import { Divider } from '@mui/material';
 import { IconButton } from 'components/UI/IconButton/IconButton';
 
 import { HFTextField, HFTextFieldProps } from '../HFTextField';
-
 import sx from './HFPassField.styles';
 
 import ClosedEye from '@mui/icons-material/VisibilityOffOutlined';

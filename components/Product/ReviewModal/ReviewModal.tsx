@@ -11,7 +11,6 @@ import { formatDate } from 'utils/dateUtil';
 import { color } from 'themes';
 
 import { Review } from '../Reviews/Reviews';
-
 import sx from './ReviewModal.styles';
 
 import StarIcon from '@mui/icons-material/Star';

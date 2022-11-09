@@ -17,6 +17,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { color } from 'themes';
 
 import translations from './Form.i18n.json';
+
 import { getValidationSchema } from './validation';
 
 import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';

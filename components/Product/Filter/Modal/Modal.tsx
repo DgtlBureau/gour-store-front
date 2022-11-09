@@ -8,8 +8,9 @@ import { Language } from 'types/entities/Language';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { ProductFilterList } from '../List/List';
 import translations from './Modal.i18n.json';
+
+import { ProductFilterList } from '../List/List';
 
 export type ProductFilterModalProps = {
   isOpen: boolean;

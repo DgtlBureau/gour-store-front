@@ -17,7 +17,7 @@
     "^(hooks|helpers|packages|utils|constants|errors)",
     "^themes",
 
-    "^(.?./)+(?!\\w+((.module.css)|(.styles)))",
+    "^(\\.?\\.\\/)+\\w+\\.(?!(s?css|module\\.s?css|styles))",
     "^(.?./)+",
     "^(assets|@mui/icons-material/)"
   ],

@@ -19,10 +19,9 @@ import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
 import '../../../.storybook/main';
-import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
-
 import styles from './Card.module.css';
 import sx from './Card.styles';
+import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
 
 import tooltipIcon from 'assets/icons/general/tooltip.svg';
 

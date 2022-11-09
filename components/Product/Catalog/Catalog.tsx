@@ -15,7 +15,6 @@ import { Language } from 'types/entities/Language';
 import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
-
 import catalogSx from './Catalog.styles';
 
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';

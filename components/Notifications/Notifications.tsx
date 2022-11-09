@@ -9,7 +9,6 @@ import { Notification, NotificationType } from 'types/entities/Notification';
 import { EventTypes, dispatchNotification, eventBus } from 'packages/EventBus';
 
 import { PaymentStatus, paymentNotification } from './NotificationHelper';
-
 import sx from './Notifications.styles';
 
 const baseNotification: ToastOptions = {

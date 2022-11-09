@@ -11,7 +11,6 @@ import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { IOrderProfile } from 'types/entities/IOrderProfile';
 
 import { PAProfilesForm } from '../Form/Form';
-
 import sx from './Item.styles';
 
 import LocationIcon from '@mui/icons-material/LocationOnOutlined';

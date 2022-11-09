@@ -15,9 +15,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useStopwatch } from 'hooks/useStopwatch';
 
 import translations from './EmailChangeModal.i18n.json';
-import { getSchema } from './validation';
 
 import sx from './EmailChangeModal.styles';
+import { getSchema } from './validation';
 
 export type PAEmailChangeModalProps = {
   isOpen: boolean;

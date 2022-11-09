@@ -14,6 +14,7 @@ import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './Editor.i18n.json';
+
 import { getValidationSchema } from './validation';
 
 import SettingsIcon from '@mui/icons-material/Settings';

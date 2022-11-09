@@ -10,12 +10,12 @@ import { formatDate } from 'utils/dateUtil';
 
 import { color } from 'themes';
 
+import translations from './Reviews.i18n.json';
+
 import { CardSlider } from '../../CardSlider/CardSlider';
 import { CommentCard } from '../../Comment/Card/Card';
-import translations from './Reviews.i18n.json';
-import { ReviewsCounter } from './ReviewsCounter';
-
 import reviewSx from './Reviews.styles';
+import { ReviewsCounter } from './ReviewsCounter';
 
 import StarIcon from '@mui/icons-material/Star';
 

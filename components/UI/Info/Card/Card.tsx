@@ -6,7 +6,6 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Box } from '../../Box/Box';
-
 import sx from './Card.styles';
 
 import ArrowIcon from '@mui/icons-material/ArrowForwardIos';

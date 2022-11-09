@@ -17,9 +17,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { useStopwatch } from 'hooks/useStopwatch';
 
 import translations from './PassRecovery.i18n.json';
-import { getSchema } from './validation';
 
 import sx from './PassRecovery.styles';
+import { getSchema } from './validation';
 
 export type SigninPassRecoveryProps = {
   defaultValues?: PasswordRecoveryDto;

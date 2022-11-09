@@ -20,11 +20,10 @@ import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 
+import sx from './Card.styles';
 import { ProductCardCart as Cart } from './Cart/Cart';
 import { ProductCardDocket as Docket } from './Docket/Docket';
 import { ProductCardRate as Rate } from './Rate/Rate';
-
-import sx from './Card.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/images/default.svg';

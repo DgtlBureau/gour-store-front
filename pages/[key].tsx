@@ -13,7 +13,6 @@ import Loader from 'components/UI/Loader/Loader';
 import { useAppSelector } from 'hooks/store';
 
 import NotFound from './404';
-
 import { sx } from './Page.styles';
 
 function InfoPages() {

@@ -20,9 +20,9 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 
 import translations from './BuyModal.i18n.json';
-import { formMasks, getExpDate, getValidationSchema } from './validations';
 
 import { sx } from './BuyModal.styles';
+import { formMasks, getExpDate, getValidationSchema } from './validations';
 
 import coinImage from 'assets/icons/cheesecoins/coin.svg';
 

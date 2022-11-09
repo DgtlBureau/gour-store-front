@@ -14,6 +14,7 @@ import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './PhoneChangeModal.i18n.json';
+
 import { getSchema } from './validation';
 
 const sx = {

@@ -12,7 +12,6 @@ import { IOption } from 'types/entities/IOption';
 import { color } from 'themes';
 
 import { ProductFilterSelectItem } from '../Multiselect/SelectItem';
-
 import selectSx from './Select.styles';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

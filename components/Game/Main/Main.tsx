@@ -17,7 +17,6 @@ import { GameLives as Lives } from '../Lives/Lives';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';
 import { GameCore, GameEvent } from './Core';
-
 import sx from './Main.styles';
 
 import heartIcon from 'assets/icons/heart.svg';

@@ -5,8 +5,9 @@ import { styled } from '@mui/material/styles';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
-import { Button } from '../Button/Button';
 import translations from './UploadFile.i18n.json';
+
+import { Button } from '../Button/Button';
 
 type Props = {
   id: string;

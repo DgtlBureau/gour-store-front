@@ -17,9 +17,9 @@ import { SignInDto } from 'types/dto/signin.dto';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './Credentials.i18n.json';
-import { getSchema } from './validation';
 
 import sx from './Credentials.styles';
+import { getSchema } from './validation';
 
 export type SigninCredentialsProps = {
   defaultValues?: SignInDto;
