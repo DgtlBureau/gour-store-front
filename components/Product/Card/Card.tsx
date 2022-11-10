@@ -130,7 +130,6 @@ export const ProductCard = memo(function ProductCard({
     <Box sx={sx.card}>
       <Box sx={sx.preview}>
         <HeartIcon sx={{ ...sx.heart, ...(isElected && sx.elected) } as SxProps} onClick={onElect} />
-
         <Link href={`/${Path.PRODUCTS}/${id}`}>
           <CardMedia
             sx={{ ...sx.previewImg, backgroundImage }}
