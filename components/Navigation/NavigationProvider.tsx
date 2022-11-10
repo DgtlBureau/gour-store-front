@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { NextRouter, useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
 

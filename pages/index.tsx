@@ -119,7 +119,7 @@ const Home: NextPage = () => {
           />
         </Link>
       )) || [],
-    [filteredPromotions],
+    [filteredPromotions, goToPromotionPage],
   );
 
   const hasPromotions = !!filteredPromotions?.length;

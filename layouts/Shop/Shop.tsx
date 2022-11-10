@@ -61,8 +61,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  const totalProductSum = useAppSelector(selectedProductSum);
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
@@ -119,7 +118,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
           cities={convertedCities}
           currency={currency}
           basketProductCount={count}
-          basketProductSum={sum - sumDiscount}
+          basketProductSum={totalProductSum}
           moneyAmount={balance}
           onChangeCity={changeCity}
           onClickAddCoins={handleOpenCoinsAddModal}

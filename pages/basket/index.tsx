@@ -61,7 +61,7 @@ export function Basket() {
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
+  const productTotalSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const productIds = useAppSelector(selectProductsIdInOrder);
@@ -75,7 +75,8 @@ export function Basket() {
 
   // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
-  const sumToFreeDelivery = 2990 - sum;
+  const minCostForFreeDelivery = 2990;
+  const sumToFreeDelivery = minCostForFreeDelivery - productTotalSum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
@@ -99,7 +100,9 @@ export function Basket() {
     }
   };
 
-  const freeDeliveryBlockTitle = `${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')}`;
+  const freeDeliveryBlockTitle = `${t('freeDeliveryText.part1')} ${sumToFreeDelivery}\xa0₽ ${t(
+    'freeDeliveryText.part2',
+  )}`;
 
   return (
     <PrivateLayout>
@@ -107,14 +110,12 @@ export function Basket() {
         <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>
-
         {productsInOrder.length === 0 && (
           <CartEmpty title={t('emptyTitle')} actionText={t('emptyButton')} onClick={goToHome}>
             <Typography variant='body1'>{t('emptyText')}</Typography>
           </CartEmpty>
         )}
-
-        {productsInOrder.length && (
+        {!!productsInOrder.length && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map(it => (
@@ -152,7 +153,7 @@ export function Basket() {
                   count={count}
                   discount={sumDiscount}
                   delivery={isDeliveryFree ? 0 : delivery}
-                  price={sum}
+                  price={productTotalSum}
                   currency={currency}
                 />
               </Grid>

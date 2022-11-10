@@ -29,6 +29,7 @@ export interface IProduct extends IBase {
   weight: number;
   discount: number;
   promotions?: IPromotion[];
+  totalCost: number;
 }
 
 export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate' | 'default';

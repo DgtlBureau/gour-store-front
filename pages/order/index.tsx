@@ -6,7 +6,13 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useCreateOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
-import { removeProduct, selectBasketProducts, selectedProductCount, selectedProductSum } from 'store/slices/orderSlice';
+import {
+  removeProduct,
+  selectBasketProducts,
+  selectedProductCount,
+  selectedProductDiscount,
+  selectedProductSum,
+} from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
@@ -102,10 +108,7 @@ export function Order() {
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
   const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = productsInOrder.reduce(
-    (acc, currentProduct) => acc + (currentProduct.product.price[currency] * currentProduct.product.discount) / 100,
-    0,
-  );
+  const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
