@@ -51,7 +51,6 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
 
   const handleRepayClick = async () => {
     try {
-      console.log('create');
       const invoice = await createInvoice({
         amount: payment.coins,
         currency: 'RUB',
@@ -59,7 +58,6 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
         value: payment.coins,
       }).unwrap();
 
-      console.log('created', invoice);
       onRepay(invoice.uuid, invoice.amount);
     } catch {
       dispatchNotification('Произошла ошибка, повторите снова', { type: NotificationType.DANGER });

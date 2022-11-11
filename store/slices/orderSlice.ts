@@ -8,6 +8,8 @@ import { RootState } from 'store/store';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { IProduct } from 'types/entities/IProduct';
 
+import { getPriceByGrams } from 'utils/currencyUtil';
+
 interface OrderFormContacts {
   firstName: string;
   lastName: string;
@@ -88,12 +90,15 @@ export const selectedProductCount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, product) => acc + product.amount, 0);
 
 export const selectedProductSum = (state: RootState) =>
-  Object.values(state.order.products).reduce((acc, it) => acc + it.product.price.cheeseCoin * it.amount, 0);
+  Object.values(state.order.products).reduce(
+    (acc, it) => acc + getPriceByGrams(it.product.totalCost, it.gram) * it.amount,
+    0,
+  );
 
 export const selectedProductDiscount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, it) => {
-    const discount = it.product.discount || 0;
-    return acc + (it.product.price.cheeseCoin / 100) * discount * it.amount;
+    const discount = it.product.price.cheeseCoin - it.product.totalCost;
+    return acc + getPriceByGrams(discount, it.gram) * it.amount;
   }, 0);
 
 // export const productsInBasketCount = (state: RootState, productId: number, gram: number): number =>

@@ -10,7 +10,7 @@ import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Language } from 'types/entities/Language';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getCurrencySymbol, getPriceByGrams } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
 import translation from './Card.i18n.json';
@@ -32,7 +32,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
   const currencySymbol = getCurrencySymbol(currency);
 
   const productInfo = productsList.map(product => {
-    const productTotalPrice = product.amount * product.product.price[currency];
+    const productTotalPrice = getPriceByGrams(product.product.totalCost, product.gram) * product.amount;
 
     return {
       id: product.product.id,
@@ -63,7 +63,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
 
           <Box sx={cardSx.fieldPrice}>
             <Typography variant='body1' sx={cardSx.product}>
-              {product.price} {currencySymbol}
+              {product.totalPrice} {currencySymbol}
             </Typography>
             <Typography variant='body1' sx={cardSx.product}>
               • {product.totalCount}

@@ -127,6 +127,7 @@ export function Addresses() {
         dispatchNotification(message, { type: NotificationType.DANGER });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentUser],
   );
 

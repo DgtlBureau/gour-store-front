@@ -59,8 +59,7 @@ export function PALayout({ children }: PALayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  const totalProductSum = useAppSelector(selectedProductSum);
 
   const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
     isOpen: false,
@@ -152,7 +151,7 @@ export function PALayout({ children }: PALayoutProps) {
           cities={convertedCities}
           currency={currency}
           basketProductCount={count}
-          basketProductSum={sum - sumDiscount}
+          basketProductSum={totalProductSum}
           moneyAmount={balance}
           onChangeCity={changeCity}
           onClickAddCoins={handleOpenCoinsAddModal}

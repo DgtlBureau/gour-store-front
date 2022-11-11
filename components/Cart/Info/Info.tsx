@@ -58,7 +58,7 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
       <Box sx={sx.total}>
         <Typography variant='h6'>{t('total')}</Typography>
         <Typography variant='h6'>
-          {price + delivery - discount}&nbsp;
+          {price + delivery}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
@@ -67,7 +67,7 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
           {t('all')}: {count} {productsCountText}
         </Typography>
         <Typography variant='body1'>
-          {price}&nbsp;
+          {price + discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>

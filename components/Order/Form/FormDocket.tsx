@@ -57,7 +57,7 @@ type Props = {
 export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, currency = 'cheeseCoin' }: Props) {
   const { t } = useLocalTranslation(translations);
 
-  const total = cost + delivery - discount;
+  const total = cost + delivery;
 
   const productsDeclision = getDeclensionWordByCount(productsCount, [
     t('manyProducts'),
@@ -75,7 +75,7 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
         </Typography>
         <hr style={sx.divider} />
         <Typography variant='h6' sx={sx.value}>
-          {cost}
+          {cost + discount}
           {currencySymbol}
         </Typography>
       </Box>
