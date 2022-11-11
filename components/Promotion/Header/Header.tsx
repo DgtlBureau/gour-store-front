@@ -34,14 +34,15 @@ export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
     intervalId.current = +setInterval(() => {
       setSeconds(sec => sec - 1);
     }, 1000);
-  }, []);
+    return () => clearInterval(intervalId.current);
+  }, [end]);
 
   useEffect(() => {
     const time = formatTimeLeft(new Date(), end);
 
     setTimer(time);
     if (seconds < 0) clearInterval(intervalId.current);
-  }, [seconds]);
+  }, [end, seconds]);
 
   const placeholder =
     'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
