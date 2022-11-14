@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -65,9 +65,9 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
 
   const submit = (data: OrderProfileDto) => onSave(data);
 
-  const reset = () => values.reset(defaultValues);
+  const reset = useCallback(() => values.reset(defaultValues), [defaultValues, values]);
 
-  useEffect(() => reset(), [defaultValues]);
+  useEffect(() => reset(), [defaultValues, reset]);
 
   return (
     <FormProvider {...values}>
@@ -100,9 +100,11 @@ export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }:
             <Button type='submit' size='small'>
               {t('save')}
             </Button>
-            <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
-              {t('reset')}
-            </Button>
+            {!defaultValues && (
+              <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
+                {t('reset')}
+              </Button>
+            )}
             <IconButton>
               <DeleteIcon htmlColor={color.muted} onClick={onDelete} />
             </IconButton>
