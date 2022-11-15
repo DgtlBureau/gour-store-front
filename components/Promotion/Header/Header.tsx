@@ -16,32 +16,33 @@ import { headerSx } from './Header.styles';
 
 export type PromotionHeaderProps = {
   image: string;
-  end: Date;
+  end: string;
   sx?: SxProps;
 };
+
+const getDefaultTimerSeconds = (end: string) => differenceInSeconds(new Date(end), new Date());
 
 export function PromotionHeader({ image, end, sx }: PromotionHeaderProps) {
   const { t } = useLocalTranslation(translations);
 
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(() => getDefaultTimerSeconds(end));
   const [timer, setTimer] = useState('');
 
   const intervalId = useRef(-1);
 
   useEffect(() => {
-    setSeconds(differenceInSeconds(end, new Date()));
-
-    intervalId.current = +setInterval(() => {
+    intervalId.current = window.setInterval(() => {
       setSeconds(sec => sec - 1);
     }, 1000);
-  }, []);
+    return () => clearInterval(intervalId.current);
+  }, [end]);
 
   useEffect(() => {
-    const time = formatTimeLeft(new Date(), end);
-
+    const time = formatTimeLeft(new Date(), new Date(end));
     setTimer(time);
-    if (seconds < 0) clearInterval(intervalId.current);
-  }, [seconds]);
+
+    if (seconds <= 0) clearInterval(intervalId.current);
+  }, [end, seconds]);
 
   const placeholder =
     'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
