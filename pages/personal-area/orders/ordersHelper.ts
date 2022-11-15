@@ -28,18 +28,18 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     amount: promotion.value,
   }));
 
-  const createdAt = new Date(order.createdAt);
-
   const { city, street, house, apartment } = order.orderProfile;
 
+  const title = (order.crmInfo?.id || order.id).toString();
+  const address = `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`;
+  const status = order.crmInfo?.status;
+  const createdAt = new Date(order.createdAt);
+
   return {
-    title: order.crmInfo?.id || order.id.toString(),
-    status: {
-      title: order.crmInfo?.status.name,
-      color: order.crmInfo?.status.color,
-    },
+    title,
+    status,
     createdAt,
-    address: `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`,
+    address,
     client,
     products,
     promotions,

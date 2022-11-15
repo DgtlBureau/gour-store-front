@@ -29,11 +29,14 @@ import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
 import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
 import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import translation from './Order.i18n.json';
 
@@ -168,7 +171,11 @@ export function Order() {
       toggleOrderStatusModal({ status: 'success', orderId });
 
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
-    } catch {
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
       toggleOrderStatusModal({ status: 'failure' });
 
       setIsSubmitError(true);
