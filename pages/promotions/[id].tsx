@@ -62,7 +62,7 @@ const Promotion = memo(function Promotion() {
 
   const formattedPromotionProducts = useMemo(
     () => promotion?.products && computeProductsWithCategories(promotion?.products, categories, favoriteProducts),
-    [promotion?.products, categories, favoriteProducts],
+    [promotion, categories, favoriteProducts],
   );
 
   const electProduct = async (id: number, isElect: boolean) => {

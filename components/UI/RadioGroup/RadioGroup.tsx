@@ -17,6 +17,7 @@ export function RadioGroup({ selected, options, sx, onChange }: RadioGroupProps)
     <Box sx={sx}>
       {options.map(option => (
         <FormControlLabel
+          key={option.value}
           checked={selected === option.value}
           value={option.value}
           control={<RadioButton />}
