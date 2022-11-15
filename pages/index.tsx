@@ -131,7 +131,7 @@ const Home: NextPage = () => {
       <ShopLayout>
         {isLoading && <ProgressLinear />}
 
-        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+        {/* {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />} */}
 
         {hasNovelties && (
           <ProductSlider

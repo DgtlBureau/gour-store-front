@@ -32,16 +32,12 @@ export function GeneralInfoModals() {
 }
 
 function generateModalData(query: ParsedUrlQuery) {
-  const { paymentStatus, amount } = query;
-  if (paymentStatus === 'success' && amount) {
+  const { paymentStatus, crmOrderId } = query;
+  if (paymentStatus === 'success' && crmOrderId) {
     return {
       status: 'success',
-      title: 'Платёж успешно зачислен',
-      content: (
-        <Typography color='text.secondary' sx={sx.contentAmount}>
-          {getFormattedPrice(Number(amount))}&nbsp;₽
-        </Typography>
-      ),
+      title: `Заказ ${crmOrderId} успешно оплачен`,
+      content: null,
     } as const;
   }
   if (paymentStatus === 'failure') {

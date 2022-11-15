@@ -45,6 +45,12 @@ export const orderSlice = createSlice({
     addBasketProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
       const { gram, product } = action.payload;
 
+      if (!product.id || !gram) {
+        // eslint-disable-next-line no-console
+        console.error('Отсутствует id или не выбраны граммы');
+        return;
+      }
+
       const productKey = getProductKeyInBasket(product.id, gram);
       const stateProduct = state.products[productKey];
 

@@ -105,14 +105,16 @@ export function BuyCheeseCoinsModal({
             <Image src={coinImage} width={coinIconSize} height={coinIconSize} layout='fixed' />
           </Box>
 
-          <Box>
+          <Box sx={{ display: 'flex' }}>
             <Typography variant='h6' color='text.secondary' sx={sx.titleLabel}>
+              Оплата заказа
+            </Typography>
+            {/* <Typography variant='h6' color='text.secondary' sx={sx.titleLabel}>
               Покупка виртуальной игровой валюты
             </Typography>
             <Typography variant='body1' color='text.muted' sx={sx.titlePrice}>
-              {/* {price}&nbsp;₡ — {price}&nbsp;₽ */}
               {getFormattedPrice(price!)}&nbsp;{rubCurrencySymbol}
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
       }

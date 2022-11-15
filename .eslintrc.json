@@ -68,7 +68,8 @@
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "consistent-return": "off"
   },
   "settings": {
     "import/resolver": {
