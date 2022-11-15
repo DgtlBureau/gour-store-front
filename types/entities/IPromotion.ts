@@ -10,7 +10,7 @@ export interface IPromotion extends IBase {
   cardImage: IImage;
   pageImage: IImage;
   discount: number;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   products?: IProduct[];
 }

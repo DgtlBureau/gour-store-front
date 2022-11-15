@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
@@ -33,7 +33,8 @@ import translations from './Promotion.i18n.json';
 
 import { sx } from './Promotion.styles';
 
-export default function Promotion() {
+// eslint-disable-next-line prefer-arrow-callback
+const Promotion = memo(function Promotion() {
   const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translations);
@@ -97,7 +98,7 @@ export default function Promotion() {
             <Box sx={sx.promotion}>
               <Link href='/'>{t('goBack')}</Link>
 
-              <PromotionHeader image={promotion.pageImage?.full} end={new Date(promotion.end)} sx={sx.header} />
+              <PromotionHeader image={promotion.pageImage?.full} end={promotion.end} sx={sx.header} />
 
               <Typography variant='h5' sx={sx.title}>
                 {promotion.title[language]}
@@ -125,4 +126,6 @@ export default function Promotion() {
       </ShopLayout>
     </PrivateLayout>
   );
-}
+});
+
+export default Promotion;

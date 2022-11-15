@@ -15,7 +15,7 @@ export const DefaultPromotionHeader = Template.bind({});
 const props: Partial<PromotionHeaderProps> = {
   image:
     'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80',
-  end: new Date(2022, 4, 22),
+  end: new Date(2022, 2, 22).toString(),
 };
 
 DefaultPromotionHeader.args = props;
