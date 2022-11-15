@@ -7,20 +7,21 @@ export interface IOrder extends IBase {
   lastName?: string;
   phone: string;
   email: string;
-  orderProfile: IOrderProfile;
   comment?: string;
-  crmInfo: OrderCrmInfo;
   totalSum: number;
+  crmInfo: OrderCrmInfo;
+  orderProfile: IOrderProfile;
   promotions: OrderPromotion[];
   orderProducts: IOrderProduct[];
 }
 
-interface OrderCrmInfo {
-  id: string;
-  status: {
-    name: string;
-    color: string;
-  };
+export interface OrderCrmInfo {
+  id: number;
+  status: OrderCrmInfoStatus;
+}
+export interface OrderCrmInfoStatus {
+  name: string;
+  color: string;
 }
 
 interface OrderPromotion {

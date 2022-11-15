@@ -15,7 +15,7 @@ const props: Partial<OrdersCardProps> = {
   order: {
     title: 'Заказ T212486314',
     status: {
-      title: 'test',
+      name: 'test',
       color: 'yellow',
     },
     totalSum: 1500,

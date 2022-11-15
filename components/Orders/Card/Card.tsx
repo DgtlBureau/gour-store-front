@@ -7,6 +7,7 @@ import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Acc
 import { Box } from 'components/UI/Box/Box';
 
 import { Currency } from 'types/entities/Currency';
+import { OrderCrmInfoStatus } from 'types/entities/IOrder';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
@@ -25,10 +26,7 @@ type Promotion = {
 
 export type FullOrder = {
   title: string;
-  status: {
-    title: string;
-    color: string;
-  };
+  status: OrderCrmInfoStatus;
   createdAt: Date;
   address: string;
   client: string;
@@ -78,8 +76,8 @@ export function OrdersCard({ order }: OrdersCardProps) {
           </Grid>
 
           <Grid item sm={5} xs={12} sx={{ display: 'flex', alignItems: 'center', margin: { xs: '5px 0' } }}>
-            <Typography sx={{ ...sx.status, backgroundColor: status.color || 'secondary.main' }}>
-              {status.title || 'ожидание'}
+            <Typography sx={{ ...sx.status, backgroundColor: status?.color || 'secondary.main' }}>
+              {status?.name || 'ожидание'}
             </Typography>
 
             <Typography variant='body1' sx={sx.muted}>
