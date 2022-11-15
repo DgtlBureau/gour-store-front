@@ -72,7 +72,7 @@ export function MobileMenu({
 
   return (
     <List sx={sx.list} disablePadding>
-      <Box sx={sx.money}>
+      {/* <Box sx={sx.money}>
         <Typography variant='body2' sx={sx.moneyAmount}>
           {moneyAmount}
           &nbsp;
@@ -82,7 +82,7 @@ export function MobileMenu({
         <IconButton onClick={onClickAddCoins} color='inherit' sx={sx.replenishment}>
           <AddIcon color='primary' />
         </IconButton>
-      </Box>
+      </Box> */}
 
       <Divider sx={sx.divider} />
 

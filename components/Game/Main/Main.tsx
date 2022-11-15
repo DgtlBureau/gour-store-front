@@ -49,7 +49,7 @@ export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: Game
     setGameState(e);
 
     if (!e.isPlaying) {
-      onEndGame();
+      // onEndGame();
     }
   };
 
@@ -76,17 +76,18 @@ export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: Game
   });
 
   const onStartGameClick = () => {
-    const isLivesLeft = lives < 1;
-    if (isLivesLoading || isLivesLeft) {
-      const label = isLivesLoading ? 'Получение доступных жизней, подождите...' : 'Пополните жизни в магазине';
-      dispatchNotification(label, { type: NotificationType.INFO });
-      return;
-    }
+    // const isLivesLeft = lives < 1;
+    // if (isLivesLoading || isLivesLeft) {
+    //   const label = isLivesLoading ? 'Получение доступных жизней, подождите...' : 'Пополните жизни в магазине';
+    //   dispatchNotification(label, { type: NotificationType.INFO });
+    //   return;
+    // }
 
     if (game.isNowPlaying) {
       dispatchNotification('Игра уже запущена', { type: NotificationType.DANGER });
     } else {
-      toggleStartGameModal(true);
+      // toggleStartGameModal(true);
+      game.start();
     }
   };
 
@@ -117,10 +118,10 @@ export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: Game
           СТАРТ
         </Typography>
 
-        <Box sx={sx.userLives}>
+        {/* <Box sx={sx.userLives}>
           <Typography variant='body1'>{lives}</Typography>&nbsp;
           <Image src={heartIcon} width={20} height={20} />
-        </Box>
+        </Box> */}
       </Box>
 
       <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown && !!gameState.lives} />
