@@ -66,7 +66,7 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
 
   const invoiceStatus = paymentColorByStatus[payment.status];
 
-  const cheeseCoinCount = getFormattedPrice(payment.coins);
+  const cheeseCoinCount = getFormattedPrice(payment.value);
   const currencySymbol = getCurrencySymbol('cheeseCoin');
 
   const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy');
@@ -76,7 +76,7 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
     <Grid container sx={sx.container}>
       {isInvoice && (
         <Typography sx={sx.title} variant='h6'>
-          Чизкоины
+          Счет
         </Typography>
       )}
 
