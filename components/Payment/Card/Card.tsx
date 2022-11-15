@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import '../../../.storybook/main';
 import { Grid, Tooltip, Typography } from '@mui/material';
 import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
 
@@ -18,7 +19,6 @@ import { dispatchNotification } from 'packages/EventBus';
 import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
 import { formatDate } from 'utils/dateUtil';
 
-import '../../../.storybook/main';
 import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
 
 import styles from './Card.module.css';

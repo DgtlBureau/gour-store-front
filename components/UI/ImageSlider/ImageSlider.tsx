@@ -10,8 +10,8 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Box } from '../Box/Box';
-import styles from './ImageSlider.module.scss';
 
+import styles from './ImageSlider.module.scss';
 import sliderSx from './ImageSlider.styles';
 
 import defaultImage from 'assets/images/default.svg';

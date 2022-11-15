@@ -17,8 +17,8 @@
     "^(hooks|helpers|packages|utils|constants|errors)",
     "^themes",
 
-    "^(.?./)+(?!\\w+((.module.css)|(.styles)))",
-    "^(.?./)+",
+    "^(\\.\\.?\\/)+\\w+(/\\w+)*(?!((\\.s?css)|(\\.module\\.s?css)|(\\.styles)))(\\.\\w+)*$",
+    "^(\\.\\.?\\/)+\\w+(/\\w+)*\\.((s?css)|(module\\.s?css)|(styles))",
     "^(assets|@mui/icons-material/)"
   ],
   "importOrderSeparation": true,

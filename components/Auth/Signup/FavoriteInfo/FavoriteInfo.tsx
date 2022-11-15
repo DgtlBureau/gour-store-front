@@ -13,8 +13,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
 import translations from './FavoriteInfo.i18n.json';
-import s from './FavoriteInfo.module.scss';
 
+import s from './FavoriteInfo.module.scss';
 import sx from './FavoriteInfo.styles';
 
 import { CountrySvgSelector } from 'assets/icons/countries/CountrySvgSelector';
