@@ -10,7 +10,6 @@ export const getExpDate = (value?: string) => {
     return;
   }
   const [_, month, year] = regexpResult;
-  // eslint-disable-next-line consistent-return
   return [month, year] as const;
 };
 

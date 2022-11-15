@@ -30,7 +30,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
 
   const { city, street, house, apartment } = order.orderProfile;
 
-  const title = (order.crmInfo?.id || order.id).toString();
+  const title = (order.crmInfo?.id || order.uuid).toString();
   const address = `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`;
   const status = order.crmInfo?.status;
   const createdAt = new Date(order.createdAt);

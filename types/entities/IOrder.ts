@@ -2,13 +2,15 @@ import { IBase } from './IBase';
 import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';
 
-export interface IOrder extends IBase {
+export interface IOrder extends Omit<IBase, 'id'> {
+  uuid: string;
   firstName: string;
   lastName?: string;
   phone: string;
   email: string;
   comment?: string;
   totalSum: number;
+  invoiceUuid: string;
   crmInfo: OrderCrmInfo;
   orderProfile: IOrderProfile;
   promotions: OrderPromotion[];

@@ -4,7 +4,7 @@ import { Grid, Stack } from '@mui/material';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useCreateOrderMutation } from 'store/api/orderApi';
+import { useCreateOrderMutation, usePayOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
 import {
   removeProduct,
@@ -18,6 +18,7 @@ import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
 import { CartEmpty } from 'components/Cart/Empty/Empty';
+import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { useAppNavigation } from 'components/Navigation';
 import { OrderCard } from 'components/Order/Card/Card';
 import { DeliveryFields, OrderForm, OrderFormType, PersonalFields } from 'components/Order/Form/Form';
@@ -25,9 +26,12 @@ import { InfoModal } from 'components/UI/InfoModal/InfoModal';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+import type { IOrder } from 'types/entities/IOrder';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
@@ -65,6 +69,8 @@ const defaultDeliveryFields: DeliveryFields = {
   comment: '',
 };
 
+type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number; orderData: OrderFormType };
+
 type OrderStatusModal =
   | {
       status: 'success';
@@ -78,16 +84,21 @@ type OrderStatusModal =
 const DELIVERY_PRICE = 500;
 
 export function Order() {
-  const { goToOrders, goToHome, language, currency } = useAppNavigation();
+  const { goToOrders, goToHome, language, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const { t } = useLocalTranslation(translation);
 
   const dispatch = useAppDispatch();
 
+  const [fetchPayOrder, { isLoading: isPayOrderLoading }] = usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
+
+  const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
+    isOpen: false,
+  });
 
   const [personalFields, setPersonalFields] = useState<PersonalFields>(defaultPersonalFields);
 
@@ -110,12 +121,22 @@ export function Order() {
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
+  const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
-  const createOrder = async (orderData: OrderFormType) => {
+  const handleCreateOrder = (orderData: OrderFormType) => {
+    setPayCoinsState({
+      isOpen: true,
+      orderData,
+      price: totalProductsSum,
+    });
+  };
+
+  const handlePayOrder = async (orderData: OrderFormType) => {
+    if (!payCoinsState.isOpen) return;
+
     const {
       firstName,
       lastName,
@@ -131,55 +152,79 @@ export function Order() {
       deliveryProfileId,
     } = orderData;
 
-    try {
-      let currentDeliveryProfileId = deliveryProfileId;
+    let currentDeliveryProfileId = deliveryProfileId;
 
-      if (currentDeliveryProfileId === noExistingId) {
-        const deliveryProfileData: CreateOrderProfileDto = {
-          title: `${street}, ${house}`,
-          cityId,
-          street,
-          house,
-          apartment,
-          entrance,
-          floor,
-        };
-
-        const newDeliveryProfile = await fetchCreateOrderProfile(deliveryProfileData).unwrap();
-
-        currentDeliveryProfileId = newDeliveryProfile.id;
-      }
-
-      const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
-        productId: product.product.id,
-        amount: product.amount,
-        gram: product.gram,
-      }));
-
-      const formattedOrderData: CreateOrderDto = {
-        firstName,
-        lastName,
-        phone,
-        email,
-        comment,
-        deliveryProfileId: currentDeliveryProfileId,
-        orderProducts,
+    if (currentDeliveryProfileId === noExistingId) {
+      const deliveryProfileData: CreateOrderProfileDto = {
+        title: `${street}, ${house}`,
+        cityId,
+        street,
+        house,
+        apartment,
+        entrance,
+        floor,
       };
 
-      const { id: orderId } = await fetchCreateOrder(formattedOrderData).unwrap();
+      const newDeliveryProfile = await fetchCreateOrderProfile(deliveryProfileData).unwrap();
 
-      toggleOrderStatusModal({ status: 'success', orderId });
-
-      productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
-    } catch (error) {
-      const message = getErrorMessage(error);
-
-      dispatchNotification(message, { type: NotificationType.DANGER });
-
-      toggleOrderStatusModal({ status: 'failure' });
-
-      setIsSubmitError(true);
+      currentDeliveryProfileId = newDeliveryProfile.id;
     }
+
+    const orderProducts: OrderProductDto[] = productsInOrder.map(product => ({
+      productId: product.product.id,
+      amount: product.amount,
+      gram: product.gram,
+    }));
+
+    const formattedOrderData: CreateOrderDto = {
+      firstName,
+      lastName,
+      phone,
+      email,
+      comment,
+      deliveryProfileId: currentDeliveryProfileId,
+      orderProducts,
+    };
+
+    return fetchCreateOrder(formattedOrderData).unwrap();
+
+    // toggleOrderStatusModal({ status: 'success', orderId });
+
+    // productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
+  };
+
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    if (!payCoinsState.isOpen) return;
+
+    try {
+      let invoiceUuid: string;
+      try {
+        const payOrderDto = (await handlePayOrder(payCoinsState.orderData)) as IOrder;
+        invoiceUuid = payOrderDto.invoiceUuid;
+      } catch {
+        setPayCoinsState({ isOpen: false });
+        setIsSubmitError(true);
+        toggleOrderStatusModal({ status: 'failure' });
+        return;
+      }
+      const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
+      productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
+
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
+        setIsSubmitError(true);
+      } else {
+        goToFailurePayment();
+      }
+    }
+  };
+
+  const handleCloseBuyModal = () => {
+    setPayCoinsState({ isOpen: false });
   };
 
   const onCloseOrderStatusModal = () => {
@@ -238,7 +283,7 @@ export function Order() {
   );
 
   // TODO: вынести на бек
-  const delivery = sum > 2990 ? 0 : DELIVERY_PRICE;
+  const delivery = totalProductsSum > 2990 ? 0 : DELIVERY_PRICE;
 
   const infoModalContent = useMemo(() => {
     if (!orderStatusModal)
@@ -298,17 +343,17 @@ export function Order() {
                 isSubmitError={isSubmitError}
                 discount={sumDiscount}
                 productsCount={count}
-                cost={sum}
+                cost={totalProductsSum}
                 delivery={delivery}
                 deliveryProfiles={formattedDeliveryProfiles}
                 onSelectDeliveryProfile={selectDeliveryProfile}
-                onSubmit={createOrder}
+                onSubmit={handleCreateOrder}
               />
             </Grid>
 
             <Grid item md={4} xs={12}>
               <OrderCard
-                totalCartPrice={sum}
+                totalCartPrice={totalProductsSum}
                 currency={currency}
                 language={language}
                 totalProductCount={count}
@@ -324,6 +369,17 @@ export function Order() {
           title={infoModalContent.title}
           content={infoModalContent.content}
           onClose={onCloseOrderStatusModal}
+        />
+
+        <BuyCheeseCoinsModal
+          isOpened={payCoinsState.isOpen}
+          invoiceUuid='invoiceData?.uuid'
+          userId={currentUser?.id}
+          userEmail={currentUser?.email}
+          price={payCoinsState.isOpen ? payCoinsState.price : undefined}
+          isLoading={isPayOrderLoading}
+          onClose={handleCloseBuyModal}
+          onSubmit={handleBuyCheeseCoins}
         />
       </ShopLayout>
     </PrivateLayout>
