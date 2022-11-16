@@ -3,7 +3,7 @@ import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';
 
 export interface IOrder extends Omit<IBase, 'id'> {
-  uuid: string;
+  id: string;
   firstName: string;
   lastName?: string;
   phone: string;
