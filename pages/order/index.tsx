@@ -233,24 +233,21 @@ export function Order() {
   };
 
   const selectDeliveryProfile = (deliveryProfileId: number) => {
-    let deliveryFieldsData: DeliveryFields = defaultDeliveryFields;
+    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
-    if (deliveryProfileId !== noExistingId) {
-      const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
-
-      if (currentProfile)
-        deliveryFieldsData = {
-          deliveryProfileId,
-          cityId: currentProfile.city.id,
-          street: currentProfile.street,
-          house: currentProfile.house,
-          apartment: currentProfile.apartment,
-          entrance: currentProfile.entrance,
-          floor: currentProfile.floor,
-        };
+    if (currentProfile) {
+      setDeliveryFields({
+        deliveryProfileId,
+        cityId: currentProfile.city.id,
+        street: currentProfile.street,
+        house: currentProfile.house,
+        apartment: currentProfile.apartment,
+        entrance: currentProfile.entrance,
+        floor: currentProfile.floor,
+      });
+    } else {
+      setDeliveryFields(defaultDeliveryFields);
     }
-
-    setDeliveryFields(deliveryFieldsData);
   };
 
   useEffect(() => {
@@ -258,16 +255,17 @@ export function Order() {
 
     const { firstName, lastName, phone, email, mainOrderProfileId } = currentUser;
 
-    setPersonalFields({
-      ...personalFields,
+    setPersonalFields(fields => ({
+      ...fields,
       firstName,
       lastName,
       phone,
       email,
-    });
+    }));
 
-    if (mainOrderProfileId && mainOrderProfileId !== noExistingId)
-      setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
+    if (mainOrderProfileId && mainOrderProfileId !== noExistingId) {
+      selectDeliveryProfile(mainOrderProfileId);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
