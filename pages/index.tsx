@@ -92,19 +92,22 @@ const Home: NextPage = () => {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const electProduct = useCallback(async (id: number, isElect: boolean) => {
-    try {
-      if (isElect) {
-        await removeFavorite(id);
-      } else {
-        await addFavorite(id);
-      }
-    } catch (error) {
-      const message = getErrorMessage(error);
+  const electProduct = useCallback(
+    async (id: number, isElect: boolean) => {
+      try {
+        if (isElect) {
+          await removeFavorite(id);
+        } else {
+          await addFavorite(id);
+        }
+      } catch (error) {
+        const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  }, []);
+        dispatchNotification(message, { type: NotificationType.DANGER });
+      }
+    },
+    [addFavorite, removeFavorite],
+  );
 
   const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
 
@@ -131,7 +134,7 @@ const Home: NextPage = () => {
       <ShopLayout>
         {isLoading && <ProgressLinear />}
 
-        {/* {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />} */}
+        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
 
         {hasNovelties && (
           <ProductSlider
