@@ -1,4 +1,6 @@
-import { differenceInHours, formatDuration, intervalToDuration } from 'date-fns';
+import { differenceInHours, formatDuration, getDefaultOptions, intervalToDuration } from 'date-fns';
+
+import { decOfNum, ruDeclensions } from './wordUtil';
 
 export const formatSeconds = (seconds: number) => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
@@ -11,12 +13,20 @@ export const formatSeconds = (seconds: number) => {
 
 export const formatTimeLeft = (start: Date, end: Date, locale?: Locale) => {
   const duration = intervalToDuration({ start, end });
-  let format: string[];
+  let format: Array<keyof Duration>;
   if (duration.days) {
     format = ['days', 'hours'];
   } else {
     format = ['hours', 'minutes'];
   }
+
+  const defaultOptions = getDefaultOptions() as { locale?: Locale };
+  const lang = locale?.code ?? defaultOptions.locale?.code ?? 'ru';
+
+  if (lang === 'ru') {
+    return format.map(unit => `${duration[unit]} ${decOfNum(duration[unit] ?? 0, ruDeclensions[unit])}`).join(' ');
+  }
+
   const time = formatDuration(duration, { locale, zero: true, format });
   return time;
 };
