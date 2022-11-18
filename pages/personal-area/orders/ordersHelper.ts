@@ -1,5 +1,3 @@
-import { endOfDay, getTime } from 'date-fns';
-
 import { FullOrder } from 'components/Orders/Card/Card';
 import { OrderProductType } from 'components/Orders/Card/CardProduct';
 
@@ -30,7 +28,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
 
   const { city, street, house, apartment } = order.orderProfile;
 
-  const title = (order.crmInfo?.id || order.uuid).toString();
+  const title = order.crmInfo?.id.toString() || '####';
   const address = `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`;
   const status = order.crmInfo?.status;
   const createdAt = new Date(order.createdAt);
@@ -50,13 +48,15 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
 }
 
 export const groupOrdersByDate = (ordersList: FullOrder[]) =>
-  ordersList.reduce<Record<string, FullOrder[]>>((acc, order) => {
-    const orderKey = formatDate(order.createdAt, 'd MMMM yyyy');
+  ordersList
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .reduce<Record<string, FullOrder[]>>((acc, order) => {
+      const orderKey = formatDate(order.createdAt, 'd MMMM yyyy');
 
-    acc[orderKey] ??= [];
+      acc[orderKey] ??= [];
 
-    acc[orderKey].push(order);
-    return acc;
-  }, {});
+      acc[orderKey].push(order);
+      return acc;
+    }, {});
 
 export const getProductKeyInBasket = (productId: number, gram: number) => `${productId}:${gram}`;
