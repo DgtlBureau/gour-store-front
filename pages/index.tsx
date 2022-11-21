@@ -129,6 +129,8 @@ const Home: NextPage = () => {
   const hasNovelties = !!novelties.length;
   const hasProducts = !!products.length;
 
+  const bannerPromoImage = promotions?.[0]?.cardImage.small;
+
   return (
     <PrivateLayout>
       <ShopLayout>
