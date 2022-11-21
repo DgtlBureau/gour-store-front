@@ -1,191 +1,234 @@
-import React, { useState } from 'react';
-import { SxProps } from '@mui/material';
+import React, { memo, useMemo, useState } from 'react';
 
-import ArrowsIcon from '@mui/icons-material/CompareArrows';
-import FilterIcon from '@mui/icons-material/FilterAltOutlined';
+import { SxProps, Theme, useMediaQuery } from '@mui/material';
 
-import { IProduct, IFiltersCharacteristic } from 'types/entities/IProduct';
-import { ICategory, ICategoryNew } from 'types/entities/ICategory';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { getCountryImage } from 'helpers/countryHelper';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-
-import { CardSlider } from 'components/CardSlider/CardSlider';
+import { Catalog } from 'components/Catalog/Catalog';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
 import { Button } from 'components/UI/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { Currency } from 'types/entities/Currency';
+import { ICategory } from 'types/entities/ICategory';
+import { IExtendedProduct, IFilters, IProduct, OrderType } from 'types/entities/IProduct';
+import { Language } from 'types/entities/Language';
+
+import { ProductCard } from '../Card/Card';
 import { ProductFilterList } from '../Filter/List/List';
 import { ProductFilterModal } from '../Filter/Modal/Modal';
-import { ProductCard } from '../Card/Card';
-
-import { checkCategory } from './CatalogHelpers';
 
 import catalogSx from './Catalog.styles';
 
+import FilterIcon from '@mui/icons-material/FilterAltOutlined';
+
 export type ProductCatalogProps = {
   title?: string;
-  emptyTitle?: string;
-  products: IProduct[];
-  favoritesList: IProduct[];
-  categories?: ICategoryNew[];
-  basket?: IOrderProduct[];
+  emptyText?: string;
+  products: IExtendedProduct[];
+  categories?: ICategory[];
   language: Language;
   currency?: Currency;
   discount?: number;
-  rows?: number;
+  withFilters?: boolean;
   sx?: SxProps;
-  onAdd: (product: IProduct) => void;
-  onRemove: (product: IProduct) => void;
+  onAdd: (product: IProduct, gram: number) => void;
+  onRemove: (product: IProduct, gram: number) => void;
   onElect: (productId: number, isElect: boolean) => void;
-  onDetail: (productId: number) => void;
 };
 
-export function ProductCatalog({
-  title,
-  emptyTitle,
-  products,
-  categories,
-  basket,
-  favoritesList,
-  language,
-  currency = 'cheeseCoin',
-  discount,
-  rows,
-  sx,
-  onAdd,
-  onRemove,
-  onElect,
-  onDetail,
-}: ProductCatalogProps) {
-  const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filters, setFilters] = useState<IFiltersCharacteristic>({
-    isReversed: false,
-    productType: 'all',
-    categories: {},
-  });
-
-  const productsWidthElect = products.map(product => ({
-    ...product,
-    isElected: isProductFavorite(product.id, favoritesList),
-  }));
-
-  const screenWidth = window.screen.width;
-
-  const toggleSequence = () => setFilters({ ...filters, isReversed: !filters.isReversed });
-  const selectCategory = (value: number) =>
-    setFilters({
-      ...filters,
-      productType: filters.productType !== value ? value : 'all',
-      categories: {},
+export const ProductCatalog = memo(
+  ({
+    title,
+    emptyText = 'Продукты не найдены',
+    products,
+    categories,
+    language,
+    currency = 'cheeseCoin',
+    discount,
+    withFilters = false,
+    sx,
+    onAdd,
+    onRemove,
+    onElect,
+  }: ProductCatalogProps) => {
+    const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
+    const [filters, setFilters] = useState<IFilters>({
+      orderType: 'default',
+      productType: null,
+      characteristics: {},
     });
 
-  const selectCharacteristics = () => {
-    // TODO: реализация фильтров списка товаров
-  };
+    const withFilterList = withFilters && !!categories?.length;
 
-  const productList = categories
-    ? productsWidthElect?.filter(
-        product => checkCategory(product.categories, filters.productType),
-        // checkCharacteristics(product.categories, filters.categories), // TODO: добавить фильтрацию по всем категориям
-        // TODO: обсудить, мб вообще все фильтры выводить
-      )
-    : productsWidthElect;
+    const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const findProductInBasket = (productId: number) => basket?.find(it => it.product.id === productId);
+    const checkProductType = (product: IExtendedProduct) => {
+      const isAll = !filters.productType;
+      const productTypeIsMatches = !!product.categories?.find(category => category.id === filters.productType);
 
-  const getProductCount = (productId: number, isWeightGood: boolean) => {
-    const productInBasket = findProductInBasket(productId);
-    return (isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-  };
+      return isAll || productTypeIsMatches;
+    };
 
-  const getCatalogRows = () => {
-    const length = productList?.length || 0;
-    if (length > 8) return 3;
-    if (length > 4) return 2;
-    return 1;
-  };
+    const checkCharacteristics = (product: IExtendedProduct) => {
+      if (!product.categories?.length) return false;
 
-  const openFilterModal = () => setFilterModalIsOpen(true);
-  const closeFilterModal = () => setFilterModalIsOpen(false);
+      const productCharacteristicIds = product.categories
+        .map(category => category.id)
+        .filter(id => !categories?.find(category => category.id === id));
 
-  return (
-    <Box sx={sx}>
-      {!!categories && screenWidth <= 900 && (
-        <Box sx={catalogSx.header}>
-          <Typography variant='h4' sx={catalogSx.title}>
-            {title}
-          </Typography>
+      const filterCharacteristicIds = Object.keys(filters.characteristics).filter(
+        id => filters.characteristics[id].length > 0,
+      );
 
-          <Box>
-            <ToggleButton
-              selected={filters.isReversed}
-              sx={{ padding: '4px', marginRight: '6px' }}
-              onChange={toggleSequence}
-            >
-              <ArrowsIcon fontSize='small' sx={{ transform: 'rotate(90deg)' }} />
-            </ToggleButton>
+      // true - если характеристики продукта содержатся во всех фильтрах
+      const isAllMatches = filterCharacteristicIds.every(filterCharacteristicId => {
+        const filterValues = filters.characteristics[filterCharacteristicId];
 
-            <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
-              <FilterIcon fontSize='small' />
-            </Button>
-          </Box>
-        </Box>
-      )}
+        // true - если фильтр содержит одну из характеристик продукта
+        const includesMatches = productCharacteristicIds.some(productCharacteristicId => {
+          const includesCharacteristic = filterValues.includes(productCharacteristicId.toString());
 
-      <CardSlider
-        title={screenWidth > 900 || !categories ? title : undefined}
-        emptyTitle={emptyTitle || 'Продукты не найдены'}
-        key={`catalog/${filters.productType}`}
-        spaceBetween={10}
-        rows={rows || getCatalogRows()}
-        head={
-          !!categories && (
-            <ProductFilterList
-              sx={catalogSx.filters}
-              categories={categories}
-              filters={filters}
-              language={language}
-              onReverse={toggleSequence}
-              onCategoryChange={selectCategory}
-              onCharacteristicChange={selectCharacteristics}
-            />
-          )
-        }
-        cardsList={(filters.isReversed ? productList.reverse() : productList).map(product => (
+          return includesCharacteristic;
+        });
+
+        return includesMatches;
+      });
+
+      return isAllMatches;
+    };
+
+    const sortByPrice = (sortedProducts: IExtendedProduct[]) =>
+      sortedProducts.sort((prev, it) => prev.price[currency] - it.price[currency]);
+
+    const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
+      unsortedProducts.sort((prev, it) =>
+        it.discount === prev.discount ? it.price[currency] - prev.price[currency] : it.discount - prev.discount,
+      );
+
+    const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
+      unsortedProducts.sort((prev, it) =>
+        it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade,
+      );
+
+    const sortByOrderType = (unsortedProducts: IExtendedProduct[]) => {
+      switch (filters.orderType) {
+        case 'price':
+          return sortByPrice(unsortedProducts);
+
+        case 'price-reverse':
+          return sortByPrice(unsortedProducts).reverse();
+
+        case 'discount':
+          return sortByDiscount(unsortedProducts);
+
+        case 'rate':
+          return sortByRate(unsortedProducts);
+
+        default:
+          return unsortedProducts;
+      }
+    };
+
+    const productList = useMemo(() => {
+      if (withFilterList) {
+        const filteredProducts = products.filter(checkProductType).filter(checkCharacteristics);
+        const sortedProducts = sortByOrderType(filteredProducts);
+
+        return sortedProducts;
+      }
+      return products;
+    }, [filters, products, withFilterList]);
+
+    const changeProductType = (id: number) => {
+      const isSelected = filters.productType === id;
+
+      const productType = isSelected ? null : id;
+
+      setFilters({ ...filters, productType, characteristics: {} });
+    };
+
+    const changeCharacteristics = (key: string, values: string[]) => {
+      const characteristics = { ...filters.characteristics, [key]: values };
+
+      setFilters({ ...filters, characteristics });
+    };
+
+    const resetCharacteristics = () => setFilters({ ...filters, characteristics: {} });
+
+    const changeOrderType = (value: OrderType) => setFilters({ ...filters, orderType: value });
+
+    const openFilterModal = () => setFilterModalIsOpen(true);
+    const closeFilterModal = () => setFilterModalIsOpen(false);
+
+    const cardList = useMemo(
+      () =>
+        productList.map(product => (
           <ProductCard
             key={product.id}
+            id={product.id}
+            moyskladId={product.moyskladId}
             title={product.title[language]}
-            description={product.description[language]}
             rating={product.grade}
             price={product.price[currency]}
             discount={discount || product.discount}
-            previewSrc={product.images[0] ? product.images[0].small : ''}
             currency={currency}
-            countrySrc={getCountryImage(product.categories)}
-            currentCount={getProductCount(product.id, product.isWeightGood)}
+            productType={product.productType}
+            previewImg={product.images[0]?.small || ''}
+            countryImg={product.countryImg}
+            backgroundImg={product.backgroundImg}
             isElected={product.isElected}
-            isWeightGood={product.isWeightGood}
-            onAdd={() => onAdd(product)}
-            onRemove={() => onRemove(product)}
+            onAdd={(gram: number) => onAdd(product, gram)}
+            onRemove={(gram: number) => onRemove(product, gram)}
             onElect={() => onElect(product.id, product.isElected)}
-            onDetail={() => onDetail(product.id)}
           />
-        ))}
-      />
-      {!!categories && (
-        <ProductFilterModal
-          categories={categories}
-          filters={filters}
-          language={language}
-          onCategoryChange={selectCategory}
-          onCharacteristicChange={selectCharacteristics}
-          isOpen={filterModalIsOpen}
-          onClose={closeFilterModal}
+        )),
+      [productList],
+    );
+
+    return (
+      <Box sx={sx}>
+        <Catalog
+          emptyText={emptyText}
+          cardList={cardList}
+          head={
+            <Box sx={catalogSx.header}>
+              <Typography variant='h4' sx={catalogSx.title}>
+                {title}
+              </Typography>
+
+              {withFilterList && isDesktop ? (
+                <ProductFilterList
+                  sx={catalogSx.filters}
+                  categories={categories}
+                  filters={filters}
+                  language={language}
+                  onOrderTypeChange={changeOrderType}
+                  onProductTypeChange={changeProductType}
+                  onCharacteristicChange={changeCharacteristics}
+                  onCharacteristicsReset={resetCharacteristics}
+                />
+              ) : (
+                <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
+                  <FilterIcon fontSize='small' />
+                </Button>
+              )}
+            </Box>
+          }
         />
-      )}
-    </Box>
-  );
-}
+
+        {!!categories && (
+          <ProductFilterModal
+            isOpen={filterModalIsOpen}
+            categories={categories}
+            filters={filters}
+            language={language}
+            onOrderTypeChange={changeOrderType}
+            onProductTypeChange={changeProductType}
+            onCharacteristicChange={changeCharacteristics}
+            onCharacteristicsReset={resetCharacteristics}
+            onClose={closeFilterModal}
+          />
+        )}
+      </Box>
+    );
+  },
+);

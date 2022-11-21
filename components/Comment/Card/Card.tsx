@@ -1,10 +1,13 @@
 import React from 'react';
+
 import { Paper, Rating } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { defaultTheme as t } from 'themes';
+
+import { color } from 'themes';
+
+import StarIcon from '@mui/icons-material/Star';
 
 const sx = {
   comment: {
@@ -14,7 +17,7 @@ const sx = {
       sm: '280px',
     },
     padding: '12px',
-    backgroundColor: t.palette.common.white,
+    backgroundColor: color.white,
     boxShadow: 'none',
   },
   rating: {
@@ -52,8 +55,8 @@ export function CommentCard({ title, grade, date, text, onClick }: CommentCardPr
           value={grade}
           precision={0.5}
           readOnly
-          icon={<StarIcon fontSize='small' htmlColor={t.palette.accent.main} />}
-          emptyIcon={<StarIcon fontSize='small' htmlColor={t.palette.text.muted} />}
+          icon={<StarIcon fontSize='small' htmlColor={color.accent} />}
+          emptyIcon={<StarIcon fontSize='small' htmlColor={color.muted} />}
         />
         <Typography sx={sx.date} variant='body2' color='text.muted'>
           {date}

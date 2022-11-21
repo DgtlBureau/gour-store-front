@@ -1,153 +1,92 @@
-import React from 'react';
-import { Grid, Stack } from '@mui/material';
+import React, { useMemo } from 'react';
 
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useAppNavigation } from 'components/Navigation';
+import { useGetProductListQuery } from 'store/api/productApi';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
-import { ProductCard } from 'components/Product/Card/Card';
-import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+
 import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { ShopLayout } from 'layouts/Shop/Shop';
-import { Typography } from 'components/UI/Typography/Typography';
+
+import { useAppNavigation } from 'components/Navigation';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
 import { LinkRef as Link } from 'components/UI/Link/Link';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+
 import { IProduct } from 'types/entities/IProduct';
-import { IOrderProduct } from 'types/entities/IOrderProduct';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import { isProductFavorite } from './favoritesHelper';
-import { dispatchNotification } from 'packages/EventBus';
 import { NotificationType } from 'types/entities/Notification';
 
-const sx = {
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
-};
-
-function FavoriteProductCard({
-  product,
-  basket,
-  language,
-  currency,
-  isElect,
-  addToBasket,
-  removeFromBasket,
-  handleElect,
-  goToProductPage,
-}: FavoriteProductType) {
-  const productInBasket = basket.find(it => it.product.id === product.id);
-  const count = (product.isWeightGood ? productInBasket?.weight : productInBasket?.amount) || 0;
-
-  const elect = () => handleElect(product.id, isElect);
-
-  return (
-    <ProductCard
-      title={product.title[language]}
-      description={product.description[language]}
-      rating={product.grade}
-      discount={product.discount}
-      currentCount={count}
-      isWeightGood={product.isWeightGood}
-      price={product.price[currency]}
-      previewSrc={product.images[0]?.small || ''}
-      currency={currency}
-      isElected={isElect}
-      onElect={elect}
-      onAdd={() => addToBasket(product)}
-      onRemove={() => removeFromBasket(product)}
-      onDetail={() => goToProductPage(product.id)}
-    />
-  );
-}
+import { useAppDispatch } from 'hooks/store';
+import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { getErrorMessage } from 'utils/errorUtil';
 
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const { language, goToProductPage } = useAppNavigation();
+  const { language, currency } = useAppNavigation();
 
-  const currentCurrency: Currency = 'cheeseCoin';
-
+  const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
+  const { data: categories = [] } = useGetCategoryListQuery();
 
-  const basket = useAppSelector(state => state.order);
+  const formattedProducts = useMemo(
+    () => computeProductsWithCategories(products, categories, favoriteProducts),
+    [products, categories, favoriteProducts],
+  );
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const handleElect = async (id: number, isElect: boolean) => {
+  const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
-      console.log(error);
-      dispatchNotification('Ошибка удаления из избранного', { type: NotificationType.DANGER });
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
+  const filteredProducts = formattedProducts.filter(
+    product => !!favoriteProducts.find(favorite => favorite.id === product.id),
+  );
+
   return (
     <PrivateLayout>
-      <ShopLayout currency='cheeseCoin' language='ru'>
+      <ShopLayout>
         <Link href='/' sx={{ marginBottom: '20px' }}>
           Вернуться на главную
         </Link>
 
-        <Stack spacing={3}>
-          <Typography sx={sx.title}>Избранные продукты</Typography>
+        {isFetching && <ProgressLinear />}
 
-          {isFetching && <ProgressLinear />}
-
-          {favoriteProducts.length === 0 ? (
-            <Typography variant='h5'>Нет избранных продуктов</Typography>
-          ) : (
-            <Grid container>
-              {favoriteProducts.map(product => (
-                <FavoriteProductCard
-                  key={product.id}
-                  product={product}
-                  basket={basket.products}
-                  currency={currentCurrency}
-                  language={language}
-                  isElect={isProductFavorite(product.id, favoriteProducts)}
-                  addToBasket={addToBasket}
-                  removeFromBasket={removeFromBasket}
-                  handleElect={handleElect}
-                  goToProductPage={goToProductPage}
-                />
-              ))}
-            </Grid>
-          )}
-        </Stack>
+        {!!filteredProducts.length && (
+          <ProductCatalog
+            title='Избранные продукты'
+            emptyText='Нет избранных продуктов'
+            products={formattedProducts}
+            categories={categories}
+            language={language}
+            currency={currency}
+            onAdd={addToBasket}
+            onRemove={removeFromBasket}
+            onElect={electProduct}
+          />
+        )}
       </ShopLayout>
     </PrivateLayout>
   );
 }
 
 export default Favorites;
-
-type FavoriteProductType = {
-  product: IProduct;
-  basket: IOrderProduct[];
-  currency: Currency;
-  language: Language;
-  isElect: boolean;
-  addToBasket: (product: IProduct) => void;
-  removeFromBasket: (product: IProduct) => void;
-  handleElect: (id: number, isElect: boolean) => void;
-  goToProductPage: (id: number) => void;
-};

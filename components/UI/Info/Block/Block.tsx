@@ -1,40 +1,32 @@
 import React from 'react';
+
 import { Paper, SxProps } from '@mui/material';
 
-import { Typography } from 'components/UI/Typography/Typography';
 import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
-const infoSx = {
-  block: {
-    padding: '16px',
-    backgroundColor: 'background.default',
-    border: '1px solid',
-    borderColor: 'secondary.main',
-  },
-  text: {
-    marginBottom: '10px',
-  },
-};
+import infoSx from './Block.styles';
 
 type Props = {
+  title: string;
+  actionText?: string;
+  href?: string;
   sx?: SxProps;
-  text: string;
-  link?: {
-    label: string;
-    path?: string;
-    onClick?: () => void;
-  };
+  onClick?: () => void;
 };
 
-export function InfoBlock({ text, link, sx }: Props) {
+export function InfoBlock({ title, href = '#', actionText, sx, onClick }: Props) {
+  const withAction = !!actionText && (!!href || !!onClick);
+
   return (
-    <Paper sx={{ ...infoSx.block, ...sx }} elevation={0}>
+    <Paper sx={{ ...infoSx.block, ...sx } as SxProps} elevation={0}>
       <Typography sx={infoSx.text} color='text.muted' variant='body1'>
-        {text}
+        {title}
       </Typography>
-      {link && (
-        <Link href={link.path || '#'} onClick={link.onClick}>
-          {link.label}
+
+      {withAction && (
+        <Link href={href} onClick={onClick}>
+          {actionText}
         </Link>
       )}
     </Paper>

@@ -1,16 +1,21 @@
 import React, { useMemo } from 'react';
 
 import { Divider, Stack } from '@mui/material';
+
 import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import { color } from 'themes';
+
 import translations from './Card.i18n.json';
-import { defaultTheme as theme } from 'themes';
 
 const sx = {
   card: {
-    background: theme.palette.background.paper,
+    background: color.secondary,
     borderRadius: '6px',
     padding: {
       sm: '30px',
@@ -34,9 +39,8 @@ const sx = {
 };
 
 type OrderCardInfoProps = {
-  fullPrice: number;
+  totalSum: number;
   summaryDiscount: number;
-  totalPrice: number;
   promotions: {
     title: string;
     amount: number;
@@ -45,14 +49,7 @@ type OrderCardInfoProps = {
   currency: Currency;
 };
 
-export function OrderCardInfo({
-  fullPrice,
-  promotions,
-  summaryDiscount,
-  totalPrice,
-  deliveryCost,
-  currency,
-}: OrderCardInfoProps) {
+export function OrderCardInfo({ totalSum, promotions, summaryDiscount, deliveryCost, currency }: OrderCardInfoProps) {
   const { t } = useLocalTranslation(translations);
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
@@ -63,21 +60,29 @@ export function OrderCardInfo({
         </Typography>
 
         <Typography variant='h6' sx={sx.total}>
-          {fullPrice} {getCurrencySymbol(currency)}
+          {totalSum} {getCurrencySymbol(currency)}
         </Typography>
       </Stack>
 
-      {promotions.map((promotion, i) => (
-        <Stack key={promotion.title} direction='row' alignItems='center' justifyContent='space-between'>
-          <Typography variant='body2' sx={sx.price}>
-            {promotion.title}
-          </Typography>
+      {promotions.map(
+        promotion =>
+          promotion.title && (
+            <Stack
+              key={`${promotion.title}${promotion.amount}`}
+              direction='row'
+              alignItems='center'
+              justifyContent='space-between'
+            >
+              <Typography variant='body2' sx={sx.price}>
+                {promotion.title}
+              </Typography>
 
-          <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
-            -{promotion.amount} {getCurrencySymbol(currency)}
-          </Typography>
-        </Stack>
-      ))}
+              <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
+                -{promotion.amount} {getCurrencySymbol(currency)}
+              </Typography>
+            </Stack>
+          ),
+      )}
 
       <Divider variant='fullWidth' sx={{ margin: '10px 0' }} />
 
@@ -99,11 +104,11 @@ export function OrderCardInfo({
         </Typography>
 
         <Typography variant='h6' sx={sx.total}>
-          {totalPrice} {currencySymbol}
+          {totalSum} {currencySymbol}
         </Typography>
       </Stack>
 
-      <Stack direction='row' alignItems='center' justifyContent='space-between'>
+      {/* <Stack direction='row' alignItems='center' justifyContent='space-between'>
         <Typography variant='body2' sx={sx.price}>
           {t('delivery')}
         </Typography>
@@ -111,7 +116,7 @@ export function OrderCardInfo({
         <Typography variant='body2' sx={sx.price}>
           {deliveryCost} {currencySymbol}
         </Typography>
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 }

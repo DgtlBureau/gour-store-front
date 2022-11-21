@@ -1,15 +1,18 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { ITranslatableString } from './ITranslatableString';
 
-export interface ICategory extends IBaseEntity {
+export interface ICategory extends IBase {
   title: ITranslatableString;
-  parentCategories: ICategory[];
-  subCategories: ICategory[];
+  parentCategories?: ICategory[];
+  subCategories?: ICategory[];
 }
 
-export interface ICategoryNew {
-  id: number;
-  title: ITranslatableString;
-  parentCategories: ICategoryNew[];
-  subCategories: ICategoryNew[];
+export interface ICategoryWithDiscount {
+  id: IBase['id'];
+  title: Pick<ITranslatableString, 'ru' | 'en'>;
+  subCategories: {
+    id: IBase['id'];
+    title: Pick<ITranslatableString, 'ru' | 'en'>;
+    discountPrice: number;
+  }[];
 }

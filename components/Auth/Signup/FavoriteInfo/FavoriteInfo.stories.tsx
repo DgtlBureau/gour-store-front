@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
+
 import { SignupFavoriteInfo, SignupFavoriteInfoProps } from './FavoriteInfo';
 
 export default {
@@ -15,22 +16,22 @@ export const DefaultSignupFavoriteInfo = Template.bind({});
 const props: Partial<SignupFavoriteInfoProps> = {
   countries: [
     {
-      image: '',
+      iconKey: '',
       title: 'Россия',
       id: 1,
     },
     {
-      image: '',
+      iconKey: '',
       title: 'Англия',
       id: 2,
     },
     {
-      image: '',
+      iconKey: '',
       title: 'Испания',
       id: 3,
     },
     {
-      image: '',
+      iconKey: '',
       title: 'Италия',
       id: 4,
     },

@@ -1,36 +1,38 @@
-import { AppBar, Badge, Container, Collapse, Grid, SxProps, useMediaQuery } from '@mui/material';
-import React, { useState } from 'react';
-import NextLink from 'next/link';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Badge, Collapse, Container, Grid, SxProps, useMediaQuery } from '@mui/material';
 
-import { useAppNavigation } from 'components/Navigation';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { CitySelect } from './CitySelect';
-import { MobileMenu } from '../Mobile/Menu/Menu';
+import { selectIsAuth } from 'store/selectors/auth';
+
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Button } from 'components/UI/Button/Button';
-import { LinkRef as Link } from 'components/UI/Link/Link';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
-import RusFlagIcon from 'assets/icons/flags/rus.svg';
-import UKFlagIcon from 'assets/icons/flags/uk.svg';
-import Logo from 'assets/images/common-logo.svg';
-import GamepadIcon from 'assets/icons/gamepad.svg';
-import CatalogIcon from 'assets/icons/catalog.svg';
+
+import { Path } from 'constants/routes';
+import { useAppSelector } from 'hooks/store';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import { MobileMenu } from '../Mobile/Menu/Menu';
+import { CitySelect } from './CitySelect';
 
 import headerSx from './Header.styles';
+
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import CatalogIcon from 'assets/icons/catalog.svg';
+import GamepadIcon from 'assets/icons/gamepad.svg';
+import Logo from 'assets/images/common-logo.svg';
 
 export type HeaderProps = {
   isGame?: boolean;
@@ -46,16 +48,12 @@ export type HeaderProps = {
     name: string;
   }[];
   currency: Currency;
-  language: Language;
   basketProductCount: number;
   basketProductSum: number;
   moneyAmount: number;
   sx?: SxProps;
   onChangeCity(id: number): void;
-  onClickFavorite(): void;
-  onClickPersonalArea(): void;
-  onClickBasket(): void;
-  onClickReplenishment(): void;
+  onClickAddCoins(): void;
   onClickSignout(): void;
 };
 
@@ -71,23 +69,19 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  language,
   currency,
   moneyAmount,
   sx,
   onChangeCity,
-  onClickFavorite,
-  onClickPersonalArea,
-  onClickBasket,
-  onClickReplenishment,
+  onClickAddCoins,
   onClickSignout,
 }: HeaderProps) {
-  const { goToGame, goToHome } = useAppNavigation();
-
   const [isCitiesModalOpen, setIsCitiesModalOpen] = useState<boolean>(false);
   const [isMenuDeployed, setIsMenuDeployed] = useState(false);
 
   const isDesktop = useMediaQuery('(min-width: 600px)');
+
+  const isAuth = useAppSelector(selectIsAuth);
 
   const currencySymbol = getCurrencySymbol(currency);
 
@@ -113,36 +107,42 @@ export function Header({
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
             <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
               <Box sx={headerSx.logo}>
-                <NextLink href='/' passHref>
-                  <Image src={Logo} height={49} width={58} alt='' />
-                </NextLink>
+                <Link href='/'>
+                  <Image src={Logo} height='49px' width='58px' alt='' />
+                </Link>
               </Box>
 
-              {!isGame && (
-                <>
-                  <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
-                    {firstPhone}
-                  </Link>
-
-                  <Box sx={headerSx.city} onClick={openCityModal}>
-                    <PlaceOutlinedIcon />
-                    <Typography sx={headerSx.cityTitle} variant='body1'>
-                      {currentCity?.name}
-                    </Typography>
-                    <KeyboardArrowDownIcon />
-                  </Box>
-                </>
-              )}
+              <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
+                {firstPhone}
+              </Link>
+              <Box sx={headerSx.city} onClick={openCityModal}>
+                <PlaceOutlinedIcon />
+                <Typography sx={headerSx.cityTitle} variant='body1'>
+                  {currentCity?.name}
+                </Typography>
+                <KeyboardArrowDownIcon />
+              </Box>
             </Grid>
 
-            <Grid item xs={10} md={8} lg={6} container direction='row' alignItems='center' justifyContent='flex-end'>
+            <Grid
+              item
+              xs={10}
+              md={8}
+              lg={6}
+              container
+              direction='row'
+              alignItems='center'
+              justifyContent='flex-end'
+              sx={{ gap: '20px' }}
+            >
               <Box
                 sx={{
                   ...headerSx.money,
-                  display: {
-                    xs: isGame ? 'flex' : 'none',
-                    sm: 'flex',
-                  },
+                  display: 'none',
+                  // display: {
+                  //   xs: isGame ? 'flex' : 'none',
+                  //   sm: 'flex',
+                  // },
                 }}
               >
                 <Typography variant='body2' sx={headerSx.moneyAmount}>
@@ -151,14 +151,14 @@ export function Header({
                   {currencySymbol}
                 </Typography>
 
-                <IconButton onClick={onClickReplenishment} color='inherit' sx={headerSx.replenishment}>
+                <IconButton onClick={onClickAddCoins} color='inherit' sx={headerSx.replenishment}>
                   <AddIcon color='primary' />
                 </IconButton>
               </Box>
 
               {isGame ? (
-                <IconButton
-                  onClick={goToHome}
+                <Link
+                  href='/'
                   color='inherit'
                   sx={{
                     ...headerSx.icon,
@@ -169,48 +169,36 @@ export function Header({
                   }}
                 >
                   <Image src={CatalogIcon} height={24} width={24} alt='' />
-                </IconButton>
+                </Link>
               ) : (
-                <IconButton onClick={goToGame} color='inherit' sx={headerSx.icon}>
+                <Link href={`/${Path.GAME}`} color='inherit' sx={headerSx.icon}>
                   <Image src={GamepadIcon} height={24} width={24} alt='' />
+                </Link>
+              )}
+
+              <Link href={`/${Path.FAVORITES}`} color='inherit' sx={headerSx.icon}>
+                <FavoriteBorderIcon />
+              </Link>
+
+              <Link href={`/${Path.PERSONAL_AREA}`} color='inherit' sx={headerSx.icon}>
+                <PersonIcon />
+              </Link>
+
+              <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
+                <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
+                  <ShoppingCartOutlinedIcon color='primary' />
+                </Badge>
+                {basketProductSum}
+                &nbsp;
+                {currencySymbol}
+              </Link>
+
+              {isAuth && (
+                <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
+                  <LogoutIcon />
                 </IconButton>
               )}
 
-              {!isGame && (
-                <>
-                  <IconButton onClick={onClickFavorite} color='inherit' sx={headerSx.icon}>
-                    <FavoriteBorderIcon />
-                  </IconButton>
-
-                  <IconButton onClick={onClickPersonalArea} color='inherit' sx={headerSx.icon}>
-                    <PersonIcon />
-                  </IconButton>
-
-                  {/* <Box sx={headerSx.flag}>
-                    <NextLink href={router?.asPath || ''} locale={language === 'ru' ? 'en' : 'ru'} passHref>
-                      <Image
-                        src={language === 'ru' ? RusFlagIcon : UKFlagIcon}
-                        objectFit="cover"
-                        height={24}
-                        width={34}
-                        alt=""
-                      />
-                    </NextLink>
-                  </Box> */}
-
-                  <Button sx={headerSx.cart} onClick={onClickBasket}>
-                    <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
-                      <ShoppingCartOutlinedIcon color='primary' />
-                    </Badge>
-                    {basketProductSum}
-                    &nbsp;
-                    {currencySymbol}
-                  </Button>
-                  <IconButton onClick={onClickSignout} color='inherit' sx={headerSx.icon}>
-                    <LogoutIcon />
-                  </IconButton>
-                </>
-              )}
               {!isGame && !isDesktop && (
                 <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
                   {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
@@ -233,11 +221,8 @@ export function Header({
             moneyAmount={moneyAmount}
             currency={currency}
             onChangeCity={onChangeCity}
-            onClickFavorite={onClickFavorite}
-            onClickPersonalArea={onClickPersonalArea}
             onClickSignout={onClickSignout}
-            onClickReplenishment={onClickReplenishment}
-            onClickGame={goToGame}
+            onClickAddCoins={onClickAddCoins}
           />
         </Collapse>
       </AppBar>

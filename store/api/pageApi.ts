@@ -1,13 +1,13 @@
-import { Path } from 'constants/routes';
-import { commonApi } from './commonApi';
 import { IPage } from 'types/entities/IPage';
 
-type PageKeys = 'MAIN' | 'PURCHASE' | 'PRIVACY' | 'COOKIE' | 'AGREEMENT';
+import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const pageApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getPage: builder.query<IPage, PageKeys>({
+      getPage: builder.query<IPage, string>({
         query(key) {
           return {
             method: 'GET',

@@ -1,7 +1,10 @@
 import React from 'react';
-import DoneIcon from '@mui/icons-material/Done';
+
 import { Box } from '../Box/Box';
+
 import s from './Stepper.module.scss';
+
+import DoneIcon from '@mui/icons-material/Done';
 
 type Props = {
   activeStep: number;

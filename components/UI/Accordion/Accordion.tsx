@@ -1,16 +1,17 @@
 import React from 'react';
+
 import {
-  Accordion as MUIAccordion,
-  AccordionSummary as MUIAccordionSummary,
-  AccordionDetails as MUIAccordionDetails,
+  AccordionDetailsProps,
   AccordionProps,
   AccordionSummaryProps,
-  AccordionDetailsProps,
+  Accordion as MUIAccordion,
+  AccordionDetails as MUIAccordionDetails,
+  AccordionSummary as MUIAccordionSummary,
 } from '@mui/material';
 
-import ExpandIcon from '@mui/icons-material/ExpandMore';
+import { color } from 'themes';
 
-import { defaultTheme as theme } from 'themes';
+import ExpandIcon from '@mui/icons-material/ExpandMore';
 
 const accordionSx = {
   marginBottom: '10px',
@@ -19,7 +20,7 @@ const accordionSx = {
   borderRadius: '6px',
   borderColor: 'secondary.main',
   boxShadow: 'none',
-  background: theme.palette.common.white,
+  background: color.white,
   '&:before': {
     content: 'none',
   },
@@ -57,11 +58,7 @@ export function Accordion({ sx, ...props }: AccordionProps) {
 
 export function AccordionSummary({ sx, ...props }: AccordionSummaryProps) {
   return (
-    <MUIAccordionSummary
-      {...props}
-      expandIcon={<ExpandIcon htmlColor={theme.palette.text.muted} />}
-      sx={{ ...summarySx, ...sx }}
-    />
+    <MUIAccordionSummary {...props} expandIcon={<ExpandIcon htmlColor={color.muted} />} sx={{ ...summarySx, ...sx }} />
   );
 }
 

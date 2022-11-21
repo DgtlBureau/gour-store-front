@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SxProps } from '@mui/material';
 
 import { Typography } from 'components/UI/Typography/Typography';

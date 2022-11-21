@@ -1,55 +1,58 @@
-import React from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import React, { useCallback, useMemo } from 'react';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import translations from './Main.i18n.json';
-import { useLocalTranslation } from '../hooks/useLocalTranslation';
-import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 import { useGetPageQuery } from 'store/api/pageApi';
-import { useGetPromotionListQuery } from 'store/api/promotionApi';
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from 'store/api/productApi';
+import { useGetPromotionListQuery } from 'store/api/promotionApi';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
-import { ShopLayout } from '../layouts/Shop/Shop';
-import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
-import { useAppNavigation } from 'components/Navigation';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { CardSlider } from 'components/CardSlider/CardSlider';
-import { PromotionCard } from 'components/Promotion/Card/Card';
-import { dispatchNotification } from 'packages/EventBus';
-import { getErrorMessage } from 'utils/errorUtil';
+import { ShopLayout } from 'layouts/Shop/Shop';
 
-import { Currency } from '../types/entities/Currency';
-import { IProduct } from '../types/entities/IProduct';
+import { CardSlider } from 'components/CardSlider/CardSlider';
+import { useAppNavigation } from 'components/Navigation';
+import { PageContent } from 'components/PageContent/PageContent';
+import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { ProductSlider } from 'components/Product/Slider/Slider';
+import { PromotionCard } from 'components/Promotion/Card/Card';
+import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+
+import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import bannerImg from '../assets/images/banner.jpeg';
+import { Path } from 'constants/routes';
+import { useAppDispatch } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './Main.i18n.json';
 
 import sx from './Main.styles';
 
+import defaultBannerImg from 'assets/images/banner.jpeg';
+
 const NOW = new Date();
 
-const fakePromoImage =
-  'https://i.pinimg.com/736x/ca/f2/48/caf24896f739c464073ee31edfebead2--images-for-website-website-designs.jpg';
-
-// eslint-disable-next-line react/function-component-definition
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
-
-  const basket = useAppSelector(state => state.order);
+  const { goToPromotionPage, language, currency } = useAppNavigation();
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+
+  // TODO: вынести сюда в useMemo добавление к продуктам favoriteProducts, миллион расчетов для категорий
+  // а в каждом отдельном компоненте <ProductCard /> чекать корзину по ключу "id:id", чтобы избежать ререндера у всех компонентов
 
   const dispatch = useAppDispatch();
 
@@ -64,75 +67,95 @@ const Home: NextPage = () => {
   });
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
-  const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('MAIN');
+  const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
+
+  const bannerImg = page?.bannerImg?.full || defaultBannerImg;
+
+  const formattedNovelties = useMemo(
+    () =>
+      // TODO: вынести вычисление любимых продуктов в каждый компонент, чтобы избежать ререндера всего приложения после добавления в любимые продукты
+      computeProductsWithCategories(novelties, categories, favoriteProducts),
+    [novelties, categories, favoriteProducts],
+  );
+
+  const formattedProducts = useMemo(
+    () => computeProductsWithCategories(products, categories, favoriteProducts),
+    [products, categories, favoriteProducts],
+  );
 
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
-  const currency: Currency = 'cheeseCoin';
-
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const electProduct = async (id: number, isElect: boolean) => {
-    try {
-      if (isElect) {
-        await removeFavorite(id);
-      } else {
-        await addFavorite({ productId: id });
-      }
-    } catch (error) {
-      const message = getErrorMessage(error);
+  const electProduct = useCallback(
+    async (id: number, isElect: boolean) => {
+      try {
+        if (isElect) {
+          await removeFavorite(id);
+        } else {
+          await addFavorite(id);
+        }
+      } catch (error) {
+        const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  };
+        dispatchNotification(message, { type: NotificationType.DANGER });
+      }
+    },
+    [addFavorite, removeFavorite],
+  );
+
+  const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
+
+  const promotionCardList = useMemo(
+    () =>
+      filteredPromotions?.map(promotion => (
+        <Link href={`/${Path.PROMOTIONS}/${promotion.id}`}>
+          <PromotionCard
+            key={promotion.id}
+            image={promotion.cardImage.small}
+            onClickMore={() => goToPromotionPage(promotion.id)}
+          />
+        </Link>
+      )) || [],
+    [filteredPromotions, goToPromotionPage],
+  );
+
+  const hasPromotions = !!filteredPromotions?.length;
+  const hasNovelties = !!novelties.length;
+  const hasProducts = !!products.length;
 
   const bannerPromoImage = promotions?.[0]?.cardImage.small;
 
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         {isLoading && <ProgressLinear />}
-        {!!promotions?.length && (
-          <CardSlider
-            title={t('promotions')}
-            cardsList={promotions
-              .filter(it => new Date(it.end) > NOW)
-              .map(promotion => (
-                <PromotionCard
-                  key={promotion.id}
-                  image={promotion.cardImage.small}
-                  onClickMore={() => goToPromotionPage(promotion.id)}
-                />
-              ))}
-          />
-        )}
-        {!!novelties?.length && (
-          <ProductCatalog
+
+        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+
+        {hasNovelties && (
+          <ProductSlider
             title={t('novelties')}
-            products={novelties}
-            favoritesList={favoriteProducts}
-            basket={basket.products}
+            products={formattedNovelties}
             language={language}
             currency={currency}
-            rows={1}
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
-        {!!products.length && (
+
+        {hasProducts && (
           <ProductCatalog
+            withFilters
             title={t('catalog')}
-            favoritesList={favoriteProducts}
-            products={products}
-            basket={basket.products}
+            products={formattedProducts}
             categories={categories}
             language={language}
             currency={currency}
@@ -140,38 +163,21 @@ const Home: NextPage = () => {
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}
-            onDetail={goToProductPage}
           />
         )}
 
         {!!page && (
           <Box>
-            <Box sx={sx.banner}>
-              {bannerPromoImage ? (
-                <Image
-                  src={bannerPromoImage || fakePromoImage} // FIXME:
-                  objectFit='cover'
-                  layout='fill'
-                  alt=''
-                />
-              ) : (
-                <Image
-                  loader={() => fakePromoImage}
-                  src={bannerImg || fakePromoImage}
-                  objectFit='cover'
-                  layout='fill'
-                  alt=''
-                />
-              )}
-            </Box>
+            {!!bannerImg && (
+              <Box sx={sx.banner}>
+                <Image loader={() => bannerImg} src={bannerImg} objectFit='cover' layout='fill' alt='' />
+              </Box>
+            )}
 
-            <Typography variant='h4' sx={sx.title}>
-              {page.info?.title?.[language]}
-            </Typography>
-
-            <Typography variant='body1' sx={{ marginTop: { xs: '20px', md: '40px' } }}>
-              {page.info?.description?.[language]}
-            </Typography>
+            <PageContent
+              title={page?.info?.title?.[language] || ''}
+              description={page?.info?.description?.[language]}
+            />
           </Box>
         )}
       </ShopLayout>

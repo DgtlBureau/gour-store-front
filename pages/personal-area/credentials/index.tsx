@@ -1,80 +1,110 @@
-import { Grid } from '@mui/material';
 import { useState } from 'react';
 
-import { dispatchNotification } from 'packages/EventBus';
+import { Grid } from '@mui/material';
+
+import { useCheckCodeMutation, useSendEmailCodeMutation } from 'store/api/authApi';
 import {
   useGetCurrentUserQuery,
-  useSendChangePhoneCodeMutation,
+  useUpdateCurrentAvatarMutation,
+  useUpdateCurrentUserEmailMutation,
   useUpdateCurrentUserMutation,
   useUpdateCurrentUserPasswordMutation,
-  useUpdateCurrentUserPhoneMutation,
 } from 'store/api/currentUserApi';
 import { useCreateImageMutation } from 'store/api/imageApi';
-import { PAPhoneChangeModal } from 'components/PA/Credentials/PhoneChangeModal/PhoneChangeModal';
-import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+
+import { PALayout } from 'layouts/PA/PA';
+
 import { PACredentialsAvatarEditor } from 'components/PA/Credentials/AvatarEditor/AvatarEditor';
-import { PACredentialsEditor } from 'components/PA/Credentials/Editor/Editor';
+import { CredentialsFormType, PACredentialsEditor } from 'components/PA/Credentials/Editor/Editor';
+import { PAEmailChangeModal } from 'components/PA/Credentials/EmailChangeModal/EmailChangeModal';
 import { PAPasswordChangeModal } from 'components/PA/Credentials/PasswordChangeModal/PasswordChangeModal';
 
+import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
 import { NotificationType } from 'types/entities/Notification';
-import { PALayout } from 'layouts/PA/PA';
-import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
-import { useSignOutMutation } from 'store/api/authApi';
 
 export function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  const [updateCurrentUser] = useUpdateCurrentUserMutation();
-  const [updatePassword] = useUpdateCurrentUserPasswordMutation();
   const [uploadImage] = useCreateImageMutation();
-  const [sendPhoneCode] = useSendChangePhoneCodeMutation();
-  const [updatePhone] = useUpdateCurrentUserPhoneMutation();
-  const [signOut] = useSignOutMutation();
+  const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
+  const [checkCode] = useCheckCodeMutation();
+  const [updateCurrentUser] = useUpdateCurrentUserMutation();
+  const [updateEmail] = useUpdateCurrentUserEmailMutation();
+  const [updatePassword] = useUpdateCurrentUserPasswordMutation();
+  const [updateAvatar] = useUpdateCurrentAvatarMutation();
 
-  const sendChangePasswordCode = async (sendCode: SendCodeDto) => {
+  const defaultValues: CredentialsFormType = {
+    firstName: currentUser?.firstName || '',
+    lastName: currentUser?.lastName || '',
+    email: currentUser?.email || '',
+    phone: currentUser?.phone || '',
+    password: '********',
+    referralCode: currentUser?.referralCode?.code || '',
+  };
+
+  const openEmailChangeModal = () => setIsEmailModalOpen(true);
+  const closeEmailChangeModal = () => setIsEmailModalOpen(false);
+
+  const openPasswordChangeModal = () => setIsPasswordModalOpen(true);
+  const closePasswordChangeModal = () => setIsPasswordModalOpen(false);
+
+  const sendEmail = async (email: string) => {
     try {
-      await sendPhoneCode(sendCode).unwrap();
+      await sendCode({ email }).unwrap();
 
-      dispatchNotification('Код отправлен');
+      dispatchNotification('Email код отправлен');
 
-      return true;
+      return Promise.resolve();
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
+    }
+  };
+
+  const checkEmailCode = async (code: string) => {
+    try {
+      const isSuccess = await checkCode({ code }).unwrap();
+
+      if (isSuccess) dispatchNotification('Код подтверждён');
+
+      return isSuccess;
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
+    }
+  };
+
+  const changeEmail = async (dto: ChangeEmailDto) => {
+    try {
+      await updateEmail(dto).unwrap();
+
+      dispatchNotification('Почта изменена');
+
+      closeEmailChangeModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
       dispatchNotification(message, { type: NotificationType.DANGER });
-
-      return false;
     }
   };
 
-  const changePhone = async (changePhoneData: ChangePhoneDto) => {
+  const changePassword = async (dto: ChangePasswordDto) => {
     try {
-      await updatePhone({
-        phone: changePhoneData.phone,
-        code: +changePhoneData.code,
-      }).unwrap();
-
-      dispatchNotification('Телефон изменен');
-    } catch (error) {
-      const message = getErrorMessage(error);
-
-      dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  };
-
-  const changePassword = async (changePasswordData: ChangePasswordDto) => {
-    try {
-      await updatePassword(changePasswordData).unwrap();
-
-      await signOut().unwrap();
+      await updatePassword(dto).unwrap();
 
       dispatchNotification('Пароль изменен');
+
+      closePasswordChangeModal();
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -90,9 +120,7 @@ export function Profile() {
     try {
       const image = await uploadImage(formData).unwrap();
 
-      if (!image) return;
-
-      await updateCurrentUser({ avatarId: image.id });
+      await updateAvatar(image.id);
 
       dispatchNotification('Фото профиля изменено');
     } catch (error) {
@@ -101,9 +129,10 @@ export function Profile() {
       dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
+
   const removeAvatar = async () => {
     try {
-      await updateCurrentUser({ avatarId: null }).unwrap();
+      await updateAvatar(null).unwrap();
 
       dispatchNotification('Фото профиля удалено');
     } catch (error) {
@@ -113,9 +142,9 @@ export function Profile() {
     }
   };
 
-  const saveBaseInfo = async (data: UpdateUserDto) => {
+  const saveBaseInfo = async (dto: UpdateUserDto) => {
     try {
-      await updateCurrentUser(data).unwrap();
+      await updateCurrentUser(dto).unwrap();
 
       dispatchNotification('Данные профиля изменены');
     } catch (error) {
@@ -146,30 +175,27 @@ export function Profile() {
 
         <Grid item xs={12} sm={8} md={4}>
           <PACredentialsEditor
-            onChangePhone={() => setIsPhoneModalOpen(true)}
-            onChangePassword={() => setIsPasswordModalOpen(true)}
-            user={{
-              firstName: currentUser.firstName,
-              lastName: currentUser.lastName,
-              referralCode: currentUser.referralCode?.code,
-              email: currentUser.email,
-            }}
-            phone={currentUser.phone}
-            onSave={saveBaseInfo}
+            defaultValues={defaultValues}
+            onChangeEmail={openEmailChangeModal}
+            onChangePassword={openPasswordChangeModal}
+            onSubmit={saveBaseInfo}
           />
         </Grid>
       </Grid>
 
-      <PAPhoneChangeModal
-        isOpen={isPhoneModalOpen}
-        onClose={() => setIsPhoneModalOpen(false)}
-        onSendSMS={sendChangePasswordCode}
-        onSubmit={changePhone}
+      <PAEmailChangeModal
+        isOpen={isEmailModalOpen}
+        defaultValues={{ email: defaultValues.email, code: '' }}
+        onClose={closeEmailChangeModal}
+        onEmailSend={sendEmail}
+        onCodeCheck={checkEmailCode}
+        codeIsSending={codeIsSending}
+        onSubmit={changeEmail}
       />
 
       <PAPasswordChangeModal
         isOpen={isPasswordModalOpen}
-        onClose={() => setIsPasswordModalOpen(false)}
+        onClose={closePasswordChangeModal}
         onChange={changePassword}
       />
     </PALayout>

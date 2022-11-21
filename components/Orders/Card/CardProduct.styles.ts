@@ -56,7 +56,7 @@ const sx = {
   },
 
   leftActions: {
-    'button:first-child': {
+    'button:first-of-type': {
       marginRight: '20px',
     },
   },

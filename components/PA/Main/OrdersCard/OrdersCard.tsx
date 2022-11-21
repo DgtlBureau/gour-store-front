@@ -1,13 +1,19 @@
 import React from 'react';
+
 import { format } from 'date-fns';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { Currency } from 'types/entities/Currency';
-import translations from './OrdersCard.i18n.json';
+import PALoader from 'components/PA/Main/Loader';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { InfoCard } from 'components/UI/Info/Card/Card';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { Currency } from 'types/entities/Currency';
+
+import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import translations from './OrdersCard.i18n.json';
 
 const sx = {
   order: {
@@ -30,46 +36,48 @@ const sx = {
 };
 
 export type PAOrdersCardProps = {
-  orders?: {
+  orders: {
     id: string;
     date: Date;
     status: string;
     sum: number;
     currency: Currency;
   }[];
-  onClickMore(): void;
+  isLoading: boolean;
 };
 
-export function PAOrdersCard({ orders, onClickMore }: PAOrdersCardProps) {
+export function PAOrdersCard({ orders, isLoading }: PAOrdersCardProps) {
   const { t } = useLocalTranslation(translations);
 
   return (
-    <InfoCard title={t('title')} footerText={t('footerText')} onClickMore={onClickMore}>
-      {orders && orders.length !== 0 ? (
-        orders.map(order => (
-          <Box key={order.id} sx={sx.order}>
-            <Box sx={sx.orderHeader}>
-              <Box sx={sx.orderTitle}>
-                <Typography variant='body1' sx={sx.orderId}>
-                  {t('order')} {order.id}
-                </Typography>
-                <Typography variant='body1' color='text.muted'>
-                  {t('from')} {format(order.date, 'dd.MM.yyyy')}
-                </Typography>
-              </Box>
+    <InfoCard title={t('title')} footerText={t('footerText')} href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
+      {isLoading && <PALoader />}
 
-              <Typography variant='body1'>
-                {order.sum}
-                {getCurrencySymbol(order.currency)}
+      {orders.map(order => (
+        <Box key={order.id} sx={sx.order}>
+          <Box sx={sx.orderHeader}>
+            <Box sx={sx.orderTitle}>
+              <Typography variant='body1' sx={sx.orderId}>
+                {t('order')} {order.id}
+              </Typography>
+              <Typography variant='body1' color='text.muted'>
+                {t('from')} {format(order.date, 'dd.MM.yyyy')}
               </Typography>
             </Box>
 
-            <Typography variant='body2' color='text.muted'>
-              {order.status}
+            <Typography variant='body1'>
+              {order.sum}
+              {getCurrencySymbol(order.currency)}
             </Typography>
           </Box>
-        ))
-      ) : (
+
+          <Typography variant='body2' color='text.muted'>
+            {order.status}
+          </Typography>
+        </Box>
+      )) || 12345}
+
+      {!isLoading && !orders.length && (
         <Typography variant='body1' color='text.muted'>
           {t('emptyOrders')}
         </Typography>

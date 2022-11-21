@@ -1,8 +1,10 @@
 import React from 'react';
 
-import translations from './DeleteModal.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { Modal } from 'components/UI/Modal/Modal';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './DeleteModal.i18n.json';
 
 export type PAProfilesDeleteModalProps = {
   isOpen: boolean;
@@ -14,6 +16,13 @@ export function PAProfilesDeleteModal({ isOpen, onAccept, onClose }: PAProfilesD
   const { t } = useLocalTranslation(translations);
 
   return (
-    <Modal isOpen={isOpen} title={t('title')} description={t('description')} onAccept={onAccept} onClose={onClose} />
+    <Modal
+      isOpen={isOpen}
+      title={t('title')}
+      description={t('description')}
+      showRefuseButton
+      onAccept={onAccept}
+      onClose={onClose}
+    />
   );
 }

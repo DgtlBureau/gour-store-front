@@ -1,39 +1,26 @@
 import React from 'react';
+
 import { Grid } from '@mui/material';
 
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Box } from 'components/UI/Box/Box';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Stepper } from 'components/UI/Stepper/Stepper';
+import { Typography } from 'components/UI/Typography/Typography';
 
-type Category = {
-  title: string;
-  summary: number;
-};
+import { ICategoryWithDiscount } from 'types/entities/ICategory';
+import { Language } from 'types/entities/Language';
+
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import { sx } from './Group.styles';
 
 type Props = {
   title: string;
-  categories: Category[];
+  subCategories: ICategoryWithDiscount['subCategories'];
+  language: Language;
 };
 
-const sx = {
-  headerText: {
-    color: 'text.muted',
-  },
-  categoryTitle: {
-    color: 'text.secondary',
-  },
-  category: {
-    width: '100%',
-    marginBottom: {
-      xs: '10px',
-      md: '25px',
-    },
-  },
-};
-
-export function DiscountsGroup({ title, categories }: Props) {
+export function DiscountsGroup({ title, subCategories, language }: Props) {
   const percents: number[] = [];
   for (let i = 1; i <= 10; i++) {
     percents.push(i);
@@ -62,7 +49,7 @@ export function DiscountsGroup({ title, categories }: Props) {
             </Typography>
           </Grid>
 
-          <Grid display='flex' justifyContent='space-between' item xs={6} md={10}>
+          <Grid display='flex' sx={sx.percentBlock} justifyContent='space-between' item xs={6} md={9}>
             {percents.map(percent => (
               <Box
                 key={percent}
@@ -93,24 +80,24 @@ export function DiscountsGroup({ title, categories }: Props) {
           </Grid>
         </Grid>
 
-        {categories.map(category => (
-          <Grid sx={sx.category} key={category.summary} container spacing={{ xs: 1, md: 2 }}>
-            <Grid item xs={3} md={1}>
+        {subCategories.map(subCategory => (
+          <Grid sx={sx.category} key={subCategory.id} container spacing={{ xs: 1, md: 2 }}>
+            <Grid item xs={3} md={2}>
               <Typography sx={sx.categoryTitle} variant='subtitle2'>
-                {category.title}
+                {subCategory.title[language]}
               </Typography>
             </Grid>
 
-            <Grid item xs={6} md={10}>
+            <Grid item xs={6} md={9}>
               <Stepper
                 stepsCount={10}
-                percent={(category.summary % 100000) / 1000}
-                activeStep={Math.floor(category.summary / 100000)}
+                percent={(subCategory.discountPrice % 100000) / 1000}
+                activeStep={Math.floor(subCategory.discountPrice / 100000)}
               />
             </Grid>
 
             <Grid item xs={3} md={1}>
-              <Typography variant='subtitle2'>{category.summary}</Typography>
+              <Typography variant='subtitle2'>{subCategory.discountPrice}</Typography>
             </Grid>
           </Grid>
         ))}

@@ -11,15 +11,6 @@ const sx = {
   divider: {
     borderColor: 'secondary.main',
   },
-  desktopOrderBtn: {
-    display: { xs: 'none', md: 'flex' },
-    width: '100%',
-    marginBottom: '10px',
-  },
-  mobileOrderBtn: {
-    width: '100%',
-    marginTop: '10px',
-  },
 };
 
 export default sx;

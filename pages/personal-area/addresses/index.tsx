@@ -1,27 +1,33 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-import {
-  useGetOrderProfilesListQuery,
-  useCreateOrderProfileMutation,
-  useUpdateOrderProfileMutation,
-  useDeleteOrderProfileMutation,
-} from 'store/api/orderProfileApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeMainAddressMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import translations from './Addresses.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { PrivateLayout } from 'layouts/Private/Private';
+import {
+  useCreateOrderProfileMutation,
+  useDeleteOrderProfileMutation,
+  useGetOrderProfilesListQuery,
+  useUpdateOrderProfileMutation,
+} from 'store/api/orderProfileApi';
+
 import { PALayout } from 'layouts/PA/PA';
+import { PrivateLayout } from 'layouts/Private/Private';
+
+import { useAppNavigation } from 'components/Navigation';
+import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
+import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { PAProfilesItem } from 'components/PA/Profiles/Item/Item';
-import { PAProfilesDeleteModal } from 'components/PA/Profiles/DeleteModal/DeleteModal';
-import { useAppNavigation } from 'components/Navigation';
-import { dispatchNotification } from 'packages/EventBus';
+
 import { OrderProfileDto } from 'types/dto/order/profile.dto';
 import { NotificationType } from 'types/entities/Notification';
+
+import { noExistingId } from 'constants/default';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './Addresses.i18n.json';
 
 const sx = {
   actions: {
@@ -37,7 +43,16 @@ export function Addresses() {
   const { language } = useAppNavigation();
 
   const { data: profiles } = useGetOrderProfilesListQuery();
-  const { data: cities } = useGetCityListQuery();
+  const { cities } = useGetCityListQuery(undefined, {
+    selectFromResult: ({ data, ...params }) => ({
+      cities:
+        data?.map(city => ({
+          value: city.id,
+          label: city.name[language],
+        })) || [],
+      ...params,
+    }),
+  });
   const { data: currentUser } = useGetCurrentUserQuery();
 
   const [createProfile] = useCreateOrderProfileMutation();
@@ -57,20 +72,17 @@ export function Addresses() {
   };
   const closeCreateForm = () => setIsCreating(false);
 
-  const openDeleteModal = () => setIsDeleting(true);
+  const openDeleteModal = useCallback(() => setIsDeleting(true), []);
   const closeDeleteModal = () => setIsDeleting(false);
 
-  const citiesList =
-    cities?.map(city => ({
-      value: city.id,
-      label: city.name[language],
-    })) || [];
-
-  const expandProfile = (id: number) => {
-    if (isCreating) closeCreateForm();
-    if (expandedProfileId !== id) setExpandedProfileId(id);
-    else rollUpProfile();
-  };
+  const expandProfile = useCallback(
+    (id: number) => {
+      if (isCreating) closeCreateForm();
+      if (expandedProfileId !== id) setExpandedProfileId(id);
+      else rollUpProfile();
+    },
+    [expandedProfileId, isCreating],
+  );
 
   const changeMainAddress = async (addressId: number | null) => {
     try {
@@ -96,24 +108,28 @@ export function Addresses() {
     }
   };
 
-  const editAddress = async (data: OrderProfileDto, id: number) => {
-    try {
-      await updateProfile({ ...data, id }).unwrap();
+  const editAddress = useCallback(
+    async (data: OrderProfileDto, id: number) => {
+      try {
+        await updateProfile({ ...data, id }).unwrap();
 
-      const currentOrderProfileId = currentUser?.mainOrderProfileId;
+        const currentOrderProfileId = currentUser?.mainOrderProfileId;
 
-      if (currentOrderProfileId !== id && data.isMain) await changeMainAddress(id);
-      if (currentOrderProfileId === id && !data.isMain) await changeMainAddress(null);
+        if (currentOrderProfileId !== id && data.isMain) await changeMainAddress(id);
+        if (currentOrderProfileId === id && !data.isMain) await changeMainAddress(null);
 
-      dispatchNotification('Адрес доставки обновлен');
+        dispatchNotification('Адрес доставки обновлен');
 
-      rollUpProfile();
-    } catch (error) {
-      const message = getErrorMessage(error);
+        rollUpProfile();
+      } catch (error) {
+        const message = getErrorMessage(error);
 
-      dispatchNotification(message, { type: NotificationType.DANGER });
-    }
-  };
+        dispatchNotification(message, { type: NotificationType.DANGER });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentUser],
+  );
 
   const deleteAddress = async () => {
     if (expandedProfileId) {
@@ -142,19 +158,26 @@ export function Addresses() {
         </Box>
 
         {isCreating && (
-          <PAProfilesItem key={-1} cities={citiesList} onSave={createAddress} onDelete={closeCreateForm} />
+          <PAProfilesItem
+            key={noExistingId}
+            id={noExistingId}
+            cities={cities}
+            onSave={createAddress}
+            onDelete={closeCreateForm}
+          />
         )}
 
-        {!!profiles && profiles.length !== 0 ? (
+        {profiles?.length ? (
           profiles.map(profile => (
             <PAProfilesItem
               key={profile.id}
+              id={profile.id}
               isExpanded={expandedProfileId === profile.id}
               isMain={currentUser?.mainOrderProfileId === profile.id}
-              cities={citiesList}
+              cities={cities}
               profile={profile}
-              onExpand={() => expandProfile(profile.id)}
-              onSave={data => editAddress(data, profile.id)}
+              onExpand={expandProfile}
+              onSave={editAddress}
               onDelete={openDeleteModal}
             />
           ))

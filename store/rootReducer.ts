@@ -1,22 +1,22 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import authSlice from './slices/authSlice';
-import orderSlice from './slices/orderSlice';
-import { commonApi } from './api/commonApi';
-import { productApi } from './api/productApi';
-import { promotionApi } from './api/promotionApi';
-import { cityApi } from './api/cityApi';
-import { roleApi } from './api/roleApi';
 import { authApi } from './api/authApi';
+import { categoryApi } from './api/categoryApi';
+import { cityApi } from './api/cityApi';
+import { commonApi } from './api/commonApi';
 import { currentUserApi } from './api/currentUserApi';
-import { productGradeApi } from './api/productGradeApi';
+import { favoriteApi } from './api/favoriteApi';
+import { imageApi } from './api/imageApi';
+import { invoiceApi } from './api/invoiceApi';
 import { orderApi } from './api/orderApi';
 import { orderProfileApi } from './api/orderProfileApi';
 import { pageApi } from './api/pageApi';
-import { favoriteApi } from './api/favoriteApi';
-import { imageApi } from './api/imageApi';
-import { categoryApi } from './api/categoryApi';
-import { invoiceApi } from './api/invoiceApi';
+import { productApi } from './api/productApi';
+import { productGradeApi } from './api/productGradeApi';
+import { promotionApi } from './api/promotionApi';
+import { roleApi } from './api/roleApi';
+import authSlice from './slices/authSlice';
+import orderSlice from './slices/orderSlice';
 
 export const rootReducer = combineReducers({
   auth: authSlice,

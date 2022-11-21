@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { Box } from 'components/UI/Box/Box';
+
 import { SigninIntro, SigninIntroProps } from './Intro';
 
 export default {
@@ -17,13 +19,11 @@ const boxSx = {
   backgroundColor: 'gray',
 };
 
-const Template: ComponentStory<typeof SigninIntro> = function (args: SigninIntroProps) {
-  return (
-    <Box sx={boxSx}>
-      <SigninIntro {...args} />
-    </Box>
-  );
-};
+const Template: ComponentStory<typeof SigninIntro> = args => (
+  <Box sx={boxSx}>
+    <SigninIntro {...args} />
+  </Box>
+);
 export const DefaultSigninIntro = Template.bind({});
 
 const props: Partial<SigninIntroProps> = {};

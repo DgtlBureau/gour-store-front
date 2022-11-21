@@ -1,48 +1,53 @@
 import React from 'react';
-import { Card, CardContent, CardActions, CardMedia } from '@mui/material';
 
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 
-import translations from './Card.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { CartCardDocket as Docket } from './Docket';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
 
-import defaultImage from 'assets/no-image.svg';
+import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Card.i18n.json';
+import { CartCardDocket as Docket } from './Docket';
 
 import sx from './Card.styles';
 
+import PlusIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Cancel';
+import MinusIcon from '@mui/icons-material/Remove';
+import defaultImg from 'assets/images/default.svg';
+
 type Props = {
+  id: number;
   title: string;
   price: number;
-  weight: number;
   amount: number;
+  gram: number;
   productImg: string;
-  isWeightGood: boolean;
+  backgroundImg?: string;
   discount?: number;
   currency?: Currency;
-  onDetail: () => void;
   onAdd: () => void;
   onSubtract: () => void;
   onDelete: () => void;
 };
 
 export function CartCard({
+  id,
   title,
   price,
   amount,
+  gram,
   productImg,
+  backgroundImg,
   discount,
-  weight,
-  isWeightGood,
   currency = 'cheeseCoin',
-  onDetail,
   onDelete,
   onAdd,
   onSubtract,
@@ -51,23 +56,34 @@ export function CartCard({
 
   const screenWidth = window.screen.width;
 
+  const backgroundImage = `url('${backgroundImg}')`;
+
   return (
     <Card sx={sx.card}>
-      <CardMedia sx={sx.image} component='img' image={productImg || defaultImage} onClick={onDetail} />
+      <Link href={`/${Path.PRODUCTS}/${id}`}>
+        <CardMedia sx={{ ...sx.previewImg, backgroundImage }} component='img' image={productImg || defaultImg} alt='' />
+      </Link>
 
       <Box sx={sx.info}>
         <CardContent sx={sx.content}>
-          <Typography variant='h6' sx={sx.title} onClick={onDetail}>
-            {title}
-          </Typography>
+          <Box sx={sx.contentTitle}>
+            <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none', userSelect: 'none' }}>
+              <Typography variant='h6' sx={sx.title}>
+                {title}
+              </Typography>
+            </Link>
 
-          {screenWidth > 600 ? (
-            <Docket currency={currency} discount={discount} price={price} amount={amount} />
-          ) : (
-            <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
-              <CancelIcon />
-            </IconButton>
-          )}
+            {screenWidth > 600 ? (
+              <Docket currency={currency} discount={discount} price={price} amount={amount} />
+            ) : (
+              <IconButton size='small' onClick={onDelete} sx={sx.cancelBtn}>
+                <CancelIcon />
+              </IconButton>
+            )}
+          </Box>
+          <Typography variant='body2' sx={sx.contentGram}>
+            {gram} грам
+          </Typography>
         </CardContent>
 
         <CardActions sx={sx.actions}>
@@ -76,12 +92,12 @@ export function CartCard({
           </Button>
 
           <Box sx={sx.edit}>
-            <IconButton onClick={onSubtract}>
+            <IconButton onClick={onSubtract} disabled={amount === 1}>
               <MinusIcon />
             </IconButton>
 
             <Typography variant='body2' sx={sx.weight}>
-              {isWeightGood ? weight : amount} {isWeightGood ? t('g') : t('piece')}
+              {amount * gram} {t('g')}
             </Typography>
 
             <IconButton onClick={onAdd}>

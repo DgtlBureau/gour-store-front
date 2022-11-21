@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
   const content: any;
   export default content;
@@ -11,6 +12,19 @@ declare module '*.png' {
 declare module '*.jpeg' {
   const value: any;
   export default value;
+}
+
+declare namespace cp {
+  class Checkout {
+    constructor(config: { publicId: string });
+
+    createPaymentCryptogram(cardFields: {
+      cvv: string;
+      cardNumber: string;
+      expDateMonth: string;
+      expDateYear: string;
+    }): Promise<string>;
+  }
 }
 
 type ObjectKeys<T> = T extends object

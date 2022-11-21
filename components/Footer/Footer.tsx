@@ -1,20 +1,23 @@
-import React, { Fragment } from 'react';
 import Image from 'next/image';
+import React, { Fragment } from 'react';
+
 import { Divider, SxProps } from '@mui/material';
 
-import { Typography } from 'components/UI/Typography/Typography';
-import { Path } from 'constants/routes';
-import translations from './Footer.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Box } from 'components/UI/Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import logo from 'assets/images/logo.svg';
+import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Footer.i18n.json';
+
+import footerSx from './Footer.styles';
+
 import fbIcon from 'assets/icons/social/fb.svg';
 import instIcon from 'assets/icons/social/inst.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
-
-import footerSx from './Footer.styles';
+import logo from 'assets/images/logo.svg';
 
 export type FooterProps = {
   firstPhone: string;
@@ -101,7 +104,7 @@ export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
         {info.map(link => (
           <Fragment key={link.path}>
             <Divider sx={footerSx.divider} orientation='vertical' variant='middle' flexItem />
-            <Link href={link.path} rel='noreferrer' target='_blank' sx={footerSx.infoLink}>
+            <Link href={link.path} rel='noreferrer' sx={footerSx.infoLink}>
               {link.label}
             </Link>
           </Fragment>

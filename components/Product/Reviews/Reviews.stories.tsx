@@ -2,16 +2,14 @@ import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { ProductReviewsProps, ProductReviews } from './Reviews';
+import { ProductReviews, ProductReviewsProps } from './Reviews';
 
 export default {
   component: ProductReviews,
   title: 'Product/Reviews',
 } as Meta;
 
-const Template: ComponentStory<typeof ProductReviews> = function (args: ProductReviewsProps) {
-  return <ProductReviews {...args} />;
-};
+const Template: ComponentStory<typeof ProductReviews> = args => <ProductReviews {...args} />;
 export const DefaultProductInformation = Template.bind({});
 
 const props: Partial<ProductReviewsProps> = {

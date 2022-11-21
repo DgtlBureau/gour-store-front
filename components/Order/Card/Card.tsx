@@ -1,15 +1,19 @@
 import React from 'react';
+
 import { Stack, SxProps } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
 import { Box } from 'components/UI/Box/Box';
-import translation from './Card.i18n.json';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { Language } from 'types/entities/Language';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol, getPriceByGrams } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import translation from './Card.i18n.json';
 
 import cardSx from './Card.styles';
 
@@ -18,7 +22,7 @@ type Props = {
   language: Language;
   totalProductCount: number;
   totalCartPrice: number;
-  productsList: IOrderProduct[];
+  productsList: Pick<IOrderProduct, 'amount' | 'product' | 'gram'>[];
   sx?: SxProps;
 };
 
@@ -28,18 +32,14 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
   const currencySymbol = getCurrencySymbol(currency);
 
   const productInfo = productsList.map(product => {
-    const productTotalPrice = product.product.isWeightGood
-      ? product.weight * (product.product.price[currency] / 100)
-      : product.amount * product.product.price[currency];
-
-    const productTotalCount = product.product.isWeightGood ? product.weight / 1000 : product.amount;
+    const productTotalPrice = getPriceByGrams(product.product.totalCost, product.gram) * product.amount;
 
     return {
       id: product.product.id,
       title: product.product.title[language],
       price: product.product.price[currency],
       totalPrice: productTotalPrice,
-      totalCount: `${productTotalCount} ${product.product.isWeightGood ? t('kg') : t('piece')}`,
+      totalCount: `${product.amount} ${t('piece')}`,
     };
   });
 
@@ -61,9 +61,14 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
             {product.title}
           </Typography>
 
-          <Typography variant='body1' sx={cardSx.product}>
-            {product.price} {currencySymbol} • {product.totalCount}
-          </Typography>
+          <Box sx={cardSx.fieldPrice}>
+            <Typography variant='body1' sx={cardSx.product}>
+              {product.totalPrice} {currencySymbol}
+            </Typography>
+            <Typography variant='body1' sx={cardSx.product}>
+              • {product.totalCount}
+            </Typography>
+          </Box>
         </Box>
       ))}
 

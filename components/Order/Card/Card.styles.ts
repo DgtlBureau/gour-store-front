@@ -13,6 +13,7 @@ const sx = {
     padding: '20px 0 0 0',
   },
   field: {
+    width: '100%',
     display: 'flex',
     flexDirection: {
       xs: 'column',
@@ -25,6 +26,12 @@ const sx = {
       md: 0,
     },
     marginBottom: '10px',
+  },
+  fieldPrice: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   count: {
     fontFamily: 'Roboto slab',

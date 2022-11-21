@@ -1,11 +1,11 @@
-import { commonApi } from './commonApi';
+import { ChangeEmailDto } from 'types/dto/profile/change-email.dto';
+import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+import { ICurrentUser } from 'types/entities/ICurrentUser';
+
 import { Path } from 'constants/routes';
 
-import { ICurrentUser } from 'types/entities/ICurrentUser';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
-import { ChangePasswordDto } from 'types/dto/profile/change-password.dto';
-import { ChangePhoneDto } from 'types/dto/profile/change-phone.dto';
-import { SendCodeDto } from 'types/dto/profile/send-code.dto';
+import { commonApi } from './commonApi';
 
 export const currentUserApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -17,7 +17,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}`,
           };
         },
-        providesTags: [{ type: 'CurrentUser', id: 1 }],
+        providesTags: ['CurrentUser'],
       }),
       updateCurrentUser: builder.mutation<number, UpdateUserDto>({
         query(body) {
@@ -27,7 +27,7 @@ export const currentUserApi = commonApi.injectEndpoints({
             body,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       updateCurrentUserPassword: builder.mutation<number, ChangePasswordDto>({
         query(password) {
@@ -37,26 +37,17 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: password,
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
-      sendChangePhoneCode: builder.mutation<number, SendCodeDto>({
-        query(phone) {
+      updateCurrentUserEmail: builder.mutation<string, ChangeEmailDto>({
+        query(body) {
           return {
             method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.SEND_CODE}`,
-            body: phone,
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_EMAIL}`,
+            body,
           };
         },
-      }),
-      updateCurrentUserPhone: builder.mutation<number, ChangePhoneDto>({
-        query(dto) {
-          return {
-            method: 'POST',
-            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_PHONE}`,
-            body: dto,
-          };
-        },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
       }),
       changeCurrentCity: builder.mutation<void, number>({
         query(cityId) {
@@ -66,7 +57,17 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: { cityId },
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
+      }),
+      updateCurrentAvatar: builder.mutation<void, number | null>({
+        query(avatarId) {
+          return {
+            method: 'PUT',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.CHANGE_AVATAR}`,
+            body: { avatarId },
+          };
+        },
+        invalidatesTags: ['CurrentUser'],
       }),
       changeMainAddress: builder.mutation<void, number | null>({
         query(addressId) {
@@ -76,7 +77,16 @@ export const currentUserApi = commonApi.injectEndpoints({
             body: { addressId },
           };
         },
-        invalidatesTags: [{ type: 'CurrentUser', id: 1 }],
+        invalidatesTags: ['CurrentUser'],
+      }),
+      reduceGameLive: builder.mutation<void, void>({
+        query() {
+          return {
+            method: 'POST',
+            url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.REDUCE_GAME_LIVE}`,
+          };
+        },
+        invalidatesTags: ['CurrentUser'],
       }),
     };
   },
@@ -85,9 +95,10 @@ export const currentUserApi = commonApi.injectEndpoints({
 export const {
   useGetCurrentUserQuery,
   useUpdateCurrentUserMutation,
+  useReduceGameLiveMutation,
   useChangeCurrentCityMutation,
   useChangeMainAddressMutation,
   useUpdateCurrentUserPasswordMutation,
-  useSendChangePhoneCodeMutation,
-  useUpdateCurrentUserPhoneMutation,
+  useUpdateCurrentAvatarMutation,
+  useUpdateCurrentUserEmailMutation,
 } = currentUserApi;

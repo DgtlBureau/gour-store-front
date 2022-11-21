@@ -1,14 +1,19 @@
 import React from 'react';
+
 import { Paper } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { defaultTheme } from 'themes';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Info.i18n.json';
+
 import { Currency } from 'types/entities/Currency';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import { color } from 'themes';
+
+import translations from './Info.i18n.json';
 
 const sx = {
   paper: {
@@ -23,26 +28,25 @@ const sx = {
 
   total: {
     fontWeight: 700,
-    color: defaultTheme.palette.text.secondary,
+    color: color.primary,
   },
 
   footnote: {
     marginTop: '10px',
 
-    color: defaultTheme.palette.text.muted,
+    color: color.muted,
   },
 };
 
 type CartInfoProps = {
   count: number;
-  weight: number;
   price: number;
   delivery: number;
   discount: number;
   currency?: Currency;
 };
 
-export function CartInfo({ count, weight, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
+export function CartInfo({ count, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const productsCountText = getDeclensionWordByCount(count, [t('manyProducts'), t('oneProduct'), t('someProducts')]);
@@ -54,16 +58,16 @@ export function CartInfo({ count, weight, price, delivery, discount, currency = 
       <Box sx={sx.total}>
         <Typography variant='h6'>{t('total')}</Typography>
         <Typography variant='h6'>
-          {price + delivery - discount}&nbsp;
+          {price + delivery}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
       <Box sx={sx.footnote}>
         <Typography variant='body1'>
-          {t('all')}: {count} {productsCountText} {weight ? `• ${weight} ${t('kg')}` : ''}
+          {t('all')}: {count} {productsCountText}
         </Typography>
         <Typography variant='body1'>
-          {price}&nbsp;
+          {price + discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>

@@ -1,11 +1,13 @@
-import React from 'react';
 import NextLink from 'next/link';
+import React from 'react';
+
 import { SxProps } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Copyright.i18n.json';
 import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Copyright.i18n.json';
 
 const copyrightSx = {
   wrapper: {

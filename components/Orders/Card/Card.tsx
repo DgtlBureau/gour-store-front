@@ -1,16 +1,21 @@
 import React, { useMemo } from 'react';
-import { format } from 'date-fns';
-import { Divider, Typography, Grid } from '@mui/material';
 
-import translations from './Card.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Divider, Grid, Typography } from '@mui/material';
+import { format } from 'date-fns';
+
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
-import { OrderProductType, OrderCardProduct } from './CardProduct';
-import { OrderCardInfo } from './CardInfo';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
+
 import { Currency } from 'types/entities/Currency';
+import { OrderCrmInfoStatus } from 'types/entities/IOrder';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import translations from './Card.i18n.json';
+import { OrderCardInfo } from './CardInfo';
+import { OrderCardProduct, OrderProductType } from './CardProduct';
 
 import sx from './Card.styles';
 
@@ -21,10 +26,7 @@ type Promotion = {
 
 export type FullOrder = {
   title: string;
-  status: {
-    title: string;
-    color: string;
-  };
+  status: OrderCrmInfoStatus;
   createdAt: Date;
   address: string;
   client: string;
@@ -32,6 +34,7 @@ export type FullOrder = {
   promotions: Promotion[];
   deliveryCost: number;
   currency: Currency;
+  totalSum: number;
 };
 
 export type OrdersCardProps = {
@@ -39,17 +42,11 @@ export type OrdersCardProps = {
 };
 
 export function OrdersCard({ order }: OrdersCardProps) {
-  const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost } = order;
+  const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost, totalSum } = order;
 
   const { t } = useLocalTranslation(translations);
 
   const productCount = products.length;
-  const fullOrderPrice = products.reduce((acc, currentProduct) => {
-    if (!currentProduct.isWeightGood) {
-      return acc + currentProduct.cost * currentProduct.amount;
-    }
-    return acc + (currentProduct.cost * currentProduct.weight) / 100;
-  }, 0);
 
   const productsCountText = getDeclensionWordByCount(productCount, [
     t('manyProducts'),
@@ -64,8 +61,6 @@ export function OrdersCard({ order }: OrdersCardProps) {
 
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
-  const priceWithDiscount = fullOrderPrice + deliveryCost - summaryDiscount;
-
   return (
     <Accordion>
       <AccordionSummary>
@@ -75,14 +70,14 @@ export function OrdersCard({ order }: OrdersCardProps) {
 
             <Box sx={{ ...sx.total, display: { xs: 'flex', sm: 'none' } }}>
               <Typography variant='h6' sx={sx.totalText}>
-                {priceWithDiscount} {currencySymbol}
+                {totalSum} {currencySymbol}
               </Typography>
             </Box>
           </Grid>
 
           <Grid item sm={5} xs={12} sx={{ display: 'flex', alignItems: 'center', margin: { xs: '5px 0' } }}>
-            <Typography sx={{ ...sx.status, backgroundColor: status.color || 'secondary.main' }}>
-              {status.title || 'ожидание'}
+            <Typography sx={{ ...sx.status, backgroundColor: status?.color || 'secondary.main' }}>
+              {status?.name || 'ожидание'}
             </Typography>
 
             <Typography variant='body1' sx={sx.muted}>
@@ -98,7 +93,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
 
           <Grid item sm={2} xs={12} sx={{ ...sx.total, display: { xs: 'none', sm: 'flex' } }}>
             <Typography variant='h6' sx={sx.totalText}>
-              {priceWithDiscount} {currencySymbol}
+              {totalSum} {currencySymbol}
             </Typography>
           </Grid>
         </Grid>
@@ -131,8 +126,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
         {!!products.length && <Divider variant='fullWidth' />}
 
         <OrderCardInfo
-          fullPrice={fullOrderPrice}
-          totalPrice={priceWithDiscount}
+          totalSum={totalSum}
           summaryDiscount={summaryDiscount}
           promotions={promotions}
           deliveryCost={deliveryCost}

@@ -1,26 +1,29 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { IOrderProduct } from './IOrderProduct';
 import { IOrderProfile } from './IOrderProfile';
 
-export interface IOrder extends IBaseEntity {
+export interface IOrder extends Omit<IBase, 'id'> {
+  id: string;
   firstName: string;
   lastName?: string;
   phone: string;
   email: string;
-  orderProfile: IOrderProfile;
   comment?: string;
-  crmInfo: OrderCrmInfo;
   totalSum: number;
+  invoiceUuid: string;
+  crmInfo: OrderCrmInfo;
+  orderProfile: IOrderProfile;
   promotions: OrderPromotion[];
   orderProducts: IOrderProduct[];
 }
 
-interface OrderCrmInfo {
-  id: string;
-  status: {
-    name: string;
-    color: string;
-  };
+export interface OrderCrmInfo {
+  id: number;
+  status: OrderCrmInfoStatus;
+}
+export interface OrderCrmInfoStatus {
+  name: string;
+  color: string;
 }
 
 interface OrderPromotion {

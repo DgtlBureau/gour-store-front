@@ -1,32 +1,45 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { useSignOutMutation } from 'store/api/authApi';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
-import { useAppNavigation } from 'components/Navigation';
-import { useAppSelector } from 'hooks/store';
-import { PrivateLayout } from 'layouts/Private/Private';
-import translations from './PA.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
 import { useGetCityListQuery } from 'store/api/cityApi';
-import { Box } from 'components/UI/Box/Box';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
+
+import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
+import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { Header } from 'components/Header/Header';
+import { useAppNavigation } from 'components/Navigation';
 import { PAMenu } from 'components/PA/Menu/Menu';
+import { Box } from 'components/UI/Box/Box';
+
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+import { NotificationType } from 'types/entities/Notification';
+
 import { contacts } from 'constants/contacts';
-import { Currency } from 'types/entities/Currency';
 import { Path } from 'constants/routes';
+import { useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './PA.i18n.json';
 
 import sx from './PA.styles';
+
+type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
+type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
 
 export interface PALayoutProps {
   children?: ReactNode;
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment, language, pathname, changeChapter } =
-    useAppNavigation();
-  const currency: Currency = 'cheeseCoin';
+  const { language, pathname, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -34,6 +47,8 @@ export function PALayout({ children }: PALayoutProps) {
 
   const [signOut] = useSignOutMutation();
   const [changeCity] = useChangeCurrentCityMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
+  const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
 
   const { t } = useLocalTranslation(translations);
 
@@ -44,33 +59,88 @@ export function PALayout({ children }: PALayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  const totalProductSum = useAppSelector(selectedProductSum);
+
+  const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
+    isOpen: false,
+  });
+  const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
+    isOpen: false,
+  });
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
   const menuList = [
     {
       label: t('main'),
-      path: `/${Path.PERSONAL_AREA}`,
+      value: `/${Path.PERSONAL_AREA}`,
     },
     {
       label: t('credentials'),
-      path: `/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.CREDENTIALS}`,
     },
     {
       label: t('addresses'),
-      path: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.ADDRESSES}`,
     },
     {
       label: t('orders'),
-      path: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.ORDERS}`,
     },
     {
       label: t('discounts'),
-      path: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
+      value: `/${Path.PERSONAL_AREA}/${Path.DISCOUNTS}`,
+    },
+    {
+      label: t('payments'),
+      value: `/${Path.PERSONAL_AREA}/${Path.PAYMENTS}`,
     },
   ];
+
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
+    setBalanceCoinsState({ isOpen: false });
+    setPayCoinsState({
+      isOpen: true,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
+    });
+  };
+
+  const handleCloseBuyModal = () => {
+    if (payCoinsState.isOpen) {
+      const { price } = payCoinsState;
+      setBalanceCoinsState({ isOpen: true, coins: price });
+      setPayCoinsState({ isOpen: false });
+    }
+  };
+
+  const handleOpenCoinsAddModal = () =>
+    setBalanceCoinsState({
+      isOpen: true,
+      coins: undefined,
+    });
+
+  const handleCloseCoinsAddModal = () => setBalanceCoinsState({ isOpen: false });
+
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
+      } else {
+        goToFailurePayment();
+      }
+    }
+  };
 
   return (
     <PrivateLayout>
@@ -80,22 +150,36 @@ export function PALayout({ children }: PALayoutProps) {
           selectedCityId={selectedCity?.id || 0}
           cities={convertedCities}
           currency={currency}
-          language={language}
           basketProductCount={count}
-          basketProductSum={sum - sumDiscount}
+          basketProductSum={totalProductSum}
           moneyAmount={balance}
           onChangeCity={changeCity}
-          onClickFavorite={goToFavorites}
-          onClickPersonalArea={goToPersonalArea}
-          onClickBasket={goToBasket}
-          onClickReplenishment={goToReplenishment}
+          onClickAddCoins={handleOpenCoinsAddModal}
           onClickSignout={signOut}
         />
 
         <Box sx={sx.content}>
-          <PAMenu active={pathname} menuList={menuList} onChange={changeChapter} />
+          <PAMenu active={pathname} options={menuList} />
           {children}
         </Box>
+
+        <CheesecoinsAddModal
+          initCoins={balanceCoinsState.isOpen ? balanceCoinsState.coins : undefined}
+          isOpened={balanceCoinsState.isOpen}
+          onClose={handleCloseCoinsAddModal}
+          onSubmit={handleAddCheeseCoinClick}
+        />
+
+        <BuyCheeseCoinsModal
+          isOpened={payCoinsState.isOpen}
+          invoiceUuid={invoiceData?.uuid}
+          userId={currentUser?.id}
+          userEmail={currentUser?.email}
+          price={payCoinsState.isOpen ? payCoinsState.price : undefined}
+          isLoading={isPaymentLoading}
+          onClose={handleCloseBuyModal}
+          onSubmit={handleBuyCheeseCoins}
+        />
       </Box>
     </PrivateLayout>
   );

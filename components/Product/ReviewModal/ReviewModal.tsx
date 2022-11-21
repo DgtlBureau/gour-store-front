@@ -1,16 +1,20 @@
 import React from 'react';
+
 import { Rating } from '@mui/material';
 
-import StarIcon from '@mui/icons-material/Star';
-
-import { Modal } from 'components/UI/Modal/Modal';
 import { Box } from 'components/UI/Box/Box';
+import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { formatDate } from 'utils/dateUtil';
+
+import { color } from 'themes';
+
 import { Review } from '../Reviews/Reviews';
-import { formatDate } from 'helpers/dateHelper';
-import { defaultTheme as t } from '../../../themes';
 
 import sx from './ReviewModal.styles';
+
+import StarIcon from '@mui/icons-material/Star';
 
 export type ReviewModalProps = {
   isOpen: boolean;
@@ -26,8 +30,8 @@ export function ReviewModal({ isOpen, review, onClose }: ReviewModalProps) {
           value={review.value}
           precision={0.5}
           readOnly
-          icon={<StarIcon fontSize='small' htmlColor={t.palette.accent.main} />}
-          emptyIcon={<StarIcon fontSize='small' htmlColor={t.palette.text.muted} />}
+          icon={<StarIcon fontSize='small' htmlColor={color.accent} />}
+          emptyIcon={<StarIcon fontSize='small' htmlColor={color.muted} />}
         />
 
         <Typography sx={sx.date} variant='body2' color='text.muted'>

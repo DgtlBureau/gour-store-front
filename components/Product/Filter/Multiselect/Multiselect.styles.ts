@@ -1,8 +1,9 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   select: {
-    backgroundColor: 'background.paper',
+    width: '100%',
+    backgroundColor: color.secondary,
     boxShadow: 'none',
     borderRadius: '6px',
     borderColor: 'none',
@@ -13,38 +14,28 @@ const sx = {
       margin: '0 0 10px 0',
     },
   },
-  optionBox: {
-    padding: '6px 12px',
-    color: t.palette.text.secondary,
-    backgroundColor: t.palette.common.white,
-    borderRadius: '6px',
-    userSelect: 'none',
-    cursor: 'pointer',
-  },
-  selected: {
-    background: t.palette.primary.main,
-    color: t.palette.common.white,
-  },
+
   title: {
-    color: t.palette.text.muted,
+    color: color.muted,
   },
   extender: {
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px 16px',
-    backgroundColor: 'background.paper',
+    padding: '8px 16px',
+    backgroundColor: color.secondary,
     borderRadius: '6px',
   },
   list: {
     position: 'absolute',
-    maxWidth: '260px',
+    minWidth: '180px',
+    maxWidth: '280px',
     marginTop: '6px',
-    padding: '14px 0',
-    backgroundColor: 'white',
+    padding: '14px',
+    backgroundColor: color.white,
     border: '1px solid',
-    borderColor: t.palette.secondary.main,
+    borderColor: color.secondary,
     borderRadius: '6px',
     zIndex: 100,
   },
@@ -60,12 +51,9 @@ const sx = {
   rotatedArrow: {
     transform: 'rotate(180deg)',
   },
-  actions: {
-    marginTop: '14px',
-    padding: '0 14px',
-  },
   applyBtn: {
-    marginLeft: '6px',
+    marginTop: '14px',
+    width: '100%',
   },
 };
 

@@ -6,5 +6,21 @@
   "trailingComma": "all",
   "jsxSingleQuote": true,
   "bracketSpacing": true,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "importOrder": [
+    "^(react|next)",
+    "<THIRD_PARTY_MODULES>",
+    "^(store|http)",
+    "^layouts",
+    "^components/(.*)$",
+    "^types",
+    "^(hooks|helpers|packages|utils|constants|errors)",
+    "^themes",
+
+    "^(\\.\\.?\\/)+\\w+(/\\w+)*(?!((\\.s?css)|(\\.module\\.s?css)|(\\.styles)))(\\.\\w+)*$",
+    "^(\\.\\.?\\/)+\\w+(/\\w+)*\\.((s?css)|(module\\.s?css)|(styles))",
+    "^(assets|@mui/icons-material/)"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

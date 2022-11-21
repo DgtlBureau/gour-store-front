@@ -8,7 +8,8 @@
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -21,7 +22,10 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
 
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react/react-in-jsx-scope": "off",
+    "react/jsx-no-duplicate-props": [1, { "ignoreCase": false }],
     "camelcase": "error",
     "spaced-comment": "error",
     "quotes": ["error", "single"],
@@ -46,7 +50,7 @@
         "peerDependencies": true
       }
     ],
-    "react/function-component-definition": "warn",
+    "react/function-component-definition": "off",
     "jsx-a11y/label-has-for": [
       2,
       {
@@ -55,7 +59,17 @@
         }
       }
     ],
-    "import/order": "off"
+    "import/order": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "consistent-return": "off"
   },
   "settings": {
     "import/resolver": {

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
-import { defaultTheme as theme } from 'themes';
+
+import { color, defaultTheme as theme } from 'themes';
 
 type Props = {
   image: string;
@@ -34,16 +35,16 @@ const sx = {
   },
   title: {
     padding: '5px',
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: color.white,
     borderRadius: '6px',
   },
   btn: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.text.secondary,
+    backgroundColor: color.white,
+    color: color.primary,
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: color.secondary,
     },
   },
 };

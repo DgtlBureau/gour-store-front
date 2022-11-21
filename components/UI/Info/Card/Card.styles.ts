@@ -39,7 +39,6 @@ const sx = {
     paddingRight: '12px',
   },
   link: {
-    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -48,6 +47,8 @@ const sx = {
     padding: '20px 26px',
     marginTop: 'auto',
     color: 'accent.main',
+    textDecoration: 'none',
+
     '&:hover': {
       opacity: 0.75,
     },

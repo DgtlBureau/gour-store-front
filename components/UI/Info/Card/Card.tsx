@@ -1,35 +1,37 @@
 import React, { ReactNode } from 'react';
+
 import { Paper } from '@mui/material';
 
-import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
-
-import { Box } from '../../Box/Box';
+import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
+import { Box } from '../../Box/Box';
+
 import sx from './Card.styles';
+
+import ArrowIcon from '@mui/icons-material/ArrowForwardIos';
 
 export type InfoCardProps = {
   title: string;
   footerText: string;
+  href: string;
   children: ReactNode;
-  onClickMore(): void;
 };
 
-export function InfoCard({ title, footerText, onClickMore, children }: InfoCardProps) {
+export function InfoCard({ title, footerText, href, children }: InfoCardProps) {
   return (
     <Paper sx={sx.card}>
       <Box sx={sx.content}>
         <Typography variant='h5' sx={sx.title}>
           {title}
         </Typography>
-
         <Box sx={sx.children}>{children}</Box>
       </Box>
 
-      <Box sx={sx.link} onClick={onClickMore}>
+      <Link href={href} sx={sx.link}>
         <Typography variant='body1'>{footerText}</Typography>
         <ArrowIcon fontSize='small' />
-      </Box>
+      </Link>
     </Paper>
   );
 }

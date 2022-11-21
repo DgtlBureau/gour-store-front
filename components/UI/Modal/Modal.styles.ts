@@ -27,22 +27,48 @@ export const sx = {
       xs: '40px 20px',
     },
     bgcolor: 'background.default',
-    overflowY: 'auto',
-    borderRadius: '10px',
+
+    borderRadius: { xs: 'none', sm: '10px' },
   },
   head: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '14px',
+  },
+  body: {
+    maxHeight: { xs: '100%', sm: '600px' },
+    overflow: 'scroll',
+
+    marginRight: '-10px',
+    paddingRight: '10px',
+
+    '&::-webkit-scrollbar': {
+      width: '0.4em',
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.00)',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      borderRadius: '5px',
+    },
   },
   title: {
     fontFamily: 'Roboto slab',
     fontWeight: 'bold',
+    marginBottom: '14px',
   },
-  acceptBtn: {
-    width: '100%',
+  closeBtn: {
+    alignSelf: 'flex-start',
+  },
+  controlBtnGroup: {
+    display: 'flex',
+    gap: '10px',
     marginTop: '14px',
+  },
+  controlBtn: {
+    width: '100%',
   },
 };
 

@@ -1,14 +1,19 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import translations from './CitySelect.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getSchema } from './validation';
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFSelect } from 'components/HookForm/HFSelect';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import { HFSelect } from 'components/HookForm/HFSelect';
+
+import { IOption } from 'types/entities/IOption';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './CitySelect.i18n.json';
+import { getSchema } from './validation';
 
 import sx from './CitySelect.styles';
 
@@ -18,10 +23,7 @@ type SignupCityFields = {
 
 export type SignupCitySelectProps = {
   city?: string;
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: IOption[];
   onBack(): void;
   onSubmit(cityId: string): void;
 };
@@ -32,7 +34,7 @@ export function SignupCitySelect({ city, options, onBack, onSubmit }: SignupCity
   const schema = getSchema(t);
 
   const values = useForm<SignupCityFields>({
-    defaultValues: { city },
+    defaultValues: { city: city || options[0]?.value },
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });

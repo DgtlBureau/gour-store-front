@@ -27,12 +27,25 @@ const sx = {
   field: {
     marginBottom: '14px',
   },
+  codeField: {
+    width: '50%',
+  },
   backBtn: {
     width: 'fit-content',
     marginBottom: '20px',
   },
   submitBtn: {
     width: '100%',
+  },
+  divider: {
+    height: 28,
+    marginRight: '14px',
+  },
+  timer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '8px',
+    color: 'text.muted',
   },
 };
 

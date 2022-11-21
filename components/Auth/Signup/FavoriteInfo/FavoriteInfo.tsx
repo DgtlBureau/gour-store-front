@@ -1,18 +1,24 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 // FIXME: fix eslint errors
 import React, { useState } from 'react';
+
 import { Grid } from '@mui/material';
 
-import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
-import translations from './FavoriteInfo.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { AuthCard } from 'components/Auth/Card/Card';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
-import sx from './FavoriteInfo.styles';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './FavoriteInfo.i18n.json';
 
 import s from './FavoriteInfo.module.scss';
+import sx from './FavoriteInfo.styles';
+
+import { CountrySvgSelector } from 'assets/icons/countries/CountrySvgSelector';
+import { ProductSvgSelector } from 'assets/icons/products/ProductsSvgSelector';
 
 export type FavoriteInfo = {
   countries: number[];
@@ -21,7 +27,7 @@ export type FavoriteInfo = {
 
 export type SignupFavoriteInfoProps = {
   countries: {
-    image?: string;
+    iconKey: string;
     title: string;
     id: number;
   }[];
@@ -40,7 +46,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
   const [userCountries, setUserCountries] = useState<number[]>([]);
   const [userProducts, setUserProducts] = useState<number[]>([]);
 
-  const handleClickCountry = (countryId: number) => {
+  const selectCountry = (countryId: number) => {
     const isSelected = userCountries.includes(countryId);
     if (isSelected) {
       const newList = userCountries.filter(id => id !== countryId);
@@ -49,7 +55,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
     return setUserCountries(prevList => [...prevList, countryId]);
   };
 
-  const handleClickProducts = (productId: number) => {
+  const selectProduct = (productId: number) => {
     const isSelected = userProducts.includes(productId);
     if (isSelected) {
       const newList = userProducts.filter(id => id !== productId);
@@ -58,12 +64,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
     return setUserProducts(prevList => [...prevList, productId]);
   };
 
-  const handleSubmit = () => {
-    onSubmit({
-      countries: userCountries,
-      products: userProducts,
-    });
-  };
+  const submit = () => onSubmit({ countries: userCountries, products: userProducts });
 
   return (
     <AuthCard>
@@ -82,20 +83,24 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
           <Typography variant='subtitle1'>{t('countriesTitle')}</Typography>
         </Grid>
 
-        <Grid item xs={12} container spacing={2}>
+        <Grid
+          item
+          xs={12}
+          container
+          sx={{
+            display: 'flex',
+            justifyContent: { xs: 'center', md: 'space-between' },
+            gap: { md: '10px', xs: '10px 20px' },
+          }}
+        >
           {countries.map(country => (
-            <Grid item xs={3} sm={2} key={country.id}>
-              <div
-                style={{
-                  ...sx.circle,
-                  ...(userCountries.includes(country.id) && sx.selected),
-                  backgroundImage: `url(${country.image})`,
-                }}
-                onClick={() => handleClickCountry(country.id)}
-              >
-                {!country.image && <Typography variant='body2'>{country.title}</Typography>}
-              </div>
-            </Grid>
+            <div
+              id={country.id.toString()}
+              className={`${s.icon} ${userCountries.includes(country.id) ? s.selected : ''}`}
+              onClick={() => selectCountry(country.id)}
+            >
+              {CountrySvgSelector(country.iconKey, s.outline)}
+            </div>
           ))}
         </Grid>
 
@@ -106,15 +111,16 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         <Grid item xs={12} container spacing={2}>
           {products.map(product => (
             <Grid
+              sx={{ ...sx.product, justifyContent: product.iconKey === 'jamon' ? 'flex-start' : 'center' }}
               item
-              xs={4}
+              xs={6}
               sm={3}
-              onClick={() => {
-                handleClickProducts(product.id);
-              }}
               key={product.id}
             >
-              <div className={`${s.icon} ${userProducts.includes(product.id) ? s.selected : ''}`}>
+              <div
+                className={`${s.icon} ${userProducts.includes(product.id) ? s.selected : ''}`}
+                onClick={() => selectProduct(product.id)}
+              >
                 {ProductSvgSelector(product.iconKey, s.outline)}
               </div>
             </Grid>
@@ -122,7 +128,7 @@ export function SignupFavoriteInfo({ countries, products, onBack, onSubmit }: Si
         </Grid>
 
         <Grid item xs={12}>
-          <Button sx={{ width: '100%' }} variant='contained' onClick={handleSubmit}>
+          <Button sx={{ width: '100%' }} variant='contained' onClick={submit}>
             {t('endRegistration')}
           </Button>
         </Grid>

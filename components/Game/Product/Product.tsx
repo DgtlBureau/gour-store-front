@@ -1,13 +1,14 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
+
 import { SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 
 import cheese from 'assets/images/game/cheese.svg';
 import chicken from 'assets/images/game/chicken.svg';
-import sausage from 'assets/images/game/sausage.svg';
 import jamon from 'assets/images/game/jamon.svg';
+import sausage from 'assets/images/game/sausage.svg';
 
 const productSx = {
   position: 'absolute',

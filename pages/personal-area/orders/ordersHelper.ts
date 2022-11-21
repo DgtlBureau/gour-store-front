@@ -1,20 +1,24 @@
-import { endOfDay, getTime } from 'date-fns';
 import { FullOrder } from 'components/Orders/Card/Card';
-import { getFullName } from 'utils/getFullName';
+import { OrderProductType } from 'components/Orders/Card/CardProduct';
+
 import { Currency } from 'types/entities/Currency';
 import { IOrder } from 'types/entities/IOrder';
+
+import { formatDate } from 'utils/dateUtil';
+import { getFullName } from 'utils/nameUtil';
 
 export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
 
-  const products = order.orderProducts.map(product => ({
-    id: product.product?.id || -1,
+  const products: OrderProductType[] = order.orderProducts.map(product => ({
+    id: product.id,
     photo: product.product?.images[0]?.small || '',
     title: product.product?.title[lang],
-    weight: product?.weight,
-    amount: product?.amount,
+    amount: product.amount,
+    gram: product.gram,
+    totalSum: product.totalSum,
+    totalSumWithoutAmount: product.totalSumWithoutAmount,
     cost: product.product?.price[currency],
-    isWeightGood: product?.product?.isWeightGood,
   }));
 
   const promotions = order.promotions.map(promotion => ({
@@ -22,40 +26,37 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     amount: promotion.value,
   }));
 
-  const createdAt = new Date(order.createdAt);
-
   const { city, street, house, apartment } = order.orderProfile;
 
+  const title = order.crmInfo?.id.toString() || '####';
+  const address = `${city.name[lang]}, ${street}, ${house}, кв. ${apartment},`;
+  const status = order.crmInfo?.status;
+  const createdAt = new Date(order.createdAt);
+
   return {
-    title: order.crmInfo?.id || '####',
-    status: {
-      title: order.crmInfo?.status.name,
-      color: order.crmInfo?.status.color,
-    },
+    title,
+    status,
     createdAt,
-    address: `${city}, ${street}, ${house}, кв. ${apartment},`,
+    address,
     client,
     products,
     promotions,
     deliveryCost: 500, // TODO: данные должны идти с бека©,
     currency,
+    totalSum: order.totalSum,
   };
 }
 
-type formattedOrder = {
-  date: Date;
-  orderList: FullOrder[];
-};
-
 export const groupOrdersByDate = (ordersList: FullOrder[]) =>
-  ordersList.reduce<Record<number, formattedOrder>>((acc, order) => {
-    const createdDay = endOfDay(order.createdAt);
-    const orderTime = getTime(createdDay);
-    acc[orderTime] ??= {
-      date: order.createdAt,
-      orderList: [],
-    };
+  ordersList
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .reduce<Record<string, FullOrder[]>>((acc, order) => {
+      const orderKey = formatDate(order.createdAt, 'd MMMM yyyy');
 
-    acc[orderTime].orderList.push(order);
-    return acc;
-  }, {});
+      acc[orderKey] ??= [];
+
+      acc[orderKey].push(order);
+      return acc;
+    }, {});
+
+export const getProductKeyInBasket = (productId: number, gram: number) => `${productId}:${gram}`;

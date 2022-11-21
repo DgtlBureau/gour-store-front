@@ -1,4 +1,4 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   form: {
@@ -8,7 +8,7 @@ const sx = {
     borderRadius: '6px',
     borderColor: 'accent.main',
     boxShadow: 'none',
-    background: theme.palette.common.white,
+    background: color.white,
   },
   header: {
     display: 'flex',
@@ -23,14 +23,14 @@ const sx = {
     borderRadius: '50%',
   },
   mainAddress: {
-    backgroundColor: 'secondary.main',
+    backgroundColor: color.secondary,
   },
   title: {
     margin: '0 12px',
   },
   divider: {
     marginBottom: '16px',
-    borderColor: 'secondary.main',
+    borderColor: color.secondary,
   },
 };
 

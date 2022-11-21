@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   comment: {
@@ -8,7 +8,7 @@ const sx = {
       sm: '280px',
     },
     padding: '12px',
-    backgroundColor: t.palette.common.white,
+    backgroundColor: color.white,
     boxShadow: 'none',
   },
   rating: {

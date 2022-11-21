@@ -1,11 +1,17 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 
 type WalletTransactionType = 'income' | 'expense';
-type WalletTransactionStatus = 'init' | 'approved' | 'rejected';
+export enum WalletTransactionStatus {
+  INIT = 'init',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+}
 
-export interface IWalletTransaction extends Omit<IBaseEntity, 'id'> {
+export interface IWalletTransaction extends Omit<IBase, 'id'> {
   uuid: string;
   type: WalletTransactionType;
   status: WalletTransactionStatus;
   description: string;
+  prevValue: number;
+  newValue: number;
 }

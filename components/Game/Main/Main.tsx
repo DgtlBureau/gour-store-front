@@ -1,17 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
+import { Modal } from 'components/UI/Modal/Modal';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+
+import { GameAlarm as Alarm } from '../Alarm/Alarm';
+import { GameCounter as Counter } from '../Counter/Counter';
 import { GameFrame as Frame } from '../Frame/Frame';
+import { GameLives as Lives } from '../Lives/Lives';
 import { GamePlayer as Player } from '../Player/Player';
 import { GameProduct as Product } from '../Product/Product';
-import { GameCounter as Counter } from '../Counter/Counter';
-import { GameLives as Lives } from '../Lives/Lives';
-import { GameAlarm as Alarm } from '../Alarm/Alarm';
 import { GameCore, GameEvent } from './Core';
 
 import sx from './Main.styles';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
+
+import heartIcon from 'assets/icons/heart.svg';
 
 const DEFAULT_ANGLES = {
   1: 0,
@@ -27,12 +36,22 @@ const JAMON_ANGLES = {
 
 export type GameMainProps = {
   onHelpClick(): void;
+  isLivesLoading: boolean;
+  onEndGame: () => Promise<void>;
+  lives: number;
 };
 
-export function GameMain({ onHelpClick }: GameMainProps) {
+export function GameMain({ onHelpClick, onEndGame, isLivesLoading, lives }: GameMainProps) {
   const [gameState, setGameState] = useState({} as GameEvent);
+  const [isOpenStartGameModal, toggleStartGameModal] = useState(false);
 
-  const changeGameState = (e: GameEvent) => setGameState(e);
+  const changeGameState = (e: GameEvent) => {
+    setGameState(e);
+
+    if (!e.isPlaying) {
+      // onEndGame();
+    }
+  };
 
   const game = useMemo(() => new GameCore(changeGameState), []);
 
@@ -48,8 +67,6 @@ export function GameMain({ onHelpClick }: GameMainProps) {
     if (e.code === 'KeyD') moveToBottomRight();
   };
 
-  const start = () => game.start();
-
   useEffect(() => {
     document.addEventListener('keydown', changeOlegPosition);
 
@@ -57,6 +74,27 @@ export function GameMain({ onHelpClick }: GameMainProps) {
       document.removeEventListener('keydown', changeOlegPosition);
     };
   });
+
+  const onStartGameClick = () => {
+    // const isLivesLeft = lives < 1;
+    // if (isLivesLoading || isLivesLeft) {
+    //   const label = isLivesLoading ? 'Получение доступных жизней, подождите...' : 'Пополните жизни в магазине';
+    //   dispatchNotification(label, { type: NotificationType.INFO });
+    //   return;
+    // }
+
+    if (game.isNowPlaying) {
+      dispatchNotification('Игра уже запущена', { type: NotificationType.DANGER });
+    } else {
+      // toggleStartGameModal(true);
+      game.start();
+    }
+  };
+
+  const onSubmitStartGame = () => {
+    toggleStartGameModal(false);
+    game.start();
+  };
 
   return (
     <Frame>
@@ -74,16 +112,21 @@ export function GameMain({ onHelpClick }: GameMainProps) {
       </Box>
 
       <Box sx={sx.startBtn}>
-        <Button onClick={start} sx={sx.smallBtn} />
+        <Button onClick={onStartGameClick} sx={sx.smallBtn} />
 
         <Typography variant='body2' sx={sx.btnText}>
           СТАРТ
         </Typography>
+
+        {/* <Box sx={sx.userLives}>
+          <Typography variant='body1'>{lives}</Typography>&nbsp;
+          <Image src={heartIcon} width={20} height={20} />
+        </Box> */}
       </Box>
 
       <Alarm sx={sx.alarm} isRinging={gameState.isRabbitShown && !!gameState.lives} />
 
-      <Lives sx={sx.lives} value={gameState.lives} />
+      <Lives sx={sx.gameLives} value={gameState.lives} />
 
       <Counter sx={sx.counter} value={gameState.score} />
 
@@ -148,6 +191,16 @@ export function GameMain({ onHelpClick }: GameMainProps) {
         isActive={gameState.products?.chicken === 3}
         type='chicken'
         angle={DEFAULT_ANGLES[3]}
+      />
+
+      <Modal
+        title='Вы уверены, что хотите потратить игровую жизнь?'
+        isOpen={isOpenStartGameModal}
+        acceptText='Начать игру'
+        refuseText='Назад'
+        showRefuseButton
+        onAccept={onSubmitStartGame}
+        onClose={() => toggleStartGameModal(false)}
       />
     </Frame>
   );

@@ -1,23 +1,28 @@
+import { color } from 'themes';
+
 export const sx = {
   top: {
     display: 'flex',
     flexDirection: {
       xs: 'column',
-      md: 'row',
+      lg: 'row',
     },
     marginTop: '20px',
   },
+  preview: {
+    position: 'relative',
+  },
   imageSlider: {
     margin: {
-      md: '0 40px 0 0',
+      lg: '0 40px 0 0',
       sm: '0 0 40px 0',
       xs: '0 0 20px 0',
     },
   },
   title: {
     margin: {
-      xs: '0 0 10px 0',
-      md: '0 0 20px 0',
+      xs: '0 0 15px 0',
+      lg: '0 0 20px 0',
     },
     fontSize: {
       sm: '40px',
@@ -25,17 +30,18 @@ export const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: 'primary.main',
+    color: color.primary,
   },
   info: {
     margin: '0 0 35px 0',
   },
   actions: {
-    marginTop: '40px',
+    marginTop: '10px',
   },
   description: {
+    whiteSpace: 'pre-wrap',
     margin: {
-      md: '100px 0 100px 0',
+      lg: '100px 0 100px 0',
       sm: '70px 0 70px 0',
       xs: '30px 0 30px 0',
     },
@@ -48,13 +54,33 @@ export const sx = {
   },
   similar: {
     margin: {
-      md: '0 0 90px 0',
+      lg: '0 0 90px 0',
       sm: '0 0 70px 0',
       xs: '0 0 30px 0',
     },
   },
   comment: {
     marginBottom: '40px',
+  },
+  heart: {
+    position: 'absolute',
+
+    display: { xs: 'flex', sm: 'none' },
+
+    top: '15px',
+    right: '15px',
+
+    color: color.muted,
+
+    cursor: 'pointer',
+    zIndex: 100,
+
+    '&:hover': {
+      opacity: 0.75,
+    },
+  },
+  elected: {
+    color: color.accent,
   },
 };
 

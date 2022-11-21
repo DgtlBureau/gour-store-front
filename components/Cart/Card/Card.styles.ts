@@ -1,4 +1,4 @@
-import { defaultTheme as t } from '../../../themes';
+import { color } from 'themes';
 
 const sx = {
   card: {
@@ -18,9 +18,7 @@ const sx = {
     borderRadius: 0,
   },
 
-  image: {
-    cursor: 'pointer',
-
+  previewImg: {
     height: {
       sm: '125px',
       xs: '80px',
@@ -33,7 +31,7 @@ const sx = {
     border: '2px solid #FDCE85',
     borderRadius: '10px',
 
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
 
   info: {
@@ -50,15 +48,20 @@ const sx = {
   },
 
   content: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
     padding: 0,
   },
 
+  contentTitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  contentGram: {
+    color: color.primary,
+  },
+
   title: {
-    cursor: 'pointer',
     fontSize: {
       xs: '14px',
       sm: '16px',
@@ -66,7 +69,7 @@ const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: color.primary,
 
     '&:hover': {
       opacity: '0.75',
@@ -97,12 +100,12 @@ const sx = {
 
     width: 'fit-content',
 
-    color: t.palette.text.muted || '',
+    color: color.muted,
 
     '&:before': {
       content: '""',
       borderBottom: '1px solid',
-      borderColor: t.palette.error.main,
+      borderColor: color.error,
       position: 'absolute',
       width: '100%',
       height: '50%',
@@ -121,7 +124,7 @@ const sx = {
 
       padding: 0,
 
-      color: t.palette.text.secondary,
+      color: color.primary,
     },
   },
 
@@ -135,11 +138,11 @@ const sx = {
   cancelBtn: {
     height: 'fit-content',
     padding: 0,
-    color: t.palette.secondary.main,
+    color: color.secondary,
   },
 
   leftActions: {
-    'button:first-child': {
+    'button:first-of-type': {
       marginRight: '20px',
     },
   },
@@ -150,8 +153,8 @@ const sx = {
 
     padding: '4px',
 
-    backgroundColor: t.palette.secondary.main,
-    color: t.palette.text.secondary,
+    backgroundColor: color.secondary,
+    color: color.primary,
 
     borderRadius: '99px',
 

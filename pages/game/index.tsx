@@ -1,27 +1,47 @@
 import React, { useState } from 'react';
 
+import { useGetCurrentUserQuery, useReduceGameLiveMutation } from 'store/api/currentUserApi';
+
 import { GameLayout } from 'layouts/Game/Game';
-import { useAppNavigation } from 'components/Navigation';
-import { GameMain } from 'components/Game/Main/Main';
-import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
 import { PrivateLayout } from 'layouts/Private/Private';
 
+import { GameMain } from 'components/Game/Main/Main';
+import { GameRulesModal } from 'components/Game/RulesModal/RulesModal';
+
+import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+
 export function Game() {
-  const { currency, language } = useAppNavigation();
+  const { data: currentUser, isFetching: isUserFetching } = useGetCurrentUserQuery();
+  const [reduceGameLive, { isLoading: isReduceGameLiveLoading }] = useReduceGameLiveMutation();
 
   const [rulesModalIsOpen, setRulesModalIsOpen] = useState(false);
 
   const openRulesModal = () => setRulesModalIsOpen(true);
   const closeRulesModal = () => setRulesModalIsOpen(false);
 
-  return (
-    // <PrivateLayout>
-    <GameLayout currency={currency} language={language}>
-      <GameMain onHelpClick={openRulesModal} />
+  const onEndGame = async () => {
+    try {
+      await reduceGameLive().unwrap();
+    } catch {
+      dispatchNotification('Произошла ошибка', { type: NotificationType.DANGER });
+    }
+  };
 
-      <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
-    </GameLayout>
-    // </PrivateLayout>
+  return (
+    <PrivateLayout>
+      <GameLayout>
+        <GameMain
+          onHelpClick={openRulesModal}
+          isLivesLoading={isUserFetching || isReduceGameLiveLoading}
+          onEndGame={onEndGame}
+          lives={currentUser?.lives ?? 0}
+        />
+
+        <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
+      </GameLayout>
+    </PrivateLayout>
   );
 }
 

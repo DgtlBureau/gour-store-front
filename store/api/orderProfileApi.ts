@@ -1,7 +1,9 @@
-import { commonApi } from './commonApi';
-import { IOrderProfile } from 'types/entities/IOrderProfile';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
+import { IOrderProfile } from 'types/entities/IOrderProfile';
+
 import { Path } from 'constants/routes';
+
+import { commonApi } from './commonApi';
 
 export const orderProfileApi = commonApi.injectEndpoints({
   endpoints(builder) {

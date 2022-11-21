@@ -1,44 +1,56 @@
-import React, { useRef, useState } from 'react';
-import { LinearProgress } from '@mui/material';
+import React, { useMemo, useRef, useState } from 'react';
 
+import { LinearProgress, SxProps } from '@mui/material';
+import { isProductFavorite } from 'pages/favorites/favoritesHelper';
+
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useGetProductQuery } from 'store/api/productApi';
 import { useCreateProductGradeMutation, useGetProductGradeListQuery } from 'store/api/productGradeApi';
-import { addBasketProduct, productsInBasketCount, subtractBasketProduct } from 'store/slices/orderSlice';
-import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from 'types/entities/Notification';
-import { IProduct } from 'types/entities/IProduct';
-import { CommentDto } from 'types/dto/comment.dto';
-import { ShopLayout } from 'layouts/Shop/Shop';
+import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
+
 import { PrivateLayout } from 'layouts/Private/Private';
+import { ShopLayout } from 'layouts/Shop/Shop';
+
 import { CommentCreateBlock } from 'components/Comment/CreateBlock/CreateBlock';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { useAppNavigation } from 'components/Navigation';
 import { ProductActions } from 'components/Product/Actions/Actions';
 import { ProductInformation } from 'components/Product/Information/Information';
+import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
 import { ProductReviews, Review } from 'components/Product/Reviews/Reviews';
+import { ProductSlider } from 'components/Product/Slider/Slider';
 import { Box } from 'components/UI/Box/Box';
 import { ImageSlider } from 'components/UI/ImageSlider/ImageSlider';
-import { Typography } from 'components/UI/Typography/Typography';
-import { useAppNavigation } from 'components/Navigation';
 import { LinkRef as Link } from 'components/UI/Link/Link';
-import { isProductFavorite } from 'pages/favorites/favoritesHelper';
-import translations from './Product.i18n.json';
-import { getErrorMessage } from 'utils/errorUtil';
-import { ReviewModal } from 'components/Product/ReviewModal/ReviewModal';
+import { Typography } from 'components/UI/Typography/Typography';
 
+import { CommentDto } from 'types/dto/comment.dto';
+import { IProduct } from 'types/entities/IProduct';
+import { NotificationType } from 'types/entities/Notification';
+
+import { noExistingId } from 'constants/default';
+import { useAppDispatch } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import translations from './Product.i18n.json';
+
+import styles from './Product.module.css';
 import sx from './Product.styles';
-import { ICategoryNew } from 'types/entities/ICategory';
+
+import HeartIcon from '@mui/icons-material/Favorite';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
-    goToProductPage,
     language,
     currency,
     query: { id: queryId },
@@ -49,16 +61,18 @@ export default function Product() {
   const commentBlockRef = useRef<HTMLDivElement>(null);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+  const { data: categories = [], isLoading: isCategoriesLoading } = useGetCategoryListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
-  const addToBasket = (product: IProduct) => dispatch(addBasketProduct(product));
+  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ gram, product }));
 
-  const removeFromBasket = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
-  const productId = queryId ? +queryId : 0;
+  const productId = Number(queryId) || 0;
 
   const {
     data: product,
-    isLoading,
+    isLoading: isProductLoading,
     isError,
   } = useGetProductQuery(
     {
@@ -71,8 +85,15 @@ export default function Product() {
     { skip: !productId },
   );
 
+  const isLoading = isProductLoading || isCategoriesLoading;
+
+  const productType = useMemo(
+    () => product?.categories && categories && getProductTypeLabel(categories, product.categories),
+    [product, categories],
+  );
+
   const [reviewForModal, setReviewForModal] = useState<Review>({
-    id: -1,
+    id: noExistingId,
     clientName: '',
     value: 0,
     comment: '',
@@ -86,9 +107,9 @@ export default function Product() {
   const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
-        await removeFavorite(id); // FIXME: TODO: избавиться от дублирования кода в разных компонентах
+        await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);
@@ -97,15 +118,17 @@ export default function Product() {
     }
   };
 
-  const basket = useAppSelector(state => state.order);
-
-  const count = useAppSelector(state => productsInBasketCount(state, productId, product?.isWeightGood || false));
-
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
   const { data: comments = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
     { skip: !productId },
+  );
+
+  const formattedSimilarProducts = useMemo(
+    () =>
+      product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
+    [product?.similarProducts, categories, favoriteProducts],
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
@@ -131,13 +154,22 @@ export default function Product() {
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
-      label: lowCategory.parentCategories[0]?.title.ru || 'Тип товара',
+      label: lowCategory.parentCategories?.[0]?.title.ru || 'Тип товара',
       value: lowCategory.title.ru,
     })) || [];
 
+  const productDescription = product?.description[language] || '';
+
+  const isCurrentProductElected = isProductFavorite(productId, favoriteProducts);
+
+  const price = product ? Math.round(product.price[currency] * 0.1) : 0;
+
+  const hasSimilar = !!formattedSimilarProducts?.length;
+  const hasComments = !!productComments.length;
+
   return (
     <PrivateLayout>
-      <ShopLayout language={language} currency={currency}>
+      <ShopLayout>
         {isLoading && <LinearProgress />}
 
         {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
@@ -149,7 +181,18 @@ export default function Product() {
             <Link href='/'>Вернуться на главную</Link>
 
             <Box sx={sx.top}>
-              <ImageSlider images={product.images} sx={sx.imageSlider} />
+              <Box sx={sx.preview}>
+                <ImageSlider
+                  images={product.images}
+                  backgroundSrc={categories && getProductBackground(categories, product.categories || [])}
+                  sx={sx.imageSlider}
+                />
+
+                <HeartIcon
+                  sx={{ ...sx.heart, ...(isCurrentProductElected && sx.elected) } as SxProps}
+                  onClick={() => electProduct(product.id, isCurrentProductElected)}
+                />
+              </Box>
 
               <Box sx={sx.info}>
                 <Typography variant='h3' sx={sx.title}>
@@ -165,45 +208,46 @@ export default function Product() {
                 />
 
                 <ProductActions
-                  price={product.price[currency] || 0}
-                  count={count}
+                  id={product.id}
+                  moyskladId={product.moyskladId}
+                  currentUserCity={currentUser?.city.name.ru}
+                  price={price}
                   currency={currency}
                   discount={product.discount}
-                  isWeightGood={product.isWeightGood}
+                  productType={productType!}
                   sx={sx.actions}
-                  onAdd={() => addToBasket(product)}
-                  onRemove={() => removeFromBasket(product)}
-                  onElect={() => electProduct(product.id, isProductFavorite(product.id, favoriteProducts))}
-                  isElect={isProductFavorite(product.id, favoriteProducts)}
+                  onAdd={(gram: number) => addToBasket(product, gram)}
+                  onRemove={(gram: number) => removeFromBasket(product, gram)}
+                  onElect={() => electProduct(product.id, isCurrentProductElected)}
+                  isElect={isCurrentProductElected}
                 />
               </Box>
             </Box>
 
-            <Box sx={sx.description}>
-              <Typography sx={sx.title} variant='h5'>
-                {t('description')}
-              </Typography>
+            {productDescription && (
+              <Box sx={sx.description}>
+                <Typography sx={sx.title} variant='h5'>
+                  {t('description')}
+                </Typography>
 
-              <Typography variant='body1'>{product.description[language] || ''}</Typography>
-            </Box>
+                <div dangerouslySetInnerHTML={{ __html: productDescription }} className={styles.productDescription} />
+              </Box>
+            )}
 
-            {!!product.similarProducts.length && (
-              <ProductCatalog
+            {hasSimilar && (
+              <ProductSlider
                 title={t('similar')}
-                products={product.similarProducts}
-                basket={basket.products}
+                products={formattedSimilarProducts}
                 language={language}
                 currency={currency}
                 sx={sx.similar}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
-                onDetail={goToProductPage}
-                favoritesList={favoriteProducts}
               />
             )}
 
-            {!!productComments.length && (
+            {hasComments && (
               <ProductReviews
                 sx={sx.reviews}
                 reviews={productComments}

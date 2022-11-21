@@ -1,13 +1,16 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, Grid, Typography } from '@mui/material';
+
+import { Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { color } from 'themes';
 
 import translations from './CitySelect.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { defaultTheme as theme } from 'themes';
 
 const paperSx = {
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.secondary,
+  backgroundColor: color.white,
+  color: color.primary,
 };
 
 type Props = {
@@ -35,7 +38,7 @@ export function CitySelect({ isOpen, cities, selected, onSelect, onClose }: Prop
               <Typography
                 sx={{ cursor: 'pointer' }}
                 variant='body1'
-                color={city.id === selected ? theme.palette.accent.main : 'inherit'}
+                color={city.id === selected ? color.accent : 'inherit'}
               >
                 {city.name}
               </Typography>

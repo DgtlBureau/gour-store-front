@@ -1,36 +1,48 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+
 import { useMediaQuery } from '@mui/material';
 
-import { useGetCurrentUserQuery, useChangeCurrentCityMutation } from 'store/api/currentUserApi';
-import { useGetCityListQuery } from 'store/api/cityApi';
-import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { useSignOutMutation } from 'store/api/authApi';
-import { useAppNavigation } from 'components/Navigation';
-import { useAppSelector } from 'hooks/store';
+import { useGetCityListQuery } from 'store/api/cityApi';
+import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
+import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
+import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
+import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+
+import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
+import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { GameFlipWarning } from 'components/Game/FlipWarning/FlipWarning';
-import { selectedProductCount, selectedProductSum, selectedProductDiscount } from 'store/slices/orderSlice';
-import { Box } from 'components/UI/Box/Box';
 import { Header } from 'components/Header/Header';
-import { Copyright } from 'components/Copyright/Copyright';
-import { Currency } from 'types/entities/Currency';
-import { Language } from 'types/entities/Language';
+import { useAppNavigation } from 'components/Navigation';
+import { Box } from 'components/UI/Box/Box';
+
+import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { InvoiceStatus } from 'types/entities/IInvoice';
+import { NotificationType } from 'types/entities/Notification';
+
 import { contacts } from 'constants/contacts';
+import { useAppSelector } from 'hooks/store';
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 import sx from './Game.styles';
 
+type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
+type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
+
 export interface GameLayoutProps {
-  currency: Currency;
-  language: Language;
   children?: ReactNode;
 }
 
-export function GameLayout({ currency, language, children }: GameLayoutProps) {
-  const { goToFavorites, goToBasket, goToPersonalArea, goToReplenishment } = useAppNavigation();
+export function GameLayout({ children }: GameLayoutProps) {
+  const { currency, language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
+  const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
+  const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
 
@@ -41,8 +53,14 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const sum = useAppSelector(selectedProductSum);
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  const totalProductSum = useAppSelector(selectedProductSum);
+
+  const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
+    isOpen: false,
+  });
+  const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
+    isOpen: false,
+  });
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
@@ -51,7 +69,49 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
 
   const flipIsNeeded = isMobile && isPortrait;
 
-  const copyrightSx = { display: { xs: isPortrait ? 'flex' : 'none', md: 'flex' } };
+  const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
+    setBalanceCoinsState({ isOpen: false });
+    setPayCoinsState({
+      isOpen: true,
+      price: invoicePrice,
+    });
+    createInvoiceMutation({
+      currency: 'RUB',
+      amount: coinsCount,
+      value: invoicePrice,
+      payerUuid: currentUser?.id ?? '',
+    });
+  };
+
+  const handleCloseBuyModal = () => {
+    if (payCoinsState.isOpen) {
+      const { price } = payCoinsState;
+      setBalanceCoinsState({ isOpen: true, coins: price });
+      setPayCoinsState({ isOpen: false });
+    }
+  };
+
+  const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
+    try {
+      const result = await buyCheeseCoins(buyData).unwrap();
+      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+    } catch (e) {
+      const mayBeError = getErrorMessage(e);
+      if (mayBeError) {
+        dispatchNotification(mayBeError, { type: NotificationType.DANGER });
+      } else {
+        goToFailurePayment();
+      }
+    }
+  };
+
+  const handleOpenCoinsAddModal = () =>
+    setBalanceCoinsState({
+      isOpen: true,
+      coins: undefined,
+    });
+  const handleCloseCoinsAddModal = () => setBalanceCoinsState({ isOpen: false });
 
   return (
     <Box sx={sx.layout}>
@@ -60,22 +120,34 @@ export function GameLayout({ currency, language, children }: GameLayoutProps) {
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
         currency={currency}
-        language={language}
         basketProductCount={count}
-        basketProductSum={sum - sumDiscount}
+        basketProductSum={totalProductSum}
         moneyAmount={balance}
         onChangeCity={changeCity}
-        onClickFavorite={goToFavorites}
-        onClickPersonalArea={goToPersonalArea}
-        onClickBasket={goToBasket}
-        onClickReplenishment={goToReplenishment}
+        onClickAddCoins={handleOpenCoinsAddModal}
         onClickSignout={signOut}
         {...contacts}
       />
 
-      {flipIsNeeded ? <GameFlipWarning /> : <Box sx={sx.content}>{children}</Box>}
+      <Box sx={sx.content}>{flipIsNeeded ? <GameFlipWarning /> : children}</Box>
 
-      <Copyright sx={copyrightSx} />
+      <CheesecoinsAddModal
+        initCoins={balanceCoinsState.isOpen ? balanceCoinsState.coins : undefined}
+        isOpened={balanceCoinsState.isOpen}
+        onClose={handleCloseCoinsAddModal}
+        onSubmit={handleAddCheeseCoinClick}
+      />
+
+      <BuyCheeseCoinsModal
+        isOpened={payCoinsState.isOpen}
+        invoiceUuid={invoiceData?.uuid}
+        userId={currentUser?.id}
+        userEmail={currentUser?.email}
+        price={payCoinsState.isOpen ? payCoinsState.price : undefined}
+        isLoading={isPaymentLoading}
+        onClose={handleCloseBuyModal}
+        onSubmit={handleBuyCheeseCoins}
+      />
     </Box>
   );
 }

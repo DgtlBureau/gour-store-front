@@ -1,7 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
+
+import { authApi } from 'store/api/authApi';
 import { RootState } from 'store/store';
-import { IProduct } from 'types/entities/IProduct';
+
 import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { IProduct } from 'types/entities/IProduct';
+
+import { getPriceByGrams } from 'utils/currencyUtil';
 
 interface OrderFormContacts {
   firstName: string;
@@ -19,138 +26,92 @@ interface OrderFormAddress {
   floor: number;
 }
 
+export type BasketProduct = Pick<IOrderProduct, 'amount' | 'product' | 'gram'>;
+
 export interface BasketState {
-  products: IOrderProduct[];
+  products: Record<string, BasketProduct>;
   contacts?: OrderFormContacts;
   address?: OrderFormAddress;
 }
 
 const initialState: BasketState = {
-  products: [],
+  products: {},
 };
 
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    addBasketProduct: (state, action: PayloadAction<IProduct>) => {
-      const product = action.payload;
-      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
+    addBasketProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
+      const { gram, product } = action.payload;
 
-      if (foundIndex > -1) {
-        const foundOrderProduct = state.products[foundIndex];
+      if (!product.id || !gram) {
+        // eslint-disable-next-line no-console
+        console.error('Отсутствует id или не выбраны граммы');
+        return;
+      }
 
-        if (product.isWeightGood) {
-          state.products.splice(foundIndex, 1, {
-            ...foundOrderProduct,
-            weight: foundOrderProduct.weight + 100,
-          });
-        } else {
-          state.products.splice(foundIndex, 1, {
-            ...foundOrderProduct,
-            amount: foundOrderProduct.amount + 1,
-          });
-        }
-      } else if (product.isWeightGood) {
-        state.products.push({
-          product,
-          amount: 1,
-          weight: 0,
-        });
+      const productKey = getProductKeyInBasket(product.id, gram);
+      const stateProduct = state.products[productKey];
+
+      if (stateProduct) {
+        stateProduct.amount++;
       } else {
-        state.products.push({
+        state.products[productKey] = {
           product,
           amount: 1,
-          weight: 0,
-        });
+          gram,
+        };
       }
     },
 
-    subtractBasketProduct: (state, action: PayloadAction<IProduct>) => {
-      const product = action.payload;
-      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
-      const foundOrderProduct = state.products[foundIndex];
+    subtractBasketProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
+      const { gram, product } = action.payload;
 
-      if (!foundOrderProduct) return;
+      const productKey = getProductKeyInBasket(product.id, gram);
+      const stateProduct = state.products[productKey];
 
-      if (product.isWeightGood) {
-        if (foundOrderProduct.weight! > 100) {
-          state.products.splice(foundIndex, 1, {
-            ...foundOrderProduct,
-            weight: foundOrderProduct.weight! - 100,
-          });
-        } else {
-          state.products.splice(foundIndex, 1);
-        }
-      } else if (foundOrderProduct.amount! > 1) {
-        state.products.splice(foundIndex, 1, {
-          ...foundOrderProduct,
-          amount: foundOrderProduct.amount! - 1,
-        });
+      if (stateProduct.amount === 1) {
+        delete state.products[productKey];
       } else {
-        state.products.splice(foundIndex, 1);
+        stateProduct.amount--;
       }
     },
 
-    removeProduct: (state, action: PayloadAction<IProduct>) => {
-      const product = action.payload;
-      const foundIndex = state.products.findIndex(it => it.product.id === product.id);
-      if (foundIndex === -1) return;
-      state.products.splice(foundIndex, 1);
+    removeProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
+      const { gram, product } = action.payload;
+
+      const productKey = getProductKeyInBasket(product.id, gram);
+      delete state.products[productKey];
     },
-    setContacts(state, action: PayloadAction<OrderFormContacts>) {
-      state.contacts = action.payload;
-    },
-    setAddress(state, action: PayloadAction<OrderFormAddress>) {
-      state.address = action.payload;
-    },
+  },
+  extraReducers(builder) {
+    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState);
   },
 });
 
+export const selectBasketProducts = (state: RootState) => Object.values(state.order.products);
+
 export const selectedProductCount = (state: RootState) =>
-  state.order.products.reduce((acc, item) => {
-    if (!item.product.isWeightGood) {
-      acc += item.amount;
-    } else {
-      acc++;
-    }
-
-    return acc;
-  }, 0);
-
-export const selectedProductWeight = (state: RootState) =>
-  state.order.products.reduce((acc, item) => acc + item.weight, 0);
+  Object.values(state.order.products).reduce((acc, product) => acc + product.amount, 0);
 
 export const selectedProductSum = (state: RootState) =>
-  state.order.products.reduce((acc, it) => {
-    if (it.product.isWeightGood) {
-      return acc + (it.product.price.cheeseCoin / 1000) * it.weight;
-    }
-    return acc + it.product.price.cheeseCoin * it.amount;
-  }, 0);
+  Object.values(state.order.products).reduce(
+    (acc, it) => acc + getPriceByGrams(it.product.totalCost, it.gram) * it.amount,
+    0,
+  );
 
 export const selectedProductDiscount = (state: RootState) =>
-  state.order.products.reduce((acc, it) => {
-    const discount = it.product.discount || 0;
-    return acc + (it.product.price.cheeseCoin / 100) * discount * it.amount;
+  Object.values(state.order.products).reduce((acc, it) => {
+    const discount = it.product.price.cheeseCoin - it.product.totalCost;
+    return acc + getPriceByGrams(discount, it.gram) * it.amount;
   }, 0);
 
-export const checkProductInBasket = (state: RootState, productId: number): boolean =>
-  state.order.products.some(it => it.product.id === productId);
-
-export const productsInBasketCount = (state: RootState, productId: number, isWeightGood: boolean): number => {
-  const currentProduct = state.order.products.find(it => it.product.id === productId);
-  if (!currentProduct) return 0;
-  if (isWeightGood) {
-    return currentProduct.weight;
-  }
-  return currentProduct.amount;
-};
-
-export const selectProductsInOrder = (state: RootState): IOrderProduct[] => state.order.products;
+// export const productsInBasketCount = (state: RootState, productId: number, gram: number): number =>
+//   state.order.products[getProductKeyInBasket(productId, gram)]?.amount ?? 0;
 
 export const selectProductsIdInOrder = (state: RootState): number[] =>
-  state.order.products.reduce((acc, item) => [...acc, item.product.id], [] as number[]);
+  Object.values(state.order.products).reduce((acc, item) => [...acc, item.product.id], [] as number[]);
 
 export const { addBasketProduct, subtractBasketProduct, removeProduct } = orderSlice.actions;
 

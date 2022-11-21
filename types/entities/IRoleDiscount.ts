@@ -1,8 +1,8 @@
-import { IProduct } from './IProduct';
+import { IBase } from './IBase';
 import { IClientRole } from './IClientRole';
-import { IBaseEntity } from './IBaseEntity';
+import { IProduct } from './IProduct';
 
-export interface IRoleDiscount extends IBaseEntity {
+export interface IRoleDiscount extends IBase {
   product: IProduct;
   role: IClientRole;
   value: number;

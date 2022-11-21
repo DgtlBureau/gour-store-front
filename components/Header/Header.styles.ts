@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   container: {
@@ -44,10 +44,10 @@ const sx = {
   },
   replenishment: {
     padding: '4px 16px',
-    backgroundColor: 'common.white',
+    backgroundColor: color.white,
     borderRadius: '50px',
     '&:hover': {
-      backgroundColor: 'secondary.main',
+      backgroundColor: color.secondary,
     },
   },
   flag: {
@@ -66,11 +66,15 @@ const sx = {
   },
   cart: {
     position: 'relative',
-    backgroundColor: t.palette.common.white,
-    color: t.palette.text.secondary,
+    backgroundColor: color.white,
+    color: color.primary,
+    padding: '6px 12px',
+    textDecoration: 'none',
+    borderRadius: '6px',
+    userSelect: 'none',
 
     '&:hover': {
-      backgroundColor: t.palette.secondary.main,
+      backgroundColor: color.secondary,
     },
   },
   cartBadge: {
@@ -85,7 +89,6 @@ const sx = {
       xs: 'none',
       sm: 'flex',
     },
-    margin: '0 10px',
   },
   menuBtn: {
     display: 'flex',
@@ -93,17 +96,16 @@ const sx = {
     minWidth: '34px',
     height: '34px',
     width: '34px',
-    marginLeft: '20px',
     padding: 0,
     borderRadius: '6px',
-    backgroundColor: t.palette.common.white,
+    backgroundColor: color.white,
     '&:hover': {
-      backgroundColor: t.palette.common.white,
+      backgroundColor: color.white,
     },
   },
   menuIcon: {
     width: '18px',
-    color: t.palette.common.black,
+    color: color.black,
   },
 };
 

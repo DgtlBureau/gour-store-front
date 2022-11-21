@@ -1,70 +1,36 @@
-/* eslint-disable react/no-array-index-key */
-import React, { CSSProperties, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
-import { ButtonGroup, Stack, SxProps } from '@mui/material';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SxProps, Theme, useMediaQuery } from '@mui/material';
 import SwiperCore, { Grid } from 'swiper';
-
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Button } from 'components/UI/Button/Button';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import cardCss from './CardSlider.module.scss';
-
 import 'swiper/css';
 import 'swiper/css/grid';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const sliderSx = {
-  container: {
-    maxWidth: '1200px',
-    display: 'flex',
-    flexDirection: 'column',
-  } as CSSProperties,
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
-    },
-    fontWeight: 'bold',
-    fontFamily: 'Roboto slab',
-    color: 'text.secondary',
-  },
-  backArrow: {
-    transform: 'rotate(-180deg)',
-  },
-  arrows: {
-    display: {
-      xs: 'none',
-      md: 'flex',
-    },
-  },
-  emptyTitle: {
-    marginTop: '15px',
-    fontSize: {
-      sm: '24px',
-      xs: '16px',
-    },
-  },
-};
+import { Box } from 'components/UI/Box/Box';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { CardSliderArrows } from './CardSliderArrows';
+
+import sliderSx from './CardSlider.styles';
 
 type Props = {
   title?: string;
-  emptyTitle?: string;
+  emptyText?: string;
   head?: ReactNode;
-  cardsList: ReactNode[];
+  cardList: ReactNode[];
   rows?: number;
   spaceBetween?: number;
-  slidesPerView?: number;
+  slidesPerRow?: number;
   sx?: SxProps;
 };
 
 export function CardSlider({
   title,
-  emptyTitle,
+  emptyText = 'Список карточек пуст',
   head,
-  cardsList,
+  cardList,
   rows = 1,
-  slidesPerView = 4,
+  slidesPerRow = 4,
   spaceBetween = 10,
   sx,
 }: Props) {
@@ -75,39 +41,38 @@ export function CardSlider({
     isEnd: false,
   });
 
-  const screenWidth = window.screen.width;
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const withArrows = cardsList.length > rows * slidesPerView || screenWidth < 1200;
+  const withArrows = isDesktop && cardList.length > rows * slidesPerRow;
 
-  const slideChangeHandler = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
+  const changeSlide = ({ isBeginning, isEnd }: SwiperCore) => setEdge({ isBeginning, isEnd });
+
   return (
-    <Box sx={{ ...sliderSx.container, ...sx }}>
-      <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent='space-between'>
+    <Box sx={{ ...sliderSx.container, ...sx } as SxProps}>
+      <Box sx={sliderSx.titleWrapper}>
         <Typography variant='h4' sx={sliderSx.title}>
           {title}
         </Typography>
 
         {withArrows && (
-          <ButtonGroup sx={sliderSx.arrows}>
-            <Button variant='outlined' disabled={edge.isBeginning} onClick={() => slider?.slidePrev()}>
-              <ArrowForwardIosIcon fontSize='small' sx={sliderSx.backArrow} />
-            </Button>
-
-            <Button variant='outlined' disabled={edge.isEnd} onClick={() => slider?.slideNext()}>
-              <ArrowForwardIosIcon fontSize='small' />
-            </Button>
-          </ButtonGroup>
+          <CardSliderArrows
+            isPrevDisabled={edge.isBeginning}
+            isNextDisabled={edge.isEnd}
+            onClickPrev={() => slider?.slidePrev()}
+            onClickNext={() => slider?.slideNext()}
+          />
         )}
-      </Stack>
+      </Box>
 
       {head}
 
-      {cardsList.length ? (
-        <Box sx={{ width: '100%', marginTop: { xs: '20px', md: '40px' } }}>
+      {cardList.length ? (
+        <Box sx={sliderSx.cardList}>
           <Swiper
             style={{
               width: '100%',
-              height: 'auto',
+              overflowX: 'clip',
+              overflowY: 'visible',
             }}
             spaceBetween={spaceBetween}
             grid={{
@@ -118,18 +83,19 @@ export function CardSlider({
             modules={[Grid]}
             className='mySwiper'
             slidesPerView='auto'
-            onSlideChange={slideChangeHandler}
+            onSlideChange={changeSlide}
           >
-            {cardsList.map((card, i) => (
-              <SwiperSlide key={i} className={cardCss.fit}>
+            {cardList.map((card, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <SwiperSlide key={i} style={sliderSx.slide}>
                 {card}
               </SwiperSlide>
             ))}
           </Swiper>
         </Box>
       ) : (
-        <Typography variant='h5' color='primary' sx={sliderSx.emptyTitle}>
-          {emptyTitle || 'Список карточек пуст'}
+        <Typography variant='h5' color='primary' sx={sliderSx.emptyText}>
+          {emptyText}
         </Typography>
       )}
     </Box>

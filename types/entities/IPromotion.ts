@@ -1,16 +1,16 @@
-import { ITranslatableString } from './ITranslatableString';
-import { ITranslatableText } from './ITranslatableText';
+import { IBase } from './IBase';
 import { IImage } from './IImage';
 import { IProduct } from './IProduct';
-import { IBaseEntity } from './IBaseEntity';
+import { ITranslatableString } from './ITranslatableString';
+import { ITranslatableText } from './ITranslatableText';
 
-export interface IPromotion extends IBaseEntity {
+export interface IPromotion extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   cardImage: IImage;
   pageImage: IImage;
   discount: number;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   products?: IProduct[];
 }

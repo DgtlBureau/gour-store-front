@@ -1,6 +1,7 @@
 import React from 'react';
-import MUICircularProgress from '@mui/material/CircularProgress';
+
 import { SxProps } from '@mui/material';
+import MUICircularProgress from '@mui/material/CircularProgress';
 
 type Props = {
   color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'inherit' | undefined;

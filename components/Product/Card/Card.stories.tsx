@@ -1,66 +1,44 @@
 import React, { useState } from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
-import { ProductCard } from './Card';
-import { Weight } from 'types/entities/Weight';
 
-import russiaIcon from 'assets/icons/countries/russia.svg';
+import { imageByCountry } from 'constants/countries';
+
+import { ProductCard, ProductCardProps } from './Card';
+
+import cheeseBackground from 'assets/images/categories/cheese-background.png';
 
 export default {
   component: ProductCard,
   title: 'Product/Card',
 } as Meta;
 
-const DESCRIPTION = `
-  Обладает белым цветом, чистым, кисломолочным, 
-  чуть сладковатым вкусом и нежной, ломкой структурой. 
-  Благодаря изготовлению из козьего молока усиливает иммунитет,
-  содержит ценные витамины и минералы.
-  Прекрасен как самостоятельное блюдо в сочетании с белым или розовым вином.
-`;
-
-const WEIGHTS = [
-  {
-    value: 100,
-    unit: 'г',
-  },
-  {
-    value: 200,
-    unit: 'г',
-  },
-  {
-    value: 300,
-    unit: 'г',
-  },
-] as Weight[];
-
-const PRICE = 350;
-
-const PREVIEW_SRC = 'https://posta-magazine.ru/wp-content/uploads/2020/01/l_main_goatcheese-places_posta-magazine.jpg';
-
-const Template: ComponentStory<typeof ProductCard> = function () {
-  const [weightId, setWeightId] = useState(0);
-  const [inCart, setInCart] = useState(false);
+const Template: ComponentStory<typeof ProductCard> = args => {
   const [isElected, setIsElected] = useState(false);
+  const [amount, setWeight] = useState(0);
+
+  const changeIsElect = () => setIsElected(!isElected);
+
+  const increaseWeight = (_gram: number) => setWeight(amount + 1);
+  const decreaseWeight = (_gram: number) => setWeight(amount - 1);
 
   return (
-    <ProductCard
-      currentCount={1}
-      isWeightGood
-      currency='cheeseCoin'
-      title='Chevrano XO Козий Элитный Сыр'
-      description={DESCRIPTION}
-      rating={4.3}
-      price={PRICE}
-      previewSrc={PREVIEW_SRC}
-      countrySrc={russiaIcon}
-      isElected={isElected}
-      onAdd={() => setInCart(true)}
-      onRemove={() => setInCart(false)}
-      onElect={() => setIsElected(!isElected)}
-      onDetail={() => ({})}
-    />
+    <ProductCard {...args} productType='Сыр' onElect={changeIsElect} onAdd={increaseWeight} onRemove={decreaseWeight} />
   );
 };
 
-export const DefaultProductCard = Template.bind({});
+export const DefaultProductInformation = Template.bind({});
+
+const props: Partial<ProductCardProps> = {
+  title: 'Русский сыр',
+  rating: 4.93,
+  price: 350,
+  discount: 10,
+  currency: 'cheeseCoin',
+  previewImg: '',
+  countryImg: imageByCountry.Russia,
+  backgroundImg: cheeseBackground,
+  isElected: false,
+};
+
+DefaultProductInformation.args = props;

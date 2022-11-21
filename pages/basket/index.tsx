@@ -1,84 +1,97 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useMemo } from 'react';
+
 import { Divider, Grid } from '@mui/material';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { PrivateLayout } from 'layouts/Private/Private';
-import { useAppDispatch, useAppSelector } from 'hooks/store';
-import {
-  addBasketProduct,
-  selectedProductCount,
-  selectedProductSum,
-  selectedProductWeight,
-  selectedProductDiscount,
-  selectProductsInOrder,
-  subtractBasketProduct,
-  removeProduct,
-  selectProductsIdInOrder,
-} from 'store/slices/orderSlice';
+import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { useGetSimilarProductsByIdQuery } from 'store/api/productApi';
-import { useAppNavigation } from 'components/Navigation';
-import { Button } from 'components/UI/Button/Button';
-import { CartInfo } from 'components/Cart/Info/Info';
+import {
+  addBasketProduct,
+  removeProduct,
+  selectBasketProducts,
+  selectProductsIdInOrder,
+  selectedProductCount,
+  selectedProductDiscount,
+  selectedProductSum,
+  subtractBasketProduct,
+} from 'store/slices/orderSlice';
+
+import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
+
 import { CartCard } from 'components/Cart/Card/Card';
 import { CartEmpty } from 'components/Cart/Empty/Empty';
-import { Typography } from 'components/UI/Typography/Typography';
+import { CartInfo } from 'components/Cart/Info/Info';
+import { useAppNavigation } from 'components/Navigation';
+import { ProductSlider } from 'components/Product/Slider/Slider';
+import { Button } from 'components/UI/Button/Button';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
-import translation from './Basket.i18n.json';
-import { dispatchNotification } from 'packages/EventBus';
-import { NotificationType } from 'types/entities/Notification';
+import { Typography } from 'components/UI/Typography/Typography';
+
 import { IProduct } from 'types/entities/IProduct';
-import { ProductCatalog } from 'components/Product/Catalog/Catalog';
+import { NotificationType } from 'types/entities/Notification';
+
+import { Path } from 'constants/routes';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { dispatchNotification } from 'packages/EventBus';
+import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { getProductBackground } from 'utils/categoryUtil';
+import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import translation from './Basket.i18n.json';
+
 import sx from './Basket.styles';
-import { useRouter } from 'next/router';
 
 export function Basket() {
-  const { language, currency, goToHome, goToOrder, goToProductPage } = useAppNavigation();
-
-  const router = useRouter();
+  const { language, currency, goToHome, goToOrder } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
+  const { data: categories = [] } = useGetCategoryListQuery();
 
-  const productsInOrder = useAppSelector(selectProductsInOrder);
+  const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
-  const weight = useAppSelector(selectedProductWeight);
-  const sum = useAppSelector(selectedProductSum);
+  const productTotalSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const productIds = useAppSelector(selectProductsIdInOrder);
 
   const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });
 
+  const formattedSimilarProducts = useMemo(
+    () => computeProductsWithCategories(similarProducts, categories, favoriteProducts),
+    [similarProducts, categories, favoriteProducts],
+  );
+
   // TODO: вынести логику стоимости доставки на бек
   const delivery = 500;
-  const sumToFreeDelivery = 2990 - sum;
+  const minCostForFreeDelivery = 2990;
+  const sumToFreeDelivery = minCostForFreeDelivery - productTotalSum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const deleteProduct = (product: IProduct) => dispatch(removeProduct(product));
-  const addProduct = (product: IProduct) => dispatch(addBasketProduct(product));
-  const subtractProduct = (product: IProduct) => dispatch(subtractBasketProduct(product));
+  const deleteProduct = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
+  const addProduct = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const subtractProduct = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const electProduct = async (id: number, isElect: boolean) => {
     try {
       if (isElect) {
         await removeFavorite(id);
       } else {
-        await addFavorite({ productId: id });
+        await addFavorite(id);
       }
     } catch (error) {
       const message = getErrorMessage(error);
@@ -87,44 +100,40 @@ export function Basket() {
     }
   };
 
+  const freeDeliveryBlockTitle = `${t('freeDeliveryText.part1')} ${sumToFreeDelivery}\xa0₽ ${t(
+    'freeDeliveryText.part2',
+  )}`;
+
   return (
     <PrivateLayout>
-      <ShopLayout currency={currency} language={language}>
+      <ShopLayout>
         <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>
-
         {productsInOrder.length === 0 && (
-          <CartEmpty
-            title={t('emptyTitle')}
-            btn={{
-              label: t('emptyButton'),
-              onClick: goToHome,
-            }}
-          >
+          <CartEmpty title={t('emptyTitle')} actionText={t('emptyButton')} onClick={goToHome}>
             <Typography variant='body1'>{t('emptyText')}</Typography>
           </CartEmpty>
         )}
-
-        {productsInOrder.length !== 0 && (
+        {!!productsInOrder.length && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map(it => (
                 <>
                   <CartCard
+                    id={it.product.id}
                     key={it.product.id}
                     title={it.product.title[language] || '...'}
-                    price={it.product.price[currency] || 0} // FIXME: TODO: избавиться от any
+                    price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
                     amount={it.amount}
-                    weight={it.weight}
-                    isWeightGood={it.product.isWeightGood}
+                    gram={it.gram}
                     productImg={it.product.images[0]?.small}
+                    backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
                     currency={currency}
-                    onDetail={() => goToProductPage(it.product.id)}
-                    onDelete={() => deleteProduct(it.product)}
-                    onAdd={() => addProduct(it.product)}
-                    onSubtract={() => subtractProduct(it.product)}
+                    onDelete={() => deleteProduct(it.product, it.gram)}
+                    onAdd={() => addProduct(it.product, it.gram)}
+                    onSubtract={() => subtractProduct(it.product, it.gram)}
                   />
 
                   <Divider sx={sx.divider} />
@@ -132,55 +141,50 @@ export function Basket() {
               ))}
             </Grid>
 
-            <Grid item xs={12} md={4}>
-              <Button onClick={goToOrder} sx={sx.desktopOrderBtn}>
-                {t('orderButton')}
-              </Button>
+            <Grid container item xs={12} md={4} spacing={1}>
+              <Grid item xs={12} sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <Button fullWidth onClick={goToOrder}>
+                  {t('orderButton')}
+                </Button>
+              </Grid>
 
-              <CartInfo
-                count={count}
-                weight={weight}
-                discount={sumDiscount}
-                delivery={isDeliveryFree ? 0 : delivery}
-                price={sum}
-                currency={currency}
-              />
+              <Grid item xs={12}>
+                <CartInfo
+                  count={count}
+                  discount={sumDiscount}
+                  delivery={isDeliveryFree ? 0 : delivery}
+                  price={productTotalSum}
+                  currency={currency}
+                />
+              </Grid>
 
               {!isDeliveryFree && (
-                <InfoBlock
-                  sx={{ marginTop: '10px' }}
-                  text={`${t('freeDeliveryText.part1')} ${sumToFreeDelivery}₽ ${t('freeDeliveryText.part2')} `}
-                  link={{ label: t('continueShopping'), path: '/' }}
-                />
+                <Grid item xs={12}>
+                  <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
+                </Grid>
               )}
-              <InfoBlock
-                sx={{ marginTop: '10px' }}
-                text={t('aboutDelivery')}
-                link={{
-                  label: t('detailed'),
-                  path: '/#purchase-rules-block',
-                }}
-              />
+
+              <Grid item xs={12}>
+                <InfoBlock title={t('aboutDelivery')} actionText={t('detailed')} href={`${Path.RULES}`} />
+              </Grid>
             </Grid>
 
             {!!similarProducts?.length && (
               <Grid item xs={12}>
-                <ProductCatalog
+                <ProductSlider
                   title={t('similar')}
-                  products={similarProducts}
+                  products={formattedSimilarProducts}
                   language={language}
                   currency={currency}
-                  favoritesList={favoriteProducts}
                   onAdd={addProduct}
                   onRemove={subtractProduct}
                   onElect={electProduct}
-                  onDetail={goToProductPage}
                 />
               </Grid>
             )}
 
             <Grid item xs={12} sx={{ display: { md: 'none' } }}>
-              <Button onClick={goToOrder} sx={sx.mobileOrderBtn}>
+              <Button fullWidth onClick={goToOrder}>
                 {t('orderButton')}
               </Button>
             </Grid>

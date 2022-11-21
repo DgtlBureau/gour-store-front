@@ -1,12 +1,17 @@
+import Image from 'next/image';
 import React, { ChangeEvent } from 'react';
-import { Avatar, Stack } from '@mui/material';
 
-import translations from './AvatarEditor.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { Stack } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import noImage from 'assets/no-image.svg';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './AvatarEditor.i18n.json';
+
+import noImage from 'assets/images/default.svg';
 
 const sx = {
   image: {
@@ -43,7 +48,7 @@ export type PACredentialsAvatarEditorProps = {
 export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACredentialsAvatarEditorProps) {
   const { t } = useLocalTranslation(translations);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const changeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
     const filesList = event.target.files;
     if (!filesList) return;
     if (!filesList[0]) return;
@@ -52,7 +57,9 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
 
   return (
     <Stack sx={{ width: '100%', marginBottom: '30px' }} spacing={1} alignItems='center'>
-      <Avatar alt='Your profile' src={image || noImage} sx={{ width: 128, height: 128, marginBottom: '30px' }} />
+      <Box sx={sx.image}>
+        <Image src={image || noImage} objectFit='cover' height={128} width={128} alt='' />
+      </Box>
 
       <div style={sx.btn}>
         <label htmlFor='profile-photo-input' style={sx.label}>
@@ -60,12 +67,14 @@ export function PACredentialsAvatarEditor({ image, onChange, onRemove }: PACrede
             {t('changePhoto')}
           </Typography>
         </label>
-        <input id='profile-photo-input' type='file' onChange={handleChange} style={sx.input} />
+        <input id='profile-photo-input' type='file' onChange={changeAvatar} style={sx.input} />
       </div>
 
-      <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
-        {t('delete')}
-      </Button>
+      {!!image && (
+        <Button sx={sx.btn} variant='outlined' onClick={onRemove}>
+          {t('delete')}
+        </Button>
+      )}
     </Stack>
   );
 }

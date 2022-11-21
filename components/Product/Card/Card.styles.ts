@@ -1,16 +1,20 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-
-    height: 'auto',
+    justifyContent: 'space-between',
 
     width: {
-      xs: '165px',
-      sm: '215px',
+      xs: '172px',
+      sm: '212px',
       md: '282px',
+    },
+
+    gap: {
+      xs: '3px',
+      md: '5px',
     },
 
     padding: {
@@ -22,9 +26,8 @@ const sx = {
     borderColor: '#FEC983',
     borderRadius: '10px',
 
-    backgroundColor: t.palette.background.default,
+    backgroundColor: color.white,
 
-    boxShadow: 'none',
     boxSizing: 'border-box',
   },
   preview: {
@@ -32,49 +35,46 @@ const sx = {
   },
   previewImg: {
     height: {
-      xs: '146px',
-      sm: '190px',
-      md: '255px',
+      xs: '148px',
+      sm: '188px',
+      md: '238px',
     },
+
+    width: '100%',
 
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
+  },
+  productImg: {
+    height: '100%',
     objectFit: 'contain',
-
-    '&:hover': {
-      cursor: 'pointer',
-    },
   },
   heart: {
     position: 'absolute',
     top: '8px',
     right: '8px',
 
-    color: t.palette.text.muted || '',
+    color: color.muted,
+
+    cursor: 'pointer',
 
     '&:hover': {
-      cursor: 'pointer',
       opacity: 0.75,
     },
   },
   elected: {
-    color: t.palette.accent.main,
+    color: color.accent,
   },
   country: {
     position: 'absolute',
+    pointerEvents: 'none',
     bottom: 6,
     right: 6,
     height: '26px',
     width: '26px',
     overflow: 'hidden',
     borderRadius: '50%',
-  },
-  rate: {
-    margin: {
-      xs: '10px 0 5px 0',
-      md: '10px 0',
-    },
   },
   title: {
     fontSize: {
@@ -84,57 +84,49 @@ const sx = {
     },
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
-    color: t.palette.text.secondary,
+    color: color.primary,
     display: '-webkit-box',
 
     height: '100%',
-    overflow: 'hidden',
-    '-webkit-line-clamp': {
+
+    WebkitLineClamp: {
       xs: '2',
       sm: '1',
       md: '2',
     },
-    '-webkit-box-orient': 'vertical',
+    WebkitBoxOrient: 'vertical',
 
-    maxHeight: {
-      xs: '45px',
-      sm: '26px',
-      md: '64px',
-    },
+    maxHeight: { xs: '24px', sm: '26px', md: '30px' },
+
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
-    whiteSpace: 'normal',
+    whiteSpace: 'nowrap',
 
     '&:hover': {
-      cursor: 'pointer',
       opacity: '0.75',
     },
   },
-  description: {
-    display: {
-      sm: '-webkit-box',
-      xs: 'none',
-    },
-    height: '100%',
-    maxHeight: '44px',
-    margin: {
-      xs: '5px 0',
-      md: '10px 0',
-    },
-    '-webkit-line-clamp': '2',
-    '-webkit-box-orient': 'vertical',
+  stock: {
+    display: 'block',
+    padding: '2px 16px',
+    borderRadius: '4px',
+    backgroundColor: color.secondary,
+    color: color.primary,
 
-    textOverflow: 'ellipsis',
+    width: '100%',
+    height: '100%',
+
+    maxHeight: '26px',
+
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: 'vertical',
+
     overflow: 'hidden',
-    whiteSpace: 'normal',
-    color: t.palette.text.secondary,
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
   actions: {
     display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  deployed: {
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },

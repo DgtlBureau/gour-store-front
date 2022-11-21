@@ -1,5 +1,6 @@
-import React, { forwardRef, Ref } from 'react';
 import NextLink, { LinkProps } from 'next/link';
+import React, { Ref, forwardRef } from 'react';
+
 import { Link as MuiLink, LinkProps as MuiLinkProps } from '@mui/material';
 
 type LinkRef = HTMLAnchorElement;

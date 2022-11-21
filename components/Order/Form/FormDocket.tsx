@@ -2,12 +2,16 @@ import React from 'react';
 
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
-import { getDeclensionWordByCount } from 'utils/wordHelper';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
-import { defaultTheme as theme } from 'themes';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import translations from './Form.i18n.json';
+
 import { Currency } from 'types/entities/Currency';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+import { getDeclensionWordByCount } from 'utils/wordUtil';
+
+import { color } from 'themes';
+
+import translations from './Form.i18n.json';
 
 const sx = {
   docket: {
@@ -17,7 +21,7 @@ const sx = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    color: theme.palette.text.muted,
+    color: color.muted,
     '&:last-child': {
       marginBottom: '10px',
     },
@@ -30,10 +34,10 @@ const sx = {
     fontFamily: 'Roboto slab',
   },
   discountValue: {
-    color: theme.palette.error.main,
+    color: color.error,
   },
   total: {
-    color: theme.palette.text.secondary,
+    color: color.primary,
   },
   divider: {
     width: '100%',
@@ -53,7 +57,7 @@ type Props = {
 export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, currency = 'cheeseCoin' }: Props) {
   const { t } = useLocalTranslation(translations);
 
-  const total = cost + delivery - discount;
+  const total = cost + delivery;
 
   const productsDeclision = getDeclensionWordByCount(productsCount, [
     t('manyProducts'),
@@ -71,7 +75,7 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
         </Typography>
         <hr style={sx.divider} />
         <Typography variant='h6' sx={sx.value}>
-          {cost}
+          {cost + discount}
           {currencySymbol}
         </Typography>
       </Box>

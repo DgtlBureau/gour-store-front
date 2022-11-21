@@ -1,14 +1,10 @@
 {
   "ru": {
     "addToCart": "в корзину",
-    "g": "г",
-    "kg": "кг",
-    "pcs": "шт"
+    "g": "г"
   },
   "en": {
     "addToCart": "add to cart",
-    "g": "g",
-    "kg": "kg",
-    "pcs": "pcs"
+    "g": "g"
   }
 }

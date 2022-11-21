@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
 
+import {
+  useCheckCodeMutation,
+  useRecoverPasswordMutation,
+  useSendEmailCodeMutation,
+  useSignInMutation,
+} from 'store/api/authApi';
+
 import { AuthLayout } from 'layouts/Auth/Auth';
-import { useAppNavigation } from 'components/Navigation';
-import { dispatchNotification } from 'packages/EventBus';
+
 import { SigninCredentials } from 'components/Auth/Signin/Credentials/Credentials';
 import { SigninPassRecovery } from 'components/Auth/Signin/PassRecovery/PassRecovery';
-import { useSignInMutation, useSendCodeMutation, useSignOutMutation } from 'store/api/authApi';
-import { SignInDto } from 'types/dto/signin.dto';
+import { useAppNavigation } from 'components/Navigation';
+
 import { PasswordRecoveryDto } from 'types/dto/password-recovery.dto';
+import { SignInDto } from 'types/dto/signin.dto';
 import { NotificationType } from 'types/entities/Notification';
+
+import { dispatchNotification } from 'packages/EventBus';
+import { getErrorMessage } from 'utils/errorUtil';
 
 type SignInStage = 'credentials' | 'recovery';
 
 export default function SignIn() {
   const { goToIntro, goToSignUp, goToHome } = useAppNavigation();
 
-  const [sendCode] = useSendCodeMutation();
+  const [sendCode] = useSendEmailCodeMutation();
+  const [checkCode, { isLoading: codeIsSending }] = useCheckCodeMutation();
+  const [recoverPassword] = useRecoverPasswordMutation();
   const [signIn] = useSignInMutation();
 
   const [stage, setStage] = useState<SignInStage>('credentials');
@@ -25,32 +37,65 @@ export default function SignIn() {
   const goToCredentials = () => setStage('credentials');
   const goToRecovery = () => setStage('recovery');
 
-  // finish it later
-  const sendSMS = (phone: string) => {
-    sendCode(phone);
-    return '1234';
+  const sendEmail = async (email: string) => {
+    try {
+      await sendCode({ email }).unwrap();
+
+      dispatchNotification('Email код отправлен');
+
+      return Promise.resolve();
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
+    }
   };
 
-  const authorize = async (data: SignInDto) => {
-    setCredentials(data);
+  const checkEmailCode = async (code: string) => {
     try {
-      await signIn(data).unwrap();
+      const isSuccess = await checkCode({ code }).unwrap();
+
+      if (isSuccess) dispatchNotification('Код подтверждён');
+
+      return isSuccess;
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      return Promise.reject(message);
+    }
+  };
+
+  const authorize = async (dto: SignInDto) => {
+    setCredentials(dto);
+
+    try {
+      await signIn(dto).unwrap();
+
       dispatchNotification('Добро пожаловать :]');
+
       goToHome();
-    } catch (e: unknown) {
-      dispatchNotification('Ошибка авторизации', { type: NotificationType.DANGER });
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+
       setCredentials(prevState => ({ ...prevState, password: '' }));
     }
   };
 
-  const recover = async (data: PasswordRecoveryDto) => {
-    setRecoveryData(data);
+  const recover = async (dto: PasswordRecoveryDto) => {
+    setRecoveryData(dto);
 
     try {
-      // await recoverPassword(recoveryData).unwrap();
+      await recoverPassword(dto).unwrap();
+
+      dispatchNotification('Пароль восстановлен');
+
       goToCredentials();
-    } catch (e: unknown) {
-      dispatchNotification('Ошибка восстановления пароля', { type: NotificationType.DANGER });
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
     }
   };
 
@@ -67,7 +112,9 @@ export default function SignIn() {
     recovery: (
       <SigninPassRecovery
         defaultValues={recoveryData}
-        onSendSMS={sendSMS}
+        codeIsSending={codeIsSending}
+        onEmailSend={sendEmail}
+        onCodeCheck={checkEmailCode}
         onBack={goToCredentials}
         onSubmit={recover}
       />

@@ -1,27 +1,16 @@
-import { defaultTheme as theme } from 'themes';
+import { color } from 'themes';
 
 const sx = {
-  circle: {
-    width: '52px',
-    height: '52px',
-
+  product: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    borderRadius: '50%',
-
-    backgroundColor: '#ebebeb',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    border: '1px solid #ebebeb',
-
-    cursor: 'pointer',
+    alignItems: {
+      xs: 'center',
+      md: 'flex-end',
+    },
   },
   selected: {
     border: '2px solid',
-    borderColor: theme.palette.accent.main,
+    borderColor: color.accent,
   },
 };
 

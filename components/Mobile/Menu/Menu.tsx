@@ -1,39 +1,27 @@
-import React, { useState, Fragment } from 'react';
-import { Box, List, ListItemButton, Collapse, Divider } from '@mui/material';
-import NextLink from 'next/link';
 import Image from 'next/image';
+import React, { Fragment, useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material';
 
-import { useAppNavigation } from 'components/Navigation';
-import translations from './Menu.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { IconButton } from 'components/UI/IconButton/IconButton';
+import { ListItemLink } from 'components/UI/List/List';
 import { Typography } from 'components/UI/Typography/Typography';
-import { MobileMenuContacts } from './MenuContacts';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import { Currency } from 'types/entities/Currency';
 
-import locationIcon from 'assets/icons/mobile/location.svg';
-import arrowIcon from 'assets/icons/mobile/arrow.svg';
-import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
-import russiaImage from 'assets/images/countries/russia.png';
-import britainImage from 'assets/images/countries/britain.png';
+import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { getCurrencySymbol } from 'utils/currencyUtil';
+
+import translations from './Menu.i18n.json';
+import { MobileMenuContacts } from './MenuContacts';
 
 import sx from './Menu.styles';
 
-const languages = [
-  {
-    value: 'ru',
-    title: 'Русский',
-    src: russiaImage,
-  },
-  {
-    value: 'en',
-    title: 'English',
-    src: britainImage,
-  },
-];
+import AddIcon from '@mui/icons-material/Add';
+import arrowIcon from 'assets/icons/mobile/arrow.svg';
+import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
+import locationIcon from 'assets/icons/mobile/location.svg';
 
 export type MobileMenuProps = {
   selectedCityId: number;
@@ -50,11 +38,8 @@ export type MobileMenuProps = {
   moneyAmount: number;
   currency: Currency;
   onChangeCity(id: number): void;
-  onClickFavorite(): void;
-  onClickPersonalArea(): void;
   onClickSignout(): void;
-  onClickReplenishment(): void;
-  onClickGame(): void;
+  onClickAddCoins(): void;
 };
 
 export function MobileMenu({
@@ -69,21 +54,14 @@ export function MobileMenu({
   moneyAmount,
   currency,
   onChangeCity,
-  onClickFavorite,
-  onClickPersonalArea,
   onClickSignout,
-  onClickReplenishment,
-  onClickGame,
+  onClickAddCoins,
 }: MobileMenuProps) {
   const [citiesIsOpened, setCitiesIsOpened] = useState(false);
-  const [languagesIsOpened, setLanguagesIsOpened] = useState(false);
 
   const { t } = useLocalTranslation(translations);
 
-  const { language } = useAppNavigation();
-
   const currentCity = cities.find(city => city?.id === selectedCityId);
-  const currentLanguage = languages.find(i => i.value === language);
 
   const currencySymbol = getCurrencySymbol(currency);
 
@@ -94,17 +72,17 @@ export function MobileMenu({
 
   return (
     <List sx={sx.list} disablePadding>
-      <Box sx={sx.money}>
+      {/* <Box sx={sx.money}>
         <Typography variant='body2' sx={sx.moneyAmount}>
           {moneyAmount}
           &nbsp;
           {currencySymbol}
         </Typography>
 
-        <IconButton onClick={onClickReplenishment} color='inherit' sx={sx.replenishment}>
+        <IconButton onClick={onClickAddCoins} color='inherit' sx={sx.replenishment}>
           <AddIcon color='primary' />
         </IconButton>
-      </Box>
+      </Box> */}
 
       <Divider sx={sx.divider} />
 
@@ -139,75 +117,33 @@ export function MobileMenu({
         </List>
       </Collapse>
 
-      {/* <ListItemButton
-        sx={{ ...sx.listItem, ...sx.languageItem }}
-        onClick={() => setLanguagesIsOpened(!languagesIsOpened)}
-      >
-        <Box sx={sx.language}>
-          <Box sx={sx.languageIcon}>
-            <Image src={currentLanguage!.src} layout="fill" alt="" />
-          </Box>
-
-          <Typography sx={sx.title}>{currentLanguage?.title}</Typography>
-        </Box>
-
-        <Box sx={Object.assign([sx.arrowIcon, languagesIsOpened && sx.invertedArrow])}>
-          <Image src={arrowIcon} layout="fill" alt="" />
-        </Box>
-      </ListItemButton> */}
-
-      <Divider sx={sx.divider} />
-
-      {/* <Collapse in={languagesIsOpened} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {languages.map(language => (
-            <Fragment key={language.title}>
-              <ListItemButton sx={{ ...sx.listItem, ...sx.languageItem }} onClick={() => setLanguagesIsOpened(false)}>
-                <NextLink href={router?.asPath || ''} locale={locale === 'ru' ? 'en' : 'ru'} passHref>
-                  <Typography
-                    sx={Object.assign([
-                      sx.title,
-                      sx.languageTitle,
-                      language.value === currentLanguage?.value && sx.accent,
-                    ])}
-                  >
-                    {language.title}
-                  </Typography>
-                </NextLink>
-              </ListItemButton>
-              <Divider sx={sx.divider} />
-            </Fragment>
-          ))}
-        </List>
-      </Collapse> */}
-
-      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickGame}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.GAME}`}>
         <Typography sx={sx.title}>{t('game')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
-      </ListItemButton>
+      </ListItemLink>
 
       <Divider sx={sx.divider} />
 
-      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickPersonalArea}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.PERSONAL_AREA}`}>
         <Typography sx={sx.title}>{t('personalArea')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
-      </ListItemButton>
+      </ListItemLink>
 
       <Divider sx={sx.divider} />
 
-      <ListItemButton sx={{ ...sx.listItem, ...sx.bigItem }} onClick={onClickFavorite}>
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.FAVORITES}`}>
         <Typography sx={sx.title}>{t('favorites')}</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={lightArrowIcon} layout='fill' alt='' />
         </Box>
-      </ListItemButton>
+      </ListItemLink>
 
       <Divider sx={sx.divider} />
 

@@ -1,7 +1,7 @@
-import { IBaseEntity } from './IBaseEntity';
+import { IBase } from './IBase';
 import { ICity } from './ICity';
 
-export interface IOrderProfile extends IBaseEntity {
+export interface IOrderProfile extends IBase {
   title: string;
   city: ICity;
   street: string;

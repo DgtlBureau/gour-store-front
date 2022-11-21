@@ -1,58 +1,70 @@
 import React, { useEffect } from 'react';
-import { Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Divider, Stack } from '@mui/material';
+
+import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+
+import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import translations from './Editor.i18n.json';
+import { getValidationSchema } from './validation';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { UpdateUserDto } from 'types/dto/profile/update-user.dto';
-import translations from './Editor.i18n.json';
-import { HFTextField } from 'components/HookForm/HFTextField';
-import { TextField } from 'components/UI/TextField/TextField';
-import { IconButton } from 'components/UI/IconButton/IconButton';
-import { Button } from 'components/UI/Button/Button';
-import { getValidationSchema } from './validation';
+const sx = {
+  divider: {
+    height: 28,
+    marginRight: '14px',
+  },
+};
 
-type UserData = {
+export type CredentialsFormType = {
   firstName: string;
   lastName: string;
-  email?: string;
+  phone?: string;
+  email: string;
   referralCode?: string;
+  password?: string;
 };
 
 export type PACredentialsEditorProps = {
-  user: UserData;
-  phone: string;
-  onChangePhone(): void;
+  defaultValues: CredentialsFormType;
+  onChangeEmail(): void;
   onChangePassword(): void;
-  onSave(updatedUser: UpdateUserDto): void;
+  onSubmit(updatedUser: UpdateUserDto): void;
 };
 
 export function PACredentialsEditor({
-  user,
-  phone,
-  onSave,
-  onChangePhone,
+  defaultValues,
+  onSubmit,
+  onChangeEmail,
   onChangePassword,
 }: PACredentialsEditorProps) {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
 
-  const values = useForm<UserData>({
-    defaultValues: user,
+  const values = useForm<CredentialsFormType>({
+    defaultValues,
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
   useEffect(() => {
-    values.reset(user);
-  }, [user]);
+    values.reset(defaultValues);
+  }, [defaultValues]);
 
-  const submit = (data: Partial<UserData>) => onSave(data);
+  const submit = ({ firstName, lastName, phone, referralCode }: CredentialsFormType) =>
+    onSubmit({ firstName, lastName, phone, referralCode });
 
-  const cancel = () => values.reset(user);
+  const cancel = () => values.reset(defaultValues);
 
   return (
     <FormProvider {...values}>
@@ -60,28 +72,37 @@ export function PACredentialsEditor({
         <Stack spacing={2} sx={{ margin: '0 0 10px 0' }}>
           <HFTextField name='firstName' label={t('firstName')} />
           <HFTextField name='lastName' label={t('lastName')} />
-          <HFTextField name='email' label={t('email')} />
-          <TextField
-            value={phone}
-            label={t('phone')}
+          <HFPhoneInput name='phone' label={t('phone')} />
+          <HFTextField
+            name='email'
+            label={t('email')}
+            disabled
             endAdornment={
-              <IconButton onClick={onChangePhone}>
-                <SettingsIcon />
-              </IconButton>
+              <>
+                <Divider sx={sx.divider} orientation='vertical' />
+                <IconButton onClick={onChangeEmail}>
+                  <SettingsIcon />
+                </IconButton>
+              </>
             }
           />
-          <TextField
+          <HFTextField
             type='password'
-            value='1234567890'
+            name='password'
             label={t('password')}
+            disabled
             endAdornment={
-              <IconButton onClick={onChangePassword}>
-                <SettingsIcon />
-              </IconButton>
+              <>
+                <Divider sx={sx.divider} orientation='vertical' />
+                <IconButton onClick={onChangePassword}>
+                  <SettingsIcon />
+                </IconButton>
+              </>
             }
           />
           <HFTextField name='referralCode' label={t('referralCode')} />
         </Stack>
+
         <Button type='submit' disabled={!values.formState.isDirty} sx={{ margin: '0 10px 0 0' }}>
           {t('submit')}
         </Button>

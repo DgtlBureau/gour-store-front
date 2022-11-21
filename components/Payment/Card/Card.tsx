@@ -1,50 +1,102 @@
+import Image from 'next/image';
 import React from 'react';
-import { Typography, Grid } from '@mui/material';
 
-import { formatDate } from 'helpers/dateHelper';
-import { getCurrencySymbol, getFormattedPrice } from 'helpers/currencyHelper';
-import { FullInvoice } from 'pages/personal-area/payments';
-import { Button } from 'components/UI/Button/Button';
-import { InvoiceStatus } from 'types/entities/IInvoice';
+import '../../../.storybook/main';
+import { Grid, Tooltip, Typography } from '@mui/material';
+import { FullInvoice, PaymentTabs } from 'pages/personal-area/payments';
+
+import { useCreateInvoiceMutation } from 'store/api/invoiceApi';
+
 import { Box } from 'components/UI/Box/Box';
-import { useTimer } from 'hooks/useTimer';
+import { Button } from 'components/UI/Button/Button';
 
-import { payButtonFields, PayBtnKeys, paymentColorByStatus } from './CardHelper';
+import { IInvoice, InvoiceStatus } from 'types/entities/IInvoice';
+import { IWalletTransaction } from 'types/entities/IWalletTransaction';
+import { NotificationType } from 'types/entities/Notification';
+
+import { useTimer } from 'hooks/useTimer';
+import { dispatchNotification } from 'packages/EventBus';
+import { getCurrencySymbol, getFormattedPrice } from 'utils/currencyUtil';
+import { formatDate } from 'utils/dateUtil';
+
+import { PayBtnKeys, payButtonFields, paymentColorByStatus } from './CardHelper';
+
+import styles from './Card.module.css';
 import sx from './Card.styles';
+
+import tooltipIcon from 'assets/icons/general/tooltip.svg';
+
+function matchIsActualInvoiceDate(status: InvoiceStatus, expiresAt: Date | null) {
+  const isActualDateForRepay = expiresAt && expiresAt.getTime() > new Date().getTime();
+  const isActualStatusForRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(status);
+
+  return !!isActualDateForRepay && isActualStatusForRepay;
+}
 
 export type PaymentsCardProps = {
   payment: FullInvoice;
+  type: PaymentTabs;
+  payerUuid: string;
   refetch: () => void;
+  onRepay: (invoiceUuid: IInvoice['uuid'], price: number) => void;
 };
 
-export function PaymentsCard({ payment, refetch }: PaymentsCardProps) {
-  const { timerTime } = useTimer(payment.expiresAt, /* refetch */ () => undefined); // TODO: вызывать refetch для обновления статуса заявки
+export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: PaymentsCardProps) {
+  const [createInvoice] = useCreateInvoiceMutation();
+
+  const isInvoice = type === PaymentTabs.INVOICE;
+  const canInvoiceRepay = isInvoice && matchIsActualInvoiceDate(payment.status as InvoiceStatus, payment.expiresAt);
+
+  const { timerTime } = useTimer(payment.expiresAt || new Date(), { onEnd: refetch, needCount: canInvoiceRepay });
+
+  const handleRepayClick = async () => {
+    try {
+      const invoice = await createInvoice({
+        amount: payment.coins,
+        currency: 'RUB',
+        payerUuid,
+        value: payment.coins,
+      }).unwrap();
+
+      onRepay(invoice.uuid, invoice.amount);
+    } catch {
+      dispatchNotification('Произошла ошибка, повторите снова', { type: NotificationType.DANGER });
+    }
+  };
 
   const invoiceStatus = paymentColorByStatus[payment.status];
 
-  const cheeseCoinCount = getFormattedPrice(payment.cheeseCoinCount);
+  const cheeseCoinCount = getFormattedPrice(payment.value);
   const currencySymbol = getCurrencySymbol('cheeseCoin');
 
   const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy');
-  const formattedTime = formatDate(payment.updatedAt, 'hh:mm');
-
-  const canRepay = [InvoiceStatus.WAITING, InvoiceStatus.FAILED].includes(payment.status);
+  const formattedTime = formatDate(payment.updatedAt, 'H:mm');
 
   return (
     <Grid container sx={sx.container}>
-      <Typography sx={sx.title} variant='h6'>
-        Чизкоины
-      </Typography>
+      {isInvoice && (
+        <Typography sx={sx.title} variant='h6'>
+          Счет
+        </Typography>
+      )}
 
-      <Grid item sx={sx.statusBlock}>
+      <Grid item sx={{ ...sx.statusBlock, ...(!isInvoice && sx.title) }}>
         <Typography sx={{ ...sx.status, ...sx[invoiceStatus.className] }}>{invoiceStatus.name}</Typography>
 
         <Typography variant='body1' sx={sx.statusDate}>
           от&nbsp;{formattedDate} в&nbsp;{formattedTime}
         </Typography>
+
+        {payment.description && (
+          <Tooltip title={payment.description} arrow>
+            <div className={styles.statusTooltip}>
+              <Image src={tooltipIcon} layout='fixed' width='20px' height='20px' />
+            </div>
+          </Tooltip>
+        )}
       </Grid>
 
-      {canRepay && timerTime && (
+      {canInvoiceRepay && timerTime && (
         <Grid item sx={sx.timer}>
           <Typography sx={sx.timerLabel}>
             до отмены платежа&ensp;
@@ -55,15 +107,18 @@ export function PaymentsCard({ payment, refetch }: PaymentsCardProps) {
         </Grid>
       )}
 
-      {canRepay && (
+      {canInvoiceRepay && (
         <Box sx={sx.payBtnBlock}>
-          <Button variant='outlined' sx={sx.payBtn}>
+          <Button variant='outlined' sx={sx.payBtn} onClick={handleRepayClick}>
             {payButtonFields[payment.status as PayBtnKeys]}
           </Button>
         </Box>
       )}
 
-      <Typography variant='h6' sx={sx.price}>
+      <Typography
+        variant='h6'
+        sx={{ ...sx.price, ...(!isInvoice && sx[payment.status as IWalletTransaction['type']]) }}
+      >
         {cheeseCoinCount}&nbsp;{currencySymbol}
       </Typography>
     </Grid>

@@ -1,20 +1,25 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { memo, useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
 
-import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
-
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { OrderProfileDto } from 'types/dto/order/profile.dto';
-import { defaultTheme as theme } from 'themes';
-import translations from './Form.i18n.json';
-import { Button } from 'components/UI/Button/Button';
-import { IconButton } from 'components/UI/IconButton/IconButton';
-import { HFTextField } from 'components/HookForm/HFTextField';
 import { HFCheckbox } from 'components/HookForm/HFCheckbox';
 import { HFSelect } from 'components/HookForm/HFSelect';
+import { HFTextField } from 'components/HookForm/HFTextField';
+import { Button } from 'components/UI/Button/Button';
+import { IconButton } from 'components/UI/IconButton/IconButton';
+
+import { OrderProfileDto } from 'types/dto/order/profile.dto';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { color } from 'themes';
+
+import translations from './Form.i18n.json';
 import { getValidationSchema } from './validation';
+
+import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 const sx = {
   mainCheck: {
@@ -47,7 +52,7 @@ type PAProfilesFormProps = {
   onDelete(): void;
 };
 
-export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) {
+export const PAProfilesForm = memo(({ defaultValues, cities, onSave, onDelete }: PAProfilesFormProps) => {
   const { t } = useLocalTranslation(translations);
 
   const schema = getValidationSchema(t);
@@ -60,7 +65,9 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
 
   const submit = (data: OrderProfileDto) => onSave(data);
 
-  const reset = () => values.reset(defaultValues);
+  const reset = useCallback(() => values.reset(defaultValues), [defaultValues, values]);
+
+  useEffect(() => reset(), [defaultValues, reset]);
 
   return (
     <FormProvider {...values}>
@@ -86,24 +93,24 @@ export function PAProfilesForm({ defaultValues, cities, onSave, onDelete }: PAPr
               <HFTextField rows={4} multiline name='comment' label={t('comment')} />
             </Grid>
           </Grid>
-
           <Grid item xs={12} md={6} sx={sx.mainCheck}>
             <HFCheckbox name='isMain' label={t('isMain')} sx={sx.checkbox} />
           </Grid>
-
           <Grid item xs={12} md={6} container sx={sx.actions}>
             <Button type='submit' size='small'>
               {t('save')}
             </Button>
-            <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
-              {t('clear')}
-            </Button>
+            {!defaultValues && (
+              <Button variant='outlined' size='small' onClick={reset} sx={sx.closeBtn}>
+                {t('reset')}
+              </Button>
+            )}
             <IconButton>
-              <DeleteIcon htmlColor={theme.palette.text.muted} onClick={onDelete} />
+              <DeleteIcon htmlColor={color.muted} onClick={onDelete} />
             </IconButton>
           </Grid>
         </Grid>
       </form>
     </FormProvider>
   );
-}
+});

@@ -1,11 +1,12 @@
 import { InvoiceStatus } from 'types/entities/IInvoice';
+import { IWalletTransaction } from 'types/entities/IWalletTransaction';
 
 type InvoiceStatusLabels = {
   name: string;
   className: 'statusWaiting' | 'statusCancelled' | 'statusPaid' | 'statusFailed';
 };
 
-export const paymentColorByStatus: Record<InvoiceStatus, InvoiceStatusLabels> = {
+export const paymentColorByStatus: Record<InvoiceStatus | IWalletTransaction['type'], InvoiceStatusLabels> = {
   PAID: {
     name: 'Оплачен',
     className: 'statusPaid',
@@ -21,6 +22,15 @@ export const paymentColorByStatus: Record<InvoiceStatus, InvoiceStatusLabels> = 
   CANCELLED: {
     name: 'Платеж отменен',
     className: 'statusCancelled',
+  },
+
+  income: {
+    name: 'Пополнение',
+    className: 'statusPaid',
+  },
+  expense: {
+    name: 'Списание',
+    className: 'statusFailed',
   },
 };
 

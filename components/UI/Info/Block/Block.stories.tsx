@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ComponentStory, Meta } from '@storybook/react';
 
 import { InfoBlock } from './Block';
@@ -14,7 +15,7 @@ const DEFAULT_LINK = {
   path: 'https://sib.fm/storage/article/March2021/IDsV2DD5Qhwj5kWTpfYG.jpeg',
 };
 
-const Template: ComponentStory<typeof InfoBlock> = function () {
-  return <InfoBlock text={DEFAULT_TEXT} link={DEFAULT_LINK} />;
-};
+const Template: ComponentStory<typeof InfoBlock> = () => (
+  <InfoBlock title={DEFAULT_TEXT} href={DEFAULT_LINK.path} actionText={DEFAULT_LINK.label} />
+);
 export const DefaultInfoBlock = Template.bind({});

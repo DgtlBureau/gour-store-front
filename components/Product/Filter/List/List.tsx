@@ -1,22 +1,33 @@
 import React from 'react';
-import { SxProps } from '@mui/material';
 
-import ArrowsIcon from '@mui/icons-material/CompareArrows';
+import { SxProps, Theme, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
 import { ToggleButton } from 'components/UI/ToggleButton/ToggleButton';
-import { ICategoryNew } from 'types/entities/ICategory';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { ICategory } from 'types/entities/ICategory';
+import { IFilters, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
-import { IFiltersCharacteristic } from 'types/entities/IProduct';
+
+import { orderTypeOptions } from 'constants/filters';
+import { convertOrderTypesToOptions, convertSubCategoriesToOptions } from 'utils/catalogUtil';
+
+import { FilterMultiselectProps, ProductFilterMultiselect } from '../Multiselect/Multiselect';
+import { ProductFilterSelect } from '../Select/Select';
+
+import listSx from './List.styles';
 
 export type CatalogFilterProps = {
-  categories: ICategoryNew[];
-  filters: IFiltersCharacteristic;
+  categories: ICategory[];
+  filters: IFilters;
   language: Language;
   sx?: SxProps;
-  onReverse: () => void;
-  onCategoryChange: (key: number) => void;
-  onCharacteristicChange: (key: string, selected: string[]) => void;
+  onOrderTypeChange: (order: OrderType) => void;
+  onProductTypeChange: (id: number) => void;
+  onCharacteristicChange: (key: string, values: string[]) => void;
+  onCharacteristicsReset: () => void;
 };
 
 export function ProductFilterList({
@@ -24,51 +35,70 @@ export function ProductFilterList({
   filters,
   language,
   sx,
-  onReverse,
-  onCategoryChange,
+  onOrderTypeChange,
+  onProductTypeChange,
   onCharacteristicChange,
+  onCharacteristicsReset,
 }: CatalogFilterProps) {
-  // const features = Object.keys(CHARACTERISTICS).filter(
-  //   it =>
-  //     CHARACTERISTICS[it].categoryKey === filters.productType?.toString() || CHARACTERISTICS[it].categoryKey === 'all',
-  // );
-  // TODO: реализация фильтров
+  const characteristics = categories.reduce((acc, it) => {
+    if (it.id === filters.productType && it.subCategories) acc.push(...it.subCategories);
+    return acc;
+  }, [] as ICategory[]);
+
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
+  const filtersPropList: FilterMultiselectProps[] = characteristics.map(characteristic => ({
+    key: characteristic.id,
+    title: characteristic.title[language],
+    selected: filters.characteristics[characteristic.id]?.map(it => it.toString()) || [],
+    options: convertSubCategoriesToOptions(characteristic.subCategories || [], language),
+    onChange: (values: string[]) => onCharacteristicChange(characteristic.id.toString(), values),
+  }));
+
+  const orderType = orderTypeOptions.find(option => option.type === filters.orderType);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <ToggleButton
-          selected={filters.isReversed}
-          sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '10px' }}
-          onChange={onReverse}
-        >
-          <ArrowsIcon sx={{ transform: 'rotate(90deg)' }} />
-        </ToggleButton>
+    <Box sx={{ ...listSx.list, ...sx } as SxProps}>
+      <Box sx={listSx.summary}>
+        <ProductFilterSelect
+          key='products-order'
+          title={orderType?.title[language] || ''}
+          selected={filters.orderType}
+          options={convertOrderTypesToOptions(orderTypeOptions, language)}
+          onChange={onOrderTypeChange}
+          isDesktop={isDesktop}
+        />
 
-        {categories?.map(category => (
-          <ToggleButton
-            key={category.id}
-            selected={filters.productType === category.id}
-            sx={{ marginRight: '10px' }}
-            onChange={() => onCategoryChange(category.id)}
-          >
-            {category.title[language]}
-          </ToggleButton>
-        ))}
+        <Box sx={listSx.categories}>
+          {categories?.map(category => (
+            <ToggleButton
+              key={category.id}
+              selected={filters.productType === category.id}
+              onChange={() => onProductTypeChange(category.id)}
+            >
+              {category.title[language]}
+            </ToggleButton>
+          ))}
+        </Box>
       </Box>
 
-      {/* <Box sx={{ display: 'flex', marginTop: '10px' }}>
-        {features.map(feature => (
-          <ProductFilterMultiselect
-            key={feature}
-            title={CHARACTERISTICS[feature].label[language]}
-            selected={filters.characteristics[feature] || []}
-            options={CHARACTERISTICS[feature].values.map(it => ({ value: it.key, label: it.label[language] }))}
-            sx={{ marginRight: '10px' }}
-            onChange={selected => onCharacteristicChange(feature, selected)}
-          />
-        ))}
-      </Box> */}
+      {characteristics.length > 0 && (
+        <Box sx={listSx.characteristics}>
+          {!isDesktop && (
+            <Typography sx={listSx.title} variant='h6' color='primary'>
+              Фильтры
+            </Typography>
+          )}
+
+          {filtersPropList.map(props => (
+            <ProductFilterMultiselect {...props} isDesktop={isDesktop} />
+          ))}
+
+          <Button sx={listSx.resetBtn} variant='outlined' onClick={onCharacteristicsReset}>
+            Сбросить всё
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

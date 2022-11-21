@@ -1,104 +1,151 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import { Grid, SxProps } from '@mui/material';
+import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
-import CartIcon from '@mui/icons-material/ShoppingCart';
-import PlusIcon from '@mui/icons-material/Add';
-import MinusIcon from '@mui/icons-material/Remove';
-import TrashIcon from '@mui/icons-material/DeleteForever';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useGetStockQuery } from 'store/api/warehouseApi';
 
-import translations from './Actions.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
 import { IconButton } from 'components/UI/IconButton/IconButton';
-import { getCurrencySymbol } from 'helpers/currencyHelper';
+
 import { Currency } from 'types/entities/Currency';
+import { IOption } from 'types/entities/IOption';
+import { IOrderProduct } from 'types/entities/IOrderProduct';
+import { ProductTypeLabel } from 'types/entities/IProduct';
+
+import { productGramList } from 'constants/gramList';
+import { useAppSelector } from 'hooks/store';
+import { getDefaultGramByProductType } from 'utils/catalogUtil';
+import { getPriceByGrams } from 'utils/currencyUtil';
+import { getErrorMessage } from 'utils/errorUtil';
+
+import { getStockLabel } from '../Card/Card';
+import { ProductCardCart } from '../Card/Cart/Cart';
+import { ProductCardGramSelect } from '../Card/GramSelect/GramSelect';
+import { ProductPrice } from '../Price/Price';
+import { ProductStock } from '../Stock/Stock';
 
 import sxActions from './Actions.styles';
 
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 export type ProductActionsProps = {
+  id: number;
+  moyskladId: string | null;
+  currentUserCity?: string;
   price: number;
   discount?: number;
-  isWeightGood?: boolean;
+  productType: ProductTypeLabel;
   currency: Currency;
-  count: number;
   sx?: SxProps;
   isElect: boolean;
-  onAdd: () => void;
-  onRemove: () => void;
+  onAdd: (gram: number) => void;
+  onRemove: (gram: number) => void;
   onElect: () => void;
 };
 
 export function ProductActions({
+  id,
+  moyskladId,
+  currentUserCity,
   price,
-  count,
-  discount = 0,
+  discount,
   currency,
-  sx,
+  productType,
+  sx = {},
   isElect,
   onAdd,
   onRemove,
   onElect,
-  isWeightGood,
 }: ProductActionsProps) {
-  const { t } = useLocalTranslation(translations);
+  const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
-  const pricePerCount = isWeightGood ? price / 100 : price;
+  const {
+    data: stock,
+    isFetching: isStockFetching,
+    isError: isStockError,
+    error: stockError,
+  } = useGetStockQuery(
+    {
+      city: 'Санкт-Петербург' ?? currentUserCity, // TODO: в будущем отправлять currentUserCity
+      gram: String(productGramValue),
+      warehouseId: String(moyskladId),
+    },
+    {
+      skip: !productGramValue || !moyskladId,
+      selectFromResult: ({ error, ...rest }) => ({ ...rest, error: getErrorMessage(error) }),
+    },
+  );
 
-  const total = pricePerCount * ((100 - discount) / 100);
+  const basketProductsKey = getProductKeyInBasket(id, productGramValue);
+  const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
+  const [productGramOptions] = useState<IOption[]>(() =>
+    productGramList[productType]?.map(
+      gram =>
+        ({
+          label: `${gram}\u00A0г`,
+          value: String(gram),
+        } || []),
+    ),
+  );
+
+  const onSelectGram = (value: string | number) => selectProductGramValue(+value);
+
+  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
+
+  const stockLabel = isStockError ? stockError : getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
+  const priceByGrams = getPriceByGrams(price, productGramValue);
+
+  const handleAddClick = () => {
+    if (!isAddDisabled) onAdd(productGramValue);
+  };
+
+  const handleRemoveClick = () => {
+    onRemove(productGramValue);
+  };
 
   return (
-    <Box sx={{ ...sxActions.container, ...sx }}>
-      <Box sx={sxActions.docket}>
-        <Box sx={sxActions.total}>
-          <Typography variant='h6' color={discount ? 'error' : 'primary'} sx={sxActions.price}>
-            {total}&nbsp;
-            {getCurrencySymbol(currency)}
-          </Typography>
-        </Box>
+    <Grid container sx={{ ...sx, ...sxActions.container } as SxProps}>
+      <Grid item xs md={12}>
+        <ProductPrice price={priceByGrams} discount={discount} currency={currency} />
+      </Grid>
 
-        {!!discount && (
-          <Typography variant='body2' sx={sxActions.oldPrice}>
-            {pricePerCount}
-            {getCurrencySymbol(currency)}
-          </Typography>
-        )}
+      <Grid item>
+        <ProductCardGramSelect
+          gram={productGramValue}
+          onChange={onSelectGram}
+          options={productGramOptions}
+          sx={sxActions.gramSelect}
+        />
+      </Grid>
 
-        <Typography variant='body2'>/ {isWeightGood ? `100${t('g')}` : t('pcs')}</Typography>
-      </Box>
+      <Grid item xs={5} md>
+        <ProductCardCart
+          isDisabled={isAddDisabled}
+          amount={basketProduct?.amount}
+          gram={productGramValue}
+          onAdd={handleAddClick}
+          onRemove={handleRemoveClick}
+        />
+      </Grid>
 
-      <Box sx={sxActions.actions}>
-        <Box sx={sxActions.cart}>
-          {count === 0 ? (
-            <IconButton onClick={onAdd}>
-              <CartIcon sx={sxActions.icon} />
-            </IconButton>
-          ) : (
-            <Grid container sx={sxActions.btnGroup}>
-              <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={onRemove}>
-                  {count === 1 ? <TrashIcon sx={sxActions.icon} /> : <MinusIcon sx={sxActions.icon} />}
-                </IconButton>
-              </Grid>
-
-              <Grid item xs={4} sx={sxActions.action}>
-                {count}&nbsp;{isWeightGood ? t('kg') : t('pcs')}
-              </Grid>
-
-              <Grid item xs={4} sx={sxActions.action}>
-                <IconButton onClick={onAdd}>
-                  <PlusIcon sx={sxActions.icon} />
-                </IconButton>
-              </Grid>
-            </Grid>
-          )}
-        </Box>
-
-        <IconButton sx={isElect ? sxActions.favoriteBtn : sxActions.favoriteElect} onClick={onElect}>
+      <Grid
+        item
+        sx={{
+          display: {
+            xs: 'none',
+            sm: 'flex',
+          },
+        }}
+      >
+        <IconButton sx={{ ...sxActions.favoriteBtn, ...(isElect && sxActions.favoriteBtnElected) }} onClick={onElect}>
           <FavoriteIcon sx={sxActions.icon} />
         </IconButton>
-      </Box>
-    </Box>
+      </Grid>
+
+      <Grid item xs={12}>
+        <ProductStock label={stockLabel} fullWidth multiLine />
+      </Grid>
+    </Grid>
   );
 }

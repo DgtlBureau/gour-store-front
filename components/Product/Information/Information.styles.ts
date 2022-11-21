@@ -1,4 +1,4 @@
-import { defaultTheme as t } from 'themes';
+import { color } from 'themes';
 
 const sx = {
   info: {
@@ -8,7 +8,7 @@ const sx = {
       xs: '100%',
       sm: '450px',
     },
-    color: t.palette.text.muted || '',
+    color: color.muted,
   },
   stats: {
     display: 'flex',
@@ -19,10 +19,10 @@ const sx = {
     alignItems: 'center',
   },
   star: {
-    color: t.palette.text.muted,
+    color: color.muted,
   },
   emptyStar: {
-    color: t.palette.secondary.main,
+    color: color.secondary,
   },
   count: {
     marginLeft: '6px',
@@ -43,10 +43,10 @@ const sx = {
     margin: '0 10px',
     opacity: '0.5',
     borderBottom: '1px solid',
-    borderColor: t.palette.primary.main,
+    borderColor: color.primary,
   },
   value: {
-    color: t.palette.accent.main,
+    color: color.accent,
   },
 };
 

@@ -1,75 +1,89 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Collapse,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ClickAwayListener,
-  SxProps,
-} from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Collapse, SxProps } from '@mui/material';
+
+import { Box } from 'components/UI/Box/Box';
+import { Button } from 'components/UI/Button/Button';
+import { CheckboxGroup } from 'components/UI/CheckboxGroup/CheckboxGroup';
+import { ClickAwayListener } from 'components/UI/ClickAwayListener/ClickAwayListener';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { IOption } from 'types/entities/IOption';
+
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+
+import { color } from 'themes';
 
 import translations from './Multiselect.i18n.json';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { Box } from 'components/UI/Box/Box';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Button } from 'components/UI/Button/Button';
-import { Checkbox } from 'components/UI/Checkbox/Checkbox';
-import { defaultTheme as theme } from 'themes';
+import { ProductFilterSelectItem } from './SelectItem';
 
 import selectSx from './Multiselect.styles';
 
+import ClearIcon from '@mui/icons-material/Clear';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 export type FilterMultiselectProps = {
   title: string;
-  selected: string[];
-  options: {
-    label: string;
-    value: string;
-  }[];
-  isMobile?: boolean;
+  selected: IOption['value'][];
+  options: IOption[];
+  isDesktop?: boolean;
   sx?: SxProps;
-  onChange(selected: string[]): void;
+  onChange(selected: IOption['value'][]): void;
 };
 
-export function ProductFilterMultiselect({ title, selected, options, isMobile, sx, onChange }: FilterMultiselectProps) {
+export function ProductFilterMultiselect({
+  title,
+  selected,
+  options,
+  isDesktop,
+  sx,
+  onChange,
+}: FilterMultiselectProps) {
   const { t } = useLocalTranslation(translations);
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(selected);
+  const [selectedOptions, setSelectedOptions] = useState(selected);
   const [isDeployed, setIsDeployed] = useState(false);
 
   const applyOptions = () => {
     onChange(selectedOptions);
     setIsDeployed(false);
   };
+
   const resetOptions = () => {
-    setSelectedOptions([]);
-    applyOptions();
+    if (selectedOptions.length) onChange([]);
   };
 
-  function changeOption(selectedOption: string) {
-    const isSelected = selectedOptions.find(option => option === selectedOption);
+  useEffect(() => {
+    if (!selected.length) setSelectedOptions([]);
+  }, [selected]);
 
-    const newSelectedList = isSelected
-      ? [...selectedOptions].filter(option => option !== selectedOption)
-      : [...selectedOptions, selectedOption];
+  const changeOption = (value: string) => {
+    const isSelected = selectedOptions.includes(value);
+    const newSelectedList = isSelected ? selectedOptions.filter(it => it !== value) : [...selectedOptions, value];
 
     setSelectedOptions(newSelectedList);
 
-    if (isMobile) onChange(newSelectedList);
-  }
+    if (isDesktop) onChange(newSelectedList);
+  };
 
-  function isOptionSelected(currentOption: string) {
-    return selectedOptions.find(option => option === currentOption);
-  }
+  const checkOption = (value: string) => selectedOptions?.includes(value);
 
-  return isMobile ? (
+  const summaryIcon = selected.length ? (
+    <ClearIcon
+      htmlColor={color.muted}
+      fontSize='small'
+      onClick={e => {
+        e.stopPropagation();
+        resetOptions();
+      }}
+    />
+  ) : (
+    <ExpandMoreIcon htmlColor={color.muted} fontSize='small' sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
+  );
+
+  return !isDesktop ? (
     <Accordion sx={{ ...selectSx.select, ...sx }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon htmlColor={theme.palette.text.muted} />}>
+      <AccordionSummary expandIcon={summaryIcon}>
         <Typography variant='body1' sx={selectSx.title}>
           {title}
         </Typography>
@@ -77,58 +91,39 @@ export function ProductFilterMultiselect({ title, selected, options, isMobile, s
 
       <AccordionDetails sx={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
         {options.map(option => (
-          <Typography
-            variant='body1'
+          <ProductFilterSelectItem
             key={option.value}
-            onClick={() => changeOption(option.value)}
-            sx={{
-              ...selectSx.optionBox,
-              ...(isOptionSelected(option.value) && selectSx.selected),
-            }}
-          >
-            {option.label}
-          </Typography>
+            isSelected={checkOption(option.value)}
+            title={option.label}
+            onSelect={() => changeOption(option.value)}
+          />
         ))}
       </AccordionDetails>
     </Accordion>
   ) : (
     <Box sx={sx}>
       <Box sx={selectSx.extender} onClick={() => setIsDeployed(!isDeployed)}>
-        <Typography variant='body1' sx={{ ...selectSx.title, userSelect: 'none' }}>
+        <Typography variant='body1' sx={{ ...selectSx.title, whiteSpace: 'nowrap', userSelect: 'none' }}>
           {title}
         </Typography>
-        <ExpandMoreIcon htmlColor={theme.palette.text.muted} sx={{ ...(isDeployed && selectSx.rotatedArrow) }} />
+
+        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>{summaryIcon}</Box>
       </Box>
 
       <Collapse in={isDeployed} timeout='auto' unmountOnExit>
         <ClickAwayListener onClickAway={() => setIsDeployed(false)}>
-          <List sx={selectSx.list}>
-            {options.map(option => (
-              <ListItem key={option.value} onClick={() => changeOption(option.value)} disablePadding>
-                <ListItemButton role={undefined} dense>
-                  <ListItemIcon sx={selectSx.listItemIcon}>
-                    <Checkbox
-                      sx={selectSx.checkbox}
-                      edge='start'
-                      value={selectedOptions.includes(option.value)}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <Typography variant='body2' sx={selectSx.listItemText}>
-                    {option.label}
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-            ))}
-            <Box sx={selectSx.actions}>
-              <Button size='small' variant='outlined' onClick={resetOptions}>
-                {t('reset')}
-              </Button>
-              <Button size='small' onClick={applyOptions} sx={selectSx.applyBtn}>
-                {t('apply')}
-              </Button>
-            </Box>
-          </List>
+          <Box sx={selectSx.list}>
+            <CheckboxGroup
+              sx={{ display: 'flex', flexDirection: 'column' }}
+              selected={selectedOptions}
+              options={options}
+              onChange={value => changeOption(value)}
+            />
+
+            <Button size='small' onClick={applyOptions} sx={selectSx.applyBtn}>
+              {t('apply')}
+            </Button>
+          </Box>
         </ClickAwayListener>
       </Collapse>
     </Box>

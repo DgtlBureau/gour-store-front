@@ -1,9 +1,9 @@
-import { IWarehouse } from './IWarehouse';
-import { ITranslatableString } from './ITranslatableString';
+import { IBase } from './IBase';
 import { IProduct } from './IProduct';
-import { IBaseEntity } from './IBaseEntity';
+import { ITranslatableString } from './ITranslatableString';
+import { IWarehouse } from './IWarehouse';
 
-export interface IProductModification extends IBaseEntity {
+export interface IProductModification extends IBase {
   title: ITranslatableString;
   weight: number;
   quantityInStock: number;

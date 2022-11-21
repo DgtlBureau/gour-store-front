@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
-import { defaultTheme as t } from '../../../themes';
+
+import { color } from 'themes';
 
 type Props = {
   isOpen: boolean;
@@ -11,10 +12,10 @@ type Props = {
 
 export function GameRulesModal({ isOpen, onAccept }: Props) {
   return (
-    <Modal title='Правила игры' acceptText='Начать игру' isOpen={isOpen} onAccept={onAccept}>
+    <Modal title='Правила игры' acceptText='Вернуться к игре' isOpen={isOpen} onAccept={onAccept}>
       <Typography variant='body1'>
         <b>Ваша цель</b> — собрать как можно больше падающих продуктов. За каждый пойманный продукт вы получаете{' '}
-        <div style={{ display: 'inline', color: t.palette.accent.main }}>1 балл.</div>
+        <div style={{ display: 'inline', color: color.accent }}>1 балл.</div>
       </Typography>
 
       <Typography variant='body1' sx={{ margin: '8px 0' }}>

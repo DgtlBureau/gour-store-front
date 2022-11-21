@@ -10,7 +10,7 @@ declare module '@mui/material/styles' {
   }
 
   interface TypeText {
-    muted?: string;
+    muted: string;
   }
 
   interface BreakpointOverrides {
@@ -18,34 +18,45 @@ declare module '@mui/material/styles' {
   }
 }
 
+export const color = {
+  white: '#FFFEF7',
+  black: '#321811',
+  green: '#24B232',
+  primary: '#7E5F2F',
+  secondary: '#F4E7CE',
+  error: '#DB3D15',
+  accent: '#F7A400',
+  muted: '#C29F6C',
+};
+
 export const defaultTheme = createTheme({
   palette: {
     common: {
-      white: '#FFFEF7',
-      black: '#321811',
+      white: color.white,
+      black: color.black,
     },
     primary: {
-      main: '#7E5F2F',
-      contrastText: '#FFFEF7',
+      main: color.primary,
+      contrastText: color.white,
     },
     secondary: {
-      main: '#F4E7CE',
-      contrastText: '#321811',
+      main: color.secondary,
+      contrastText: color.black,
     },
     error: {
-      main: '#DB3D15',
+      main: color.error,
     },
     accent: {
-      main: '#F7A400',
+      main: color.accent,
     },
     text: {
-      primary: '#321811',
-      secondary: '#7E5F2F',
-      muted: '#C29F6C',
+      primary: color.black,
+      secondary: color.primary,
+      muted: color.muted,
     },
     background: {
-      default: '#FFFEF7',
-      paper: '#F4E7CE',
+      default: color.white,
+      paper: color.secondary,
     },
   },
   shape: {

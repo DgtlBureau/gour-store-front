@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { FormControlLabel, Radio, CircularProgress } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { HFCodeInput } from 'components/HookForm/HFCodeInput';
-import { LinkRef as Link } from 'components/UI/Link/Link';
-import { Path } from 'constants/routes';
-import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { SignUpFormDto } from 'types/dto/signup-form.dto';
-import translations from './Credentials.i18n.json';
-import { getSchema } from './validation';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormControlLabel, Radio } from '@mui/material';
+
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
+import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
+import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
+import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
-import { Typography } from 'components/UI/Typography/Typography';
 import { Checkbox } from 'components/UI/Checkbox/Checkbox';
-import { HFTextField } from 'components/HookForm/HFTextField';
-import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
+import { LinkRef } from 'components/UI/Link/Link';
+import { Typography } from 'components/UI/Typography/Typography';
+
+import { SignUpFormDto } from 'types/dto/signup-form.dto';
+
+import { Path } from 'constants/routes';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
+import { useStopwatch } from 'hooks/useStopwatch';
+
+import translations from './Credentials.i18n.json';
+import { getSchema } from './validation';
 
 import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
   defaultValues?: SignUpFormDto;
-  codeCheckIsLoading?: boolean;
+  codeIsSending?: boolean;
   onBack(): void;
-  onSendSMS(phone: string): Promise<'success' | string>;
-  onCheckCode: (code: string) => Promise<boolean>;
+  onEmailSend(email: string): Promise<void>;
+  onCodeCheck(code: string): Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
 };
 
 export function SignupCredentials({
   defaultValues,
-  codeCheckIsLoading,
+  codeIsSending,
   onBack,
-  onSendSMS,
-  onCheckCode,
+  onEmailSend,
+  onCodeCheck,
   onSubmit,
 }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
@@ -55,31 +61,59 @@ export function SignupCredentials({
     resolver: yupResolver(schema),
   });
 
-  const emailIsInvalid = !values.watch('email') || !!values.getFieldState('email').error;
-  const codeIsValid = !values.watch('sms') || !!values.getFieldState('sms').error;
-  const formIsInvalid = !values.formState.isValid || !isAgree;
+  const { seconds, startCount, stopCount } = useStopwatch(30);
 
-  const sendSMS = async () => {
-    if (isCodeSended) return;
-    const target = values.watch('email');
+  const emailIsValid = !!values.watch('email') && !values.getFieldState('email').error;
+  const formIsValid = values.formState.isValid && isAgree && isCodeSuccess;
+  const sendingIsDisabled = !!seconds || !emailIsValid || isCodeSuccess;
 
-    const response = await onSendSMS(target);
-    if (response === 'success') {
+  const sendEmail = async () => {
+    const email = values.getValues('email');
+
+    try {
+      await onEmailSend(email);
+
       setIsCodeSended(true);
-    } else {
-      values.setError('email', { message: response });
+
+      startCount();
+    } catch (e) {
+      setIsCodeSended(false);
+      values.setError('email', { message: String(e) });
     }
   };
 
-  const checkCode = async () => {
-    const code = values.watch('sms');
-    const status = await onCheckCode(code);
-    setIsCodeSuccess(status);
+  const checkCode = async (value: string) => {
+    if (value.length !== 4) return;
+
+    try {
+      const isSuccess = await onCodeCheck(value);
+
+      setIsCodeSuccess(isSuccess);
+
+      if (!isSuccess) values.setError('code', { message: 'Неверный код' });
+    } catch (e) {
+      setIsCodeSuccess(false);
+      values.setError('code', { message: String(e) });
+    }
   };
 
   const agree = () => setIsAgree(!isAgree);
 
-  const submit = (data: SignUpFormDto) => onSubmit(data);
+  const resetEmailStates = () => {
+    stopCount();
+    setIsCodeSended(false);
+    setIsCodeSuccess(false);
+    values.resetField('code');
+  };
+
+  const changeEmail = () => {
+    if (isCodeSended) resetEmailStates();
+  };
+
+  const submit = (data: SignUpFormDto) => {
+    onSubmit(data);
+    resetEmailStates();
+  };
 
   return (
     <AuthCard>
@@ -103,37 +137,43 @@ export function SignupCredentials({
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFTextField type='email' name='email' disabled={isCodeSended} label={t('email')} />
-            <Button sx={sx.getCodeBtn} onClick={sendSMS} disabled={emailIsInvalid || isCodeSended}>
-              {t('getCode')}
-            </Button>
+            <HFSendField
+              label={t('email')}
+              name='email'
+              isSending={!!codeIsSending}
+              sendingIsDisabled={sendingIsDisabled}
+              disabled={isCodeSuccess}
+              onChange={changeEmail}
+              onSend={sendEmail}
+            />
           </Box>
+
           {isCodeSended && !isCodeSuccess && (
-            <Box sx={sx.field}>
-              <HFCodeInput
-                name='sms'
-                onChange={value => {
-                  if (value.length === 4) checkCode();
-                }}
-                // disabled={codeCheckIsLoading}
+            <>
+              <HFTextField
+                sx={{ ...sx.field, ...sx.codeField }}
+                label={t('code')}
+                name='code'
+                onChange={e => checkCode(e.target.value)}
               />
 
-              {codeCheckIsLoading && <CircularProgress size={40} sx={sx.progress} />}
-            </Box>
+              {!!seconds && (
+                <Box sx={sx.timer}>
+                  <Typography variant='body2'>{t('codeHelper')}</Typography>
+                  <Typography variant='body2'>
+                    {seconds} {t('sec')}
+                  </Typography>
+                </Box>
+              )}
+            </>
           )}
 
           {isCodeSuccess && (
             <>
               <HFTextField sx={sx.field} type='text' name='firstName' label={t('firstName')} />
               <HFTextField sx={sx.field} type='text' name='lastName' label={t('lastName')} />
-              <HFTextField
-                sx={sx.field}
-                type='password'
-                name='password'
-                label={t('password')}
-                helperText={t('passwordHelper')}
-              />
-              <HFTextField sx={sx.field} type='password' name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
+              <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
               <Checkbox
                 sx={sx.field}
                 value={isAgree}
@@ -141,19 +181,19 @@ export function SignupCredentials({
                 label={
                   <Typography variant='body2' sx={sx.checkboxLabel}>
                     Я даю свое согласие на сбор и обработку моих персональных данных в соответствии с{' '}
-                    <Link href={`/${Path.RULES}`} target='_blank'>
+                    <LinkRef href={`/${Path.RULES}`} target='_blank'>
                       Политикой
-                    </Link>{' '}
+                    </LinkRef>{' '}
                     и принимаю условия{' '}
-                    <Link href={`/${Path.OFERTA}`} target='_blank'>
+                    <LinkRef href={`/${Path.OFERTA}`} target='_blank'>
                       Пользовательского соглашения
-                    </Link>
+                    </LinkRef>
                   </Typography>
                 }
               />
             </>
           )}
-          <Button type='submit' disabled={formIsInvalid} sx={sx.submitBtn}>
+          <Button type='submit' disabled={!formIsValid} sx={sx.submitBtn}>
             {t('submit')}
           </Button>
         </form>

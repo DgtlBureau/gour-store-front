@@ -1,21 +1,22 @@
-import { ITranslatableString } from './ITranslatableString';
-import { ITranslatableText } from './ITranslatableText';
+import { IBase } from './IBase';
+import { ICategory } from './ICategory';
 import { IImage } from './IImage';
-import { ICategory, ICategoryNew } from './ICategory';
+import { IPageMeta } from './IPageMeta';
+import { IPrice } from './IPrice';
 import { IProductGrade } from './IProductGrade';
 import { IProductModification } from './IProductModification';
-import { IPrice } from './IPrice';
-import { IRoleDiscount } from './IRoleDiscount';
-import { IBaseEntity } from './IBaseEntity';
-import { IPageMeta } from './IPageMeta';
 import { IPromotion } from './IPromotion';
+import { IRoleDiscount } from './IRoleDiscount';
+import { ITranslatableString } from './ITranslatableString';
+import { ITranslatableText } from './ITranslatableText';
 
-export interface IProduct extends IBaseEntity {
+export interface IProduct extends IBase {
   title: ITranslatableString;
   description: ITranslatableText;
   moyskladCode: number;
+  moyskladId: string | null;
   images: IImage[];
-  categories: ICategory[];
+  categories?: ICategory[];
   productGrades: IProductGrade[];
   gradesCount: number;
   commentsCount: number;
@@ -27,12 +28,24 @@ export interface IProduct extends IBaseEntity {
   meta: IPageMeta;
   weight: number;
   discount: number;
-  isWeightGood: boolean;
   promotions?: IPromotion[];
+  totalCost: number;
 }
 
-export interface IFiltersCharacteristic {
-  isReversed: boolean;
-  productType: number | 'all';
-  categories: Record<string, number>;
+export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate' | 'default';
+
+export interface IFilters {
+  productType: number | null;
+  orderType: OrderType;
+  characteristics: Record<string, string[]>;
+}
+
+export type ProductTypeLabel = 'Сыр' | 'Мясо';
+
+export interface IExtendedProduct extends IProduct {
+  isElected: boolean;
+  backgroundImg?: string;
+  countryImg?: string;
+  // currentCount: number;
+  productType: ProductTypeLabel;
 }
