@@ -13,8 +13,8 @@
     "getCode": "Get code",
     "password": "Password",
     "passwordConfirm": "Password confirm",
-    "passwordHelper": "At least 8 characters and at least one number",
-    "passwordError": "Password must contain 8 characters and at least one number",
+    "passwordHelper": "Minimum length 8 symbols, at least one number and one letter",
+    "passwordError": "Password must contain 8 symbols, at least one number and one letter",
     "passwordsDoNotMatch": "Passwords do not match",
     "submit": "Change password"
   },
@@ -32,8 +32,8 @@
     "getCode": "Получить код",
     "password": "Введите пароль",
     "passwordConfirm": "Повторите пароль",
-    "passwordHelper": "Минимум 8 символов и хотя бы одну цифру",
-    "passwordError": "Пароль должен содержать 8 символов и хотя бы одну цифру",
+    "passwordHelper": "Минимум 8 символов, хотя бы одна цифра и буква",
+    "passwordError": "Пароль должен содержать 8 символов, хотя бы одну цифру и букву",
     "passwordsDoNotMatch": "Пароли не совпадают",
     "submit": "Изменить пароль"
   }
