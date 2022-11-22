@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, FocusEventHandler, ReactElement } from 'react';
 import MaskedInput, { MaskedInputProps } from 'react-text-mask';
 
-import { InputBaseProps, TextField as MUITextField, SxProps } from '@mui/material';
+import { InputBaseProps, TextField as MUITextField, SxProps, TextFieldProps } from '@mui/material';
 
 export type MaskInputProps = {
   mask: MaskedInputProps['mask'];
@@ -17,6 +17,7 @@ export type MaskInputProps = {
   helperText?: string;
   endAdornment?: ReactElement;
   inputProps?: InputBaseProps['inputProps'];
+  margin?: TextFieldProps['margin'];
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -36,6 +37,7 @@ export function MaskInput({
   endAdornment,
   name,
   inputProps,
+  margin,
   onChange,
   onFocus,
   onBlur,
@@ -58,6 +60,7 @@ export function MaskInput({
           onFocus={onFocus}
           variant={variant}
           type={type}
+          margin={margin}
           helperText={helperText}
           InputProps={{ endAdornment }}
           // eslint-disable-next-line react/jsx-no-duplicate-props
