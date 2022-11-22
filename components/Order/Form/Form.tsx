@@ -120,8 +120,6 @@ export function OrderForm({
     });
   }, [defaultPersonalFields]);
 
-  const submit = (data: OrderFormType) => onSubmit(data);
-
   const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
   const agree = () => setIsAgree(!isAgree);
@@ -130,7 +128,7 @@ export function OrderForm({
 
   return (
     <FormProvider {...values}>
-      <form onSubmit={values.handleSubmit(submit)}>
+      <form onSubmit={values.handleSubmit(onSubmit)}>
         <Box sx={sx.form}>
           <Box sx={sx.block}>
             <Typography variant='h6' sx={sx.title}>
