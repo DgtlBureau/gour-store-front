@@ -5,7 +5,7 @@ import { SxProps } from '@mui/material';
 
 import { MaskInput, MaskInputProps } from 'components/UI/Inputs/MaskInput/MaskInput';
 
-export type Props = Pick<MaskInputProps, 'mask' | 'showMask' | 'inputProps'> & {
+export type Props = Pick<MaskInputProps, 'mask' | 'showMask' | 'inputProps' | 'margin'> & {
   name: string;
 
   defaultValue?: string;
