@@ -162,7 +162,7 @@ export default function Product() {
 
   const isCurrentProductElected = isProductFavorite(productId, favoriteProducts);
 
-  const price = product ? Math.round(product.price[currency] * 0.1) : 0;
+  const price = Math.round(product?.price[currency] || 0);
 
   const hasSimilar = !!formattedSimilarProducts?.length;
   const hasComments = !!productComments.length;

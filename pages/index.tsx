@@ -109,7 +109,12 @@ const Home: NextPage = () => {
     [addFavorite, removeFavorite],
   );
 
-  const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
+  const filteredPromotions = promotions?.filter(it => {
+    const start = new Date(it.start);
+    const end = new Date(it.end);
+
+    return NOW > start && NOW < end;
+  });
 
   const promotionCardList = useMemo(
     () =>

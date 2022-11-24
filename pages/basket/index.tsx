@@ -63,7 +63,6 @@ export function Basket() {
   const count = useAppSelector(selectedProductCount);
   const productTotalSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
-
   const productIds = useAppSelector(selectProductsIdInOrder);
 
   const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });

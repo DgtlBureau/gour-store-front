@@ -96,15 +96,18 @@ export const selectedProductCount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, product) => acc + product.amount, 0);
 
 export const selectedProductSum = (state: RootState) =>
-  Object.values(state.order.products).reduce(
-    (acc, it) => acc + getPriceByGrams(it.product.totalCost, it.gram) * it.amount,
-    0,
-  );
+  Object.values(state.order.products).reduce((acc, it) => {
+    const priceByGram = getPriceByGrams(it.product.price.cheeseCoin, it.gram);
+
+    return acc + priceByGram * it.amount;
+  }, 0);
 
 export const selectedProductDiscount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, it) => {
     const discount = it.product.price.cheeseCoin - it.product.totalCost;
-    return acc + getPriceByGrams(discount, it.gram) * it.amount;
+    const discountByGram = getPriceByGrams(discount, it.gram);
+
+    return acc + discountByGram * it.amount;
   }, 0);
 
 // export const productsInBasketCount = (state: RootState, productId: number, gram: number): number =>
