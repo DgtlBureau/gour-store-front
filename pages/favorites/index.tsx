@@ -58,9 +58,8 @@ export function Favorites() {
     }
   };
 
-  const filteredProducts = formattedProducts.filter(
-    product => !!favoriteProducts.find(favorite => favorite.id === product.id),
-  );
+  const favoriteProductsIds = useMemo(() => new Set(favoriteProducts.map(product => product.id)), [favoriteProducts]);
+  const filteredProducts = formattedProducts.filter(product => favoriteProductsIds.has(product.id));
 
   return (
     <PrivateLayout>
@@ -75,7 +74,7 @@ export function Favorites() {
           <ProductCatalog
             title='Избранные продукты'
             emptyText='Нет избранных продуктов'
-            products={formattedProducts}
+            products={filteredProducts}
             categories={categories}
             language={language}
             currency={currency}
