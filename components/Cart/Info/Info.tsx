@@ -57,22 +57,27 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
     <Paper sx={sx.paper}>
       <Box sx={sx.total}>
         <Typography variant='h6'>{t('total')}</Typography>
+
         <Typography variant='h6'>
-          {price + delivery}&nbsp;
+          {price + delivery - discount}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
+
       <Box sx={sx.footnote}>
         <Typography variant='body1'>
           {t('all')}: {count} {productsCountText}
         </Typography>
+
         <Typography variant='body1'>
-          {price + discount}&nbsp;
+          {price}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
+
       <Box sx={sx.footnote}>
         <Typography variant='body1'>{t('delivery')}</Typography>
+
         <Typography variant='body1'>
           {delivery ? (
             <>
@@ -83,13 +88,17 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
           )}
         </Typography>
       </Box>
-      <Box sx={sx.footnote}>
-        <Typography variant='body1'>{t('discount')}</Typography>
-        <Typography variant='body1' color='error'>
-          {discount}&nbsp;
-          {currencySymbol}
-        </Typography>
-      </Box>
+
+      {!!discount && (
+        <Box sx={sx.footnote}>
+          <Typography variant='body1'>{t('discount')}</Typography>
+
+          <Typography variant='body1' color='error'>
+            {discount}&nbsp;
+            {currencySymbol}
+          </Typography>
+        </Box>
+      )}
     </Paper>
   );
 }

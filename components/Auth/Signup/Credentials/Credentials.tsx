@@ -16,6 +16,7 @@ import { LinkRef } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
+import { IClientRole } from 'types/entities/IClientRole';
 
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -27,6 +28,7 @@ import { getSchema } from './validation';
 import sx from './Credentials.styles';
 
 export type SignupCredentialsProps = {
+  roles: IClientRole[];
   defaultValues?: SignUpFormDto;
   codeIsSending?: boolean;
   onBack(): void;
@@ -36,6 +38,7 @@ export type SignupCredentialsProps = {
 };
 
 export function SignupCredentials({
+  roles,
   defaultValues,
   codeIsSending,
   onBack,
@@ -126,14 +129,9 @@ export function SignupCredentials({
           <Typography sx={sx.title}>{t('title')}</Typography>
 
           <HFRadioGroup name='role' sx={sx.radioGroup}>
-            <FormControlLabel sx={sx.radioBtn} value='CLIENT' control={<Radio />} label={t('physical')} />
-            <FormControlLabel sx={sx.radioBtn} value='COMPANY' control={<Radio />} label={t('company')} />
-            <FormControlLabel
-              sx={sx.radioBtn}
-              value='COLLECTIVE_PURCHASE'
-              control={<Radio />}
-              label={t('collectivePurchase')}
-            />
+            {roles.map(role => (
+              <FormControlLabel sx={sx.radioBtn} value={role.key} control={<Radio />} label={role.title} />
+            ))}
           </HFRadioGroup>
 
           <Box sx={{ ...sx.field, ...sx.phone }}>

@@ -20,30 +20,31 @@ import cardSx from './Card.styles';
 type Props = {
   currency: Currency;
   language: Language;
-  totalProductCount: number;
-  totalCartPrice: number;
-  productsList: Pick<IOrderProduct, 'amount' | 'product' | 'gram'>[];
+  products: Pick<IOrderProduct, 'amount' | 'product' | 'gram'>[];
   sx?: SxProps;
 };
 
-export function OrderCard({ totalProductCount, totalCartPrice, productsList, currency, language, sx }: Props) {
+export function OrderCard({ products, currency, language, sx }: Props) {
   const { t } = useLocalTranslation(translation);
 
   const currencySymbol = getCurrencySymbol(currency);
 
-  const productInfo = productsList.map(product => {
-    const productTotalPrice = getPriceByGrams(product.product.totalCost, product.gram) * product.amount;
+  const productInfo = products.map(product => {
+    const priceByGram = getPriceByGrams(product.product.totalCost, product.gram) * product.amount;
 
     return {
       id: product.product.id,
       title: product.product.title[language],
-      price: product.product.price[currency],
-      totalPrice: productTotalPrice,
-      totalCount: `${product.amount} ${t('piece')}`,
+      price: priceByGram,
+      amount: `${product.amount} ${t('piece')}`,
     };
   });
 
-  const productsCountText = getDeclensionWordByCount(totalProductCount, [
+  const productCount = products.length;
+
+  const totalSum = productInfo.reduce((acc, it) => acc + it.price, 0);
+
+  const productsCountText = getDeclensionWordByCount(productCount, [
     t('manyProducts'),
     t('oneProduct'),
     t('someProducts'),
@@ -52,7 +53,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
   return (
     <Stack sx={{ ...cardSx.card, ...sx }}>
       <Typography sx={cardSx.count} variant='h6'>
-        {totalProductCount} {productsCountText} {t('inOrder')}
+        {productCount} {productsCountText} {t('inOrder')}
       </Typography>
 
       {productInfo.map(product => (
@@ -63,10 +64,10 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
 
           <Box sx={cardSx.fieldPrice}>
             <Typography variant='body1' sx={cardSx.product}>
-              {product.totalPrice} {currencySymbol}
+              {product.price} {currencySymbol}
             </Typography>
             <Typography variant='body1' sx={cardSx.product}>
-              • {product.totalCount}
+              • {product.amount}
             </Typography>
           </Box>
         </Box>
@@ -77,7 +78,7 @@ export function OrderCard({ totalProductCount, totalCartPrice, productsList, cur
           {t('total')}
         </Typography>
         <Typography variant='h6' sx={cardSx.total}>
-          {totalCartPrice} {currencySymbol}
+          {totalSum} {currencySymbol}
         </Typography>
       </Stack>
     </Stack>

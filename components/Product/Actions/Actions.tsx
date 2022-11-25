@@ -88,13 +88,17 @@ export function ProductActions({
     ),
   );
 
+  const amount = basketProduct?.amount || 1;
+
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
 
-  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
+  const isAmountMoreThanCost = !isStockFetching && amount >= Number(stock?.value);
   const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
 
-  const stockLabel = isStockError ? stockError : getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
-  const priceByGrams = getPriceByGrams(price, productGramValue);
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
+
+  const priceByGram = getPriceByGrams(price, productGramValue);
+  const totalCost = priceByGram * amount;
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(productGramValue);
@@ -107,7 +111,7 @@ export function ProductActions({
   return (
     <Grid container sx={{ ...sx, ...sxActions.container } as SxProps}>
       <Grid item xs md={12}>
-        <ProductPrice price={priceByGrams} discount={discount} currency={currency} />
+        <ProductPrice price={totalCost} discount={discount} currency={currency} />
       </Grid>
 
       <Grid item>

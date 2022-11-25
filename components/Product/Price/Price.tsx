@@ -49,7 +49,7 @@ export function ProductPrice({
     <Box sx={sx}>
       {!!discount && (
         <Typography variant='body2' sx={{ ...priceSx.oldPrice, fontSize: oldPriceFontSize }}>
-          {price}
+          {price}&nbsp;
           {currencySymbol}
         </Typography>
       )}

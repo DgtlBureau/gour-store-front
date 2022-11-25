@@ -11,6 +11,7 @@ import {
 import { useGetPageQuery } from 'store/api/pageApi';
 import { useGetNoveltiesProductListQuery, useGetProductListQuery } from 'store/api/productApi';
 import { useGetPromotionListQuery } from 'store/api/promotionApi';
+import { selectCurrentUser } from 'store/selectors/auth';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -30,7 +31,7 @@ import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
 import { Path } from 'constants/routes';
-import { useAppDispatch } from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
@@ -56,16 +57,25 @@ const Home: NextPage = () => {
 
   const dispatch = useAppDispatch();
 
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  const isIndividual = currentUser?.role.key === 'individual';
+
   const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
+
   const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({
     withDiscount: true,
     withCategories: true,
   });
+
   const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
     withCategories: true,
   });
-  const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
+
+  const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery(undefined, {
+    skip: !isIndividual,
+  });
 
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
 
@@ -109,7 +119,12 @@ const Home: NextPage = () => {
     [addFavorite, removeFavorite],
   );
 
-  const filteredPromotions = promotions?.filter(it => new Date(it.end) > NOW);
+  const filteredPromotions = promotions?.filter(it => {
+    const start = new Date(it.start);
+    const end = new Date(it.end);
+
+    return NOW > start && NOW < end;
+  });
 
   const promotionCardList = useMemo(
     () =>
@@ -134,7 +149,7 @@ const Home: NextPage = () => {
       <ShopLayout>
         {isLoading && <ProgressLinear />}
 
-        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+        {isIndividual && hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
 
         {hasNovelties && (
           <ProductSlider

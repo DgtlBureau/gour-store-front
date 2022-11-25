@@ -157,17 +157,7 @@ export function Header({
               </Box>
 
               {isGame ? (
-                <Link
-                  href='/'
-                  color='inherit'
-                  sx={{
-                    ...headerSx.icon,
-                    display: {
-                      xs: 'flex',
-                      sm: catalogIsHidden ? 'none' : 'flex',
-                    },
-                  }}
-                >
+                <Link href='/' color='inherit' sx={headerSx.icon}>
                   <Image src={CatalogIcon} height={24} width={24} alt='' />
                 </Link>
               ) : (

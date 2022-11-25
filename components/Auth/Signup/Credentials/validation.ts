@@ -6,7 +6,7 @@ import regexp from 'constants/regex';
 
 export const getSchema = (t: Translator) =>
   yup.object().shape({
-    type: yup.string().oneOf(['physical', 'organization', 'procurementOrganizer']),
+    type: yup.string(),
     code: yup.string().required(t('codeEmpty')),
     email: yup
       .string()
