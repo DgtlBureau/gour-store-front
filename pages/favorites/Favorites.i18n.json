@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "favorites": "Избранное",
+    "favoriteProducts": "Избранные продукты",
+    "emptyTitle": "В избранном нет товаров",
+    "emptyText": "Акции, специальные предложения интересных товаров на главной странице помогут вам определиться с выбором!",
+    "emptyButton": "Вернуться к покупкам"
+  },
+  "en": {
+    "favorites": "Favorites",
+    "favoriteProducts": "Favorite products",
+    "emptyTitle": "There are no favorite items",
+    "emptyText": "Promotions, special offers of interesting products on the main page will help you make the right choice!",
+    "emptyButton": "Back to shopping"
+  }
+}
