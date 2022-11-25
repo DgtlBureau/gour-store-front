@@ -34,7 +34,8 @@ import sx from '../basket/Basket.styles';
 
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const { language, currency } = useAppNavigation();
+  const { language, currency, goToHome } = useAppNavigation();
+  const { t } = useLocalTranslation(translation);
 
   const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
@@ -67,8 +68,6 @@ export function Favorites() {
 
   const favoriteProductsIds = useMemo(() => new Set(favoriteProducts.map(product => product.id)), [favoriteProducts]);
   const filteredProducts = formattedProducts.filter(product => favoriteProductsIds.has(product.id));
-  const { t } = useLocalTranslation(translation);
-  const { goToHome } = useAppNavigation();
 
   return (
     <PrivateLayout>
