@@ -89,14 +89,16 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
         </Typography>
       </Box>
 
-      <Box sx={sx.footnote}>
-        <Typography variant='body1'>{t('discount')}</Typography>
+      {!!discount && (
+        <Box sx={sx.footnote}>
+          <Typography variant='body1'>{t('discount')}</Typography>
 
-        <Typography variant='body1' color='error'>
-          {discount}&nbsp;
-          {currencySymbol}
-        </Typography>
-      </Box>
+          <Typography variant='body1' color='error'>
+            {discount}&nbsp;
+            {currencySymbol}
+          </Typography>
+        </Box>
+      )}
     </Paper>
   );
 }
