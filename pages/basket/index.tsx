@@ -126,6 +126,7 @@ export function Basket() {
                     price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
                     amount={it.amount}
                     gram={it.gram}
+                    moyskladId={it.product.moyskladId}
                     productImg={it.product.images[0]?.small}
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
