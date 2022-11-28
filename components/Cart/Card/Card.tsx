@@ -82,7 +82,7 @@ export function CartCard({
             )}
           </Box>
           <Typography variant='body2' sx={sx.contentGram}>
-            {gram} грам
+            {gram} {t('g')}
           </Typography>
         </CardContent>
 
