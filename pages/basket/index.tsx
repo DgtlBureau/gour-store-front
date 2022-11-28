@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import { Divider, Grid } from '@mui/material';
 
@@ -118,7 +118,7 @@ export function Basket() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map(it => (
-                <>
+                <Fragment key={it.product.id + it.gram}>
                   <CartCard
                     id={it.product.id}
                     key={it.product.id}
@@ -137,7 +137,7 @@ export function Basket() {
                   />
 
                   <Divider sx={sx.divider} />
-                </>
+                </Fragment>
               ))}
             </Grid>
 
