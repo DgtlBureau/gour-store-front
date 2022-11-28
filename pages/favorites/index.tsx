@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { Typography } from '@mui/material';
+
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
   useCreateFavoriteProductsMutation,
@@ -12,22 +14,28 @@ import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice
 import { PrivateLayout } from 'layouts/Private/Private';
 import { ShopLayout } from 'layouts/Shop/Shop';
 
+import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductCatalog } from 'components/Product/Catalog/Catalog';
-import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
 
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
 import { useAppDispatch } from 'hooks/store';
+import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
+import translation from './Favorites.i18n.json';
+
+import sx from '../basket/Basket.styles';
+
 export function Favorites() {
   const dispatch = useAppDispatch();
-  const { language, currency } = useAppNavigation();
+  const { language, currency, goToHome } = useAppNavigation();
+  const { t } = useLocalTranslation(translation);
 
   const { data: products = [] } = useGetProductListQuery({ withDiscount: true, withCategories: true });
   const { data: favoriteProducts = [], isFetching } = useGetFavoriteProductsQuery();
@@ -58,24 +66,30 @@ export function Favorites() {
     }
   };
 
-  const filteredProducts = formattedProducts.filter(
-    product => !!favoriteProducts.find(favorite => favorite.id === product.id),
-  );
+  const favoriteProductsIds = useMemo(() => new Set(favoriteProducts.map(product => product.id)), [favoriteProducts]);
+  const filteredProducts = formattedProducts.filter(product => favoriteProductsIds.has(product.id));
 
   return (
     <PrivateLayout>
       <ShopLayout>
-        <Link href='/' sx={{ marginBottom: '20px' }}>
-          Вернуться на главную
-        </Link>
+        {filteredProducts.length === 0 && (
+          <>
+            <Typography variant='h3' sx={sx.title}>
+              {t('favorites')}
+            </Typography>
+
+            <CartEmpty title={t('emptyTitle')} actionText={t('emptyButton')} onClick={goToHome}>
+              <Typography variant='body1'>{t('emptyText')}</Typography>
+            </CartEmpty>
+          </>
+        )}
 
         {isFetching && <ProgressLinear />}
 
         {!!filteredProducts.length && (
           <ProductCatalog
-            title='Избранные продукты'
-            emptyText='Нет избранных продуктов'
-            products={formattedProducts}
+            title={t('favoriteProducts')}
+            products={filteredProducts}
             categories={categories}
             language={language}
             currency={currency}
