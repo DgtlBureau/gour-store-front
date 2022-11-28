@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 
+import { useGetStockQuery } from 'store/api/warehouseApi';
+
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { IconButton } from 'components/UI/IconButton/IconButton';
@@ -29,6 +31,7 @@ type Props = {
   price: number;
   amount: number;
   gram: number;
+  moyskladId: string | null;
   productImg: string;
   backgroundImg?: string;
   discount?: number;
@@ -44,6 +47,7 @@ export function CartCard({
   price,
   amount,
   gram,
+  moyskladId,
   productImg,
   backgroundImg,
   discount,
@@ -54,9 +58,34 @@ export function CartCard({
 }: Props) {
   const { t } = useLocalTranslation(translations);
 
+  const shouldSkipGettingStocks = !gram || !moyskladId;
+  const {
+    data: stock,
+    isFetching: isStockFetching,
+    isError: isStockError,
+  } = useGetStockQuery(
+    {
+      city: 'Санкт-Петербург',
+      gram: String(gram),
+      warehouseId: String(moyskladId),
+    },
+    {
+      skip: shouldSkipGettingStocks,
+    },
+  );
+
+  const isAmountMoreThanCost = !isStockFetching && amount >= Number(stock?.value || 0);
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
+
   const screenWidth = window.screen.width;
 
   const backgroundImage = `url('${backgroundImg}')`;
+
+  const handleAddClick = () => {
+    if (!isAddDisabled) {
+      onAdd();
+    }
+  };
 
   return (
     <Card sx={sx.card}>
@@ -81,9 +110,14 @@ export function CartCard({
               </IconButton>
             )}
           </Box>
-          <Typography variant='body2' sx={sx.contentGram}>
+          <Typography variant='body2' color='primary'>
             {gram} грам
           </Typography>
+          {!isStockFetching && !!stock && (
+            <Typography variant='body2' color='primary'>
+              Осталось {stock.value} шт
+            </Typography>
+          )}
         </CardContent>
 
         <CardActions sx={sx.actions}>
@@ -100,7 +134,7 @@ export function CartCard({
               {amount * gram} {t('g')}
             </Typography>
 
-            <IconButton onClick={onAdd}>
+            <IconButton onClick={handleAddClick} disabled={isAddDisabled}>
               <PlusIcon />
             </IconButton>
           </Box>
