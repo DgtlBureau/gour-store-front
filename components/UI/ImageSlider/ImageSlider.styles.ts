@@ -32,12 +32,14 @@ const sx = {
     // width: '100%',
     padding: '5px',
     objectFit: 'contain',
+    backgroundSize: 'contain',
   },
   small: {
     cursor: 'pointer',
     height: '80px',
     width: '90px',
     marginRight: '14px',
+    backgroundSize: 'contain',
 
     '&:last-child': {
       marginRight: 0,

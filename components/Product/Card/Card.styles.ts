@@ -43,6 +43,7 @@ const sx = createSx({
     width: '100%',
     padding: '10px',
     objectFit: 'contain',
+    backgroundSize: 'contain',
 
     border: '2px solid',
     borderColor: '#FEC983',

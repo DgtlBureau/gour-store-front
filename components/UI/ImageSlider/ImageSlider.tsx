@@ -65,7 +65,6 @@ export function ImageSlider({ images, backgroundSrc, sx }: ImageSliderProps) {
 
       {existImages.length > 1 && (
         <Box sx={sliderSx.scroll}>
-          111
           {existImages.map((image, i) => (
             <Box
               key={i}

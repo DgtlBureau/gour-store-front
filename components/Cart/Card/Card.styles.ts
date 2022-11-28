@@ -32,6 +32,7 @@ const sx = {
     borderRadius: '10px',
 
     objectFit: 'contain',
+    backgroundSize: 'contain',
   },
 
   info: {
