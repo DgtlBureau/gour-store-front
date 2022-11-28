@@ -29,7 +29,9 @@ const sx = {
       sm: '540px',
       xs: '300px',
     },
-    width: '100%',
+    // width: '100%',
+    padding: '5px',
+    objectFit: 'contain',
   },
   small: {
     cursor: 'pointer',
