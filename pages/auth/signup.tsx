@@ -34,15 +34,17 @@ type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'r
 export default function SignUp() {
   const { goToIntro, goToSignIn, language } = useAppNavigation();
 
-  const { data: cities } = useGetCityListQuery();
-  const { data: roles } = useGetRoleListQuery();
-
-  const convertedCities = cities
-    ? cities.map(city => ({
-        label: city.name[language].toString(),
-        value: city.id.toString(),
-      }))
-    : [];
+  const { cities } = useGetCityListQuery(undefined, {
+    selectFromResult: ({ data, ...params }) => ({
+      cities:
+        data?.map(city => ({
+          value: city.id.toString(),
+          label: city.name[language],
+        })) || [],
+      ...params,
+    }),
+  });
+  const { data: roles = [] } = useGetRoleListQuery();
 
   const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
   const [signUp] = useSignUpMutation();
@@ -144,15 +146,14 @@ export default function SignUp() {
       stepIndex: 1,
     },
     citySelect: {
-      component: (
-        <SignupCitySelect city={selectedCity} options={convertedCities} onSubmit={saveCity} onBack={goToGreeting} />
-      ),
+      component: <SignupCitySelect city={selectedCity} options={cities} onSubmit={saveCity} onBack={goToGreeting} />,
       image: cityImage,
       stepIndex: 2,
     },
     credentials: {
       component: (
         <SignupCredentials
+          roles={roles}
           defaultValues={credentials}
           codeIsSending={codeIsSending}
           onEmailSend={sendEmail}

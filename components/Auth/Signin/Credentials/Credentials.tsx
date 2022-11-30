@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
 import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
@@ -64,7 +65,7 @@ export function SigninCredentials({
 
           <HFTextField sx={sx.field} name='email' type='email' label={t('email')} />
 
-          <HFTextField sx={sx.field} type='password' name='password' label={t('password')} />
+          <HFPassField sx={sx.field} name='password' label={t('password')} />
 
           <Box sx={sx.links}>
             <Link sx={sx.link} component='button' type='button' variant='body2' onClick={onPasswordChange}>

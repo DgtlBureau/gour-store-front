@@ -352,13 +352,7 @@ export function Order() {
             </Grid>
 
             <Grid item md={4} xs={12}>
-              <OrderCard
-                totalCartPrice={totalProductsSum}
-                currency={currency}
-                language={language}
-                totalProductCount={count}
-                productsList={productsInOrder}
-              />
+              <OrderCard currency={currency} language={language} products={productsInOrder} />
             </Grid>
           </Grid>
         )}

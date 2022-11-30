@@ -129,6 +129,7 @@ export function BuyCheeseCoinsModal({
           <Grid container spacing={3} marginBottom='24px'>
             <Grid item xs={12}>
               <HFMaskInput
+                margin='dense' // https://github.com/mui/material-ui/issues/29892#issuecomment-979745849
                 name='cardNumber'
                 label='Номер карты'
                 mask={formMasks.cardNumber}

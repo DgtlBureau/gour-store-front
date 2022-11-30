@@ -1,5 +1,6 @@
 import { IBase } from './IBase';
 import { ICity } from './ICity';
+import { IClientRole } from './IClientRole';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 
@@ -16,4 +17,5 @@ export interface ICurrentUser extends Omit<IBase, 'id'> {
   city: ICity;
   avatar: IImage;
   referralCode: IReferralCode;
+  role: IClientRole;
 }

@@ -12,7 +12,7 @@ export function getCurrencySymbol(currencyAbbreviation: GeneralCurrency) {
 }
 
 // изначально цена указывается за 1кг
-export const getPriceByGrams = (price: number, gram: number) => Math.ceil((price / 1000) * gram);
+export const getPriceByGrams = (price: number, gram: number) => Math.floor((price / 1000) * gram);
 
 export function getPriceWithDiscount(price: number, discount?: number) {
   if (!discount) return price;

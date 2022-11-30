@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import { Divider, Grid } from '@mui/material';
 
@@ -63,7 +63,6 @@ export function Basket() {
   const count = useAppSelector(selectedProductCount);
   const productTotalSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
-
   const productIds = useAppSelector(selectProductsIdInOrder);
 
   const { data: similarProducts = [] } = useGetSimilarProductsByIdQuery({ productIds });
@@ -119,7 +118,7 @@ export function Basket() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               {productsInOrder.map(it => (
-                <>
+                <Fragment key={it.product.id + it.gram}>
                   <CartCard
                     id={it.product.id}
                     key={it.product.id}
@@ -127,6 +126,7 @@ export function Basket() {
                     price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
                     amount={it.amount}
                     gram={it.gram}
+                    moyskladId={it.product.moyskladId}
                     productImg={it.product.images[0]?.small}
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     discount={it.product.discount}
@@ -137,7 +137,7 @@ export function Basket() {
                   />
 
                   <Divider sx={sx.divider} />
-                </>
+                </Fragment>
               ))}
             </Grid>
 

@@ -24,6 +24,7 @@ export const sx = {
     },
   },
   filterBtn: {
+    marginTop: '1rem',
     minWidth: '20px',
     padding: '4px',
   },

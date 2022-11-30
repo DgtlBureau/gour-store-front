@@ -81,6 +81,7 @@ export const ProductCard = memo(function ProductCard({
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
+  const shouldSkipGettingStocks = !gramValue || !moyskladId;
   const {
     data: stock,
     isFetching: isStockFetching,
@@ -92,7 +93,7 @@ export const ProductCard = memo(function ProductCard({
       warehouseId: String(moyskladId),
     },
     {
-      skip: !gramValue || !moyskladId,
+      skip: shouldSkipGettingStocks,
     },
   );
 
@@ -112,7 +113,7 @@ export const ProductCard = memo(function ProductCard({
   const changeGram = (value: string | number) => setGramValue(+value);
 
   const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
-  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(gramValue);
@@ -145,9 +146,7 @@ export const ProductCard = memo(function ProductCard({
           </Box>
         )}
       </Box>
-
       <Rate rating={rating} stockLabel={stockLabel} />
-
       <Link href={`/${Path.PRODUCTS}/${id}`} sx={{ textDecoration: 'none' }}>
         <Typography sx={sx.title} variant='h6'>
           {title}
