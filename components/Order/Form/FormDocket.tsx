@@ -42,7 +42,8 @@ const sx = {
   divider: {
     width: '100%',
     margin: '0 10px',
-    border: '1px dashed rgba(0, 0, 0, 0.2)',
+    border: 'none',
+    borderTop: '1px dashed rgba(0, 0, 0, 0.2)',
   },
 };
 
