@@ -57,10 +57,6 @@ const sx = {
     justifyContent: 'space-between',
   },
 
-  contentGram: {
-    color: color.primary,
-  },
-
   title: {
     fontSize: {
       xs: '14px',

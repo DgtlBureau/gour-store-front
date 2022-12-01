@@ -59,6 +59,7 @@ export function ProductActions({
 }: ProductActionsProps) {
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
+  const shouldSkipGettingStocks = !productGramValue || !moyskladId;
   const {
     data: stock,
     isFetching: isStockFetching,
@@ -71,7 +72,7 @@ export function ProductActions({
       warehouseId: String(moyskladId),
     },
     {
-      skip: !productGramValue || !moyskladId,
+      skip: shouldSkipGettingStocks,
       selectFromResult: ({ error, ...rest }) => ({ ...rest, error: getErrorMessage(error) }),
     },
   );
@@ -93,7 +94,7 @@ export function ProductActions({
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
 
   const isAmountMoreThanCost = !isStockFetching && amount >= Number(stock?.value);
-  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost;
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
 
   const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
 
@@ -113,7 +114,6 @@ export function ProductActions({
       <Grid item xs md={12}>
         <ProductPrice price={totalCost} discount={discount} currency={currency} />
       </Grid>
-
       <Grid item>
         <ProductCardGramSelect
           gram={productGramValue}
@@ -122,7 +122,6 @@ export function ProductActions({
           sx={sxActions.gramSelect}
         />
       </Grid>
-
       <Grid item xs={5} md>
         <ProductCardCart
           isDisabled={isAddDisabled}
@@ -132,7 +131,6 @@ export function ProductActions({
           onRemove={handleRemoveClick}
         />
       </Grid>
-
       <Grid
         item
         sx={{
