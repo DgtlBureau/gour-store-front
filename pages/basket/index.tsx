@@ -29,6 +29,7 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { CartInfo } from 'components/Cart/Info/Info';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductSlider } from 'components/Product/Slider/Slider';
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -141,29 +142,22 @@ export function Basket() {
               ))}
             </Grid>
 
-            <Grid container item xs={12} md={4} spacing={1}>
-              <Grid item xs={12} sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <Button fullWidth onClick={goToOrder}>
                   {t('orderButton')}
                 </Button>
-              </Grid>
-
-              <Grid item xs={12}>
-                <CartInfo
-                  count={count}
-                  discount={sumDiscount}
-                  delivery={isDeliveryFree ? 0 : delivery}
-                  price={productTotalSum}
-                  currency={currency}
-                />
-              </Grid>
-
+              </Box>
+              <CartInfo
+                count={count}
+                discount={sumDiscount}
+                delivery={isDeliveryFree ? 0 : delivery}
+                price={productTotalSum}
+                currency={currency}
+              />
               {!isDeliveryFree && (
-                <Grid item xs={12}>
-                  <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
-                </Grid>
+                <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
               )}
-
               <Grid item xs={12}>
                 <InfoBlock title={t('aboutDelivery')} actionText={t('detailed')} href={`${Path.RULES}`} />
               </Grid>
