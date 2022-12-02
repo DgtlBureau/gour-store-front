@@ -111,7 +111,7 @@ export function CartCard({
             )}
           </Box>
           <Typography variant='body2' color='primary'>
-            {gram} грам
+            {gram} {t('g')}
           </Typography>
           {!isStockFetching && !!stock && (
             <Typography variant='body2' color='primary'>
