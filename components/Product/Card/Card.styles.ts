@@ -84,7 +84,6 @@ const sx = createSx({
     fontWeight: 'bold',
     fontFamily: 'Roboto slab',
     color: color.primary,
-    display: '-webkit-box',
 
     height: '100%',
 
