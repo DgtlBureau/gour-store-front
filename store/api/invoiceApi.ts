@@ -7,7 +7,7 @@ import { IInvoice } from 'types/entities/IInvoice';
 
 import { CardValidationError } from 'errors/CardValidationError';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 const PAYMENT_PUBLIC_ID = process.env.NEXT_PUBLIC_PAYMENT_PUBLIC_ID as string;
 
@@ -19,10 +19,7 @@ export const invoiceApi = commonApi.injectEndpoints({
           url: '/payment/invoice',
           params,
         }),
-        providesTags: result =>
-          result
-            ? [...result.map(({ uuid: id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
-            : [{ type: 'Invoice', id: 'LIST' }],
+        providesTags: result => providesList(result, 'Invoice'),
       }),
       getInvoicePrice: builder.query<number, GetInvoicePriceDto>({
         query: body => ({
