@@ -136,7 +136,7 @@ export const ProductCard = memo(function ProductCard({
             sx={{ ...sx.previewImg, backgroundImage }}
             component='img'
             image={previewImg || defaultImg}
-            alt=''
+            alt='product'
           />
         </Link>
 

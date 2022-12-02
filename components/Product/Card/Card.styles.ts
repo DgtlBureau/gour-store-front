@@ -1,6 +1,6 @@
-import { color } from 'themes';
+import { color, createSx } from 'themes';
 
-const sx = {
+const sx = createSx({
   card: {
     display: 'flex',
     flexDirection: 'column',
@@ -41,14 +41,13 @@ const sx = {
     },
 
     width: '100%',
+    padding: '10px',
+    objectFit: 'contain',
+    backgroundSize: 'contain',
 
     border: '2px solid',
     borderColor: '#FEC983',
     borderRadius: '10px',
-  },
-  productImg: {
-    height: '100%',
-    objectFit: 'contain',
   },
   heart: {
     position: 'absolute',
@@ -130,6 +129,6 @@ const sx = {
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-};
+});
 
 export default sx;
