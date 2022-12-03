@@ -128,7 +128,7 @@ export default function Product() {
   const formattedSimilarProducts = useMemo(
     () =>
       product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
-    [product?.similarProducts, categories, favoriteProducts],
+    [product, categories, favoriteProducts],
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
