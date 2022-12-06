@@ -9,56 +9,32 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
 
-import { color } from 'themes';
-
 import translations from './Form.i18n.json';
 
-const sx = {
-  docket: {
-    margin: '40px 0',
-  },
-  field: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    color: color.muted,
-    '&:last-child': {
-      marginBottom: '10px',
-    },
-  },
-  label: {
-    whiteSpace: 'nowrap',
-  },
-  value: {
-    fontWeight: 700,
-    fontFamily: 'Roboto slab',
-  },
-  discountValue: {
-    color: color.error,
-  },
-  total: {
-    color: color.primary,
-  },
-  divider: {
-    width: '100%',
-    margin: '0 10px',
-    border: 'none',
-    borderTop: '1px dashed rgba(0, 0, 0, 0.2)',
-  },
-};
+import sx from './FormDocket.styles';
 
 type Props = {
   productsCount: number;
   cost: number;
-  discount?: number;
+  promotionsDiscount?: number;
+  promoCodeDiscount?: number;
+  referralCodeDiscount?: number;
   delivery: number;
   currency?: Currency;
 };
 
-export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, currency = 'cheeseCoin' }: Props) {
+export function OrderFormDocket({
+  productsCount,
+  cost,
+  promotionsDiscount = 0,
+  promoCodeDiscount = 0,
+  referralCodeDiscount = 0,
+  delivery,
+  currency = 'cheeseCoin',
+}: Props) {
   const { t } = useLocalTranslation(translations);
 
-  const total = cost + delivery - discount;
+  const total = cost + delivery - promotionsDiscount - (promoCodeDiscount || referralCodeDiscount);
 
   const productsDeclision = getDeclensionWordByCount(productsCount, [
     t('manyProducts'),
@@ -76,22 +52,48 @@ export function OrderFormDocket({ productsCount, cost, discount = 0, delivery, c
         </Typography>
         <hr style={sx.divider} />
         <Typography variant='h6' sx={sx.value}>
-          {cost - discount}&nbsp;
+          {cost}&nbsp;
           {currencySymbol}
         </Typography>
       </Box>
 
-      {!!discount && (
+      {!!promotionsDiscount && (
         <Box sx={sx.field}>
           <Typography variant='body1' sx={sx.label}>
-            {t('discount')}
+            {t('promotions')}
           </Typography>
           <hr style={sx.divider} />
           <Typography variant='h6' sx={{ ...sx.value, ...sx.discountValue }}>
-            -{discount}&nbsp;
+            -{promotionsDiscount}&nbsp;
             {currencySymbol}
           </Typography>
         </Box>
+      )}
+
+      {promoCodeDiscount ? (
+        <Box sx={sx.field}>
+          <Typography variant='body1' sx={sx.label}>
+            {t('promoCode')}
+          </Typography>
+          <hr style={sx.divider} />
+          <Typography variant='h6' sx={{ ...sx.value, ...sx.discountValue }}>
+            -{promoCodeDiscount}&nbsp;
+            {currencySymbol}
+          </Typography>
+        </Box>
+      ) : (
+        !!referralCodeDiscount && (
+          <Box sx={sx.field}>
+            <Typography variant='body1' sx={sx.label}>
+              {t('referralCode')}
+            </Typography>
+            <hr style={sx.divider} />
+            <Typography variant='h6' sx={{ ...sx.value, ...sx.discountValue }}>
+              -{referralCodeDiscount}&nbsp;
+              {currencySymbol}
+            </Typography>
+          </Box>
+        )
       )}
 
       <Box sx={sx.field}>
