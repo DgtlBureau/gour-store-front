@@ -1,4 +1,4 @@
-import { CSSProperties, ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { CSSProperties, ChangeEvent, KeyboardEvent, memo, useEffect, useState } from 'react';
 
 import { SxProps } from '@mui/material';
 
@@ -52,10 +52,6 @@ export function CodeInput({
   const getFieldsValue = () => fields.map(field => field.value).join('');
 
   useEffect(() => {
-    const fieldsValue = getFieldsValue();
-
-    if (fieldsValue === value) return;
-
     const splittedValue = value?.split('');
 
     const updatedFields: CodeInputField[] = [];

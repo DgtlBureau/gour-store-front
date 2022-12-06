@@ -3,8 +3,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
-import { HFTextField } from 'components/HookForm/HFTextField';
 import { Box } from 'components/UI/Box/Box';
 import { Modal } from 'components/UI/Modal/Modal';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -139,12 +139,7 @@ export function PAEmailChangeModal({
 
             {isCodeSended && !isCodeSuccess && (
               <>
-                <HFTextField
-                  label={t('code')}
-                  name='code'
-                  sx={sx.codeField}
-                  onChange={e => checkCode(e.target.value)}
-                />
+                <HFCodeInput sx={sx.codeField} name='code' onChange={checkCode} />
 
                 {!!seconds && (
                   <Box sx={sx.timer}>
