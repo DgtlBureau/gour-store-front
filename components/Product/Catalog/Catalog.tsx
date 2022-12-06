@@ -195,22 +195,23 @@ export const ProductCatalog = memo(
                 {title}
               </Typography>
 
-              {withFilterList && isDesktop ? (
-                <ProductFilterList
-                  sx={catalogSx.filters}
-                  categories={categories}
-                  filters={filters}
-                  language={language}
-                  onOrderTypeChange={changeOrderType}
-                  onProductTypeChange={changeProductType}
-                  onCharacteristicChange={changeCharacteristics}
-                  onCharacteristicsReset={resetCharacteristics}
-                />
-              ) : (
-                <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
-                  <FilterIcon fontSize='small' />
-                </Button>
-              )}
+              {withFilterList &&
+                (isDesktop ? (
+                  <ProductFilterList
+                    sx={catalogSx.filters}
+                    categories={categories}
+                    filters={filters}
+                    language={language}
+                    onOrderTypeChange={changeOrderType}
+                    onProductTypeChange={changeProductType}
+                    onCharacteristicChange={changeCharacteristics}
+                    onCharacteristicsReset={resetCharacteristics}
+                  />
+                ) : (
+                  <Button size='small' onClick={openFilterModal} sx={catalogSx.filterBtn}>
+                    <FilterIcon fontSize='small' />
+                  </Button>
+                ))}
             </Box>
           }
         />
