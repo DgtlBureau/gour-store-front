@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControlLabel, Radio } from '@mui/material';
 
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
 import { HFRadioGroup } from 'components/HookForm/HFRadioGroup';
 import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
@@ -148,12 +149,7 @@ export function SignupCredentials({
 
           {isCodeSended && !isCodeSuccess && (
             <>
-              <HFTextField
-                sx={{ ...sx.field, ...sx.codeField }}
-                label={t('code')}
-                name='code'
-                onChange={e => checkCode(e.target.value)}
-              />
+              <HFCodeInput sx={sx.codeField} name='code' onChange={checkCode} />
 
               {!!seconds && (
                 <Box sx={sx.timer}>
