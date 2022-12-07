@@ -76,7 +76,7 @@ export type OrderFormProps = {
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
-  isPromoCodeApply: boolean;
+  isPromoCodeApplies: boolean;
   delivery: number;
   deliveryProfiles: SelectOption[];
   currency?: Currency;
@@ -97,7 +97,7 @@ export function OrderForm({
   deliveryProfiles,
   isSubmitError,
   isFetching,
-  isPromoCodeApply,
+  isPromoCodeApplies,
   cities,
   currency,
   onAddPromoCode,
@@ -212,9 +212,9 @@ export function OrderForm({
                   <HFTextField
                     name='promoCode'
                     label={t('promoCode')}
-                    disabled={isPromoCodeApply}
+                    disabled={isPromoCodeApplies}
                     endAdornment={
-                      isPromoCodeApply ? (
+                      isPromoCodeApplies ? (
                         <CircularProgress />
                       ) : (
                         <IconButton disabled={!values.getValues('promoCode')} onClick={addPromoCode}>

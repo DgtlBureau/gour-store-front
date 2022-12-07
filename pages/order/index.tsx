@@ -44,6 +44,7 @@ import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
+import { filterOrderProductsByCategories, getOrderDiscountValue } from 'utils/orderUtil';
 
 import translation from './Order.i18n.json';
 
@@ -96,7 +97,7 @@ export function Order() {
   const [fetchPayOrder, { isLoading: isPayOrderLoading }] = usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
-  const [applyPromoCode, { isLoading: isPromoCodeApply }] = useApplyPromoCodeMutation();
+  const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
 
@@ -137,21 +138,12 @@ export function Order() {
     try {
       const code = await applyPromoCode({ key }).unwrap();
 
-      const promoCodeCategoriesIds = code.categories.map(category => category.id);
-
-      const promoCodeOrderProducts = productsInOrder.filter(orderProduct =>
-        orderProduct.product.categories?.some(productCategory => promoCodeCategoriesIds.includes(productCategory.id)),
-      );
+      const promoCodeOrderProducts = filterOrderProductsByCategories(productsInOrder, code.categories);
 
       const isUseful = !!promoCodeOrderProducts.length;
 
       if (isUseful) {
-        const codeDiscountValue = promoCodeOrderProducts.reduce((acc, { product, gram, amount }) => {
-          const discount = product.totalCost * (code.discount / 100);
-          const discountByGram = getPriceByGrams(discount, gram);
-
-          return acc + discountByGram * amount;
-        }, 0);
+        const codeDiscountValue = getOrderDiscountValue(code.discount, promoCodeOrderProducts);
 
         setPromoCode(code);
         setPromoCodeDiscountValue(codeDiscountValue);
@@ -392,7 +384,7 @@ export function Order() {
                 defaultDeliveryFields={deliveryFields}
                 cities={cities}
                 isFetching={isCreatingProfile || isCreatingOrder}
-                isPromoCodeApply={isPromoCodeApply}
+                isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
                 productsCount={count}
                 cost={totalProductsSum}

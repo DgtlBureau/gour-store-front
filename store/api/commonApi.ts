@@ -14,7 +14,6 @@ export const commonApi = createApi({
     'OrderProfile',
     'Page',
     'Product',
-    'PromoCode',
     'ProductGrade',
     'Promotion',
     'Role',
