@@ -88,7 +88,7 @@ export function Favorites() {
 
         {!!filteredProducts.length && (
           <ProductCatalog
-            title={t('favoriteProducts')}
+            title={t('favorites')}
             products={filteredProducts}
             categories={categories}
             language={language}
