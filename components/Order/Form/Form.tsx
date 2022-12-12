@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { SelectOption } from 'components/UI/Select/Select';
 
@@ -25,6 +26,8 @@ import { getValidationSchema } from './validation';
 
 import sx from './Form.styles';
 
+import DoneIcon from '@mui/icons-material/Done';
+
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
 export type OrderFormType = {
@@ -32,6 +35,7 @@ export type OrderFormType = {
   lastName: string;
   phone: string;
   email: string;
+  promoCode?: string;
   deliveryProfileId: number;
   cityId: number;
   street: string;
@@ -47,6 +51,7 @@ export type PersonalFields = {
   lastName: string;
   phone: string;
   email: string;
+  promoCodeId?: number;
 };
 
 export type DeliveryFields = {
@@ -65,13 +70,17 @@ export type OrderFormProps = {
   defaultDeliveryFields: DeliveryFields;
   productsCount: number;
   cost: number;
-  discount?: number;
+  promotionsDiscount?: number;
+  promoCodeDiscount?: number;
+  referralCodeDiscount?: number;
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
+  isPromoCodeApplies: boolean;
   delivery: number;
   deliveryProfiles: SelectOption[];
   currency?: Currency;
+  onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
 };
@@ -81,13 +90,17 @@ export function OrderForm({
   defaultDeliveryFields,
   productsCount,
   cost,
-  discount,
+  promotionsDiscount,
+  promoCodeDiscount,
+  referralCodeDiscount,
   delivery,
   deliveryProfiles,
   isSubmitError,
   isFetching,
+  isPromoCodeApplies,
   cities,
   currency,
+  onAddPromoCode,
   onSelectDeliveryProfile,
   onSubmit,
 }: OrderFormProps) {
@@ -120,6 +133,12 @@ export function OrderForm({
     });
   }, [defaultPersonalFields]);
 
+  const addPromoCode = async () => {
+    const promoCodeKey = values.getValues('promoCode');
+
+    if (promoCodeKey) onAddPromoCode(promoCodeKey);
+  };
+
   const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
   const agree = () => setIsAgree(!isAgree);
@@ -143,7 +162,6 @@ export function OrderForm({
                 <HFTextField name='lastName' label={t('lastName')} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                {' '}
                 <HFPhoneInput name='phone' label={t('phone')} />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -170,7 +188,7 @@ export function OrderForm({
               )}
 
               <Grid item xs={12} sm={6}>
-                <HFSelect name='cityId' options={cities} label={t('city')} />
+                <HFSelect name='cityId' options={cities} label={t('city')} placeholder='Выберите город' />
               </Grid>
 
               {addressFields.map(field => (
@@ -179,17 +197,52 @@ export function OrderForm({
                 </Grid>
               ))}
 
-              <Grid item xs>
+              <Grid item xs={12}>
                 <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
+              </Grid>
+
+              <Grid
+                container
+                item
+                xs={12}
+                sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+                spacing={2}
+              >
+                <Grid item xs={12} sm={6}>
+                  <HFTextField
+                    name='promoCode'
+                    label={t('promoCode')}
+                    disabled={isPromoCodeApplies}
+                    endAdornment={
+                      isPromoCodeApplies ? (
+                        <CircularProgress />
+                      ) : (
+                        <IconButton disabled={!values.getValues('promoCode')} onClick={addPromoCode}>
+                          <DoneIcon />
+                        </IconButton>
+                      )
+                    }
+                  />
+                </Grid>
+
+                {!!referralCodeDiscount && (
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant='body2' color='text.muted'>
+                      При указанном промокоде реферальный код не учитывается
+                    </Typography>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 
             <OrderFormDocket
-              productsCount={productsCount}
               cost={cost}
-              discount={discount}
               delivery={delivery}
               currency={currency}
+              productsCount={productsCount}
+              promotionsDiscount={promotionsDiscount}
+              promoCodeDiscount={promoCodeDiscount}
+              referralCodeDiscount={referralCodeDiscount}
             />
 
             <Checkbox

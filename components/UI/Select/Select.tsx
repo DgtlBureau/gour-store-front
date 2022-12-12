@@ -30,9 +30,11 @@ type Props = {
 export function Select({ value, options, error, isError, label, sx, selectSx, isDisabled, size, onChange }: Props) {
   const isNumberValue = typeof value === 'number';
 
+  const selectValue = (value || options[0].value).toString();
+
   const change = (event: SelectChangeEvent) => {
-    const selectValue = event.target.value;
-    onChange(isNumberValue ? +selectValue : selectValue);
+    const targetValue = event.target.value;
+    onChange(isNumberValue ? +targetValue : targetValue);
   };
 
   return (
@@ -43,7 +45,7 @@ export function Select({ value, options, error, isError, label, sx, selectSx, is
           labelId='select-label'
           id='select'
           sx={selectSx}
-          value={isNumberValue ? value.toString() : value}
+          value={selectValue}
           label={label}
           error={isError}
           disabled={isDisabled}

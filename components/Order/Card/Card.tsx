@@ -30,7 +30,7 @@ export function OrderCard({ products, currency, language, sx }: Props) {
   const currencySymbol = getCurrencySymbol(currency);
 
   const productInfo = products.map(product => {
-    const priceByGram = getPriceByGrams(product.product.totalCost, product.gram) * product.amount;
+    const priceByGram = getPriceByGrams(product.product.price.cheeseCoin, product.gram) * product.amount;
 
     return {
       id: product.product.id,

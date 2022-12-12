@@ -6,6 +6,7 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useCreateOrderMutation, usePayOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+import { useApplyPromoCodeMutation } from 'store/api/promoCodeApi';
 import {
   removeProduct,
   selectBasketProducts,
@@ -33,6 +34,7 @@ import { OrderProductDto } from 'types/dto/order/product.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
 import type { IOrder } from 'types/entities/IOrder';
 import { IProduct } from 'types/entities/IProduct';
+import { IPromoCode } from 'types/entities/IPromoCode';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
@@ -40,7 +42,9 @@ import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
+import { filterOrderProductsByCategories, getOrderDiscountValue } from 'utils/orderUtil';
 
 import translation from './Order.i18n.json';
 
@@ -93,6 +97,7 @@ export function Order() {
   const [fetchPayOrder, { isLoading: isPayOrderLoading }] = usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
 
@@ -103,6 +108,11 @@ export function Order() {
   const [personalFields, setPersonalFields] = useState<PersonalFields>(defaultPersonalFields);
 
   const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>(defaultDeliveryFields);
+
+  const [promoCode, setPromoCode] = useState<IPromoCode | null>(null);
+
+  const [referralCodeDiscountValue, setReferralCodeDiscountValue] = useState(0);
+  const [promoCodeDiscountValue, setPromoCodeDiscountValue] = useState(0);
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
@@ -123,6 +133,31 @@ export function Order() {
   const count = useAppSelector(selectedProductCount);
   const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
+
+  const addPromoCode = async (key: string) => {
+    try {
+      const code = await applyPromoCode({ key }).unwrap();
+
+      const promoCodeOrderProducts = filterOrderProductsByCategories(productsInOrder, code.categories);
+
+      const isUseful = !!promoCodeOrderProducts.length;
+
+      if (isUseful) {
+        const codeDiscountValue = getOrderDiscountValue(code.discount, promoCodeOrderProducts);
+
+        setPromoCode(code);
+        setPromoCodeDiscountValue(codeDiscountValue);
+
+        dispatchNotification('Промокод успешно применён', { type: NotificationType.SUCCESS });
+      } else {
+        dispatchNotification('Промокод не подходит к товарам из заказа', { type: NotificationType.WARNING });
+      }
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+    }
+  };
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
@@ -182,6 +217,7 @@ export function Order() {
       phone,
       email,
       comment,
+      promoCodeId: promoCode?.id,
       deliveryProfileId: currentDeliveryProfileId,
       orderProducts,
     };
@@ -253,7 +289,7 @@ export function Order() {
   useEffect(() => {
     if (!currentUser) return;
 
-    const { firstName, lastName, phone, email, mainOrderProfileId } = currentUser;
+    const { firstName, lastName, phone, email, mainOrderProfileId, referralCode } = currentUser;
 
     setPersonalFields(fields => ({
       ...fields,
@@ -263,9 +299,19 @@ export function Order() {
       email,
     }));
 
-    if (mainOrderProfileId && mainOrderProfileId !== noExistingId) {
-      selectDeliveryProfile(mainOrderProfileId);
+    if (mainOrderProfileId) selectDeliveryProfile(mainOrderProfileId);
+
+    if (referralCode) {
+      const codeDiscountValue = productsInOrder.reduce((acc, { product, gram, amount }) => {
+        const discount = product.totalCost * (currentUser.referralCode.discount / 100);
+        const discountByGram = getPriceByGrams(discount, gram);
+
+        return acc + discountByGram * amount;
+      }, 0);
+
+      setReferralCodeDiscountValue(codeDiscountValue);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
@@ -338,12 +384,16 @@ export function Order() {
                 defaultDeliveryFields={deliveryFields}
                 cities={cities}
                 isFetching={isCreatingProfile || isCreatingOrder}
+                isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
-                discount={sumDiscount}
                 productsCount={count}
                 cost={totalProductsSum}
                 delivery={delivery}
                 deliveryProfiles={formattedDeliveryProfiles}
+                promotionsDiscount={sumDiscount}
+                referralCodeDiscount={referralCodeDiscountValue}
+                promoCodeDiscount={promoCodeDiscountValue}
+                onAddPromoCode={addPromoCode}
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
               />
