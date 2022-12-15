@@ -6,7 +6,12 @@
     "someProducts": "товара",
     "manyProducts": "товаров",
     "inOrder": "в заказе",
-    "total": "Итого"
+    "total": "Итого",
+    "delivery": "Доставка",
+    "promotions": "Акции",
+    "promoCode": "Промокод",
+    "referralCode": "Реферальный код",
+    "cost": "Стоимость товаров"
   },
   "en": {
     "kg": "kg",
@@ -15,6 +20,11 @@
     "someProducts": "products",
     "manyProducts": "products",
     "inOrder": "in the order",
-    "total": "Total"
+    "total": "Total",
+    "delivery": "Delivery",
+    "promotions": "Promotions",
+    "promoCode": "Promo code",
+    "referralCode": "Referral code",
+    "cost": "Cost of products"
   }
 }
