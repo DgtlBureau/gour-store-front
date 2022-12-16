@@ -47,14 +47,18 @@ type OrderSumItemProps = {
   title: string;
   value: number;
   isTotal?: boolean;
-  isDiscount?: boolean;
   currencySymbol: JSX.Element;
 };
 
-function OrderSumItem({ title, value, isTotal, isDiscount, currencySymbol }: OrderSumItemProps) {
+function OrderSumItem({ title, value, isTotal, currencySymbol }: OrderSumItemProps) {
+  const { t } = useLocalTranslation(translation);
+
+  const isFree = value === 0;
+  const isDiscount = value < 0;
+
   const variant = isTotal ? 'h6' : 'body1';
   const textSx = { ...cardSx.sumItemText, ...(isTotal && cardSx.totalText) };
-  const valueTextSx = { ...textSx, ...(isDiscount && cardSx.discountText) };
+  const valueTextSx = { ...textSx, ...(isDiscount && cardSx.discountText), ...(isFree && cardSx.freeText) };
 
   return (
     <Box sx={cardSx.sumItem}>
@@ -62,9 +66,14 @@ function OrderSumItem({ title, value, isTotal, isDiscount, currencySymbol }: Ord
         {title}
       </Typography>
       <Typography variant={variant} sx={valueTextSx}>
-        {isDiscount && '-'}
-        {value}&nbsp;
-        {currencySymbol}
+        {isFree ? (
+          t('free')
+        ) : (
+          <>
+            {value}&nbsp;
+            {currencySymbol}
+          </>
+        )}
       </Typography>
     </Box>
   );
@@ -138,18 +147,15 @@ export function OrderCard({
       <Stack sx={cardSx.footer}>
         <OrderSumItem title={t('cost')} value={cost} currencySymbol={currencySymbol} />
 
-        <OrderSumItem isDiscount title={t('promotions')} value={promotionsDiscount} currencySymbol={currencySymbol} />
+        {promotionsDiscount && (
+          <OrderSumItem title={t('promotions')} value={-promotionsDiscount} currencySymbol={currencySymbol} />
+        )}
 
         {promoCodeDiscount ? (
-          <OrderSumItem isDiscount title={t('promoCode')} value={promoCodeDiscount} currencySymbol={currencySymbol} />
+          <OrderSumItem title={t('promoCode')} value={-promoCodeDiscount} currencySymbol={currencySymbol} />
         ) : (
           !!referralCodeDiscount && (
-            <OrderSumItem
-              isDiscount
-              title={t('referralCode')}
-              value={referralCodeDiscount}
-              currencySymbol={currencySymbol}
-            />
+            <OrderSumItem title={t('referralCode')} value={-referralCodeDiscount} currencySymbol={currencySymbol} />
           )
         )}
 

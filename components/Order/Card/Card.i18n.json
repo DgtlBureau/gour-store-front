@@ -11,7 +11,8 @@
     "promotions": "Акции",
     "promoCode": "Промокод",
     "referralCode": "Реферальный код",
-    "cost": "Стоимость товаров"
+    "cost": "Стоимость товаров",
+    "free": "Бесплатно"
   },
   "en": {
     "kg": "kg",
@@ -25,6 +26,7 @@
     "promotions": "Promotions",
     "promoCode": "Promo code",
     "referralCode": "Referral code",
-    "cost": "Cost of products"
+    "cost": "Cost of products",
+    "free": "Free"
   }
 }

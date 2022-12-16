@@ -58,6 +58,9 @@ const sx = createSx({
   discountText: {
     color: color.error,
   },
+  freeText: {
+    color: color.green,
+  },
 });
 
 export default sx;
