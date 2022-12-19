@@ -120,7 +120,7 @@ export default function Product() {
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
-  const { data: comments = [] } = useGetProductGradeListQuery(
+  const { data: grades = [] } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
     { skip: !productId },
   );
@@ -143,14 +143,18 @@ export default function Product() {
     setReviewModalIsOpen(false);
   };
 
-  const productComments =
-    comments.map(grade => ({
-      id: grade.id,
-      clientName: grade.client?.role?.title || 'Клиент',
-      value: grade.value,
-      date: new Date(grade.createdAt),
-      comment: grade.comment,
-    })) || [];
+  const reviews = grades.map(({ id, client, value, createdAt, comment }) => {
+    const clientName = client ? `${client.firstName} ${client.lastName}` : 'Клиент';
+    const date = new Date(createdAt);
+
+    return {
+      id,
+      clientName,
+      value,
+      date,
+      comment,
+    };
+  });
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
@@ -165,7 +169,7 @@ export default function Product() {
   const price = Math.round(product?.price[currency] || 0);
 
   const hasSimilar = !!formattedSimilarProducts?.length;
-  const hasComments = !!productComments.length;
+  const hasComments = !!reviews.length;
 
   return (
     <PrivateLayout>
@@ -248,12 +252,7 @@ export default function Product() {
             )}
 
             {hasComments && (
-              <ProductReviews
-                sx={sx.reviews}
-                reviews={productComments}
-                ref={commentBlockRef}
-                onReviewClick={openReviewModal}
-              />
+              <ProductReviews sx={sx.reviews} reviews={reviews} ref={commentBlockRef} onReviewClick={openReviewModal} />
             )}
 
             <CommentCreateBlock onCreate={onCreateComment} />
