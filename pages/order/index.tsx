@@ -130,7 +130,6 @@ export function Order() {
   const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
   const productsInOrder = useAppSelector(selectBasketProducts);
-  const count = useAppSelector(selectedProductCount);
   const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
@@ -386,13 +385,7 @@ export function Order() {
                 isFetching={isCreatingProfile || isCreatingOrder}
                 isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
-                productsCount={count}
-                cost={totalProductsSum}
-                delivery={delivery}
                 deliveryProfiles={formattedDeliveryProfiles}
-                promotionsDiscount={sumDiscount}
-                referralCodeDiscount={referralCodeDiscountValue}
-                promoCodeDiscount={promoCodeDiscountValue}
                 onAddPromoCode={addPromoCode}
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
@@ -400,7 +393,16 @@ export function Order() {
             </Grid>
 
             <Grid item md={4} xs={12}>
-              <OrderCard currency={currency} language={language} products={productsInOrder} />
+              <OrderCard
+                products={productsInOrder}
+                cost={totalProductsSum}
+                promotionsDiscount={sumDiscount}
+                referralCodeDiscount={referralCodeDiscountValue}
+                promoCodeDiscount={promoCodeDiscountValue}
+                delivery={delivery}
+                currency={currency}
+                language={language}
+              />
             </Grid>
           </Grid>
         )}

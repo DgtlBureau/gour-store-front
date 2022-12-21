@@ -1,4 +1,6 @@
-const sx = {
+import { color, createSx } from 'themes';
+
+const sx = createSx({
   card: {
     width: '100%',
     padding: '30px',
@@ -42,11 +44,23 @@ const sx = {
     width: 'fit-content',
     color: 'text.muted',
   },
-  total: {
+  sumItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  sumItemText: {
     fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
     color: 'text.secondary',
   },
-};
+  totalText: {
+    fontWeight: 'bold',
+  },
+  discountText: {
+    color: color.error,
+  },
+  freeText: {
+    color: color.green,
+  },
+});
 
 export default sx;

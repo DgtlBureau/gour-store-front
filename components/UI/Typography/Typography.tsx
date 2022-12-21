@@ -1,32 +1,16 @@
 import React, { ReactNode } from 'react';
 
-import { SxProps } from '@mui/material';
-import MUITypography from '@mui/material/Typography';
+import { Typography as MUITypography, TypographyProps as MUITypographyProps, SxProps } from '@mui/material';
 
-type Props = {
+export type TypographyProps = {
   color?: string;
-  variant?:
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'body1'
-    | 'body2'
-    | 'caption'
-    | 'button'
-    | 'overline'
-    | 'inherit'
-    | undefined;
+  variant?: MUITypographyProps['variant'];
   children: ReactNode;
   sx?: SxProps;
   onClick?(): void;
 };
 
-export function Typography({ variant = 'h4', children, color, sx, onClick }: Props) {
+export function Typography({ variant = 'h4', children, color, sx, onClick }: TypographyProps) {
   return (
     <MUITypography sx={sx} variant={variant} color={color} onClick={onClick}>
       {children}
