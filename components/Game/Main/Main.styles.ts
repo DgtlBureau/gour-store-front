@@ -71,6 +71,10 @@ const sx = {
   btnText: {
     width: 'fit-content',
     marginTop: '8px',
+    fontSize: {
+      md: '14px',
+      xs: '10px',
+    },
   },
 
   alarm: {
