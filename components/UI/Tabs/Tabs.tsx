@@ -38,7 +38,7 @@ export function Tabs<T = string | number>({ value, options, sx, withLink, onChan
     >
       {options.map(option => (
         <Tab
-          LinkComponent={LinkRef}
+          LinkComponent={withLink ? LinkRef : undefined}
           key={String(option.value)}
           label={option.label}
           value={option.value}
