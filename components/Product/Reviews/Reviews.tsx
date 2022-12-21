@@ -101,7 +101,6 @@ export const ProductReviews = forwardRef<HTMLDivElement, ProductReviewsProps>(({
           </Box>
         </Box>
       </Grid>
-
       <Grid item xs={12} md={9}>
         {reviews.length === 0 ? (
           <Typography variant='h5'>{t('noReviews')}</Typography>

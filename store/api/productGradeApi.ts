@@ -17,6 +17,7 @@ export const productGradeApi = commonApi.injectEndpoints({
             params,
           };
         },
+        providesTags: (_result, _err, arg) => [{ type: 'ProductGrade', id: arg.productId }],
       }),
       createProductGrade: builder.mutation<IProductGrade, CreateProductGradeDto>({
         query({ productId, ...body }) {
@@ -26,6 +27,10 @@ export const productGradeApi = commonApi.injectEndpoints({
             body,
           };
         },
+        invalidatesTags: (result, _error, arg) => [
+          { type: 'Product', id: arg.productId },
+          { type: 'ProductGrade', id: arg.productId },
+        ],
       }),
     };
   },

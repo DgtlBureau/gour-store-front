@@ -9,8 +9,6 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { SelectOption } from 'components/UI/Select/Select';
 
-import { Currency } from 'types/entities/Currency';
-
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
@@ -21,7 +19,6 @@ import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { Typography } from '../../UI/Typography/Typography';
 import translations from './Form.i18n.json';
-import { OrderFormDocket } from './FormDocket';
 import { getValidationSchema } from './validation';
 
 import sx from './Form.styles';
@@ -68,18 +65,11 @@ export type DeliveryFields = {
 export type OrderFormProps = {
   defaultPersonalFields: PersonalFields;
   defaultDeliveryFields: DeliveryFields;
-  productsCount: number;
-  cost: number;
-  promotionsDiscount?: number;
-  promoCodeDiscount?: number;
-  referralCodeDiscount?: number;
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
   isPromoCodeApplies: boolean;
-  delivery: number;
   deliveryProfiles: SelectOption[];
-  currency?: Currency;
   onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
@@ -88,18 +78,11 @@ export type OrderFormProps = {
 export function OrderForm({
   defaultPersonalFields,
   defaultDeliveryFields,
-  productsCount,
-  cost,
-  promotionsDiscount,
-  promoCodeDiscount,
-  referralCodeDiscount,
-  delivery,
   deliveryProfiles,
   isSubmitError,
   isFetching,
   isPromoCodeApplies,
   cities,
-  currency,
   onAddPromoCode,
   onSelectDeliveryProfile,
   onSubmit,
@@ -205,7 +188,7 @@ export function OrderForm({
                 container
                 item
                 xs={12}
-                sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+                // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
                 spacing={2}
               >
                 <Grid item xs={12} sm={6}>
@@ -225,44 +208,34 @@ export function OrderForm({
                   />
                 </Grid>
 
-                {!!referralCodeDiscount && (
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant='body2' color='text.muted'>
-                      При указанном промокоде реферальный код не учитывается
-                    </Typography>
-                  </Grid>
-                )}
+                <Grid item xs={12} sm={6}>
+                  <Typography variant='body2' color='text.muted'>
+                    При указанном промокоде реферальный код не учитывается
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Checkbox
+                    sx={sx.agreement}
+                    value={isAgree}
+                    onChange={agree}
+                    label={
+                      <span style={sx.agreementLabel}>
+                        Даю свое согласие с{' '}
+                        <Link href={`/${Path.OFERTA}`} target='_blank'>
+                          условиями обслуживания
+                        </Link>
+                        , а также с &nbsp;
+                        <Link href={`/${Path.PRIVACY}`} target='_blank'>
+                          политикой конфиденциальности и правилами хранения моих персональных данных
+                        </Link>
+                        .
+                      </span>
+                    }
+                  />
+                </Grid>
               </Grid>
             </Grid>
-
-            <OrderFormDocket
-              cost={cost}
-              delivery={delivery}
-              currency={currency}
-              productsCount={productsCount}
-              promotionsDiscount={promotionsDiscount}
-              promoCodeDiscount={promoCodeDiscount}
-              referralCodeDiscount={referralCodeDiscount}
-            />
-
-            <Checkbox
-              sx={sx.agreement}
-              value={isAgree}
-              onChange={agree}
-              label={
-                <span style={sx.agreementLabel}>
-                  Даю свое согласие с{' '}
-                  <Link href={`/${Path.OFERTA}`} target='_blank'>
-                    условиями обслуживания
-                  </Link>
-                  , а также с &nbsp;
-                  <Link href={`/${Path.PRIVACY}`} target='_blank'>
-                    политикой конфиденциальности и правилами хранения моих персональных данных
-                  </Link>
-                  .
-                </span>
-              }
-            />
 
             <Button
               sx={sx.btn}

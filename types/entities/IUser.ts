@@ -4,7 +4,8 @@ import { IClientRole } from './IClientRole';
 import { IImage } from './IImage';
 import { IReferralCode } from './IReferralCode';
 
-export interface IUser extends IBase {
+export interface IUser extends Omit<IBase, 'id'> {
+  id: string;
   role: IClientRole;
   isApproved: boolean;
   firstName: string;

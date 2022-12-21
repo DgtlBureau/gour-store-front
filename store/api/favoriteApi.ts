@@ -2,7 +2,7 @@ import { IProduct } from 'types/entities/IProduct';
 
 import { Path } from 'constants/routes';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 export const favoriteApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -14,10 +14,7 @@ export const favoriteApi = commonApi.injectEndpoints({
             url: `${Path.CLIENT_AUTH}/${Path.CURRENT_USER}/${Path.FAVORITES}`,
           };
         },
-        providesTags: result =>
-          result
-            ? [...result.map(({ id }) => ({ type: 'Favorite', id } as const)), { type: 'Favorite', id: 'LIST' }]
-            : [{ type: 'Favorite', id: 'LIST' }],
+        providesTags: result => providesList(result, 'Favorite'),
       }),
       createFavoriteProducts: builder.mutation<void, number>({
         query(productId) {

@@ -3,7 +3,7 @@ import { IOrderProfile } from 'types/entities/IOrderProfile';
 
 import { Path } from 'constants/routes';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 export const orderProfileApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -15,10 +15,7 @@ export const orderProfileApi = commonApi.injectEndpoints({
             url: Path.ORDER_PROFILES,
           };
         },
-        providesTags: result =>
-          result
-            ? [...result.map(({ id }) => ({ type: 'OrderProfile', id } as const)), { type: 'OrderProfile', id: 'LIST' }]
-            : [{ type: 'OrderProfile', id: 'LIST' }],
+        providesTags: result => providesList(result, 'OrderProfile'),
       }),
       createOrderProfile: builder.mutation<IOrderProfile, CreateOrderProfileDto>({
         query(profile) {

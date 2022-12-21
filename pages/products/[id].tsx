@@ -31,6 +31,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
+import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
@@ -47,6 +48,17 @@ import styles from './Product.module.css';
 import sx from './Product.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
+
+const getProductComments = (comments: IProductGrade[]) =>
+  comments
+    .filter(i => i.isApproved && !!i.comment)
+    .map(grade => ({
+      id: grade.id,
+      clientName: grade.client?.role?.title || 'Клиент',
+      value: grade.value,
+      date: new Date(grade.createdAt),
+      comment: grade.comment,
+    }));
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -128,7 +140,7 @@ export default function Product() {
   const formattedSimilarProducts = useMemo(
     () =>
       product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
-    [product?.similarProducts, categories, favoriteProducts],
+    [product, categories, favoriteProducts],
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
@@ -155,6 +167,7 @@ export default function Product() {
       comment,
     };
   });
+
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
@@ -183,7 +196,6 @@ export default function Product() {
         {!isLoading && !isError && product && (
           <>
             <Link href='/'>Вернуться на главную</Link>
-
             <Box sx={sx.top}>
               <Box sx={sx.preview}>
                 <ImageSlider
@@ -202,7 +214,6 @@ export default function Product() {
                 <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
-
                 <ProductInformation
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
@@ -227,7 +238,6 @@ export default function Product() {
                 />
               </Box>
             </Box>
-
             {productDescription && (
               <Box sx={sx.description}>
                 <Typography sx={sx.title} variant='h5'>
@@ -237,7 +247,6 @@ export default function Product() {
                 <div dangerouslySetInnerHTML={{ __html: productDescription }} className={styles.productDescription} />
               </Box>
             )}
-
             {hasSimilar && (
               <ProductSlider
                 title={t('similar')}
@@ -250,12 +259,10 @@ export default function Product() {
                 onElect={electProduct}
               />
             )}
-
             {hasComments && (
               <ProductReviews sx={sx.reviews} reviews={reviews} ref={commentBlockRef} onReviewClick={openReviewModal} />
             )}
-
-            <CommentCreateBlock onCreate={onCreateComment} />
+            {canCreateReview && <CommentCreateBlock onCreate={onCreateComment} />}
           </>
         )}
 
