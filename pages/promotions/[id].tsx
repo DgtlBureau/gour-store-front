@@ -61,7 +61,7 @@ const Promotion = memo(function Promotion() {
   const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
   const { data: favoriteProducts = [], isLoading: favoriteProductsLoading } = useGetFavoriteProductsQuery();
 
-  const isLoading = isPromotionLoading && categoriesIsLoading && favoriteProductsLoading;
+  const isLoading = isPromotionLoading || categoriesIsLoading || favoriteProductsLoading;
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();

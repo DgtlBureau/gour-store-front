@@ -11,11 +11,17 @@ type Props = {
   disabled?: boolean;
   fieldsCount?: number;
   type?: 'number' | 'text';
+  helperText?: string;
+  isError?: boolean;
   onChange?: (value: string) => void;
 };
 
-export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
-  const { control } = useFormContext();
+export function HFCodeInput({ name, defaultValue, helperText, onChange, ...props }: Props) {
+  const {
+    control,
+    formState: { errors },
+    clearErrors,
+  } = useFormContext();
 
   return (
     <Controller
@@ -26,9 +32,13 @@ export function HFCodeInput({ name, defaultValue, onChange, ...props }: Props) {
         <CodeInput
           {...rest}
           onChange={value => {
+            clearErrors(name);
+
             HFOnChange(value);
             onChange?.(value);
           }}
+          isError={!!errors[name]}
+          helperText={helperText || errors[name]?.message}
           {...props}
         />
       )}

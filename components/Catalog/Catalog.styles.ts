@@ -24,7 +24,6 @@ const sx: Record<string, SxProps> = {
   },
   cardsGrid: {
     display: 'flex',
-    justifyContent: 'center',
     flexWrap: 'wrap',
     width: '100%',
     marginTop: { xs: '20px', md: '40px' },

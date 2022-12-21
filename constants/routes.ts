@@ -35,12 +35,14 @@ export enum Path {
   CHANGE_EMAIL = 'change-email',
   CHANGE_PHONE = 'change-phone',
   RECOVER_PASSWORD = 'recover-password',
+  APPLY = 'apply',
 
   WALLET = 'wallet',
   IMAGES = 'images',
   UPLOAD = 'upload',
   PAGES = 'pages',
   PROMOTIONS = 'promotions',
+  PROMOCODES = 'promo-codes',
   GAME = 'game',
 
   WAREHOUSE = 'warehouse',

@@ -28,14 +28,16 @@
     "promoError": "Неверный промокод",
     "promoApply": "Применить",
     "delivery": "Доставка",
-    "discount": "Скидка",
+    "promotions": "Акции",
     "total": "Итого",
     "toPay": "Оформить заказ",
     "orderError": "Возникла ошибка, попробуйте позже",
     "oneProduct": "товар",
     "someProducts": "товара",
     "manyProducts": "товаров",
-    "free": "Бесплатно"
+    "free": "Бесплатно",
+    "promoCode": "Промокод",
+    "referralCode": "Реферальный код"
   },
   "en": {
     "details": "Contact details",
@@ -66,13 +68,15 @@
     "promoError": "Incorrect code",
     "promoApply": "Apply",
     "delivery": "Delivery",
-    "discount": "Discount",
+    "promotions": "Promotions",
     "total": "Total",
     "toPay": "Checkout",
     "orderError": "An error occurred, please try again later",
     "oneProduct": "product",
     "someProducts": "products",
     "manyProducts": "products",
-    "free": "Free"
+    "free": "Free",
+    "promoCode": "Promo code",
+    "referralCode": "Referral code"
   }
 }

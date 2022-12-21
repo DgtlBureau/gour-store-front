@@ -1,4 +1,6 @@
-import { createTheme } from '@mui/material/styles';
+import { CSSProperties } from 'react';
+
+import { SxProps, createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -76,3 +78,11 @@ export const defaultTheme = createTheme({
     },
   },
 });
+
+export function createSx<T extends { [name: string]: CSSProperties | SxProps<typeof defaultTheme> }>(cfg: T) {
+  return cfg;
+}
+
+export function createOnlyCss<T extends { [name: string]: CSSProperties }>(cfg: T) {
+  return cfg;
+}

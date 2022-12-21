@@ -64,6 +64,7 @@ const sx = {
     color: 'text.muted',
   },
   codeField: {
+    marginBottom: '14px',
     width: '50%',
   },
 };

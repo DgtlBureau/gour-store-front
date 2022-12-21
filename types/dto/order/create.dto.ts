@@ -6,6 +6,7 @@ export type CreateOrderDto = {
   phone: string;
   email: string;
   deliveryProfileId: number;
+  promoCodeId?: number;
   orderProducts: OrderProductDto[];
   comment?: string;
 };
