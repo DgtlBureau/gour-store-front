@@ -10,6 +10,24 @@ import { CardValidationError } from 'errors/CardValidationError';
 
 import { commonApi } from './commonApi';
 
+const getCardValidationResponse = (err: unknown) => {
+  if (typeof err === 'object' && err !== null && 'cardNumber' in err) {
+    return {
+      error: {
+        data: new CardValidationError('Неправильный номер карты'),
+        originalStatus: 400,
+      } as any,
+    };
+  }
+
+  return {
+    error: {
+      data: new CardValidationError('Ошибка валидации карты'),
+      originalStatus: 400,
+    } as any,
+  };
+};
+
 export const orderApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
@@ -47,22 +65,8 @@ export const orderApi = commonApi.injectEndpoints({
           try {
             const checkout = new cp.Checkout({ publicId: process.env.NEXT_PUBLIC_PAYMENT_PUBLIC_ID as string });
             signature = await checkout.createPaymentCryptogram(checkoutValues);
-          } catch (e) {
-            if (typeof e === 'object' && 'cardNumber' in (e as object)) {
-              return {
-                error: {
-                  data: new CardValidationError('Неправильный номер карты'),
-                  originalStatus: 400,
-                } as any,
-              };
-            }
-
-            return {
-              error: {
-                data: new CardValidationError('Ошибка валидации карты'),
-                originalStatus: 400,
-              } as any,
-            };
+          } catch (err) {
+            return getCardValidationResponse(err);
           }
 
           const paymentDto: PayServerInvoiceDto = {
@@ -74,20 +78,33 @@ export const orderApi = commonApi.injectEndpoints({
             invoiceUuid,
           };
 
-          const paymentResult = await fetchWithBQ({
+          const createdOrderWithout3DS = await fetchWithBQ({
             url: '/orders/pay-order', // TODO: вынести в константы пути
             body: paymentDto,
             method: 'POST',
           });
 
-          if (paymentResult.data) {
-            const redirectUri = (paymentResult.data as { redirect: string }).redirect;
-            if (redirectUri) window.open(redirectUri, '_self');
-          }
+          const { MD, PaReq, TermUrl, acsUrl } = createdOrderWithout3DS.data as unknown as Record<
+            'MD' | 'PaReq' | 'TermUrl' | 'acsUrl',
+            string
+          >;
 
-          return paymentResult.data
-            ? { data: paymentResult.data as IInvoice }
-            : { error: paymentResult.error as FetchBaseQueryError };
+          const response3DSecure = await fetchWithBQ({
+            // должен произойти редирект на 3D Secure
+            url: acsUrl,
+            body: {
+              MD,
+              PaReq,
+              TermUrl,
+            },
+            method: 'POST',
+          });
+
+          return {
+            error: {
+              data: new CardValidationError('Неправильный номер карты'),
+            },
+          };
         },
         invalidatesTags: ['Wallet', 'Invoice'],
       }),
