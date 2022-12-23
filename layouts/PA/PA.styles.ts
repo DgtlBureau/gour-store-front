@@ -30,6 +30,9 @@ const sx = {
       sm: '0 20px 40px 20px',
     },
   },
+  menu: {
+    marginBottom: '20px',
+  },
 };
 
 export default sx;
