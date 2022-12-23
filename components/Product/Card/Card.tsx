@@ -113,7 +113,8 @@ export const ProductCard = memo(function ProductCard({
   const changeGram = (value: string | number) => setGramValue(+value);
 
   const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
-  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
+  const isAddDisabled =
+    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || !stock?.value;
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(gramValue);
