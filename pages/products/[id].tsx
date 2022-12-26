@@ -138,7 +138,6 @@ export default function Product() {
     { skip: !productId },
   );
   const reviews = getProductReviews(grades);
-  console.log('grades', grades);
 
   const formattedSimilarProducts = useMemo(
     () =>
@@ -219,7 +218,7 @@ export default function Product() {
                 <ProductActions
                   id={product.id}
                   moyskladId={product.moyskladId}
-                  currentUserCity={currentUser?.city.name.ru}
+                  currentUserCity={currentUser?.city?.name.ru}
                   price={price}
                   currency={currency}
                   discount={product.discount}

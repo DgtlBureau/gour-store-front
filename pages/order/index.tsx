@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -94,12 +94,14 @@ export function Order() {
 
   const dispatch = useAppDispatch();
 
-  const [fetchPayOrder, { isLoading: isPayOrderLoading }] = usePayOrderMutation();
+  const [fetchPayOrder, { isLoading: isPayOrderLoading, isSuccess: isPaySuccess, data: payData }] =
+    usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
   const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
+  const payFormRef = useRef<HTMLFormElement>(null);
 
   const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
     isOpen: false,
@@ -132,6 +134,12 @@ export function Order() {
   const productsInOrder = useAppSelector(selectBasketProducts);
   const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
+
+  useEffect(() => {
+    if (isPaySuccess) {
+      payFormRef.current?.submit();
+    }
+  }, [isPaySuccess]);
 
   const addPromoCode = async (key: string) => {
     try {
@@ -245,8 +253,8 @@ export function Order() {
       const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
 
-      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
-      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+      // if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      // if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
     } catch (e) {
       const mayBeError = getErrorMessage(e);
       if (mayBeError) {
@@ -425,6 +433,12 @@ export function Order() {
           onClose={handleCloseBuyModal}
           onSubmit={handleBuyCheeseCoins}
         />
+
+        <form hidden ref={payFormRef} action={payData?.acsUrl} method='POST'>
+          <input name='MD' value={payData?.MD} />
+          <input name='PaReq' value={payData?.PaReq} />
+          <input name='TermUrl' value={payData?.TermUrl} />
+        </form>
       </ShopLayout>
     </PrivateLayout>
   );

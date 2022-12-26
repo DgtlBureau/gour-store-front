@@ -1,8 +1,6 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-
 import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { CreateOrderDto } from 'types/dto/order/create.dto';
-import { IInvoice } from 'types/entities/IInvoice';
+import { I3DSecureDto } from 'types/entities/IInvoice';
 import { IOrder } from 'types/entities/IOrder';
 
 import { Path } from 'constants/routes';
@@ -51,7 +49,7 @@ export const orderApi = commonApi.injectEndpoints({
         invalidatesTags: ['Wallet'],
       }),
 
-      payOrder: builder.mutation<IInvoice, PayInvoiceDto>({
+      payOrder: builder.mutation<I3DSecureDto, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
           const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
           const checkoutValues = {
@@ -84,27 +82,16 @@ export const orderApi = commonApi.injectEndpoints({
             method: 'POST',
           });
 
-          const { MD, PaReq, TermUrl, acsUrl } = createdOrderWithout3DS.data as unknown as Record<
-            'MD' | 'PaReq' | 'TermUrl' | 'acsUrl',
-            string
-          >;
+          if (createdOrderWithout3DS.error) {
+            return {
+              error: {
+                data: new CardValidationError('Ошибка сервера'),
+              },
+            };
+          }
 
-          const response3DSecure = await fetchWithBQ({
-            // должен произойти редирект на 3D Secure
-            url: acsUrl,
-            body: {
-              MD,
-              PaReq,
-              TermUrl,
-            },
-            method: 'POST',
-          });
-
-          return {
-            error: {
-              data: new CardValidationError('Неправильный номер карты'),
-            },
-          };
+          const { MD, PaReq, TermUrl, acsUrl } = createdOrderWithout3DS.data as unknown as I3DSecureDto;
+          return { data: { MD, PaReq, TermUrl, acsUrl } };
         },
         invalidatesTags: ['Wallet', 'Invoice'],
       }),

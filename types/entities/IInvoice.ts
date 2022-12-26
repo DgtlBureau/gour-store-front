@@ -14,3 +14,10 @@ export interface IInvoice extends Omit<IBase, 'id'> {
   status: InvoiceStatus;
   expiresAt: string;
 }
+
+export interface I3DSecureDto {
+  MD: string;
+  PaReq: string;
+  TermUrl: string;
+  acsUrl: string;
+}
