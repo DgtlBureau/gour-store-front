@@ -147,7 +147,7 @@ export function OrderCard({
       <Stack sx={cardSx.footer}>
         <OrderSumItem title={t('cost')} value={cost} currencySymbol={currencySymbol} />
 
-        {promotionsDiscount && (
+        {!!promotionsDiscount && (
           <OrderSumItem title={t('promotions')} value={-promotionsDiscount} currencySymbol={currencySymbol} />
         )}
 
