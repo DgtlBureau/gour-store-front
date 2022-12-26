@@ -78,47 +78,33 @@ export const orderApi = commonApi.injectEndpoints({
             invoiceUuid,
           };
 
-          const paymentResult = await fetchWithBQ({
+          const createdOrderWithout3DS = await fetchWithBQ({
             url: '/orders/pay-order', // TODO: вынести в константы пути
             body: paymentDto,
             method: 'POST',
           });
 
-          if (paymentResult.data) {
-            const redirectUri = (paymentResult.data as { redirect: string }).redirect;
-            if (redirectUri) window.open(redirectUri, '_self');
-          }
+          const { MD, PaReq, TermUrl, acsUrl } = createdOrderWithout3DS.data as unknown as Record<
+            'MD' | 'PaReq' | 'TermUrl' | 'acsUrl',
+            string
+          >;
 
-          return paymentResult.data
-            ? { data: paymentResult.data as IInvoice }
-            : { error: paymentResult.error as FetchBaseQueryError };
+          const response3DSecure = await fetchWithBQ({
+            // должен произойти редирект на 3D Secure
+            url: acsUrl,
+            body: {
+              MD,
+              PaReq,
+              TermUrl,
+            },
+            method: 'POST',
+          });
 
-          // const { MD, PaReq, TermUrl, acsUrl } = paymentResult.data as unknown as Record<
-          //   'MD' | 'PaReq' | 'TermUrl' | 'acsUrl',
-          //   string
-          // >;
-
-          // const response3DSecure = await fetchWithBQ({
-          //   // должен произойти редирект на 3D Secure
-          //   url: acsUrl,
-          //   params: {
-          //     MD,
-          //     PaReq,
-          //     TermUrl,
-          //   },
-          //   body: {
-          //     MD,
-          //     PaReq,
-          //     TermUrl,
-          //   },
-          //   method: 'POST',
-          // });
-
-          // return {
-          //   error: {
-          //     data: new CardValidationError('Неправильный номер карты'),
-          //   },
-          // };
+          return {
+            error: {
+              data: new CardValidationError('Неправильный номер карты'),
+            },
+          };
         },
         invalidatesTags: ['Wallet', 'Invoice'],
       }),
