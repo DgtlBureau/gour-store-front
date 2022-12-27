@@ -4,13 +4,25 @@
     "subtitle": "Оставьте отзыв",
     "rate": "Оцените товар",
     "review": "Текст отзыва",
-    "accept": "Отправить отзыв"
+    "accept": "Отправить отзыв",
+    "sending": "Отзыв отправляется...",
+    "notification": {
+      "title": "Спасибо",
+      "withContent": "Отзыв отправлен на модерацию.\nСкоро мы его опубликуем.",
+      "noContent": "Оценка оставлена"
+    }
   },
   "en": {
     "title": "Have you already bought this product?",
     "subtitle": "Leave a review",
     "rate": "Rate the product",
     "review": "Review text",
-    "accept": "Send review"
+    "accept": "Send review",
+    "sending": "Review's sending...",
+    "notification": {
+      "title": "Thanks",
+      "withContent": "The review has been sent for moderation.\nWe will publish it soon",
+      "noContent": "Rating left"
+    }
   }
 }

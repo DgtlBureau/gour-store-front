@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useCallback, useMemo } from 'react';
 
 import { Divider, Grid } from '@mui/material';
 
@@ -29,6 +29,7 @@ import { CartEmpty } from 'components/Cart/Empty/Empty';
 import { CartInfo } from 'components/Cart/Info/Info';
 import { useAppNavigation } from 'components/Navigation';
 import { ProductSlider } from 'components/Product/Slider/Slider';
+import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { InfoBlock } from 'components/UI/Info/Block/Block';
 import { Typography } from 'components/UI/Typography/Typography';
@@ -81,9 +82,18 @@ export function Basket() {
   const [removeFavorite] = useDeleteFavoriteProductMutation();
   const [addFavorite] = useCreateFavoriteProductsMutation();
 
-  const deleteProduct = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
-  const addProduct = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
-  const subtractProduct = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
+  const deleteProduct = useCallback(
+    (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram })),
+    [dispatch],
+  );
+  const addProduct = useCallback(
+    (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram })),
+    [dispatch],
+  );
+  const subtractProduct = useCallback(
+    (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram })),
+    [dispatch],
+  );
 
   const electProduct = async (id: number, isElect: boolean) => {
     try {
@@ -120,20 +130,13 @@ export function Basket() {
               {productsInOrder.map(it => (
                 <Fragment key={it.product.id + it.gram}>
                   <CartCard
-                    id={it.product.id}
-                    key={it.product.id}
-                    title={it.product.title[language] || '...'}
+                    {...it}
                     price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
-                    amount={it.amount}
-                    gram={it.gram}
-                    moyskladId={it.product.moyskladId}
                     productImg={it.product.images[0]?.small}
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
-                    discount={it.product.discount}
-                    currency={currency}
-                    onDelete={() => deleteProduct(it.product, it.gram)}
-                    onAdd={() => addProduct(it.product, it.gram)}
-                    onSubtract={() => subtractProduct(it.product, it.gram)}
+                    onDelete={deleteProduct}
+                    onAdd={addProduct}
+                    onSubtract={subtractProduct}
                   />
 
                   <Divider sx={sx.divider} />
@@ -141,29 +144,22 @@ export function Basket() {
               ))}
             </Grid>
 
-            <Grid container item xs={12} md={4} spacing={1}>
-              <Grid item xs={12} sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <Button fullWidth onClick={goToOrder}>
                   {t('orderButton')}
                 </Button>
-              </Grid>
-
-              <Grid item xs={12}>
-                <CartInfo
-                  count={count}
-                  discount={sumDiscount}
-                  delivery={isDeliveryFree ? 0 : delivery}
-                  price={productTotalSum}
-                  currency={currency}
-                />
-              </Grid>
-
+              </Box>
+              <CartInfo
+                count={count}
+                discount={sumDiscount}
+                delivery={isDeliveryFree ? 0 : delivery}
+                price={productTotalSum}
+                currency={currency}
+              />
               {!isDeliveryFree && (
-                <Grid item xs={12}>
-                  <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
-                </Grid>
+                <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
               )}
-
               <Grid item xs={12}>
                 <InfoBlock title={t('aboutDelivery')} actionText={t('detailed')} href={`${Path.RULES}`} />
               </Grid>

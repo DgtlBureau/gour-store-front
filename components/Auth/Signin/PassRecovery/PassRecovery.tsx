@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { AuthCard } from 'components/Auth/Card/Card';
+import { HFCodeInput } from 'components/HookForm/HFCodeInput';
 import { HFPassField } from 'components/HookForm/HFPassField/HFPassField';
 import { HFSendField } from 'components/HookForm/HFSendField/HFSendField';
 import { HFTextField } from 'components/HookForm/HFTextField';
@@ -127,12 +128,7 @@ export function SigninPassRecovery({
 
           {isCodeSended && !isCodeSuccess && (
             <>
-              <HFTextField
-                sx={{ ...sx.field, ...sx.codeField }}
-                name='code'
-                label={t('code')}
-                onChange={e => checkCode(e.target.value)}
-              />
+              <HFCodeInput sx={sx.field} name='code' onChange={checkCode} />
 
               {!!seconds && (
                 <Box sx={sx.timer}>

@@ -31,6 +31,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
+import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
@@ -47,6 +48,18 @@ import styles from './Product.module.css';
 import sx from './Product.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
+
+const getProductReviews = (comments: IProductGrade[]) =>
+  comments
+    .filter(i => i.isApproved && !!i.comment)
+    .map(({ id, client, value, createdAt, comment }) => ({
+      id,
+      clientName: client ? `${client.firstName} ${client.lastName}` : 'Клиент',
+      value,
+      date: new Date(createdAt),
+      comment,
+      clientId: client?.id,
+    }));
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -72,7 +85,7 @@ export default function Product() {
 
   const {
     data: product,
-    isLoading: isProductLoading,
+    isFetching: isProductFetching,
     isError,
   } = useGetProductQuery(
     {
@@ -85,7 +98,7 @@ export default function Product() {
     { skip: !productId },
   );
 
-  const isLoading = isProductLoading || isCategoriesLoading;
+  const isLoading = isProductFetching || isCategoriesLoading;
 
   const productType = useMemo(
     () => product?.categories && categories && getProductTypeLabel(categories, product.categories),
@@ -120,15 +133,16 @@ export default function Product() {
 
   const [fetchCreateProductGrade] = useCreateProductGradeMutation();
 
-  const { data: comments = [] } = useGetProductGradeListQuery(
+  const { data: grades = [], isSuccess: isGradesSuccessfully } = useGetProductGradeListQuery(
     { productId, withComments: true, isApproved: true },
     { skip: !productId },
   );
+  const reviews = getProductReviews(grades);
 
   const formattedSimilarProducts = useMemo(
     () =>
       product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
-    [product?.similarProducts, categories, favoriteProducts],
+    [product, categories, favoriteProducts],
   );
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
@@ -143,14 +157,10 @@ export default function Product() {
     setReviewModalIsOpen(false);
   };
 
-  const productComments =
-    comments.map(grade => ({
-      id: grade.id,
-      clientName: grade.client?.role?.title || 'Клиент',
-      value: grade.value,
-      date: new Date(grade.createdAt),
-      comment: grade.comment,
-    })) || [];
+  const canCreateReview = useMemo(() => {
+    if (!isGradesSuccessfully || !currentUser) return false;
+    return !grades.find(grade => grade.client?.id === currentUser.id);
+  }, [grades, currentUser, isGradesSuccessfully]);
 
   const productCategories =
     product?.categories?.map(lowCategory => ({
@@ -165,21 +175,20 @@ export default function Product() {
   const price = Math.round(product?.price[currency] || 0);
 
   const hasSimilar = !!formattedSimilarProducts?.length;
-  const hasComments = !!productComments.length;
+  const hasComments = !!reviews.length;
 
   return (
     <PrivateLayout>
       <ShopLayout>
         {isLoading && <LinearProgress />}
 
-        {!isLoading && isError && <Typography variant='h5'>Произошла ошибка</Typography>}
+        {isError && <Typography variant='h5'>Произошла ошибка</Typography>}
 
         {!isLoading && !isError && !product && <Typography variant='h5'>Продукт не найден</Typography>}
 
-        {!isLoading && !isError && product && (
+        {!isLoading && product && (
           <>
             <Link href='/'>Вернуться на главную</Link>
-
             <Box sx={sx.top}>
               <Box sx={sx.preview}>
                 <ImageSlider
@@ -198,7 +207,6 @@ export default function Product() {
                 <Typography variant='h3' sx={sx.title}>
                   {product.title[language] || ''}
                 </Typography>
-
                 <ProductInformation
                   rating={product.grade || 0}
                   gradesCount={product.gradesCount || 0}
@@ -210,7 +218,7 @@ export default function Product() {
                 <ProductActions
                   id={product.id}
                   moyskladId={product.moyskladId}
-                  currentUserCity={currentUser?.city.name.ru}
+                  currentUserCity={currentUser?.city?.name.ru}
                   price={price}
                   currency={currency}
                   discount={product.discount}
@@ -223,7 +231,6 @@ export default function Product() {
                 />
               </Box>
             </Box>
-
             {productDescription && (
               <Box sx={sx.description}>
                 <Typography sx={sx.title} variant='h5'>
@@ -233,7 +240,6 @@ export default function Product() {
                 <div dangerouslySetInnerHTML={{ __html: productDescription }} className={styles.productDescription} />
               </Box>
             )}
-
             {hasSimilar && (
               <ProductSlider
                 title={t('similar')}
@@ -246,17 +252,10 @@ export default function Product() {
                 onElect={electProduct}
               />
             )}
-
             {hasComments && (
-              <ProductReviews
-                sx={sx.reviews}
-                reviews={productComments}
-                ref={commentBlockRef}
-                onReviewClick={openReviewModal}
-              />
+              <ProductReviews sx={sx.reviews} reviews={reviews} ref={commentBlockRef} onReviewClick={openReviewModal} />
             )}
-
-            <CommentCreateBlock onCreate={onCreateComment} />
+            {canCreateReview && <CommentCreateBlock onCreate={onCreateComment} />}
           </>
         )}
 

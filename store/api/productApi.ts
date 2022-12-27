@@ -5,7 +5,7 @@ import { IProduct } from 'types/entities/IProduct';
 
 import { Path } from 'constants/routes';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 export const productApi = commonApi.injectEndpoints({
   endpoints(builder) {
@@ -18,6 +18,7 @@ export const productApi = commonApi.injectEndpoints({
             params,
           };
         },
+        providesTags: ['Product'],
       }),
       getNoveltiesProductList: builder.query<IProduct[], ProductGetManyDto>({
         query(params) {
@@ -27,6 +28,7 @@ export const productApi = commonApi.injectEndpoints({
             params,
           };
         },
+        providesTags: ['Product'],
       }),
       getProduct: builder.query<IProduct, ProductGetOneDto>({
         query({ id, ...params }) {
@@ -36,6 +38,7 @@ export const productApi = commonApi.injectEndpoints({
             params,
           };
         },
+        providesTags: (_result, _err, { id }) => [{ type: 'Product', id }],
       }),
       getSimilarProductsById: builder.query<IProduct[], ProductGetSimilarDto>({
         query(params) {
@@ -45,6 +48,7 @@ export const productApi = commonApi.injectEndpoints({
             params,
           };
         },
+        providesTags: ['Product'],
       }),
     };
   },

@@ -35,21 +35,26 @@ type OnChangeFn = <K extends keyof CommentDto>(name: K, value: CommentDto[K]) =>
 export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
   const { t } = useLocalTranslation(translations);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<CommentDto>(initComment);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       await onCreate(formData);
 
       setFormData(initComment);
 
-      dispatchNotification('Отзыв отправлен на модерацию.\nСкоро мы его опубликуем.', { title: 'Спасибо!' });
+      const notificationText = formData.comment ? t('notification.withContent') : t('notification.noContent');
+      dispatchNotification(notificationText, { title: t('notification.title') });
     } catch (error) {
       const message = getErrorMessage(error);
 
       dispatchNotification(message, { type: NotificationType.DANGER });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +64,7 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
 
   return (
     <Paper sx={{ ...blockSx.container, ...sx }}>
-      <form onSubmit={submit}>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <Typography variant='h5' sx={blockSx.title}>
@@ -103,8 +108,8 @@ export function CommentCreateBlock({ sx, onCreate }: CommentCreateBlockProps) {
               label={t('review')}
               onChange={e => onChange('comment', e.target.value)}
             />
-            <Button sx={blockSx.btn} type='submit' disabled={!formData.value}>
-              {t('accept')}
+            <Button sx={blockSx.btn} type='submit' disabled={!formData.value || isLoading}>
+              {isLoading ? t('sending') : t('accept')}
             </Button>
           </Grid>
         </Grid>

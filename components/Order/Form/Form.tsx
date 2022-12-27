@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
+import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { SelectOption } from 'components/UI/Select/Select';
-
-import { Currency } from 'types/entities/Currency';
 
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -20,10 +19,11 @@ import { Button } from '../../UI/Button/Button';
 import { Checkbox } from '../../UI/Checkbox/Checkbox';
 import { Typography } from '../../UI/Typography/Typography';
 import translations from './Form.i18n.json';
-import { OrderFormDocket } from './FormDocket';
 import { getValidationSchema } from './validation';
 
 import sx from './Form.styles';
+
+import DoneIcon from '@mui/icons-material/Done';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -32,6 +32,7 @@ export type OrderFormType = {
   lastName: string;
   phone: string;
   email: string;
+  promoCode?: string;
   deliveryProfileId: number;
   cityId: number;
   street: string;
@@ -47,6 +48,7 @@ export type PersonalFields = {
   lastName: string;
   phone: string;
   email: string;
+  promoCodeId?: number;
 };
 
 export type DeliveryFields = {
@@ -63,15 +65,12 @@ export type DeliveryFields = {
 export type OrderFormProps = {
   defaultPersonalFields: PersonalFields;
   defaultDeliveryFields: DeliveryFields;
-  productsCount: number;
-  cost: number;
-  discount?: number;
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
-  delivery: number;
+  isPromoCodeApplies: boolean;
   deliveryProfiles: SelectOption[];
-  currency?: Currency;
+  onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
 };
@@ -79,15 +78,12 @@ export type OrderFormProps = {
 export function OrderForm({
   defaultPersonalFields,
   defaultDeliveryFields,
-  productsCount,
-  cost,
-  discount,
-  delivery,
   deliveryProfiles,
   isSubmitError,
   isFetching,
+  isPromoCodeApplies,
   cities,
-  currency,
+  onAddPromoCode,
   onSelectDeliveryProfile,
   onSubmit,
 }: OrderFormProps) {
@@ -120,6 +116,12 @@ export function OrderForm({
     });
   }, [defaultPersonalFields]);
 
+  const addPromoCode = async () => {
+    const promoCodeKey = values.getValues('promoCode');
+
+    if (promoCodeKey) onAddPromoCode(promoCodeKey);
+  };
+
   const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
   const agree = () => setIsAgree(!isAgree);
@@ -143,7 +145,6 @@ export function OrderForm({
                 <HFTextField name='lastName' label={t('lastName')} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                {' '}
                 <HFPhoneInput name='phone' label={t('phone')} />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -170,7 +171,7 @@ export function OrderForm({
               )}
 
               <Grid item xs={12} sm={6}>
-                <HFSelect name='cityId' options={cities} label={t('city')} />
+                <HFSelect name='cityId' options={cities} label={t('city')} placeholder='Выберите город' />
               </Grid>
 
               {addressFields.map(field => (
@@ -179,37 +180,62 @@ export function OrderForm({
                 </Grid>
               ))}
 
-              <Grid item xs>
+              <Grid item xs={12}>
                 <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
               </Grid>
+
+              <Grid
+                container
+                item
+                xs={12}
+                // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+                spacing={2}
+              >
+                <Grid item xs={12} sm={6}>
+                  <HFTextField
+                    name='promoCode'
+                    label={t('promoCode')}
+                    disabled={isPromoCodeApplies}
+                    endAdornment={
+                      isPromoCodeApplies ? (
+                        <CircularProgress />
+                      ) : (
+                        <IconButton disabled={!values.getValues('promoCode')} onClick={addPromoCode}>
+                          <DoneIcon />
+                        </IconButton>
+                      )
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography variant='body2' color='text.muted'>
+                    При указанном промокоде реферальный код не учитывается
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Checkbox
+                    sx={sx.agreement}
+                    value={isAgree}
+                    onChange={agree}
+                    label={
+                      <span style={sx.agreementLabel}>
+                        Даю свое согласие с{' '}
+                        <Link href={`/${Path.OFERTA}`} target='_blank'>
+                          условиями обслуживания
+                        </Link>
+                        , а также с &nbsp;
+                        <Link href={`/${Path.PRIVACY}`} target='_blank'>
+                          политикой конфиденциальности и правилами хранения моих персональных данных
+                        </Link>
+                        .
+                      </span>
+                    }
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-
-            <OrderFormDocket
-              productsCount={productsCount}
-              cost={cost}
-              discount={discount}
-              delivery={delivery}
-              currency={currency}
-            />
-
-            <Checkbox
-              sx={sx.agreement}
-              value={isAgree}
-              onChange={agree}
-              label={
-                <span style={sx.agreementLabel}>
-                  Даю свое согласие с{' '}
-                  <Link href={`/${Path.OFERTA}`} target='_blank'>
-                    условиями обслуживания
-                  </Link>
-                  , а также с &nbsp;
-                  <Link href={`/${Path.PRIVACY}`} target='_blank'>
-                    политикой конфиденциальности и правилами хранения моих персональных данных
-                  </Link>
-                  .
-                </span>
-              }
-            />
 
             <Button
               sx={sx.btn}

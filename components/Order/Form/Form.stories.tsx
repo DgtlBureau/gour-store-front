@@ -2,26 +2,17 @@ import React from 'react';
 
 import { ComponentStory, Meta } from '@storybook/react';
 
-import { DeliveryFields, OrderForm, PersonalFields } from './Form';
+import { OrderForm, OrderFormProps } from './Form';
 
 export default {
   component: OrderForm,
   title: 'OrderForm',
 } as Meta;
 
-const Template: ComponentStory<typeof OrderForm> = () => (
-  <OrderForm
-    defaultPersonalFields={{} as PersonalFields}
-    defaultDeliveryFields={{} as DeliveryFields}
-    productsCount={0}
-    cost={100}
-    discount={10}
-    cities={[]}
-    delivery={0}
-    deliveryProfiles={[]}
-    isFetching={false}
-    onSubmit={() => ({})}
-    onSelectDeliveryProfile={() => ({})}
-  />
-);
+const Template: ComponentStory<typeof OrderForm> = args => <OrderForm {...args} />;
+
 export const DefaultOrderForm = Template.bind({});
+
+const props: Partial<OrderFormProps> = {};
+
+DefaultOrderForm.args = props;

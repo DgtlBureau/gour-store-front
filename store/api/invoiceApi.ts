@@ -7,7 +7,7 @@ import { IInvoice } from 'types/entities/IInvoice';
 
 import { CardValidationError } from 'errors/CardValidationError';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 const PAYMENT_PUBLIC_ID = process.env.NEXT_PUBLIC_PAYMENT_PUBLIC_ID as string;
 
@@ -19,10 +19,7 @@ export const invoiceApi = commonApi.injectEndpoints({
           url: '/payment/invoice',
           params,
         }),
-        providesTags: result =>
-          result
-            ? [...result.map(({ uuid: id }) => ({ type: 'Invoice', id } as const)), { type: 'Invoice', id: 'LIST' }]
-            : [{ type: 'Invoice', id: 'LIST' }],
+        providesTags: result => providesList(result, 'Invoice'),
       }),
       getInvoicePrice: builder.query<number, GetInvoicePriceDto>({
         query: body => ({
@@ -40,59 +37,66 @@ export const invoiceApi = commonApi.injectEndpoints({
       }),
       buyCheeseCoins: builder.mutation<IInvoice, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
-          const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
-          const checkoutValues = {
-            cvv,
-            cardNumber,
-            expDateMonth,
-            expDateYear,
+          return {
+            error: {
+              originalStatus: 400,
+              data: 'Метод для пополнения чизкоинов, используйте метод для оплаты',
+            } as FetchBaseQueryError,
           };
 
-          let signature: string;
-          try {
-            const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
-            signature = await checkout.createPaymentCryptogram(checkoutValues);
-          } catch (e) {
-            if (typeof e === 'object' && 'cardNumber' in (e as object)) {
-              return {
-                error: {
-                  data: new CardValidationError('Неправильный номер карты'),
-                  originalStatus: 400,
-                } as any,
-              };
-            }
+          // const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
+          // const checkoutValues = {
+          //   cvv,
+          //   cardNumber,
+          //   expDateMonth,
+          //   expDateYear,
+          // };
 
-            return {
-              error: {
-                data: new CardValidationError('Ошибка валидации карты'),
-                originalStatus: 400,
-              } as any,
-            };
-          }
+          // let signature: string;
+          // try {
+          //   const checkout = new cp.Checkout({ publicId: PAYMENT_PUBLIC_ID });
+          //   signature = await checkout.createPaymentCryptogram(checkoutValues);
+          // } catch (e) {
+          //   if (typeof e === 'object' && 'cardNumber' in (e as object)) {
+          //     return {
+          //       error: {
+          //         data: new CardValidationError('Неправильный номер карты'),
+          //         originalStatus: 400,
+          //       } as any,
+          //     };
+          //   }
 
-          const paymentDto: PayServerInvoiceDto = {
-            signature,
-            email,
-            ipAddress: '5.18.144.32',
-            payerUuid,
-            currency: 'RUB',
-            invoiceUuid,
-          };
+          //   return {
+          //     error: {
+          //       data: new CardValidationError('Ошибка валидации карты'),
+          //       originalStatus: 400,
+          //     } as any,
+          //   };
+          // }
 
-          const paymentResult = await fetchWithBQ({
-            url: '/wallet/wallet-replenish-balance', // TODO: вынести в константы пути
-            body: paymentDto,
-            method: 'POST',
-          });
+          // const paymentDto: PayServerInvoiceDto = {
+          //   signature,
+          //   email,
+          //   ipAddress: '5.18.144.32',
+          //   payerUuid,
+          //   currency: 'RUB',
+          //   invoiceUuid,
+          // };
 
-          if (paymentResult.data) {
-            const redirectUri = (paymentResult.data as { redirect: string }).redirect;
-            if (redirectUri) window.open(redirectUri, '_self');
-          }
+          // const paymentResult = await fetchWithBQ({
+          //   url: '/wallet/wallet-replenish-balance', // TODO: вынести в константы пути
+          //   body: paymentDto,
+          //   method: 'POST',
+          // });
 
-          return paymentResult.data
-            ? { data: paymentResult.data as IInvoice }
-            : { error: paymentResult.error as FetchBaseQueryError };
+          // if (paymentResult.data) {
+          //   const redirectUri = (paymentResult.data as { redirect: string }).redirect;
+          //   if (redirectUri) window.open(redirectUri, '_self');
+          // }
+
+          // return paymentResult.data
+          //   ? { data: paymentResult.data as IInvoice }
+          //   : { error: paymentResult.error as FetchBaseQueryError };
         },
         invalidatesTags: ['Wallet', 'Invoice'],
       }),

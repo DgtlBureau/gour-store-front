@@ -65,8 +65,8 @@ export const orderSlice = createSlice({
       }
     },
 
-    subtractBasketProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
-      const { gram, product } = action.payload;
+    subtractBasketProduct: (state, action: PayloadAction<{ gram: number; product: IProduct; count?: number }>) => {
+      const { gram, product, count = 1 } = action.payload;
 
       const productKey = getProductKeyInBasket(product.id, gram);
       const stateProduct = state.products[productKey];
@@ -74,7 +74,7 @@ export const orderSlice = createSlice({
       if (stateProduct.amount === 1) {
         delete state.products[productKey];
       } else {
-        stateProduct.amount--;
+        stateProduct.amount -= count;
       }
     },
 

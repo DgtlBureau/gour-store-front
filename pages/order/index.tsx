@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -6,6 +6,7 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useCreateOrderMutation, usePayOrderMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
+import { useApplyPromoCodeMutation } from 'store/api/promoCodeApi';
 import {
   removeProduct,
   selectBasketProducts,
@@ -33,6 +34,7 @@ import { OrderProductDto } from 'types/dto/order/product.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
 import type { IOrder } from 'types/entities/IOrder';
 import { IProduct } from 'types/entities/IProduct';
+import { IPromoCode } from 'types/entities/IPromoCode';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
@@ -40,7 +42,9 @@ import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
+import { getPriceByGrams } from 'utils/currencyUtil';
 import { getErrorMessage } from 'utils/errorUtil';
+import { filterOrderProductsByCategories, getOrderDiscountValue } from 'utils/orderUtil';
 
 import translation from './Order.i18n.json';
 
@@ -90,11 +94,14 @@ export function Order() {
 
   const dispatch = useAppDispatch();
 
-  const [fetchPayOrder, { isLoading: isPayOrderLoading }] = usePayOrderMutation();
+  const [fetchPayOrder, { isLoading: isPayOrderLoading, isSuccess: isPaySuccess, data: payData }] =
+    usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
   const [isSubmitError, setIsSubmitError] = useState(false);
+  const payFormRef = useRef<HTMLFormElement>(null);
 
   const [payCoinsState, setPayCoinsState] = useState<BuyCoinsState>({
     isOpen: false,
@@ -103,6 +110,11 @@ export function Order() {
   const [personalFields, setPersonalFields] = useState<PersonalFields>(defaultPersonalFields);
 
   const [deliveryFields, setDeliveryFields] = useState<DeliveryFields>(defaultDeliveryFields);
+
+  const [promoCode, setPromoCode] = useState<IPromoCode | null>(null);
+
+  const [referralCodeDiscountValue, setReferralCodeDiscountValue] = useState(0);
+  const [promoCodeDiscountValue, setPromoCodeDiscountValue] = useState(0);
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
@@ -120,9 +132,39 @@ export function Order() {
   const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
   const productsInOrder = useAppSelector(selectBasketProducts);
-  const count = useAppSelector(selectedProductCount);
   const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
+
+  useEffect(() => {
+    if (isPaySuccess) {
+      payFormRef.current?.submit();
+    }
+  }, [isPaySuccess]);
+
+  const addPromoCode = async (key: string) => {
+    try {
+      const code = await applyPromoCode({ key }).unwrap();
+
+      const promoCodeOrderProducts = filterOrderProductsByCategories(productsInOrder, code.categories);
+
+      const isUseful = !!promoCodeOrderProducts.length;
+
+      if (isUseful) {
+        const codeDiscountValue = getOrderDiscountValue(code.discount, promoCodeOrderProducts);
+
+        setPromoCode(code);
+        setPromoCodeDiscountValue(codeDiscountValue);
+
+        dispatchNotification('Промокод успешно применён', { type: NotificationType.SUCCESS });
+      } else {
+        dispatchNotification('Промокод не подходит к товарам из заказа', { type: NotificationType.WARNING });
+      }
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatchNotification(message, { type: NotificationType.DANGER });
+    }
+  };
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
@@ -182,6 +224,7 @@ export function Order() {
       phone,
       email,
       comment,
+      promoCodeId: promoCode?.id,
       deliveryProfileId: currentDeliveryProfileId,
       orderProducts,
     };
@@ -210,8 +253,8 @@ export function Order() {
       const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
 
-      if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
-      if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
+      // if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
+      // if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
     } catch (e) {
       const mayBeError = getErrorMessage(e);
       if (mayBeError) {
@@ -233,41 +276,49 @@ export function Order() {
   };
 
   const selectDeliveryProfile = (deliveryProfileId: number) => {
-    let deliveryFieldsData: DeliveryFields = defaultDeliveryFields;
+    const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
 
-    if (deliveryProfileId !== noExistingId) {
-      const currentProfile = deliveryProfiles.find(profile => profile.id === deliveryProfileId);
-
-      if (currentProfile)
-        deliveryFieldsData = {
-          deliveryProfileId,
-          cityId: currentProfile.city.id,
-          street: currentProfile.street,
-          house: currentProfile.house,
-          apartment: currentProfile.apartment,
-          entrance: currentProfile.entrance,
-          floor: currentProfile.floor,
-        };
+    if (currentProfile) {
+      setDeliveryFields({
+        deliveryProfileId,
+        cityId: currentProfile.city.id,
+        street: currentProfile.street,
+        house: currentProfile.house,
+        apartment: currentProfile.apartment,
+        entrance: currentProfile.entrance,
+        floor: currentProfile.floor,
+      });
+    } else {
+      setDeliveryFields(defaultDeliveryFields);
     }
-
-    setDeliveryFields(deliveryFieldsData);
   };
 
   useEffect(() => {
     if (!currentUser) return;
 
-    const { firstName, lastName, phone, email, mainOrderProfileId } = currentUser;
+    const { firstName, lastName, phone, email, mainOrderProfileId, referralCode } = currentUser;
 
-    setPersonalFields({
-      ...personalFields,
+    setPersonalFields(fields => ({
+      ...fields,
       firstName,
       lastName,
       phone,
       email,
-    });
+    }));
 
-    if (mainOrderProfileId && mainOrderProfileId !== noExistingId)
-      setDeliveryFields({ ...deliveryFields, deliveryProfileId: mainOrderProfileId });
+    if (mainOrderProfileId) selectDeliveryProfile(mainOrderProfileId);
+
+    if (referralCode) {
+      const codeDiscountValue = productsInOrder.reduce((acc, { product, gram, amount }) => {
+        const discount = product.totalCost * (currentUser.referralCode.discount / 100);
+        const discountByGram = getPriceByGrams(discount, gram);
+
+        return acc + discountByGram * amount;
+      }, 0);
+
+      setReferralCodeDiscountValue(codeDiscountValue);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
@@ -340,19 +391,26 @@ export function Order() {
                 defaultDeliveryFields={deliveryFields}
                 cities={cities}
                 isFetching={isCreatingProfile || isCreatingOrder}
+                isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
-                discount={sumDiscount}
-                productsCount={count}
-                cost={totalProductsSum}
-                delivery={delivery}
                 deliveryProfiles={formattedDeliveryProfiles}
+                onAddPromoCode={addPromoCode}
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
               />
             </Grid>
 
             <Grid item md={4} xs={12}>
-              <OrderCard currency={currency} language={language} products={productsInOrder} />
+              <OrderCard
+                products={productsInOrder}
+                cost={totalProductsSum}
+                promotionsDiscount={sumDiscount}
+                referralCodeDiscount={referralCodeDiscountValue}
+                promoCodeDiscount={promoCodeDiscountValue}
+                delivery={delivery}
+                currency={currency}
+                language={language}
+              />
             </Grid>
           </Grid>
         )}
@@ -375,6 +433,12 @@ export function Order() {
           onClose={handleCloseBuyModal}
           onSubmit={handleBuyCheeseCoins}
         />
+
+        <form hidden ref={payFormRef} action={payData?.acsUrl} method='POST'>
+          <input name='MD' value={payData?.MD} />
+          <input name='PaReq' value={payData?.PaReq} />
+          <input name='TermUrl' value={payData?.TermUrl} />
+        </form>
       </ShopLayout>
     </PrivateLayout>
   );

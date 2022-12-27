@@ -5,7 +5,7 @@ import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
-import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
 
@@ -13,8 +13,8 @@ import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
 import { Header } from 'components/Header/Header';
 import { useAppNavigation } from 'components/Navigation';
-import { PAMenu } from 'components/PA/Menu/Menu';
 import { Box } from 'components/UI/Box/Box';
+import { Tabs } from 'components/UI/Tabs/Tabs';
 
 import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { InvoiceStatus } from 'types/entities/IInvoice';
@@ -70,7 +70,7 @@ export function PALayout({ children }: PALayoutProps) {
 
   const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
 
-  const menuList = [
+  const menuOptions = [
     {
       label: t('main'),
       value: `/${Path.PERSONAL_AREA}`,
@@ -159,7 +159,8 @@ export function PALayout({ children }: PALayoutProps) {
         />
 
         <Box sx={sx.content}>
-          <PAMenu active={pathname} options={menuList} />
+          <Tabs withLink sx={sx.menu} value={pathname} options={menuOptions} />
+
           {children}
         </Box>
 

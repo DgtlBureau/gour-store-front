@@ -56,7 +56,7 @@ export function ImageSlider({ images, backgroundSrc, sx }: ImageSliderProps) {
           {existImages.map((image, i) => (
             <SwiperSlide key={image.full + i}>
               <Box sx={{ ...sliderSx.slide, ...sliderSx.full, backgroundImage }}>
-                <Image src={image.full} layout='fill' objectFit='contain' alt='' />
+                <Image src={image.full} layout='fill' className={styles.img} objectFit='contain' alt='' />
               </Box>
             </SwiperSlide>
           ))}
