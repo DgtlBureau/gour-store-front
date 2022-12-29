@@ -1,3 +1,4 @@
+import { BaseGetListDto } from 'types/dto/base-get-list.dto';
 import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { I3DSecureDto } from 'types/entities/IInvoice';
@@ -6,7 +7,7 @@ import { IOrder } from 'types/entities/IOrder';
 import { Path } from 'constants/routes';
 import { CardValidationError } from 'errors/CardValidationError';
 
-import { commonApi } from './commonApi';
+import { commonApi, providesList } from './commonApi';
 
 const getCardValidationResponse = (err: unknown) => {
   if (typeof err === 'object' && err !== null && 'cardNumber' in err) {
@@ -29,14 +30,15 @@ const getCardValidationResponse = (err: unknown) => {
 export const orderApi = commonApi.injectEndpoints({
   endpoints(builder) {
     return {
-      getOrdersList: builder.query<IOrder[], void>({
-        query() {
+      getOrdersList: builder.query<{ orders: IOrder[]; totalCount: number }, BaseGetListDto>({
+        query(params) {
           return {
             method: 'GET',
             url: Path.ORDERS,
+            params,
           };
         },
-        providesTags: ['Wallet'],
+        providesTags: result => providesList(result?.orders, 'Order'),
       }),
       createOrder: builder.mutation<IOrder, CreateOrderDto>({
         query(product) {
@@ -46,9 +48,8 @@ export const orderApi = commonApi.injectEndpoints({
             body: product,
           };
         },
-        invalidatesTags: ['Wallet'],
+        invalidatesTags: ['Order'],
       }),
-
       payOrder: builder.mutation<I3DSecureDto, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
           const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
@@ -100,3 +101,24 @@ export const orderApi = commonApi.injectEndpoints({
 });
 
 export const { useGetOrdersListQuery, useCreateOrderMutation, usePayOrderMutation } = orderApi;
+
+// async onQueryStarted(params, { dispatch, queryFulfilled }) {
+//   try {
+//     const {
+//       data: { orders },
+//     } = await queryFulfilled;
+
+//     const mergeResult = dispatch(
+//       orderApi.util.updateQueryData('getOrdersList', params, draft => {
+//         const prevIds = draft.orders.map(order => order.id);
+//         const newIds = orders.map(order => order.id);
+
+//         console.log('prev:', prevIds, 'new:', newIds);
+
+//         Object.assign(draft, { orders });
+//       }),
+//     );
+//   } catch (error) {
+//     console.log('orders merge error:', error);
+//   }
+// },
