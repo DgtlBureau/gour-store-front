@@ -21,6 +21,7 @@ const sx = {
 
 export type PAAddressCardProps = {
   addresses: {
+    id: number;
     title: string;
     address: string;
   }[];
@@ -36,7 +37,7 @@ export function PAAddressCard({ addresses, isLoading }: PAAddressCardProps) {
 
       {!isLoading &&
         addresses.map(address => (
-          <Box key={address.address} sx={sx.address}>
+          <Box key={address.id} sx={sx.address}>
             <Typography variant='body2' color='text.muted'>
               {address.title}
             </Typography>

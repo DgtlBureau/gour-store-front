@@ -1,10 +1,12 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
-import { SxProps, Theme, useMediaQuery } from '@mui/material';
+import { SxProps, useMediaQuery } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
 import { Pagination } from 'components/UI/Pagination/Pagination';
 import { Typography } from 'components/UI/Typography/Typography';
+
+import { scrollTo } from 'utils/pageUtil';
 
 import catalogSx from './Catalog.styles';
 
@@ -43,14 +45,21 @@ export function Catalog({ title, emptyText = 'Список карточек пу
 
   const cardsGridSx = { ...catalogSx.cardsGrid, justifyContent: isSmallPage ? 'flex-start' : 'center' } as SxProps;
 
-  const scrollToCatalog = () => catalogRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const scrollToCatalog = () => scrollTo(catalogRef);
 
   const changePage = (value: number) => {
     if (value !== page) {
       setPage(value);
-      scrollToCatalog();
     }
   };
+
+  const isFirstRenderRef = useRef(true);
+
+  useEffect(() => {
+    if (!isFirstRenderRef.current) scrollToCatalog();
+
+    isFirstRenderRef.current = false;
+  }, [page]);
 
   return (
     <div ref={catalogRef} style={{ scrollMargin: '20px' }}>

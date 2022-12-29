@@ -2,7 +2,6 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { Box } from 'components/UI/Box/Box';
