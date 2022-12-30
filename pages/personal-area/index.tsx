@@ -28,14 +28,14 @@ export function Main() {
 
   const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
   const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
-  const { data: ordersList = [], isLoading: ordersListIsLoading } = useGetOrdersListQuery();
+  const { data: ordersData, isLoading: ordersListIsLoading } = useGetOrdersListQuery({ length: 15 });
   const { categoriesWithDiscounts, isLoading: categoriesIsLoading } = useGetCategoryListWithDiscountQuery(undefined, {
     selectFromResult: state => ({ ...state, categoriesWithDiscounts: formatCategoriesWithMaxDiscount(state.data) }),
   });
 
   const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading || categoriesIsLoading;
 
-  const orders = getFormattedOrdersList(ordersList, currency);
+  const orders = getFormattedOrdersList(ordersData?.orders || [], currency);
   const addresses = getFormattedAddressesList(addressList, language);
 
   return (

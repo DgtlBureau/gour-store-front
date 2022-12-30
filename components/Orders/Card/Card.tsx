@@ -77,7 +77,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
 
           <Grid item sm={5} xs={12} sx={{ display: 'flex', alignItems: 'center', margin: { xs: '5px 0' } }}>
             <Typography sx={{ ...sx.status, backgroundColor: status?.color || 'secondary.main' }}>
-              {status?.name || 'ожидание'}
+              {status.name || 'ожидание'}
             </Typography>
 
             <Typography variant='body1' sx={sx.muted}>

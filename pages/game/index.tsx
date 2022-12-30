@@ -39,7 +39,7 @@ export function Game() {
           lives={currentUser?.lives ?? 0}
         />
 
-        {/* <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} /> */}
+        <GameRulesModal isOpen={rulesModalIsOpen} onAccept={closeRulesModal} />
       </GameLayout>
     </PrivateLayout>
   );

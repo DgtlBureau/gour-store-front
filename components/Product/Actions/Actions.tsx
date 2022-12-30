@@ -64,7 +64,6 @@ export function ProductActions({
     data: stock,
     isFetching: isStockFetching,
     isError: isStockError,
-    error: stockError,
   } = useGetStockQuery(
     {
       city: 'Санкт-Петербург' ?? currentUserCity, // TODO: в будущем отправлять currentUserCity
