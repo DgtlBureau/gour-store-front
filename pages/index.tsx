@@ -185,7 +185,7 @@ const Home: NextPage = () => {
           <Box>
             {!!bannerImg && (
               <Box sx={sx.banner}>
-                <Image loader={() => bannerImg} src={bannerImg} objectFit='cover' layout='fill' alt='' />
+                <Image unoptimized loader={() => bannerImg} src={bannerImg} objectFit='cover' layout='fill' alt='' />
               </Box>
             )}
 

@@ -11,6 +11,7 @@ export interface IOrder extends Omit<IBase, 'id'> {
   comment?: string;
   totalSum: number;
   invoiceUuid: string;
+  leadId: number;
   crmInfo: OrderCrmInfo;
   orderProfile: IOrderProfile;
   promotions: OrderPromotion[];

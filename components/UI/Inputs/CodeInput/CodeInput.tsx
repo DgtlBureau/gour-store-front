@@ -1,4 +1,4 @@
-import { CSSProperties, ChangeEvent, KeyboardEvent, memo, useEffect, useState } from 'react';
+import { CSSProperties, ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 import { SxProps } from '@mui/material';
 
@@ -66,7 +66,7 @@ export function CodeInput({
     }
 
     setFields(updatedFields);
-  }, [value]);
+  }, [value, fieldsCount]);
 
   const focusNext = (current: HTMLInputElement) => {
     const next = current.nextElementSibling as HTMLInputElement;

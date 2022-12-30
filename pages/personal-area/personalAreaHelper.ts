@@ -14,12 +14,12 @@ export const getFormattedAddressesList = (addressList: IOrderProfile[], language
       .filter(item => !!item)
       .join(', ');
 
-    return { title: it.title, address };
+    return { id: it.id, title: it.title, address };
   });
 
 export const getFormattedOrdersList = (orderList: IOrder[], currency: Currency) =>
   orderList.map(it => ({
-    id: it.crmInfo?.id.toString() || '####',
+    id: it.leadId.toString() || '####',
     date: new Date(it.createdAt),
     status: it.crmInfo?.status.name,
     sum: it.totalSum,

@@ -6,7 +6,7 @@ import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/
 import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectIsAuth } from 'store/selectors/auth';
-import { selectedProductCount, selectedProductDiscount, selectedProductSum } from 'store/slices/orderSlice';
+import { selectedProductCount, selectedProductSum } from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';

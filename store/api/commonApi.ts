@@ -28,6 +28,7 @@ export const commonApi = createApi({
 });
 
 type ProvidedItem = { id: number | string } | { uuid: string };
+
 export function providesList<R extends ProvidedItem[], T extends typeof tagTypes[number]>(
   resultsWithIds: R | undefined,
   tagType: T,

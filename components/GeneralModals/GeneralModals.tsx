@@ -8,7 +8,6 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
 import { Path } from 'constants/routes';
-import { getFormattedPrice } from 'utils/currencyUtil';
 
 import { sx } from './GeneralModals.styles';
 

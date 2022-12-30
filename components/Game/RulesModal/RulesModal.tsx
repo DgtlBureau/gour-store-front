@@ -13,7 +13,7 @@ type Props = {
 export function GameRulesModal({ isOpen, onAccept }: Props) {
   return (
     <Modal title='Правила игры' acceptText='Вернуться к игре' isOpen={isOpen} onAccept={onAccept}>
-      <Typography variant='body1'>
+      <Typography component='span' variant='body1'>
         <b>Ваша цель</b> — собрать как можно больше падающих продуктов. За каждый пойманный продукт вы получаете{' '}
         <div style={{ display: 'inline', color: color.accent }}>1 балл.</div>
       </Typography>

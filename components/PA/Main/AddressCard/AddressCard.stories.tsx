@@ -15,10 +15,12 @@ export const DefaultPAAddressCard = Template.bind({});
 const props: Partial<PAAddressCardProps> = {
   addresses: [
     {
+      id: 0,
       title: 'Работа',
       address: 'Рабочий адрес',
     },
     {
+      id: 1,
       title: 'Дом',
       address: 'Домашний адрес',
     },

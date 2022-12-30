@@ -85,8 +85,6 @@ export function Header({
 
   const currencySymbol = getCurrencySymbol(currency);
 
-  const catalogIsHidden = moneyAmount < 1000;
-
   const currentCity = cities.find(it => it?.id === selectedCityId);
 
   const deployMenu = () => setIsMenuDeployed(!isMenuDeployed);
