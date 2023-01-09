@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof ProductActions> = args => {
     if (count === 0) return;
     setCount(count - 1);
   };
-  // FIXME: исправить логику
+  // TODO: исправить логику
   return <ProductActions {...args} onAdd={handleAddToCart} onRemove={handleRemoveFromCart} />;
 };
 export const DefaultProductPreview = Template.bind({});

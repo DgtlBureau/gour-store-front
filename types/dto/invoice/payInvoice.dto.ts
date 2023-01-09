@@ -7,11 +7,11 @@ export type PayInvoiceDto = Readonly<{
   invoiceUuid: string;
   payerUuid: string;
   email?: string;
-  price: number; // FIXME: удолить
+  price: number;
 }>;
 
 export type PayServerInvoiceDto = Readonly<{
-  currency: 'RUB' | 'USD'; // FIXME: вынести в тип
+  currency: 'RUB' | 'USD';
   payerUuid: string;
   email?: string;
   ipAddress: string;

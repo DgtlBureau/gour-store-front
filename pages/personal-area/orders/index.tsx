@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Stack } from '@mui/material';
 
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useGetOrdersListQuery } from 'store/api/orderApi';
 
 import { PALayout } from 'layouts/PA/PA';
@@ -27,12 +28,15 @@ export function Orders() {
   const offset = (page - 1) * length;
 
   const { data: ordersData, isFetching, isError, isSuccess } = useGetOrdersListQuery({ length, offset });
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const totalCount = ordersData?.totalCount || 0;
 
   const hasMore = orders.length < totalCount;
 
-  const formattedOrdersList = orders.map(order => formatOrderData(order, language, currency));
+  const formattedOrdersList = orders.map(order =>
+    formatOrderData(order, language, currency, currentUser?.city.deliveryCost),
+  );
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
   const orderEntries = Object.entries(groupedOrders);
 

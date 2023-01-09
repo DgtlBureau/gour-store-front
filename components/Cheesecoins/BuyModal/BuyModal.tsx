@@ -42,7 +42,7 @@ type Props = {
   isLoading: boolean;
 };
 
-// FIXME: адекватно прокидывать пропсы с юзером
+// TODO: адекватно прокидывать пропсы с юзером
 export function BuyCheeseCoinsModal({
   isOpened,
   onClose,

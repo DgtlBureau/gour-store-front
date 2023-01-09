@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// FIXME: убрать ошибки eslint'a
+// TODO: убрать ошибки eslint'a
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 

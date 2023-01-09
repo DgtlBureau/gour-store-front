@@ -1,5 +1,5 @@
 export type CreateInvoiceDto = {
-  currency: 'RUB' | 'USD'; // FIXME: вынести в тип
+  currency: 'RUB' | 'USD';
   amount: number;
   value: number;
   payerUuid: string;

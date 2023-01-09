@@ -4,6 +4,7 @@ import React, { Fragment, useCallback, useMemo } from 'react';
 import { Divider, Grid } from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
+import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import {
   useCreateFavoriteProductsMutation,
   useDeleteFavoriteProductMutation,
@@ -59,6 +60,7 @@ export function Basket() {
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
@@ -73,8 +75,7 @@ export function Basket() {
     [similarProducts, categories, favoriteProducts],
   );
 
-  // TODO: вынести логику стоимости доставки на бек
-  const delivery = 500;
+  const delivery = currentUser?.city.deliveryCost || 0;
   const minCostForFreeDelivery = 2990;
   const sumToFreeDelivery = minCostForFreeDelivery - productTotalSum;
   const isDeliveryFree = sumToFreeDelivery <= 0;

@@ -333,8 +333,7 @@ export function Order() {
     [deliveryProfiles],
   );
 
-  // TODO: вынести на бек
-  const delivery = totalProductsSum > 2990 ? 0 : DELIVERY_PRICE;
+  const delivery = totalProductsSum > 2990 ? 0 : currentUser?.city.deliveryCost || 0;
 
   const infoModalContent = useMemo(() => {
     if (!orderStatusModal)
