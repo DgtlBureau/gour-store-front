@@ -7,7 +7,7 @@ import { IOrder } from 'types/entities/IOrder';
 import { formatDate } from 'utils/dateUtil';
 import { getFullName } from 'utils/nameUtil';
 
-export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency): FullOrder {
+export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Currency, deliveryCost = 0): FullOrder {
   const client = getFullName(order.firstName, order.lastName || '');
 
   const products: OrderProductType[] = order.orderProducts.map(product => ({
@@ -41,7 +41,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
     client,
     products,
     promotions,
-    deliveryCost: 500, // TODO: данные должны идти с бека©,
+    deliveryCost, // FIXME: данные должны идти с бека©,
     currency,
     totalSum: order.totalSum,
   };
