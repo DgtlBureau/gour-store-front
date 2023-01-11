@@ -48,7 +48,7 @@ export function formatOrderData(order: IOrder, lang: 'ru' | 'en', currency: Curr
 }
 
 export const groupOrdersByDate = (ordersList: FullOrder[]) =>
-  ordersList
+  [...ordersList]
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .reduce<Record<string, FullOrder[]>>((acc, order) => {
       const orderKey = formatDate(order.createdAt, 'd MMMM yyyy');
