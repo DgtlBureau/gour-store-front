@@ -9,6 +9,7 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { SelectOption } from 'components/UI/Select/Select';
 
+import { noExistingId } from 'constants/default';
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 
@@ -73,6 +74,7 @@ export type OrderFormProps = {
   onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
+  onChangeDeliveryCity: (id: number | null) => void;
 };
 
 export function OrderForm({
@@ -85,6 +87,7 @@ export function OrderForm({
   cities,
   onAddPromoCode,
   onSelectDeliveryProfile,
+  onChangeDeliveryCity,
   onSubmit,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
@@ -115,6 +118,17 @@ export function OrderForm({
       ...defaultPersonalFields,
     });
   }, [defaultPersonalFields]);
+
+  useEffect(() => {
+    const subscription = values.watch(({ cityId, deliveryProfileId }) => {
+      if (cityId && cityId !== noExistingId) {
+        onChangeDeliveryCity(cityId);
+        return;
+      }
+      onChangeDeliveryCity(null);
+    });
+    return () => subscription.unsubscribe();
+  }, [values.watch]);
 
   const addPromoCode = async () => {
     const promoCodeKey = values.getValues('promoCode');

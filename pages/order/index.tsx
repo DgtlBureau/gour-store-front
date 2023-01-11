@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Grid, Stack } from '@mui/material';
+import { current } from '@reduxjs/toolkit';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -118,16 +119,18 @@ export function Order() {
 
   const { data: currentUser } = useGetCurrentUserQuery();
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
-  const { cities } = useGetCityListQuery(undefined, {
-    selectFromResult: ({ data, ...params }) => ({
-      cities:
-        data?.map(city => ({
-          value: city.id,
-          label: city.name[language],
-        })) || [],
-      ...params,
-    }),
-  });
+  const { data: cities = [] } = useGetCityListQuery();
+
+  const [formDeliveryCityId, setFormDeliveryCityId] = useState<number | null>(null);
+
+  const formattedCities = useMemo(
+    () =>
+      cities.map(city => ({
+        value: city.id,
+        label: city.name[language],
+      })) || [],
+    [cities, language],
+  );
 
   const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
@@ -333,7 +336,19 @@ export function Order() {
     [deliveryProfiles],
   );
 
-  const delivery = totalProductsSum > 2990 ? 0 : currentUser?.city.deliveryCost || 0;
+  console.log('rerender');
+  const totalDeliveryCost = useMemo(() => {
+    console.log('rematch');
+    if (totalProductsSum > 2990) return 0;
+    if (formDeliveryCityId) {
+      const cityForDelivery = cities.find(city => city.id === formDeliveryCityId);
+      if (cityForDelivery) {
+        return cityForDelivery.deliveryCost;
+      }
+    }
+    return currentUser?.city.deliveryCost || 0;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser, totalProductsSum, formDeliveryCityId]);
 
   const infoModalContent = useMemo(() => {
     if (!orderStatusModal)
@@ -388,7 +403,7 @@ export function Order() {
               <OrderForm
                 defaultPersonalFields={personalFields}
                 defaultDeliveryFields={deliveryFields}
-                cities={cities}
+                cities={formattedCities}
                 isFetching={isCreatingProfile || isCreatingOrder}
                 isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
@@ -396,6 +411,7 @@ export function Order() {
                 onAddPromoCode={addPromoCode}
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
+                onChangeDeliveryCity={setFormDeliveryCityId}
               />
             </Grid>
 
@@ -406,7 +422,7 @@ export function Order() {
                 promotionsDiscount={sumDiscount}
                 referralCodeDiscount={referralCodeDiscountValue}
                 promoCodeDiscount={promoCodeDiscountValue}
-                delivery={delivery}
+                delivery={totalDeliveryCost}
                 currency={currency}
                 language={language}
               />
