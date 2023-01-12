@@ -86,8 +86,6 @@ type OrderStatusModal =
     }
   | null;
 
-const DELIVERY_PRICE = 500;
-
 export function Order() {
   const { goToOrders, goToHome, language, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
@@ -138,6 +136,18 @@ export function Order() {
   const totalProductsSum = useAppSelector(selectedProductSum);
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
+  const totalDeliveryCost = useMemo(() => {
+    if (totalProductsSum > 2990) return 0;
+    if (formDeliveryCityId) {
+      const cityForDelivery = cities.find(city => city.id === formDeliveryCityId);
+      if (cityForDelivery) {
+        return cityForDelivery.deliveryCost;
+      }
+    }
+    return currentUser?.city.deliveryCost || 0;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser, totalProductsSum, formDeliveryCityId]);
+
   useEffect(() => {
     if (isPaySuccess) {
       payFormRef.current?.submit();
@@ -175,7 +185,7 @@ export function Order() {
     setPayCoinsState({
       isOpen: true,
       orderData,
-      price: totalProductsSum,
+      price: totalProductsSum + totalDeliveryCost,
     });
   };
 
@@ -247,6 +257,7 @@ export function Order() {
       try {
         const payOrderDto = (await handlePayOrder(payCoinsState.orderData)) as IOrder;
         invoiceUuid = payOrderDto.invoiceUuid;
+        console.log('payOrderDto', payOrderDto);
       } catch {
         setPayCoinsState({ isOpen: false });
         setIsSubmitError(true);
@@ -254,6 +265,7 @@ export function Order() {
         return;
       }
       const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
+      console.log('result', result);
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
 
       // if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
@@ -335,20 +347,6 @@ export function Order() {
     ],
     [deliveryProfiles],
   );
-
-  console.log('rerender');
-  const totalDeliveryCost = useMemo(() => {
-    console.log('rematch');
-    if (totalProductsSum > 2990) return 0;
-    if (formDeliveryCityId) {
-      const cityForDelivery = cities.find(city => city.id === formDeliveryCityId);
-      if (cityForDelivery) {
-        return cityForDelivery.deliveryCost;
-      }
-    }
-    return currentUser?.city.deliveryCost || 0;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, totalProductsSum, formDeliveryCityId]);
 
   const infoModalContent = useMemo(() => {
     if (!orderStatusModal)
