@@ -38,6 +38,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
+import { minCostForFreeDelivery } from 'constants/default';
 import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -76,7 +77,6 @@ export function Basket() {
   );
 
   const delivery = currentUser?.city.deliveryCost || 0;
-  const minCostForFreeDelivery = 2990;
   const sumToFreeDelivery = minCostForFreeDelivery - productTotalSum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 

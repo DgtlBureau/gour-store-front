@@ -38,7 +38,7 @@ import { IProduct } from 'types/entities/IProduct';
 import { IPromoCode } from 'types/entities/IPromoCode';
 import { NotificationType } from 'types/entities/Notification';
 
-import { noExistingId } from 'constants/default';
+import { minCostForFreeDelivery, noExistingId } from 'constants/default';
 import { Path } from 'constants/routes';
 import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -137,7 +137,7 @@ export function Order() {
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const totalDeliveryCost = useMemo(() => {
-    if (totalProductsSum > 2990) return 0;
+    if (totalProductsSum >= minCostForFreeDelivery) return 0;
     if (formDeliveryCityId) {
       const cityForDelivery = cities.find(city => city.id === formDeliveryCityId);
       if (cityForDelivery) {
