@@ -31,7 +31,7 @@ class MyDocument extends Document {
                         hash:"78d744b05d391618671c168e7548fb9dd2cd804200d38f012f3e246ac1a880e1",
                         locale:"ru",
                         inline:false,
-                        setMeta:function(p: any) {
+                        setMeta:function(p) {
                           this.params=(this.params||[]).concat([p])
                         }
                       };
