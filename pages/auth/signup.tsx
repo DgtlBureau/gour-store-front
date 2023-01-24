@@ -54,7 +54,6 @@ export default function SignUp() {
   const [selectedCity, setSelectedCity] = useState<string | undefined>();
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
   const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
-  const [referralCode, setReferralCode] = useState('');
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -105,7 +104,7 @@ export default function SignUp() {
     goToReferralCode();
   };
 
-  const registerUser = async () => {
+  const registerUser = async (referralCode: string) => {
     if (!credentials || !selectedCity) return;
 
     const role = roles?.find(it => it.key === credentials.role);
@@ -135,8 +134,7 @@ export default function SignUp() {
   };
 
   const saveReferralCode = (referralData: ReferralCodeDto) => {
-    setReferralCode(referralData.referralCode);
-    registerUser();
+    registerUser(referralData.referralCode);
   };
 
   const forms = {
