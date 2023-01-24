@@ -34,6 +34,10 @@ export const sx = {
   btn: {
     width: '100%',
   },
+  sbpBtn: {
+    width: '100%',
+    marginTop: '5px',
+  },
   agreement: {
     display: 'flex',
     alignItems: 'center',

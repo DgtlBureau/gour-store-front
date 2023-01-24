@@ -37,7 +37,8 @@
     "manyProducts": "товаров",
     "free": "Бесплатно",
     "promoCode": "Промокод",
-    "referralCode": "Реферальный код"
+    "referralCode": "Реферальный код",
+    "SBP": "СБП"
   },
   "en": {
     "details": "Contact details",
@@ -77,6 +78,7 @@
     "manyProducts": "products",
     "free": "Free",
     "promoCode": "Promo code",
-    "referralCode": "Referral code"
+    "referralCode": "Referral code",
+    "SBP": "SBP"
   }
 }

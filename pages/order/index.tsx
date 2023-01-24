@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Grid, Stack } from '@mui/material';
+import { Grid, Stack, Modal, Box } from '@mui/material';
 import { current } from '@reduxjs/toolkit';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useCreateOrderMutation, usePayOrderMutation } from 'store/api/orderApi';
+import { useCreateOrderMutation, usePayOrderMutation, useGetSBPQueryMutation } from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
 import { useApplyPromoCodeMutation } from 'store/api/promoCodeApi';
 import {
@@ -96,6 +96,7 @@ export function Order() {
   const [fetchPayOrder, { isLoading: isPayOrderLoading, isSuccess: isPaySuccess, data: payData }] =
     usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
+  const [fetchSBPQuery, { isLoading: isGettingSBPQuery }] = useGetSBPQueryMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
   const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
@@ -120,6 +121,15 @@ export function Order() {
   const { data: cities = [] } = useGetCityListQuery();
 
   const [formDeliveryCityId, setFormDeliveryCityId] = useState<number | null>(null);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleClickSBPButton = async () => {
+    const SBPQr = await fetchSBPQuery({}).unwrap();
+    setOpenModal(true);
+  }
+
+  const handleCloseModal = () => setOpenModal(false);
 
   const formattedCities = useMemo(
     () =>
@@ -410,6 +420,7 @@ export function Order() {
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
                 onChangeDeliveryCity={setFormDeliveryCityId}
+                handleClickSBPButton={handleClickSBPButton}
               />
             </Grid>
 
@@ -427,6 +438,21 @@ export function Order() {
             </Grid>
           </Grid>
         )}
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box>
+            <Typography sx={sx.modal}
+              variant="h6"
+              component="h2"
+            >
+              {t('modalTypo')}
+            </Typography>
+          </Box>
+        </Modal>
 
         <InfoModal
           isOpen={!!orderStatusModal?.status}
