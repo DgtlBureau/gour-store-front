@@ -140,7 +140,7 @@ export function Payments() {
                   <PaymentsCardGroup
                     key={date}
                     type={currentTab}
-                    date={new Date(date)}
+                    date={new Date(date.replace(/\./g, '-'))}
                     paymentsList={paymentsList}
                     payerUuid={currentUser!.id}
                     refetch={refetch}
