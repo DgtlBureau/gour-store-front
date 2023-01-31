@@ -205,28 +205,25 @@ export function OrderForm({
                 // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
                 spacing={2}
               >
-                <Grid item xs={12} sm={6}>
-                  <HFTextField
-                    name='promoCode'
-                    label={t('promoCode')}
-                    disabled={isPromoCodeApplies}
-                    endAdornment={
-                      isPromoCodeApplies ? (
-                        <CircularProgress />
-                      ) : (
-                        <IconButton disabled={!values.getValues('promoCode')} onClick={addPromoCode}>
-                          <DoneIcon />
-                        </IconButton>
-                      )
-                    }
-                  />
+                <Grid item xs={6} sm={6}>
+                  <HFTextField name='promoCode' label={t('promoCode')} disabled={isPromoCodeApplies} />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant='body2' color='text.muted'>
-                    При указанном промокоде реферальный код не учитывается
-                  </Typography>
+                <Grid item xs={6} sm={6}>
+                  <Button
+                    sx={sx.btnPromo}
+                    type='button'
+                    color={!isSubmitError ? 'primary' : 'error'}
+                    disabled={!values.getValues('promoCode')}
+                    onClick={addPromoCode}
+                  >
+                    {isPromoCodeApplies ? <CircularProgress /> : 'Применить'}
+                  </Button>
                 </Grid>
+
+                <Typography variant='body2' color='text.muted' sx={sx.descriptionPromo}>
+                  При указанном промокоде реферальный код не учитывается
+                </Typography>
 
                 <Grid item xs={12}>
                   <Checkbox

@@ -34,6 +34,16 @@ export const sx = {
   btn: {
     width: '100%',
   },
+  btnPromo: {
+    height: 56,
+    width: {
+      xs: '100%',
+      md: '155px',
+    },
+  },
+  descriptionPromo: {
+    padding: '6px 0 8px 16px',
+  },
   agreement: {
     display: 'flex',
     alignItems: 'center',
