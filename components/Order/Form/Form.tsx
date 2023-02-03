@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -75,6 +75,7 @@ export type OrderFormProps = {
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
   onChangeDeliveryCity: (id: number | null) => void;
+  handleClickSBPButton: (data: OrderFormType) => void;
 };
 
 export function OrderForm({
@@ -89,6 +90,7 @@ export function OrderForm({
   onSelectDeliveryProfile,
   onChangeDeliveryCity,
   onSubmit,
+  handleClickSBPButton,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
 
@@ -255,6 +257,14 @@ export function OrderForm({
               color={!isSubmitError ? 'primary' : 'error'}
             >
               {!isSubmitError ? t('toPay') : t('orderError')}
+            </Button>
+            <Button
+              sx={sx.sbpBtn}
+              disabled={isSubmitBtnDisabled}
+              color={!isSubmitError ? 'success' : 'error'}
+              onClick={() => handleClickSBPButton(values.getValues())}
+            >
+              {!isSubmitError ? t('SBP') : t('orderError')}
             </Button>
           </Box>
         </Box>

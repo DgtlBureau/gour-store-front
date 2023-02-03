@@ -1,11 +1,16 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Modal, Stack } from '@mui/material';
 import { current } from '@reduxjs/toolkit';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
-import { useCreateOrderMutation, usePayOrderMutation } from 'store/api/orderApi';
+import {
+  useCheckSBPQueryMutation,
+  useCreateOrderMutation,
+  useGetSBPQueryMutation,
+  usePayOrderMutation,
+} from 'store/api/orderApi';
 import { useCreateOrderProfileMutation, useGetOrderProfilesListQuery } from 'store/api/orderProfileApi';
 import { useApplyPromoCodeMutation } from 'store/api/promoCodeApi';
 import {
@@ -28,7 +33,8 @@ import { InfoModal } from 'components/UI/InfoModal/InfoModal';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { PayInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { UserAgent } from 'types/dto/order/SBP.dto';
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { CreateOrderProfileDto } from 'types/dto/order/createOrderProfile.dto';
 import { OrderProductDto } from 'types/dto/order/product.dto';
@@ -96,6 +102,8 @@ export function Order() {
   const [fetchPayOrder, { isLoading: isPayOrderLoading, isSuccess: isPaySuccess, data: payData }] =
     usePayOrderMutation();
   const [fetchCreateOrderProfile, { isLoading: isCreatingProfile }] = useCreateOrderProfileMutation();
+  const [fetchSBPQuery, { isLoading: isGettingSBPQuery }] = useGetSBPQueryMutation();
+  const [fetchCheckSBPQuery, { isLoading: isGettingCheckSBPQuery }] = useCheckSBPQueryMutation();
   const [fetchCreateOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
   const [applyPromoCode, { isLoading: isPromoCodeApplies }] = useApplyPromoCodeMutation();
 
@@ -120,6 +128,12 @@ export function Order() {
   const { data: cities = [] } = useGetCityListQuery();
 
   const [formDeliveryCityId, setFormDeliveryCityId] = useState<number | null>(null);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [qrImage, setQrImage] = useState('');
+  const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
+
+  const handleCloseModal = () => setOpenModal(false);
 
   const formattedCities = useMemo(
     () =>
@@ -190,7 +204,7 @@ export function Order() {
   };
 
   const handlePayOrder = async (orderData: OrderFormType) => {
-    if (!payCoinsState.isOpen) return;
+    // if (!payCoinsState.isOpen) return;
 
     const {
       firstName,
@@ -248,6 +262,59 @@ export function Order() {
 
     // productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
   };
+
+  const handleClickSBPButton = async (orderData: OrderFormType) => {
+    setOpenModal(true);
+    const amount = totalProductsSum + totalDeliveryCost - sumDiscount;
+    const sbpCurrency = 'RUB';
+    const payOrderDto = (await handlePayOrder(orderData)) as any;
+
+    const SBPData = {
+      userAgent: UserAgent.DESKTOP,
+      ipAddress: '5.18.144.32',
+      currency: sbpCurrency,
+      amount,
+      description: '',
+      invoiceUuid: payOrderDto.invoiceUuid,
+      payerUuid: payOrderDto.client.id,
+      email: payOrderDto.email,
+    };
+
+    const SBPResponse = await fetchSBPQuery(SBPData).unwrap();
+
+    if (SBPResponse.Model.QrImage) {
+      setQrImage(SBPResponse.Model.QrImage);
+    }
+
+    setSBPCheckData({
+      transactionId: SBPResponse.Model.TransactionId,
+      email: payOrderDto.email,
+    });
+  };
+
+  useEffect(() => {
+    let intervalId: any;
+
+    const intervalCalling = async () => {
+      const SBPCheckResponse = await fetchCheckSBPQuery(SBPCheckData).unwrap();
+
+      if (SBPCheckResponse.status === 'Completed' || SBPCheckResponse.status === 'Declined') {
+        dispatchNotification('Оплата прошла успешно', { type: NotificationType.SUCCESS });
+        clearInterval(intervalId);
+      }
+    };
+
+    const delay = 4 * 1000;
+    if (openModal && SBPCheckData.transactionId) {
+      intervalId = setInterval(intervalCalling, delay);
+    }
+    if (!openModal && SBPCheckData.transactionId) {
+      clearInterval(intervalId);
+    }
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [openModal, SBPCheckData]);
 
   const handleBuyCheeseCoins = async (buyData: PayInvoiceDto) => {
     if (!payCoinsState.isOpen) return;
@@ -410,6 +477,7 @@ export function Order() {
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
                 onChangeDeliveryCity={setFormDeliveryCityId}
+                handleClickSBPButton={handleClickSBPButton}
               />
             </Grid>
 
@@ -427,6 +495,19 @@ export function Order() {
             </Grid>
           </Grid>
         )}
+        <Modal
+          open={openModal && !!qrImage}
+          onClose={handleCloseModal}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={sx.modal}>
+            <Typography variant='h6' component='h2'>
+              {t('modalTypo')}
+            </Typography>
+            <img alt='QR' src={`data:image/svg+xml;base64,${qrImage}`} />
+          </Box>
+        </Modal>
 
         <InfoModal
           isOpen={!!orderStatusModal?.status}
