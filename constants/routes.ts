@@ -55,7 +55,8 @@ export enum Path {
   CREDENTIALS = 'credentials',
   ADDRESSES = 'addresses',
   DISCOUNTS = 'discounts',
-  SBPQr = 'sbp-link',
+  SBPQr = 'payment/sbp-link',
+  SBPCheck = 'payment/sbp-check',
 
   RULES = 'rules',
   PRIVACY = 'privacy',

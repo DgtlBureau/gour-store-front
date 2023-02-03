@@ -1,10 +1,10 @@
 import { BaseGetListDto } from 'types/dto/base-get-list.dto';
 import { PayInvoiceDto, PayServerInvoiceDto } from 'types/dto/invoice/payInvoice.dto';
+import { SBPResponseDto } from 'types/dto/order/SBP-response.dto';
+import { SBPDto } from 'types/dto/order/SBP.dto';
 import { CreateOrderDto } from 'types/dto/order/create.dto';
 import { I3DSecureDto } from 'types/entities/IInvoice';
 import { IOrder } from 'types/entities/IOrder';
-import { SBPResponseDto } from 'types/dto/order/SBP-response.dto';
-import { SBPDto } from 'types/dto/order/SBP.dto';
 
 import { Path } from 'constants/routes';
 import { CardValidationError } from 'errors/CardValidationError';
@@ -62,11 +62,20 @@ export const orderApi = commonApi.injectEndpoints({
         },
         invalidatesTags: ['Order'],
       }),
-      getSBPQuery: builder.mutation<SBPDto, SBPResponseDto>({
+      getSBPQuery: builder.mutation<SBPResponseDto, SBPDto>({
         query(product) {
           return {
             method: 'POST',
             url: Path.SBPQr,
+            body: product,
+          };
+        },
+      }),
+      checkSBPQuery: builder.mutation<{ status: string }, { transactionId: number; email?: string }>({
+        query(product) {
+          return {
+            method: 'POST',
+            url: Path.SBPCheck,
             body: product,
           };
         },
@@ -126,6 +135,7 @@ export const {
   useCreateOrderMutation,
   usePayOrderMutation,
   useGetSBPQueryMutation,
+  useCheckSBPQueryMutation,
 } = orderApi;
 
 // async onQueryStarted(params, { dispatch, queryFulfilled }) {

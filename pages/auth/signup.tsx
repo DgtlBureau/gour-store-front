@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { useCheckCodeMutation, useSendEmailCodeMutation, useSignUpMutation } from 'store/api/authApi';
+import {
+  useCheckCodeMutation,
+  useSendEmailCodeMutation,
+  useSignInMutation,
+  useSignUpMutation,
+} from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetRoleListQuery } from 'store/api/roleApi';
 
@@ -32,7 +37,7 @@ import referralImage from 'assets/images/signup/referral-codes.svg';
 type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
 
 export default function SignUp() {
-  const { goToIntro, goToSignIn, language } = useAppNavigation();
+  const { goToIntro, goToHome, language } = useAppNavigation();
 
   const { cities } = useGetCityListQuery(undefined, {
     selectFromResult: ({ data, ...params }) => ({
@@ -48,13 +53,13 @@ export default function SignUp() {
 
   const [sendCode, { isLoading: codeIsSending }] = useSendEmailCodeMutation();
   const [signUp] = useSignUpMutation();
+  const [signIn] = useSignInMutation();
   const [checkCode] = useCheckCodeMutation();
 
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState<string | undefined>();
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
   const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
-  const [referralCode, setReferralCode] = useState('');
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
@@ -105,7 +110,7 @@ export default function SignUp() {
     goToReferralCode();
   };
 
-  const registerUser = async () => {
+  const registerUser = async (referralCode: string) => {
     if (!credentials || !selectedCity) return;
 
     const role = roles?.find(it => it.key === credentials.role);
@@ -126,7 +131,12 @@ export default function SignUp() {
 
       dispatchNotification('Регистрация прошла успешно');
 
-      goToSignIn();
+      await signIn({
+        password: credentials.password,
+        email: credentials.email,
+      }).unwrap();
+
+      goToHome();
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -135,8 +145,7 @@ export default function SignUp() {
   };
 
   const saveReferralCode = (referralData: ReferralCodeDto) => {
-    setReferralCode(referralData.referralCode);
-    registerUser();
+    registerUser(referralData.referralCode);
   };
 
   const forms = {

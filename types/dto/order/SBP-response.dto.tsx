@@ -1,21 +1,12 @@
-import { IsString, IsNumber } from 'class-validator';
-
-export class SBPResponseDto {
-  @IsString()
-  qrUrl: string;
-
-  @IsString()
-  qrImage: string;
-
-  @IsNumber()
-  transactionId: number;
-
-  @IsNumber()
-  providerQrId: number;
-
-  @IsNumber()
-  amount: number;
-
-  @IsString()
-  message: string;
-}
+export type SBPResponseDto = {
+  Model: {
+    QrUrl: string;
+    QrImage: string;
+    TransactionId: number;
+    ProviderQrId: number;
+    Amount: number;
+    Message: string;
+  };
+  Success: boolean;
+  Message: string | null;
+};

@@ -1,42 +1,15 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsIP,
-  IsOptional,
-  IsString,
-  IsUUID,
-  IsNumber
-} from 'class-validator';
-import { Currency } from 'src/common/types/app';
-
-enum UserAgent {
+export enum UserAgent {
   MOBILE = 'mobile',
-  DESKTOP = 'desktop'
+  DESKTOP = 'desktop',
 }
 
-export class SBPDto {
-  @IsEnum(UserAgent)
+export type SBPDto = {
   userAgent: UserAgent;
-
-  @IsIP()
   ipAddress: string;
-
-  @IsEnum(Currency)
-  currency: Currency;
-
-  @IsNumber()
+  currency: string;
   amount: number;
-
-  @IsString()
   description: string;
-
-  @IsUUID()
   invoiceUuid: string;
-
-  @IsUUID()
   payerUuid: string;
-
-  @IsEmail()
-  @IsOptional()
   email: string;
-}
+};
