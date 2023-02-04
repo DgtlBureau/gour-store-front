@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Box, Grid, Modal, Stack } from '@mui/material';
+import { Box, CircularProgress, Grid, Modal, Stack } from '@mui/material';
 import { current } from '@reduxjs/toolkit';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
@@ -133,7 +133,10 @@ export function Order() {
   const [qrImage, setQrImage] = useState('');
   const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
 
-  const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setQrImage('');
+  };
 
   const formattedCities = useMemo(
     () =>
@@ -299,7 +302,11 @@ export function Order() {
       const SBPCheckResponse = await fetchCheckSBPQuery(SBPCheckData).unwrap();
 
       if (SBPCheckResponse.status === 'Completed' || SBPCheckResponse.status === 'Declined') {
-        dispatchNotification('Оплата прошла успешно', { type: NotificationType.SUCCESS });
+        if (SBPCheckResponse.status === 'Completed') {
+          dispatchNotification('Оплата прошла успешно', { type: NotificationType.SUCCESS });
+        } else {
+          dispatchNotification('Оплата не прошла', { type: NotificationType.DANGER });
+        }
         clearInterval(intervalId);
       }
     };
@@ -496,7 +503,7 @@ export function Order() {
           </Grid>
         )}
         <Modal
-          open={openModal && !!qrImage}
+          open={openModal}
           onClose={handleCloseModal}
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
@@ -505,7 +512,11 @@ export function Order() {
             <Typography variant='h6' component='h2'>
               {t('modalTypo')}
             </Typography>
-            <img alt='QR' src={`data:image/svg+xml;base64,${qrImage}`} />
+            {openModal && qrImage ? (
+              <img alt='QR' src={`data:image/svg+xml+png;base64,${qrImage}`} />
+            ) : (
+              <CircularProgress sx={sx.SBPSpinner} size={120} />
+            )}
           </Box>
         </Modal>
 

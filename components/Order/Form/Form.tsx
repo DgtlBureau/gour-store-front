@@ -261,10 +261,10 @@ export function OrderForm({
             <Button
               sx={sx.sbpBtn}
               disabled={isSubmitBtnDisabled}
-              color={!isSubmitError ? 'success' : 'error'}
+              color='success'
               onClick={() => handleClickSBPButton(values.getValues())}
             >
-              {!isSubmitError ? t('SBP') : t('orderError')}
+              {t('SBP')}
             </Button>
           </Box>
         </Box>

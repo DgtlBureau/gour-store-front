@@ -41,6 +41,9 @@ export const sx = {
     p: 4,
     textAlign: 'center',
   },
+  SBPSpinner: {
+    marginTop: '80px',
+  },
 };
 
 export default sx;
