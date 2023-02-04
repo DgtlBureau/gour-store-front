@@ -69,6 +69,7 @@ export type OrderFormProps = {
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
+  isSBPFetching: boolean;
   isPromoCodeApplies: boolean;
   deliveryProfiles: SelectOption[];
   onAddPromoCode: (key: string) => void;
@@ -84,6 +85,7 @@ export function OrderForm({
   deliveryProfiles,
   isSubmitError,
   isFetching,
+  isSBPFetching,
   isPromoCodeApplies,
   cities,
   onAddPromoCode,
@@ -143,6 +145,8 @@ export function OrderForm({
   const agree = () => setIsAgree(!isAgree);
 
   const isSubmitBtnDisabled = !values.formState.isValid || !isAgree || isFetching;
+
+  const isSBPBtnDisabled = !values.formState.isValid || !isAgree;
 
   return (
     <FormProvider {...values}>
@@ -260,11 +264,11 @@ export function OrderForm({
             </Button>
             <Button
               sx={sx.sbpBtn}
-              disabled={isSubmitBtnDisabled}
+              disabled={isSBPBtnDisabled}
               color='success'
               onClick={() => handleClickSBPButton(values.getValues())}
             >
-              {t('SBP')}
+              {isSBPFetching ? <CircularProgress size={24} color='secondary' /> : t('SBP')}
             </Button>
           </Box>
         </Box>

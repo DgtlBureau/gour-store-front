@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Box, CircularProgress, Grid, Modal, Stack } from '@mui/material';
-import { current } from '@reduxjs/toolkit';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -132,6 +131,12 @@ export function Order() {
   const [openModal, setOpenModal] = useState(false);
   const [qrImage, setQrImage] = useState('');
   const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
+  const userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+    navigator.userAgent,
+  )
+    ? UserAgent.MOBILE
+    : UserAgent.DESKTOP;
+  const [SBPFetching, setSBPFetching] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -276,9 +281,8 @@ export function Order() {
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
-
     const SBPData = {
-      userAgent: UserAgent.DESKTOP,
+      userAgent,
       ipAddress: '5.18.144.32',
       currency: sbpCurrency,
       amount,
@@ -300,6 +304,38 @@ export function Order() {
     });
   };
 
+  const redirectToSBPLink = async (orderData: OrderFormType) => {
+    setOpenModal(true);
+    setSBPFetching(true);
+    const amount = promoCodeDiscountValue
+      ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
+      : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
+    const sbpCurrency = 'RUB';
+    const payOrderDto = (await handlePayOrder(orderData)) as any;
+    const SBPData = {
+      userAgent: UserAgent.MOBILE,
+      ipAddress: '5.18.144.32',
+      currency: sbpCurrency,
+      amount,
+      description: '',
+      invoiceUuid: payOrderDto.invoiceUuid,
+      payerUuid: payOrderDto.client.id,
+      email: payOrderDto.email,
+    };
+
+    const SBPResponse = await fetchSBPQuery(SBPData).unwrap();
+
+    setSBPCheckData({
+      transactionId: SBPResponse.Model.TransactionId,
+      email: payOrderDto.email,
+    });
+
+    setSBPFetching(false);
+    window.open(SBPResponse.Model.QrUrl, '__blank');
+    const timer = 1000 * 60 * 15;
+    setTimeout(() => setOpenModal(false), timer);
+  };
+
   useEffect(() => {
     let intervalId: any;
 
@@ -309,6 +345,7 @@ export function Order() {
       if (SBPCheckResponse.status === 'Completed' || SBPCheckResponse.status === 'Declined') {
         if (SBPCheckResponse.status === 'Completed') {
           dispatchNotification('Оплата прошла успешно', { type: NotificationType.SUCCESS });
+          setOpenModal(false);
         } else {
           dispatchNotification('Оплата не прошла', { type: NotificationType.DANGER });
         }
@@ -482,6 +519,7 @@ export function Order() {
                 defaultDeliveryFields={deliveryFields}
                 cities={formattedCities}
                 isFetching={isCreatingProfile || isCreatingOrder}
+                isSBPFetching={SBPFetching}
                 isPromoCodeApplies={isPromoCodeApplies}
                 isSubmitError={isSubmitError}
                 deliveryProfiles={formattedDeliveryProfiles}
@@ -489,7 +527,7 @@ export function Order() {
                 onSelectDeliveryProfile={selectDeliveryProfile}
                 onSubmit={handleCreateOrder}
                 onChangeDeliveryCity={setFormDeliveryCityId}
-                handleClickSBPButton={handleClickSBPButton}
+                handleClickSBPButton={userAgent === UserAgent.MOBILE ? redirectToSBPLink : handleClickSBPButton}
               />
             </Grid>
 
@@ -507,24 +545,25 @@ export function Order() {
             </Grid>
           </Grid>
         )}
-        <Modal
-          open={openModal}
-          onClose={handleCloseModal}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
-        >
-          <Box sx={sx.modal}>
-            <Typography variant='h6' component='h2'>
-              {t('modalTypo')}
-            </Typography>
-            {openModal && qrImage ? (
-              <img alt='QR' src={`data:image/svg+xml+png;base64,${qrImage}`} />
-            ) : (
-              <CircularProgress sx={sx.SBPSpinner} size={120} />
-            )}
-          </Box>
-        </Modal>
-
+        {userAgent === UserAgent.DESKTOP && (
+          <Modal
+            open={openModal}
+            onClose={handleCloseModal}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+          >
+            <Box sx={sx.modal}>
+              <Typography variant='h6' component='h2'>
+                {t('modalTypo')}
+              </Typography>
+              {openModal && qrImage ? (
+                <img alt='QR' src={`data:image/svg+xml+png;base64,${qrImage}`} />
+              ) : (
+                <CircularProgress sx={sx.SBPSpinner} size={120} />
+              )}
+            </Box>
+          </Modal>
+        )}
         <InfoModal
           isOpen={!!orderStatusModal?.status}
           status={orderStatusModal?.status}
