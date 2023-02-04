@@ -199,10 +199,13 @@ export function Order() {
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
   const handleCreateOrder = (orderData: OrderFormType) => {
+    const price = promoCodeDiscountValue
+      ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
+      : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     setPayCoinsState({
       isOpen: true,
       orderData,
-      price: totalProductsSum + totalDeliveryCost,
+      price,
     });
   };
 
@@ -268,7 +271,9 @@ export function Order() {
 
   const handleClickSBPButton = async (orderData: OrderFormType) => {
     setOpenModal(true);
-    const amount = totalProductsSum + totalDeliveryCost - sumDiscount;
+    const amount = promoCodeDiscountValue
+      ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
+      : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
 

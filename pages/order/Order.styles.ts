@@ -40,6 +40,7 @@ export const sx = {
     transform: 'translate(-50%, -50%)',
     p: 4,
     textAlign: 'center',
+    borderRadius: '10px',
   },
   SBPSpinner: {
     marginTop: '80px',
