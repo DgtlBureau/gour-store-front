@@ -339,7 +339,7 @@ export function Order() {
     if (isIphoneSafari && windowRef) {
       windowRef.location = SBPResponse.Model.QrUrl;
     } else {
-      window.open(SBPResponse.Model.QrUrl);
+      window.open(SBPResponse.Model.QrUrl, '_blank');
     }
     // const windowRef = window.open(url, '_blank');
     // if (windowRef) {
