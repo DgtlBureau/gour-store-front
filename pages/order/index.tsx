@@ -312,7 +312,6 @@ export function Order() {
       ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
-    const windowRef = window.open('about:blank', '_blank');
     const payOrderDto = (await handlePayOrder(orderData)) as any;
     const SBPData = {
       userAgent: UserAgent.MOBILE,
@@ -332,6 +331,7 @@ export function Order() {
       email: payOrderDto.email,
     });
 
+    const windowRef = window.open('about:blank', '_blank');
     if (windowRef) {
       windowRef.location = SBPResponse.Model.QrUrl;
     }
