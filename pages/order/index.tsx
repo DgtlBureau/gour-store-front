@@ -345,7 +345,11 @@ export function Order() {
   };
 
   useEffect(() => {
-    window.open(qrLink, '_blank');
+    const windowRef = window.open('about:blank', '_blank');
+    if (windowRef) {
+      windowRef.location = qrLink;
+    }
+    // window.open(qrLink, '_blank');
   }, [qrLink]);
 
   useEffect(() => {
