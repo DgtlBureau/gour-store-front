@@ -131,6 +131,7 @@ export function Order() {
   const [openModal, setOpenModal] = useState(false);
   const [qrImage, setQrImage] = useState('');
   const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
+  const [qrLink, setQrLink] = useState('');
   const userAgent =
     /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i.test(
       navigator.userAgent,
@@ -336,14 +337,16 @@ export function Order() {
     //   windowRef.location = SBPResponse.Model.QrUrl;
     // }
     // const windowRef = window.open('about:blank', '_blank');
-    setTimeout(() => {
-      window.open(SBPResponse.Model.QrUrl, '_blank');
-    });
+    setQrLink(SBPResponse.Model.QrUrl);
 
     setSBPFetching(false);
     const timer = 1000 * 60 * 15;
     setTimeout(() => setOpenModal(false), timer);
   };
+
+  useEffect(() => {
+    window.open(qrLink, '_blank');
+  }, [qrLink]);
 
   useEffect(() => {
     let intervalId: any;
