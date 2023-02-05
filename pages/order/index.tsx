@@ -137,6 +137,7 @@ export function Order() {
     )
       ? UserAgent.MOBILE
       : UserAgent.DESKTOP;
+
   const [SBPFetching, setSBPFetching] = useState(false);
 
   const handleCloseModal = () => {
@@ -339,7 +340,7 @@ export function Order() {
     if (isIphoneSafari && windowRef) {
       windowRef.location = SBPResponse.Model.QrUrl;
     } else {
-      window.open(SBPResponse.Model.QrUrl, '_blank');
+      window.open(SBPResponse.Model.QrUrl, '__blank');
     }
     // const windowRef = window.open(url, '_blank');
     // if (windowRef) {
