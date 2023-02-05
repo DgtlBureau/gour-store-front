@@ -131,11 +131,12 @@ export function Order() {
   const [openModal, setOpenModal] = useState(false);
   const [qrImage, setQrImage] = useState('');
   const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
-  const userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-    navigator.userAgent,
-  )
-    ? UserAgent.MOBILE
-    : UserAgent.DESKTOP;
+  const userAgent =
+    /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i.test(
+      navigator.userAgent,
+    )
+      ? UserAgent.MOBILE
+      : UserAgent.DESKTOP;
   const [SBPFetching, setSBPFetching] = useState(false);
 
   const handleCloseModal = () => {
