@@ -307,7 +307,7 @@ export function Order() {
   };
 
   const redirectToSBPLink = async (orderData: OrderFormType) => {
-    const isIphoneSafari = /^.*iP(hone|od|ad)(?!.*CriOS).*Safari/gm.test(navigator.userAgent);
+    const isIphoneSafari = /^((?!Chrome|Android|FxiOS|CriOS).)*Safari/gm.test(navigator.userAgent);
     let windowRef;
     if (isIphoneSafari) {
       windowRef = window.open('about:blank', '_blank');
