@@ -364,6 +364,7 @@ export function Order() {
       if (SBPCheckResponse.status === 'Completed' || SBPCheckResponse.status === 'Declined') {
         if (SBPCheckResponse.status === 'Completed') {
           dispatchNotification('Оплата прошла успешно', { type: NotificationType.SUCCESS });
+          productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
           setOpenModal(false);
         } else {
           dispatchNotification('Оплата не прошла', { type: NotificationType.DANGER });
