@@ -307,7 +307,7 @@ export function Order() {
   };
 
   const redirectToSBPLink = async (orderData: OrderFormType) => {
-    const isIphoneSafari = /\biP(hone|od|ad)\b.*\bSafari\b/gm.test(navigator.userAgent);
+    const isIphoneSafari = /^.*iP(hone|od|ad)(?!.*CriOS).*Safari/gm.test(navigator.userAgent);
     let windowRef;
     if (isIphoneSafari) {
       windowRef = window.open('about:blank', '_blank');
@@ -340,7 +340,7 @@ export function Order() {
     if (isIphoneSafari && windowRef) {
       windowRef.location = SBPResponse.Model.QrUrl;
     } else {
-      window.open(SBPResponse.Model.QrUrl, '__blank');
+      window.open(SBPResponse.Model.QrUrl, '_blank');
     }
     // const windowRef = window.open(url, '_blank');
     // if (windowRef) {
