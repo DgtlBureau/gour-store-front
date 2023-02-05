@@ -131,7 +131,6 @@ export function Order() {
   const [openModal, setOpenModal] = useState(false);
   const [qrImage, setQrImage] = useState('');
   const [SBPCheckData, setSBPCheckData] = useState({ transactionId: 0, email: '' });
-  const [qrLink, setQrLink] = useState('');
   const userAgent =
     /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i.test(
       navigator.userAgent,
@@ -307,6 +306,11 @@ export function Order() {
   };
 
   const redirectToSBPLink = async (orderData: OrderFormType) => {
+    const isIphoneSafari = /iP(hone|od|ad)|Safari/i.test(navigator.userAgent);
+    let windowRef;
+    if (isIphoneSafari) {
+      windowRef = window.open('about:blank', '_blank');
+    }
     setOpenModal(true);
     setSBPFetching(true);
     const amount = promoCodeDiscountValue
@@ -332,25 +336,20 @@ export function Order() {
       email: payOrderDto.email,
     });
 
+    if (isIphoneSafari && windowRef) {
+      windowRef.location = SBPResponse.Model.QrUrl;
+    } else {
+      window.open(SBPResponse.Model.QrUrl);
+    }
     // const windowRef = window.open(url, '_blank');
     // if (windowRef) {
-    //   windowRef.location = SBPResponse.Model.QrUrl;
     // }
     // const windowRef = window.open('about:blank', '_blank');
-    setQrLink(SBPResponse.Model.QrUrl);
 
     setSBPFetching(false);
     const timer = 1000 * 60 * 15;
     setTimeout(() => setOpenModal(false), timer);
   };
-
-  useEffect(() => {
-    const windowRef = window.open('about:blank', '_blank');
-    if (windowRef) {
-      windowRef.location = qrLink;
-    }
-    // window.open(qrLink, '_blank');
-  }, [qrLink]);
 
   useEffect(() => {
     let intervalId: any;
