@@ -331,10 +331,14 @@ export function Order() {
       email: payOrderDto.email,
     });
 
-    const windowRef = window.open('about:blank', '_blank');
-    if (windowRef) {
-      windowRef.location = SBPResponse.Model.QrUrl;
-    }
+    // const windowRef = window.open(url, '_blank');
+    // if (windowRef) {
+    //   windowRef.location = SBPResponse.Model.QrUrl;
+    // }
+    // const windowRef = window.open('about:blank', '_blank');
+    setTimeout(() => {
+      window.open(SBPResponse.Model.QrUrl, '_blank');
+    });
 
     setSBPFetching(false);
     const timer = 1000 * 60 * 15;
