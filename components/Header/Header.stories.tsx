@@ -15,7 +15,7 @@ const props: Partial<HeaderProps> = {
   firstPhone: '8 (921) 865-05-38',
   secondPhone: '+372 880-45-21',
   email: 'rk@gour-food.com',
-  fb: 'https://www.facebook.com/',
+  tg: 'https://t.me/tastyoleg',
   inst: 'https://www.instagram.com/',
   vk: 'https://www.vk.com/',
   selectedCityId: 1,

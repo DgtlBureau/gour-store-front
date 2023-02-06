@@ -32,7 +32,7 @@ export type MobileMenuProps = {
   firstPhone: string;
   secondPhone: string;
   email: string;
-  fb: string;
+  tg: string;
   inst: string;
   vk: string;
   moneyAmount: number;
@@ -48,7 +48,7 @@ export function MobileMenu({
   firstPhone,
   secondPhone,
   email,
-  fb,
+  tg,
   inst,
   vk,
   moneyAmount,
@@ -153,7 +153,7 @@ export function MobileMenu({
 
       <Divider sx={sx.divider} />
 
-      <MobileMenuContacts firstPhone={firstPhone} secondPhone={secondPhone} email={email} fb={fb} inst={inst} vk={vk} />
+      <MobileMenuContacts firstPhone={firstPhone} secondPhone={secondPhone} email={email} tg={tg} inst={inst} vk={vk} />
     </List>
   );
 }

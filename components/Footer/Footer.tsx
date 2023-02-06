@@ -14,21 +14,21 @@ import translations from './Footer.i18n.json';
 
 import footerSx from './Footer.styles';
 
-import fbIcon from 'assets/icons/social/fb.svg';
 import instIcon from 'assets/icons/social/inst.svg';
+import tgIcon from 'assets/icons/social/tg.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
 import logo from 'assets/images/logo.svg';
 
 export type FooterProps = {
   firstPhone: string;
   email: string;
-  fb: string;
+  tg: string;
   inst: string;
   vk: string;
   sx?: SxProps;
 };
 
-export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
+export function Footer({ firstPhone, email, tg, inst, vk, sx }: FooterProps) {
   const { t } = useLocalTranslation(translations);
 
   const contacts = [
@@ -44,8 +44,8 @@ export function Footer({ firstPhone, email, fb, inst, vk, sx }: FooterProps) {
 
   const social = [
     {
-      icon: fbIcon,
-      path: fb,
+      icon: tgIcon,
+      path: tg,
     },
     {
       icon: instIcon,

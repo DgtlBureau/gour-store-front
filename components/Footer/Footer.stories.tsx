@@ -15,7 +15,7 @@ export const DefaultFooter = Template.bind({});
 const props: Partial<FooterProps> = {
   firstPhone: '+7 812 602-52-61',
   email: 'rk@gour-food.com',
-  fb: 'https://www.facebook.com/gourfood.spb/',
+  tg: 'https://t.me/tastyoleg',
   inst: 'https://www.instagram.com/gourfood_/',
   vk: 'https://vk.com/gour_food',
 };
