@@ -1,3 +1,5 @@
+import { color } from 'themes';
+
 export const sx = {
   title: {
     fontSize: {
@@ -21,6 +23,27 @@ export const sx = {
   },
   infoModalLink: {
     fontSize: 'inherit',
+  },
+  modal: {
+    width: {
+      xs: '100%',
+      md: '450px',
+    },
+    height: {
+      xs: '100%',
+      md: '450px',
+    },
+    backgroundColor: color.white,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    p: 4,
+    textAlign: 'center',
+    borderRadius: '10px',
+  },
+  SBPSpinner: {
+    marginTop: '80px',
   },
 };
 

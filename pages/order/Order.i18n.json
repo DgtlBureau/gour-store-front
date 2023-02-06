@@ -3,12 +3,14 @@
     "title": "Оформление заказа",
     "emptyBasket": "Корзина пуста",
     "emptyBasketText": "Ваша корзина пуста. Чтобы оформить заказ добавьте товары в корзину.",
-    "toHome": "На главную"
+    "toHome": "На главную",
+    "modalTypo": "Для оплаты наведите камеру телефона на QR-код"
   },
   "en": {
     "title": "Checkout",
     "emptyBasket": "Basket is empty",
     "emptyBasketText": "Your basket is empty. To place an order, add products to basket.",
-    "toHome": "To home"
+    "toHome": "To home",
+    "modalTypo": "To pay point your phone camer at the QR code"
   }
 }
