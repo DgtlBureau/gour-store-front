@@ -525,6 +525,7 @@ export function Order() {
       <ShopLayout>
         <Typography variant='h4' sx={sx.title}>
           {t('title')}
+          {navigator.userAgent}
         </Typography>
 
         {productsInOrder.length === 0 ? (
