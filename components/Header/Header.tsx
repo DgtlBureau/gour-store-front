@@ -39,7 +39,7 @@ export type HeaderProps = {
   firstPhone: string;
   secondPhone: string;
   email: string;
-  fb: string;
+  tg: string;
   inst: string;
   vk: string;
   selectedCityId: number;
@@ -62,7 +62,7 @@ export function Header({
   firstPhone,
   secondPhone,
   email,
-  fb,
+  tg,
   inst,
   vk,
   selectedCityId,
@@ -203,7 +203,7 @@ export function Header({
             firstPhone={firstPhone}
             secondPhone={secondPhone}
             email={email}
-            fb={fb}
+            tg={tg}
             inst={inst}
             vk={vk}
             moneyAmount={moneyAmount}

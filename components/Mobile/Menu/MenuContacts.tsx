@@ -8,20 +8,20 @@ import { LinkRef as Link } from 'components/UI/Link/Link';
 
 import sx from './Menu.styles';
 
-import fbIcon from 'assets/icons/social/fb-white.svg';
 import instIcon from 'assets/icons/social/inst-white.svg';
+import tgIcon from 'assets/icons/social/tg.svg';
 import vkIcon from 'assets/icons/social/vk-white.svg';
 
 export type MobileMenuContactsProps = {
   firstPhone: string;
   secondPhone: string;
   email: string;
-  fb: string;
+  tg: string;
   inst: string;
   vk: string;
 };
 
-export function MobileMenuContacts({ firstPhone, secondPhone, email, fb, inst, vk }: MobileMenuContactsProps) {
+export function MobileMenuContacts({ firstPhone, secondPhone, email, tg, inst, vk }: MobileMenuContactsProps) {
   return (
     <>
       <ListItem sx={sx.phones}>
@@ -39,9 +39,9 @@ export function MobileMenuContacts({ firstPhone, secondPhone, email, fb, inst, v
         </Link>
 
         <Box sx={sx.socialIcons}>
-          <Link href={fb} rel='noreferrer' target='_blank'>
+          <Link href={tg} rel='noreferrer' target='_blank'>
             <Box sx={sx.socialIcon}>
-              <Image src={fbIcon} layout='fill' alt='' />
+              <Image src={tgIcon} layout='fill' alt='' />
             </Box>
           </Link>
 
