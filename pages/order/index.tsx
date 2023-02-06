@@ -307,11 +307,13 @@ export function Order() {
   };
 
   const redirectToSBPLink = async (orderData: OrderFormType) => {
-    // const isIphoneSafari = /^((?!Chrome|Android|FxiOS|CriOS).)*Safari/gm.test(navigator.userAgent);
-    // let windowRef;
-    // if (isIphoneSafari) {
-    //   windowRef = window.open('about:blank', '_blank');
-    // }
+    const isIphoneSafari = /^(?=.*(?:iP(hone|ad|od)))^(?!.*(?:Chrome|Android|FxiOS|CriOS))^(?=.*(?:Safari))/gim.test(
+      navigator.userAgent,
+    );
+    let windowRef;
+    if (isIphoneSafari) {
+      windowRef = window.open('about:blank', '_blank');
+    }
     setOpenModal(true);
     setSBPFetching(true);
     const amount = promoCodeDiscountValue
@@ -337,11 +339,11 @@ export function Order() {
       email: payOrderDto.email,
     });
 
-    // if (isIphoneSafari && windowRef) {
-    //   windowRef.location = SBPResponse.Model.QrUrl;
-    // } else {
-    window.open(SBPResponse.Model.QrUrl, '_blank');
-    // }
+    if (isIphoneSafari && windowRef) {
+      windowRef.location = SBPResponse.Model.QrUrl;
+    } else {
+      window.open(SBPResponse.Model.QrUrl, '_blank');
+    }
     //
     //
     //
