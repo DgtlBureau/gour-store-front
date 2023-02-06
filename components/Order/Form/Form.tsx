@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -69,12 +69,14 @@ export type OrderFormProps = {
   cities: SelectOption[];
   isSubmitError?: boolean;
   isFetching: boolean;
+  isSBPFetching: boolean;
   isPromoCodeApplies: boolean;
   deliveryProfiles: SelectOption[];
   onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
   onChangeDeliveryCity: (id: number | null) => void;
+  handleClickSBPButton: (data: OrderFormType) => void;
 };
 
 export function OrderForm({
@@ -83,12 +85,14 @@ export function OrderForm({
   deliveryProfiles,
   isSubmitError,
   isFetching,
+  isSBPFetching,
   isPromoCodeApplies,
   cities,
   onAddPromoCode,
   onSelectDeliveryProfile,
   onChangeDeliveryCity,
   onSubmit,
+  handleClickSBPButton,
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
 
@@ -141,6 +145,8 @@ export function OrderForm({
   const agree = () => setIsAgree(!isAgree);
 
   const isSubmitBtnDisabled = !values.formState.isValid || !isAgree || isFetching;
+
+  const isSBPBtnDisabled = !values.formState.isValid || !isAgree;
 
   return (
     <FormProvider {...values}>
@@ -205,28 +211,25 @@ export function OrderForm({
                 // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
                 spacing={2}
               >
-                <Grid item xs={12} sm={6}>
-                  <HFTextField
-                    name='promoCode'
-                    label={t('promoCode')}
-                    disabled={isPromoCodeApplies}
-                    endAdornment={
-                      isPromoCodeApplies ? (
-                        <CircularProgress />
-                      ) : (
-                        <IconButton disabled={!values.getValues('promoCode')} onClick={addPromoCode}>
-                          <DoneIcon />
-                        </IconButton>
-                      )
-                    }
-                  />
+                <Grid item xs={6} sm={6}>
+                  <HFTextField name='promoCode' label={t('promoCode')} disabled={isPromoCodeApplies} />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant='body2' color='text.muted'>
-                    При указанном промокоде реферальный код не учитывается
-                  </Typography>
+                <Grid item xs={6} sm={6}>
+                  <Button
+                    sx={sx.btnPromo}
+                    type='button'
+                    color={!isSubmitError ? 'primary' : 'error'}
+                    disabled={!values.getValues('promoCode')}
+                    onClick={addPromoCode}
+                  >
+                    {isPromoCodeApplies ? <CircularProgress /> : 'Применить'}
+                  </Button>
                 </Grid>
+
+                <Typography variant='body2' color='text.muted' sx={sx.descriptionPromo}>
+                  При указанном промокоде реферальный код не учитывается
+                </Typography>
 
                 <Grid item xs={12}>
                   <Checkbox
@@ -258,6 +261,14 @@ export function OrderForm({
               color={!isSubmitError ? 'primary' : 'error'}
             >
               {!isSubmitError ? t('toPay') : t('orderError')}
+            </Button>
+            <Button
+              sx={sx.sbpBtn}
+              disabled={isSBPBtnDisabled}
+              color='success'
+              onClick={() => handleClickSBPButton(values.getValues())}
+            >
+              {isSBPFetching ? <CircularProgress size={24} color='secondary' /> : t('SBP')}
             </Button>
           </Box>
         </Box>
