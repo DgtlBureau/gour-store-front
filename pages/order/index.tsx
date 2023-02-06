@@ -307,9 +307,7 @@ export function Order() {
   };
 
   const redirectToSBPLink = async (orderData: OrderFormType) => {
-    const isIphoneSafari = /^(?=.*(?:iP(hone|ad|od)))^(?!.*(?:Chrome|Android|FxiOS|CriOS))^(?=.*(?:Safari))/gim.test(
-      navigator.userAgent,
-    );
+    const isIphoneSafari = /^(?=.*(?:iP(hone|ad|od)))^(?=.*(?:Version))^(?=.*(?:Safari))/gim.test(navigator.userAgent);
     let windowRef;
     if (isIphoneSafari) {
       windowRef = window.open('about:blank', '_blank');
@@ -525,7 +523,6 @@ export function Order() {
       <ShopLayout>
         <Typography variant='h4' sx={sx.title}>
           {t('title')}
-          {navigator.userAgent}
         </Typography>
 
         {productsInOrder.length === 0 ? (
