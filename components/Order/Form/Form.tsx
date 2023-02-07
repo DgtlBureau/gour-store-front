@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -25,6 +26,7 @@ import { getValidationSchema } from './validation';
 import sx from './Form.styles';
 
 import DoneIcon from '@mui/icons-material/Done';
+import sbpImg from 'assets/icons/sbp.png';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -268,7 +270,11 @@ export function OrderForm({
               color='success'
               onClick={() => handleClickSBPButton(values.getValues())}
             >
-              {isSBPFetching ? <CircularProgress size={24} color='secondary' /> : t('SBP')}
+              {isSBPFetching ? (
+                <CircularProgress sx={{ marginTop: '5px' }} size={24} color='secondary' />
+              ) : (
+                <Image src={sbpImg} objectFit='cover' height={86} width={86} alt='' />
+              )}
             </Button>
           </Box>
         </Box>

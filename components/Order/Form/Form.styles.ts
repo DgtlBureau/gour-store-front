@@ -37,9 +37,16 @@ export const sx = {
   sbpBtn: {
     width: '100%',
     marginTop: '5px',
+    maxHeight: 36.5,
+    paddingBottom: '12px',
+    backgroundColor: 'rgba(60, 144, 66, 0.98)',
+    // whiteSpace: 'nowrap',
+    // overflow: 'hidden',
+    // backgroundColor: '#f5f1e8'
   },
   btnPromo: {
     height: 56,
+    display: 'flex',
     width: {
       xs: '100%',
       md: '155px',
