@@ -38,6 +38,8 @@ type Props = {
   invoiceUuid?: string;
   userId?: string;
   userEmail?: string;
+  fullName: string;
+  code: string;
   price?: number;
   isLoading: boolean;
 };
@@ -49,6 +51,8 @@ export function BuyCheeseCoinsModal({
   price,
   userId,
   userEmail,
+  fullName,
+  code,
   invoiceUuid,
   isLoading,
   onSubmit,
@@ -82,6 +86,8 @@ export function BuyCheeseCoinsModal({
       price: price!,
       invoiceUuid: invoiceUuid!,
       payerUuid: userId!,
+      fullName,
+      code: code || '',
       ...(formData.isSendInvoice && { email: formData.email }),
     };
 

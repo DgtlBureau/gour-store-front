@@ -143,6 +143,8 @@ export function GameLayout({ children }: GameLayoutProps) {
         invoiceUuid={invoiceData?.uuid}
         userId={currentUser?.id}
         userEmail={currentUser?.email}
+        fullName={[currentUser?.firstName, currentUser?.lastName].join(' ')}
+        code={currentUser?.referralCode?.code || ''}
         price={payCoinsState.isOpen ? payCoinsState.price : undefined}
         isLoading={isPaymentLoading}
         onClose={handleCloseBuyModal}
