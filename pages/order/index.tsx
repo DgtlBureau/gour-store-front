@@ -283,6 +283,8 @@ export function Order() {
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
+    const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
+
     const SBPData = {
       userAgent,
       ipAddress: '5.18.144.32',
@@ -292,6 +294,8 @@ export function Order() {
       invoiceUuid: payOrderDto.invoiceUuid,
       payerUuid: payOrderDto.client.id,
       email: payOrderDto.email,
+      fullName: userFullName,
+      code: currentUser?.referralCode?.code || '',
     };
 
     const SBPResponse = await fetchSBPQuery(SBPData).unwrap();
@@ -319,6 +323,8 @@ export function Order() {
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
+    const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
+
     const SBPData = {
       userAgent: UserAgent.MOBILE,
       ipAddress: '5.18.144.32',
@@ -328,6 +334,8 @@ export function Order() {
       invoiceUuid: payOrderDto.invoiceUuid,
       payerUuid: payOrderDto.client.id,
       email: payOrderDto.email,
+      fullName: userFullName,
+      code: currentUser?.referralCode?.code || '',
     };
 
     const SBPResponse = await fetchSBPQuery(SBPData).unwrap();
@@ -342,13 +350,6 @@ export function Order() {
     } else {
       window.open(SBPResponse.Model.QrUrl, '_blank');
     }
-    //
-    //
-    //
-    // const windowRef = window.open(url, '_blank');
-    // if (windowRef) {
-    // }
-    // const windowRef = window.open('about:blank', '_blank');
 
     setSBPFetching(false);
     const timer = 1000 * 60 * 15;
@@ -400,6 +401,9 @@ export function Order() {
         toggleOrderStatusModal({ status: 'failure' });
         return;
       }
+
+      const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
+
       const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
       console.log('result', result);
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
@@ -597,6 +601,8 @@ export function Order() {
           invoiceUuid='invoiceData?.uuid'
           userId={currentUser?.id}
           userEmail={currentUser?.email}
+          fullName={[currentUser?.firstName, currentUser?.lastName].join(' ')}
+          code={currentUser?.referralCode?.code || ''}
           price={payCoinsState.isOpen ? payCoinsState.price : undefined}
           isLoading={isPayOrderLoading}
           onClose={handleCloseBuyModal}

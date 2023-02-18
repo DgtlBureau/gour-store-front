@@ -179,6 +179,8 @@ export function Payments() {
           isOpened={buyCheeseCoinState.isOpen}
           userEmail={currentUser?.email}
           userId={currentUser?.id}
+          fullName={[currentUser?.firstName, currentUser?.lastName].join(' ')}
+          code={currentUser?.referralCode?.code || ''}
           invoiceUuid={buyCheeseCoinState.invoiceUuid || undefined}
           price={buyCheeseCoinState.price || undefined}
           isLoading={isPaymentLoading}

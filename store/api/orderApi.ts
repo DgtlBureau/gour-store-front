@@ -82,7 +82,7 @@ export const orderApi = commonApi.injectEndpoints({
       }),
       payOrder: builder.mutation<I3DSecureDto, PayInvoiceDto>({
         async queryFn(args, _queryApi, _extraOptions, fetchWithBQ) {
-          const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid } = args;
+          const { cardNumber, expDateMonth, expDateYear, cvv, email, invoiceUuid, payerUuid, fullName, code } = args;
           const checkoutValues = {
             cvv,
             cardNumber,
@@ -105,6 +105,8 @@ export const orderApi = commonApi.injectEndpoints({
             payerUuid,
             currency: 'RUB',
             invoiceUuid,
+            fullName,
+            code,
           };
 
           const createdOrderWithout3DS = await fetchWithBQ({

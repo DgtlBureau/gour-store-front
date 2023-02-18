@@ -8,6 +8,8 @@ export type PayInvoiceDto = Readonly<{
   payerUuid: string;
   email?: string;
   price: number;
+  fullName: string;
+  code: string;
 }>;
 
 export type PayServerInvoiceDto = Readonly<{
@@ -17,4 +19,6 @@ export type PayServerInvoiceDto = Readonly<{
   ipAddress: string;
   signature: string;
   invoiceUuid: string;
+  fullName: string;
+  code: string;
 }>;
