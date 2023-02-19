@@ -161,26 +161,28 @@ export const ProductCatalog = memo(
 
     const cardList = useMemo(
       () =>
-        productList.map(product => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            moyskladId={product.moyskladId}
-            title={product.title[language]}
-            rating={product.grade}
-            price={product.price[currency]}
-            discount={discount || product.discount}
-            currency={currency}
-            productType={product.productType}
-            previewImg={product.images[0]?.small || ''}
-            countryImg={product.countryImg}
-            backgroundImg={product.backgroundImg}
-            isElected={product.isElected}
-            onAdd={(gram: number) => onAdd(product, gram)}
-            onRemove={(gram: number) => onRemove(product, gram)}
-            onElect={() => onElect(product.id, product.isElected)}
-          />
-        )),
+        productList
+          .sort((a, b) => (a.moyskladId === null ? 1 : -1))
+          .map(product => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              moyskladId={product.moyskladId}
+              title={product.title[language]}
+              rating={product.grade}
+              price={product.price[currency]}
+              discount={discount || product.discount}
+              currency={currency}
+              productType={product.productType}
+              previewImg={product.images[0]?.small || ''}
+              countryImg={product.countryImg}
+              backgroundImg={product.backgroundImg}
+              isElected={product.isElected}
+              onAdd={(gram: number) => onAdd(product, gram)}
+              onRemove={(gram: number) => onRemove(product, gram)}
+              onElect={() => onElect(product.id, product.isElected)}
+            />
+          )),
       [productList],
     );
 
