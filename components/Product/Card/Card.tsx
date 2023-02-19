@@ -55,7 +55,7 @@ export const getStockLabel = (
 ) => {
   if (isStockFetching) return 'загружаем...';
 
-  if (!moyskladId || isStockError) return 'ошибка';
+  if (!moyskladId || isStockError) return 'нет на складе';
 
   if (stockValue) return `осталось ${stockValue} шт`;
   return 'нет на складе';
