@@ -4,5 +4,5 @@ export const contacts = {
   email: 'tk@tastyoleg.com',
   tg: 'https://t.me/tastyoleg',
   inst: 'https://www.instagram.com/gourfood_/',
-  vk: 'https://vk.com/gour_food',
+  vk: 'https://vk.com/tastyoleg',
 };
