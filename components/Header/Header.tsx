@@ -164,7 +164,7 @@ export function Header({
                 </Link>
               )}
 
-              <Link href={isAuth ? `/${Path.PERSONAL_AREA}` : `/${Path.AUTH}`} color='inherit' sx={headerSx.icon}>
+              <Link href={isAuth ? `/${Path.FAVORITES}` : `/${Path.AUTH}`} color='inherit' sx={headerSx.icon}>
                 <FavoriteBorderIcon />
               </Link>
 
