@@ -21,11 +21,13 @@ import { InvoiceStatus } from 'types/entities/IInvoice';
 import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
-import { useAppSelector } from 'hooks/store';
+import {useAppDispatch, useAppSelector} from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
 import sx from './Game.styles';
+import {selectIsAuth} from "../../store/selectors/auth";
+import {setCurrentCity} from "../../store/slices/citySlice";
 
 type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
 type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
@@ -37,13 +39,27 @@ export interface GameLayoutProps {
 export function GameLayout({ children }: GameLayoutProps) {
   const { currency, language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
+  const isAuth = useAppSelector(selectIsAuth);
+
   const { data: cities } = useGetCityListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: balance = 0 } = useGetCurrentBalanceQuery();
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
+  const { data: balance = 0 } = useGetCurrentBalanceQuery(undefined,{skip: !isAuth});
 
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
   const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [changeCity] = useChangeCurrentCityMutation();
+  const dispatch = useAppDispatch();
+  const updateCity = (cityId:any) => {
+    const city = cities?.find((city) => city.id === cityId);
+    if (city) {
+      if (isAuth) {
+        changeCity(cityId);
+      }
+
+      dispatch(setCurrentCity(city));
+    }
+  }
+
   const [signOut] = useSignOutMutation();
 
   const convertedCities =
@@ -123,7 +139,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         basketProductCount={count}
         basketProductSum={totalProductSum}
         moneyAmount={balance}
-        onChangeCity={changeCity}
+        onChangeCity={updateCity}
         onClickAddCoins={handleOpenCoinsAddModal}
         onClickSignout={signOut}
         {...contacts}

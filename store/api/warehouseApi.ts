@@ -21,4 +21,4 @@ export const warehouseApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetStockQuery } = warehouseApi;
+export const { useGetStockQuery, useLazyGetStockQuery } = warehouseApi;

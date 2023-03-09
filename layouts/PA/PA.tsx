@@ -22,7 +22,7 @@ import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
 import { Path } from 'constants/routes';
-import { useAppSelector } from 'hooks/store';
+import {useAppDispatch, useAppSelector} from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
@@ -30,6 +30,8 @@ import { getErrorMessage } from 'utils/errorUtil';
 import translations from './PA.i18n.json';
 
 import sx from './PA.styles';
+import {setCurrentCity} from "../../store/slices/citySlice";
+import {selectIsAuth} from "../../store/selectors/auth";
 
 type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
 type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
@@ -47,6 +49,19 @@ export function PALayout({ children }: PALayoutProps) {
 
   const [signOut] = useSignOutMutation();
   const [changeCity] = useChangeCurrentCityMutation();
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(selectIsAuth);
+  const updateCity = (cityId:any) => {
+    const city = cities?.find((city) => city.id === cityId);
+    if (city) {
+      if (isAuth) {
+        changeCity(cityId);
+      }
+
+      dispatch(setCurrentCity(city));
+    }
+  }
+
   const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
 
@@ -153,7 +168,7 @@ export function PALayout({ children }: PALayoutProps) {
           basketProductCount={count}
           basketProductSum={totalProductSum}
           moneyAmount={balance}
-          onChangeCity={changeCity}
+          onChangeCity={updateCity}
           onClickAddCoins={handleOpenCoinsAddModal}
           onClickSignout={signOut}
         />

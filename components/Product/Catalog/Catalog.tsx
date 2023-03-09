@@ -52,7 +52,7 @@ export const ProductCatalog = memo(
   }: ProductCatalogProps) => {
     const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
     const [filters, setFilters] = useState<IFilters>({
-      orderType: 'default',
+      orderType: 'price',
       productType: null,
       characteristics: {},
     });
@@ -96,17 +96,46 @@ export const ProductCatalog = memo(
       return isAllMatches;
     };
 
-    const sortByPrice = (sortedProducts: IExtendedProduct[]) =>
-      sortedProducts.sort((prev, it) => prev.price[currency] - it.price[currency]);
+    const sortByPrice = (sortedProducts: IExtendedProduct[], reverse = false) =>
+      sortedProducts.sort((prev:any, it:any) => {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+          return -1;
+        }
+
+        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+          return 1;
+        }
+
+        const multiplier = reverse ? -1 : 1;
+        return multiplier * (it.price[currency] - prev.price[currency]);
+      });
 
     const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
-      unsortedProducts.sort((prev, it) =>
-        it.discount === prev.discount ? it.price[currency] - prev.price[currency] : it.discount - prev.discount,
+      unsortedProducts.sort((prev: any, it: any) => {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+          return -1;
+        }
+
+        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+          return 1;
+        }
+
+        return it.discount === prev.discount ? it.price[currency] - prev.price[currency] : it.discount - prev.discount
+       },
       );
 
     const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
-      unsortedProducts.sort((prev, it) =>
-        it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade,
+      unsortedProducts.sort((prev:any, it:any ) => {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+          return -1;
+        }
+
+        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+          return 1;
+        }
+
+          return it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade
+          }
       );
 
     const sortByOrderType = (unsortedProducts: IExtendedProduct[]) => {
@@ -115,7 +144,7 @@ export const ProductCatalog = memo(
           return sortByPrice(unsortedProducts);
 
         case 'price-reverse':
-          return sortByPrice(unsortedProducts).reverse();
+          return sortByPrice(unsortedProducts,true);
 
         case 'discount':
           return sortByDiscount(unsortedProducts);
@@ -181,6 +210,8 @@ export const ProductCatalog = memo(
               onAdd={(gram: number) => onAdd(product, gram)}
               onRemove={(gram: number) => onRemove(product, gram)}
               onElect={() => onElect(product.id, product.isElected)}
+              defaultWeight={product.defaultWeight}
+              defaultStock={product.defaultStock}
             />
           )),
       [productList],

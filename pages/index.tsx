@@ -50,14 +50,15 @@ const Home: NextPage = () => {
 
   const { goToPromotionPage, language, currency } = useAppNavigation();
 
-  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
-
   // TODO: вынести сюда в useMemo добавление к продуктам favoriteProducts, миллион расчетов для категорий
   // а в каждом отдельном компоненте <ProductCard /> чекать корзину по ключу "id:id", чтобы избежать ререндера у всех компонентов
 
   const dispatch = useAppDispatch();
 
   const currentUser = useAppSelector(selectCurrentUser);
+
+  // todo не запрашивать когда !currentUser
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery(undefined,{skip: currentUser !== undefined});
 
   const isIndividual = currentUser?.role.key === 'individual';
 

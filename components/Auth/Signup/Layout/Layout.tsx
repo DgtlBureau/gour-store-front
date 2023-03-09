@@ -23,7 +23,7 @@ export function SignupLayout({ children, image, stepIndex }: Props) {
 
       <Grid item xs={12} md={6}>
         <Box sx={sx.stepper}>
-          <Stepper activeStep={stepIndex} stepsCount={5} percent={100} />
+          <Stepper activeStep={stepIndex} stepsCount={4} percent={100} />
         </Box>
         {children}
       </Grid>

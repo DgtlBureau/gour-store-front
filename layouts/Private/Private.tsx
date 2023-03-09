@@ -12,15 +12,13 @@ type Props = {
 
 export function PrivateLayout({ children }: Props): JSX.Element {
   const { isLoading, isError } = useGetCurrentUserQuery();
-  const { goToIntro } = useAppNavigation();
 
-  const isAuth = useAppSelector(selectIsAuth);
   if (isLoading) return <Loader width='58px' />; // TODO: show loader
 
-  if (isError || !isAuth) {
-    goToIntro();
+  if (isError) {
+    // goToIntro();
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
+    // return <></>;
   }
 
   return children;

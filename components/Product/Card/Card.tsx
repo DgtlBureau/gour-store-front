@@ -4,7 +4,7 @@ import React, { memo, useState } from 'react';
 import { CardMedia, SxProps } from '@mui/material';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
-import { useGetStockQuery } from 'store/api/warehouseApi';
+import {useLazyGetStockQuery} from 'store/api/warehouseApi';
 
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
@@ -45,6 +45,8 @@ export type ProductCardProps = {
   onAdd: (gram: number) => void;
   onRemove: (gram: number) => void;
   onElect: () => void;
+  defaultWeight?: number;
+  defaultStock?: object;
 };
 
 export const getStockLabel = (
@@ -78,24 +80,21 @@ export const ProductCard = memo(function ProductCard({
   onAdd,
   onRemove,
   onElect,
+  defaultWeight,
+  defaultStock
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
   const shouldSkipGettingStocks = !gramValue || !moyskladId;
-  const {
-    data: stock,
-    isFetching: isStockFetching,
-    isError: isStockError,
-  } = useGetStockQuery(
-    {
-      city: 'Санкт-Петербург',
-      gram: String(gramValue),
-      warehouseId: String(moyskladId),
-    },
-    {
-      skip: shouldSkipGettingStocks,
-    },
-  );
+  const [
+    getStockQuery, {
+      data: stock,
+      isFetching: isStockFetching,
+      isError: isStockError
+    }
+   ] = useLazyGetStockQuery();
+
+  const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
 
   const basketProductsKey = getProductKeyInBasket(id, gramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
@@ -110,11 +109,18 @@ export const ProductCard = memo(function ProductCard({
       ) || [],
   );
 
-  const changeGram = (value: string | number) => setGramValue(+value);
+  const changeGram = (value: string | number) => {
+    setGramValue(+value);
+    getStockQuery({
+      city: 'Санкт-Петербург',
+      gram: String(value),
+      warehouseId: String(moyskladId),
+    })
+  }
 
-  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(stock?.value);
+  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(someStock?.value);
   const isAddDisabled =
-    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || !stock?.value;
+    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || !someStock?.value;
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(gramValue);
@@ -126,7 +132,7 @@ export const ProductCard = memo(function ProductCard({
 
   const backgroundImage = `url('${backgroundImg}')`;
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, someStock?.value);
 
   return (
     <Box sx={sx.card}>

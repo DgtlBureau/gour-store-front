@@ -4,6 +4,8 @@ import { authApi } from 'store/api/authApi';
 import { currentUserApi } from 'store/api/currentUserApi';
 
 import { ICurrentUser } from 'types/entities/ICurrentUser';
+import {ICity} from "../../types/entities/ICity";
+import {RootState} from "../store";
 
 export interface AuthState {
   currentUser: ICurrentUser | null;
@@ -49,6 +51,8 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const getCurrentUserCity = (state: RootState) => state.auth.currentUser?.city ?? state.city.city;
 
 export const { setCurrentUser, setIsAuth, setIsFetching } = authSlice.actions;
 

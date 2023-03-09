@@ -57,6 +57,8 @@ export function ProductSlider({
           onAdd={(gram: number) => onAdd(product, gram)}
           onRemove={(gram: number) => onRemove(product, gram)}
           onElect={() => onElect(product.id, product.isElected)}
+          defaultWeight={product.defaultWeight}
+          defaultStock={product.defaultStock}
         />
       ))}
       sx={sx}
