@@ -41,7 +41,7 @@ export interface PALayoutProps {
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { language, pathname, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
+  const { language, pathname, currency, goToSuccessPayment, goToFailurePayment, goToIntro } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
@@ -51,6 +51,11 @@ export function PALayout({ children }: PALayoutProps) {
   const [changeCity] = useChangeCurrentCityMutation();
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);
+  if (!isAuth) {
+    goToIntro();
+    return null
+  }
+
   const updateCity = (cityId:any) => {
     const city = cities?.find((city) => city.id === cityId);
     if (city) {

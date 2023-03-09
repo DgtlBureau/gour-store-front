@@ -56,7 +56,7 @@ import sx from './Basket.styles';
 import {getCurrentUserCity} from '../../store/slices/authSlice';
 
 export function Basket() {
-  const { language, currency, goToHome, goToOrder,goToIntro } = useAppNavigation();
+  const { language, currency, goToHome, goToOrder,goToSignIn } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
@@ -121,7 +121,7 @@ export function Basket() {
       goToOrder
       : () => {
           dispatch(setOrderPostponed(true));
-          return goToIntro();
+          return goToSignIn();
       };
 
   return (
