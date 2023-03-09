@@ -33,11 +33,13 @@ import credentialsImage from 'assets/images/signup/credentials.svg';
 import favoritesImage from 'assets/images/signup/favorites.svg';
 import greetingsImage from 'assets/images/signup/greetings.svg';
 import referralImage from 'assets/images/signup/referral-codes.svg';
+import {getWasOrderPostponed, setOrderPostponed} from '../../store/slices/orderSlice';
+import {useAppDispatch, useAppSelector} from '../../hooks/store';
 
-type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'favoriteInfo' | 'referralCode';
+type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'referralCode';
 
 export default function SignUp() {
-  const { goToIntro, goToHome, language } = useAppNavigation();
+  const { goToIntro, goToHome, language , goToBasket } = useAppNavigation();
 
   const { cities } = useGetCityListQuery(undefined, {
     selectFromResult: ({ data, ...params }) => ({
@@ -59,12 +61,12 @@ export default function SignUp() {
   const [stage, setStage] = useState<AuthStage>('greeting');
   const [selectedCity, setSelectedCity] = useState<string | undefined>();
   const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
-  const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
+  // const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
 
   const goToGreeting = () => setStage('greeting');
   const goToCitySelect = () => setStage('citySelect');
   const goToCredentials = () => setStage('credentials');
-  const goToFavoriteInfo = () => setStage('favoriteInfo');
+  // const goToFavoriteInfo = () => setStage('favoriteInfo');
   const goToReferralCode = () => setStage('referralCode');
 
   const sendEmail = async (email: string) => {
@@ -102,14 +104,17 @@ export default function SignUp() {
 
   const saveCredentials = (data: SignUpFormDto) => {
     setCredentials(data);
-    goToFavoriteInfo();
-  };
-
-  const saveFavoriteInfo = (info: FavoriteInfo) => {
-    setFavoriteInfo(info);
+    // goToFavoriteInfo();
     goToReferralCode();
   };
 
+  // const saveFavoriteInfo = (info: FavoriteInfo) => {
+  //   setFavoriteInfo(info);
+  //   goToReferralCode();
+  // };
+
+  const dispatch = useAppDispatch();
+  const wasPostponed = useAppSelector(getWasOrderPostponed);
   const registerUser = async (referralCode: string) => {
     if (!credentials || !selectedCity) return;
 
@@ -136,7 +141,13 @@ export default function SignUp() {
         email: credentials.email,
       }).unwrap();
 
-      goToHome();
+
+      if (wasPostponed) {
+        dispatch(setOrderPostponed(false));
+        goToBasket();
+      } else {
+        goToHome();
+      }
     } catch (error) {
       const message = getErrorMessage(error);
 
@@ -174,22 +185,22 @@ export default function SignUp() {
       image: credentialsImage,
       stepIndex: 3,
     },
-    favoriteInfo: {
-      component: (
-        <SignupFavoriteInfo
-          countries={favoriteCountries}
-          products={favoriteProducts}
-          onSubmit={saveFavoriteInfo}
-          onBack={goToCredentials}
-        />
-      ),
-      image: favoritesImage,
-      stepIndex: 4,
-    },
+    // favoriteInfo: {
+    //   component: (
+    //     <SignupFavoriteInfo
+    //       countries={favoriteCountries}
+    //       products={favoriteProducts}
+    //       onSubmit={saveFavoriteInfo}
+    //       onBack={goToCredentials}
+    //     />
+    //   ),
+    //   image: favoritesImage,
+    //   stepIndex: 4,
+    // },
     referralCode: {
-      component: <SignupReferralCode onSubmit={saveReferralCode} onBack={goToFavoriteInfo} />,
+      component: <SignupReferralCode onSubmit={saveReferralCode} onBack={goToCredentials} />,
       image: referralImage,
-      stepIndex: 5,
+      stepIndex: 4,
     },
   };
 

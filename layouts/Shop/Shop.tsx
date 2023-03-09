@@ -1,12 +1,15 @@
 import { ReactNode, useState } from 'react';
 
+import {  getCurrentUserCity} from 'store/slices/authSlice';
+import {  setCurrentCity } from 'store/slices/citySlice';
+
 import { useSignOutMutation } from 'store/api/authApi';
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/currentUserApi';
 import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectIsAuth } from 'store/selectors/auth';
-import { selectedProductCount, selectedProductSum } from 'store/slices/orderSlice';
+import {addBasketProduct, selectedProductCount, selectedProductSum} from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
@@ -20,7 +23,7 @@ import { InvoiceStatus } from 'types/entities/IInvoice';
 import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
-import { useAppSelector } from 'hooks/store';
+import {useAppDispatch, useAppSelector} from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -36,9 +39,11 @@ export interface ShopLayoutProps {
 export function ShopLayout({ children }: ShopLayoutProps) {
   const { currency, language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
+  const isAuth = useAppSelector(selectIsAuth);
+
   const { data: cities } = useGetCityListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const { data: balance = 0 } = useGetCurrentBalanceQuery();
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
+  const { data: balance = 0 } = useGetCurrentBalanceQuery(undefined,{skip: !isAuth});
 
   const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
     isOpen: false,
@@ -47,12 +52,22 @@ export function ShopLayout({ children }: ShopLayoutProps) {
     isOpen: false,
   });
 
-  const isAuth = useAppSelector(selectIsAuth);
-
   const [buyCheeseCoins, { isLoading: isPaymentLoading }] = useBuyCheeseCoinsMutation();
   const [createInvoiceMutation, { data: invoiceData }] = useCreateInvoiceMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const [signOut] = useSignOutMutation();
+
+  const dispatch = useAppDispatch();
+  const updateCity = (cityId:any) => {
+    const city = cities?.find((city) => city.id === cityId);
+    if (city) {
+      if (isAuth) {
+        changeCity(cityId);
+      }
+
+      dispatch(setCurrentCity(city));
+    }
+  }
 
   const convertedCities =
     cities?.map(city => ({
@@ -63,7 +78,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
   const count = useAppSelector(selectedProductCount);
   const totalProductSum = useAppSelector(selectedProductSum);
 
-  const selectedCity = cities?.find(city => city.id === currentUser?.city?.id) || cities?.[0];
+  const selectedCity = useAppSelector(getCurrentUserCity) || cities?.[0];
 
   const handleAddCheeseCoinClick = ({ invoicePrice, coinsCount }: { invoicePrice: number; coinsCount: number }) => {
     setBalanceCoinsState({ isOpen: false });
@@ -111,7 +126,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
 
   return (
     <Box sx={sx.layout}>
-      {isAuth && (
+      {true && (
         <Header
           {...contacts}
           selectedCityId={selectedCity?.id || 0}
@@ -120,7 +135,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
           basketProductCount={count}
           basketProductSum={totalProductSum}
           moneyAmount={balance}
-          onChangeCity={changeCity}
+          onChangeCity={updateCity}
           onClickAddCoins={handleOpenCoinsAddModal}
           onClickSignout={signOut}
         />

@@ -20,6 +20,8 @@ import {
   selectedProductDiscount,
   selectedProductSum,
   subtractBasketProduct,
+  getWasOrderPostponed,
+  setOrderPostponed,
 } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -51,17 +53,18 @@ import { getErrorMessage } from 'utils/errorUtil';
 import translation from './Basket.i18n.json';
 
 import sx from './Basket.styles';
+import {getCurrentUserCity} from '../../store/slices/authSlice';
 
 export function Basket() {
-  const { language, currency, goToHome, goToOrder } = useAppNavigation();
+  const { language, currency, goToHome, goToOrder,goToIntro } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
   const { t } = useLocalTranslation(translation);
 
-  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
   const { data: categories = [] } = useGetCategoryListQuery();
   const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery(undefined,{skip: !currentUser});
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
@@ -76,7 +79,7 @@ export function Basket() {
     [similarProducts, categories, favoriteProducts],
   );
 
-  const delivery = currentUser?.city.deliveryCost || 0;
+  const delivery = useAppSelector(getCurrentUserCity)?.deliveryCost  || 0;
   const sumToFreeDelivery = minCostForFreeDelivery - productTotalSum;
   const isDeliveryFree = sumToFreeDelivery <= 0;
 
@@ -114,6 +117,13 @@ export function Basket() {
     'freeDeliveryText.part2',
   )}`;
 
+  const onOrderClick = currentUser ?
+      goToOrder
+      : () => {
+          dispatch(setOrderPostponed(true));
+          return goToIntro();
+      };
+
   return (
     <PrivateLayout>
       <ShopLayout>
@@ -147,7 +157,7 @@ export function Basket() {
 
             <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <Button fullWidth onClick={goToOrder}>
+                <Button fullWidth onClick={onOrderClick}>
                   {t('orderButton')}
                 </Button>
               </Box>
@@ -181,7 +191,7 @@ export function Basket() {
             )}
 
             <Grid item xs={12} sx={{ display: { md: 'none' } }}>
-              <Button fullWidth onClick={goToOrder}>
+              <Button fullWidth onClick={onOrderClick}>
                 {t('orderButton')}
               </Button>
             </Grid>

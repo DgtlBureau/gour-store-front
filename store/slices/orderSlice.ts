@@ -32,10 +32,12 @@ export interface BasketState {
   products: Record<string, BasketProduct>;
   contacts?: OrderFormContacts;
   address?: OrderFormAddress;
+  wasOrderPostponed: boolean
 }
 
 const initialState: BasketState = {
   products: {},
+  wasOrderPostponed: false,
 };
 
 export const orderSlice = createSlice({
@@ -84,11 +86,17 @@ export const orderSlice = createSlice({
       const productKey = getProductKeyInBasket(product.id, gram);
       delete state.products[productKey];
     },
+
+    setOrderPostponed: (state, action: PayloadAction<boolean>) => {
+      state.wasOrderPostponed = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, () => initialState);
   },
 });
+
+export const getWasOrderPostponed = (state: RootState) => state.order.wasOrderPostponed;
 
 export const selectBasketProducts = (state: RootState) => Object.values(state.order.products);
 
@@ -116,6 +124,6 @@ export const selectedProductDiscount = (state: RootState) =>
 export const selectProductsIdInOrder = (state: RootState): number[] =>
   Object.values(state.order.products).reduce((acc, item) => [...acc, item.product.id], [] as number[]);
 
-export const { addBasketProduct, subtractBasketProduct, removeProduct } = orderSlice.actions;
+export const { addBasketProduct, subtractBasketProduct, removeProduct, setOrderPostponed } = orderSlice.actions;
 
 export default orderSlice.reducer;

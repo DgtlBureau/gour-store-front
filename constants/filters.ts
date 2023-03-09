@@ -7,13 +7,13 @@ export type OrderTypeOption = {
 };
 
 export const orderTypeOptions: OrderTypeOption[] = [
-  {
-    title: {
-      ru: 'По умолчанию',
-      en: 'By default',
-    },
-    type: 'default',
-  },
+  // {
+  //   title: {
+  //     ru: 'По умолчанию',
+  //     en: 'By default',
+  //   },
+  //   type: 'default',
+  // },
   {
     title: {
       ru: 'Сначала дешевле',

@@ -30,9 +30,11 @@ export interface IProduct extends IBase {
   discount: number;
   promotions?: IPromotion[];
   totalCost: number;
+  defaultWeight?: number,
+  defaultStock?: object;
 }
 
-export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate' | 'default';
+export type OrderType = 'price' | 'price-reverse' | 'discount' | 'rate';
 
 export interface IFilters {
   productType: number | null;

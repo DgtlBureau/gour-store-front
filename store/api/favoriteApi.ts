@@ -39,5 +39,5 @@ export const favoriteApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useGetFavoriteProductsQuery, useCreateFavoriteProductsMutation, useDeleteFavoriteProductMutation } =
+export const {useLazyGetFavoriteProductsQuery, useGetFavoriteProductsQuery, useCreateFavoriteProductsMutation, useDeleteFavoriteProductMutation } =
   favoriteApi;
