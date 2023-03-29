@@ -69,7 +69,10 @@ function OrderSumItem({ title, value, isTotal, currencySymbol }: OrderSumItemPro
         {isFree ? (
           t('free')
         ) : (
-            t('freeAboveCost')
+            <>
+              {value}&nbsp;
+              {currencySymbol}
+            </>
         )}
       </Typography>
     </Box>
