@@ -16,6 +16,7 @@ export interface IOrder extends Omit<IBase, 'id'> {
   orderProfile: IOrderProfile;
   promotions: OrderPromotion[];
   orderProducts: IOrderProduct[];
+  paymentMethod?: string;
 }
 
 export interface OrderCrmInfo {

@@ -9,4 +9,5 @@ export type CreateOrderDto = {
   promoCodeId?: number;
   orderProducts: OrderProductDto[];
   comment?: string;
+  paymentMethod?: string;
 };

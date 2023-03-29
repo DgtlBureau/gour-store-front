@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CircularProgress, Grid } from '@mui/material';
+import {CircularProgress, Grid, useRadioGroup} from '@mui/material';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
 import { IconButton } from 'components/UI/IconButton/IconButton';
@@ -25,8 +25,8 @@ import { getValidationSchema } from './validation';
 
 import sx from './Form.styles';
 
-import DoneIcon from '@mui/icons-material/Done';
 import sbpImg from 'assets/icons/sbp.png';
+import {RadioGroup} from '../../UI/RadioGroup/RadioGroup';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -44,6 +44,7 @@ export type OrderFormType = {
   entrance: string;
   floor: string;
   comment?: string;
+  paymentMethod: string;
 };
 
 export type PersonalFields = {
@@ -63,6 +64,7 @@ export type DeliveryFields = {
   entrance: string;
   floor: string;
   comment?: string;
+  paymentMethod?: string;
 };
 
 export type OrderFormProps = {
@@ -144,11 +146,21 @@ export function OrderForm({
 
   const changeDeliveryProfile = () => values.setValue('deliveryProfileId', -1);
 
+  const [paymentMethod, setPaymentMethod] = useState('SBP');
+  const changePaymentMethod = (value: any) => {
+    values.setValue('paymentMethod', value);
+    setPaymentMethod(value);
+  };
+
   const agree = () => setIsAgree(!isAgree);
 
   const isSubmitBtnDisabled = !values.formState.isValid || !isAgree || isFetching;
 
   const isSBPBtnDisabled = !values.formState.isValid || !isAgree;
+  const paymentMethodsOptions = [
+      {value: 'SBP', label:t('paymentMethodSBP')},
+      {value: 'cash', label:t('paymentMethodCash')},
+  ];
 
   return (
     <FormProvider {...values}>
@@ -233,28 +245,42 @@ export function OrderForm({
                   При указанном промокоде реферальный код не учитывается
                 </Typography>
 
-                <Grid item xs={12}>
-                  <Checkbox
-                    sx={sx.agreement}
-                    value={isAgree}
-                    onChange={agree}
-                    label={
-                      <span style={sx.agreementLabel}>
+              </Grid>
+            </Grid>
+
+            <Box sx={sx.block}>
+              <Typography variant='h6' sx={sx.title}>
+                {t('paymentMethods')}
+              </Typography>
+
+              <RadioGroup
+                  selected={paymentMethod}
+                  options={paymentMethodsOptions}
+                  onChange={changePaymentMethod}
+              />
+            </Box>
+
+            <Grid item xs={12}>
+              <Checkbox
+                  sx={sx.agreement}
+                  value={isAgree}
+                  onChange={agree}
+                  label={
+                    <span style={sx.agreementLabel}>
                         Даю свое согласие с{' '}
-                        <Link href={`/${Path.OFERTA}`} target='_blank'>
+                      <Link href={`/${Path.OFERTA}`} target='_blank'>
                           условиями обслуживания
                         </Link>
                         , а также с &nbsp;
-                        <Link href={`/${Path.PRIVACY}`} target='_blank'>
+                      <Link href={`/${Path.PRIVACY}`} target='_blank'>
                           политикой конфиденциальности и правилами хранения моих персональных данных
                         </Link>
                         .
                       </span>
-                    }
-                  />
-                </Grid>
-              </Grid>
+                  }
+              />
             </Grid>
+
 
             <Button
               sx={sx.btn}
@@ -264,18 +290,20 @@ export function OrderForm({
             >
               {!isSubmitError ? t('toPay') : t('orderError')}
             </Button>
-            <Button
-              sx={sx.sbpBtn}
-              disabled={isSBPBtnDisabled}
-              color='success'
-              onClick={() => handleClickSBPButton(values.getValues())}
-            >
-              {isSBPFetching ? (
-                <CircularProgress sx={{ marginTop: '5px' }} size={24} color='secondary' />
-              ) : (
-                <Image src={sbpImg} objectFit='cover' height={86} width={86} alt='' />
-              )}
-            </Button>
+            { paymentMethod === 'SBP' && (
+                <Button
+                  sx={sx.sbpBtn}
+                  disabled={isSBPBtnDisabled}
+                  color='success'
+                  onClick={() => handleClickSBPButton(values.getValues())}
+                >
+                  {isSBPFetching ? (
+                    <CircularProgress sx={{ marginTop: '5px' }} size={24} color='secondary' />
+                  ) : (
+                    <Image src={sbpImg} objectFit='cover' height={86} width={86} alt='' />
+                  )}
+                </Button>
+            )}
           </Box>
         </Box>
       </form>

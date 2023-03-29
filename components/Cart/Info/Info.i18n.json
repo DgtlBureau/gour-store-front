@@ -8,7 +8,8 @@
     "oneProduct": "товар",
     "someProducts": "товара",
     "manyProducts": "товаров",
-    "free": "Бесплатно"
+    "free": "Бесплатно",
+    "freeAboveCost": "Бесплатно от 3000"
   },
   "en": {
     "total": "Total",
@@ -19,6 +20,7 @@
     "oneProduct": "product",
     "someProducts": "products",
     "manyProducts": "products",
-    "free": "Free"
+    "free": "Free",
+    "freeAboveCost": "Free above 3000"
   }
 }

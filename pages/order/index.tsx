@@ -77,6 +77,7 @@ const defaultDeliveryFields: DeliveryFields = {
   entrance: '',
   floor: '',
   comment: '',
+  paymentMethod: 'SBP',
 };
 
 type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number; orderData: OrderFormType };
@@ -84,7 +85,7 @@ type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number; orderDat
 type OrderStatusModal =
   | {
       status: 'success';
-      orderId: number;
+      orderId: number|string;
     }
   | {
       status: 'failure';
@@ -205,20 +206,8 @@ export function Order() {
 
   const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
 
-  const handleCreateOrder = (orderData: OrderFormType) => {
-    const price = promoCodeDiscountValue
-      ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
-      : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
-    setPayCoinsState({
-      isOpen: true,
-      orderData,
-      price,
-    });
-  };
 
   const handlePayOrder = async (orderData: OrderFormType) => {
-    // if (!payCoinsState.isOpen) return;
-
     const {
       firstName,
       lastName,
@@ -232,6 +221,7 @@ export function Order() {
       floor,
       comment,
       deliveryProfileId,
+      paymentMethod
     } = orderData;
 
     let currentDeliveryProfileId = deliveryProfileId;
@@ -267,13 +257,33 @@ export function Order() {
       promoCodeId: promoCode?.id,
       deliveryProfileId: currentDeliveryProfileId,
       orderProducts,
+      paymentMethod
     };
 
     return fetchCreateOrder(formattedOrderData).unwrap();
+  };
 
-    // toggleOrderStatusModal({ status: 'success', orderId });
+  const handleCreateOrder = async (orderData: OrderFormType) => {
+    const price = promoCodeDiscountValue
+        ? totalProductsSum + totalDeliveryCost - promoCodeDiscountValue
+        : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
 
-    // productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
+    setPayCoinsState(orderData.paymentMethod === 'cash' ? {isOpen: false} : {
+      isOpen: true,
+      orderData,
+      price,
+    });
+
+    if (orderData.paymentMethod === 'cash') {
+      try {
+        const payOrderDto = (await handlePayOrder(orderData)) as IOrder;
+        toggleOrderStatusModal({ status: 'success',orderId: payOrderDto.leadId });
+      } catch {
+        setPayCoinsState({ isOpen: false });
+        setIsSubmitError(true);
+        toggleOrderStatusModal({ status: 'failure' });
+      }
+    }
   };
 
   const handleClickSBPButton = async (orderData: OrderFormType) => {
@@ -394,7 +404,6 @@ export function Order() {
       try {
         const payOrderDto = (await handlePayOrder(payCoinsState.orderData)) as IOrder;
         invoiceUuid = payOrderDto.invoiceUuid;
-        console.log('payOrderDto', payOrderDto);
       } catch {
         setPayCoinsState({ isOpen: false });
         setIsSubmitError(true);
@@ -402,14 +411,8 @@ export function Order() {
         return;
       }
 
-      const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
-
       const result = await fetchPayOrder({ ...buyData, invoiceUuid }).unwrap();
-      console.log('result', result);
       productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
-
-      // if (result.status === InvoiceStatus.PAID) goToSuccessPayment(buyData.price);
-      // if (result.status === InvoiceStatus.FAILED) goToFailurePayment();
     } catch (e) {
       const mayBeError = getErrorMessage(e);
       if (mayBeError) {

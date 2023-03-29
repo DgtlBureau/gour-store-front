@@ -12,7 +12,8 @@
     "promoCode": "Промокод",
     "referralCode": "Реферальный код",
     "cost": "Стоимость товаров",
-    "free": "Бесплатно"
+    "free": "Бесплатно",
+    "freeAboveCost": "Бесплатно от 3000"
   },
   "en": {
     "kg": "kg",
@@ -27,6 +28,7 @@
     "promoCode": "Promo code",
     "referralCode": "Referral code",
     "cost": "Cost of products",
-    "free": "Free"
+    "free": "Free",
+    "freeAboveCost": "Free above 3000"
   }
 }

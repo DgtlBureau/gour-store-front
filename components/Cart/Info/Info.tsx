@@ -80,9 +80,7 @@ export function CartInfo({ count, price, delivery, discount, currency = 'cheeseC
 
         <Typography variant='body1'>
           {delivery ? (
-            <>
-              {delivery}&nbsp;{currencySymbol}
-            </>
+              t('freeAboveCost')
           ) : (
             t('free')
           )}

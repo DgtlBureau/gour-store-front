@@ -36,9 +36,13 @@
     "someProducts": "товара",
     "manyProducts": "товаров",
     "free": "Бесплатно",
+    "freeAboveCost": "Бесплатно от 3000",
     "promoCode": "Промокод",
     "referralCode": "Реферальный код",
-    "SBP": "СБП"
+    "SBP": "СБП",
+    "paymentMethods": "Способы оплаты",
+    "paymentMethodCash": "Оплата наличными",
+    "paymentMethodSBP": "Система быстрых платежей"
   },
   "en": {
     "details": "Contact details",
@@ -77,8 +81,12 @@
     "someProducts": "products",
     "manyProducts": "products",
     "free": "Free",
+    "freeAboveCost": "Free above 3000",
     "promoCode": "Promo code",
     "referralCode": "Referral code",
-    "SBP": "SBP"
+    "SBP": "SBP",
+    "paymentMethods": "Payment methods",
+    "paymentMethodCash": "Cash",
+    "paymentMethodSBP": "Fast payment system"
   }
 }

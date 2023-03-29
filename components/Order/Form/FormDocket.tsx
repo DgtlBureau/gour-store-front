@@ -105,11 +105,7 @@ export function OrderFormDocket({
           {delivery === 0 ? (
             t('free')
           ) : (
-            <>
-              {delivery}&nbsp;
-              {currencySymbol}
-            </>
-          )}
+              t('freeAboveCost')          )}
         </Typography>
       </Box>
 
