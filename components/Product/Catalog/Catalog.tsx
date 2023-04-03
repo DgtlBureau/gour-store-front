@@ -96,21 +96,21 @@ export const ProductCatalog = memo(
       return isAllMatches;
     };
 
+    const noVolume = (item: any) => (item.defaultStock === undefined || item.defaultStock.value === 0) && !item.weight
     const sortByPrice = (sortedProducts: IExtendedProduct[], reverse = false) =>
       sortedProducts.sort((prev:any, it:any) => {
-        if (noVolume(prev)) {
-          return -1;
-        }
+       if (noVolume(prev)) {
+         return -1;
+       }
 
-        if (noVolume(it)) {
-          return 1;
-        }
+       if (noVolume(it)) {
+         return 1;
+       }
 
-        const multiplier = reverse ? -1 : 1;
-        return multiplier * (it.price[currency] - prev.price[currency]);
-      });
+       const multiplier = reverse ? -1 : 1;
+       return multiplier * (it.price[currency] - prev.price[currency]);
+    });
 
-    const noVolume = (item: any) => (item.defaultStock === undefined || item.defaultStock.value === 0) && !item.weight
     const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev: any, it: any) => {
         if (noVolume(prev)) {
