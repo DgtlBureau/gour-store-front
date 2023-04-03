@@ -98,11 +98,11 @@ export const ProductCatalog = memo(
 
     const sortByPrice = (sortedProducts: IExtendedProduct[], reverse = false) =>
       sortedProducts.sort((prev:any, it:any) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0 || !prev.weight) {
+        if (noVolume(prev)) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0|| !it.weight) {
+        if (noVolume(it)) {
           return 1;
         }
 
@@ -110,13 +110,14 @@ export const ProductCatalog = memo(
         return multiplier * (it.price[currency] - prev.price[currency]);
       });
 
+    const noVolume = (item: any) => (item.defaultStock === undefined || item.defaultStock.value === 0) && !item.weight
     const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev: any, it: any) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0 || !prev.weight) {
+        if (noVolume(prev)) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0 || !it.weight) {
+        if (noVolume(it)) {
           return 1;
         }
 
@@ -126,16 +127,16 @@ export const ProductCatalog = memo(
 
     const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev:any, it:any ) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0|| !prev.weight) {
+        if (noVolume(prev)) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0|| !it.weight) {
+        if (noVolume(it)) {
           return 1;
         }
 
           return it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade
-          }
+        }
       );
 
     const sortByOrderType = (unsortedProducts: IExtendedProduct[]) => {
