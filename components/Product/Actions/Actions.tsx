@@ -70,11 +70,13 @@ export function ProductActions({
             isError: isStockError
         }
     ] = useLazyGetStockQuery();
-    useEffect(() => getStockQuery({
-        city: 'Санкт-Петербург',
-        gram: String(productGramValue),
-        warehouseId: String(moyskladId),
-    }),[]);
+    useEffect(() => {
+        getStockQuery({
+            city: 'Санкт-Петербург',
+            gram: String(productGramValue),
+            warehouseId: String(moyskladId),
+        })
+    },[]);
 
 
     const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
