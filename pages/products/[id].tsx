@@ -229,6 +229,7 @@ export default function Product() {
                   onRemove={(gram: number) => removeFromBasket(product, gram)}
                   onElect={() => electProduct(product.id, isCurrentProductElected)}
                   isElect={isCurrentProductElected}
+                  defaultStock={product.defaultStock}
                 />
               </Box>
             </Box>

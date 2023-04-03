@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { Grid, SxProps } from '@mui/material';
 import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
-
-import { useGetStockQuery } from 'store/api/warehouseApi';
 
 import { IconButton } from 'components/UI/IconButton/IconButton';
 
@@ -27,6 +25,7 @@ import { ProductStock } from '../Stock/Stock';
 import sxActions from './Actions.styles';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import {useLazyGetStockQuery} from 'store/api/warehouseApi';
 
 export type ProductActionsProps = {
   id: number;
@@ -42,6 +41,7 @@ export type ProductActionsProps = {
   onAdd: (gram: number) => void;
   onRemove: (gram: number) => void;
   onElect: () => void;
+  defaultStock?: object;
 };
 
 export function ProductActions({
@@ -58,25 +58,36 @@ export function ProductActions({
   onAdd,
   onRemove,
   onElect,
+  defaultStock
 }: ProductActionsProps) {
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
   const shouldSkipGettingStocks = !productGramValue || !moyskladId;
-  const {
-    data: stock,
-    isFetching: isStockFetching,
-    isError: isStockError,
-  } = useGetStockQuery(
-    {
-      city: 'Санкт-Петербург' ?? currentUserCity, // TODO: в будущем отправлять currentUserCity
-      gram: String(productGramValue),
-      warehouseId: String(moyskladId),
-    },
-    {
-      skip: shouldSkipGettingStocks,
-      selectFromResult: ({ error, ...rest }) => ({ ...rest, error: getErrorMessage(error) }),
-    },
-  );
+    const [
+        getStockQuery, {
+            data: stock,
+            isFetching: isStockFetching,
+            isError: isStockError
+        }
+    ] = useLazyGetStockQuery();
+    useEffect(() => getStockQuery({
+        city: 'Санкт-Петербург',
+        gram: String(productGramValue),
+        warehouseId: String(moyskladId),
+    }),[]);
+
+
+    const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+    const changeGram = (value: string | number) => {
+        selectProductGramValue(+value);
+        if (!weight) {
+            getStockQuery({
+                city: 'Санкт-Петербург',
+                gram: String(value),
+                warehouseId: String(moyskladId),
+            })
+        }
+    }
 
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
@@ -92,13 +103,11 @@ export function ProductActions({
 
   const amount = basketProduct?.amount || 1;
 
-  const onSelectGram = (value: string | number) => selectProductGramValue(+value);
-
-  const maxPossibleAmount = weight ? (weight / productGramValue) : stock?.value;
+  const maxPossibleAmount = weight ? (weight / productGramValue) : someStock?.value;
   const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
-  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
+  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks  || (!someStock?.value && !weight);
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,productGramValue,stock?.value);
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,productGramValue,someStock?.value);
 
   const priceByGram = getPriceByGrams(price, productGramValue);
   const totalCost = priceByGram * amount;
@@ -119,7 +128,7 @@ export function ProductActions({
       <Grid item>
         <ProductCardGramSelect
           gram={productGramValue}
-          onChange={onSelectGram}
+          onChange={changeGram}
           options={productGramOptions}
           sx={sxActions.gramSelect}
         />
