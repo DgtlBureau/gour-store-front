@@ -30,6 +30,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export type ProductActionsProps = {
   id: number;
+  weight: number;
   moyskladId: string | null;
   currentUserCity?: string;
   price: number;
@@ -45,6 +46,7 @@ export type ProductActionsProps = {
 
 export function ProductActions({
   id,
+  weight,
   moyskladId,
   currentUserCity,
   price,
@@ -92,10 +94,11 @@ export function ProductActions({
 
   const onSelectGram = (value: string | number) => selectProductGramValue(+value);
 
-  const isAmountMoreThanCost = !isStockFetching && amount >= Number(stock?.value);
+  const maxPossibleAmount = weight ? (weight / productGramValue) : stock?.value;
+  const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
   const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, stock?.value);
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,productGramValue,stock?.value);
 
   const priceByGram = getPriceByGrams(price, productGramValue);
   const totalCost = priceByGram * amount;

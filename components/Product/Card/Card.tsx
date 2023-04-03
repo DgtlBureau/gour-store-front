@@ -47,19 +47,24 @@ export type ProductCardProps = {
   onElect: () => void;
   defaultWeight?: number;
   defaultStock?: object;
+  weight: number;
 };
 
 export const getStockLabel = (
   isStockFetching: boolean,
   isStockError: boolean,
   moyskladId: string | null,
+  totalWeight: number,
+  currentGram: number,
   stockValue?: string,
 ) => {
   if (isStockFetching) return 'загружаем...';
 
   if (!moyskladId || isStockError) return 'нет на складе';
 
-  if (stockValue) return `осталось ${stockValue} шт`;
+  const stockValueCalculated: any = totalWeight ? Math.floor(totalWeight / currentGram) : stockValue;
+  if (stockValueCalculated) return `осталось ${stockValueCalculated} шт`;
+
   return 'нет на складе';
 };
 
@@ -81,7 +86,8 @@ export const ProductCard = memo(function ProductCard({
   onRemove,
   onElect,
   defaultWeight,
-  defaultStock
+  defaultStock,
+  weight
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
@@ -111,16 +117,19 @@ export const ProductCard = memo(function ProductCard({
 
   const changeGram = (value: string | number) => {
     setGramValue(+value);
-    getStockQuery({
-      city: 'Санкт-Петербург',
-      gram: String(value),
-      warehouseId: String(moyskladId),
-    })
+    if (!weight) {
+      getStockQuery({
+        city: 'Санкт-Петербург',
+        gram: String(value),
+        warehouseId: String(moyskladId),
+      })
+    }
   }
 
-  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(someStock?.value);
+  const maxPossibleAmount = weight ? (weight / gramValue) : someStock?.value;
+  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(maxPossibleAmount);
   const isAddDisabled =
-    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || !someStock?.value;
+    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(gramValue);
@@ -132,7 +141,7 @@ export const ProductCard = memo(function ProductCard({
 
   const backgroundImage = `url('${backgroundImg}')`;
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, someStock?.value);
+  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, weight,gramValue,someStock?.value);
 
   return (
     <Box sx={sx.card}>

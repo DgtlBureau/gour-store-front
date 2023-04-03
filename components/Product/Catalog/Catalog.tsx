@@ -98,11 +98,11 @@ export const ProductCatalog = memo(
 
     const sortByPrice = (sortedProducts: IExtendedProduct[], reverse = false) =>
       sortedProducts.sort((prev:any, it:any) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0 || !prev.weight) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+        if (it.defaultStock === undefined || it.defaultStock.value === 0|| !it.weight) {
           return 1;
         }
 
@@ -112,11 +112,11 @@ export const ProductCatalog = memo(
 
     const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev: any, it: any) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0 || !prev.weight) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+        if (it.defaultStock === undefined || it.defaultStock.value === 0 || !it.weight) {
           return 1;
         }
 
@@ -126,11 +126,11 @@ export const ProductCatalog = memo(
 
     const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev:any, it:any ) => {
-        if (prev.defaultStock === undefined || prev.defaultStock.value === 0) {
+        if (prev.defaultStock === undefined || prev.defaultStock.value === 0|| !prev.weight) {
           return -1;
         }
 
-        if (it.defaultStock === undefined || it.defaultStock.value === 0) {
+        if (it.defaultStock === undefined || it.defaultStock.value === 0|| !it.weight) {
           return 1;
         }
 
@@ -212,6 +212,7 @@ export const ProductCatalog = memo(
               onElect={() => onElect(product.id, product.isElected)}
               defaultWeight={product.defaultWeight}
               defaultStock={product.defaultStock}
+              weight={product.weight}
             />
           )),
       [productList],

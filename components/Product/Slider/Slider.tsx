@@ -59,6 +59,7 @@ export function ProductSlider({
           onElect={() => onElect(product.id, product.isElected)}
           defaultWeight={product.defaultWeight}
           defaultStock={product.defaultStock}
+          weight={product.weight}
         />
       ))}
       sx={sx}

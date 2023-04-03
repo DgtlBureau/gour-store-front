@@ -217,6 +217,7 @@ export default function Product() {
 
                 <ProductActions
                   id={product.id}
+                  weight={product.weight}
                   moyskladId={product.moyskladId}
                   currentUserCity={currentUser?.city?.name.ru}
                   price={price}
