@@ -26,13 +26,11 @@ export function ProductCardDocket({
   discount,
   onChangeGram,
 }: ProductCardDocketProps) {
-  const priceByGrams = getPriceByGrams(price, gram);
-
   const changeGram = (value: number) => onChangeGram(value);
 
   return (
     <Box sx={sx.docket}>
-      <ProductPrice price={priceByGrams} discount={discount} withResponsiveFont />
+      <ProductPrice price={price} discount={discount} withResponsiveFont />
 
       <GramSelect gram={gram} options={gramOptions} onChange={changeGram} />
     </Box>
