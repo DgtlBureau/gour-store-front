@@ -161,7 +161,7 @@ export function Order() {
   const [isCash, changeIsCash] = useState(false);
 
   const totalProductsSum = useAppSelector((state) => selectedProductSum(state,currentUser,isCash));
-  const sumDiscount = useAppSelector(selectedProductDiscount);
+  const sumDiscount = useAppSelector((state) => selectedProductDiscount(state,currentUser,isCash));
 
   const totalDeliveryCost = useMemo(() => {
     if (totalProductsSum >= minCostForFreeDelivery) return 0;
@@ -279,6 +279,7 @@ export function Order() {
     if (orderData.paymentMethod === 'cash') {
       try {
         const payOrderDto = (await handlePayOrder(orderData)) as IOrder;
+        productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
         toggleOrderStatusModal({ status: 'success',orderId: payOrderDto.leadId });
       } catch {
         setPayCoinsState({ isOpen: false });

@@ -112,10 +112,12 @@ export const selectedProductSum = (state: RootState, currentUser?: ICurrentUser,
     return acc + priceByGram * it.amount;
   }, 0);
 
-export const selectedProductDiscount = (state: RootState) =>
+export const selectedProductDiscount = (state: RootState, currentUser?: ICurrentUser,isCash = false) =>
   Object.values(state.order.products).reduce((acc, it) => {
-    //TODO убрать чизкойны
-    const discount = it.product.price.cheeseCoin - it.product.totalCost;
+    let discount = getPriceByRole(it.product.price,currentUser?.role) - it.product.totalCost;
+    if (discount < 0) {
+      discount *= -1;
+    }
     const discountByGram = getPriceByGrams(discount, it.gram);
 
     return acc + discountByGram * it.amount;
