@@ -7,7 +7,6 @@ import { Box } from 'components/UI/Box/Box';
 import { Button } from 'components/UI/Button/Button';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 import { ICategory } from 'types/entities/ICategory';
 import { IExtendedProduct, IFilters, IProduct, OrderType } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
@@ -19,6 +18,8 @@ import { ProductFilterModal } from '../Filter/Modal/Modal';
 import catalogSx from './Catalog.styles';
 
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
+import { getPriceByRole, IPrice } from '../../../types/entities/IPrice';
+import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -26,7 +27,6 @@ export type ProductCatalogProps = {
   products: IExtendedProduct[];
   categories?: ICategory[];
   language: Language;
-  currency?: Currency;
   discount?: number;
   withFilters?: boolean;
   sx?: SxProps;
@@ -42,7 +42,6 @@ export const ProductCatalog = memo(
     products,
     categories,
     language,
-    currency = 'cheeseCoin',
     discount,
     withFilters = false,
     sx,
@@ -50,6 +49,7 @@ export const ProductCatalog = memo(
     onRemove,
     onElect,
   }: ProductCatalogProps) => {
+    const { data: currentUser } = useGetCurrentUserQuery();
     const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
     const [filters, setFilters] = useState<IFilters>({
       orderType: 'price',
@@ -96,48 +96,53 @@ export const ProductCatalog = memo(
       return isAllMatches;
     };
 
+    const getPriceForUser = (price: IPrice) => getPriceByRole(price,currentUser?.role)
+
+    const testProductId = 65; // после тестов можно будет удалить
     const noVolume = (item: any) => (item.defaultStock === undefined || item.defaultStock.value === 0) && !item.weight
     const sortByPrice = (sortedProducts: IExtendedProduct[], reverse = false) =>
       sortedProducts.sort((prev:any, it:any) => {
-       if (noVolume(prev)) {
+       if (noVolume(prev) || prev.id === testProductId) {
          return -1;
        }
 
-       if (noVolume(it)) {
+       if (noVolume(it) || it.id === testProductId) {
          return 1;
        }
 
        const multiplier = reverse ? -1 : 1;
-       return multiplier * (it.price[currency] - prev.price[currency]);
+       return multiplier * (getPriceForUser(it.price) - getPriceForUser(prev.price));
     });
 
     const sortByDiscount = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev: any, it: any) => {
-        if (noVolume(prev)) {
+        if (noVolume(prev)|| prev.id === testProductId) {
           return -1;
         }
 
-        if (noVolume(it)) {
+        if (noVolume(it) || it.id === testProductId) {
           return 1;
         }
 
-        return it.discount === prev.discount ? it.price[currency] - prev.price[currency] : it.discount - prev.discount
-       },
-      );
+        return it.discount === prev.discount
+            ? getPriceForUser(it.price) - getPriceForUser(prev.price)
+            : it.discount - prev.discount
+      },
+    );
 
     const sortByRate = (unsortedProducts: IExtendedProduct[]) =>
       unsortedProducts.sort((prev:any, it:any ) => {
-        if (noVolume(prev)) {
+        if (noVolume(prev) || prev.id === testProductId) {
           return -1;
         }
 
-        if (noVolume(it)) {
+        if (noVolume(it) || it.id === testProductId) {
           return 1;
         }
 
-          return it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade
-        }
-      );
+        return it.grade === prev.grade ? it.gradesCount - prev.gradesCount : it.grade - prev.grade
+      }
+    );
 
     const sortByOrderType = (unsortedProducts: IExtendedProduct[]) => {
       switch (filters.orderType) {
@@ -200,9 +205,8 @@ export const ProductCatalog = memo(
               moyskladId={product.moyskladId}
               title={product.title[language]}
               rating={product.grade}
-              price={product.price[currency]}
+              price={getPriceForUser(product.price)}
               discount={discount || product.discount}
-              currency={currency}
               productType={product.productType}
               previewImg={product.images[0]?.small || ''}
               countryImg={product.countryImg}

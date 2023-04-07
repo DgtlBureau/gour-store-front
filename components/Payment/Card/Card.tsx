@@ -67,7 +67,7 @@ export function PaymentsCard({ payment, type, payerUuid, refetch, onRepay }: Pay
   const invoiceStatus = paymentColorByStatus[payment.status];
 
   const cheeseCoinCount = getFormattedPrice(payment.value);
-  const currencySymbol = getCurrencySymbol('cheeseCoin');
+  const currencySymbol = getCurrencySymbol();
 
   const formattedDate = formatDate(payment.updatedAt, 'dd.MM.yyyy');
   const formattedTime = formatDate(payment.updatedAt, 'H:mm');

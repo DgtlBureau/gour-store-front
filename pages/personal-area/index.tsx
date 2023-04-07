@@ -24,7 +24,7 @@ import {
 } from './personalAreaHelper';
 
 export function Main() {
-  const { currency, language } = useAppNavigation();
+  const { language } = useAppNavigation();
 
   const { data: currentUser, isLoading: currentUserIsLoading } = useGetCurrentUserQuery();
   const { data: addressList = [], isLoading: addressListIsLoading } = useGetOrderProfilesListQuery();
@@ -35,7 +35,7 @@ export function Main() {
 
   const isLoading = currentUserIsLoading || addressListIsLoading || ordersListIsLoading || categoriesIsLoading;
 
-  const orders = getFormattedOrdersList(ordersData?.orders || [], currency);
+  const orders = getFormattedOrdersList(ordersData?.orders || []);
   const addresses = getFormattedAddressesList(addressList, language);
 
   return (

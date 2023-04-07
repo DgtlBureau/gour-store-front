@@ -34,7 +34,6 @@ const props: Partial<ProductCardProps> = {
   rating: 4.93,
   price: 350,
   discount: 10,
-  currency: 'cheeseCoin',
   previewImg: '',
   countryImg: imageByCountry.Russia,
   backgroundImg: cheeseBackground,

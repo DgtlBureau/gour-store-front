@@ -1,4 +1,3 @@
-import { Currency } from 'types/entities/Currency';
 import { ICategoryWithDiscount } from 'types/entities/ICategory';
 import { IOrder } from 'types/entities/IOrder';
 import { IOrderProfile } from 'types/entities/IOrderProfile';
@@ -17,13 +16,12 @@ export const getFormattedAddressesList = (addressList: IOrderProfile[], language
     return { id: it.id, title: it.title, address };
   });
 
-export const getFormattedOrdersList = (orderList: IOrder[], currency: Currency) =>
+export const getFormattedOrdersList = (orderList: IOrder[]) =>
   orderList.map(it => ({
     id: it.leadId.toString() || '####',
     date: new Date(it.createdAt),
     status: it.crmInfo?.status.name,
     sum: it.totalSum,
-    currency,
   }));
 
 export const formatCategoriesWithMaxDiscount = (

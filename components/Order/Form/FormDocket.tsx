@@ -3,8 +3,6 @@ import React from 'react';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
@@ -20,7 +18,6 @@ type Props = {
   promoCodeDiscount?: number;
   referralCodeDiscount?: number;
   delivery: number;
-  currency?: Currency;
 };
 
 export function OrderFormDocket({
@@ -30,7 +27,6 @@ export function OrderFormDocket({
   promoCodeDiscount = 0,
   referralCodeDiscount = 0,
   delivery,
-  currency = 'cheeseCoin',
 }: Props) {
   const { t } = useLocalTranslation(translations);
 
@@ -42,7 +38,7 @@ export function OrderFormDocket({
     t('someProducts'),
   ]);
 
-  const currencySymbol = getCurrencySymbol(currency);
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <Box sx={sx.docket}>

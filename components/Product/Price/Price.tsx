@@ -5,8 +5,6 @@ import { SxProps } from '@mui/material';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { getCurrencySymbol, getPriceWithDiscount } from 'utils/currencyUtil';
 
 import priceSx from './Price.styles';
@@ -14,7 +12,6 @@ import priceSx from './Price.styles';
 type ProductPriceProps = {
   price: number;
   discount?: number;
-  currency?: Currency;
   withResponsiveFont?: boolean;
   sx?: SxProps;
 };
@@ -22,12 +19,11 @@ type ProductPriceProps = {
 export function ProductPrice({
   price,
   discount = 0,
-  currency = 'cheeseCoin',
   withResponsiveFont,
   sx,
 }: ProductPriceProps) {
   const priceWithDiscount = getPriceWithDiscount(price, discount);
-  const currencySymbol = getCurrencySymbol(currency);
+  const currencySymbol = getCurrencySymbol();
 
   const oldPriceFontSize = withResponsiveFont
     ? {

@@ -69,7 +69,7 @@ export function CheesecoinsAddModal({ initCoins, isOpened, onClose, onSubmit }: 
 
   const formId = 'add-coins-modal';
 
-  const rubCurrencySymbol = getCurrencySymbol('rub');
+  const rubCurrencySymbol = getCurrencySymbol();
 
   return (
     <Modal

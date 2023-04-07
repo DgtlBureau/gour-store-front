@@ -18,7 +18,7 @@ import { IOrder } from 'types/entities/IOrder';
 import { formatOrderData, groupOrdersByDate } from './ordersHelper';
 
 export function Orders() {
-  const { language, currency } = useAppNavigation();
+  const { language } = useAppNavigation();
 
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [page, setPage] = useState(1);
@@ -35,7 +35,7 @@ export function Orders() {
   const hasMore = orders.length < totalCount;
 
   const formattedOrdersList = orders.map(order =>
-    formatOrderData(order, language, currency, currentUser?.city.deliveryCost),
+    formatOrderData(order, language, currentUser),
   );
   const groupedOrders = groupOrdersByDate(formattedOrdersList);
   const orderEntries = Object.entries(groupedOrders);

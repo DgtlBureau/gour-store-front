@@ -10,7 +10,6 @@ import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
@@ -28,6 +27,7 @@ import sx from './Card.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 import defaultImg from 'assets/images/default.svg';
+import {getPriceByGrams} from '../../../utils/currencyUtil';
 
 export type ProductCardProps = {
   id: number;
@@ -40,7 +40,6 @@ export type ProductCardProps = {
   previewImg: string;
   backgroundImg?: string;
   countryImg?: string;
-  currency: Currency;
   isElected: boolean;
   onAdd: (gram: number) => void;
   onRemove: (gram: number) => void;
@@ -58,12 +57,16 @@ export const getStockLabel = (
   currentGram: number,
   stockValue?: string,
 ) => {
+  if (totalWeight) {
+    const left = Math.floor(totalWeight / currentGram);
+    return `осталось ${left} шт`
+  }
+
   if (isStockFetching) return 'загружаем...';
 
   if (!moyskladId || isStockError) return 'нет на складе';
 
-  const stockValueCalculated: any = totalWeight ? Math.floor(totalWeight / currentGram) : stockValue;
-  if (stockValueCalculated) return `осталось ${stockValueCalculated} шт`;
+  if (stockValue) return `осталось ${stockValue} шт`;
 
   return 'нет на складе';
 };
@@ -81,7 +84,6 @@ export const ProductCard = memo(function ProductCard({
   backgroundImg,
   countryImg,
   isElected,
-  currency,
   onAdd,
   onRemove,
   onElect,
@@ -125,6 +127,8 @@ export const ProductCard = memo(function ProductCard({
       })
     }
   }
+
+  const priceByGram = getPriceByGrams(price, gramValue);
 
   const maxPossibleAmount = weight ? (weight / gramValue) : someStock?.value;
   const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(maxPossibleAmount);
@@ -174,9 +178,8 @@ export const ProductCard = memo(function ProductCard({
           gram={gramValue}
           gramOptions={gramOptions}
           onChangeGram={changeGram}
-          price={price}
+          price={priceByGram}
           discount={discount}
-          currency={currency}
         />
 
         <Cart

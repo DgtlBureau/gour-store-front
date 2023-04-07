@@ -10,8 +10,6 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { Path } from 'constants/routes';
 import { useAppSelector } from 'hooks/store';
 import { getCurrencySymbol } from 'utils/currencyUtil';
@@ -47,7 +45,6 @@ export type HeaderProps = {
     id: number;
     name: string;
   }[];
-  currency: Currency;
   basketProductCount: number;
   basketProductSum: number;
   moneyAmount: number;
@@ -69,7 +66,6 @@ export function Header({
   cities,
   basketProductCount,
   basketProductSum,
-  currency,
   moneyAmount,
   sx,
   onChangeCity,
@@ -83,7 +79,7 @@ export function Header({
 
   const isAuth = useAppSelector(selectIsAuth);
 
-  const currencySymbol = getCurrencySymbol(currency);
+  const currencySymbol = getCurrencySymbol();
 
   const currentCity = cities.find(it => it?.id === selectedCityId);
 
@@ -206,11 +202,8 @@ export function Header({
             tg={tg}
             inst={inst}
             vk={vk}
-            moneyAmount={moneyAmount}
-            currency={currency}
             onChangeCity={onChangeCity}
             onClickSignout={onClickSignout}
-            onClickAddCoins={onClickAddCoins}
           />
         </Collapse>
       </AppBar>

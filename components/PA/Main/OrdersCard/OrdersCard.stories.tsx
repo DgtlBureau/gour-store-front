@@ -19,21 +19,18 @@ const props: Partial<PAOrdersCardProps> = {
       date: new Date(),
       status: 'Ваш заказ ожидает оплаты',
       sum: 1000,
-      currency: 'cheeseCoin',
     },
     {
       id: 'T123486314',
       date: new Date(),
       status: 'Ваш заказ ожидает оплаты',
       sum: 2000,
-      currency: 'cheeseCoin',
     },
     {
       id: 'T5678986314',
       date: new Date(),
       status: 'Ваш заказ ожидает оплаты',
       sum: 500,
-      currency: 'cheeseCoin',
     },
   ],
 };

@@ -99,8 +99,6 @@ export function BuyCheeseCoinsModal({
   const showEmailInput = values.watch('isSendInvoice');
   const coinIconSize = isDesktop ? 74 : 62;
 
-  const rubCurrencySymbol = getCurrencySymbol('rub');
-
   return (
     <Modal
       showRefuseButton

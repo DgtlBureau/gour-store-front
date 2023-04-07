@@ -76,6 +76,7 @@ export type OrderFormProps = {
   isSBPFetching: boolean;
   isPromoCodeApplies: boolean;
   deliveryProfiles: SelectOption[];
+  onChangePaymentMethod: (value: string) => void;
   onAddPromoCode: (key: string) => void;
   onSubmit: (data: OrderFormType) => void;
   onSelectDeliveryProfile: (id: number) => void;
@@ -97,6 +98,7 @@ export function OrderForm({
   onChangeDeliveryCity,
   onSubmit,
   handleClickSBPButton,
+  onChangePaymentMethod
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
 
@@ -149,6 +151,9 @@ export function OrderForm({
   const [paymentMethod, setPaymentMethod] = useState('SBP');
   const changePaymentMethod = (value: any) => {
     values.setValue('paymentMethod', value);
+
+    onChangePaymentMethod(value);
+
     setPaymentMethod(value);
   };
 

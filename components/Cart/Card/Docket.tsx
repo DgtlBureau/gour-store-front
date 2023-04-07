@@ -3,21 +3,19 @@ import React from 'react';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 
 import { getCurrencySymbol, getPriceWithDiscount } from 'utils/currencyUtil';
 
 import sx from './Card.styles';
 
 type Props = {
-  currency: Currency;
   discount?: number;
   price: number;
   amount: number;
 };
 
-export function CartCardDocket({ currency, discount, price, amount }: Props) {
-  const currencySymbol = getCurrencySymbol(currency);
+export function CartCardDocket({ discount, price, amount }: Props) {
+  const currencySymbol = getCurrencySymbol();
 
   const totalPrice = getPriceWithDiscount(price, discount);
 

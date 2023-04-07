@@ -48,6 +48,5 @@ export interface IExtendedProduct extends IProduct {
   isElected: boolean;
   backgroundImg?: string;
   countryImg?: string;
-  // currentCount: number;
   productType: ProductTypeLabel;
 }

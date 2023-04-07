@@ -48,6 +48,7 @@ import styles from './Product.module.css';
 import sx from './Product.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
+import { getPriceByRole } from '../../types/entities/IPrice';
 
 const getProductReviews = (comments: IProductGrade[]) =>
   comments
@@ -65,7 +66,6 @@ export default function Product() {
   const { t } = useLocalTranslation(translations);
   const {
     language,
-    currency,
     query: { id: queryId },
   } = useAppNavigation();
 
@@ -172,7 +172,7 @@ export default function Product() {
 
   const isCurrentProductElected = isProductFavorite(productId, favoriteProducts);
 
-  const price = Math.round(product?.price[currency] || 0);
+  const price = Math.round(getPriceByRole(product?.price, currentUser?.role));
 
   const hasSimilar = !!formattedSimilarProducts?.length;
   const hasComments = !!reviews.length;
@@ -221,7 +221,6 @@ export default function Product() {
                   moyskladId={product.moyskladId}
                   currentUserCity={currentUser?.city?.name.ru}
                   price={price}
-                  currency={currency}
                   discount={product.discount}
                   productType={productType!}
                   sx={sx.actions}
@@ -247,7 +246,6 @@ export default function Product() {
                 title={t('similar')}
                 products={formattedSimilarProducts}
                 language={language}
-                currency={currency}
                 sx={sx.similar}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}

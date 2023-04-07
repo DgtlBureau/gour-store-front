@@ -44,6 +44,9 @@ const mockProduct: IProduct = {
   price: {
     id: 1,
     cheeseCoin: 1,
+    individual: 1,
+    company: 1,
+    companyByCash: 1,
     createdAt: NEW_DATE,
     updatedAt: NEW_DATE,
   },

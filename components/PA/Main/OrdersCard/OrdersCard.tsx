@@ -7,8 +7,6 @@ import { Box } from 'components/UI/Box/Box';
 import { InfoCard } from 'components/UI/Info/Card/Card';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
@@ -41,7 +39,6 @@ export type PAOrdersCardProps = {
     date: Date;
     status: string;
     sum: number;
-    currency: Currency;
   }[];
   isLoading: boolean;
 };
@@ -67,7 +64,7 @@ export function PAOrdersCard({ orders, isLoading }: PAOrdersCardProps) {
 
             <Typography variant='body1'>
               {order.sum}
-              {getCurrencySymbol(order.currency)}
+              {getCurrencySymbol()}
             </Typography>
           </Box>
 

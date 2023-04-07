@@ -5,8 +5,6 @@ import { Paper } from '@mui/material';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 import { getDeclensionWordByCount } from 'utils/wordUtil';
@@ -43,15 +41,14 @@ type CartInfoProps = {
   price: number;
   delivery: number;
   discount: number;
-  currency?: Currency;
 };
 
-export function CartInfo({ count, price, delivery, discount, currency = 'cheeseCoin' }: CartInfoProps) {
+export function CartInfo({ count, price, delivery, discount}: CartInfoProps) {
   const { t } = useLocalTranslation(translations);
 
   const productsCountText = getDeclensionWordByCount(count, [t('manyProducts'), t('oneProduct'), t('someProducts')]);
 
-  const currencySymbol = getCurrencySymbol(currency);
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <Paper sx={sx.paper}>

@@ -159,7 +159,6 @@ const Home: NextPage = () => {
             title={t('novelties')}
             products={formattedNovelties}
             language={language}
-            currency={currency}
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
@@ -174,7 +173,6 @@ const Home: NextPage = () => {
             products={formattedProducts}
             categories={categories}
             language={language}
-            currency={currency}
             sx={sx.productList}
             onAdd={addToBasket}
             onRemove={removeFromBasket}

@@ -9,6 +9,8 @@ import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { IProduct } from 'types/entities/IProduct';
 
 import { getPriceByGrams } from 'utils/currencyUtil';
+import { getPriceByRole} from '../../types/entities/IPrice';
+import { ICurrentUser } from '../../types/entities/ICurrentUser';
 
 interface OrderFormContacts {
   firstName: string;
@@ -103,23 +105,21 @@ export const selectBasketProducts = (state: RootState) => Object.values(state.or
 export const selectedProductCount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, product) => acc + product.amount, 0);
 
-export const selectedProductSum = (state: RootState) =>
-  Object.values(state.order.products).reduce((acc, it) => {
-    const priceByGram = getPriceByGrams(it.product.price.cheeseCoin, it.gram);
+export const selectedProductSum = (state: RootState, currentUser?: ICurrentUser,isCash = false) =>
+    Object.values(state.order.products).reduce((acc, it) => {
+    const priceByGram = getPriceByGrams(getPriceByRole(it.product.price, currentUser?.role, isCash), it.gram);
 
     return acc + priceByGram * it.amount;
   }, 0);
 
 export const selectedProductDiscount = (state: RootState) =>
   Object.values(state.order.products).reduce((acc, it) => {
+    //TODO убрать чизкойны
     const discount = it.product.price.cheeseCoin - it.product.totalCost;
     const discountByGram = getPriceByGrams(discount, it.gram);
 
     return acc + discountByGram * it.amount;
   }, 0);
-
-// export const productsInBasketCount = (state: RootState, productId: number, gram: number): number =>
-//   state.order.products[getProductKeyInBasket(productId, gram)]?.amount ?? 0;
 
 export const selectProductsIdInOrder = (state: RootState): number[] =>
   Object.values(state.order.products).reduce((acc, item) => [...acc, item.product.id], [] as number[]);

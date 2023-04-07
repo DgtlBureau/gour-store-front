@@ -4,8 +4,6 @@ import { Divider, Stack } from '@mui/material';
 
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
@@ -45,13 +43,11 @@ type OrderCardInfoProps = {
     title: string;
     amount: number;
   }[];
-  deliveryCost: number;
-  currency: Currency;
 };
 
-export function OrderCardInfo({ totalSum, promotions, summaryDiscount, deliveryCost, currency }: OrderCardInfoProps) {
+export function OrderCardInfo({ totalSum, promotions, summaryDiscount }: OrderCardInfoProps) {
   const { t } = useLocalTranslation(translations);
-  const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
+  const currencySymbol = getCurrencySymbol();
   return (
     <Stack sx={sx.card}>
       <Stack direction='row' alignItems='center' justifyContent='space-between'>
@@ -60,7 +56,7 @@ export function OrderCardInfo({ totalSum, promotions, summaryDiscount, deliveryC
         </Typography>
 
         <Typography variant='h6' sx={sx.total}>
-          {totalSum} {getCurrencySymbol(currency)}
+          {totalSum} {currencySymbol}
         </Typography>
       </Stack>
 
@@ -78,7 +74,7 @@ export function OrderCardInfo({ totalSum, promotions, summaryDiscount, deliveryC
               </Typography>
 
               <Typography variant='body2' sx={{ ...sx.price, ...sx.discount }}>
-                -{promotion.amount} {getCurrencySymbol(currency)}
+                -{promotion.amount} {currencySymbol}
               </Typography>
             </Stack>
           ),

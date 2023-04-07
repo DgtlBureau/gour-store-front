@@ -63,7 +63,7 @@ function NavigationProvider({ children }: Props) {
     setDefaultOptions({ locale: language === 'ru' ? ru : enGB });
   }, [language]);
 
-  const currency: Currency = 'cheeseCoin';
+  const currency: Currency = 'rub';
 
   const navigation = useMemo<Navigation>(
     () => ({

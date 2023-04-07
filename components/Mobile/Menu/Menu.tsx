@@ -3,22 +3,18 @@ import React, { Fragment, useState } from 'react';
 
 import { Box, Collapse, Divider, List, ListItemButton } from '@mui/material';
 
-import { IconButton } from 'components/UI/IconButton/IconButton';
 import { ListItemLink } from 'components/UI/List/List';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 
 import { Path } from 'constants/routes';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
-import { getCurrencySymbol } from 'utils/currencyUtil';
 
 import translations from './Menu.i18n.json';
 import { MobileMenuContacts } from './MenuContacts';
 
 import sx from './Menu.styles';
 
-import AddIcon from '@mui/icons-material/Add';
 import arrowIcon from 'assets/icons/mobile/arrow.svg';
 import lightArrowIcon from 'assets/icons/mobile/light-arrow.svg';
 import locationIcon from 'assets/icons/mobile/location.svg';
@@ -35,11 +31,8 @@ export type MobileMenuProps = {
   tg: string;
   inst: string;
   vk: string;
-  moneyAmount: number;
-  currency: Currency;
   onChangeCity(id: number): void;
   onClickSignout(): void;
-  onClickAddCoins(): void;
 };
 
 export function MobileMenu({
@@ -51,19 +44,14 @@ export function MobileMenu({
   tg,
   inst,
   vk,
-  moneyAmount,
-  currency,
   onChangeCity,
   onClickSignout,
-  onClickAddCoins,
 }: MobileMenuProps) {
   const [citiesIsOpened, setCitiesIsOpened] = useState(false);
 
   const { t } = useLocalTranslation(translations);
 
   const currentCity = cities.find(city => city?.id === selectedCityId);
-
-  const currencySymbol = getCurrencySymbol(currency);
 
   const selectCity = (id: number) => {
     onChangeCity(id);

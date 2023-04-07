@@ -22,7 +22,6 @@ const props: Partial<OrdersCardProps> = {
     createdAt: new Date(),
     address: 'Санкт-Петербург, Каменноостровский пр., дом 43, квартира 44',
     client: 'Иван Иванов',
-    currency: 'cheeseCoin',
     products: [
       {
         id: 2,

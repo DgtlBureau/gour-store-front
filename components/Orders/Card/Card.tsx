@@ -6,7 +6,6 @@ import { format } from 'date-fns';
 import { Accordion, AccordionDetails, AccordionSummary } from 'components/UI/Accordion/Accordion';
 import { Box } from 'components/UI/Box/Box';
 
-import { Currency } from 'types/entities/Currency';
 import { OrderCrmInfoStatus } from 'types/entities/IOrder';
 
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
@@ -33,7 +32,6 @@ export type FullOrder = {
   products: OrderProductType[];
   promotions: Promotion[];
   deliveryCost: number;
-  currency: Currency;
   totalSum: number;
 };
 
@@ -42,7 +40,7 @@ export type OrdersCardProps = {
 };
 
 export function OrdersCard({ order }: OrdersCardProps) {
-  const { title, status, createdAt, address, currency, client, products, promotions, deliveryCost, totalSum } = order;
+  const { title, status, createdAt, address,  client, products, promotions, deliveryCost, totalSum } = order;
 
   const { t } = useLocalTranslation(translations);
 
@@ -59,7 +57,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
 
   const summaryDiscount = promotions.reduce((acc, currentDiscount) => acc + currentDiscount.amount, 0);
 
-  const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
+  const currencySymbol = getCurrencySymbol();
 
   return (
     <Accordion>
@@ -120,7 +118,7 @@ export function OrdersCard({ order }: OrdersCardProps) {
         <Divider variant='fullWidth' sx={{ margin: '20px 0 0 0' }} />
 
         {products.map(product => (
-          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product} currency={currency} />
+          <OrderCardProduct key={`${product.amount}_${product.photo}`} product={product}  />
         ))}
 
         {!!products.length && <Divider variant='fullWidth' />}
@@ -129,8 +127,6 @@ export function OrdersCard({ order }: OrdersCardProps) {
           totalSum={totalSum}
           summaryDiscount={summaryDiscount}
           promotions={promotions}
-          deliveryCost={deliveryCost}
-          currency={currency}
         />
       </AccordionDetails>
     </Accordion>

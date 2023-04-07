@@ -75,7 +75,7 @@ export function DiscountsGroup({ title, subCategories, language }: Props) {
 
           <Grid item xs={3} md={1}>
             <Typography sx={{ ...sx.headerText, textAlign: 'end' }} variant='subtitle1'>
-              Всего {getCurrencySymbol('cheeseCoin')}
+              Всего {getCurrencySymbol()}
             </Typography>
           </Grid>
         </Grid>

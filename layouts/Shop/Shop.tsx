@@ -9,7 +9,7 @@ import { useChangeCurrentCityMutation, useGetCurrentUserQuery } from 'store/api/
 import { useBuyCheeseCoinsMutation, useCreateInvoiceMutation } from 'store/api/invoiceApi';
 import { useGetCurrentBalanceQuery } from 'store/api/walletApi';
 import { selectIsAuth } from 'store/selectors/auth';
-import {addBasketProduct, selectedProductCount, selectedProductSum} from 'store/slices/orderSlice';
+import {selectedProductCount, selectedProductSum} from 'store/slices/orderSlice';
 
 import { CheesecoinsAddModal } from 'components/Cheesecoins/AddModal/AddModal';
 import { BuyCheeseCoinsModal } from 'components/Cheesecoins/BuyModal/BuyModal';
@@ -37,7 +37,7 @@ export interface ShopLayoutProps {
 }
 
 export function ShopLayout({ children }: ShopLayoutProps) {
-  const { currency, language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
+  const { language, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
 
   const isAuth = useAppSelector(selectIsAuth);
 
@@ -76,7 +76,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const totalProductSum = useAppSelector(selectedProductSum);
+  const totalProductSum = useAppSelector((state) => selectedProductSum(state,currentUser));
 
   const selectedCity = useAppSelector(getCurrentUserCity) || cities?.[0];
 
@@ -126,12 +126,11 @@ export function ShopLayout({ children }: ShopLayoutProps) {
 
   return (
     <Box sx={sx.layout}>
-      {true && (
+      {isAuth && (
         <Header
           {...contacts}
           selectedCityId={selectedCity?.id || 0}
           cities={convertedCities}
-          currency={currency}
           basketProductCount={count}
           basketProductSum={totalProductSum}
           moneyAmount={balance}

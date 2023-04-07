@@ -4,18 +4,18 @@ import { SxProps } from '@mui/material';
 
 import { CardSlider } from 'components/CardSlider/CardSlider';
 
-import { Currency } from 'types/entities/Currency';
 import { IExtendedProduct, IProduct } from 'types/entities/IProduct';
 import { Language } from 'types/entities/Language';
 
 import { ProductCard } from '../Card/Card';
+import { getPriceByRole } from '../../../types/entities/IPrice';
+import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
 
 export type ProductSliderProps = {
   title?: string;
   emptyText?: string;
   products: IExtendedProduct[];
   language: Language;
-  currency: Currency;
   discount?: number;
   sx?: SxProps;
   onAdd: (product: IProduct, gram: number) => void;
@@ -28,13 +28,15 @@ export function ProductSlider({
   emptyText = 'Продукты не найдены',
   products,
   language,
-  currency,
   discount,
   sx,
   onAdd,
   onRemove,
   onElect,
 }: ProductSliderProps) {
+  const { data: currentUser } = useGetCurrentUserQuery();
+
+
   return (
     <CardSlider
       title={title}
@@ -46,9 +48,8 @@ export function ProductSlider({
           moyskladId={product.moyskladId}
           title={product.title[language]}
           rating={product.grade}
-          price={product.price[currency]}
+          price={getPriceByRole(product.price,currentUser?.role)}
           discount={discount || product.discount}
-          currency={currency}
           productType={product.productType}
           previewImg={product.images[0]?.small || ''}
           countryImg={product.countryImg}

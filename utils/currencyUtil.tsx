@@ -2,13 +2,11 @@ import { Currency, MonetaryCurrency } from 'types/entities/Currency';
 
 type GeneralCurrency = Currency | MonetaryCurrency;
 const symbolByCurrency: Record<GeneralCurrency, JSX.Element> = {
-  // cheeseCoin: <>&#8353;</>,
-  cheeseCoin: <>₽</>,
   rub: <>₽</>,
 };
 
-export function getCurrencySymbol(currencyAbbreviation: GeneralCurrency) {
-  return symbolByCurrency[currencyAbbreviation] || null;
+export function getCurrencySymbol(currencyAbbreviation: GeneralCurrency = 'rub') {
+  return symbolByCurrency.rub;
 }
 
 // изначально цена указывается за 1кг

@@ -3,9 +3,8 @@ import React from 'react';
 import { Stack, SxProps } from '@mui/material';
 
 import { Box } from 'components/UI/Box/Box';
-import { Typography, TypographyProps } from 'components/UI/Typography/Typography';
+import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { Language } from 'types/entities/Language';
 
@@ -16,6 +15,8 @@ import { getDeclensionWordByCount } from 'utils/wordUtil';
 import translation from './Card.i18n.json';
 
 import cardSx from './Card.styles';
+import { getPriceByRole } from '../../../types/entities/IPrice';
+import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
 
 type OrderProductInfoItemProps = {
   title: string;
@@ -86,9 +87,9 @@ type OrderCardProps = {
   promoCodeDiscount?: number;
   referralCodeDiscount?: number;
   delivery: number;
-  currency: Currency;
   language: Language;
   sx?: SxProps;
+  isByCash: boolean;
 };
 
 export function OrderCard({
@@ -98,16 +99,19 @@ export function OrderCard({
   promoCodeDiscount = 0,
   referralCodeDiscount = 0,
   delivery,
-  currency,
   language,
   sx,
+  isByCash
 }: OrderCardProps) {
   const { t } = useLocalTranslation(translation);
 
-  const currencySymbol = getCurrencySymbol(currency);
+  const currencySymbol = getCurrencySymbol();
+  const { data: currentUser } = useGetCurrentUserQuery();
 
   const productInfo = products.map(product => {
-    const priceByGram = getPriceByGrams(product.product.price.cheeseCoin, product.gram) * product.amount;
+    const priceByGram = getPriceByGrams(
+        getPriceByRole(product.product.price, currentUser?.role, isByCash), product.gram
+    ) * product.amount;
 
     return {
       id: product.product.id,

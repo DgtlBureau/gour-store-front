@@ -69,7 +69,7 @@ export function GameLayout({ children }: GameLayoutProps) {
     })) || [];
 
   const count = useAppSelector(selectedProductCount);
-  const totalProductSum = useAppSelector(selectedProductSum);
+  const totalProductSum = useAppSelector((state) => selectedProductSum(state, currentUser));
 
   const [balanceCoinsState, setBalanceCoinsState] = useState<BalanceCoinState>({
     isOpen: false,
@@ -135,7 +135,6 @@ export function GameLayout({ children }: GameLayoutProps) {
         isGame
         selectedCityId={selectedCity?.id || 0}
         cities={convertedCities}
-        currency={currency}
         basketProductCount={count}
         basketProductSum={totalProductSum}
         moneyAmount={balance}

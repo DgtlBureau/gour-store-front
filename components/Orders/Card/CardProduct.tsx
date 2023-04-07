@@ -6,8 +6,6 @@ import { useAppNavigation } from 'components/Navigation';
 import { Box } from 'components/UI/Box/Box';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
-
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { getCurrencySymbol } from 'utils/currencyUtil';
 
@@ -28,10 +26,9 @@ export type OrderProductType = {
 
 type OrderCardProductProps = {
   product: OrderProductType;
-  currency: Currency;
 };
 
-export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
+export function OrderCardProduct({ product }: OrderCardProductProps) {
   const { goToProductPage } = useAppNavigation();
 
   const { t } = useLocalTranslation(translations);
@@ -77,7 +74,7 @@ export function OrderCardProduct({ currency, product }: OrderCardProductProps) {
 
         <Grid item sm={2} xs={4} sx={sx.price}>
           <Typography variant='body1' sx={sx.priceText}>
-            {cost} {getCurrencySymbol(currency)}
+            {cost} {getCurrencySymbol()}
           </Typography>
         </Grid>
       </Grid>

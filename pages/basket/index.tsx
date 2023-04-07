@@ -20,7 +20,6 @@ import {
   selectedProductDiscount,
   selectedProductSum,
   subtractBasketProduct,
-  getWasOrderPostponed,
   setOrderPostponed,
 } from 'store/slices/orderSlice';
 
@@ -53,10 +52,11 @@ import { getErrorMessage } from 'utils/errorUtil';
 import translation from './Basket.i18n.json';
 
 import sx from './Basket.styles';
-import {getCurrentUserCity} from '../../store/slices/authSlice';
+import { getCurrentUserCity } from '../../store/slices/authSlice';
+import { getPriceByRole } from '../../types/entities/IPrice';
 
 export function Basket() {
-  const { language, currency, goToHome, goToOrder,goToSignIn } = useAppNavigation();
+  const { language, goToHome, goToOrder,goToSignIn } = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
@@ -68,7 +68,7 @@ export function Basket() {
 
   const productsInOrder = useAppSelector(selectBasketProducts);
   const count = useAppSelector(selectedProductCount);
-  const productTotalSum = useAppSelector(selectedProductSum);
+  const productTotalSum = useAppSelector((state) => selectedProductSum(state,currentUser));
   const sumDiscount = useAppSelector(selectedProductDiscount);
   const productIds = useAppSelector(selectProductsIdInOrder);
 
@@ -124,6 +124,7 @@ export function Basket() {
           return goToSignIn();
       };
 
+
   return (
     <PrivateLayout>
       <ShopLayout>
@@ -142,7 +143,7 @@ export function Basket() {
                 <Fragment key={it.product.id + it.gram}>
                   <CartCard
                     {...it}
-                    price={getPriceByGrams(it.product.price[currency] || 0, it.gram)}
+                    price={getPriceByGrams(getPriceByRole(it.product.price, currentUser?.role), it.gram)}
                     productImg={it.product.images[0]?.small}
                     backgroundImg={getProductBackground(categories, it.product.categories || [])}
                     onDelete={deleteProduct}
@@ -166,7 +167,6 @@ export function Basket() {
                 discount={sumDiscount}
                 delivery={isDeliveryFree ? 0 : delivery}
                 price={productTotalSum}
-                currency={currency}
               />
               {!isDeliveryFree && (
                 <InfoBlock title={freeDeliveryBlockTitle} actionText={t('continueShopping')} href={`${Path.HOME}`} />
@@ -182,7 +182,6 @@ export function Basket() {
                   title={t('similar')}
                   products={formattedSimilarProducts}
                   language={language}
-                  currency={currency}
                   onAdd={addProduct}
                   onRemove={subtractProduct}
                   onElect={electProduct}

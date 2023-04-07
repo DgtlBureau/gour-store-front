@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react';
 
 import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
 
-import { useGetStockQuery } from 'store/api/warehouseApi';
+import { useLazyGetStockQuery } from 'store/api/warehouseApi';
 import { subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { useAppNavigation } from 'components/Navigation';
@@ -12,7 +12,6 @@ import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { Typography } from 'components/UI/Typography/Typography';
 
-import { Currency } from 'types/entities/Currency';
 import { IProduct } from 'types/entities/IProduct';
 
 import { Path } from 'constants/routes';
@@ -28,6 +27,7 @@ import PlusIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MinusIcon from '@mui/icons-material/Remove';
 import defaultImg from 'assets/images/default.svg';
+import { getStockLabel } from '../../Product/Card/Card';
 
 type Props = {
   product: IProduct;
@@ -37,7 +37,6 @@ type Props = {
   productImg: string;
   backgroundImg?: string;
   discount?: number;
-  currency?: Currency;
   onAdd: (product: IProduct, gram: number) => void;
   onSubtract: (product: IProduct, gram: number) => void;
   onDelete: (product: IProduct, gram: number) => void;
@@ -52,7 +51,6 @@ export const CartCard = memo(
     productImg,
     backgroundImg,
     discount,
-    currency = 'cheeseCoin',
     onDelete,
     onAdd,
     onSubtract,
@@ -61,37 +59,40 @@ export const CartCard = memo(
     const { language } = useAppNavigation();
     const dispatch = useAppDispatch();
 
-    const { id, moyskladId } = product;
+    const { id, moyskladId, weight, defaultStock } = product;
     const title = product.title[language];
 
     const shouldSkipGettingStocks = !gram || !moyskladId;
-    const {
-      data: stock,
-      isFetching: isStockFetching,
-      isError: isStockError,
-      isSuccess: isStockSuccess,
-    } = useGetStockQuery(
-      {
-        city: 'Санкт-Петербург',
-        gram: String(gram),
-        warehouseId: String(moyskladId),
-      },
-      {
-        skip: shouldSkipGettingStocks,
-      },
-    );
+    const [
+        getStockQuery, {
+        data: stock,
+        isFetching: isStockFetching,
+        isError: isStockError
+    }
+    ] = useLazyGetStockQuery();
+    useEffect(() => {
+        getStockQuery({
+            city: 'Санкт-Петербург',
+            gram: String(gram),
+            warehouseId: String(moyskladId),
+        })
+    },[]);
 
+    const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+
+    const maxPossibleAmount = weight ? (weight / gram) : someStock?.value;
     useEffect(() => {
       // update product amount with moySlad's stocks
-      if (isStockSuccess && amount > +stock.value) {
-        const subtractCount = amount - +stock.value;
+      if (amount > maxPossibleAmount) {
+        const subtractCount = amount - maxPossibleAmount;
         dispatch(subtractBasketProduct({ product, gram, count: subtractCount }));
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, product, stock, isStockSuccess]);
+    }, [dispatch, product, stock]);
 
-    const isAmountMoreThanCost = !isStockFetching && amount >= Number(stock?.value || 0);
-    const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks;
+    const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
+    const isAddDisabled = isStockFetching || (isStockError && !weight) || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
+    const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,gram,someStock?.value);
 
     const screenWidth = window.screen.width;
 
@@ -127,7 +128,7 @@ export const CartCard = memo(
               </Link>
 
               {screenWidth > 600 ? (
-                <Docket currency={currency} discount={discount} price={price} amount={amount} />
+                <Docket discount={discount} price={price} amount={amount} />
               ) : (
                 <IconButton size='small' onClick={handleDeleteClick} sx={sx.cancelBtn}>
                   <CancelIcon />
@@ -137,9 +138,9 @@ export const CartCard = memo(
             <Typography variant='body2' color='primary'>
               {gram} грам
             </Typography>
-            {!isStockFetching && !!stock && (
+            {!isStockFetching &&  (
               <Typography variant='body2' color='primary'>
-                Осталось {stock.value} шт
+                  {stockLabel}
               </Typography>
             )}
           </CardContent>
@@ -163,7 +164,7 @@ export const CartCard = memo(
               </IconButton>
             </Box>
 
-            {screenWidth <= 600 && <Docket currency={currency} discount={discount} price={price} amount={amount} />}
+            {screenWidth <= 600 && <Docket discount={discount} price={price} amount={amount} />}
           </CardActions>
         </Box>
       </Card>

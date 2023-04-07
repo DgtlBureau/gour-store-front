@@ -21,7 +21,6 @@ const props: Partial<HeaderProps> = {
   selectedCityId: 1,
   basketProductCount: 5,
   basketProductSum: 15000,
-  currency: 'cheeseCoin',
   moneyAmount: 1000,
   cities: [
     {

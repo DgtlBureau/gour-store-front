@@ -92,7 +92,6 @@ export function Favorites() {
             products={filteredProducts}
             categories={categories}
             language={language}
-            currency={currency}
             onAdd={addToBasket}
             onRemove={removeFromBasket}
             onElect={electProduct}

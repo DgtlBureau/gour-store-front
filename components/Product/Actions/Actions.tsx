@@ -5,7 +5,6 @@ import { getProductKeyInBasket } from 'pages/personal-area/orders/ordersHelper';
 
 import { IconButton } from 'components/UI/IconButton/IconButton';
 
-import { Currency } from 'types/entities/Currency';
 import { IOption } from 'types/entities/IOption';
 import { IOrderProduct } from 'types/entities/IOrderProduct';
 import { ProductTypeLabel } from 'types/entities/IProduct';
@@ -14,7 +13,6 @@ import { productGramList } from 'constants/gramList';
 import { useAppSelector } from 'hooks/store';
 import { getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getPriceByGrams } from 'utils/currencyUtil';
-import { getErrorMessage } from 'utils/errorUtil';
 
 import { getStockLabel } from '../Card/Card';
 import { ProductCardCart } from '../Card/Cart/Cart';
@@ -25,7 +23,7 @@ import { ProductStock } from '../Stock/Stock';
 import sxActions from './Actions.styles';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {useLazyGetStockQuery} from 'store/api/warehouseApi';
+import { useLazyGetStockQuery } from 'store/api/warehouseApi';
 
 export type ProductActionsProps = {
   id: number;
@@ -35,7 +33,6 @@ export type ProductActionsProps = {
   price: number;
   discount?: number;
   productType: ProductTypeLabel;
-  currency: Currency;
   sx?: SxProps;
   isElect: boolean;
   onAdd: (gram: number) => void;
@@ -51,7 +48,6 @@ export function ProductActions({
   currentUserCity,
   price,
   discount,
-  currency,
   productType,
   sx = {},
   isElect,
@@ -79,17 +75,17 @@ export function ProductActions({
     },[]);
 
 
-    const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
-    const changeGram = (value: string | number) => {
-        selectProductGramValue(+value);
-        if (!weight) {
-            getStockQuery({
-                city: 'Санкт-Петербург',
-                gram: String(value),
-                warehouseId: String(moyskladId),
-            })
-        }
-    }
+  const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+  const changeGram = (value: string | number) => {
+      selectProductGramValue(+value);
+      if (!weight) {
+          getStockQuery({
+              city: 'Санкт-Петербург',
+              gram: String(value),
+              warehouseId: String(moyskladId),
+          })
+      }
+  }
 
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
@@ -125,7 +121,7 @@ export function ProductActions({
   return (
     <Grid container sx={{ ...sx, ...sxActions.container } as SxProps}>
       <Grid item xs md={12}>
-        <ProductPrice price={totalCost} discount={discount} currency={currency} />
+        <ProductPrice price={totalCost} discount={discount} />
       </Grid>
       <Grid item>
         <ProductCardGramSelect

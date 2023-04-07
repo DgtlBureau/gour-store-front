@@ -93,7 +93,7 @@ type OrderStatusModal =
   | null;
 
 export function Order() {
-  const { goToOrders, goToHome, language, currency, goToSuccessPayment, goToFailurePayment } = useAppNavigation();
+  const { goToOrders, goToHome, language, goToFailurePayment } = useAppNavigation();
 
   const { t } = useLocalTranslation(translation);
 
@@ -158,7 +158,9 @@ export function Order() {
   const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
   const productsInOrder = useAppSelector(selectBasketProducts);
-  const totalProductsSum = useAppSelector(selectedProductSum);
+  const [isCash, changeIsCash] = useState(false);
+
+  const totalProductsSum = useAppSelector((state) => selectedProductSum(state,currentUser,isCash));
   const sumDiscount = useAppSelector(selectedProductDiscount);
 
   const totalDeliveryCost = useMemo(() => {
@@ -171,7 +173,7 @@ export function Order() {
     }
     return currentUser?.city.deliveryCost || 0;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, totalProductsSum, formDeliveryCityId]);
+  }, [currentUser, totalProductsSum, formDeliveryCityId, isCash]);
 
   useEffect(() => {
     if (isPaySuccess) {
@@ -491,6 +493,10 @@ export function Order() {
     [deliveryProfiles],
   );
 
+  const changePaymentMethodHandle = (value: any) => {
+    changeIsCash(value === 'cash');
+  }
+
   const infoModalContent = useMemo(() => {
     if (!orderStatusModal)
       return {
@@ -552,6 +558,7 @@ export function Order() {
                 deliveryProfiles={formattedDeliveryProfiles}
                 onAddPromoCode={addPromoCode}
                 onSelectDeliveryProfile={selectDeliveryProfile}
+                onChangePaymentMethod={changePaymentMethodHandle}
                 onSubmit={handleCreateOrder}
                 onChangeDeliveryCity={setFormDeliveryCityId}
                 handleClickSBPButton={userAgent === UserAgent.MOBILE ? redirectToSBPLink : handleClickSBPButton}
@@ -560,13 +567,13 @@ export function Order() {
 
             <Grid item md={4} xs={12}>
               <OrderCard
+                isByCash={isCash}
                 products={productsInOrder}
                 cost={totalProductsSum}
                 promotionsDiscount={sumDiscount}
                 referralCodeDiscount={referralCodeDiscountValue}
                 promoCodeDiscount={promoCodeDiscountValue}
                 delivery={totalDeliveryCost}
-                currency={currency}
                 language={language}
               />
             </Grid>

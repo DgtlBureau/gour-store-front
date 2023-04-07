@@ -26,7 +26,6 @@ export const DefaultProductPreview = Template.bind({});
 
 const props: Partial<ProductActionsProps> = {
   price: 500,
-  currency: 'cheeseCoin',
   discount: 50,
 };
 

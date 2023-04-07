@@ -43,7 +43,6 @@ const Promotion = memo(function Promotion() {
   const {
     goToHome,
     language,
-    currency,
     query: { id: queryId },
   } = useAppNavigation();
 
@@ -121,7 +120,6 @@ const Promotion = memo(function Promotion() {
                 products={formattedPromotionProducts}
                 discount={promotion?.discount}
                 language={language}
-                currency={currency}
                 onAdd={addToBasket}
                 onRemove={removeFromBasket}
                 onElect={electProduct}
