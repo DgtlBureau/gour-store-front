@@ -48,7 +48,7 @@ const NOW = new Date();
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, language, currency } = useAppNavigation();
+  const { goToPromotionPage, language } = useAppNavigation();
 
   // TODO: вынести сюда в useMemo добавление к продуктам favoriteProducts, миллион расчетов для категорий
   // а в каждом отдельном компоненте <ProductCard /> чекать корзину по ключу "id:id", чтобы избежать ререндера у всех компонентов

@@ -35,7 +35,7 @@ import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
-import { useAppDispatch } from 'hooks/store';
+import {useAppDispatch, useAppSelector} from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
@@ -49,6 +49,7 @@ import sx from './Product.styles';
 
 import HeartIcon from '@mui/icons-material/Favorite';
 import { getPriceByRole } from '../../types/entities/IPrice';
+import { selectIsAuth } from '../../store/selectors/auth';
 
 const getProductReviews = (comments: IProductGrade[]) =>
   comments
@@ -75,7 +76,8 @@ export default function Product() {
 
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery();
   const { data: categories = [], isLoading: isCategoriesLoading } = useGetCategoryListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
 
   const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ gram, product }));
 

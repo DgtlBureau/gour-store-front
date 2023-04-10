@@ -10,6 +10,8 @@ import { Language } from 'types/entities/Language';
 import { ProductCard } from '../Card/Card';
 import { getPriceByRole } from '../../../types/entities/IPrice';
 import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
+import { useAppSelector } from '../../../hooks/store';
+import { selectIsAuth } from '../../../store/selectors/auth';
 
 export type ProductSliderProps = {
   title?: string;
@@ -34,8 +36,8 @@ export function ProductSlider({
   onRemove,
   onElect,
 }: ProductSliderProps) {
-  const { data: currentUser } = useGetCurrentUserQuery();
-
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
 
   return (
     <CardSlider

@@ -20,6 +20,8 @@ import catalogSx from './Catalog.styles';
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 import { getPriceByRole, IPrice } from '../../../types/entities/IPrice';
 import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
+import { useAppSelector } from '../../../hooks/store';
+import { selectIsAuth } from '../../../store/selectors/auth';
 
 export type ProductCatalogProps = {
   title?: string;
@@ -49,7 +51,8 @@ export const ProductCatalog = memo(
     onRemove,
     onElect,
   }: ProductCatalogProps) => {
-    const { data: currentUser } = useGetCurrentUserQuery();
+    const isAuth = useAppSelector(selectIsAuth);
+    const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
     const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
     const [filters, setFilters] = useState<IFilters>({
       orderType: 'price',

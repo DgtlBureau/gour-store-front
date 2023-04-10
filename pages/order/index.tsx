@@ -55,6 +55,7 @@ import { filterOrderProductsByCategories, getOrderDiscountValue } from 'utils/or
 import translation from './Order.i18n.json';
 
 import sx from './Order.styles';
+import { selectIsAuth } from '../../store/selectors/auth';
 
 const defaultPersonalFields = {
   firstName: '',
@@ -123,7 +124,8 @@ export function Order() {
   const [referralCodeDiscountValue, setReferralCodeDiscountValue] = useState(0);
   const [promoCodeDiscountValue, setPromoCodeDiscountValue] = useState(0);
 
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
   const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
   const { data: cities = [] } = useGetCityListQuery();
 

@@ -22,7 +22,7 @@ import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
 import { Path } from 'constants/routes';
-import {useAppDispatch, useAppSelector} from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
@@ -30,8 +30,8 @@ import { getErrorMessage } from 'utils/errorUtil';
 import translations from './PA.i18n.json';
 
 import sx from './PA.styles';
-import {setCurrentCity} from "../../store/slices/citySlice";
-import {selectIsAuth} from "../../store/selectors/auth";
+import { setCurrentCity } from '../../store/slices/citySlice';
+import { selectIsAuth } from '../../store/selectors/auth';
 
 type BalanceCoinState = { isOpen: false } | { isOpen: true; coins?: number };
 type BuyCoinsState = { isOpen: false } | { isOpen: true; price: number };
@@ -41,16 +41,16 @@ export interface PALayoutProps {
 }
 
 export function PALayout({ children }: PALayoutProps) {
-  const { language, pathname, currency, goToSuccessPayment, goToFailurePayment, goToIntro } = useAppNavigation();
+  const { language, pathname, goToSuccessPayment, goToFailurePayment, goToIntro } = useAppNavigation();
 
   const { data: cities } = useGetCityListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
   const { data: balance = 0 } = useGetCurrentBalanceQuery();
 
   const [signOut] = useSignOutMutation();
   const [changeCity] = useChangeCurrentCityMutation();
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(selectIsAuth);
   if (!isAuth) {
     goToIntro();
     return null

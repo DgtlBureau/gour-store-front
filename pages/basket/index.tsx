@@ -54,6 +54,7 @@ import translation from './Basket.i18n.json';
 import sx from './Basket.styles';
 import { getCurrentUserCity } from '../../store/slices/authSlice';
 import { getPriceByRole } from '../../types/entities/IPrice';
+import { selectIsAuth } from '../../store/selectors/auth';
 
 export function Basket() {
   const { language, goToHome, goToOrder,goToSignIn } = useAppNavigation();
@@ -63,7 +64,8 @@ export function Basket() {
   const { t } = useLocalTranslation(translation);
 
   const { data: categories = [] } = useGetCategoryListQuery();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
   const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery(undefined,{skip: !currentUser});
 
   const productsInOrder = useAppSelector(selectBasketProducts);

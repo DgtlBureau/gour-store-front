@@ -23,7 +23,7 @@ import { InvoiceStatus } from 'types/entities/IInvoice';
 import { NotificationType } from 'types/entities/Notification';
 
 import { contacts } from 'constants/contacts';
-import {useAppDispatch, useAppSelector} from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -126,7 +126,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
 
   return (
     <Box sx={sx.layout}>
-      {isAuth && (
+      {
         <Header
           {...contacts}
           selectedCityId={selectedCity?.id || 0}
@@ -138,7 +138,7 @@ export function ShopLayout({ children }: ShopLayoutProps) {
           onClickAddCoins={handleOpenCoinsAddModal}
           onClickSignout={signOut}
         />
-      )}
+      }
 
       <Box sx={sx.content}>{children}</Box>
 
