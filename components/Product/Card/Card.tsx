@@ -93,16 +93,16 @@ export const ProductCard = memo(function ProductCard({
 }: ProductCardProps) {
   const [gramValue, setGramValue] = useState(() => productType && getDefaultGramByProductType(productType));
 
-  const shouldSkipGettingStocks = !gramValue || !moyskladId;
-  const [
-    getStockQuery, {
-      data: stock,
-      isFetching: isStockFetching,
-      isError: isStockError
-    }
-   ] = useLazyGetStockQuery();
-
-  const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+  // const shouldSkipGettingStocks = !gramValue || !moyskladId;
+  // const [
+  //   getStockQuery, {
+  //     data: stock,
+  //     isFetching: isStockFetching,
+  //     isError: isStockError
+  //   }
+  //  ] = useLazyGetStockQuery();
+  //
+  // const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
 
   const basketProductsKey = getProductKeyInBasket(id, gramValue);
   const basketProduct = useAppSelector(state => state.order.products[basketProductsKey]) as IOrderProduct | undefined;
@@ -119,21 +119,24 @@ export const ProductCard = memo(function ProductCard({
 
   const changeGram = (value: string | number) => {
     setGramValue(+value);
-    if (!weight) {
-      getStockQuery({
-        city: 'Санкт-Петербург',
-        gram: String(value),
-        warehouseId: String(moyskladId),
-      })
-    }
+    // if (!weight) {
+    //   getStockQuery({
+    //     city: 'Санкт-Петербург',
+    //     gram: String(value),
+    //     warehouseId: String(moyskladId),
+    //   })
+    // }
   }
 
   const priceByGram = getPriceByGrams(price, gramValue);
 
-  const maxPossibleAmount = weight ? (weight / gramValue) : someStock?.value;
-  const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(maxPossibleAmount);
-  const isAddDisabled =
-    isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
+  // const maxPossibleAmount = weight ? (weight / gramValue) : someStock?.value;
+  // const isAmountMoreThanCost = !isStockFetching && (basketProduct?.amount || 0) >= Number(maxPossibleAmount);
+  // const isAddDisabled =
+  //     isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
+  const maxPossibleAmount = weight / gramValue;
+  const isAmountMoreThanCost = (basketProduct?.amount || 0) >= Number(maxPossibleAmount);
+  const isAddDisabled = isAmountMoreThanCost || !weight;
 
   const handleAddClick = () => {
     if (!isAddDisabled) onAdd(gramValue);
@@ -145,7 +148,7 @@ export const ProductCard = memo(function ProductCard({
 
   const backgroundImage = `url('${backgroundImg}')`;
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId, weight,gramValue,someStock?.value);
+  const stockLabel = getStockLabel(false, false, moyskladId, weight,gramValue,undefined);
 
   return (
     <Box sx={sx.card}>

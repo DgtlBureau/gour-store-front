@@ -58,33 +58,33 @@ export function ProductActions({
 }: ProductActionsProps) {
   const [productGramValue, selectProductGramValue] = useState(() => getDefaultGramByProductType(productType));
 
-  const shouldSkipGettingStocks = !productGramValue || !moyskladId;
-    const [
-        getStockQuery, {
-            data: stock,
-            isFetching: isStockFetching,
-            isError: isStockError
-        }
-    ] = useLazyGetStockQuery();
-    useEffect(() => {
-        getStockQuery({
-            city: 'Санкт-Петербург',
-            gram: String(productGramValue),
-            warehouseId: String(moyskladId),
-        })
-    },[]);
+  // const shouldSkipGettingStocks = !productGramValue || !moyskladId;
+  //   const [
+  //       getStockQuery, {
+  //           data: stock,
+  //           isFetching: isStockFetching,
+  //           isError: isStockError
+  //       }
+  //   ] = useLazyGetStockQuery();
+  //   useEffect(() => {
+  //       getStockQuery({
+  //           city: 'Санкт-Петербург',
+  //           gram: String(productGramValue),
+  //           warehouseId: String(moyskladId),
+  //       })
+  //   },[]);
 
 
-  const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+  // const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
   const changeGram = (value: string | number) => {
       selectProductGramValue(+value);
-      if (!weight) {
-          getStockQuery({
-              city: 'Санкт-Петербург',
-              gram: String(value),
-              warehouseId: String(moyskladId),
-          })
-      }
+      // if (!weight) {
+      //     getStockQuery({
+      //         city: 'Санкт-Петербург',
+      //         gram: String(value),
+      //         warehouseId: String(moyskladId),
+      //     })
+      // }
   }
 
   const basketProductsKey = getProductKeyInBasket(id, productGramValue);
@@ -101,11 +101,14 @@ export function ProductActions({
 
   const amount = basketProduct?.amount || 1;
 
-  const maxPossibleAmount = weight ? (weight / productGramValue) : someStock?.value;
-  const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
-  const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks  || (!someStock?.value && !weight);
+  // const maxPossibleAmount = weight ? (weight / productGramValue) : someStock?.value;
+    // const isAddDisabled = isStockFetching || isStockError || isAmountMoreThanCost || shouldSkipGettingStocks  || (!someStock?.value && !weight);
+    // const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
+  const maxPossibleAmount = weight / productGramValue;
+  const isAmountMoreThanCost = amount >= Number(maxPossibleAmount);
+  const isAddDisabled = isAmountMoreThanCost|| !weight;
 
-  const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,productGramValue,someStock?.value);
+  const stockLabel = getStockLabel(false, false, moyskladId,weight,productGramValue,undefined);
 
   const priceByGram = getPriceByGrams(price, productGramValue);
   const totalCost = priceByGram * amount;

@@ -62,25 +62,26 @@ export const CartCard = memo(
     const { id, moyskladId, weight, defaultStock } = product;
     const title = product.title[language];
 
-    const shouldSkipGettingStocks = !gram || !moyskladId;
-    const [
-        getStockQuery, {
-        data: stock,
-        isFetching: isStockFetching,
-        isError: isStockError
-    }
-    ] = useLazyGetStockQuery();
-    useEffect(() => {
-        getStockQuery({
-            city: 'Санкт-Петербург',
-            gram: String(gram),
-            warehouseId: String(moyskladId),
-        })
-    },[]);
+    // const shouldSkipGettingStocks = !gram || !moyskladId;
+    // const [
+    //     getStockQuery, {
+    //     data: stock,
+    //     isFetching: isStockFetching,
+    //     isError: isStockError
+    // }
+    // ] = useLazyGetStockQuery();
+    // useEffect(() => {
+    //     getStockQuery({
+    //         city: 'Санкт-Петербург',
+    //         gram: String(gram),
+    //         warehouseId: String(moyskladId),
+    //     })
+    // },[]);
 
-    const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
+    // const someStock: any = Object.keys(stock ?? {}).length ? stock : defaultStock;
 
-    const maxPossibleAmount = weight ? (weight / gram) : someStock?.value;
+    // const maxPossibleAmount = weight ? (weight / gram) : someStock?.value;
+    const maxPossibleAmount = weight / gram;
     useEffect(() => {
       // update product amount with moySlad's stocks
       if (amount > maxPossibleAmount) {
@@ -88,11 +89,13 @@ export const CartCard = memo(
         dispatch(subtractBasketProduct({ product, gram, count: subtractCount }));
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, product, stock]);
+    }, [dispatch, product]);
 
-    const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
-    const isAddDisabled = isStockFetching || (isStockError && !weight) || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
-    const stockLabel = getStockLabel(isStockFetching, isStockError, moyskladId,weight,gram,someStock?.value);
+    // const isAmountMoreThanCost = !isStockFetching && amount >= Number(maxPossibleAmount);
+      // const isAddDisabled = isStockFetching || (isStockError && !weight) || isAmountMoreThanCost || shouldSkipGettingStocks || (!someStock?.value && !weight);
+    const isAmountMoreThanCost = amount >= Number(maxPossibleAmount);
+    const isAddDisabled = isAmountMoreThanCost || !weight;
+    const stockLabel = getStockLabel(false, false, moyskladId,weight,gram,undefined);
 
     const screenWidth = window.screen.width;
 
@@ -138,11 +141,9 @@ export const CartCard = memo(
             <Typography variant='body2' color='primary'>
               {gram} грам
             </Typography>
-            {!isStockFetching &&  (
               <Typography variant='body2' color='primary'>
                   {stockLabel}
               </Typography>
-            )}
           </CardContent>
 
           <CardActions sx={sx.actions}>
