@@ -212,6 +212,10 @@ export function Order() {
 
 
   const handlePayOrder = async (orderData: OrderFormType) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ym(92190821,'reachGoal','completed-order');
+
     const {
       firstName,
       lastName,
@@ -277,10 +281,6 @@ export function Order() {
       orderData,
       price,
     });
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ym(92190821,'reachGoal','completed-order');
 
     if (orderData.paymentMethod === 'cash') {
       try {
