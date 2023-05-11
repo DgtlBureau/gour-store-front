@@ -114,7 +114,12 @@ export function ProductActions({
   const totalCost = priceByGram * amount;
 
   const handleAddClick = () => {
-    if (!isAddDisabled) onAdd(productGramValue);
+    if (!isAddDisabled) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ym(92190821,'reachGoal','add-product-to-basket');
+        onAdd(productGramValue)
+    }
   };
 
   const handleRemoveClick = () => {

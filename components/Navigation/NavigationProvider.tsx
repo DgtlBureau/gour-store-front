@@ -46,7 +46,12 @@ function NavigationProvider({ children }: Props) {
   const goToOrders = useCallback(() => router?.push(`/${Path.PERSONAL_AREA}/${Path.ORDERS}`), []);
 
   const goToFavorites = useCallback(() => router?.push(`/${Path.FAVORITES}`), []);
-  const goToBasket = useCallback(() => router?.push(`/${Path.BASKET}`), []);
+  const goToBasket = useCallback(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ym(92190821,'reachGoal','went-to-basket')
+      return router?.push(`/${Path.BASKET}`);
+  }, []);
   const goToPersonalArea = useCallback(() => router?.push(`/${Path.PERSONAL_AREA}`), []);
 
   const goToPromotionPage = useCallback((id: number) => router?.push(`/${Path.PROMOTIONS}/${id}`), []);

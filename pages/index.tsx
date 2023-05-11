@@ -97,7 +97,13 @@ const Home: NextPage = () => {
   const isLoading =
     categoriesIsLoading || productsIsLoading || noveltiesIsLoading || promotionsIsLoading || mainPageIsLoading;
 
-  const addToBasket = (product: IProduct, gram: number) => dispatch(addBasketProduct({ product, gram }));
+  const addToBasket = (product: IProduct, gram: number) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ym(92190821,'reachGoal','add-product-to-basket');
+    dispatch(addBasketProduct({product, gram}))
+  };
+
   const removeFromBasket = (product: IProduct, gram: number) => dispatch(subtractBasketProduct({ product, gram }));
 
   const [removeFavorite] = useDeleteFavoriteProductMutation();

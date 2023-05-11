@@ -278,6 +278,10 @@ export function Order() {
       price,
     });
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ym(92190821,'reachGoal','completed-order');
+
     if (orderData.paymentMethod === 'cash') {
       try {
         const payOrderDto = (await handlePayOrder(orderData)) as IOrder;
