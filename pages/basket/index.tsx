@@ -124,7 +124,7 @@ export function Basket() {
     // @ts-ignore
     ym(92190821,'reachGoal','went-to-order');
     return currentUser ?
-        goToOrder
+        goToOrder()
         : () => {
           dispatch(setOrderPostponed(true));
           return goToSignIn();
