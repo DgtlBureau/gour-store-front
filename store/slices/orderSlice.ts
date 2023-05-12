@@ -11,6 +11,7 @@ import { IProduct } from 'types/entities/IProduct';
 import { getPriceByGrams } from 'utils/currencyUtil';
 import { getPriceByRole} from '../../types/entities/IPrice';
 import { ICurrentUser } from '../../types/entities/ICurrentUser';
+import { getProductForDataLayer } from '../../utils/metricaUtil';
 
 interface OrderFormContacts {
   firstName: string;
@@ -55,6 +56,19 @@ export const orderSlice = createSlice({
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.dataLayer.push({
+        'ecommerce': {
+          'currencyCode': 'RUB',
+          'add': {
+            'products': [
+              getProductForDataLayer(gram, product)
+            ]
+          }
+        }
+      });
+
       const productKey = getProductKeyInBasket(product.id, gram);
       const stateProduct = state.products[productKey];
 
@@ -75,6 +89,19 @@ export const orderSlice = createSlice({
       const productKey = getProductKeyInBasket(product.id, gram);
       const stateProduct = state.products[productKey];
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.dataLayer.push({
+        'ecommerce': {
+          'currencyCode': 'RUB',
+          'remove': {
+            'products': [
+              getProductForDataLayer(gram, product)
+            ]
+          }
+        }
+      });
+
       if (stateProduct.amount === 1) {
         delete state.products[productKey];
       } else {
@@ -82,10 +109,26 @@ export const orderSlice = createSlice({
       }
     },
 
-    removeProduct: (state, action: PayloadAction<{ gram: number; product: IProduct }>) => {
-      const { gram, product } = action.payload;
+    removeProduct: (state, action: PayloadAction<{ gram: number; product: IProduct; byUser?: boolean }>) => {
+      const { gram, product, byUser = true } = action.payload;
 
       const productKey = getProductKeyInBasket(product.id, gram);
+
+      if (byUser) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        window.dataLayer.push({
+          'ecommerce': {
+            'currencyCode': 'RUB',
+            'remove': {
+              'products': [
+                getProductForDataLayer(gram, product, undefined, state.products[productKey].amount)
+              ]
+            }
+          }
+        });
+      }
+
       delete state.products[productKey];
     },
 

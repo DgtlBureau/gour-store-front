@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 import { LinearProgress, SxProps } from '@mui/material';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
@@ -35,10 +35,10 @@ import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
-import {useAppDispatch, useAppSelector} from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
-import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { computeProductsWithCategories, getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -50,6 +50,7 @@ import sx from './Product.styles';
 import HeartIcon from '@mui/icons-material/Favorite';
 import { getPriceByRole } from '../../types/entities/IPrice';
 import { selectIsAuth } from '../../store/selectors/auth';
+import { getProductForDataLayer } from 'utils/metricaUtil';
 
 const getProductReviews = (comments: IProductGrade[]) =>
   comments
@@ -146,6 +147,30 @@ export default function Product() {
       product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
     [product, categories, favoriteProducts],
   );
+
+  useEffect(() => {
+    if (!product || !productType) {
+        return;
+    }
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.dataLayer.push({
+          'ecommerce': {
+              'currencyCode': 'RUB',
+              'detail': {
+                  'products': [
+                      getProductForDataLayer(
+                          getDefaultGramByProductType(productType),
+                          product,
+                          currentUser,
+                          1
+                      )
+                  ]
+              }
+          }
+      });
+  },[product]);
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
 

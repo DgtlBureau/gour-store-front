@@ -23,7 +23,6 @@ import { ProductStock } from '../Stock/Stock';
 import sxActions from './Actions.styles';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useLazyGetStockQuery } from 'store/api/warehouseApi';
 
 export type ProductActionsProps = {
   id: number;
