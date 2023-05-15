@@ -123,12 +123,12 @@ export function Basket() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     ym(92190821,'reachGoal','went-to-order');
-    return currentUser ?
-        goToOrder()
-        : () => {
-          dispatch(setOrderPostponed(true));
-          return goToSignIn();
-        }
+    if (currentUser) {
+      return goToOrder();
+    }
+
+    dispatch(setOrderPostponed(true));
+    return goToSignIn();
   };
 
 
