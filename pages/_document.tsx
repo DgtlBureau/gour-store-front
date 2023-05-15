@@ -62,13 +62,8 @@ class MyDocument extends Document {
                       clickmap:true,
                       trackLinks:true,
                       accurateTrackBounce:true,
+                      ecommerce:"dataLayer",
                       webvisor:true
-                 });
-                 ym(93547510, "init", {
-                      clickmap:true,
-                      trackLinks:true,
-                      accurateTrackBounce:true,
-                      ecommerce:"dataLayer"
                  });
                  window.dataLayer = window.dataLayer || [];
             `,
@@ -78,7 +73,6 @@ class MyDocument extends Document {
           <noscript>
             <div>
               <img src='https://mc.yandex.ru/watch/92190821' style={{ position: 'absolute', left: '-9999px' }} alt='' />
-              <img src='https://mc.yandex.ru/watch/93547510' style={{ position: 'absolute', left: '-9999px' }} alt='' />
             </div>
           </noscript>
         </body>
