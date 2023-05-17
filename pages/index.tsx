@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import React, { useCallback, useMemo } from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import {
@@ -42,13 +42,17 @@ import translations from './Main.i18n.json';
 import sx from './Main.styles';
 
 import defaultBannerImg from 'assets/images/banner.jpeg';
+import { Review } from '../components/Product/Reviews/Reviews';
+import { getProductReviews } from '../utils/reviewUtil';
+import { useGetGradeListQuery} from '../store/api/productGradeApi';
+import { ProductReviewsForMain } from '../components/Product/Reviews/ReviewsForMain';
 
 const NOW = new Date();
 
 const Home: NextPage = () => {
   const { t } = useLocalTranslation(translations);
 
-  const { goToPromotionPage, language } = useAppNavigation();
+  const { goToPromotionPage, goToProductPage, language } = useAppNavigation();
 
   // TODO: вынести сюда в useMemo добавление к продуктам favoriteProducts, миллион расчетов для категорий
   // а в каждом отдельном компоненте <ProductCard /> чекать корзину по ключу "id:id", чтобы избежать ререндера у всех компонентов
@@ -81,6 +85,12 @@ const Home: NextPage = () => {
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
 
   const bannerImg = page?.bannerImg?.full || defaultBannerImg;
+
+  const { data: grades = [] } = useGetGradeListQuery(
+      { withComments: true, isApproved: true, length: 8 }
+  );
+  const reviews = getProductReviews(grades);
+  const hasReviews = !!reviews.length;
 
   const formattedNovelties = useMemo(
     () =>
@@ -150,8 +160,10 @@ const Home: NextPage = () => {
   const hasPromotions = !!filteredPromotions?.length;
   const hasNovelties = !!novelties.length;
   const hasProducts = !!products.length;
-
-  const bannerPromoImage = promotions?.[0]?.cardImage.small;
+  const commentBlockRef = useRef<HTMLDivElement>(null);
+  const onReviewClick = (review: Review) => {
+    goToProductPage(review.productId);
+  };
 
   return (
     <PrivateLayout>
@@ -184,6 +196,10 @@ const Home: NextPage = () => {
             onRemove={removeFromBasket}
             onElect={electProduct}
           />
+        )}
+
+        {hasReviews && !productsIsLoading && (
+          <ProductReviewsForMain sx={sx.reviews} reviews={reviews} ref={commentBlockRef} onReviewClick={onReviewClick} />
         )}
 
         {!!page && (

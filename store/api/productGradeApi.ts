@@ -19,6 +19,16 @@ export const productGradeApi = commonApi.injectEndpoints({
         },
         providesTags: (_result, _err, arg) => [{ type: 'ProductGrade', id: arg.productId }],
       }),
+      getGradeList: builder.query<IProductGrade[], GetProductGradeListDto>({
+        query({  ...params }) {
+          return {
+            method: 'GET',
+            url: `${Path.PRODUCTS}/${Path.GRADES}`,
+            params,
+          };
+        },
+        providesTags: (_result, _err, arg) => [{ type: 'ProductGrade', id: arg.productId }],
+      }),
       createProductGrade: builder.mutation<IProductGrade, CreateProductGradeDto>({
         query({ productId, ...body }) {
           return {
@@ -36,4 +46,4 @@ export const productGradeApi = commonApi.injectEndpoints({
   },
 });
 
-export const { useCreateProductGradeMutation, useGetProductGradeListQuery } = productGradeApi;
+export const { useCreateProductGradeMutation, useGetProductGradeListQuery, useGetGradeListQuery } = productGradeApi;

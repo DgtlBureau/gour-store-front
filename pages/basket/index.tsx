@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Fragment, useCallback, useMemo } from 'react';
 
-import { Divider, Grid } from '@mui/material';
+import {Breadcrumbs, Divider, Grid} from '@mui/material';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -55,6 +55,7 @@ import sx from './Basket.styles';
 import { getCurrentUserCity } from '../../store/slices/authSlice';
 import { getPriceByRole } from '../../types/entities/IPrice';
 import { selectIsAuth } from '../../store/selectors/auth';
+import { LinkRef as Link } from '../../components/UI/Link/Link';
 
 export function Basket() {
   const { language, goToHome, goToOrder,goToSignIn } = useAppNavigation();
@@ -135,6 +136,13 @@ export function Basket() {
   return (
     <PrivateLayout>
       <ShopLayout>
+        <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
+          <Link underline="hover" color="inherit" href="/">
+            Главная
+          </Link>
+          <Typography variant='h6' sx={{fontWeight: 700}}>{t('cart')}</Typography>
+        </Breadcrumbs>
+
         <Typography variant='h3' sx={sx.title}>
           {t('cart')}
         </Typography>

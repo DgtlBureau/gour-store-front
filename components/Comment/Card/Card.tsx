@@ -41,11 +41,12 @@ export type CommentCardProps = {
   date: string;
   text: string;
   onClick: () => void;
+  commentSx?: any;
 };
 
-export function CommentCard({ title, grade, date, text, onClick }: CommentCardProps) {
+export function CommentCard({ title, grade, date, text, onClick, commentSx = {} }: CommentCardProps) {
   return (
-    <Paper sx={sx.comment} elevation={0} onClick={onClick}>
+    <Paper sx={{...sx.comment, ...commentSx}} elevation={0} onClick={onClick}>
       <Typography variant='body1' color='primary'>
         {title}
       </Typography>

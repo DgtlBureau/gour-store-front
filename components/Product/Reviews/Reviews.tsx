@@ -25,6 +25,7 @@ export type Review = {
   value: number;
   comment: string;
   date: Date;
+  productId: number;
 };
 
 export type ProductReviewsProps = {

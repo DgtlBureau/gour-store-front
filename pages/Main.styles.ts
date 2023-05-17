@@ -6,6 +6,12 @@ export const sx = {
       xs: '60px 0 0 0',
     },
   },
+  reviews: {
+    margin: {
+      sm: '40px 0 40px 0',
+      xs: '30px 0 30px 0',
+    },
+  },
   banner: {
     position: 'relative',
     display: 'flex',

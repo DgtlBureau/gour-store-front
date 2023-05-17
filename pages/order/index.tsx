@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Box, CircularProgress, Grid, Modal, Stack } from '@mui/material';
+import {Box, Breadcrumbs, CircularProgress, Grid, Modal, Stack} from '@mui/material';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -568,6 +568,17 @@ export function Order() {
   return (
     <PrivateLayout>
       <ShopLayout>
+        <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
+          <Link underline="hover" color="inherit" href="/">
+            Главная
+          </Link>
+          <Link underline="hover" color="inherit" href={`/${Path.BASKET}`}>
+            Корзина
+          </Link>
+          <Typography variant='h6' sx={{fontWeight: 700}}>Заказ</Typography>
+        </Breadcrumbs>
+
+
         <Typography variant='h4' sx={sx.title}>
           {t('title')}
         </Typography>
