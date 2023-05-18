@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, {memo, useEffect, useMemo, useState} from 'react';
 
 import { SxProps, Theme, useMediaQuery } from '@mui/material';
 
@@ -54,6 +54,7 @@ export const ProductCatalog = memo(
     const isAuth = useAppSelector(selectIsAuth);
     const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
     const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
+
     const [filters, setFilters] = useState<IFilters>({
       orderType: 'price',
       productType: null,
@@ -184,7 +185,14 @@ export const ProductCatalog = memo(
       setFilters({ ...filters, productType, characteristics: {} });
     };
 
-    const changeCharacteristics = (key: string, values: string[]) => {
+      useEffect(() => {
+          const searchParams = new URLSearchParams(window.location.search);
+          if (searchParams.has('productType')) {
+              changeProductType(Number(searchParams.get('productType')));
+          }
+      },[]);
+
+      const changeCharacteristics = (key: string, values: string[]) => {
       const characteristics = { ...filters.characteristics, [key]: values };
 
       setFilters({ ...filters, characteristics });

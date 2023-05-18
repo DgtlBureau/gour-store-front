@@ -31,7 +31,6 @@ import { Typography } from 'components/UI/Typography/Typography';
 
 import { CommentDto } from 'types/dto/comment.dto';
 import { IProduct } from 'types/entities/IProduct';
-import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
@@ -208,6 +207,9 @@ export default function Product() {
           <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="/">
               Главная
+            </Link>
+            <Link underline="hover" color="inherit" href={`/?productType=${productType === 'Сыр' ? 130 : 131}`}>
+              {productType}
             </Link>
             <Typography variant='h6' sx={{fontWeight: 700}}>{product.title[language] || ''}</Typography>
           </Breadcrumbs>
