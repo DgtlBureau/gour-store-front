@@ -1,9 +1,10 @@
 export const sx = {
-  productList: {
-    margin: {
-      md: '100px 0 0 0',
-      sm: '80px 0 0 0',
-      xs: '60px 0 0 0',
+    productList: {
+        margin: {
+            md: '100px 0 0 0',
+            sm: '80px 0 0 0',
+            xs: '60px 0 0 0',
+        },
     },
   },
   reviews: {
@@ -23,33 +24,26 @@ export const sx = {
       sm: '300px',
       xs: '200px',
     },
-    width: '100%',
-    margin: {
-      md: '100px 0',
-      sm: '80px 0',
-      xs: '60px 0',
+    title: {
+        fontSize: {
+            sm: '40px',
+            xs: '24px',
+        },
+        fontFamily: 'Roboto slab',
+        fontWeight: 'bold',
+        color: 'text.secondary',
     },
-  },
-  title: {
-    fontSize: {
-      sm: '40px',
-      xs: '24px',
+    promoRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'justify-content',
     },
-    fontFamily: 'Roboto slab',
-    fontWeight: 'bold',
-    color: 'text.secondary',
-  },
-  promoRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'justify-content',
-  },
-  pageInfoDescription: {
-    marginTop: {
-      xs: '20px',
-      md: '40px',
+    pageInfoDescription: {
+        marginTop: {
+            xs: '20px',
+            md: '40px',
+        },
     },
-  },
 };
 
 export default sx;

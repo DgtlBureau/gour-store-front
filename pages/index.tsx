@@ -26,6 +26,7 @@ import { PromotionCard } from 'components/Promotion/Card/Card';
 import { Box } from 'components/UI/Box/Box';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { ProgressLinear } from 'components/UI/ProgressLinear/ProgressLinear';
+import {WhyUs} from 'components/WhyUs/WhyUs';
 
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
@@ -42,10 +43,13 @@ import translations from './Main.i18n.json';
 import sx from './Main.styles';
 
 import defaultBannerImg from 'assets/images/banner.jpeg';
+
+
 import { Review } from '../components/Product/Reviews/Reviews';
 import { getProductReviews } from '../utils/reviewUtil';
 import { useGetGradeListQuery} from '../store/api/productGradeApi';
 import { ProductReviewsForMain } from '../components/Product/Reviews/ReviewsForMain';
+
 
 const NOW = new Date();
 
@@ -62,7 +66,7 @@ const Home: NextPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
 
   // todo не запрашивать когда !currentUser
-  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery(undefined,{skip: currentUser !== undefined});
+  const { data: favoriteProducts = [] } = useGetFavoriteProductsQuery(undefined, { skip: currentUser !== undefined });
 
   const isIndividual = currentUser?.role.key === 'individual';
 
@@ -216,6 +220,7 @@ const Home: NextPage = () => {
             />
           </Box>
         )}
+        <WhyUs/>
       </ShopLayout>
     </PrivateLayout>
   );
