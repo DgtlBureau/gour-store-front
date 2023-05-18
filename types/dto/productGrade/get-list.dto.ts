@@ -1,6 +1,7 @@
 export type GetProductGradeListDto = Readonly<{
-  productId: number;
+  productId?: number;
   withComments?: boolean;
   isApproved?: boolean;
   waitConfirmation?: boolean;
+  length?: number;
 }>;

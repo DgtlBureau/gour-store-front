@@ -15,6 +15,7 @@ export const DefaultProductInformation = Template.bind({});
 const props: Partial<ProductReviewsProps> = {
   reviews: [
     {
+      productId: 0,
       id: 0,
       clientName: 'Али',
       value: 3,
@@ -22,6 +23,7 @@ const props: Partial<ProductReviewsProps> = {
       date: new Date(),
     },
     {
+      productId: 0,
       id: 1,
       clientName: 'Колян',
       value: 5,
@@ -29,6 +31,7 @@ const props: Partial<ProductReviewsProps> = {
       date: new Date(),
     },
     {
+      productId: 0,
       id: 3,
       clientName: 'Али',
       value: 3,
@@ -36,6 +39,7 @@ const props: Partial<ProductReviewsProps> = {
       date: new Date(),
     },
     {
+      productId: 0,
       id: 4,
       clientName: 'Колян',
       value: 5,

@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
-import { LinearProgress, SxProps } from '@mui/material';
+import {Breadcrumbs, LinearProgress, SxProps} from '@mui/material';
 import { isProductFavorite } from 'pages/favorites/favoritesHelper';
 
 import { useGetCategoryListQuery } from 'store/api/categoryApi';
@@ -35,10 +35,10 @@ import { IProductGrade } from 'types/entities/IProductGrade';
 import { NotificationType } from 'types/entities/Notification';
 
 import { noExistingId } from 'constants/default';
-import {useAppDispatch, useAppSelector} from 'hooks/store';
+import { useAppDispatch, useAppSelector } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
-import { computeProductsWithCategories } from 'utils/catalogUtil';
+import { computeProductsWithCategories, getDefaultGramByProductType } from 'utils/catalogUtil';
 import { getProductBackground, getProductTypeLabel } from 'utils/categoryUtil';
 import { getErrorMessage } from 'utils/errorUtil';
 
@@ -50,18 +50,8 @@ import sx from './Product.styles';
 import HeartIcon from '@mui/icons-material/Favorite';
 import { getPriceByRole } from '../../types/entities/IPrice';
 import { selectIsAuth } from '../../store/selectors/auth';
-
-const getProductReviews = (comments: IProductGrade[]) =>
-  comments
-    .filter(i => i.isApproved && !!i.comment)
-    .map(({ id, client, value, createdAt, comment }) => ({
-      id,
-      clientName: client ? `${client.firstName} ${client.lastName}` : 'Клиент',
-      value,
-      date: new Date(createdAt),
-      comment,
-      clientId: client?.id,
-    }));
+import { getProductReviews } from '../../utils/reviewUtil';
+import { getProductForDataLayer } from '../../utils/metricaUtil';
 
 export default function Product() {
   const { t } = useLocalTranslation(translations);
@@ -109,6 +99,7 @@ export default function Product() {
 
   const [reviewForModal, setReviewForModal] = useState<Review>({
     id: noExistingId,
+    productId: noExistingId,
     clientName: '',
     value: 0,
     comment: '',
@@ -146,6 +137,30 @@ export default function Product() {
       product?.similarProducts && computeProductsWithCategories(product?.similarProducts, categories, favoriteProducts),
     [product, categories, favoriteProducts],
   );
+
+  useEffect(() => {
+    if (!product || !productType) {
+        return;
+    }
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.dataLayer.push({
+          'ecommerce': {
+              'currencyCode': 'RUB',
+              'detail': {
+                  'products': [
+                      getProductForDataLayer(
+                          getDefaultGramByProductType(productType),
+                          product,
+                          currentUser,
+                          1
+                      )
+                  ]
+              }
+          }
+      });
+  },[product]);
 
   const onCreateComment = (comment: CommentDto) => fetchCreateProductGrade({ productId, ...comment }).unwrap();
 
@@ -190,7 +205,13 @@ export default function Product() {
 
         {!isLoading && product && (
           <>
-            <Link href='/'>Вернуться на главную</Link>
+          <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Главная
+            </Link>
+            <Typography variant='h6' sx={{fontWeight: 700}}>{product.title[language] || ''}</Typography>
+          </Breadcrumbs>
+
             <Box sx={sx.top}>
               <Box sx={sx.preview}>
                 <ImageSlider

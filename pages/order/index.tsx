@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Box, CircularProgress, Grid, Modal, Stack } from '@mui/material';
+import {Box, Breadcrumbs, CircularProgress, Grid, Modal, Stack} from '@mui/material';
 
 import { useGetCityListQuery } from 'store/api/cityApi';
 import { useGetCurrentUserQuery } from 'store/api/currentUserApi';
@@ -56,6 +56,7 @@ import translation from './Order.i18n.json';
 
 import sx from './Order.styles';
 import { selectIsAuth } from '../../store/selectors/auth';
+import { getProductForDataLayer } from '../../utils/metricaUtil';
 
 const defaultPersonalFields = {
   firstName: '',
@@ -160,6 +161,28 @@ export function Order() {
   const [orderStatusModal, toggleOrderStatusModal] = useState<OrderStatusModal>(null);
 
   const productsInOrder = useAppSelector(selectBasketProducts);
+  const sendDataLayerPurchase = (products: any[],leadId: any,isCash: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.dataLayer.push({
+      'ecommerce': {
+        'currencyCode': 'RUB',
+        'purchase': {
+          'actionField': {
+            'id' : leadId
+          },
+          'products': products.map((product) => getProductForDataLayer(
+              product.gram,
+              product.product,
+              currentUser,
+              product.amount,
+              isCash
+          ))
+        }
+      }
+    })
+  }
+
   const [isCash, changeIsCash] = useState(false);
 
   const totalProductsSum = useAppSelector((state) => selectedProductSum(state,currentUser,isCash));
@@ -208,10 +231,13 @@ export function Order() {
     }
   };
 
-  const deleteProductFromOrder = (product: IProduct, gram: number) => dispatch(removeProduct({ product, gram }));
-
+  const deleteProductFromOrder = (product: IProduct, gram: number ,sendEvent = false) => dispatch(removeProduct({ product, gram, byUser: sendEvent }));
 
   const handlePayOrder = async (orderData: OrderFormType) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ym(92190821,'reachGoal','completed-order');
+
     const {
       firstName,
       lastName,
@@ -281,9 +307,11 @@ export function Order() {
     if (orderData.paymentMethod === 'cash') {
       try {
         const payOrderDto = (await handlePayOrder(orderData)) as IOrder;
+        sendDataLayerPurchase(productsInOrder,payOrderDto.leadId,true);
         productsInOrder.forEach(product => deleteProductFromOrder(product.product, product.gram));
         toggleOrderStatusModal({ status: 'success',orderId: payOrderDto.leadId });
-      } catch {
+      } catch(e) {
+        console.log(e);
         setPayCoinsState({ isOpen: false });
         setIsSubmitError(true);
         toggleOrderStatusModal({ status: 'failure' });
@@ -298,6 +326,8 @@ export function Order() {
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
+    sendDataLayerPurchase(productsInOrder, payOrderDto.leadId,false);
+
     const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
 
     const SBPData = {
@@ -338,6 +368,7 @@ export function Order() {
       : totalProductsSum + totalDeliveryCost - referralCodeDiscountValue;
     const sbpCurrency = 'RUB';
     const payOrderDto = (await handlePayOrder(orderData)) as any;
+    sendDataLayerPurchase(productsInOrder, payOrderDto.leadId, false);
     const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
 
     const SBPData = {
@@ -537,6 +568,17 @@ export function Order() {
   return (
     <PrivateLayout>
       <ShopLayout>
+        <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
+          <Link underline="hover" color="inherit" href="/">
+            Главная
+          </Link>
+          <Link underline="hover" color="inherit" href={`/${Path.BASKET}`}>
+            Корзина
+          </Link>
+          <Typography variant='h6' sx={{fontWeight: 700}}>Заказ</Typography>
+        </Breadcrumbs>
+
+
         <Typography variant='h4' sx={sx.title}>
           {t('title')}
         </Typography>

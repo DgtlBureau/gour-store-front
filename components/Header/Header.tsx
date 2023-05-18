@@ -94,6 +94,12 @@ export function Header({
     closeCityModal();
   };
 
+  const onClickBasket = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ym(92190821,'reachGoal','went-to-basket')
+  }
+
   return (
     <>
       <AppBar sx={{ ...headerSx.container, ...sx } as SxProps}>
@@ -168,7 +174,7 @@ export function Header({
                 <PersonIcon />
               </Link>
 
-              <Link href={`/${Path.BASKET}`} sx={headerSx.cart}>
+              <Link href={`/${Path.BASKET}`} onClick={onClickBasket} sx={headerSx.cart}>
                 <Badge sx={headerSx.cartBadge} badgeContent={basketProductCount} color='primary'>
                   <ShoppingCartOutlinedIcon color='primary' />
                 </Badge>
