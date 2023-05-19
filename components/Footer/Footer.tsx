@@ -88,10 +88,14 @@ export function Footer({firstPhone, email, tg, inst, vk, sx}: FooterProps) {
             label: t('delivery'),
             path: `/${Path.DELIVERY}`,
         },
+        {
+            label: t('about'),
+            path: `/${Path.ABOUTUS}`,
+        },
     ];
 
     return (
-        <footer style={{...sx}, footerSx.footMain}>
+        <footer style={footerSx.footMain}>
             <div style={footerSx.containerFoot}>
                 <Box sx={footerSx.contactsWrapper}>
                     <Link href="/">

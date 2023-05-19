@@ -1,35 +1,35 @@
 import backgroundImg from 'assets/images/delivery/GOURFOOD.png';
-import {display} from '@mui/system';
-import backgroundCheese from '../../assets/images/aboutUs/backCheese.svg';
+import backgroundCheese from 'assets/images/aboutUs/backCheese.svg';
 
 export const sx = {
     banner: {
         fontFamily: 'Roboto Slab',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        gap: '20px',
         flexDirection: {
             xs: 'column',
-            md: 'row',
         },
         margin: '2%  0',
-        border: '2px solid #7E5F2F',
+        border: '5px solid rgba(126, 95, 47, 0.2)',
         borderRadius: '60px',
         background: '#FFF9EE',
         backgroundImage: `url('${backgroundImg}')`,
-        backgroundRepeat: 'no-repeat',
+        backgroundRepeat: 'repeat-y',
         backgroundSize: 'contain',
         backgroundPosition: 'top',
-        padding: '25px 25px 0 25px',
+        textAlign: 'center',
+        padding: '35px 35px 0 35px',
         boxSizing: 'border-box',
 
-        '& img': {
-            marginRight: '5%',
-            width: '45%',
-            height: 'auto',
+        img: {
+            margin: '5% auto 0 auto',
+            width: '35%',
+            height: '100%',
             alignSelf: {
                 xs: 'center',
                 md: 'flex-end',
-            }
+            },
         },
         text: {
             fontFamily: 'Roboto Slab',
@@ -40,6 +40,7 @@ export const sx = {
                 md: '30px',
                 xs: '20px',
             },
+            width: '80%',
             lineHeight: '130%',
             color: '#7E5F2F',
             whiteSpace: 'pre-line',
@@ -66,7 +67,6 @@ export const sx = {
             xs: 'scroll',
             md: 'none',
         },
-        overflowY: 'hidden',
 
     },
     wrapperHow: {
@@ -106,13 +106,20 @@ export const sx = {
         marginTop: '15px',
     },
     containerDelivery: {
-        margin: '10% 0 1% 0 ',
+        margin: '2% 0 1% 0 ',
         display: 'flex',
         flexDirection: {
             xs: 'column',
             md: 'row',
         },
         gap: '30px',
+        overflowY: 'hidden',
+        backgroundImage: `url('${backgroundImg}')`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+    },
+    containerBox: {
+        flexBasis: '50%'
     },
     deliverySP: {
         fontFamily: 'Roboto Slab',
@@ -124,7 +131,7 @@ export const sx = {
         flexBasis: {
             xs: '100%',
             md: '50%',
-        }
+        },
     },
     deliverySPText: {
         fontFamily: 'Nunito',
@@ -137,6 +144,7 @@ export const sx = {
             xs: '100%',
             md: '50%',
         },
+        alignContent: 'bottom',
         marginLeft: 'auto',
         whiteSpace: 'pre-line',
     },
@@ -163,6 +171,7 @@ export const sx = {
         color: '#7E5F2F',
     },
     deliveryCond: {
+        marginTop: '5%',
         fontFamily: 'Nunito',
         fontStyle: 'normal',
         fontWeight: '500',
@@ -175,7 +184,6 @@ export const sx = {
             md: '50%',
         }
     },
-
     containerPrice: {
         display: 'flex',
         justifyContent: 'center',
@@ -204,7 +212,6 @@ export const sx = {
     deliveryCadWrapper: {
         display: 'flex',
         flexDirection: 'column',
-        textAlign: 'center',
     },
     deliveryCadText: {
         fontFamily: 'Nunito',
@@ -214,6 +221,7 @@ export const sx = {
         lineHeight: '120%',
         color: '#7E5F2F',
         marginTop: '10px',
+        textAlign: 'center'
     },
     containerCad: {
         display: 'flex',
@@ -249,7 +257,7 @@ export const sx = {
     },
     paymentCard: {
         flexBasis: '33%',
-        padding: '32px',
+        padding: '30px',
         display: 'flex',
         gap: '10px',
         alignItems: 'center',
@@ -277,17 +285,38 @@ export const sx = {
         textAlign: 'center'
     },
     paymentCardImg: {
-        fontFamily: 'Roboto Slab',
-        height: '150px',
-        width: '150px',
+        height: '100px',
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
         background: '#fff',
         borderRadius: '100%',
         border: '2px solid rgba(126, 95, 47, 0.2)',
         textAlign: 'center'
-    }
+    },
+    imageBox: {
+        img: {
+            margin: {
+                xs: '0 auto',
+                md: '0',
+            },
+            display: {
+                xs: 'none',
+                md: 'flex',
+            }
+        }
+    },
+    imageInProd: {
+        '&: img': {
+            display: 'flex',
+            width: '190px',
+            height: '210px',
+            background: '#fff',
+            padding: '30px',
+            justifyContent: 'center',
+            border: '2px solid rgba(126, 95, 47, 0.2);',
+            borderRadius: '100%',
+        }
+    },
 }
 
 export default sx;

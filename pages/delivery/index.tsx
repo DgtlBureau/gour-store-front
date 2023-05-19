@@ -2,8 +2,6 @@ import React from 'react';
 
 import {Breadcrumbs} from '@mui/material';
 import {LinkRef as Link} from '../../components/UI/Link/Link';
-import {Path} from '../../constants/routes';
-
 import {Typography} from '../../components/UI/Typography/Typography';
 
 import {useLocalTranslation} from '../../hooks/useLocalTranslation';
@@ -41,44 +39,44 @@ export function Delivery() {
 
             <Box sx={sxDelivery.banner}>
                 <Typography variant="body2" sx={sxDelivery.banner.text}>{t('bannerTitle')}</Typography>
-                <img style={sxDelivery.banner.img} src={oleg} alt={oleg} width="auto" height="auto"/>
+                <img src={oleg} alt={oleg} width="auto" height="auto"/>
             </Box>
 
             <Typography variant="h3" sx={sxDelivery.howWeWork}>{t('howWeWork')}</Typography>
 
             <Box sx={sxDelivery.containerHow}>
-                <div style={sxDelivery.wrapperHow}>
+                <Box sx={sxDelivery.wrapperHow}>
                     <Box sx={sxDelivery.cardHow}>
                         <img src={step1} alt={step1} width="auto" height="auto"/>
                     </Box>
                     <Typography sx={sxDelivery.textHow} variant="body1">
                         {t('step1')}
                     </Typography>
-                </div>
-                <div style={sxDelivery.wrapperHow}>
+                </Box>
+                <Box sx={sxDelivery.wrapperHow}>
                     <Box sx={sxDelivery.cardHow}>
                         <img src={step2} alt={step2} width="auto" height="auto"/>
                     </Box>
                     <Typography sx={sxDelivery.textHow} variant="body1">
                         {t('step2')}
                     </Typography>
-                </div>
-                <div style={sxDelivery.wrapperHow}>
+                </Box>
+                <Box sx={sxDelivery.wrapperHow}>
                     <Box sx={sxDelivery.cardHow}>
                         <img src={step3} alt={step3} width="auto" height="auto"/>
                     </Box>
                     <Typography sx={sxDelivery.textHow} variant="body1">
                         {t('step3')}
                     </Typography>
-                </div>
-                <div style={sxDelivery.wrapperHow}>
+                </Box>
+                <Box sx={sxDelivery.wrapperHow}>
                     <Box sx={sxDelivery.last}>
                         <img src={step4} alt={step4} width="auto" height="auto"/>
                     </Box>
                     <Typography sx={sxDelivery.textHow} variant="body1">
                         {t('step4')}
                     </Typography>
-                </div>
+                </Box>
             </Box>
 
             <Box sx={sxDelivery.containerDelivery}>
@@ -115,17 +113,23 @@ export function Delivery() {
             <Typography sx={sxDelivery.paymentHead}>{t('paymentHead')}</Typography>
             <Box sx={sxDelivery.containerPayment}>
                 <Box sx={sxDelivery.paymentCard}>
-                    <Image sx={sxDelivery.paymentCardImg} src={cash} alt={cash} width={100} height={100}/>
+                    <Box sx={sxDelivery.paymentCardImg}>
+                        <img src={cash} alt={cash} width={100} height={100}/>
+                    </Box>
                     <Typography sx={sxDelivery.paymentCardHead}>{t('cashHead')}</Typography>
                     <Typography sx={sxDelivery.paymentCardText}>{t('cashText')}</Typography>
                 </Box>
                 <Box sx={sxDelivery.paymentCard}>
-                    <Image sx={sxDelivery.paymentCardImg} src={bank} alt={bank} width={100} height={100}/>
+                    <Box sx={sxDelivery.paymentCardImg}>
+                        <img src={bank} alt={bank} width={100} height={100}/>
+                    </Box>
                     <Typography sx={sxDelivery.paymentCardHead}>{t('bankHead')}</Typography>
                     <Typography sx={sxDelivery.paymentCardText}>{t('bankText')}</Typography>
                 </Box>
                 <Box sx={sxDelivery.paymentCard}>
-                    <Image sx={sxDelivery.paymentCardImg} src={order} alt={order} width={100} height={100}/>
+                    <Box sx={sxDelivery.paymentCardImg}>
+                        <img src={order} alt={order} width={100} height={100}/>
+                    </Box>
                     <Typography sx={sxDelivery.paymentCardHead}>{t('orderHead')}</Typography>
                     <Typography sx={sxDelivery.paymentCardText}>{t('orderText')}</Typography>
                 </Box>
