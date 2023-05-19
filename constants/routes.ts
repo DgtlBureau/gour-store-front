@@ -62,6 +62,9 @@ export enum Path {
   PRIVACY = 'privacy',
   OFERTA = 'oferta',
   CONTACTS = 'contacts',
+  DELIVERY = 'delivery',
+  ABOUTUS = 'about',
+
 
   ERROR_PAGE = '404',
 }
