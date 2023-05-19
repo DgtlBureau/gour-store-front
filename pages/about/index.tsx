@@ -2,7 +2,6 @@ import React from 'react';
 
 import {Breadcrumbs} from '@mui/material';
 import {LinkRef as Link} from '../../components/UI/Link/Link';
-import {Path} from '../../constants/routes';
 import {WhyUs} from 'components/WhyUs/WhyUs';
 
 import {Typography} from '../../components/UI/Typography/Typography';
@@ -16,11 +15,10 @@ import {Box} from '../../components/UI/Box/Box';
 import Image from 'next/image';
 
 import sxAboutUs from './AboutUs.styles';
+import ch1 from 'assets/images/aboutUs/ch1.jpeg';
+import ch2 from 'assets/images/aboutUs/ch2.jpeg';
 import oleg from 'assets/images/aboutUs/oleg.svg';
-// @ts-ignore
-import ch1 from 'assets/images/aboutUs/cheese1.jpg';
-// @ts-ignore
-import ch2 from 'assets/images/aboutUs/cheese2.jpg';
+
 
 import meat from 'assets/images/aboutUs/meat.png';
 import cheese from 'assets/images/aboutUs/cheese.png';

@@ -1,5 +1,4 @@
 import backgroundImg from 'assets/images/delivery/GOURFOOD.png';
-import {display} from '@mui/system';
 import backgroundCheese from '../../assets/images/aboutUs/backCheese.svg';
 
 export const sx = {

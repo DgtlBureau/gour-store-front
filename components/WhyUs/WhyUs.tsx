@@ -70,13 +70,6 @@ const sx = {
     }
 };
 
-
-type ContactCardProps = {
-    text: string;
-    head: string;
-    icon: string;
-};
-
 export function WhyUs() {
     const {t} = useLocalTranslation(translations);
 

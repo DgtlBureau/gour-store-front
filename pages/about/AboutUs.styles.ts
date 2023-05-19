@@ -306,15 +306,15 @@ export const sx = {
         }
     },
     imageInProd: {
+        display: 'flex',
+        background: '#fff',
+        padding: '30px',
+        justifyContent: 'center',
+        border: '2px solid rgba(126, 95, 47, 0.2);',
+        borderRadius: '100%',
         '&: img': {
-            display: 'flex',
-            width: '190px',
-            height: '210px',
-            background: '#fff',
-            padding: '30px',
-            justifyContent: 'center',
-            border: '2px solid rgba(126, 95, 47, 0.2);',
-            borderRadius: '100%',
+            width: '160px',
+            height: '190px',
         }
     },
 }
