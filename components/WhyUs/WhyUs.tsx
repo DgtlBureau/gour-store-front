@@ -25,6 +25,10 @@ const sx = {
         color: '#7E5F2F',
         borderRadius: '20px',
         transition: '0.4s',
+        flexBasis: {
+            xs: '100%',
+            md: '33%',
+        },
         head: {
             fontFamily: 'Nunito',
             fontStyle: 'normal',
@@ -106,8 +110,8 @@ export function WhyUs() {
                         {t('loyaltyHead')}
                     </Typography>
                     <Box sx={sx.card.text}>
-                    {t('loyaltyText')}
-                     </Box>
+                        {t('loyaltyText')}
+                    </Box>
                 </Box>
             </Box>
         </Box>

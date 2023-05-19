@@ -16,6 +16,8 @@ import iconMail from 'assets/icons/social/mail.svg';
 import phone from 'assets/icons/social/phone.svg';
 import tgIcon from 'assets/icons/social/tg.svg';
 import vkIcon from 'assets/icons/social/vk.svg';
+import {Breadcrumbs} from '@mui/material';
+import {LinkRef as Link} from '../../components/UI/Link/Link';
 
 export default function Contacts() {
     const {t} = useLocalTranslation(translations);
@@ -26,6 +28,12 @@ export default function Contacts() {
 
     return (
         <ShopLayout>
+            <Breadcrumbs sx={{marginBottom: '20px'}} separator=">" aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/">
+                    Главная
+                </Link>
+                <Typography variant="h6" sx={{fontWeight: 700}}>Контакты</Typography>
+            </Breadcrumbs>
             <Typography variant="h4" sx={sx.titleHead}>
                 {t('title')}
             </Typography>

@@ -1,6 +1,15 @@
 import {color, defaultTheme as theme} from 'themes';
 
 const sx = {
+    footMain: {
+        width: '100%',
+        backgroundColor: '#FBF4E6',
+        marginTop: '5%',
+    },
+    containerFoot: {
+        margin: '2% auto',
+        maxWidth: '1200px',
+    },
     card: {
         fontFamily: 'Roboto slab',
         backgroundColor: '#fff',
@@ -8,16 +17,23 @@ const sx = {
         padding: '16px',
         border: '2px solid',
         borderColor: 'rgba(126, 95, 47, 0.2);',
-        width: '210px',
+        width: {
+            xs: '300px',
+            md: '210px'
+        },
         height: '160px',
         color: '#7E5F2F',
         borderRadius: '20px',
         transition: '0.4s',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         '&:hover': {
             borderColor: 'rgba(126, 95, 47, 0.2);',
             backgroundColor: '#7E5F2F',
             color: '#ffffff',
             cursor: 'pointer',
+            justifyContent: 'center',
             '& div': {
                 '@media (min-width: 1024px)': {
                     display: 'none',
@@ -25,17 +41,21 @@ const sx = {
             },
             '& p': {
                 fontSize: '18px',
-                margin: '50px auto',
                 color: '#ffffff',
                 fontWeight: '800',
+            },
+            '& a': {
+                justifyContent: 'space-evenly',
+                margin: '0 auto'
             },
         },
         textLink: {
             fontWeight: '600',
             fontSize: '16px',
             lineHeight: '20px',
+            flexBasis: '100%',
             textDecoration: 'none',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'baseline',
@@ -43,7 +63,7 @@ const sx = {
         textLabel: {
             fontSize: '16px',
             lineHeight: '20px',
-            marginTop: '35%',
+            alignItems: 'baseline',
             fontWeight: '800',
         },
         icon: {
@@ -93,9 +113,9 @@ const sx = {
             xs: 'row',
             md: 'column',
         },
-        marginLeft: '10px',
-        margin:{
-            xs: '10px auto 30px auto'
+        marginLeft: '20px',
+        margin: {
+            xs: 'auto auto'
         }
     },
     socialLink: {
@@ -122,6 +142,8 @@ const sx = {
         [theme.breakpoints.down('sm')]: {
             justifyContent: 'start',
             flexWrap: 'wrap',
+            marginLeft: '10px',
+            marginTop: '10px',
         },
     },
     infoLink: {
