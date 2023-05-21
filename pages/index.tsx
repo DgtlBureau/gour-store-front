@@ -82,9 +82,7 @@ const Home: NextPage = () => {
     withCategories: true,
   });
 
-  const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery(undefined, {
-    skip: !isIndividual,
-  });
+  const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
   const { data: page, isLoading: mainPageIsLoading } = useGetPageQuery('main');
 
@@ -174,7 +172,7 @@ const Home: NextPage = () => {
       <ShopLayout>
         {isLoading && <ProgressLinear />}
 
-        {isIndividual && hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
+        {hasPromotions && <CardSlider title={t('promotions')} cardList={promotionCardList} />}
 
         {hasNovelties && (
           <ProductSlider

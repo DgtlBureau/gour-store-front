@@ -7,7 +7,6 @@ import {
   useGetFavoriteProductsQuery,
 } from 'store/api/favoriteApi';
 import { useGetPromotionQuery } from 'store/api/promotionApi';
-import { selectCurrentUser } from 'store/selectors/auth';
 import { addBasketProduct, subtractBasketProduct } from 'store/slices/orderSlice';
 
 import { PrivateLayout } from 'layouts/Private/Private';
@@ -24,7 +23,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { IProduct } from 'types/entities/IProduct';
 import { NotificationType } from 'types/entities/Notification';
 
-import { useAppDispatch, useAppSelector } from 'hooks/store';
+import { useAppDispatch } from 'hooks/store';
 import { useLocalTranslation } from 'hooks/useLocalTranslation';
 import { dispatchNotification } from 'packages/EventBus';
 import { computeProductsWithCategories } from 'utils/catalogUtil';
@@ -41,14 +40,9 @@ const Promotion = memo(function Promotion() {
   const { t } = useLocalTranslation(translations);
 
   const {
-    goToHome,
     language,
     query: { id: queryId },
   } = useAppNavigation();
-
-  const currentUser = useAppSelector(selectCurrentUser);
-
-  if (currentUser?.role.key !== 'individual') goToHome();
 
   const promotionId = queryId ? +queryId : 0;
 
