@@ -7,6 +7,7 @@ import { color, defaultTheme as theme } from 'themes';
 type Props = {
   image: string;
   onClickMore(): void;
+  changeWidth?: string;
 };
 
 const sx = {
@@ -49,9 +50,9 @@ const sx = {
   },
 };
 
-export function PromotionCard({ image, onClickMore }: Props) {
+export function PromotionCard({ image, onClickMore,changeWidth }: Props) {
   return (
-    <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none' }} onClick={onClickMore}>
+    <Box sx={{ ...sx.box, backgroundImage: image ? `url(${image})` : 'none', width: (changeWidth || '300px' )  }} onClick={onClickMore}>
       {}
     </Box>
   );

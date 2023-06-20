@@ -104,9 +104,46 @@ export function MobileMenu({
           ))}
         </List>
       </Collapse>
+        <Divider sx={sx.divider} />
 
       <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.GAME}`}>
         <Typography sx={sx.title}>{t('game')}</Typography>
+
+        <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
+          <Image src={lightArrowIcon} layout='fill' alt='' />
+        </Box>
+      </ListItemLink>
+        <Divider sx={sx.divider} />
+
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.HOME}`}>
+        <Typography sx={sx.title}>Каталог товаров</Typography>
+
+        <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
+          <Image src={lightArrowIcon} layout='fill' alt='' />
+        </Box>
+      </ListItemLink>
+        <Divider sx={sx.divider} />
+
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.ABOUTUS}`}>
+        <Typography sx={sx.title}>О компании</Typography>
+
+        <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
+          <Image src={lightArrowIcon} layout='fill' alt='' />
+        </Box>
+      </ListItemLink>
+        <Divider sx={sx.divider} />
+
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.DELIVERY}`}>
+        <Typography sx={sx.title}>Доставка</Typography>
+
+        <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
+          <Image src={lightArrowIcon} layout='fill' alt='' />
+        </Box>
+      </ListItemLink>
+        <Divider sx={sx.divider} />
+
+      <ListItemLink sx={{ ...sx.listItem, ...sx.bigItem }} href={`/${Path.PROMOTIONS}`}>
+        <Typography sx={sx.title}>Акции</Typography>
 
         <Box sx={{ ...sx.arrowIcon, ...sx.grayArrow }}>
           <Image src={lightArrowIcon} layout='fill' alt='' />

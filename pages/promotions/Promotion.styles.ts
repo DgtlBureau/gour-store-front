@@ -28,4 +28,33 @@ export const sx = {
     maxWidth: '1200px',
     color: color.muted,
   },
+  catalog: {
+    maxWidth: '1200px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  emptyText: {
+    marginTop: '15px',
+    fontSize: {
+      sm: '24px',
+      xs: '16px',
+    },
+  },
+  cardsGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: '100%',
+    marginTop: { xs: '20px', md: '40px' },
+    gap: '10px',
+  },
+  pagination: {
+    alignSelf: 'center',
+    marginTop: {
+      md: '60px',
+      sm: '40px',
+      xs: '20px',
+    },
+  },
 };
+
+export default sx;

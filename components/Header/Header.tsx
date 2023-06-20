@@ -31,6 +31,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CatalogIcon from 'assets/icons/catalog.svg';
 import GamepadIcon from 'assets/icons/gamepad.svg';
 import Logo from 'assets/images/common-logo.svg';
+import { DesktopMenu } from './DesktopMenu/DesktopMenu';
 
 export type HeaderProps = {
   isGame?: boolean;
@@ -105,13 +106,16 @@ export function Header({
       <AppBar sx={{ ...headerSx.container, ...sx } as SxProps}>
         <Container sx={{ height: '100%', position: 'relative' }} maxWidth='lg'>
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
-            <Grid item xs={2} md={4} lg={6} container direction='row' alignItems='center' justifyContent='flex-start'>
-              <Box sx={headerSx.logo}>
-                <Link href='/'>
-                  <Image src={Logo} height='49px' width='58px' alt='' />
-                </Link>
-              </Box>
 
+            <Grid item xs={0} md={3} lg={4} container direction='row' alignItems='center' justifyContent='flex-start'>
+              {!isGame && isDesktop && (
+                  <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
+                    {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
+                  </IconButton>
+              )}
+              <Collapse in={isMenuDeployed && isDesktop} timeout='auto' unmountOnExit>
+                <DesktopMenu/>
+              </Collapse>
               <Link href={`tel:${firstPhone}`} variant='body1' color='inherit' sx={headerSx.phone}>
                 {firstPhone}
               </Link>
@@ -124,11 +128,19 @@ export function Header({
               </Box>
             </Grid>
 
+            <Grid item xs={2} md={2} lg={4} container direction='row' alignItems='flex-start' justifyContent='center'>
+              <Box sx={headerSx.logo}>
+                <Link href='/'>
+                  <Image src={Logo} height='49px' width='58px' alt='' />
+                </Link>
+              </Box>
+            </Grid>
+
             <Grid
               item
               xs={10}
-              md={8}
-              lg={6}
+              md={7}
+              lg={4}
               container
               direction='row'
               alignItems='center'
