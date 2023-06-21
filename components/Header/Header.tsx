@@ -107,7 +107,7 @@ export function Header({
         <Container sx={{ height: '100%', position: 'relative' }} maxWidth='lg'>
           <Grid container direction='row' justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
 
-            <Grid item xs={0} md={3} lg={4} container direction='row' alignItems='center' justifyContent='flex-start'>
+            <Grid item xs={0} md={3} lg={5} container direction='row' alignItems='center' justifyContent='flex-start'>
               {!isGame && isDesktop && (
                   <IconButton sx={headerSx.menuBtn} color='inherit' onClick={deployMenu}>
                     {!isMenuDeployed ? <MenuIcon sx={headerSx.menuIcon} /> : <CloseIcon sx={headerSx.menuIcon} />}
@@ -128,7 +128,7 @@ export function Header({
               </Box>
             </Grid>
 
-            <Grid item xs={2} md={2} lg={4} container direction='row' alignItems='flex-start' justifyContent='center'>
+            <Grid item xs={2} md={2} lg={3} container direction='row' alignItems='flex-start' justifyContent='center'>
               <Box sx={headerSx.logo}>
                 <Link href='/'>
                   <Image src={Logo} height='49px' width='58px' alt='' />
