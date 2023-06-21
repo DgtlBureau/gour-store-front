@@ -2,6 +2,7 @@ import { color } from 'themes';
 
 const sx = {
   list: {
+    left: '2%',
     position: 'absolute',
     width: '20%',
     backgroundColor: color.primary,
