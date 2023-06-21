@@ -148,7 +148,7 @@ const sx = {
     },
     infoLink: {
         fontSize: {
-            sm: '13px',
+            sm: '12px',
             xs: '10px',
         },
         margin: {
@@ -165,7 +165,7 @@ const sx = {
         },
         marginTop: 0,
         marginBottom: 0,
-        margin: '0 15px',
+        margin: '0 10px',
         borderColor: color.secondary,
     },
     logo: {

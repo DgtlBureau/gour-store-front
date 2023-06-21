@@ -69,6 +69,10 @@ export function Footer({firstPhone, email, tg, inst, vk, sx}: FooterProps) {
 
     const info = [
         {
+            label: 'Акции',
+            path: `/${Path.PROMOTIONS}`,
+        },
+        {
             label: t('rules'),
             path: `/${Path.RULES}`,
         },
