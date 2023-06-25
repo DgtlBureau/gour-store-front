@@ -8,4 +8,6 @@ export type SignUpFormDto = Readonly<{
   lastName: string;
   password: string;
   passwordConfirm: string;
+  city: string;
+  referralCode: string;
 }>;

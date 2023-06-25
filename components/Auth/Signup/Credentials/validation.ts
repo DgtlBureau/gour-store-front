@@ -17,4 +17,6 @@ export const getSchema = (t: Translator) =>
     lastName: yup.string().required(t('lastNameRequired')),
     password: yup.string().matches(regexp.password, t('passwordError')),
     passwordConfirm: yup.string().oneOf([yup.ref('password'), null], t('passwordsDoNotMatch')),
+    city: yup.string().required(t('cityError')),
+    referralCode: yup.string(),
   });

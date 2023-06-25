@@ -3,6 +3,9 @@ const sx = {
     fontWeight: 700,
     fontSize: '18px',
   },
+  select: {
+    margin: '16px 0',
+  },
   radioGroup: {
     display: 'flex',
     flexDirection: {
@@ -10,7 +13,7 @@ const sx = {
       sm: 'row',
     },
     justifyContent: 'space-between',
-    margin: '24px 0',
+    margin: '10px 0',
   },
   radioBtn: {
     marginRight: 0,

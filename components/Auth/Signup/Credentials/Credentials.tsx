@@ -27,6 +27,8 @@ import translations from './Credentials.i18n.json';
 import { getSchema } from './validation';
 
 import sx from './Credentials.styles';
+import { IOption } from '../../../../types/entities/IOption';
+import { HFSelect } from '../../../HookForm/HFSelect';
 
 export type SignupCredentialsProps = {
   roles: IClientRole[];
@@ -36,6 +38,8 @@ export type SignupCredentialsProps = {
   onEmailSend(email: string): Promise<void>;
   onCodeCheck(code: string): Promise<boolean>;
   onSubmit(data: SignUpFormDto): void;
+  city?: string;
+  cityOptions: IOption[];
 };
 
 export function SignupCredentials({
@@ -46,6 +50,7 @@ export function SignupCredentials({
   onEmailSend,
   onCodeCheck,
   onSubmit,
+  cityOptions
 }: SignupCredentialsProps) {
   const [isCodeSended, setIsCodeSended] = useState(false);
   const [isCodeSuccess, setIsCodeSuccess] = useState(false);
@@ -59,6 +64,7 @@ export function SignupCredentials({
   const values = useForm<SignUpFormDto>({
     defaultValues: {
       ...defaultValues,
+      city: cityOptions[0]?.value,
       role: defaultValues?.role || 'CLIENT',
     },
     mode: 'onBlur',
@@ -116,7 +122,7 @@ export function SignupCredentials({
 
   const submit = (data: SignUpFormDto) => {
     onSubmit(data);
-    resetEmailStates();
+    // resetEmailStates();
   };
 
   return (
@@ -127,25 +133,22 @@ export function SignupCredentials({
             {t('back')}
           </Button>
 
-          <Typography sx={sx.title}>{t('title')}</Typography>
-
-          <HFRadioGroup name='role' sx={sx.radioGroup}>
-            {roles.map(role => (
-              <FormControlLabel sx={sx.radioBtn} value={role.key} control={<Radio />} label={role.title} />
-            ))}
-          </HFRadioGroup>
-
-          <Box sx={{ ...sx.field, ...sx.phone }}>
-            <HFSendField
-              label={t('email')}
-              name='email'
-              isSending={!!codeIsSending}
-              sendingIsDisabled={sendingIsDisabled}
-              disabled={isCodeSuccess}
-              onChange={changeEmail}
-              onSend={sendEmail}
-            />
-          </Box>
+          {!isCodeSuccess && (
+            <>
+              <Typography sx={sx.title}>{t('title')}</Typography>
+              <Box sx={{ ...sx.field, ...sx.phone, padding: '10px 0 0 0 ' }}>
+                <HFSendField
+                  label={t('email')}
+                  name='email'
+                  isSending={!!codeIsSending}
+                  sendingIsDisabled={sendingIsDisabled}
+                  disabled={isCodeSuccess}
+                  onChange={changeEmail}
+                  onSend={sendEmail}
+                />
+              </Box>
+            </>
+          )}
 
           {isCodeSended && !isCodeSuccess && (
             <>
@@ -164,10 +167,26 @@ export function SignupCredentials({
 
           {isCodeSuccess && (
             <>
+              <Typography sx={sx.title} >Вы...</Typography>
+              <HFRadioGroup name='role' sx={sx.radioGroup}>
+                {roles.map(role => (
+                    <FormControlLabel sx={sx.radioBtn} key={role.id} value={role.key} control={<Radio />} label={role.title} />
+                ))}
+              </HFRadioGroup>
               <HFTextField sx={sx.field} type='text' name='firstName' label={t('firstName')} />
               <HFTextField sx={sx.field} type='text' name='lastName' label={t('lastName')} />
               <HFPassField sx={sx.field} name='password' label={t('password')} helperText={t('passwordHelper')} />
               <HFPassField sx={sx.field} name='passwordConfirm' label={t('passwordConfirm')} />
+              <HFSelect options={cityOptions} name='city' label={t('city')} sx={sx.select} />
+
+              <HFTextField
+                  sx={sx.field}
+                  type='text'
+                  name='referralCode'
+                  label={t('referralCode')}
+                  helperText={t('referralCodeHelper')}
+              />
+
               <Checkbox
                 sx={sx.field}
                 value={isAgree}
@@ -182,6 +201,7 @@ export function SignupCredentials({
                     <LinkRef href={`/${Path.OFERTA}`} target='_blank'>
                       Пользовательского соглашения
                     </LinkRef>
+
                   </Typography>
                 }
               />

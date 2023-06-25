@@ -32,9 +32,11 @@ const props: Partial<SignupCredentialsProps> = {
     email: '',
     firstName: '',
     lastName: '',
-    code: '',
     password: '',
     passwordConfirm: '',
+    code: '',
+    referralCode: '',
+    city: '',
   },
 };
 

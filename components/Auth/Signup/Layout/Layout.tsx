@@ -1,32 +1,25 @@
-import Image from 'next/image';
 import React, { ReactElement } from 'react';
 
 import { Grid } from '@mui/material';
 
-import { Box } from 'components/UI/Box/Box';
-import { Stepper } from 'components/UI/Stepper/Stepper';
-
-import { sx } from './Layout.styles';
-
 type Props = {
   children: ReactElement;
-  image: string;
   stepIndex: number;
 };
 
-export function SignupLayout({ children, image, stepIndex }: Props) {
+export function SignupLayout({ children, stepIndex }: Props) {
   return (
-    <Grid container alignItems='center' spacing={1}>
-      <Grid sx={sx.image} item xs={4} md={6}>
-        <Image src={image} layout='fill' alt='' />
-      </Grid>
+    <Grid container justifyContent='space-between' alignItems='center' spacing={1}>
+      <Grid item xs={2} md={3}/>
 
-      <Grid item xs={12} md={6}>
-        <Box sx={sx.stepper}>
-          <Stepper activeStep={stepIndex} stepsCount={4} percent={100} />
-        </Box>
+      <Grid item xs={10} md={9}>
+        {/* <Box sx={sx.stepper}>
+          <Stepper activeStep={stepIndex} stepsCount={0} percent={100} />
+        </Box> */}
         {children}
       </Grid>
+
+      <Grid item xs={2} md={3}/>
     </Grid>
   );
 }

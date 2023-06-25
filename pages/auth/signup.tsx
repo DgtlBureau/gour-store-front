@@ -11,32 +11,21 @@ import { useGetRoleListQuery } from 'store/api/roleApi';
 
 import { AuthLayout } from 'layouts/Auth/Auth';
 
-import { SignupCitySelect } from 'components/Auth/Signup/CitySelect/CitySelect';
 import { SignupCredentials } from 'components/Auth/Signup/Credentials/Credentials';
-import { FavoriteInfo, SignupFavoriteInfo } from 'components/Auth/Signup/FavoriteInfo/FavoriteInfo';
-import { SignupGreeting } from 'components/Auth/Signup/Greeting/Greeting';
 import { SignupLayout } from 'components/Auth/Signup/Layout/Layout';
-import { SignupReferralCode } from 'components/Auth/Signup/ReferralCode/ReferralCode';
 import { useAppNavigation } from 'components/Navigation';
 
-import { ReferralCodeDto } from 'types/dto/referral-code.dto';
 import { SignUpFormDto } from 'types/dto/signup-form.dto';
 import { SignUpDto } from 'types/dto/signup.dto';
 import { NotificationType } from 'types/entities/Notification';
 
-import { favoriteCountries, favoriteProducts } from 'constants/favorites';
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
 
-import cityImage from 'assets/images/signup/city.svg';
-import credentialsImage from 'assets/images/signup/credentials.svg';
-import favoritesImage from 'assets/images/signup/favorites.svg';
-import greetingsImage from 'assets/images/signup/greetings.svg';
-import referralImage from 'assets/images/signup/referral-codes.svg';
 import {getWasOrderPostponed, setOrderPostponed} from '../../store/slices/orderSlice';
 import {useAppDispatch, useAppSelector} from '../../hooks/store';
 
-type AuthStage = 'greeting' | 'citySelect' | 'credentials' | 'referralCode';
+type AuthStage = 'credentials';
 
 export default function SignUp() {
   const { goToIntro, goToHome, language , goToBasket } = useAppNavigation();
@@ -58,16 +47,11 @@ export default function SignUp() {
   const [signIn] = useSignInMutation();
   const [checkCode] = useCheckCodeMutation();
 
-  const [stage, setStage] = useState<AuthStage>('greeting');
-  const [selectedCity, setSelectedCity] = useState<string | undefined>();
-  const [credentials, setCredentials] = useState<SignUpFormDto | undefined>();
-  // const [_favoriteInfo, setFavoriteInfo] = useState<FavoriteInfo | undefined>(); // TODO сохранение выбора
+  const [stage, setStage] = useState<AuthStage>('credentials');
 
-  const goToGreeting = () => setStage('greeting');
-  const goToCitySelect = () => setStage('citySelect');
-  const goToCredentials = () => setStage('credentials');
-  // const goToFavoriteInfo = () => setStage('favoriteInfo');
-  const goToReferralCode = () => setStage('referralCode');
+  // const [selectedCity, setSelectedCity] = useState<string | undefined>();
+  // const goToCredentials = () => setStage('credentials');
+  // const goToReferralCode = () => setStage('referralCode');
 
   const sendEmail = async (email: string) => {
     try {
@@ -97,26 +81,10 @@ export default function SignUp() {
     }
   };
 
-  const saveCity = (city: string) => {
-    setSelectedCity(city);
-    goToCredentials();
-  };
-
-  const saveCredentials = (data: SignUpFormDto) => {
-    setCredentials(data);
-    // goToFavoriteInfo();
-    goToReferralCode();
-  };
-
-  // const saveFavoriteInfo = (info: FavoriteInfo) => {
-  //   setFavoriteInfo(info);
-  //   goToReferralCode();
-  // };
-
   const dispatch = useAppDispatch();
   const wasPostponed = useAppSelector(getWasOrderPostponed);
-  const registerUser = async (referralCode: string) => {
-    if (!credentials || !selectedCity) return;
+  const registerUser = async (credentials: SignUpFormDto) => {
+    if (!credentials || !credentials.city) return;
 
     const role = roles?.find(it => it.key === credentials.role);
 
@@ -126,8 +94,8 @@ export default function SignUp() {
       email: credentials.email,
       code: credentials.code,
       password: credentials.password,
-      referralCode,
-      cityId: +selectedCity,
+      referralCode: credentials.referralCode,
+      cityId: +credentials.city,
       roleId: role?.id || 1,
     };
 
@@ -140,7 +108,6 @@ export default function SignUp() {
         password: credentials.password,
         email: credentials.email,
       }).unwrap();
-
 
       if (wasPostponed) {
         dispatch(setOrderPostponed(false));
@@ -155,36 +122,35 @@ export default function SignUp() {
     }
   };
 
-  const saveReferralCode = (referralData: ReferralCodeDto) => {
-    registerUser(referralData.referralCode);
+  const saveCredentials = (data: SignUpFormDto) => {
+    registerUser(data);
   };
 
   const forms = {
-    greeting: {
-      component: <SignupGreeting onSubmit={goToCitySelect} onBack={goToIntro} />,
-      image: greetingsImage,
-      stepIndex: 1,
-    },
-    citySelect: {
-      component: <SignupCitySelect city={selectedCity} options={cities} onSubmit={saveCity} onBack={goToGreeting} />,
-      image: cityImage,
-      stepIndex: 2,
-    },
     credentials: {
       component: (
         <SignupCredentials
           roles={roles}
-          defaultValues={credentials}
           codeIsSending={codeIsSending}
           onEmailSend={sendEmail}
           onCodeCheck={checkEmailCode}
           onSubmit={saveCredentials}
-          onBack={goToCitySelect}
+          onBack={goToIntro}
+          cityOptions={cities}
         />
       ),
-      image: credentialsImage,
-      stepIndex: 3,
+      stepIndex: 1,
     },
+    // referralCode: {
+    //   component: <SignupReferralCode onSubmit={saveReferralCode} onBack={goToCredentials} />,
+    //   image: referralImage,
+    //   stepIndex: 2,
+    // },
+    // citySelect: {
+    //   component: <SignupCitySelect city={selectedCity} options={cities} onSubmit={saveCity} onBack={goToIntro} />,
+    //   image: cityImage,
+    //   stepIndex: 1,
+    // },
     // favoriteInfo: {
     //   component: (
     //     <SignupFavoriteInfo
@@ -197,16 +163,11 @@ export default function SignUp() {
     //   image: favoritesImage,
     //   stepIndex: 4,
     // },
-    referralCode: {
-      component: <SignupReferralCode onSubmit={saveReferralCode} onBack={goToCredentials} />,
-      image: referralImage,
-      stepIndex: 4,
-    },
   };
 
   return (
     <AuthLayout>
-      <SignupLayout image={forms[stage].image} stepIndex={forms[stage].stepIndex}>
+      <SignupLayout stepIndex={forms[stage].stepIndex}>
         {forms[stage].component}
       </SignupLayout>
     </AuthLayout>
