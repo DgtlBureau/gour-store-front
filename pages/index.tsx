@@ -72,15 +72,22 @@ const Home: NextPage = () => {
 
   const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
 
-  const { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({
+  //TODO: УДАЛИТЬ
+  // eslint-disable-next-line
+  let { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({
     withDiscount: true,
     withCategories: true,
   });
 
-  const { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
+  // eslint-disable-next-line
+  let { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
     withCategories: true,
   });
+
+  novelties = novelties.filter((product) => product.id !== 65);
+  products = products.filter((product) => product.id !== 65);
+  //TODO: УДАЛИТЬ
 
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
