@@ -72,14 +72,13 @@ const Home: NextPage = () => {
 
   const { data: categories = [], isLoading: categoriesIsLoading } = useGetCategoryListQuery();
 
-  //TODO: УДАЛИТЬ
-  // eslint-disable-next-line
+  // todo УДАЛИТЬ
+  /* eslint prefer-const: 1 */
   let { data: products = [], isLoading: productsIsLoading } = useGetProductListQuery({
     withDiscount: true,
     withCategories: true,
   });
 
-  // eslint-disable-next-line
   let { data: novelties = [], isLoading: noveltiesIsLoading } = useGetNoveltiesProductListQuery({
     withDiscount: true,
     withCategories: true,
@@ -87,7 +86,7 @@ const Home: NextPage = () => {
 
   novelties = novelties.filter((product) => product.id !== 65);
   products = products.filter((product) => product.id !== 65);
-  //TODO: УДАЛИТЬ
+  // TODO: УДАЛИТЬ
 
   const { data: promotions, isLoading: promotionsIsLoading } = useGetPromotionListQuery();
 
