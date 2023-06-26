@@ -40,7 +40,7 @@ export default function Contacts() {
             <Box sx={sx.row}>
                 <ContactCard icon={phone} text={t('textPhone')} hrefLink={hrefTel} textLink="+7 812 602-52-61"/>
                 <ContactCard icon={tgIcon} text={t('textTg')} hrefLink={hrefTg} textLink="t.me/tastyoleg"/>
-                <ContactCard icon={iconMail} text={t('textMail')} hrefLink={hrefMail} textLink="rk@gour-food.com"/>
+                <ContactCard icon={iconMail} text={t('textMail')} hrefLink={hrefMail} textLink="tk@tastyoleg.com"/>
                 <ContactCard icon={vkIcon} text={t('textVk')} hrefLink={hrefVk} textLink="vk.com/tastyoleg"/>
             </Box>
         </ShopLayout>

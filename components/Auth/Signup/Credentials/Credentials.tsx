@@ -137,16 +137,22 @@ export function SignupCredentials({
             <>
               <Typography sx={sx.title}>{t('title')}</Typography>
               <Box sx={{ ...sx.field, ...sx.phone, padding: '10px 0 0 0 ' }}>
-                <HFSendField
+                <HFTextField
                   label={t('email')}
                   name='email'
                   isSending={!!codeIsSending}
-                  sendingIsDisabled={sendingIsDisabled}
+                  // sendingIsDisabled={sendingIsDisabled}
                   disabled={isCodeSuccess}
                   onChange={changeEmail}
-                  onSend={sendEmail}
+                  // onSend={sendEmail}
                 />
+
               </Box>
+
+              <Button onClick={sendEmail} disabled={sendingIsDisabled || !!codeIsSending}
+                      sx={{...sx.submitBtn, marginBottom: '10px '}}>
+                Отправить код
+              </Button>
             </>
           )}
 
