@@ -140,11 +140,8 @@ export function SignupCredentials({
                 <HFTextField
                   label={t('email')}
                   name='email'
-                  isSending={!!codeIsSending}
-                  // sendingIsDisabled={sendingIsDisabled}
                   disabled={isCodeSuccess}
                   onChange={changeEmail}
-                  // onSend={sendEmail}
                 />
 
               </Box>
