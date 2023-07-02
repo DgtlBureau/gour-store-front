@@ -17,6 +17,8 @@ import translation from './Card.i18n.json';
 import cardSx from './Card.styles';
 import { getPriceByRole } from '../../../types/entities/IPrice';
 import { useGetCurrentUserQuery } from '../../../store/api/currentUserApi';
+import { useAppSelector } from '../../../hooks/store';
+import { selectIsAuth } from '../../../store/selectors/auth';
 
 type OrderProductInfoItemProps = {
   title: string;
@@ -106,7 +108,8 @@ export function OrderCard({
   const { t } = useLocalTranslation(translation);
 
   const currencySymbol = getCurrencySymbol();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const isAuth = useAppSelector(selectIsAuth);
+  const { data: currentUser } = useGetCurrentUserQuery(undefined, {skip: !isAuth});
 
   const productInfo = products.map(product => {
     const priceByGram = getPriceByGrams(

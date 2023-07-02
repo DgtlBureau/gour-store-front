@@ -5,7 +5,7 @@ export type PayInvoiceDto = Readonly<{
   cvv: string;
 
   invoiceUuid: string;
-  payerUuid: string;
+  payerUuid?: string;
   email?: string;
   price: number;
   fullName: string;
@@ -14,7 +14,7 @@ export type PayInvoiceDto = Readonly<{
 
 export type PayServerInvoiceDto = Readonly<{
   currency: 'RUB' | 'USD';
-  payerUuid: string;
+  payerUuid?: string;
   email?: string;
   ipAddress: string;
   signature: string;

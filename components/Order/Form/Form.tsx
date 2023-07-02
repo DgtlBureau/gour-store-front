@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import {CircularProgress, Grid, useRadioGroup} from '@mui/material';
+import {CircularProgress, Grid} from '@mui/material';
 
 import { HFPhoneInput } from 'components/HookForm/HFPhoneInput';
-import { IconButton } from 'components/UI/IconButton/IconButton';
 import { LinkRef as Link } from 'components/UI/Link/Link';
 import { SelectOption } from 'components/UI/Select/Select';
 
@@ -26,7 +25,12 @@ import { getValidationSchema } from './validation';
 import sx from './Form.styles';
 
 import sbpImg from 'assets/icons/sbp.png';
-import {RadioGroup} from '../../UI/RadioGroup/RadioGroup';
+import { RadioGroup } from '../../UI/RadioGroup/RadioGroup';
+import { HFCheckbox } from '../../HookForm/HFCheckbox';
+import { useAppSelector } from '../../../hooks/store';
+import { selectIsAuth } from '../../../store/selectors/auth';
+import { getCurrentUserCity } from '../../../store/slices/authSlice';
+import { ICity} from '../../../types/entities/ICity';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -45,6 +49,7 @@ export type OrderFormType = {
   floor: string;
   comment?: string;
   paymentMethod: string;
+  shouldRegister?: boolean;
 };
 
 export type PersonalFields = {
@@ -102,9 +107,12 @@ export function OrderForm({
 }: OrderFormProps) {
   const { t } = useLocalTranslation(translations);
 
-  const schema = getValidationSchema(t);
+  const isAuth = useAppSelector(selectIsAuth);
 
   const [isAgree, setIsAgree] = useState(false);
+  const [shouldRegisterValue, setShouldRegister] = useState<boolean | undefined>(false);
+  const schema = getValidationSchema(t);
+  const selectedCity = (useAppSelector(getCurrentUserCity) || cities?.[0]) as ICity;
 
   const values = useForm<OrderFormType>({
     resolver: yupResolver(schema),
@@ -119,6 +127,7 @@ export function OrderForm({
     values.reset({
       ...values.getValues(),
       ...defaultDeliveryFields,
+      cityId: Number(selectedCity.id)
     });
   }, [defaultDeliveryFields]);
 
@@ -136,6 +145,11 @@ export function OrderForm({
         return;
       }
       onChangeDeliveryCity(null);
+    });
+
+    values.watch(({shouldRegister}) => {
+      setShouldRegister(shouldRegister)
+      values.trigger();
     });
     return () => subscription.unsubscribe();
   }, [values.watch]);
@@ -171,7 +185,7 @@ export function OrderForm({
     <FormProvider {...values}>
       <form onSubmit={values.handleSubmit(onSubmit)}>
         <Box sx={sx.form}>
-          <Box sx={sx.block}>
+          <Box sx={{...sx.block, marginBottom: '10px'}}>
             <Typography variant='h6' sx={sx.title}>
               {t('details')}
             </Typography>
@@ -186,10 +200,22 @@ export function OrderForm({
               <Grid item xs={12} sm={6}>
                 <HFPhoneInput name='phone' label={t('phone')} />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <HFTextField name='email' label={t('email')} type='email' />
-              </Grid>
+              {(isAuth || shouldRegisterValue) && (
+                  <Grid item xs={12} sm={6}>
+                    <HFTextField name='email' disabled={isAuth} label={t('email')} type='email'/>
+                  </Grid>
+              )
+              }
             </Grid>
+            {!isAuth &&
+                <Grid item xs={12}>
+                  <HFCheckbox
+                      sx={{marginTop: '10px','& .MuiSvgIcon-root': { fontSize: 28 }, '.MuiFormLabel-root': {fontSize: 18} }}
+                      name='shouldRegister'
+                      label='Зарегистрироваться'
+                  />
+                </Grid>
+            }
           </Box>
 
           <Box sx={sx.block}>

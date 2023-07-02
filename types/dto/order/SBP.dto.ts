@@ -10,6 +10,6 @@ export type SBPDto = {
   amount: number;
   description: string;
   invoiceUuid: string;
-  payerUuid: string;
+  payerUuid?: string;
   email: string;
 };

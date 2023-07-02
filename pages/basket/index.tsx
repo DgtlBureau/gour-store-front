@@ -124,12 +124,15 @@ export function Basket() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     ym(92190821,'reachGoal','went-to-order');
-    if (currentUser) {
-      return goToOrder();
-    }
 
-    dispatch(setOrderPostponed(true));
-    return goToSignIn();
+    return goToOrder();
+
+    // if (currentUser) {
+    //   return goToOrder();
+    // }
+
+    // dispatch(setOrderPostponed(true));
+    // return goToSignIn();
   };
 
 
@@ -191,6 +194,12 @@ export function Basket() {
               </Grid>
             </Grid>
 
+            <Grid item xs={12} sx={{ display: { md: 'none' } }}>
+              <Button fullWidth onClick={onOrderClick}>
+                {t('orderButton')}
+              </Button>
+            </Grid>
+
             {!!similarProducts?.length && (
               <Grid item xs={12}>
                 <ProductSlider
@@ -204,11 +213,6 @@ export function Basket() {
               </Grid>
             )}
 
-            <Grid item xs={12} sx={{ display: { md: 'none' } }}>
-              <Button fullWidth onClick={onOrderClick}>
-                {t('orderButton')}
-              </Button>
-            </Grid>
           </Grid>
         )}
       </ShopLayout>

@@ -126,8 +126,8 @@ export function Order() {
   const [promoCodeDiscountValue, setPromoCodeDiscountValue] = useState(0);
 
   const isAuth = useAppSelector(selectIsAuth);
-  const { data: currentUser } = useGetCurrentUserQuery(undefined,{skip: !isAuth});
-  const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery();
+  const { data: currentUser } = useGetCurrentUserQuery(undefined, {skip: !isAuth});
+  const { data: deliveryProfiles = [] } = useGetOrderProfilesListQuery(undefined, {skip: !isAuth});
   const { data: cities = [] } = useGetCityListQuery();
 
   const [formDeliveryCityId, setFormDeliveryCityId] = useState<number | null>(null);
@@ -259,7 +259,7 @@ export function Order() {
     if (currentDeliveryProfileId === noExistingId) {
       const deliveryProfileData: CreateOrderProfileDto = {
         title: `${street}, ${house}`,
-        cityId,
+        cityId: +cityId,
         street,
         house,
         apartment,
@@ -329,15 +329,16 @@ export function Order() {
     sendDataLayerPurchase(productsInOrder, payOrderDto.leadId,false);
 
     const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
+    const testRealAmount = payOrderDto.phone !== '+12345678910' ? amount : 1;
 
     const SBPData = {
       userAgent,
       ipAddress: '5.18.144.32',
       currency: sbpCurrency,
-      amount,
+      amount: testRealAmount,
       description: '',
       invoiceUuid: payOrderDto.invoiceUuid,
-      payerUuid: payOrderDto.client.id,
+      payerUuid: payOrderDto.client?.id,
       email: payOrderDto.email,
       fullName: userFullName,
       code: currentUser?.referralCode?.code || '',
@@ -371,14 +372,16 @@ export function Order() {
     sendDataLayerPurchase(productsInOrder, payOrderDto.leadId, false);
     const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
 
+    const testRealAmount = payOrderDto.phone !== '+12345678910' ? amount : 1;
+
     const SBPData = {
       userAgent: UserAgent.MOBILE,
       ipAddress: '5.18.144.32',
       currency: sbpCurrency,
-      amount,
+      amount: testRealAmount,
       description: '',
       invoiceUuid: payOrderDto.invoiceUuid,
-      payerUuid: payOrderDto.client.id,
+      payerUuid: payOrderDto.client?.id,
       email: payOrderDto.email,
       fullName: userFullName,
       code: currentUser?.referralCode?.code || '',
@@ -465,8 +468,13 @@ export function Order() {
   };
 
   const onCloseOrderStatusModal = () => {
-    if (orderStatusModal?.status === 'success') goToOrders();
-    else toggleOrderStatusModal(null);
+    if (orderStatusModal?.status === 'success') {
+      /* eslint-disable no-unused-expressions */
+      isAuth ? goToOrders() : goToHome();
+      /* eslint-enable no-unused-expressions */
+    } else {
+      toggleOrderStatusModal(null);
+    }
   };
 
   const selectDeliveryProfile = (deliveryProfileId: number) => {
@@ -542,15 +550,21 @@ export function Order() {
       return {
         title: `Заказ №${orderStatusModal.orderId} успешно оформлен`,
         content: (
-          <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
-            Вы можете отслеживать статус заказа в&nbsp;разделе{' '}
-            <Link href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
-              <Typography color='accent.main' variant='caption' sx={sx.infoModalLink}>
-                Заказы
-              </Typography>
-            </Link>{' '}
-            в&nbsp;личном кабинете.
-          </Typography>
+            isAuth ? (
+            <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
+              Вы можете отслеживать статус заказа в&nbsp;разделе{' '}
+              <Link href={`/${Path.PERSONAL_AREA}/${Path.ORDERS}`}>
+                <Typography color='accent.main' variant='caption' sx={sx.infoModalLink}>
+                  Заказы
+                </Typography>
+              </Link>{' '}
+              в&nbsp;личном кабинете.
+            </Typography>
+          ) : (
+                <Typography color='text.secondary' sx={sx.infoModalContent} variant='body1'>
+                  Менеджер свяжется с вами для уточнения деталей
+                </Typography>
+            )
         ),
       };
     }
