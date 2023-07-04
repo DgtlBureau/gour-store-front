@@ -19,11 +19,13 @@ import { NotificationType } from 'types/entities/Notification';
 
 import { dispatchNotification } from 'packages/EventBus';
 import { getErrorMessage } from 'utils/errorUtil';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { getWasOrderPostponed, setOrderPostponed } from '../../store/slices/orderSlice';
 
 type SignInStage = 'credentials' | 'recovery';
 
 export default function SignIn() {
-  const { goToIntro, goToSignUp, goToHome } = useAppNavigation();
+  const { goToIntro, goToSignUp, goToHome, goToOrder } = useAppNavigation();
 
   const [sendCode] = useSendEmailCodeMutation();
   const [checkCode, { isLoading: codeIsSending }] = useCheckCodeMutation();
@@ -36,6 +38,8 @@ export default function SignIn() {
 
   const goToCredentials = () => setStage('credentials');
   const goToRecovery = () => setStage('recovery');
+  const dispatch = useAppDispatch();
+  const wasPostponed = useAppSelector(getWasOrderPostponed);
 
   const sendEmail = async (email: string) => {
     try {
@@ -73,7 +77,12 @@ export default function SignIn() {
 
       dispatchNotification('Добро пожаловать :]');
 
-      goToHome();
+      if (wasPostponed) {
+        dispatch(setOrderPostponed(false));
+        goToOrder();
+      } else {
+        goToHome();
+      }
     } catch (error) {
       const message = getErrorMessage(error);
 

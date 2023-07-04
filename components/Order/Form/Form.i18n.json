@@ -3,7 +3,7 @@
     "details": "Контактные данные",
     "firstName": "Имя",
     "lastName": "Фамилия",
-    "phone": "Номер телефона",
+    "phone": "Номер телефона*",
     "email": "Электронная почта",
     "nameRequired": "Укажите имя",
     "lastNameRequired": "Укажите фамилию",

@@ -26,11 +26,11 @@ import sx from './Form.styles';
 
 import sbpImg from 'assets/icons/sbp.png';
 import { RadioGroup } from '../../UI/RadioGroup/RadioGroup';
-import { HFCheckbox } from '../../HookForm/HFCheckbox';
-import { useAppSelector } from '../../../hooks/store';
+import {useAppDispatch, useAppSelector} from '../../../hooks/store';
 import { selectIsAuth } from '../../../store/selectors/auth';
 import { getCurrentUserCity } from '../../../store/slices/authSlice';
-import { ICity} from '../../../types/entities/ICity';
+import { setOrderPostponed } from '../../../store/slices/orderSlice';
+import { useAppNavigation } from '../../Navigation';
 
 const addressFields = ['street', 'house', 'apartment', 'entrance', 'floor'];
 
@@ -108,11 +108,13 @@ export function OrderForm({
   const { t } = useLocalTranslation(translations);
 
   const isAuth = useAppSelector(selectIsAuth);
+  const { goToSignIn } = useAppNavigation();
 
   const [isAgree, setIsAgree] = useState(false);
   const [shouldRegisterValue, setShouldRegister] = useState<boolean | undefined>(false);
   const schema = getValidationSchema(t);
-  const selectedCity = (useAppSelector(getCurrentUserCity) || cities?.[0]) as ICity;
+  const selectedCityId = Number((useAppSelector(getCurrentUserCity)?.id || cities?.[0]?.value));
+  const dispatch = useAppDispatch();
 
   const values = useForm<OrderFormType>({
     resolver: yupResolver(schema),
@@ -127,7 +129,7 @@ export function OrderForm({
     values.reset({
       ...values.getValues(),
       ...defaultDeliveryFields,
-      cityId: Number(selectedCity.id)
+      cityId: selectedCityId
     });
   }, [defaultDeliveryFields]);
 
@@ -180,6 +182,10 @@ export function OrderForm({
       {value: 'SBP', label:t('paymentMethodSBP')},
       {value: 'cash', label:t('paymentMethodCash')},
   ];
+  const onRegisterClick = () => {
+    dispatch(setOrderPostponed(true));
+    goToSignIn();
+  }
 
   return (
     <FormProvider {...values}>
@@ -208,12 +214,15 @@ export function OrderForm({
               }
             </Grid>
             {!isAuth &&
-                <Grid item xs={12}>
-                  <HFCheckbox
-                      sx={{marginTop: '10px','& .MuiSvgIcon-root': { fontSize: 28 }, '.MuiFormLabel-root': {fontSize: 18} }}
-                      name='shouldRegister'
-                      label='Зарегистрироваться'
-                  />
+                <Grid item xs={12} style={{marginTop: '10px'}}>
+                  <Button
+                      sx={sx.btn}
+                      type='button'
+                      color='primary'
+                      onClick={onRegisterClick}
+                  >
+                    Зарегистрироваться, чтобы получить привелегии
+                  </Button>
                 </Grid>
             }
           </Box>
@@ -249,38 +258,41 @@ export function OrderForm({
                 <HFTextField sx={sx.textarea} multiline rows={3} name='comment' label={t('comment')} />
               </Grid>
 
-              <Grid
-                container
-                item
-                xs={12}
-                // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
-                spacing={2}
-              >
-                <Grid item xs={6} sm={6}>
-                  <HFTextField name='promoCode' label={t('promoCode')} disabled={isPromoCodeApplies} />
+              {isAuth && (
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  // sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+                  spacing={2}
+                >
+                  <Grid item xs={6} sm={6}>
+                    <HFTextField name='promoCode' label={t('promoCode')} disabled={isPromoCodeApplies} />
+                  </Grid>
+
+                  <Grid item xs={6} sm={6}>
+                    <Button
+                      sx={sx.btnPromo}
+                      type='button'
+                      color={!isSubmitError ? 'primary' : 'error'}
+                      disabled={!values.getValues('promoCode')}
+                      onClick={addPromoCode}
+                    >
+                      {isPromoCodeApplies ? <CircularProgress /> : 'Применить'}
+                    </Button>
+                  </Grid>
+
+                  <Typography variant='body2' color='text.muted' sx={sx.descriptionPromo}>
+                    При указанном промокоде реферальный код не учитывается
+                  </Typography>
+
                 </Grid>
-
-                <Grid item xs={6} sm={6}>
-                  <Button
-                    sx={sx.btnPromo}
-                    type='button'
-                    color={!isSubmitError ? 'primary' : 'error'}
-                    disabled={!values.getValues('promoCode')}
-                    onClick={addPromoCode}
-                  >
-                    {isPromoCodeApplies ? <CircularProgress /> : 'Применить'}
-                  </Button>
-                </Grid>
-
-                <Typography variant='body2' color='text.muted' sx={sx.descriptionPromo}>
-                  При указанном промокоде реферальный код не учитывается
-                </Typography>
-
-              </Grid>
+                )
+              }
             </Grid>
 
-            <Box sx={sx.block}>
-              <Typography variant='h6' sx={sx.title}>
+            <Box sx={{...sx.block, marginTop: '10px',marginBottom: '10px'}}>
+              <Typography variant='h6' sx={{...sx.title,marginBottom: '5px'}}>
                 {t('paymentMethods')}
               </Typography>
 

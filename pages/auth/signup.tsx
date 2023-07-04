@@ -28,7 +28,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/store';
 type AuthStage = 'credentials';
 
 export default function SignUp() {
-  const { goToIntro, goToHome, language , goToBasket } = useAppNavigation();
+  const { goToIntro, goToHome, language, goToOrder } = useAppNavigation();
 
   const { cities } = useGetCityListQuery(undefined, {
     selectFromResult: ({ data, ...params }) => ({
@@ -111,7 +111,7 @@ export default function SignUp() {
 
       if (wasPostponed) {
         dispatch(setOrderPostponed(false));
-        goToBasket();
+        goToOrder();
       } else {
         goToHome();
       }

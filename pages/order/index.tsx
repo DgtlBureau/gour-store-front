@@ -329,7 +329,7 @@ export function Order() {
     sendDataLayerPurchase(productsInOrder, payOrderDto.leadId,false);
 
     const userFullName = [currentUser?.firstName, currentUser?.lastName].join(' ');
-    const testRealAmount = payOrderDto.phone !== '+12345678910' ? amount : 1;
+    const testRealAmount = payOrderDto.phone !== '+12345678910' ? amount : 10;
 
     const SBPData = {
       userAgent,
