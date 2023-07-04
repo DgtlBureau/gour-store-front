@@ -78,8 +78,10 @@ export default function SignIn() {
       dispatchNotification('Добро пожаловать :]');
 
       if (wasPostponed) {
-        dispatch(setOrderPostponed(false));
         goToOrder();
+        // eslint-disable-next-line no-promise-executor-return
+        await new Promise(r => setTimeout(r, 1000));
+        dispatch(setOrderPostponed(false));
       } else {
         goToHome();
       }
