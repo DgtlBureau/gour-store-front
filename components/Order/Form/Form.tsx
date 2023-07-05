@@ -108,7 +108,7 @@ export function OrderForm({
   const { t } = useLocalTranslation(translations);
 
   const isAuth = useAppSelector(selectIsAuth);
-  const { goToSignIn } = useAppNavigation();
+  const { goToSignUp } = useAppNavigation();
 
   const [isAgree, setIsAgree] = useState(false);
   const [shouldRegisterValue, setShouldRegister] = useState<boolean | undefined>(false);
@@ -184,7 +184,7 @@ export function OrderForm({
   ];
   const onRegisterClick = () => {
     dispatch(setOrderPostponed(true));
-    goToSignIn();
+    goToSignUp();
   }
 
   return (
