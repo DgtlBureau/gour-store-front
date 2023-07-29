@@ -15,6 +15,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo $SSH_PRIVATE_KEY
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan 65.108.90.129 >> ~/.ssh/known_hosts
